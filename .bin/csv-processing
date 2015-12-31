@@ -1,18 +1,18 @@
 #!/bin/bash
-INPUT_FILE=$1
-TMP_FILE=/tmp/csvstats.sh
-if [ -z $INPUT_FILE ] || [ ! -e $INPUT_FILE ]; then
-    echo "Input file expected"
-    exit -1
-fi
+NAME="csv-processing"
+source $HOME/.bin/install-git-common
+$HOME/.bin/install-git $1 "$NAME" "csv-stats"
+if [ $? -ne 0 ]; then
+    CSV_FILE=$(get-path $NAME)/csvstats.sh
+    INPUT_FILE=$1
+    if [ -z $INPUT_FILE ] || [ ! -e $INPUT_FILE ]; then
+        echo "Input file expected"
+        exit -1
+    fi
 
-if [ ! -e $TMP_FILE ]; then
-    wget -O $TMP_FILE https://raw.githubusercontent.com/enckse/csv-stats/master/csvstats.sh
-    chmod u+x $TMP_FILE
+    FRIENDLY=$(echo $INPUT_FILE | cut -d "." -f 1)
+    echo
+    echo "$FRIENDLY:"
+    $CSV_FILE $PWD/$INPUT_FILE
+    echo
 fi
-
-FRIENDLY=$(echo $INPUT_FILE | cut -d "." -f 1)
-echo
-echo "$FRIENDLY:"
-$TMP_FILE $PWD/$INPUT_FILE
-echo

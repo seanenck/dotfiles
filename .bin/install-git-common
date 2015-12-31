@@ -1,0 +1,9 @@
+#!/bin/bash
+export INSTALL_KEYWORD="--install"
+export REMOVE_KEYWORD="--remove"
+export INSTALL_DIR="/opt/"
+
+function get-path()
+{
+    echo "${INSTALL_DIR}$1"
+}
