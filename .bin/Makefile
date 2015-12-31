@@ -29,8 +29,9 @@ install:
 		@echo "$$IPTABLES_RULES" | sudo tee $(iptables_rule)
 		@echo "$$IPTABLES_SETUP" | sudo tee $(iptables_setup)
 		sudo chmod 700 $(iptables_setup)
+		vscode install
 
 clean:
 		sudo rm -f $(iptables_rule)
 		sudo rm -f $(iptables_setup)
-
+		vscode remove
