@@ -21,6 +21,7 @@ export IPTABLES_SETUP
 package_list = alsa-utils chromium cryptsetup debootstrap feh firmware-iwlwifi gawk git i3 i3lock i3status iptables keepass2 lxterminal p7zip pm-utils screen systemd-container unzip wicd wireless-tools wpasupplicant xautolock xbacklight xdm xorg
 iptables_rule = /etc/iptables.rules
 iptables_setup = /etc/network/if-pre-up.d/iptables
+ssh_config = $(HOME)/.ssh/config
 
 all: clean install
 
@@ -29,11 +30,16 @@ install:
 		@echo "$$IPTABLES_RULES" | sudo tee $(iptables_rule)
 		@echo "$$IPTABLES_SETUP" | sudo tee $(iptables_setup)
 		sudo chmod 700 $(iptables_setup)
+		crypt
+		ln -s /mnt/crypt/ssh/ssh.config $(ssh_config)
 		vscode install
 		nspawn operations
+
 
 clean:
 		sudo rm -f $(iptables_rule)
 		sudo rm -f $(iptables_setup)
 		vscode remove
-		rm -rf /opt/nspawn
+		sudo rm -rf /opt/nspawn
+		rm -f $(ssh_config)
+

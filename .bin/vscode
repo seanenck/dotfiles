@@ -57,7 +57,7 @@ function install-vscode()
 
 function remove-vscode()
 {
-    rm -rf $VSCODE_PATH
+    sudo rm -rf $VSCODE_PATH
 }
 
 case $1 in
