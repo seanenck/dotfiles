@@ -1,0 +1,13 @@
+CRYPT_MNT=/mnt/crypt
+TMP=/var/tmp/crypt.img
+
+mount | grep -q $CRYPT_MNT
+if [ $? -eq 0 ]; then
+    echo "already mounted"
+    exit -1
+fi
+
+rsync -vrziut /mnt/Synced/crypt.img $TMP
+sudo cryptsetup luksOpen --readonly $TMP crypt-img
+sudo mkdir -p $CRYPT_MNT
+sudo mount /dev/mapper/crypt-img $CRYPT_MNT
