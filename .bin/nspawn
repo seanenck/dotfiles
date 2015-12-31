@@ -2,12 +2,33 @@
 NSPAWN_OPT="/opt/"
 NSPAWN_PATH="${NSPAWN_OPT}nspawn/"
 NSPAWN="${NSPAWN_PATH}nspawn"
+INSTALL="--install"
+REMOVE="--remove"
 
-if [ ! -d $NSPAWN_PATH ]; then
-    sudo mkdir $NSPAWN_PATH
-    sudo chown enck:enck $NSPAWN_PATH
-    git clone git@github.com:enckse/nspawn-info.git $NSPAWN_PATH
-fi
+function install-nspawn()
+{
+    if [ ! -d $NSPAWN_PATH ]; then
+        sudo mkdir $NSPAWN_PATH
+        sudo chown enck:enck $NSPAWN_PATH
+        git clone git@github.com:enckse/nspawn-info.git $NSPAWN_PATH
+    fi
+}
+
+function remove-nspawn()
+{
+    sudo rm -rf $NSPAWN_PATH
+}
+
+case $1 in
+    $INSTALL)
+        install-nspawn
+        exit 0
+        ;;
+    $REMOVE)
+        remove-nspawn
+        exit 0
+        ;;
+esac
 
 export NSPAWN_INFO_SCREEN=1
 export NSPAWN_INFO_CONTAINERS="/opt/workspace/containers"

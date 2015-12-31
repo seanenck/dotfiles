@@ -8,8 +8,8 @@ INSTALL_URL="https://az764295.vo.msecnd.net/public/0.10.6-release/VSCode-linux64
 TMP_AREA="/tmp/"
 VSCODE_TMP="${TMP_AREA}VSCode-linux-x64"
 VSCODE_FILE="${TMP_AREA}vscode.zip"
-INSTALL_KEYWORD="install"
-REMOVE_KEYWORD="remove"
+INSTALL_KEYWORD="--install"
+REMOVE_KEYWORD="--remove"
 
 function run-vscode()
 {

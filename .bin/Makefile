@@ -32,14 +32,16 @@ install:
 		sudo chmod 700 $(iptables_setup)
 		crypt
 		ln -s /mnt/crypt/ssh/ssh.config $(ssh_config)
-		vscode install
-		nspawn operations
-
+		vscode --install
+		nspawn --install
+		csv-processing --install
 
 clean:
 		sudo rm -f $(iptables_rule)
 		sudo rm -f $(iptables_setup)
-		vscode remove
-		sudo rm -rf /opt/nspawn
 		rm -f $(ssh_config)
+		vscode --remove
+		nspawn --remove
+		csv-processing --remove
+
 
