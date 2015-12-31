@@ -1,5 +1,5 @@
 #!/bin/bash
-VSCODE_PATH=/opt/apps/vscode
+VSCODE_PATH=/opt/vscode
 VSCODE_EXE=$VSCODE_PATH/Code
 VSCODE_PAGE="/tmp/vscode-update.html"
 VSCODE_UPDATE_FILE="/tmp/vscode-need-update"
@@ -50,7 +50,8 @@ function install-vscode()
 {
     wget -O $VSCODE_FILE $INSTALL_URL
     unzip $VSCODE_FILE -d $TMP_AREA
-    mv $VSCODE_TMP $VSCODE_PATH
+    sudo mv $VSCODE_TMP $VSCODE_PATH
+    sudo chown -R enck:enck $VSCODE_PATH
     rm $VSCODE_FILE
 }
 
