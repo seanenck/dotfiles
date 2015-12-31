@@ -1,0 +1,15 @@
+#!/bin/bash
+NSPAWN_OPT="/opt/"
+NSPAWN_PATH="${NSPAWN_OPT}nspawn/"
+NSPAWN="${NSPAWN_PATH}nspawn"
+
+if [ ! -d $NSPAWN_PATH ]; then
+    sudo mkdir $NSPAWN_PATH
+    sudo chown enck:enck $NSPAWN_PATH
+    git clone git@github.com:enckse/nspawn-info.git $NSPAWN_PATH
+fi
+
+export NSPAWN_INFO_SCREEN=1
+export NSPAWN_INFO_CONTAINERS="/opt/workspace/containers"
+export NSPAWN_INFO_SHARED="/opt/workspace/shared"
+$NSPAWN $@

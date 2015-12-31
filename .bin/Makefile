@@ -30,8 +30,10 @@ install:
 		@echo "$$IPTABLES_SETUP" | sudo tee $(iptables_setup)
 		sudo chmod 700 $(iptables_setup)
 		vscode install
+		nspawn operations
 
 clean:
 		sudo rm -f $(iptables_rule)
 		sudo rm -f $(iptables_setup)
 		vscode remove
+		rm -rf /opt/nspawn
