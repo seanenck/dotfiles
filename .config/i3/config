@@ -1,0 +1,120 @@
+set $mod Mod1
+font pango:monospace 12
+floating_modifier $mod
+
+bindsym $mod+Return exec lxterminal
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+bindsym $mod+d exec dmenu_run -fn "-*-terminal-medium-*-*-*-18-*-*-*-*-*-*-*"
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# split in horizontal orientation
+bindsym Mod1+h split h
+
+# split in vertical orientation
+bindsym Mod1+v split v
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+        tray_output primary
+        status_command i3status_local
+}
+
+
+exec --no-startup-id /usr/local/bin/workplaces startup
+
+# Handle auto-locking
+exec xautolock -time 5 -locker /usr/local/bin/locking &
+
+# Move workspaces left/right via comma/period
+bindsym $mod+Shift+comma move workspace to left
+bindsym $mod+Shift+period move workspace to right
+
+# Change workplaces
+bindsym $mod+Shift+o exec workplaces change
+bindsym $mod+Shift+p exec workplaces reload
+bindsym $mod+Shift+i exec layouts restore
+
+# Locking handlers
+bindsym $mod+Shift+x exec locking toggling # change lock/suspend enable/disable
+bindsym $mod+Shift+l exec locking lock # lock now
+bindsym $mod+Shift+s exec locking sleep # immediate suspend
+
+# Scracthpad
+bindsym $mod+Shift+m move scratchpad
+bindsym $mod+Shift+n scratchpad show
+
+# Backlight
+bindsym XF86MonBrightnessUp exec control-operation brightness brighter
+bindsym XF86MonBrightnessDown exec control-operation brightness dim
+
+# Volume
+bindsym XF86AudioMute exec control-operation volume mute
+bindsym XF86AudioLowerVolume exec control-operation volume down
+bindsym XF86AudioRaiseVolume exec control-operation volume up
+
