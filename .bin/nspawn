@@ -1,9 +1,16 @@
 #!/bin/bash
 NAME="nspawn"
+AUTO_COMPLETE=/etc/bash_completion.d/nspawn
 source $HOME/.bin/install-git-common
 $HOME/.bin/install-git $1 "$NAME" "${NAME}-info"
 if [ $? -ne 0 ]; then
     NSPAWN=$(get-path $NAME)/nspawn
+    if [ ! -f $AUTO_COMPLETE ]; then
+        echo "Creating bash auto-completion script"
+        sudo ln -s ${NSPAWN}_autocompletion $AUTO_COMPLETE
+        . $AUTO_COMPLETE
+    fi
+
     export NSPAWN_INFO_SCREEN=1
     export NSPAWN_INFO_CONTAINERS="/opt/workspace/containers"
     export NSPAWN_INFO_SHARED="/opt/workspace/shared"
