@@ -1,0 +1,107 @@
+#!/bin/bash
+source $HOME/.bin/displays
+source $HOME/.bin/workspaces
+source $HOME/.bin/sound
+SUSPEND=/usr/sbin/pm-suspend-hybrid
+LOCK_ACTION="lock"
+SLEEP_ACTION="sleep"
+TOGGLE_ACTION="toggling"
+
+function get-i3pid()
+{
+    PID=$(pidof i3lock | cut -d " " -f 1)
+    echo $PID
+}
+
+function lock()
+{   
+    ACTION=$1
+    case $ACTION in
+        $SLEEP_ACTION)
+            if [ ! -e $DISPLAY_UN -a ! -e $DISPLAY_EN ]; then
+                REQUEST_SUSPEND="true"
+                ACTION=$LOCK_ACTION
+            fi
+            ;;
+    esac
+
+    case $ACTION in
+    $LOCK_ACTION)
+        # Lock unless display is set to be unlocked always
+        if [ ! -e $DISPLAY_UN ]; then
+            toggle-backlighting $BACKLIGHT_OFF
+            CUR_VOL=$(change-volume $VOL_STAT)
+            CUR_VOL=$(echo $CUR_VOL)
+            if [[ "$CUR_VOL" != "0" ]]; then
+                change-volume $VOL_MUTE
+            fi
+            i3lock -c 333333
+            PID=$(get-i3pid)
+            while [ ! -z $PID ]
+            do
+                DO_SUSPEND=""
+                PID=$(get-i3pid)
+                if [ ! -z $PID ]; then
+                    if [ -z $REQUEST_SUSPEND ]; then
+                        PROC_TIME=$(stat -c %Y /proc/$PID/exe)
+                        NOW=$(date +%s)
+                        PROC_TIME=$((NOW - PROC_TIME))
+                        pidof i3lock > /dev/null
+                        if [ $? -eq 0 ]; then
+                            if [ $PROC_TIME -gt 300 ]; then
+                                SLEEP_WAIT=0
+                                while [ $SLEEP_WAIT -lt 60 ];
+                                do
+                                    SLEEP_WAIT=$((SLEEP_WAIT + 1))
+                                    SLEEP_PID=$(get-i3pid)
+                                    if [ -z $SLEEP_PID ]; then
+                                        SLEEP_WAIT=-1
+                                        break
+                                    fi        
+                                    sleep 1
+                                done
+                                if [ $SLEEP_WAIT -ne -1 ]; then
+                                    DO_SUSPEND="1"
+                                fi
+                            fi
+                        fi
+                    else
+                        DO_SUSPEND="1"
+                        REQUEST_SUSPEND=""
+                    fi
+                fi
+                
+                if [ ! -z $DO_SUSPEND ]; then
+                    sudo $SUSPEND
+                fi
+            done
+            change-workspace $WORKSPACE_RELOAD
+            toggle-backlighting $BACKLIGHT_ON
+        fi
+        ;;
+    $TOGGLE_ACTION)
+        if [ -e $DISPLAY_UN ]; then
+            rm $DISPLAY_UN
+            touch $DISPLAY_EN
+            exit 0
+        fi
+
+        if [ -e $DISPLAY_EN ]; then
+                rm $DISPLAY_EN
+                exit 0
+        fi
+
+        touch $DISPLAY_UN
+        ;;
+    *)
+        echo "Unknown action: $1"
+        ;;
+    esac
+}
+
+USE_ACTION=$LOCK_ACTION
+if [ ! -z "$1" ]; then
+    USE_ACTION=$1
+fi
+
+lock "$USE_ACTION"
