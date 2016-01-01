@@ -1,8 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/displays
 WORKPLACE_FILE=/tmp/workplace
-DISPLAY_UN=/tmp/display-unlock
-DISPLAY_EN=/tmp/display-enabled
 LAYOUT_FILE=/tmp/last-layout
 LAYOUT_DELIM=":"
 SAVE_ACTION="save"

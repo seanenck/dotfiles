@@ -1,6 +1,7 @@
 #!/bin/bash
 source $HOME/.bin/system_stats
 source $HOME/.bin/workspaces
+source $HOME/.bin/locking
 SYS_STATS_CMD="system-stats"
 
 if [ ! -z $1 ]; then
