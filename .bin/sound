@@ -1,0 +1,46 @@
+#!/bin/bash
+VOL_MUTE="mute"
+VOL_DOWN="down"
+VOL_UP="up"
+VOL_STAT="status"
+function change-volume()
+{
+    case $1 in
+        $VOL_MUTE)
+            SUBCMD="1+ toggle"
+            ;;
+        $VOL_DOWN)
+            SUBCMD="3%-"
+            ;;
+        $VOL_UP)
+            SUBCMD="3%+"
+            ;;
+        $VOL_STAT)
+            VOL_STAT=$(amixer sget Master | grep Mono:)
+            echo $VOL_STAT | grep -q "\[off\]"
+            if [ $? -ne 0 ]; then
+                VALUE=$(echo $VOL_STAT | cut -d "[" -f 2 | cut -d "]" -f 1)
+                VOL_STAT=$VALUE
+            fi
+            
+            VOL_STAT=$(echo $VOL_STAT | awk '{printf "%3.0f", $VOL_STAT}')
+            ECHO_VAL="$VOL_STAT"
+            ;;
+        *)
+            echo "unknown command $1"
+            ;;
+    esac
+    if [ ! -z "$SUBCMD" ]; then
+        COMPLETED="amixer sset Master $SUBCMD > /dev/null"
+    fi
+
+    if [ -z $ECHO_VAL ]; then
+        if [ -z "$COMPLETED" ]; then
+            echo "invalid options specified"
+            exit -1
+        fi
+        $COMPLETED
+    else
+        echo "$ECHO_VAL"
+    fi
+}

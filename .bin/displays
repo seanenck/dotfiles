@@ -1,0 +1,59 @@
+#!/bin/bash
+DISPLAY_UN=/tmp/display-unlock
+DISPLAY_EN=/tmp/display-enabled
+BACKLIGHT_ON="up"
+BACKLIGHT_OFF="down"
+BRIGHTER="brighter"
+DIMMER="dimmer"
+
+# Get displays, first argument can filter out any displays
+function get-displays()
+{
+    DISPLAY_RESULT=$(xrandr | grep " connected" | cut -d " " -f 1)
+    if [ ! -z "$1" ]; then
+        DISPLAY_RESULT=$(echo $DISPLAY_RESULT | grep -v "$1")
+    fi
+    echo $DISPLAY_RESULT
+}
+
+# Toggle backlighting up/down to a specified level
+function toggle-backlighting()
+{
+    case $1 in
+        $BACKLIGHT_ON)
+            SETTING=1.0
+            ;;
+        $BACKLIGHT_OFF)
+            SETTING=0.3
+            ;;
+        *)
+            echo "Unknown command $1"
+            ;;
+    esac
+    
+    if [ ! -z "$SETTING" ]; then
+        DISPLAYS=$(get-displays)
+        for disp in ${DISPLAYS[@]}; do
+            xrandr --output $disp --brightness $SETTING
+        done
+    fi
+}
+
+# Increase/decrease brightness
+function change-brightness()
+{
+    case $1 in
+        $BRIGHTER)
+            SUBCMD="-inc 25"
+            ;;
+        $DIMMER)
+            SUBCMD="-dec 25"
+            ;;
+        *)
+            echo "unknown command $ACTION"
+            ;;
+    esac
+    if [ ! -z "$SUBCMD" ]; then
+        xbacklight $SUBCMD
+    fi
+}

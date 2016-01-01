@@ -1,0 +1,52 @@
+#!/bin/bash
+source $HOME/.bin/displays
+source $HOME/.bin/sound
+DISPLAY_KEY="display"
+VOLUME_KEY="volume"
+DISPLAY_TOGGLE="toggle"
+DISPLAY_CHANGE="change"
+SOUND_COMMAND="sound"
+
+if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
+    echo "subsystem, command, and value required ($1 and $2 and $3 ?)"
+    exit -1
+fi
+
+function display-subsystem()
+{
+    case $1 in
+        $DISPLAY_TOGGLE)
+            toggle-backlighting "$2"
+            ;;
+        $DISPLAY_CHANGE)
+            change-brightness "$2"
+            ;;
+        *)
+            echo "Unknown display command $1"
+            exit -1
+    esac
+}
+
+function volume-subsystem()
+{
+    case $1 in
+        $SOUND_COMMAND)
+            change-volume "$2"
+            ;;
+        *)
+            echo "Unknown volume command $1"
+            exit -1
+    esac
+}
+
+case $1 in
+    $DISPLAY_KEY)
+        display-subsystem "$2" "$3"
+        ;;
+    $VOLUME_KEY)
+        volume-subsystem "$2" "$3"
+        ;;
+    *)
+        echo "Unknown action $1"
+        ;;
+esac
