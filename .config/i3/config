@@ -86,7 +86,7 @@ bar {
 }
 
 
-exec --no-startup-id /usr/local/bin/workplaces startup
+exec --no-startup-id subsystem workspaces cycle startup
 
 # Handle auto-locking
 exec xautolock -time 5 -locker /usr/local/bin/locking &
@@ -96,8 +96,8 @@ bindsym $mod+Shift+comma move workspace to left
 bindsym $mod+Shift+period move workspace to right
 
 # Change workplaces
-bindsym $mod+Shift+o exec workplaces change
-bindsym $mod+Shift+p exec workplaces reload
+bindsym $mod+Shift+o exec subsystem workspaces cycle change
+bindsym $mod+Shift+p exec subsystem workspaces cycle reload
 bindsym $mod+Shift+i exec subsystem workspaces layout restore
 
 # Locking handlers
