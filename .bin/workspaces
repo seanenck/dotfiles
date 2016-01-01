@@ -15,6 +15,7 @@ WORKSPACE_RELOAD="reload"
 WORKSPACE_CHANGE="change"
 BACKGROUND_IMAGE=$HOME/.cache/background.png
 
+# Save layouts to disk
 function save-layouts()
 {
     LAYOUT=""
@@ -31,6 +32,7 @@ function save-layouts()
     echo $LAYOUT > $LAYOUT_FILE
 }
 
+# Toggle layouts via command
 function toggle-layouts()
 {
     case $1 in
@@ -46,6 +48,7 @@ function toggle-layouts()
     esac
 }
 
+# Restore layouts
 function restore-layouts()
 {
     if [ -e "$LAYOUT_FILE" ]; then
@@ -59,6 +62,7 @@ function restore-layouts()
     fi
 }
 
+# Clear layouts
 function clear-layouts()
 {
     if [ -e "$LAYOUT_FILE" ]; then
@@ -66,6 +70,7 @@ function clear-layouts()
     fi
 }
 
+# Change/toggle workspaces
 function change-workspace()
 {
     CURRENT=$WORKSPACE_NORM

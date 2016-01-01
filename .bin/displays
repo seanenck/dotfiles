@@ -17,12 +17,14 @@ function get-displays()
     echo $DISPLAY_RESULT
 }
 
+# Get aux displays (not main)
 function get-aux-displays()
 {
     DISPS=$(get-displays "$MAIN_DISPLAY" | sort -r)
     echo $DISPS
 }
 
+# Disable aux displays
 function disable-displays()
 {
     CONNECTED=$(get-aux-displays)
@@ -31,6 +33,7 @@ function disable-displays()
     done
 }
 
+# Enable aux displays
 function enable-displays()
 {
     BASIS="xrandr --output $MAIN_DISPLAY --primary --auto --dpi 96"

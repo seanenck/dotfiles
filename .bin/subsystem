@@ -19,6 +19,7 @@ if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
     exit -1
 fi
 
+# Workspace commands
 function workspace-subsystem()
 {
     case $1 in
@@ -35,6 +36,7 @@ function workspace-subsystem()
     esac
 }
 
+# Display commands
 function display-subsystem()
 {
     case $1 in
@@ -50,6 +52,7 @@ function display-subsystem()
     esac
 }
 
+# Volume commands
 function volume-subsystem()
 {
     case $1 in

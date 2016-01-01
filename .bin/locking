@@ -9,12 +9,14 @@ SLEEP_ACTION="sleep"
 TOGGLE_ACTION="toggling"
 SUDO_PERMS="enck ALL = NOPASSWD: /usr/sbin/pm-suspend-hybrid"
 
+# Get the i3lock pid
 function get-i3pid()
 {
     PID=$(pidof i3lock | cut -d " " -f 1)
     echo $PID
 }
 
+# Perform locking handling
 function lock()
 {   
     ACTION=$1
@@ -101,6 +103,7 @@ function lock()
     esac
 }
 
+# Update sudoers for install/remove
 function update-sudoers()
 {
     CONTENTS=$(sudo cat /etc/sudoers | grep -v "$SUDO_PERMS")

@@ -3,6 +3,8 @@ VOL_MUTE="mute"
 VOL_DOWN="down"
 VOL_UP="up"
 VOL_STAT="status"
+
+# Control volume using amixer
 function change-volume()
 {
     case $1 in
