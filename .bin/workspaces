@@ -1,4 +1,5 @@
 #!/bin/bash
+source $HOME/.bin/displays
 WORKPLACE_FILE=/tmp/workplace
 DISPLAY_UN=/tmp/display-unlock
 DISPLAY_EN=/tmp/display-enabled
@@ -7,6 +8,12 @@ LAYOUT_DELIM=":"
 SAVE_ACTION="save"
 RESTORE_ACTION="restore"
 CLEAR_ACTION="clear"
+WORKSPACE_DOCK="docked"
+WORKSPACE_NORM="normal"
+WORKSPACE_START="startup"
+WORKSPACE_RELOAD="reload"
+WORKSPACE_CHANGE="change"
+BACKGROUND_IMAGE=$HOME/.cache/background.png
 
 function save-layouts()
 {
@@ -56,5 +63,61 @@ function clear-layouts()
 {
     if [ -e "$LAYOUT_FILE" ]; then
         rm $LAYOUT_FILE
+    fi
+}
+
+function change-workspace()
+{
+    CURRENT=$WORKSPACE_NORM
+    case $1 in
+        $WORKSPACE_START)
+            COUNT=$(has-aux-displays)
+            COUNT=$((COUNT + 0))
+            if [ $COUNT -eq 0 ]; then
+                CURRENT=$DEVELOP
+            fi
+            ;;
+        $WORKSPACE_RELOAD | $WORKSPACE_CHANGE)
+            if [ -e $WORKPLACE_FILE ]; then
+                CURRENT=$(cat $WORKPLACE_FILE)
+            fi
+
+            if [[ "$1" == "$WORKSPACE_RELOAD" ]]; then
+                save-layouts
+                disable-displays
+            else
+                if [[ "$CURRENT" == "$WORKSPACE_NORM" ]]; then
+                    CURRENT=$WORKSPACE_DOCK
+                else
+                    CURRENT=$WORKSPACE_NORM
+                fi
+            fi
+            ;;
+    esac
+    
+    echo $CURRENT > $WORKPLACE_FILE
+    synclient TouchpadOff=1
+    if [[ "$CURRENT" == "$WORKSPACE_DOCK" ]]; then
+        enable-displays
+    else
+        disable-displays
+    fi
+
+    case $1 in
+        $WORKSPACE_RELOAD)
+            restore-layouts
+            ;;
+        $WORKSPACE_START)
+            i3 restart
+            ;;
+        *)
+            clear-layouts
+            ;;
+    esac
+
+    if [ -e $BACKGROUND_IMAGE ]; then
+        feh --bg-fill $BACKGROUND_IMAGE
+    else
+        xsetroot -solid "#333333"
     fi
 }

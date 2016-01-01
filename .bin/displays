@@ -3,6 +3,9 @@ BACKLIGHT_ON="up"
 BACKLIGHT_OFF="down"
 BRIGHTER="brighter"
 DIMMER="dimmer"
+MAIN_DISPLAY="eDP1"
+LEFT_DISPLAY="DP2-1"
+RIGHT_DISPLAY="DP2-2"
 
 # Get displays, first argument can filter out any displays
 function get-displays()
@@ -12,6 +15,45 @@ function get-displays()
         DISPLAY_RESULT=$(echo $DISPLAY_RESULT | grep -v "$1")
     fi
     echo $DISPLAY_RESULT
+}
+
+function get-aux-displays()
+{
+    echo $(get-displays "$MAIN_DISPLAY" | sort -r)
+}
+
+function has-aux-displays()
+{
+    echo $(get-aux-displays) | grep -q "^[A-Z]"
+    return $?
+}
+
+function disable-displays()
+{
+    CONNECTED=$(get-aux-displays)
+    for disp in ${CONNECTED[@]}; do
+        xrandr --output $disp --off
+    done
+}
+
+function enable-displays()
+{
+    BASIS="xrandr --output $MAIN_DISPLAY --primary --auto --dpi 96"
+    CONNECTED=$(get-aux-displays)
+    for display in $CONNECTED; do
+        LOCAL_EXT="--output $display "
+        LOCAL_EXT=$LOCAL_EXT"--auto --dpi 96 "
+        case $display in
+            $RIGHT_DISPLAY)
+            LOCAL_EXT=$LOCAL_EXT" --right-of $MAIN_DISPLAY "
+            ;;
+            $LEFT_DISPLAY)
+            LOCAL_EXT=$LOCAL_EXT" --left-of $MAIN_DISPLAY --rotate right"
+            ;;
+        esac
+        LOCAL_EXT="$BASIS $LOCAL_EXT"
+        eval $LOCAL_EXT
+    done
 }
 
 # Toggle backlighting up/down to a specified level
