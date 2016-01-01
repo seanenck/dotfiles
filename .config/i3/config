@@ -110,11 +110,10 @@ bindsym $mod+Shift+m move scratchpad
 bindsym $mod+Shift+n scratchpad show
 
 # Backlight
-bindsym XF86MonBrightnessUp exec control-operation brightness brighter
-bindsym XF86MonBrightnessDown exec control-operation brightness dim
+bindsym XF86MonBrightnessUp exec subsystem display change brighter
+bindsym XF86MonBrightnessDown exec subsystem display change dimmer
 
 # Volume
-bindsym XF86AudioMute exec control-operation volume mute
-bindsym XF86AudioLowerVolume exec control-operation volume down
-bindsym XF86AudioRaiseVolume exec control-operation volume up
-
+bindsym XF86AudioMute exec subsystem volume sound mute
+bindsym XF86AudioLowerVolume exec subsystem volume sound down
+bindsym XF86AudioRaiseVolume exec subsystem volume sound up

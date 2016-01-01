@@ -44,7 +44,7 @@ function sys-stats()
     DSK_USAGE=$(df -h / | tail -n 1 | awk '{printf "%3.0f", substr($5, 0, length($5) - 1)}')
     BAT0=$(get-battery "0")
     BAT1=$(get-battery "1")
-    VOL=$(control-operation volume status)
+    VOL=$(subsystem volume sound status)
     STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%" "$BAT0%" "$BAT1%" "$VOL%")
     echo "$STAT_OUT" > $STATS_FILE
 }
