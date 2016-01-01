@@ -98,7 +98,7 @@ bindsym $mod+Shift+period move workspace to right
 # Change workplaces
 bindsym $mod+Shift+o exec workplaces change
 bindsym $mod+Shift+p exec workplaces reload
-bindsym $mod+Shift+i exec layouts restore
+bindsym $mod+Shift+i exec subsystem workspaces layout restore
 
 # Locking handlers
 bindsym $mod+Shift+x exec locking toggling # change lock/suspend enable/disable

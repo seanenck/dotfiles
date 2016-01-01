@@ -2,3 +2,59 @@
 WORKPLACE_FILE=/tmp/workplace
 DISPLAY_UN=/tmp/display-unlock
 DISPLAY_EN=/tmp/display-enabled
+LAYOUT_FILE=/tmp/last-layout
+LAYOUT_DELIM=":"
+SAVE_ACTION="save"
+RESTORE_ACTION="restore"
+CLEAR_ACTION="clear"
+
+function save-layouts()
+{
+    LAYOUT=""
+    CURRENT_LAYOUT=$(i3-msg -t 'get_workspaces' | sed -e 's/{"num/\n{"num/g' | sed -e 's/,"/\n/g' | grep -E 'output|name' | cut -d\" -f 3)
+    for lay in $CURRENT_LAYOUT; do
+        LAYOUT=$LAYOUT$lay
+        echo $lay | grep -q "DP"
+        if [ $? -eq 0 ]; then
+            LAYOUT=$LAYOUT" "
+        else
+            LAYOUT=$LAYOUT$LAYOUT_DELIM
+        fi
+    done
+    echo $LAYOUT > $LAYOUT_FILE
+}
+
+function toggle-layouts()
+{
+    case $1 in
+        $SAVE_ACTION)
+            save-layouts
+            ;;
+        $RESTORE_ACTION)
+            restore-layouts
+            ;;
+        $CLEAR_ACTION)
+            clear-layouts
+            ;;
+    esac
+}
+
+function restore-layouts()
+{
+    if [ -e "$LAYOUT_FILE" ]; then
+        LAYOUT=$(cat $LAYOUT_FILE)
+        for lay in $LAYOUT; do
+            LAY_NAME=$(echo $lay | cut -d "$LAYOUT_DELIM" -f 1)
+            LAY_DISP=$(echo $lay | cut -d "$LAYOUT_DELIM" -f 2)
+            i3-msg workspace number $LAY_NAME
+            i3-msg move workspace to output $LAY_DISP
+        done
+    fi
+}
+
+function clear-layouts()
+{
+    if [ -e "$LAYOUT_FILE" ]; then
+        rm $LAYOUT_FILE
+    fi
+}

@@ -1,16 +1,35 @@
 #!/bin/bash
 source $HOME/.bin/displays
 source $HOME/.bin/sound
+source $HOME/.bin/workspaces
 DISPLAY_KEY="display"
 VOLUME_KEY="volume"
 DISPLAY_TOGGLE="toggle"
 DISPLAY_CHANGE="change"
 SOUND_COMMAND="sound"
+SAVE_LAYOUT="save"
+RESTORE_LAYOUT="restore"
+CLEAR_LAYOUT="clear"
+LAYOUT_CALL="layout"
+WORKSPACES_KEY="workspaces"
 
 if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
     echo "subsystem, command, and value required ($1 and $2 and $3 ?)"
     exit -1
 fi
+
+function workspace-subsystem()
+{
+    case $1 in
+        $LAYOUT_CALL)
+            toggle-layouts "$2"
+            ;;
+        *)
+            echo "Unknown workspaces request: $1"
+            exit -1
+            ;;
+    esac
+}
 
 function display-subsystem()
 {
@@ -41,12 +60,19 @@ function volume-subsystem()
 
 case $1 in
     $DISPLAY_KEY)
-        display-subsystem "$2" "$3"
+        CMD=display-subsystem
         ;;
     $VOLUME_KEY)
-        volume-subsystem "$2" "$3"
+        CMD=volume-subsystem
+        ;;
+    $WORKSPACES_KEY)
+        CMD=workspace-subsystem
         ;;
     *)
         echo "Unknown action $1"
         ;;
 esac
+
+if [ ! -z $CMD ]; then
+    $CMD "$2" "$3"
+fi
