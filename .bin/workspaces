@@ -74,7 +74,7 @@ function change-workspace()
             COUNT=$(has-aux-displays)
             COUNT=$((COUNT + 0))
             if [ $COUNT -eq 0 ]; then
-                CURRENT=$DEVELOP
+                CURRENT=$WORKSPACE_DOCK
             fi
             ;;
         $WORKSPACE_RELOAD | $WORKSPACE_CHANGE)

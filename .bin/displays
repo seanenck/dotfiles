@@ -25,7 +25,7 @@ function get-aux-displays()
 function has-aux-displays()
 {
     echo $(get-aux-displays) | grep -q "^[A-Z]"
-    return $?
+    echo $?
 }
 
 function disable-displays()
