@@ -8,12 +8,27 @@ LOCK_ACTION="lock"
 SLEEP_ACTION="sleep"
 TOGGLE_ACTION="toggling"
 SUDO_PERMS="enck ALL = NOPASSWD: /usr/sbin/pm-suspend-hybrid"
+HELP="help"
 
 # Get the i3lock pid
 function get-i3pid()
 {
     PID=$(pidof i3lock | cut -d " " -f 1)
     echo $PID
+}
+
+# Locking help
+function get-locking-help()
+{
+    echo "
+commands
+--------
+    $LOCK_ACTION (locks the workstation, assumed when no arguments given)
+    $SLEEP_ACTION (lock and suspend the workstation)
+    $TOGGLE_ACTION (toggle locking and/or suspending on/off)
+    $INSTALL_KEYWORD (perform installation steps)
+    $REMOVE_KEYWORD (perform removal steps)
+"
 }
 
 # Perform locking handling
@@ -123,6 +138,10 @@ if [ ! -z "$1" ]; then
         $REMOVE_KEYWORD)
             update-sudoers 0
             exit 0
+            ;;
+        $HELP)
+            get-locking-help
+            exit -1
             ;;
     esac
     USE_ACTION=$1

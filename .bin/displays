@@ -7,6 +7,16 @@ MAIN_DISPLAY="eDP1"
 LEFT_DISPLAY="DP2-1"
 RIGHT_DISPLAY="DP2-2"
 
+function get-lighting-help()
+{
+    echo "
+    $1 $BACKLIGHT_ON (toggle backlights ON)
+    $1 $BACKLIGHT_OFF (toggle backlights OFF)
+    $2 $BRIGHTER (increase backlights)
+    $2 $DIMMER (decrease backlights)
+    "
+}
+
 # Get displays, first argument can filter out any displays
 function get-displays()
 {

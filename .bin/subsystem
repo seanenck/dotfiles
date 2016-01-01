@@ -13,9 +13,45 @@ CLEAR_LAYOUT="clear"
 LAYOUT_CALL="layout"
 CYCLE_WORKSPACE="cycle"
 WORKSPACES_KEY="workspaces"
+ALL_AVAILBLE="$DISPLAY_KEY $VOLUME_KEY $WORKSPACES_KEY"
+HELP="help"
+
+function get-help()
+{
+    echo "commands"
+    echo "--------"
+    echo
+    for item in $ALL_AVAILBLE; do
+        echo $item
+        case $item in
+            $DISPLAY_KEY)
+                get-lighting-help $DISPLAY_TOGGLE $DISPLAY_CHANGE
+                ;;
+            $VOLUME_KEY)
+                get-volume-help $SOUND_COMMAND
+                ;;
+            $WORKSPACES_KEY)
+                get-workspace-help $LAYOUT_CALL $CYCLE_WORKSPACE
+                ;;
+        esac
+        echo
+    done
+}
 
 if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
-    echo "subsystem, command, and value required ($1 and $2 and $3 ?)"
+    HEADER="subsystem, command, and value required ($1 and $2 and $3 ?)"
+    if [ ! -z "$1" ]; then
+        if [[ "$1" == "$HELP" ]]; then
+            HEADER=""
+        fi
+    fi
+    
+    if [ ! -z "$HEADER" ]; then
+        echo $HEADER
+        echo
+    fi
+    
+    get-help
     exit -1
 fi
 

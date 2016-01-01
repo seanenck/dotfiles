@@ -4,6 +4,17 @@ VOL_DOWN="down"
 VOL_UP="up"
 VOL_STAT="status"
 
+# Function get sound/volume help
+function get-volume-help()
+{
+    echo "
+    $1 $VOL_MUTE (toggle sound on/off)
+    $1 $VOL_DOWN (decrease volume)
+    $1 $VOL_UP (increase volume)
+    $1 $VOL_STAT (volume status/level)
+    "
+}
+
 # Control volume using amixer
 function change-volume()
 {
