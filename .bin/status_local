@@ -1,0 +1,50 @@
+#!/bin/bash
+source $HOME/.bin/system_stats
+source $HOME/.bin/workspaces
+SYS_STATS_CMD="system-stats"
+
+if [ ! -z $1 ]; then
+    case $1 in
+    $SYS_STATS_CMD)
+        sys-stats
+        ;;
+    esac
+    exit 0
+fi
+
+i3status | while :
+do
+    read line
+    CUSTOM=""
+    if [ -e $WORKPLACE_FILE ]; then
+        CUSTOM=$(cat $WORKPLACE_FILE)
+    fi
+
+    if [ -e $DISPLAY_UN ]; then
+        CUSTOM="$CUSTOM (unlocked)"
+    fi
+    if [ -e $DISPLAY_EN ]; then
+        CUSTOM="$CUSTOM (running)"
+    fi
+
+    if [ ! -z "${CUSTOM// }" ]; then
+        CUSTOM="$CUSTOM |"
+    fi
+
+    for stats in $(echo "$STATS_FILE"); do
+        if [ -e $stats ]; then
+            CURRENT_STATS=$(cat $stats)
+        fi
+   
+        if [ -z "$CURRENT_STATS" ]; then
+            CURRENT_STATS=$(pop-stats " n/a" " n/a" " n/a" " n/a", "n/a", "n/a")
+        fi
+
+        CUSTOM="$CUSTOM $CURRENT_STATS "
+    done
+
+    CUSTOM="$CUSTOM|"
+    echo "$CUSTOM $line" || exit 1
+    status_local $SYS_STATS_CMD &
+done
+

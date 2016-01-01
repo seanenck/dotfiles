@@ -1,0 +1,4 @@
+#!/bin/bash
+WORKPLACE_FILE=/tmp/workplace
+DISPLAY_UN=/tmp/display-unlock
+DISPLAY_EN=/tmp/display-enabled

@@ -1,0 +1,50 @@
+#!/bin/bash
+STATS_FILE=/tmp/system-stats
+
+function pop-stats()
+{
+    USE_CPU="cpu($1)"
+    USE_MEM=" mem($2)"
+    USE_DSK=" dsk($3)"
+    USE_BAT0=" bt0($4)"
+    USE_BAT1=" bt1($5)"
+    USE_VOL=" vol($6)"
+    CURRENT_STATS="$USE_CPU"
+    CURRENT_STATS="$CURRENT_STATS$USE_MEM"
+    CURRENT_STATS="$CURRENT_STATS$USE_DSK"
+    CURRENT_STATS="$CURRENT_STATS$USE_BAT0"    
+    CURRENT_STATS="$CURRENT_STATS$USE_BAT1"    
+    CURRENT_STATS="$CURRENT_STATS$USE_VOL"    
+    echo "$CURRENT_STATS"
+}
+
+function get-battery()
+{
+    BATTERY=/sys/class/power_supply/BAT$1/uevent
+    if [ -e $BATTERY ]; then
+        STATUS_IND="POWER_SUPPLY_STATUS="
+        FULL_IND="POWER_SUPPLY_ENERGY_FULL"
+        if grep -q "POWER_SUPPLY_ENERGY_FULL" $BATTERY; then
+            NOW_IND="POWER_SUPPLY_ENERGY_NOW"
+        else
+            FULL_IND="POWER_SUPPLY_CHARGE_FULL"
+            NOW_IND="POWER_SUPPLY_CHARGE_NOW"
+        fi
+        FULL=$(cat $BATTERY | grep "$FULL_IND=" | cut -d '=' -f 2)
+        CURR=$(cat $BATTERY | grep "$NOW_IND=" | cut -d '=' -f 2)
+        BATT=$(echo "$CURR $FULL" | awk '{printf "%3.0f", ($1 / $2) * 100 }')
+    fi
+    echo "$BATT"
+}
+
+function sys-stats()
+{
+    MEM_USAGE=$(free | grep Mem | awk '{printf "%3.0f", $3/$2 * 100.0}')
+    CPU_USAGE=$(top -d 0.5 -b -n2 | grep "Cpu(s)"|tail -n 1 | awk '{printf "%3.0f", $2 + $4}')
+    DSK_USAGE=$(df -h / | tail -n 1 | awk '{printf "%3.0f", substr($5, 0, length($5) - 1)}')
+    BAT0=$(get-battery "0")
+    BAT1=$(get-battery "1")
+    VOL=$(control-operation volume status)
+    STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%" "$BAT0%" "$BAT1%" "$VOL%")
+    echo "$STAT_OUT" > $STATS_FILE
+}

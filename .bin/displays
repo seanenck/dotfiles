@@ -1,6 +1,4 @@
 #!/bin/bash
-DISPLAY_UN=/tmp/display-unlock
-DISPLAY_EN=/tmp/display-enabled
 BACKLIGHT_ON="up"
 BACKLIGHT_OFF="down"
 BRIGHTER="brighter"
