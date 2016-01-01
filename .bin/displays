@@ -12,20 +12,15 @@ function get-displays()
 {
     DISPLAY_RESULT=$(xrandr | grep " connected" | cut -d " " -f 1)
     if [ ! -z "$1" ]; then
-        DISPLAY_RESULT=$(echo $DISPLAY_RESULT | grep -v "$1")
+        DISPLAY_RESULT=$(echo "$DISPLAY_RESULT" | grep -v "$1")
     fi
     echo $DISPLAY_RESULT
 }
 
 function get-aux-displays()
 {
-    echo $(get-displays "$MAIN_DISPLAY" | sort -r)
-}
-
-function has-aux-displays()
-{
-    echo $(get-aux-displays) | grep -q "^[A-Z]"
-    echo $?
+    DISPS=$(get-displays "$MAIN_DISPLAY" | sort -r)
+    echo $DISPS
 }
 
 function disable-displays()

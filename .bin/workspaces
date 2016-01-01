@@ -71,9 +71,9 @@ function change-workspace()
     CURRENT=$WORKSPACE_NORM
     case $1 in
         $WORKSPACE_START)
-            COUNT=$(has-aux-displays)
-            COUNT=$((COUNT + 0))
-            if [ $COUNT -eq 0 ]; then
+            AUX=$(get-aux-displays)
+            echo "$AUX" | grep -q "^[A-Z]"
+            if [ $? -eq 0 ]; then
                 CURRENT=$WORKSPACE_DOCK
             fi
             ;;
