@@ -35,6 +35,7 @@ install:
 		vscode --install
 		nspawn --install
 		csv-processing --install
+		locking --install
 
 clean:
 		sudo rm -f $(iptables_rule)
@@ -43,5 +44,6 @@ clean:
 		vscode --remove
 		nspawn --remove
 		csv-processing --remove
+		locking --remove
 
 
