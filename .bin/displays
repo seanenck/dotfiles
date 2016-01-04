@@ -6,6 +6,9 @@ DIMMER="dimmer"
 MAIN_DISPLAY="eDP1"
 LEFT_DISPLAY="DP2-1"
 RIGHT_DISPLAY="DP2-2"
+LEFT_POS="left"
+RIGHT_POS="right"
+CENTER_POS="center"
 
 function get-lighting-help()
 {
@@ -15,6 +18,27 @@ function get-lighting-help()
     $2 $BRIGHTER (increase backlights)
     $2 $DIMMER (decrease backlights)
     "
+}
+
+# Convert positional information to display name (xrandr name)
+function convert-position-to-display()
+{
+    DISP=$MAIN_DISPLAY
+    case $1 in
+        $LEFT_POS)
+            DISP=$LEFT_DISPLAY
+            ;;
+        $RIGHT_POS)
+            DISP=$RIGHT_DISPLAY
+            ;;
+    esac
+    
+    ALL_DISPS=$(get-displays | grep -qE "$DISP")
+    if [ $? -ne 0 ]; then
+        DISP=$MAIN_DISPLAY
+    fi
+    
+    echo $DISP
 }
 
 # Get displays, first argument can filter out any displays

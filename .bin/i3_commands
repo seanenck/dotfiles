@@ -1,0 +1,11 @@
+#!/bin/bash
+source $HOME/.bin/displays
+
+function move-and-focus()
+{
+    DISP=$(convert-position-to-display $1)
+    i3-msg move container to output $DISP
+    i3-msg focus output $DISP
+}
+
+$1 $2

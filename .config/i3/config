@@ -71,6 +71,11 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
+# output switching
+bindsym $mod+Shift+bracketright exec i3_commands move-and-focus right
+bindsym $mod+Shift+apostrophe exec i3_commands move-and-focus center
+bindsym $mod+Shift+bracketleft exec i3_commands move-and-focus left
+
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -84,7 +89,6 @@ bar {
         tray_output primary
         status_command status_local
 }
-
 
 exec --no-startup-id subsystem workspaces cycle startup
 
