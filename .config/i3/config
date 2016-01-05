@@ -75,6 +75,9 @@ bindsym $mod+Shift+0 move container to workspace 10
 bindsym $mod+Shift+bracketright exec i3_commands move-and-focus right
 bindsym $mod+Shift+apostrophe exec i3_commands move-and-focus center
 bindsym $mod+Shift+bracketleft exec i3_commands move-and-focus left
+bindsym $mod+bracketright exec i3_commands move-to-focus right
+bindsym $mod+apostrophe exec i3_commands move-to-focus center
+bindsym $mod+bracketleft exec i3_commands move-to-focus left
 
 # reload the configuration file
 bindsym $mod+Shift+c reload

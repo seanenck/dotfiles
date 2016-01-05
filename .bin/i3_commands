@@ -1,11 +1,24 @@
 #!/bin/bash
 source $HOME/.bin/displays
+DO_MOVE=1
+
+function move-container-focus()
+{
+    DISP=$(convert-position-to-display $1)
+    if [ $2 -eq $DO_MOVE ]; then
+        i3-msg move container to output $DISP
+    fi
+    i3-msg focus output $DISP
+}
+
+function move-to-focus()
+{
+    move-container-focus $1 0
+}
 
 function move-and-focus()
 {
-    DISP=$(convert-position-to-display $1)
-    i3-msg move container to output $DISP
-    i3-msg focus output $DISP
+    move-container-focus $1 $DO_MOVE
 }
 
 $1 $2
