@@ -1,0 +1,8 @@
+#!/bin/bash
+sudo apt-get update
+read -p "<enter> to upgrade"
+sudo apt-get upgrade
+read -p "<enter> to dist-upgrade"
+sudo apt-get dist-upgrade
+read -p "<enter> to remove"
+sudo apt autoremove
