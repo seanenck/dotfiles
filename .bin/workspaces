@@ -122,10 +122,10 @@ function change-workspace()
     fi
 
     case $1 in
-        $WORKSPACE_RELOAD)
-            restore-layouts
-            ;;
-        $WORKSPACE_START)
+        $WORKSPACE_RELOAD | $WORKSPACE_START)
+            if [[ "$1" == "$WORKSPACE_RELOAD" ]]; then
+                restore-layouts
+            fi
             i3 restart
             ;;
         *)
