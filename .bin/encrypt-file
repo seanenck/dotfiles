@@ -1,0 +1,23 @@
+#!/bin/bash
+NAME=$1
+WORKING=/tmp/encrypt-temp/
+if [ -z "$NAME" ]; then
+    echo "Name is required"
+    exit -1
+fi
+
+mkdir -p $WORKING
+WORKING_DIR=$WORKING$NAME/
+mkdir -p $WORKING_DIR
+for item in ${@:2}; do
+    cp $item $WORKING_DIR
+done
+
+CURRENT_PWD=$PWD
+cd $WORKING_DIR
+TAR_FILE=$NAME.tar.gz
+tar -cvzf $CURRENT_PWD/$TAR_FILE *
+cd $CURRENT_PWD
+rm -rf $WORKING_DIR
+gpg -c $TAR_FILE
+rm $TAR_FILE
