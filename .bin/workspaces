@@ -124,9 +124,13 @@ function change-workspace()
     case $1 in
         $WORKSPACE_RELOAD | $WORKSPACE_START)
             if [[ "$1" == "$WORKSPACE_RELOAD" ]]; then
-                restore-layouts
+                if [[ "$CURRENT" == "$WORKSPACE_DOCK" ]]; then
+                    restore-layouts
+                    i3 restart
+                else
+                    clear-layouts
+                fi
             fi
-            i3 restart
             ;;
         *)
             clear-layouts
