@@ -6,10 +6,24 @@ if [ -z "$NAME" ]; then
     exit -1
 fi
 
+items=${@:2}
+for item in $items; do
+    valid="true"
+    if [ ! -e $item ]; then
+        echo "$item is not a file"
+        exit -1
+    fi
+done
+
+if [ -z $valid ]; then
+    echo "No items given"
+    exit -1
+fi
+
 mkdir -p $WORKING
 WORKING_DIR=$WORKING$NAME/
 mkdir -p $WORKING_DIR
-for item in ${@:2}; do
+for item in $items; do
     cp $item $WORKING_DIR
 done
 
