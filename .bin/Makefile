@@ -49,5 +49,5 @@ clean:
 		nspawn --remove
 		csv-processing --remove
 		locking --remove
-
-
+		sudo rm -f $(bash_auto)subsystem
+		sudo rm -f $(bash_auto)mounting
