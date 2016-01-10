@@ -13,10 +13,10 @@ CENTER_POS="center"
 function get-lighting-help()
 {
     echo "
-    $1 $BACKLIGHT_ON (toggle backlights ON)
-    $1 $BACKLIGHT_OFF (toggle backlights OFF)
-    $2 $BRIGHTER (increase backlights)
-    $2 $DIMMER (decrease backlights)
+    $1 $2 $BACKLIGHT_ON (toggle backlights ON)
+    $1 $2 $BACKLIGHT_OFF (toggle backlights OFF)
+    $1 $3 $BRIGHTER (increase backlights)
+    $1 $3 $DIMMER (decrease backlights)
     "
 }
 

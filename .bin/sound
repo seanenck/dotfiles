@@ -8,10 +8,10 @@ VOL_STAT="status"
 function get-volume-help()
 {
     echo "
-    $1 $VOL_MUTE (toggle sound on/off)
-    $1 $VOL_DOWN (decrease volume)
-    $1 $VOL_UP (increase volume)
-    $1 $VOL_STAT (volume status/level)
+    $1 $2 $VOL_MUTE (toggle sound on/off)
+    $1 $2 $VOL_DOWN (decrease volume)
+    $1 $2 $VOL_UP (increase volume)
+    $1 $2 $VOL_STAT (volume status/level)
     "
 }
 

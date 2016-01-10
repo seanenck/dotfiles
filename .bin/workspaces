@@ -19,12 +19,12 @@ BACKGROUND_IMAGE=$HOME/.cache/background.png
 function get-workspace-help()
 {
     echo "
-    $1 $SAVE_ACTION (save layout)
-    $1 $RESTORE_ACTION (restore layout)
-    $1 $CLEAR_ACTION (clear layout)
-    $2 $WORKSPACE_START (workspace startup/setup)
-    $2 $WORKSPACE_RELOAD (reload current workspace setup)
-    $2 $WORKSPACE_CHANGE (change the current workspace setup)
+    $1 $2 $SAVE_ACTION (save layout)
+    $1 $2 $RESTORE_ACTION (restore layout)
+    $1 $2 $CLEAR_ACTION (clear layout)
+    $1 $3 $WORKSPACE_START (workspace startup/setup)
+    $1 $3 $WORKSPACE_RELOAD (reload current workspace setup)
+    $1 $3 $WORKSPACE_CHANGE (change the current workspace setup)
     "
 }
 

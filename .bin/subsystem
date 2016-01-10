@@ -22,19 +22,17 @@ function get-help()
     echo "--------"
     echo
     for item in $ALL_AVAILBLE; do
-        echo $item
         case $item in
             $DISPLAY_KEY)
-                get-lighting-help $DISPLAY_TOGGLE $DISPLAY_CHANGE
+                get-lighting-help $item $DISPLAY_TOGGLE $DISPLAY_CHANGE
                 ;;
             $VOLUME_KEY)
-                get-volume-help $SOUND_COMMAND
+                get-volume-help $item $SOUND_COMMAND
                 ;;
             $WORKSPACES_KEY)
-                get-workspace-help $LAYOUT_CALL $CYCLE_WORKSPACE
+                get-workspace-help $item $LAYOUT_CALL $CYCLE_WORKSPACE
                 ;;
         esac
-        echo
     done
 }
 
