@@ -32,8 +32,7 @@ install:
 		@echo "$$IPTABLES_RULES" | sudo tee $(iptables_rule)
 		@echo "$$IPTABLES_SETUP" | sudo tee $(iptables_setup)
 		sudo chmod 700 $(iptables_setup)
-		sudo ln -s $(auto_home)mounting $(bash_auto)mounting
-		sudo ln -s $(auto_home)subsystem $(bash_auto)subsystem
+		sudo ln -s $(auto_home)* $(bash_auto)
 		mounting crypt
 		ln -s /mnt/crypt/ssh/ssh.config $(ssh_config)
 		vscode --install
