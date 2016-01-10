@@ -1,1 +1,7 @@
-sudo mount core:/mnt/Storage /mnt/Storage
+MNT_NAME=/mnt/Storage
+mount | grep -q $MNT_NAME
+if [ $? -eq 0 ]; then
+    echo "already mounted"
+    exit -1
+fi
+sudo mount core:$MNT_NAME $MNT_NAME
