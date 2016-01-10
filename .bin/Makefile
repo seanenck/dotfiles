@@ -22,6 +22,8 @@ package_list = alsa-utils chromium cryptsetup debootstrap feh firmware-iwlwifi g
 iptables_rule = /etc/iptables.rules
 iptables_setup = /etc/network/if-pre-up.d/iptables
 ssh_config = $(HOME)/.ssh/config
+auto_home = $(HOME)/.bin/autocomplete-
+bash_auto = /etc/bash_completed.d/
 
 all: clean install
 
@@ -30,7 +32,8 @@ install:
 		@echo "$$IPTABLES_RULES" | sudo tee $(iptables_rule)
 		@echo "$$IPTABLES_SETUP" | sudo tee $(iptables_setup)
 		sudo chmod 700 $(iptables_setup)
-		crypt
+		sudo ln -s $(auto_home)mounting $(bash_auto)mounting
+		mounting crypt
 		ln -s /mnt/crypt/ssh/ssh.config $(ssh_config)
 		vscode --install
 		nspawn --install
