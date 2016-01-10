@@ -22,7 +22,7 @@ package_list = alsa-utils chromium cryptsetup debootstrap feh firmware-iwlwifi g
 iptables_rule = /etc/iptables.rules
 iptables_setup = /etc/network/if-pre-up.d/iptables
 ssh_config = $(HOME)/.ssh/config
-auto_home = $(HOME)/.bin/autocomplete-
+auto_home = $(HOME)/.bin/autocomplete/
 bash_auto = /etc/bash_completed.d/
 
 all: clean install
