@@ -1,6 +1,0 @@
-#!/bin/bash
-sudo fdisk -l | grep "Disk /dev/" | cut -d ' ' -f 2,3,4 | cut -d ',' -f 1
-echo "Select drive:"
-read USBDISK
-USBDISK+="1"
-sudo mount $USBDISK /mnt/usb

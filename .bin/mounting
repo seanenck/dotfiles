@@ -1,0 +1,112 @@
+#!/bin/bash
+CRYPT_MNT=/mnt/crypt
+TMP=/var/tmp/crypt.img
+MNT_SHARE=/mnt/Storage
+IS_MOUNTED=1
+USB_KEYWORD="usb"
+SHARE_KEYWORD="shares"
+CRYPT_KEYWORD="crypt"
+KEYS_KEYWORD="keys"
+UMNT_KEYWORD="umount"
+
+function add-keys()
+{
+    IS_MNT=$(is-mounted $CRYPT_MNT)
+    if [ $IS_MNT -eq $IS_MOUNTED ]; then
+        keys=$(find $CRYPT_MNT/ssh/**/* -type f)
+        for key in $keys; do
+            ssh-add -l | grep -qE "$key"
+            if [ $? -ne 0 ]; then
+                echo "adding $key"
+                ssh-add $key
+            fi
+        done
+    else
+        echo "keys not available"
+        exit -1
+    fi
+}
+
+function is-mounted()
+{
+    mount | grep -q $1
+    if [ $? -eq 0 ]; then
+        echo $IS_MOUNTED
+    else
+        echo 0
+    fi
+}
+
+function print-help()
+{
+    echo
+    echo "  $SHARE_KEYWORD - mount local share(s)"
+    echo "  $UMNT_KEYWORD - umount local share(s)"
+    echo "  $CRYPT_KEYWORD - mount encrypted file image(s)"
+    echo "  $KEYS_KEYWORD - load ssh keys from crypt"
+    echo "  $USB_KEYWORD - mount a usb drive"
+    echo
+}
+
+function mount-crypt()
+{
+    IS_MNT=$(is-mounted $CRYPT_MNT)
+    if [ $IS_MNT -eq $IS_MOUNTED ]; then
+        echo "already mounted"
+        exit -1
+    fi
+
+    rsync -vrziut /mnt/Synced/crypt.img $TMP
+    sudo cryptsetup luksOpen --readonly $TMP crypt-img
+    sudo mkdir -p $CRYPT_MNT
+    sudo mount /dev/mapper/crypt-img $CRYPT_MNT
+}
+
+function mount-usb()
+{
+    sudo fdisk -l | grep "Disk /dev/" | cut -d ' ' -f 2,3,4 | cut -d ',' -f 1
+    echo "Select drive:"
+    read USBDISK
+    USBDISK+="1"
+    sudo mount $USBDISK /mnt/usb
+}
+
+function mount-share()
+{
+    IS_MNT=$(is-mounted $MNT_SHARE)
+    if [ $IS_MNT -eq $IS_MOUNTED ]; then
+        echo "already mounted"
+        exit -1
+    fi
+    sudo mount core:$MNT_SHARE $MNT_SHARE
+}
+
+function umount-share()
+{
+    IS_MNT=$(is-mounted $MNT_SHARE)
+    if [ $IS_MNT -eq $IS_MOUNTED ]; then
+        sudo umount $MNT_SHARE
+    fi    
+}
+
+case $1 in
+    $SHARE_KEYWORD)
+        mount-share
+        ;;
+    $UMNT_KEYWORD)
+        umount-share
+        ;;
+    $CRYPT_KEYWORD)
+        mount-crypt
+        add-keys
+        ;;
+    $KEYS_KEYWORD)
+        add-keys
+        ;;
+    $USB_KEYWORD)
+        mount-usb
+        ;;
+    *)
+        print-help
+        ;;
+esac
