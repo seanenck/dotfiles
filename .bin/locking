@@ -92,9 +92,13 @@ function lock()
                 
                 if [ ! -z $DO_SUSPEND ]; then
                     sudo $SUSPEND
+                    RAN_SUSPEND=1
                 fi
             done
-            change-workspace $WORKSPACE_RELOAD
+            if [ ! -z $RAN_SUSPEND ]; then
+                change-workspace $WORKSPACE_RELOAD
+            fi
+
             toggle-backlighting $BACKLIGHT_ON
         fi
         ;;
