@@ -1,0 +1,67 @@
+#!/bin/bash
+URL_COMMON=$HOME/.cache/dmenu_urls/
+REGISTER_KEYWORD="--register"
+HELP_KEYWORD="--help"
+BROWSERS="google-chrome chromium"
+
+function run-browser()
+{
+    browser=$1
+    url=$2
+    args=""
+    if [ ! -z "$3" ]; then
+        args=$3
+    fi
+
+    $browser "$url" "$args"
+}
+
+function create-script()
+{
+    mkdir -p $URL_COMMON
+    FILE_NAME=$URL_COMMON/$1
+    echo "
+#!/bin/bash
+source \$HOME/.bin/dmenu_urls
+
+run-browser \"$3\" \"$2\" \"$4\"
+" > $FILE_NAME
+    chmod u+x $FILE_NAME
+}
+
+case $1 in
+    $REGISTER_KEYWORD)
+        DO_HELP=1
+        NAME=$2
+        if [ ! -z "$NAME" ]; then
+            for browse in $BROWSERS; do
+                echo "$3" | grep -q "^$browse$"
+                if [ $? -eq 0 ]; then
+                    BROWSER=$browse
+                    break
+                fi
+            done
+            if [ ! -z "$BROWSER" ]; then
+                URL=$4
+                if [ ! -z "$URL" ]; then
+                    ARGS=$5
+                    create-script "$NAME" "$URL" "$BROWSER" "$ARGS"
+                    exit 0
+                else
+                    echo "url is required"
+                fi
+            else
+                echo "browser ($BROWSERS) is required"
+            fi
+        else
+            echo "name is required"
+        fi
+        ;;
+    $HELP_KEYWORD)
+        DO_HELP=1
+        ;;
+esac
+
+if [ ! -z $DO_HELP ]; then
+    echo "$REGISTER_KEYWORD [name] [browser($BROWSERS)] [url] [args]"
+fi
