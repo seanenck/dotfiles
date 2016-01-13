@@ -4,8 +4,11 @@ INDEX_FILE=${URL_COMMON}index
 REGISTER_KEYWORD="--register"
 HELP_KEYWORD="--help"
 REBUILD_KEYWORD="--rebuild"
+REMOVE_KEYWORD="--remove"
+DISPLAY_KEYWORD="--display"
 BROWSERS="google-chrome chromium"
 DEFAULT_ARGS="--new-window"
+START_LINE="#name,browser,url,args"
 function run-browser()
 {
     browser=$1
@@ -36,7 +39,7 @@ run-browser \"$3\" \"$2\" \"$4\"
 function build-scripts()
 {
     if [ -e $INDEX_FILE ]; then
-        LINES=$(cat $INDEX_FILE)
+        LINES=$(cat $INDEX_FILE | grep -v "$START_LINE")
         for line in $LINES; do
             NAME=$(echo "$line" | cut -d "," -f 1 | tr -d '"')
             BROWSER=$(echo "$line" | cut -d "," -f 2)
@@ -44,6 +47,25 @@ function build-scripts()
             ARGS=$(echo "$line" | cut -d "," -f 4)
             create-script "$NAME" "$URL" "$BROWSER" "$ARGS"
         done
+    fi
+}
+
+function update-index()
+{
+    if [ ! -e $INDEX_FILE ]; then
+        mkdir -p $URL_COMMON
+        touch $INDEX_FILE
+    fi
+    
+    EXISTING=$(cat $INDEX_FILE | grep -v "\"$1\"," | grep -v "$START_LINE")
+    echo "$START_LINE" > $INDEX_FILE
+    NEW_LINE=$2
+    if [ ! -z $NEW_LINE ]; then
+        echo $NEW_LINE >> $INDEX_FILE
+    fi
+    
+    if [ ! -z "$EXISTING" ]; then
+        echo "$EXISTING" >> $INDEX_FILE
     fi
 }
 
@@ -66,15 +88,9 @@ case $1 in
                     if [ -z "$ARGS" ]; then
                         ARGS=$DEFAULT_ARGS
                     fi
-                    if [ ! -e $INDEX_FILE ]; then
-                        mkdir -p $URL_COMMON
-                        touch $INDEX_FILE
-                    fi
-                    EXISTING=$(cat $INDEX_FILE | grep -v "\"$NAME\",")
-                    echo "\"$NAME\",\"$BROWSER\",\"$URL\",\"$ARGS\"" > $INDEX_FILE
-                    if [ ! -z "$EXISTING" ]; then
-                        echo "$EXISTING" >> $INDEX_FILE
-                    fi
+                    
+                    NEW_ITEM="\"$NAME\",\"$BROWSER\",\"$URL\",\"$ARGS\""
+                    update-index "$NAME" "$NEW_ITEM"
                     REBUILD=1
                 else
                     echo "url is required"
@@ -87,7 +103,23 @@ case $1 in
         fi
         ;;
     $REBUILD_KEYWORD)
-                    REBUILD=1
+        REBUILD=1
+        ;;
+    $REMOVE_KEYWORD)
+        DO_HELP=1
+        NAME=$2
+        if [ ! -z "$NAME" ]; then
+            REBUILD=1
+            update-index "$NAME" ""
+        else
+            echo "name is required"
+        fi
+        ;;
+    $DISPLAY_KEYWORD)
+        if [ -e $INDEX_FILE ]; then
+            cat $INDEX_FILE
+        fi
+        exit 0
         ;;
     $HELP_KEYWORD)
         DO_HELP=1
@@ -103,7 +135,9 @@ fi
 if [ ! -z $DO_HELP ]; then
     echo "
     $REGISTER_KEYWORD [name] [browser($BROWSERS)] [url] [args]
+    $REMOVE_KEYWORD [name]
     $REBUILD_KEYWORD
+    $DISPLAY_KEYWORD
     $HELP_KEYWORD
 "
 fi
