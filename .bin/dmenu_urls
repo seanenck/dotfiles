@@ -3,7 +3,7 @@ URL_COMMON=$HOME/.cache/dmenu_urls/
 REGISTER_KEYWORD="--register"
 HELP_KEYWORD="--help"
 BROWSERS="google-chrome chromium"
-
+DEFAULT_ARGS=" --new-window "
 function run-browser()
 {
     browser=$1
@@ -13,6 +13,7 @@ function run-browser()
         args=$3
     fi
 
+    echo "$browser $url $args"
     $browser "$url" "$args"
 }
 
@@ -45,6 +46,9 @@ case $1 in
                 URL=$4
                 if [ ! -z "$URL" ]; then
                     ARGS=$5
+                    if [ -z "$ARGS" ]; then
+                        ARGS=$DEFAULT_ARGS
+                    fi
                     create-script "$NAME" "$URL" "$BROWSER" "$ARGS"
                     exit 0
                 else
