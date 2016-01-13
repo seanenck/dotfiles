@@ -1,9 +1,11 @@
 #!/bin/bash
 URL_COMMON=$HOME/.cache/dmenu_urls/
+INDEX_FILE=${URL_COMMON}index
 REGISTER_KEYWORD="--register"
 HELP_KEYWORD="--help"
+REBUILD_KEYWORD="--rebuild"
 BROWSERS="google-chrome chromium"
-DEFAULT_ARGS=" --new-window "
+DEFAULT_ARGS="--new-window"
 function run-browser()
 {
     browser=$1
@@ -20,14 +22,29 @@ function run-browser()
 function create-script()
 {
     mkdir -p $URL_COMMON
-    FILE_NAME=$URL_COMMON/$1
+    FILE_NAME=${URL_COMMON}$1
     echo "
 #!/bin/bash
+# url for $1
 source \$HOME/.bin/dmenu_urls
 
 run-browser \"$3\" \"$2\" \"$4\"
 " > $FILE_NAME
     chmod u+x $FILE_NAME
+}
+
+function build-scripts()
+{
+    if [ -e $INDEX_FILE ]; then
+        LINES=$(cat $INDEX_FILE)
+        for line in $LINES; do
+            NAME=$(echo "$line" | cut -d "," -f 1 | tr -d '"')
+            BROWSER=$(echo "$line" | cut -d "," -f 2)
+            URL=$(echo "$line" | cut -d "," -f 3)
+            ARGS=$(echo "$line" | cut -d "," -f 4)
+            create-script "$NAME" "$URL" "$BROWSER" "$ARGS"
+        done
+    fi
 }
 
 case $1 in
@@ -49,8 +66,16 @@ case $1 in
                     if [ -z "$ARGS" ]; then
                         ARGS=$DEFAULT_ARGS
                     fi
-                    create-script "$NAME" "$URL" "$BROWSER" "$ARGS"
-                    exit 0
+                    if [ ! -e $INDEX_FILE ]; then
+                        mkdir -p $URL_COMMON
+                        touch $INDEX_FILE
+                    fi
+                    EXISTING=$(cat $INDEX_FILE | grep -v "\"$NAME\",")
+                    echo "\"$NAME\",\"$BROWSER\",\"$URL\",\"$ARGS\"" > $INDEX_FILE
+                    if [ ! -z "$EXISTING" ]; then
+                        echo "$EXISTING" >> $INDEX_FILE
+                    fi
+                    REBUILD=1
                 else
                     echo "url is required"
                 fi
@@ -61,11 +86,24 @@ case $1 in
             echo "name is required"
         fi
         ;;
+    $REBUILD_KEYWORD)
+                    REBUILD=1
+        ;;
     $HELP_KEYWORD)
         DO_HELP=1
         ;;
 esac
 
+if [ ! -z $REBUILD ]; then
+    build-scripts
+    echo "index update completed"
+    exit 0
+fi
+
 if [ ! -z $DO_HELP ]; then
-    echo "$REGISTER_KEYWORD [name] [browser($BROWSERS)] [url] [args]"
+    echo "
+    $REGISTER_KEYWORD [name] [browser($BROWSERS)] [url] [args]
+    $REBUILD_KEYWORD
+    $HELP_KEYWORD
+"
 fi
