@@ -9,6 +9,7 @@ DISPLAY_KEYWORD="--display"
 BROWSERS="google-chrome chromium"
 DEFAULT_ARGS="--new-window"
 START_LINE="#name,browser,url,args"
+ARG_DELIMITER="|"
 function run-browser()
 {
     browser=$1
@@ -44,7 +45,7 @@ function build-scripts()
             NAME=$(echo "$line" | cut -d "," -f 1 | tr -d '"')
             BROWSER=$(echo "$line" | cut -d "," -f 2)
             URL=$(echo "$line" | cut -d "," -f 3)
-            ARGS=$(echo "$line" | cut -d "," -f 4)
+            ARGS=$(echo "$line" | cut -d "," -f 4 | sed "s/$ARG_DELIMITER/ /g")
             create-script "$NAME" "$URL" "$BROWSER" "$ARGS"
         done
     fi
@@ -59,9 +60,9 @@ function update-index()
     
     EXISTING=$(cat $INDEX_FILE | grep -v "\"$1\"," | grep -v "$START_LINE")
     echo "$START_LINE" > $INDEX_FILE
-    NEW_LINE=$2
-    if [ ! -z $NEW_LINE ]; then
-        echo $NEW_LINE >> $INDEX_FILE
+    NEW_LINE="$2"
+    if [ ! -z "$NEW_LINE" ]; then
+        echo "$NEW_LINE" >> $INDEX_FILE
     fi
     
     if [ ! -z "$EXISTING" ]; then
@@ -117,6 +118,9 @@ case $1 in
         if [ ! -z "$NAME" ]; then
             REBUILD=1
             update-index "$NAME" ""
+            if [ -e "${URL_COMMON}$NAME" ]; then
+                rm "${URL_COMMON}$NAME"
+            fi
         else
             echo "name is required"
         fi
