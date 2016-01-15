@@ -84,7 +84,7 @@ case $1 in
             done
             if [ ! -z "$BROWSER" ]; then
                 URL=$4
-                ARGS=$5
+                ARGS="${@:5}"
                 VALID=1
                 if [ -z "$URL" ]; then
                     if [ -z "$ARGS" ]; then
@@ -98,6 +98,7 @@ case $1 in
                         ARGS=$DEFAULT_ARGS
                     fi
                     
+                    ARGS=$(echo "$ARGS" | sed "s/ /$ARG_DELIMITER/g")
                     NEW_ITEM="\"$NAME\",\"$BROWSER\",\"$URL\",\"$ARGS\""
                     update-index "$NAME" "$NEW_ITEM"
                     REBUILD=1
