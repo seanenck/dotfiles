@@ -1,0 +1,19 @@
+#!/bin/bash
+STORAGE=/tmp/markdown-preview/
+mkdir -p $STORAGE
+
+if [ -z "$1" ]; then
+    echo "a markdown file is required"
+    exit -1
+fi
+
+if [ ! -e "$1" ]; then
+    echo "$1 is not a file"
+    exit -1
+fi
+
+ID=$RANDOM
+NOW=$(date +%s)
+FILE_NAME=${STORAGE}/$NOW-$ID.html
+pandoc $1 > $FILE_NAME
+chromium $FILE_NAME &>/dev/null
