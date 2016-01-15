@@ -83,8 +83,16 @@ case $1 in
             done
             if [ ! -z "$BROWSER" ]; then
                 URL=$4
-                if [ ! -z "$URL" ]; then
-                    ARGS=$5
+                ARGS=$5
+                VALID=1
+                if [ -z "$URL" ]; then
+                    if [ -z "$ARGS" ]; then
+                        echo "URL or arguments are required"
+                        VALID=0
+                    fi
+                fi
+                
+                if [ $VALID -eq 1 ]; then
                     if [ -z "$ARGS" ]; then
                         ARGS=$DEFAULT_ARGS
                     fi
@@ -92,8 +100,6 @@ case $1 in
                     NEW_ITEM="\"$NAME\",\"$BROWSER\",\"$URL\",\"$ARGS\""
                     update-index "$NAME" "$NEW_ITEM"
                     REBUILD=1
-                else
-                    echo "url is required"
                 fi
             else
                 echo "browser ($BROWSERS) is required"
