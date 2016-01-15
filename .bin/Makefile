@@ -18,7 +18,7 @@ endef
 export IPTABLES_RULES
 export IPTABLES_SETUP
 
-package_list = alsa-utils chromium cryptsetup debootstrap feh firmware-iwlwifi gawk git i3 i3lock i3status iptables keepass2 lxterminal p7zip pm-utils screen systemd-container unzip wicd wireless-tools wpasupplicant xautolock xbacklight xdm xorg
+package_list = alsa-utils chromium cryptsetup debootstrap feh firmware-iwlwifi gawk git i3 i3lock i3status iptables keepass2 lxterminal p7zip pandoc pm-utils screen systemd-container unzip wicd wireless-tools wpasupplicant xautolock xbacklight xdm xorg
 iptables_rule = /etc/iptables.rules
 iptables_setup = /etc/network/if-pre-up.d/iptables
 ssh_config = $(HOME)/.ssh/config
@@ -35,7 +35,6 @@ install:
 		sudo ln -s $(auto_home)* $(bash_auto)
 		mounting crypt
 		ln -s /mnt/crypt/ssh/ssh.config $(ssh_config)
-		vscode --install
 		nspawn --install
 		csv-processing --install
 		locking --install
@@ -44,7 +43,6 @@ clean:
 		sudo rm -f $(iptables_rule)
 		sudo rm -f $(iptables_setup)
 		rm -f $(ssh_config)
-		vscode --remove
 		nspawn --remove
 		csv-processing --remove
 		locking --remove
