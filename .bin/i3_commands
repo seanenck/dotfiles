@@ -1,6 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/displays
-source $HOME/.bin/workspaces
+source $HOME/.bin/i3-common
 MOVE_CONTAINER=1
 MOVE_WORKSPACE=2
 

@@ -1,5 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/displays
+source $HOME/.bin/i3-common
 WORKPLACE_FILE=/tmp/workplace
 DISPLAY_UN=/tmp/display-unlock
 DISPLAY_EN=/tmp/display-enabled
@@ -26,17 +27,6 @@ function get-workspace-help()
     $1 $3 $WORKSPACE_RELOAD (reload current workspace setup)
     $1 $3 $WORKSPACE_CHANGE (change the current workspace setup)
     "
-}
-
-# Get i3 workspaces (only name/number by default, more grep outputs available via first param)
-function get-i3-workspaces()
-{
-    JSON_PATTERN="name"
-    if [ ! -z "$1" ]; then
-        JSON_PATTERN="$JSON_PATTERN|$1"
-    fi
-    WORKSPACE_INFO=$(i3-msg -t 'get_workspaces' | sed -e 's/{"num/\n{"num/g' | sed -e 's/,"/\n/g' | grep -E "$JSON_PATTERN" | cut -d\" -f 3)
-    echo "$WORKSPACE_INFO"
 }
 
 # Save layouts to disk
