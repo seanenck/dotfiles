@@ -1,5 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/displays
+source $HOME/.bin/workspaces
 MOVE_CONTAINER=1
 MOVE_WORKSPACE=2
 
@@ -36,5 +37,12 @@ function move-workspace-and-focus()
     move-and-focus $1 $MOVE_WORKSPACE
 }
 
-$1 $2
+function rename-workspace()
+{
+    get-i3-workspaces | grep -q $1
+    if [ $? -ne 0 ]; then
+        i3-msg rename workspace to $1
+    fi
+}
 
+$1 $2

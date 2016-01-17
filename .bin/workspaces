@@ -28,11 +28,22 @@ function get-workspace-help()
     "
 }
 
+# Get i3 workspaces (only name/number by default, more grep outputs available via first param)
+function get-i3-workspaces()
+{
+    JSON_PATTERN="name"
+    if [ ! -z "$1" ]; then
+        JSON_PATTERN="$JSON_PATTERN|$1"
+    fi
+    WORKSPACE_INFO=$(i3-msg -t 'get_workspaces' | sed -e 's/{"num/\n{"num/g' | sed -e 's/,"/\n/g' | grep -E "$JSON_PATTERN" | cut -d\" -f 3)
+    echo "$WORKSPACE_INFO"
+}
+
 # Save layouts to disk
 function save-layouts()
 {
     LAYOUT=""
-    CURRENT_LAYOUT=$(i3-msg -t 'get_workspaces' | sed -e 's/{"num/\n{"num/g' | sed -e 's/,"/\n/g' | grep -E 'output|name' | cut -d\" -f 3)
+    CURRENT_LAYOUT=$(get-i3-workspaces "output")
     for lay in $CURRENT_LAYOUT; do
         LAYOUT=$LAYOUT$lay
         echo $lay | grep -q "DP"
