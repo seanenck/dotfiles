@@ -20,7 +20,7 @@ function run-browser()
     fi
 
     echo "$browser $url $args"
-    $browser "$url" "$args"
+    $browser $url $args
 }
 
 function create-script()
@@ -32,7 +32,7 @@ function create-script()
 # url for $1
 source \$HOME/.bin/dmenu_urls
 
-run-browser \"$3\" \"$2\" \"$4\"
+run-browser $3 $2 $4
 " > $FILE_NAME
     chmod u+x $FILE_NAME
 }
