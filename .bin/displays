@@ -67,6 +67,17 @@ function disable-displays()
     done
 }
 
+# Get display modes for a specified display (or all if no 1 is given)
+function get-display-modes()
+{
+    MODES=$(xrandr | grep -E "DP|[0-9]x[0-9]" | cut -d " " -f 1,4 | sed -e 's/^ /_/g' | cut -d " " -f 1 | sed -e 's/^\([a-zA-Z]\)/display_\1/g' | xargs | sed -e 's/display_/\n/g' | sed -e 's/_//g')
+    if [ ! -z "$1" ]; then
+        MODES=$(echo "$MODES" | grep "$1 ")
+    fi
+
+    echo "$MODES"
+}
+
 # Enable aux displays
 function enable-displays()
 {
