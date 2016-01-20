@@ -16,5 +16,5 @@ ID=$RANDOM
 printf -v ID "%05d" $ID
 NOW=$(date +%s)
 FILE_NAME=${STORAGE}/$NOW-$ID.html
-pandoc $1 > $FILE_NAME
+pandoc -o $FILE_NAME -f markdown $1
 (chromium $FILE_NAME &) &>/dev/null
