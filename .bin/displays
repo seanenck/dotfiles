@@ -127,10 +127,10 @@ function change-brightness()
 {
     case $1 in
         $BRIGHTER)
-            SUBCMD="-inc 25"
+            SUBCMD="-inc 5"
             ;;
         $DIMMER)
-            SUBCMD="-dec 25"
+            SUBCMD="-dec 5"
             ;;
         *)
             echo "unknown command $ACTION"
