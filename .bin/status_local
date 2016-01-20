@@ -35,9 +35,9 @@ do
         if [ -e $stats ]; then
             CURRENT_STATS=$(cat $stats)
         fi
-   
+        
         if [ -z "$CURRENT_STATS" ]; then
-            CURRENT_STATS=$(pop-stats " n/a" " n/a" " n/a" " n/a", "n/a", "n/a")
+            CURRENT_STATS=$(pop-stats)
         fi
 
         CUSTOM="$CUSTOM $CURRENT_STATS "

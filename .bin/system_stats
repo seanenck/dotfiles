@@ -4,18 +4,42 @@ STATS_FILE=/tmp/system-stats
 # Populate statistics
 function pop-stats()
 {
-    USE_CPU="cpu($1)"
-    USE_MEM=" mem($2)"
-    USE_DSK=" dsk($3)"
-    USE_BAT0=" bt0($4)"
-    USE_BAT1=" bt1($5)"
-    USE_VOL=" vol($6)"
+    CPU_VAL=$(pop-empty "$1")
+    MEM_VAL=$(pop-empty "$2")
+    DSK_VAL=$(pop-empty "$3")
+    BAT0_VAL=$(pop-empty "$4")
+    BAT1_VAL=$(pop-empty "$5")
+    VOL_VAL=$(pop-empty "$6")
+    DIM_VAL=$(pop-empty "$7")
+    STATS=$(report-stats "$CPU_VAL" "$MEM_VAL" "$DSK_VAL" "$BAT0_VAL" "$BAT1_VAL" "$VOL_VAL" "$DIM_VAL")
+    echo "$STATS"
+}
+
+function pop-empty()
+{
+    if [ -z "$1" ]; then
+        echo " n/a"
+    else
+        echo "$1"
+    fi
+}
+
+function report-stats()
+{
+    USE_CPU="cpu:$1"
+    USE_MEM=" | mem:$2 "
+    USE_DSK="| dsk:$3 "
+    USE_BAT0="| bt0:$4 "
+    USE_BAT1="| bt1:$5 "
+    USE_VOL="| vol:$6 "
+    USE_DIM="| dim:$7"
     CURRENT_STATS="$USE_CPU"
     CURRENT_STATS="$CURRENT_STATS$USE_MEM"
     CURRENT_STATS="$CURRENT_STATS$USE_DSK"
-    CURRENT_STATS="$CURRENT_STATS$USE_BAT0"    
-    CURRENT_STATS="$CURRENT_STATS$USE_BAT1"    
-    CURRENT_STATS="$CURRENT_STATS$USE_VOL"    
+    CURRENT_STATS="$CURRENT_STATS$USE_BAT0"
+    CURRENT_STATS="$CURRENT_STATS$USE_BAT1"
+    CURRENT_STATS="$CURRENT_STATS$USE_VOL"
+    CURRENT_STATS="$CURRENT_STATS$USE_DIM"
     echo "$CURRENT_STATS"
 }
 
@@ -48,6 +72,7 @@ function sys-stats()
     BAT0=$(get-battery "0")
     BAT1=$(get-battery "1")
     VOL=$(subsystem volume sound status)
-    STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%" "$BAT0%" "$BAT1%" "$VOL%")
+    DIM=$(xbacklight | awk '{printf "%3.0f", $1}')
+    STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%" "$BAT0%" "$BAT1%" "$VOL%" "$DIM%")
     echo "$STAT_OUT" > $STATS_FILE
 }
