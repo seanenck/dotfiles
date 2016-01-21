@@ -1,3 +1,6 @@
+set tabstop=4
+set expandtab
+
 if has('mouse')
   set mouse=a
 endif
