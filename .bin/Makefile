@@ -38,7 +38,8 @@ install:
 		nspawn --install
 		csv-processing --install
 		locking --install
-		git config --global.core.excludesfiles ~/.config/.gitignore
+		git config --global core.excludesfiles ~/.config/.gitignore
+		git config --global push.default simple
 
 clean:
 		sudo rm -f $(iptables_rule)
