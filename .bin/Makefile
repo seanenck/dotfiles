@@ -18,7 +18,7 @@ endef
 export IPTABLES_RULES
 export IPTABLES_SETUP
 
-package_list = alsa-utils chromium cryptsetup debootstrap feh firmware-iwlwifi gawk git i3 i3lock i3status iptables keepass2 lxterminal p7zip pandoc pm-utils screen systemd-container unzip wicd wireless-tools wpasupplicant xautolock xbacklight xdm xorg
+package_list = alsa-utils chromium cryptsetup debootstrap feh firmware-iwlwifi gawk git i3 i3lock i3status iptables keepass2 lxterminal p7zip pandoc pm-utils screen systemd-container unzip vim vim-youcompleteme wicd wireless-tools wpasupplicant xautolock xbacklight xdm xorg
 iptables_rule = /etc/iptables.rules
 iptables_setup = /etc/network/if-pre-up.d/iptables
 ssh_config = $(HOME)/.ssh/config
