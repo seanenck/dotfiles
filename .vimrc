@@ -1,6 +1,6 @@
 set tabstop=4
 set expandtab
-
+set noautoindent
 if has('mouse')
   set mouse=a
 endif
