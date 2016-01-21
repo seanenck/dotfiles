@@ -40,6 +40,7 @@ install:
 		locking --install
 		git config --global core.excludesfiles ~/.config/.gitignore
 		git config --global push.default simple
+		git config --global core.editor "vim"
 
 clean:
 		sudo rm -f $(iptables_rule)
