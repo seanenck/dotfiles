@@ -22,6 +22,16 @@ function move-and-focus()
     i3-msg focus output $DISP
 }
 
+function close-all-containers()
+{
+    PARENT="true"
+    while [[ "$PARENT" == *"true"* ]];
+    do
+        PARENT=$(i3-msg focus parent);
+    done
+    i3-msg kill
+}
+
 function move-to-focus()
 {
     move-and-focus $1 0
