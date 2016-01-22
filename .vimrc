@@ -1,6 +1,7 @@
 set tabstop=4
 set expandtab
 set noautoindent
+set background=dark
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%80v.\+/
 if has('mouse')
