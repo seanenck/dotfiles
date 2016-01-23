@@ -1,7 +1,7 @@
 #!/bin/bash
 STORAGE=/tmp/markdown-preview/
 mkdir -p $STORAGE
-find ${STORAGE}* -type f -mtime +1 -delete
+find ${STORAGE}* -type f -mtime +1 -delete &> /dev/null
 if [ -z "$1" ]; then
     echo "a markdown file is required"
     exit -1
