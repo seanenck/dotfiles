@@ -32,7 +32,7 @@ function report-stats()
     USE_BAT0="| bt0:$4 "
     USE_BAT1="| bt1:$5 "
     USE_VOL="| vol:$6 "
-    USE_DIM="| dim:$7"
+    USE_DIM="| lgt:$7"
     CURRENT_STATS="$USE_CPU"
     CURRENT_STATS="$CURRENT_STATS$USE_MEM"
     CURRENT_STATS="$CURRENT_STATS$USE_DSK"
