@@ -1,6 +1,7 @@
 #!/bin/bash
 URL_COMMON=$HOME/.cache/dmenu_urls/
-INDEX_FILE=${URL_COMMON}index
+INDEX_NAME="index"
+INDEX_FILE=${URL_COMMON}${INDEX_NAME}
 REGISTER_KEYWORD="--register"
 HELP_KEYWORD="--help"
 REBUILD_KEYWORD="--rebuild"
@@ -75,36 +76,40 @@ case $1 in
         DO_HELP=1
         NAME=$2
         if [ ! -z "$NAME" ]; then
-            for browse in $BROWSERS; do
-                echo "$3" | grep -q "^$browse$"
-                if [ $? -eq 0 ]; then
-                    BROWSER=$browse
-                    break
-                fi
-            done
-            if [ ! -z "$BROWSER" ]; then
-                URL=$4
-                ARGS="${@:5}"
-                VALID=1
-                if [ -z "$URL" ]; then
-                    if [ -z "$ARGS" ]; then
-                        echo "URL or arguments are required"
-                        VALID=0
+            if [[ "$NAME" == "$INDEX_NAME" ]]; then
+                echo "$INDEX_NAME is a reserved"
+            else
+                for browse in $BROWSERS; do
+                    echo "$3" | grep -q "^$browse$"
+                    if [ $? -eq 0 ]; then
+                        BROWSER=$browse
+                        break
                     fi
-                fi
-                
-                if [ $VALID -eq 1 ]; then
-                    if [ -z "$ARGS" ]; then
-                        ARGS=$DEFAULT_ARGS
+                done
+                if [ ! -z "$BROWSER" ]; then
+                    URL=$4
+                    ARGS="${@:5}"
+                    VALID=1
+                    if [ -z "$URL" ]; then
+                        if [ -z "$ARGS" ]; then
+                            echo "URL or arguments are required"
+                            VALID=0
+                        fi
                     fi
                     
-                    ARGS=$(echo "$ARGS" | sed "s/ /$ARG_DELIMITER/g")
-                    NEW_ITEM="\"$NAME\",\"$BROWSER\",\"$URL\",\"$ARGS\""
-                    update-index "$NAME" "$NEW_ITEM"
-                    REBUILD=1
+                    if [ $VALID -eq 1 ]; then
+                        if [ -z "$ARGS" ]; then
+                            ARGS=$DEFAULT_ARGS
+                        fi
+                    
+                        ARGS=$(echo "$ARGS" | sed "s/ /$ARG_DELIMITER/g")
+                        NEW_ITEM="\"$NAME\",\"$BROWSER\",\"$URL\",\"$ARGS\""
+                        update-index "$NAME" "$NEW_ITEM"
+                        REBUILD=1
+                    fi
+                else
+                    echo "browser ($BROWSERS) is required"
                 fi
-            else
-                echo "browser ($BROWSERS) is required"
             fi
         else
             echo "name is required"
