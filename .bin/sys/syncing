@@ -1,0 +1,9 @@
+#!/bin/bash
+IS_READY="ok"
+SYNC_TO="base"
+LOG="/tmp/syncing-"$(date +%Y-%m-%d)
+available=$(ssh -o BatchMode=yes -o ConnectTimeout=5 $SYNC_TO echo $IS_READY 2>&1)
+echo "checked for connection...$available" >> $LOG
+if [[ "$available" == "$IS_READY" ]]; then
+    rsync -avzc --delete-after /mnt/Synced/ -e ssh $SYNC_TO:/mnt/Storage/Active/Sync/ >> $LOG
+fi

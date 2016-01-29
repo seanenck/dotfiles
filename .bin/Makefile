@@ -24,6 +24,7 @@ iptables_setup = /etc/network/if-pre-up.d/iptables
 ssh_config = $(HOME)/.ssh/config
 auto_home = $(HOME)/.bin/autocomplete/
 bash_auto = /etc/bash_completed.d/
+sys_home = $(HOME)/.bin/sys/
 
 all: clean install
 
@@ -43,6 +44,7 @@ install:
 		git config --global core.editor "vim"
 		sudo ln -s $(HOME)/.bin/locking /usr/local/bin/locking
 		sudo ln -s $(HOME)/.bin/sys/rc.local /etc/rc.local
+		(crontab -l ; echo "*/15 * * * * $(sys_home)/syncing")| crontab -
 
 clean:
 		sudo rm -f $(iptables_rule)
