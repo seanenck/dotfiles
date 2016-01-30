@@ -1,6 +1,6 @@
 #!/bin/bash
 NAME="nspawn"
-AUTO_COMPLETE=/etc/bash_completion.d/nspawn
+AUTO_COMPLETE=/usr/share/bash-completion/completions/nspawn
 source $HOME/.bin/install-git-common
 $HOME/.bin/install-git $1 "$NAME" "${NAME}-info"
 if [ $? -ne 0 ]; then
