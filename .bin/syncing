@@ -10,7 +10,7 @@ function start-syncing()
 {
     touch $PID_FILE
     IS_READY="ok"
-    SYNC_TO="base"
+    SYNC_TO="sync"
     LOG="/tmp/syncing-"$(date +%Y-%m-%d)
     ROTATE_COUNT=0
     while [ -e $PID_FILE ]; do
@@ -22,7 +22,7 @@ function start-syncing()
             echo "checked for connection...$available" >> $LOG
             echo $USER >> $LOG
             if [[ "$available" == "$IS_READY" ]]; then
-                rsync -avzc --delete-after /mnt/Synced/ -e ssh $SYNC_TO:/mnt/Storage/Active/Sync/ >> $LOG
+                rsync -avzc --delete-after /mnt/Synced/ -e ssh $SYNC_TO:~/Sync/ >> $LOG
             fi
         fi
         sleep $SLEEP_FOR
