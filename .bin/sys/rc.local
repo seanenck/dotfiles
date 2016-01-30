@@ -1,2 +1,0 @@
-echo disable > /proc/acpi/ibm/bluetooth
-exit 0
