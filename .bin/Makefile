@@ -43,6 +43,7 @@ install:
 		git config --global core.editor "vim"
 		sudo ln -s $(HOME)/.bin/locking /usr/local/bin/locking
 		sudo ln -s $(HOME)/.bin/sys/rc.local /etc/rc.local
+		syncing --install
 
 clean:
 		sudo rm -f $(iptables_rule)

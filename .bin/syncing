@@ -1,12 +1,58 @@
 #!/bin/bash
-IS_READY="ok"
-SYNC_TO="base"
-LOG="/tmp/syncing-"$(date +%Y-%m-%d)
-available=$(ssh -o BatchMode=yes -o ConnectTimeout=5 $SYNC_TO echo $IS_READY 2>&1)
-echo "=====================" >> $LOG
-echo "running "$(date +%Y-%m-%dT%H:%M:%s) >> $LOG
-echo "=====================" >> $LOG
-echo "checked for connection...$available" >> $LOG
-if [[ "$available" == "$IS_READY" ]]; then
-    rsync -avzc --delete-after /mnt/Synced/ -e ssh $SYNC_TO:/mnt/Storage/Active/Sync/ >> $LOG
-fi
+source $HOME/.bin/install-git-common
+PID_FILE="/tmp/syncing.pid"
+SLEEP_FOR=5
+ROTATION_COUNT=12
+SERVICE_NAME="syncing@enck.service"
+SERVICE_FILE="$HOME/.bin/sys/$SERVICE_NAME"
+
+function start-syncing()
+{
+    touch $PID_FILE
+    IS_READY="ok"
+    SYNC_TO="base"
+    LOG="/tmp/syncing-"$(date +%Y-%m-%d)
+    ROTATE_COUNT=0
+    while [ -e $PID_FILE ]; do
+        if [ $ROTATE_COUNT -eq 0 ]; then
+            available=$(ssh -o BatchMode=yes -o ConnectTimeout=5 $SYNC_TO echo $IS_READY 2>&1)
+            echo "=====================" >> $LOG
+            echo "running "$(date +%Y-%m-%dT%H:%M:%S) >> $LOG
+            echo "=====================" >> $LOG
+            echo "checked for connection...$available" >> $LOG
+            echo $USER >> $LOG
+            if [[ "$available" == "$IS_READY" ]]; then
+                rsync -avzc --delete-after /mnt/Synced/ -e ssh $SYNC_TO:/mnt/Storage/Active/Sync/ >> $LOG
+            fi
+        fi
+        sleep $SLEEP_FOR
+        ROTATE_COUNT=$((ROTATE_COUNT+1))
+        if [ $ROTATE_COUNT -gt $ROTATION_COUNT ]; then
+            ROTATE_COUNT=0
+        fi
+    done
+}
+
+function stop-syncing()
+{
+    if [ -e $PID_FILE ]; then
+        rm $PID_FILE
+    fi
+}
+
+case $1 in
+    $INSTALL_KEYWORD)
+        sudo systemctl enable $SERVICE_FILE
+        sudo ln -s $HOME/.bin/syncing /usr/local/bin/
+        ;;
+    $REMOVE_KEYWORD)
+        sudo systemctl disable $SERVICE_NAME
+        sudo rm /usr/local/bin/syncing
+        ;;
+    "start")
+        start-syncing
+        ;;
+    "stop")
+        stop-syncing
+        ;;
+esac

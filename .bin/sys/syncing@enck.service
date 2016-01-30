@@ -1,0 +1,11 @@
+[Unit]
+Description=Syncing worker
+
+[Service]
+Type=idle
+ExecStart=/usr/local/bin/syncing start
+ExecStop=/usr/local/bin/syncing stop
+User=enck
+
+[Install]
+WantedBy=multi-user.target
