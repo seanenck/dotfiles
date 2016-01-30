@@ -61,4 +61,7 @@ case $1 in
     "stop")
         stop-syncing
         ;;
+    *)
+        echo "unknown command: $1"
+        ;;
 esac
