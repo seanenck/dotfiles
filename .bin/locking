@@ -2,7 +2,6 @@
 source $HOME/.bin/displays
 source $HOME/.bin/workspaces
 source $HOME/.bin/sound
-source $HOME/.bin/install-git-common
 SUSPEND=/usr/sbin/pm-suspend-hybrid
 LOCK_ACTION="lock"
 SLEEP_ACTION="sleep"
@@ -122,27 +121,9 @@ function lock()
     esac
 }
 
-# Update sudoers for install/remove
-function update-sudoers()
-{
-    CONTENTS=$(sudo cat /etc/sudoers | grep -v "$SUDO_PERMS")
-    echo "$CONTENTS" > /etc/sudoers
-    if [ $1 -eq 1 ]; then
-        echo $SUDO_PERMS >> /etc/sudoers
-    fi
-}
-
 USE_ACTION=$LOCK_ACTION
 if [ ! -z "$1" ]; then
     case $1 in
-        $INSTALL_KEYWORD)
-            update-sudoers 1
-            exit 0
-            ;;
-        $REMOVE_KEYWORD)
-            update-sudoers 0
-            exit 0
-            ;;
         $HELP)
             get-locking-help
             exit -1
