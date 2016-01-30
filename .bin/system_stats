@@ -66,7 +66,7 @@ function get-battery()
 function sys-stats()
 {
     MEM_USAGE=$(free | grep Mem | awk '{printf "%3.0f", $3/$2 * 100.0}')
-    CPU_USAGE=$(top -d 0.5 -b -n2 | grep "Cpu(s)"|tail -n 1 | awk '{printf "%3.0f", $2 + $4}')
+    CPU_USAGE=$(ps axo pcpu | gawk -v cores=`grep -m 1 cores /proc/cpuinfo | cut -d ' ' -f 3` -v cpus=`grep -c processor /proc/cpuinfo`          '{k+=$1}END{print k/(cores * cpus);}' | awk '{printf "%3.0f", $1}' )
     DSK_USAGE=$(df -h / | tail -n 1 | awk '{printf "%3.0f", substr($5, 0, length($5) - 1)}')
     BAT0=$(get-battery "0")
     BAT1=$(get-battery "1")
