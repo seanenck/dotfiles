@@ -93,7 +93,7 @@ function mount-share()
         echo "already mounted"
         exit -1
     fi
-    sudo mount core:$MNT_SHARE $MNT_SHARE
+    sudo mount base:$MNT_SHARE $MNT_SHARE
 }
 
 function umount-share()
