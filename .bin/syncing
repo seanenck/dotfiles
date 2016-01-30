@@ -2,7 +2,7 @@
 source $HOME/.bin/install-git-common
 PID_FILE="/tmp/syncing.pid"
 SLEEP_FOR=5
-ROTATION_COUNT=12
+ROTATION_COUNT=120
 SERVICE_NAME="syncing@enck.service"
 SERVICE_FILE="$HOME/.bin/sys/$SERVICE_NAME"
 
@@ -20,7 +20,6 @@ function start-syncing()
             echo "running "$(date +%Y-%m-%dT%H:%M:%S) >> $LOG
             echo "=====================" >> $LOG
             echo "checked for connection...$available" >> $LOG
-            echo $USER >> $LOG
             if [[ "$available" == "$IS_READY" ]]; then
                 rsync -avzc --delete-after /mnt/Synced/ -e ssh $SYNC_TO:~/Sync/ >> $LOG
             fi
