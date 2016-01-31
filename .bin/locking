@@ -89,6 +89,10 @@ function lock()
                     fi
                 fi
                 
+                if [ -e $DISPLAY_EN ]; then
+                    DO_SUSPEND=""
+                fi
+
                 if [ ! -z $DO_SUSPEND ]; then
                     sudo $SUSPEND
                     RAN_SUSPEND=1
