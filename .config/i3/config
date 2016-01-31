@@ -92,11 +92,12 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        tray_output primary
+        tray_output eDP1
         status_command status_local
 }
 
 exec --no-startup-id subsystem workspaces cycle startup
+exec --no-startup-id nm-applet
 
 # Handle auto-locking
 exec xautolock -time 5 -locker /usr/local/bin/locking &
