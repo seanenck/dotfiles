@@ -23,10 +23,10 @@ function pop-empty()
 
 function report-stats()
 {
-    USE_CPU="cpu:$1"
-    USE_MEM=" | mem:$2 "
-    USE_DSK="| dsk:$3 "
-    USE_DIM="| lgt:$4"
+    USE_CPU="cpu: $1"
+    USE_MEM=" | memory: $2 "
+    USE_DSK="| disk: $3 "
+    USE_DIM="| brightness: $4"
     CURRENT_STATS="$USE_CPU"
     CURRENT_STATS="$CURRENT_STATS$USE_MEM"
     CURRENT_STATS="$CURRENT_STATS$USE_DSK"
