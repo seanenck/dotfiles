@@ -98,6 +98,9 @@ bar {
 
 exec --no-startup-id subsystem workspaces cycle startup
 exec --no-startup-id nm-applet
+exec --no-startup-id cbatticon -d BAT0
+exec --no-startup-id cbatticon -d BAT1
+exec --no-startup-id volumeicon
 
 # Handle auto-locking
 exec xautolock -time 5 -locker /usr/local/bin/locking &
