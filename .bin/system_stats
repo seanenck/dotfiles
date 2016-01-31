@@ -7,11 +7,9 @@ function pop-stats()
     CPU_VAL=$(pop-empty "$1")
     MEM_VAL=$(pop-empty "$2")
     DSK_VAL=$(pop-empty "$3")
-    BAT0_VAL=$(pop-empty "$4")
-    BAT1_VAL=$(pop-empty "$5")
-    VOL_VAL=$(pop-empty "$6")
-    DIM_VAL=$(pop-empty "$7")
-    STATS=$(report-stats "$CPU_VAL" "$MEM_VAL" "$DSK_VAL" "$BAT0_VAL" "$BAT1_VAL" "$VOL_VAL" "$DIM_VAL")
+    VOL_VAL=$(pop-empty "$4")
+    DIM_VAL=$(pop-empty "$5")
+    STATS=$(report-stats "$CPU_VAL" "$MEM_VAL" "$DSK_VAL" "$VOL_VAL" "$DIM_VAL")
     echo "$STATS"
 }
 
@@ -29,37 +27,14 @@ function report-stats()
     USE_CPU="cpu:$1"
     USE_MEM=" | mem:$2 "
     USE_DSK="| dsk:$3 "
-    USE_BAT0="| bat:$4,$5 "
-    USE_VOL="| vol:$6 "
-    USE_DIM="| lgt:$7"
+    USE_VOL="| vol:$4 "
+    USE_DIM="| lgt:$5"
     CURRENT_STATS="$USE_CPU"
     CURRENT_STATS="$CURRENT_STATS$USE_MEM"
     CURRENT_STATS="$CURRENT_STATS$USE_DSK"
-    CURRENT_STATS="$CURRENT_STATS$USE_BAT0"
-    CURRENT_STATS="$CURRENT_STATS$USE_BAT1"
     CURRENT_STATS="$CURRENT_STATS$USE_VOL"
     CURRENT_STATS="$CURRENT_STATS$USE_DIM"
     echo "$CURRENT_STATS"
-}
-
-# Get battery information
-function get-battery()
-{
-    BATTERY=/sys/class/power_supply/BAT$1/uevent
-    if [ -e $BATTERY ]; then
-        STATUS_IND="POWER_SUPPLY_STATUS="
-        FULL_IND="POWER_SUPPLY_ENERGY_FULL"
-        if grep -q "POWER_SUPPLY_ENERGY_FULL" $BATTERY; then
-            NOW_IND="POWER_SUPPLY_ENERGY_NOW"
-        else
-            FULL_IND="POWER_SUPPLY_CHARGE_FULL"
-            NOW_IND="POWER_SUPPLY_CHARGE_NOW"
-        fi
-        FULL=$(cat $BATTERY | grep "$FULL_IND=" | cut -d '=' -f 2)
-        CURR=$(cat $BATTERY | grep "$NOW_IND=" | cut -d '=' -f 2)
-        BATT=$(echo "$CURR $FULL" | awk '{printf "%3.0f", ($1 / $2) * 100 }')
-    fi
-    echo "$BATT"
 }
 
 # Produce system stats
@@ -68,10 +43,8 @@ function sys-stats()
     MEM_USAGE=$(free | grep Mem | awk '{printf "%3.0f", $3/$2 * 100.0}')
     CPU_USAGE=$(ps axo pcpu | gawk -v cores=`grep -m 1 cores /proc/cpuinfo | cut -d ' ' -f 3` -v cpus=`grep -c processor /proc/cpuinfo`          '{k+=$1}END{print k/(cores * cpus);}' | awk '{printf "%3.0f", $1}' )
     DSK_USAGE=$(df -h / | tail -n 1 | awk '{printf "%3.0f", substr($5, 0, length($5) - 1)}')
-    BAT0=$(get-battery "0")
-    BAT1=$(get-battery "1")
     VOL=$(subsystem volume sound status)
     DIM=$(xbacklight | awk '{printf "%3.0f", $1}')
-    STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%" "$BAT0%" "$BAT1%" "$VOL%" "$DIM%")
+    STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%" "$VOL%" "$DIM%")
     echo "$STAT_OUT" > $STATS_FILE
 }
