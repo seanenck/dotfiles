@@ -12,23 +12,22 @@ function start-syncing()
     echo $PID > $PID_FILE
     IS_READY="ok"
     SYNC_TO="sync"
-    LOG="/tmp/syncing-"$(date +%Y-%m-%d)
-    echo "Running as $PID" >> $LOG
+    echo "Running as $PID"
     ROTATE_COUNT=0
     while [ -e $PID_FILE ]; do
         CURRENT_PID=$(cat $PID_FILE)
         if [[ "$CURRENT_PID" != "$PID" ]]; then
-            echo "$CURRENT_PID is active sync process (not $PID)" >> $LOG
+            echo "$CURRENT_PID is active sync process (not $PID)"
             exit -1
         fi
         if [ $ROTATE_COUNT -eq 0 ]; then
             available=$(ssh -o BatchMode=yes -o ConnectTimeout=5 $SYNC_TO echo $IS_READY 2>&1)
-            echo "=====================" >> $LOG
-            echo "running ($PID) "$(date +%Y-%m-%dT%H:%M:%S) >> $LOG
-            echo "=====================" >> $LOG
-            echo "checked for connection...$available" >> $LOG
+            echo "====================="
+            echo "running ($PID) "$(date +%Y-%m-%dT%H:%M:%S)
+            echo "====================="
+            echo "checked for connection...$available"
             if [[ "$available" == "$IS_READY" ]]; then
-                rsync -avzc --delete-after /mnt/Synced/ -e ssh $SYNC_TO:~/Sync/ >> $LOG
+                rsync -avzc --delete-after /mnt/Synced/ -e ssh $SYNC_TO:~/Sync/
             fi
         fi
         sleep $SLEEP_FOR
