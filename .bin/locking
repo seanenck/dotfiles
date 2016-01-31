@@ -2,7 +2,6 @@
 source $HOME/.bin/displays
 source $HOME/.bin/workspaces
 source $HOME/.bin/sound
-SUSPEND=/usr/sbin/pm-suspend-hybrid
 LOCK_ACTION="lock"
 SLEEP_ACTION="sleep"
 TOGGLE_ACTION="toggling"
@@ -94,7 +93,7 @@ function lock()
                 fi
 
                 if [ ! -z $DO_SUSPEND ]; then
-                    sudo $SUSPEND
+                    systemctl suspend
                     RAN_SUSPEND=1
                 fi
             done
