@@ -7,9 +7,8 @@ function pop-stats()
     CPU_VAL=$(pop-empty "$1")
     MEM_VAL=$(pop-empty "$2")
     DSK_VAL=$(pop-empty "$3")
-    VOL_VAL=$(pop-empty "$4")
-    DIM_VAL=$(pop-empty "$5")
-    STATS=$(report-stats "$CPU_VAL" "$MEM_VAL" "$DSK_VAL" "$VOL_VAL" "$DIM_VAL")
+    DIM_VAL=$(pop-empty "$4")
+    STATS=$(report-stats "$CPU_VAL" "$MEM_VAL" "$DSK_VAL" "$DIM_VAL")
     echo "$STATS"
 }
 
@@ -27,12 +26,10 @@ function report-stats()
     USE_CPU="cpu:$1"
     USE_MEM=" | mem:$2 "
     USE_DSK="| dsk:$3 "
-    USE_VOL="| vol:$4 "
-    USE_DIM="| lgt:$5"
+    USE_DIM="| lgt:$4"
     CURRENT_STATS="$USE_CPU"
     CURRENT_STATS="$CURRENT_STATS$USE_MEM"
     CURRENT_STATS="$CURRENT_STATS$USE_DSK"
-    CURRENT_STATS="$CURRENT_STATS$USE_VOL"
     CURRENT_STATS="$CURRENT_STATS$USE_DIM"
     echo "$CURRENT_STATS"
 }
@@ -43,8 +40,7 @@ function sys-stats()
     MEM_USAGE=$(free | grep Mem | awk '{printf "%3.0f", $3/$2 * 100.0}')
     CPU_USAGE=$(ps axo pcpu | gawk -v cores=`grep -m 1 cores /proc/cpuinfo | cut -d ' ' -f 3` -v cpus=`grep -c processor /proc/cpuinfo`          '{k+=$1}END{print k/(cores * cpus);}' | awk '{printf "%3.0f", $1}' )
     DSK_USAGE=$(df -h / | tail -n 1 | awk '{printf "%3.0f", substr($5, 0, length($5) - 1)}')
-    VOL=$(subsystem volume sound status)
     DIM=$(xbacklight | awk '{printf "%3.0f", $1}')
-    STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%" "$VOL%" "$DIM%")
+    STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%" "$DIM%")
     echo "$STAT_OUT" > $STATS_FILE
 }
