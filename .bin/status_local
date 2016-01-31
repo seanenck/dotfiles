@@ -44,7 +44,7 @@ do
     done
 
     CUSTOM="$CUSTOM|"
-    echo "$CUSTOM $line" || exit 1
+    echo "$CUSTOM $line |" || exit 1
     status_local $SYS_STATS_CMD &
 done
 
