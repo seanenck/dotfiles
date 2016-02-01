@@ -33,5 +33,5 @@ TAR_FILE=$NAME.tar.gz
 tar -cvzf $CURRENT_PWD/$TAR_FILE *
 cd $CURRENT_PWD
 rm -rf $WORKING_DIR
-gpg -c $TAR_FILE
+gpg --symmetric --cipher-algo aes256 $TAR_FILE
 rm $TAR_FILE
