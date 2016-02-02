@@ -13,6 +13,7 @@ CLEAR_LAYOUT="clear"
 LAYOUT_CALL="layout"
 CYCLE_WORKSPACE="cycle"
 WORKSPACES_KEY="workspaces"
+DPMS_KEY="dpms"
 ALL_AVAILBLE="$DISPLAY_KEY $VOLUME_KEY $WORKSPACES_KEY"
 HELP="help"
 
@@ -24,7 +25,7 @@ function get-help()
     for item in $ALL_AVAILBLE; do
         case $item in
             $DISPLAY_KEY)
-                get-lighting-help $item $DISPLAY_TOGGLE $DISPLAY_CHANGE
+                get-lighting-help $item $DISPLAY_TOGGLE $DISPLAY_CHANGE $DPMS_KEY
                 ;;
             $VOLUME_KEY)
                 get-volume-help $item $SOUND_COMMAND
@@ -79,6 +80,9 @@ function display-subsystem()
             ;;
         $DISPLAY_CHANGE)
             change-brightness "$2"
+            ;;
+        $DPMS_KEY)
+            toggle-dpms "$2"
             ;;
         *)
             echo "Unknown display command $1"
