@@ -4,11 +4,7 @@ source $HOME/.bin/i3-common
 WORKPLACE_FILE=/tmp/workplace
 DISPLAY_UN=/tmp/display-unlock
 DISPLAY_EN=/tmp/display-enabled
-LAYOUT_FILE=/tmp/last-layout
 LAYOUT_DELIM=":"
-SAVE_ACTION="save"
-RESTORE_ACTION="restore"
-CLEAR_ACTION="clear"
 WORKSPACE_DOCK="dock"
 WORKSPACE_NORM="mobile"
 WORKSPACE_START="startup"
@@ -16,72 +12,14 @@ WORKSPACE_RELOAD="reload"
 WORKSPACE_CHANGE="change"
 BACKGROUND_IMAGE=$HOME/.cache/background.png
 
-# Workspace/layout help
+# Workspace help
 function get-workspace-help()
 {
     echo "
-    $1 $2 $SAVE_ACTION (save layout)
-    $1 $2 $RESTORE_ACTION (restore layout)
-    $1 $2 $CLEAR_ACTION (clear layout)
-    $1 $3 $WORKSPACE_START (workspace startup/setup)
-    $1 $3 $WORKSPACE_RELOAD (reload current workspace setup)
-    $1 $3 $WORKSPACE_CHANGE (change the current workspace setup)
+    $1 $2 $WORKSPACE_START (workspace startup/setup)
+    $1 $2 $WORKSPACE_RELOAD (reload current workspace setup)
+    $1 $2 $WORKSPACE_CHANGE (change the current workspace setup)
     "
-}
-
-# Save layouts to disk
-function save-layouts()
-{
-    LAYOUT=""
-    CURRENT_LAYOUT=$(get-i3-workspaces "output")
-    for lay in $CURRENT_LAYOUT; do
-        LAYOUT=$LAYOUT$lay
-        echo $lay | grep -q "DP"
-        if [ $? -eq 0 ]; then
-            LAYOUT=$LAYOUT" "
-        else
-            LAYOUT=$LAYOUT$LAYOUT_DELIM
-        fi
-    done
-    echo $LAYOUT > $LAYOUT_FILE
-}
-
-# Toggle layouts via command
-function toggle-layouts()
-{
-    case $1 in
-        $SAVE_ACTION)
-            save-layouts
-            ;;
-        $RESTORE_ACTION)
-            restore-layouts
-            ;;
-        $CLEAR_ACTION)
-            clear-layouts
-            ;;
-    esac
-}
-
-# Restore layouts
-function restore-layouts()
-{
-    if [ -e "$LAYOUT_FILE" ]; then
-        LAYOUT=$(cat $LAYOUT_FILE)
-        for lay in $LAYOUT; do
-            LAY_NAME=$(echo $lay | cut -d "$LAYOUT_DELIM" -f 1)
-            LAY_DISP=$(echo $lay | cut -d "$LAYOUT_DELIM" -f 2)
-            i3-msg workspace number $LAY_NAME
-            i3-msg move workspace to output $LAY_DISP
-        done
-    fi
-}
-
-# Clear layouts
-function clear-layouts()
-{
-    if [ -e "$LAYOUT_FILE" ]; then
-        rm $LAYOUT_FILE
-    fi
 }
 
 # Change/toggle workspaces
@@ -102,8 +40,7 @@ function change-workspace()
             fi
 
             if [[ "$1" == "$WORKSPACE_RELOAD" ]]; then
-                save-layouts
-                disable-displays
+                toggle-dpms $DPMS_OFF
             else
                 if [[ "$CURRENT" == "$WORKSPACE_NORM" ]]; then
                     CURRENT=$WORKSPACE_DOCK
@@ -126,15 +63,9 @@ function change-workspace()
         $WORKSPACE_RELOAD | $WORKSPACE_START)
             if [[ "$1" == "$WORKSPACE_RELOAD" ]]; then
                 if [[ "$CURRENT" == "$WORKSPACE_DOCK" ]]; then
-                    restore-layouts
                     i3 restart
-                else
-                    clear-layouts
                 fi
             fi
-            ;;
-        *)
-            clear-layouts
             ;;
     esac
 
@@ -143,4 +74,5 @@ function change-workspace()
     else
         xsetroot -solid "#333333"
     fi
+    toggle-dpms $DPMS_ON
 }
