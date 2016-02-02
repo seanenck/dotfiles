@@ -7,10 +7,6 @@ VOLUME_KEY="volume"
 DISPLAY_TOGGLE="toggle"
 DISPLAY_CHANGE="change"
 SOUND_COMMAND="sound"
-SAVE_LAYOUT="save"
-RESTORE_LAYOUT="restore"
-CLEAR_LAYOUT="clear"
-LAYOUT_CALL="layout"
 CYCLE_WORKSPACE="cycle"
 WORKSPACES_KEY="workspaces"
 DPMS_KEY="dpms"
@@ -31,7 +27,7 @@ function get-help()
                 get-volume-help $item $SOUND_COMMAND
                 ;;
             $WORKSPACES_KEY)
-                get-workspace-help $item $LAYOUT_CALL $CYCLE_WORKSPACE
+                get-workspace-help $item $CYCLE_WORKSPACE
                 ;;
         esac
     done
@@ -58,9 +54,6 @@ fi
 function workspace-subsystem()
 {
     case $1 in
-        $LAYOUT_CALL)
-            toggle-layouts "$2"
-            ;;
         $CYCLE_WORKSPACE)
             change-workspace "$2"
             ;;
