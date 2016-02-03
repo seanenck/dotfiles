@@ -1,0 +1,11 @@
+#!/bin/bash
+_utility()
+{
+    local cur cmd
+    if [ $COMP_CWORD -eq 1 ]; then
+        cmd=$(utility | grep -ve '^$' | cut -d " " -f 1)
+        cur=${COMP_WORDS[COMP_CWORD]}
+        COMPREPLY=( $(compgen -W "$cmd" -- $cur) )
+    fi
+}
+complete -F _utility utility

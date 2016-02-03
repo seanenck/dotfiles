@@ -1,0 +1,37 @@
+#!/bin/bash
+MAIL_KEYWORD="mail"
+SSID_KEYWORD="ssid"
+
+function clear-mail()
+{
+    echo 'd *' | mail -N
+}
+
+function hidden-ssid()
+{
+    if [ -z "$1" ]; then
+        echo "ssid required..."
+        exit -1
+    fi
+    sudo iwlist wlp3s0 scanning essid $1
+}
+
+function print-help()
+{
+    echo "
+$MAIL_KEYWORD (clear mail)
+$SSID_KEYWORD (discover a hidden SSID)
+"
+}
+
+case $1 in
+    $MAIL_KEYWORD)
+        clear-mail
+        ;;
+    $SSID_KEYWORD)
+        hidden-ssid "$2"
+        ;;
+    *)
+        print-help
+        ;;
+esac
