@@ -13,6 +13,7 @@ MAPPER_NAME="crypt-img"
 DEFCRYPT_KEYWORD="defcrypt"
 REMCRYPT_KEYWORD="remcrypt"
 NEWMOUNTS="/tmp/"
+SETUP_CRYPT="setup"
 function add-keys()
 {
     IS_MNT=$(is-mounted $CRYPT_MNT)
@@ -64,7 +65,7 @@ function mount-crypt()
     fi
 
     rsync -vrziut /mnt/Synced/crypt.img $TMP
-    open-crypt "--readonly" "$TMP" "$MAPPER_NAME" "$CRYPT_MNT"
+    open-crypt "--readonly" "$TMP" "$MAPPER_NAME" "$CRYPT_MNT" "open"
 }
 
 function rem-crypt()
@@ -113,7 +114,7 @@ mapper: $MAPPING
     if [[ $yn == "y" ]]; then
         dd if=/dev/zero of=$file_name bs=1 count=0 seek=$size
         sudo cryptsetup luksFormat $file_name
-        open-crypt "" "$file_name" "$MAPPING" "$DEF_MOUNT" "sudo mkfs.ext4 /dev/mapper/$MAPPING"
+        open-crypt "" "$file_name" "$MAPPING" "$DEF_MOUNT" "$SETUP_CRYPT"
         df -h $DEF_MOUNT
     fi
 }
@@ -121,11 +122,14 @@ mapper: $MAPPING
 function open-crypt()
 {
     sudo cryptsetup luksOpen $1 $2 $3
-    if [ ! -z "$5" ]; then
-        $5
-    fi
     sudo mkdir -p $4
+    if [[ "$5" == "$SETUP_CRYPT" ]]; then
+        sudo mkfs.ext4 /dev/mapper/$3
+    fi
     sudo mount /dev/mapper/$3 $4
+    if [[ "$5" == "$SETUP_CRYPT" ]]; then
+        sudo chown -R enck:enck $4
+    fi
 }
 
 function close-crypt()
