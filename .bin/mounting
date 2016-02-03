@@ -129,7 +129,7 @@ function open-crypt()
     fi
     sudo mount /dev/mapper/$3 $4
     if [[ "$5" == "$SETUP_CRYPT" ]]; then
-        sudo chown -R enck:enck $4
+        sudo chown -R $USER:$USER $4
     fi
 }
 
