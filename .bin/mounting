@@ -74,7 +74,8 @@ function rem-crypt()
         echo "requires an object to remove/cleanup"
         exit -1
     fi
-    IS_MNT=$(is-mounted $2)
+    umount_item=${2%/}
+    IS_MNT=$(is-mounted $umount_item)
     if [ $IS_MNT -ne $IS_MOUNTED ]; then
         echo "not mounted"
         exit -1
@@ -82,10 +83,10 @@ function rem-crypt()
 
     use_mapper=$3
     if [ -z $use_mapper ]; then
-        use_mapper=$(basename $2)
+        use_mapper=$(basename $umount_item)
     fi
 
-    close-crypt $2 $use_mapper    
+    close-crypt $umount_item $use_mapper    
 }
 
 function def-crypt()
