@@ -1,6 +1,28 @@
 #!/bin/bash
+source $HOME/.bin/common
 MAIL_KEYWORD="mail"
 SSID_KEYWORD="ssid"
+SNAP_KEYWORD="snapshot"
+WORKING=/opt/workspace/shared
+
+function snapshot()
+{
+    STAGE=$USER_TMP/git/
+    DATE=`date +%Y-%m-%d`
+    SNAP_FILE=$PWD/snapshot-$DATE.tar.gz
+    mkdir -p $STAGE
+    for f in $(ls $WORKING); do
+	    REPO="$WORKING/$f"
+    	if [ -e "$REPO/.git" ]; then
+    		cd $REPO
+            echo "bundling $f"
+		    git bundle create $STAGE$f.bundle --all &> /dev/null
+    	fi
+    done
+    CUR_DIR=$PWD
+    cd $STAGE && tar -cvzf $SNAP_FILE * && cd $CUR_DIR
+    rm -rf $STAGE
+}
 
 function clear-mail()
 {
@@ -21,6 +43,7 @@ function print-help()
     echo "
 $MAIL_KEYWORD (clear mail)
 $SSID_KEYWORD (discover a hidden SSID)
+$SNAP_KEYWORD (snapshot workspace)
 "
 }
 
@@ -31,7 +54,11 @@ case $1 in
     $SSID_KEYWORD)
         hidden-ssid "$2"
         ;;
+    $SNAP_KEYWORD)
+        snapshot
+        ;;
     *)
         print-help
         ;;
 esac
+
