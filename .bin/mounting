@@ -99,7 +99,7 @@ function def-crypt()
 
     check_size=$(echo "$size" | grep "^[0-9][0-9]*" | grep -E "M|G")
     if [ -z "$check_size" ]; then
-        echo "invalid size: $size"
+        echo "invalid size (expecting [0-9]+(M|G): $size"
         exit -1
     fi
 
