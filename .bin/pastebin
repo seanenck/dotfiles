@@ -1,12 +1,13 @@
 #!/bin/bash
 source $HOME/.cache/pastebin.config
-INPUT="${1:-/proc/${$}/fd/0}"
-data=$(cat $INPUT)
-title=$(date +%Y-%m-%dT%H-%M-%S)-$(uuidgen)
-if [ -z "$data" ]; then
-    echo "no data"
-    exit -1
-fi
+TEMP_BASIS="/tmp/${USER}-pem"
+TEMP_PEM="$TEMP_BASIS/cached.pem"
+TEMP_CACHE="$TEMP_BASIS/cached.pem.key"
+
+# Set and clean cache
+mkdir -p $TEMP_BASIS
+chmod 700 $TEMP_BASIS
+find $TEMP_BASIS* -mtime +1 -exec rm {} \;
 
 function check-value()
 {
@@ -16,9 +17,39 @@ function check-value()
     fi
 }
 
+# Check local (not source controlled) values
 check-value "$PASTE_API_TOKEN" "PASTE_API_TOKEN"
 check-value "$PASTE_URL" "PASTE_URL"
-check-value "$PASTE_CERT" "PASTE_CERT"
+check-value "$RAW_CERT" "RAW_CERT"
+
+INPUT="${1:-/proc/${$}/fd/0}"
+data=$(cat $INPUT)
+title=$(date +%Y-%m-%dT%H-%M-%S)-$(uuidgen)
+if [ -z "$data" ]; then
+    echo "no data"
+    exit -1
+fi
+
+# Cache the pem, if needed
+if [ ! -e $TEMP_PEM ]; then
+    rm -f $TEMP_CACHE
+    cache_pass=$(head -c 500 /dev/urandom | tr -dc 'a-zA-Z0-9~!@#$%^&*_-' | fold -w 32 | head -n 1)
+
+    openssl pkcs12 -in $RAW_CERT -out $TEMP_PEM -passout "pass:$cache_pass"
+    if [ $? -ne 0 ]; then
+        echo "unable to cache pem"
+        if [ -e $TEMP_PEM ]; then
+            rm $TEMP_PEM
+        fi
+        exit -1
+    fi
+    echo $cache_pass > $TEMP_CACHE
+    chown $USER:$USER -R $TEMP_BASIS
+    chmod 600 ${TEMP_BASIS}/*$FILE_TYPE
+fi
+
+pass=$(cat $TEMP_CACHE)
+PASTE_CERT="$TEMP_PEM:$pass"
 
 function do-paste()
 {
