@@ -10,7 +10,9 @@ UCRYPT_KEYWORD="ucrypt"
 KEYS_KEYWORD="keys"
 UMNT_KEYWORD="umount"
 MAPPER_NAME="crypt-img"
-
+DEFCRYPT_KEYWORD="defcrypt"
+REMCRYPT_KEYWORD="remcrypt"
+NEWMOUNTS="/tmp/"
 function add-keys()
 {
     IS_MNT=$(is-mounted $CRYPT_MNT)
@@ -48,6 +50,8 @@ function print-help()
     echo "  $UCRYPT_KEYWORD - umount encrypted file image(s)"
     echo "  $KEYS_KEYWORD - load ssh keys from crypt"
     echo "  $USB_KEYWORD - mount a usb drive"
+    echo "  $DEFCRYPT_KEYWORD - define a new crypt (optional size)"
+    echo "  $REMCRYPT_KEYWORD - remove a crypt (required path to crypt)"
     echo
 }
 
@@ -63,9 +67,63 @@ function mount-crypt()
     open-crypt "--readonly" "$TMP" "$MAPPER_NAME" "$CRYPT_MNT"
 }
 
+function rem-crypt()
+{
+    if [ -z $2 ]; then
+        echo "requires an object to remove/cleanup"
+        exit -1
+    fi
+    IS_MNT=$(is-mounted $2)
+    if [ $IS_MNT -ne $IS_MOUNTED ]; then
+        echo "not mounted"
+        exit -1
+    fi
+
+    use_mapper=$3
+    if [ -z $use_mapper ]; then
+        use_mapper=$(basename $2)
+    fi
+
+    close-crypt $2 $use_mapper    
+}
+
+function def-crypt()
+{
+    size=$2
+    MAPPING=$(uuidgen)"-crypt-mapper"
+    if [ -z $size ]; then
+        size="5M"
+    fi
+
+    check_size=$(echo "$size" | grep "^[0-9][0-9]*" | grep -E "M|G")
+    if [ -z "$check_size" ]; then
+        echo "invalid size: $size"
+        exit -1
+    fi
+
+    file_name=$PWD/$MAPPING".img"
+    DEF_MOUNT=${NEWMOUNTS}$MAPPING
+
+    echo "
+creating file $file_name ($size)
+mounting: $DEF_MOUNT
+mapper: $MAPPING
+"
+    read -p "continue (y/n)? " yn
+    if [[ $yn == "y" ]]; then
+        dd if=/dev/zero of=$file_name bs=1 count=0 seek=$size
+        sudo cryptsetup luksFormat $file_name
+        open-crypt "" "$file_name" "$MAPPING" "$DEF_MOUNT" "sudo mkfs.ext4 /dev/mapper/$MAPPING"
+        df -h $DEF_MOUNT
+    fi
+}
+
 function open-crypt()
 {
     sudo cryptsetup luksOpen $1 $2 $3
+    if [ ! -z "$5" ]; then
+        $5
+    fi
     sudo mkdir -p $4
     sudo mount /dev/mapper/$3 $4
 }
@@ -78,13 +136,7 @@ function close-crypt()
 
 function umount-crypt()
 {
-    IS_MNT=$(is-mounted $CRYPT_MNT)
-    if [ $IS_MNT -ne $IS_MOUNTED ]; then
-        echo "not mounted"
-        exit -1
-    fi
-
-    close-crypt "$CRYPT_MNT" "$MAPPER_NAME"
+    rem-crypt "" "$CRYPT_MNT" "$MAPPER_NAME"
 }
 
 function mount-usb()
@@ -133,6 +185,12 @@ case $1 in
         ;;
     $USB_KEYWORD)
         mount-usb
+        ;;
+    $DEFCRYPT_KEYWORD)
+        def-crypt $@
+        ;;
+    $REMCRYPT_KEYWORD)
+        rem-crypt $@
         ;;
     *)
         print-help
