@@ -1,10 +1,11 @@
 #!/bin/bash
 _mounting()
 {
-    local cur prev opts idx first
-    cur=${COMP_WORDS[COMP_CWORD]}
-    prev=${COMP_WORDS[COMP_CWORD-1]}
-    opts=$(mounting | grep -v "^$" | cut -d " " -f 3)
-    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    local cur opts 
+    if [ $COMP_CWORD -eq 1 ]; then
+        cur=${COMP_WORDS[COMP_CWORD]}
+        opts=$(mounting | grep -v "^$" | cut -d " " -f 3)
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    fi
 }
 complete -F _mounting mounting
