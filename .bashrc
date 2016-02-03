@@ -59,6 +59,8 @@ if ! shopt -oq posix; then
   fi
 fi
 
+mkdir -p $HOME/.tmp
+find $HOME/.tmp* -mtime +1 -exec rm {} \;
 if ! pgrep -u $USER ssh-agent > /dev/null; then
     ssh-agent > ~/.cache/.ssh-agent-indicator
 fi

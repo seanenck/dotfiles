@@ -1,13 +1,12 @@
 #!/bin/bash
 source $HOME/.cache/pastebin.config
-TEMP_BASIS="/tmp/${USER}-pem"
+TEMP_BASIS="$HOME/.tmp/pem"
 TEMP_PEM="$TEMP_BASIS/cached.pem"
 TEMP_CACHE="$TEMP_BASIS/cached.pem.key"
 
 # Set and clean cache
 mkdir -p $TEMP_BASIS
 chmod 700 $TEMP_BASIS
-find $TEMP_BASIS*.pem -mtime +1 -exec rm {} \;
 
 function check-value()
 {
@@ -28,6 +27,10 @@ title=$(date +%Y-%m-%dT%H-%M-%S)-$(uuidgen)
 if [ -z "$data" ]; then
     echo "no data"
     exit -1
+fi
+
+if [ ! -e $TEMP_CACHE ]; then
+    rm -f $TEMP_PEM
 fi
 
 # Cache the pem, if needed
