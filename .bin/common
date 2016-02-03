@@ -1,2 +1,4 @@
 #!/bin/bash
 USER_TMP=$HOME/.tmp
+USER_CRYPT=$USER_TMP/crypt.img
+USER_TOUCH=$USER_CRYPT

@@ -1,6 +1,6 @@
 #!/bin/bash
+source $HOME/.bin/common
 CRYPT_MNT=/mnt/crypt
-TMP=/var/tmp/crypt.img
 MNT_SHARE=/mnt/Storage
 IS_MOUNTED=1
 USB_KEYWORD="usb"
@@ -12,7 +12,7 @@ UMNT_KEYWORD="umount"
 MAPPER_NAME="crypt-img"
 DEFCRYPT_KEYWORD="defcrypt"
 REMCRYPT_KEYWORD="remcrypt"
-NEWMOUNTS="/tmp/"
+NEWMOUNTS="/tmp/crypts/"
 SETUP_CRYPT="setup"
 function add-keys()
 {
@@ -64,8 +64,8 @@ function mount-crypt()
         exit -1
     fi
 
-    rsync -vrziut /mnt/Synced/crypt.img $TMP
-    open-crypt "--readonly" "$TMP" "$MAPPER_NAME" "$CRYPT_MNT" "open"
+    rsync -vrziut /mnt/Synced/crypt.img $USER_CRYPT
+    open-crypt "--readonly" "$USER_CRYPT" "$MAPPER_NAME" "$CRYPT_MNT" "open"
 }
 
 function rem-crypt()
@@ -104,6 +104,7 @@ function def-crypt()
     fi
 
     file_name=$PWD/$MAPPING".img"
+    mkdir -p ${NEWMOUNTS}
     DEF_MOUNT=${NEWMOUNTS}$MAPPING
 
     echo "

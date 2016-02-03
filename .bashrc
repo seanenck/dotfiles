@@ -61,6 +61,11 @@ fi
 
 source $HOME/.bin/common
 mkdir -p $USER_TMP 
+for update_time in $(echo "$USER_TOUCH"); do
+    if [ -e $update_time ]; then
+        touch $update_time
+    fi
+done
 find $USER_TMP* -mtime +1 -exec rm {} \;
 if ! pgrep -u $USER ssh-agent > /dev/null; then
     ssh-agent > ~/.cache/.ssh-agent-indicator
