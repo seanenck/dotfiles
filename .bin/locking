@@ -59,6 +59,20 @@ function lock()
                 DO_SUSPEND=""
                 PID=$(get-i3pid)
                 if [ ! -z $PID ]; then
+                    # already slept - make sure not to sleep right away/again
+                    if [ ! -z $RAN_SUSPEND ] ; then
+                        DID_SUSPEND=0
+                        while [ ! -z $PID ] 
+                        do
+                            sleep 1
+                            DID_SUSPEND=$((DID_SUSPEND+1))
+                            PID=$(get-i3pid)
+                            if [ $DID_SUSPEND -gt 30 ]; then
+                                break
+                            fi
+                        done
+                    fi
+
                     if [ -z $REQUEST_SUSPEND ]; then
                         PROC_TIME=$(stat -c %Y /proc/$PID/exe)
                         NOW=$(date +%s)
