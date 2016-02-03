@@ -17,6 +17,7 @@ do
     read line
     CUSTOM=""
     if [ -e $WORKPLACE_FILE ]; then
+        touch $WORKPLACE_FILE
         CUSTOM=$(cat $WORKPLACE_FILE)
     fi
 

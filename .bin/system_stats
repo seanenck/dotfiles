@@ -1,5 +1,6 @@
 #!/bin/bash
-STATS_FILE=/tmp/system-stats
+source $HOME/.bin/common
+STATS_FILE=$USER_TMP/system-stats
 
 # Populate statistics
 function pop-stats()

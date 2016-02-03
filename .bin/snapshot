@@ -1,6 +1,7 @@
 #!/bin/bash
+source $HOME/.bin/common
 WORKING=/opt/workspace/shared
-STAGE=/tmp/git/
+STAGE=$USER_TMP/git/
 DATE=`date +%Y-%m-%d`
 SNAP_FILE=$PWD/snapshot-$DATE.tar.gz
 mkdir -p $STAGE

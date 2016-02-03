@@ -1,6 +1,7 @@
 #!/bin/bash
+source $HOME/.bin/common
 source $HOME/.bin/install-git-common
-PID_FILE="/tmp/syncing.pid"
+PID_FILE="$USER_TMP/syncing.pid"
 SLEEP_FOR=5
 ROTATION_COUNT=120
 SERVICE_NAME="syncing@enck.service"
@@ -15,6 +16,7 @@ function start-syncing()
     echo "Running as $PID"
     ROTATE_COUNT=0
     while [ -e $PID_FILE ]; do
+        touch $PID_FILE
         CURRENT_PID=$(cat $PID_FILE)
         if [[ "$CURRENT_PID" != "$PID" ]]; then
             echo "$CURRENT_PID is active sync process (not $PID)"

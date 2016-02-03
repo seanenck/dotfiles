@@ -1,9 +1,10 @@
 #!/bin/bash
+source $HOME/.bin/common
 source $HOME/.bin/displays
 source $HOME/.bin/i3-common
-WORKPLACE_FILE=/tmp/workplace
-DISPLAY_UN=/tmp/display-unlock
-DISPLAY_EN=/tmp/display-enabled
+WORKPLACE_FILE=$USER_TMP/workplace
+DISPLAY_UN=$USER_TMP/display-unlock
+DISPLAY_EN=$USER_TMP/display-enabled
 LAYOUT_DELIM=":"
 WORKSPACE_DOCK="dock"
 WORKSPACE_NORM="mobile"
