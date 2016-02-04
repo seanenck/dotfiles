@@ -3,6 +3,8 @@ source $HOME/.bin/common
 MAIL_KEYWORD="mail"
 SSID_KEYWORD="ssid"
 SNAP_KEYWORD="snapshot"
+TREE_KEYWORD="tree"
+CHKSUM_KEYWORD="checksum"
 WORKING=/opt/workspace/shared
 
 function snapshot()
@@ -22,6 +24,16 @@ function snapshot()
     CUR_DIR=$PWD
     cd $STAGE && tar -cvzf $SNAP_FILE * && cd $CUR_DIR
     rm -rf $STAGE
+}
+
+function get-tree()
+{
+    tree .
+}
+
+function get-checksum()
+{
+    find -type f -exec sha512sum "{}" + | sort -k 2
 }
 
 function clear-mail()
@@ -44,6 +56,8 @@ function print-help()
 $MAIL_KEYWORD (clear mail)
 $SSID_KEYWORD (discover a hidden SSID)
 $SNAP_KEYWORD (snapshot workspace)
+$CHKSUM_KEYWORD (get checksum of files under this directory)
+$TREE_KEYWORD (get file and directory tree structure)
 "
 }
 
@@ -56,6 +70,12 @@ case $1 in
         ;;
     $SNAP_KEYWORD)
         snapshot
+        ;;
+    $TREE_KEYWORD)
+        get-tree
+        ;;
+    $CHKSUM_KEYWORD)
+        get-checksum
         ;;
     *)
         print-help
