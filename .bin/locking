@@ -97,10 +97,10 @@ function toggle-locking()
 function print-help()
 {
     echo "
-$LOCK_KEYWORD (lock)
-$SUSP_KEYWORD (sleep)
-$TGL_KEYWORD (toggle lock/sleep availability)
-$AUTO_KEYWORD (auto lock/sleep)
+    $LOCK_KEYWORD (lock)
+    $SUSP_KEYWORD (sleep)
+    $TGL_KEYWORD (toggle lock/sleep availability)
+    $AUTO_KEYWORD (auto lock/sleep)
 "
 }
 

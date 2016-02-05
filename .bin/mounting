@@ -44,16 +44,16 @@ function is-mounted()
 
 function print-help()
 {
-    echo
-    echo "  $SHARE_KEYWORD - mount local share(s)"
-    echo "  $UMNT_KEYWORD - umount local share(s)"
-    echo "  $CRYPT_KEYWORD - mount encrypted file image(s)"
-    echo "  $UCRYPT_KEYWORD - umount encrypted file image(s)"
-    echo "  $KEYS_KEYWORD - load ssh keys from crypt"
-    echo "  $USB_KEYWORD - mount a usb drive"
-    echo "  $DEFCRYPT_KEYWORD - define a new crypt (optional size)"
-    echo "  $REMCRYPT_KEYWORD - remove a crypt (required path to crypt)"
-    echo
+    echo "
+    $SHARE_KEYWORD - mount local share(s)
+    $UMNT_KEYWORD - umount local share(s)
+    $CRYPT_KEYWORD - mount encrypted file image(s)
+    $UCRYPT_KEYWORD - umount encrypted file image(s)
+    $KEYS_KEYWORD - load ssh keys from crypt
+    $USB_KEYWORD - mount a usb drive
+    $DEFCRYPT_KEYWORD - define a new crypt (optional size)
+    $REMCRYPT_KEYWORD - remove a crypt (required path to crypt)
+"
 }
 
 function mount-crypt()

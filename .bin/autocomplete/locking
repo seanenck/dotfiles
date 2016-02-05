@@ -1,7 +1,7 @@
 #!/bin/bash
 source $HOME/.bin/autocomplete/autocomplete-common
-_utility()
+_locking()
 {
-    simple-auto "utility"
+    simple-auto "locking"
 }
-complete -F _utility utility
+complete -F _locking locking

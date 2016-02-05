@@ -1,0 +1,10 @@
+#!/bin/bash
+function simple-auto()
+{
+    local cur opts 
+    if [ $COMP_CWORD -eq 1 ]; then
+        cur=${COMP_WORDS[COMP_CWORD]}
+        opts=$($1 | grep -v "^$" | cut -d " " -f 5)
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    fi
+}

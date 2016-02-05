@@ -53,11 +53,11 @@ function hidden-ssid()
 function print-help()
 {
     echo "
-$MAIL_KEYWORD (clear mail)
-$SSID_KEYWORD (discover a hidden SSID)
-$SNAP_KEYWORD (snapshot workspace)
-$CHKSUM_KEYWORD (get checksum of files under this directory)
-$TREE_KEYWORD (get file and directory tree structure)
+    $MAIL_KEYWORD (clear mail)
+    $SSID_KEYWORD (discover a hidden SSID)
+    $SNAP_KEYWORD (snapshot workspace)
+    $CHKSUM_KEYWORD (get checksum of files under this directory)
+    $TREE_KEYWORD (get file and directory tree structure)
 "
 }
 

@@ -1,11 +1,7 @@
 #!/bin/bash
+source $HOME/.bin/autocomplete/autocomplete-common
 _mounting()
 {
-    local cur opts 
-    if [ $COMP_CWORD -eq 1 ]; then
-        cur=${COMP_WORDS[COMP_CWORD]}
-        opts=$(mounting | grep -v "^$" | cut -d " " -f 3)
-        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-    fi
+    simple-auto "mounting"
 }
 complete -F _mounting mounting
