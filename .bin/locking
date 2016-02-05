@@ -37,7 +37,6 @@ function suspend-now()
 {
     lock-now &
     if [ ! -e $DISPLAY_UN -a ! -e $DISPLAY_EN ]; then
-        toggle-backlighting $BACKLIGHT_OFF
         CUR_VOL=$(change-volume $VOL_STAT)
         CUR_VOL=$(echo $CUR_VOL)
         if [[ "$CUR_VOL" != "0" ]]; then
