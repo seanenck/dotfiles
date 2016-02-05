@@ -29,7 +29,6 @@ function lock-now()
                 sleep 1
             done
             toggle-backlighting $BACKLIGHT_ON
-            toggle-dpms $DPMS_OFF
         fi
     fi
 }
@@ -54,12 +53,14 @@ function suspend-now()
         do
             if [ $SLEEP_COUNT -ge $SLEEP_AFTER ]; then
                 SLEEP_COUNT=0
+                toggle-dpms $DPMS_ON
                 systemctl suspend
             fi
             sleep 1
             SLEEP_COUNT=$((SLEEP_COUNT+1))
             PID=$(get-i3lock)
         done
+        toggle-dpms $DPMS_OFF
     fi
 }
 
