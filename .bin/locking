@@ -1,152 +1,112 @@
 #!/bin/bash
 source $HOME/.bin/displays
-source $HOME/.bin/workspaces
 source $HOME/.bin/sound
-LOCK_ACTION="lock"
-SLEEP_ACTION="sleep"
-TOGGLE_ACTION="toggling"
-SUDO_PERMS="enck ALL = NOPASSWD: /usr/sbin/pm-suspend-hybrid"
-HELP="help"
+source $HOME/.bin/workspaces
+LOCK_KEYWORD="lock"
+SUSP_KEYWORD="sleep"
+TGL_KEYWORD="toggle"
+AUTO_KEYWORD="auto"
+SLEEP_AFTER=600
 
-# Get the i3lock pid
-function get-i3pid()
+function get-i3lock()
 {
     PID=$(pidof i3lock | cut -d " " -f 1)
-    echo $PID
+    echo "$PID"
 }
 
-# Locking help
-function get-locking-help()
+function lock-now()
+{
+    if [ ! -e $DISPLAY_UN ]; then
+        PID=$(get-i3lock)
+        
+        if [ -z $PID ]; then
+            i3lock -c 333333
+            PID=$(get-i3lock)
+            toggle-backlighting $BACKLIGHT_OFF
+            while [ ! -z $PID ];
+            do
+                PID=$(get-i3lock)
+                sleep 1
+            done
+            toggle-backlighting $BACKLIGHT_ON
+            toggle-dpms $DPMS_OFF
+        fi
+    fi
+}
+
+function suspend-now()
+{
+    lock-now &
+    if [ ! -e $DISPLAY_UN -a ! -e $DISPLAY_EN ]; then
+        toggle-backlighting $BACKLIGHT_OFF
+        CUR_VOL=$(change-volume $VOL_STAT)
+        CUR_VOL=$(echo $CUR_VOL)
+        if [[ "$CUR_VOL" != "0" ]]; then
+            change-volume $VOL_MUTE
+        fi
+
+        PID=$(get-i3lock)
+        SLEEP_COUNT=0
+        if [ -z "$1" ]; then
+            SLEEP_COUNT=$SLEEP_AFTER
+        fi
+        while [ ! -z $PID ];
+        do
+            if [ $SLEEP_COUNT -ge $SLEEP_AFTER ]; then
+                SLEEP_COUNT=0
+                systemctl suspend
+            fi
+            sleep 1
+            SLEEP_COUNT=$((SLEEP_COUNT+1))
+            PID=$(get-i3lock)
+        done
+    fi
+}
+
+function auto-lock-suspend()
+{
+    suspend-now "auto"
+}
+
+function toggle-locking()
+{
+    if [ -e $DISPLAY_UN ]; then
+        rm $DISPLAY_UN
+        touch $DISPLAY_EN
+        exit 0
+    fi
+
+    if [ -e $DISPLAY_EN ]; then
+        rm $DISPLAY_EN
+        exit 0  
+    fi
+    touch $DISPLAY_UN
+}
+
+function print-help()
 {
     echo "
-commands
---------
-    $LOCK_ACTION (locks the workstation, assumed when no arguments given)
-    $SLEEP_ACTION (lock and suspend the workstation)
-    $TOGGLE_ACTION (toggle locking and/or suspending on/off)
-    $INSTALL_KEYWORD (perform installation steps)
-    $REMOVE_KEYWORD (perform removal steps)
+$LOCK_KEYWORD (lock)
+$SUSP_KEYWORD (sleep)
+$TGL_KEYWORD (toggle lock/sleep availability)
+$AUTO_KEYWORD (auto lock/sleep)
 "
 }
 
-# Perform locking handling
-function lock()
-{   
-    ACTION=$1
-    case $ACTION in
-        $SLEEP_ACTION)
-            if [ ! -e $DISPLAY_UN -a ! -e $DISPLAY_EN ]; then
-                REQUEST_SUSPEND="true"
-                ACTION=$LOCK_ACTION
-            fi
-            ;;
-    esac
-
-    case $ACTION in
-    $LOCK_ACTION)
-        # Lock unless display is set to be unlocked always
-        if [ ! -e $DISPLAY_UN ]; then
-            toggle-backlighting $BACKLIGHT_OFF
-            CUR_VOL=$(change-volume $VOL_STAT)
-            CUR_VOL=$(echo $CUR_VOL)
-            if [[ "$CUR_VOL" != "0" ]]; then
-                change-volume $VOL_MUTE
-            fi
-            i3lock -c 333333
-            PID=$(get-i3pid)
-            while [ ! -z $PID ]
-            do
-                DO_SUSPEND=""
-                PID=$(get-i3pid)
-                if [ ! -z $PID ]; then
-                    # already slept - make sure not to sleep right away/again
-                    if [ ! -z $RAN_SUSPEND ] ; then
-                        DID_SUSPEND=0
-                        while [ ! -z $PID ] 
-                        do
-                            sleep 1
-                            DID_SUSPEND=$((DID_SUSPEND+1))
-                            PID=$(get-i3pid)
-                            if [ $DID_SUSPEND -gt 30 ]; then
-                                break
-                            fi
-                        done
-                    fi
-
-                    if [ -z $REQUEST_SUSPEND ]; then
-                        PROC_TIME=$(stat -c %Y /proc/$PID/exe)
-                        NOW=$(date +%s)
-                        PROC_TIME=$((NOW - PROC_TIME))
-                        pidof i3lock > /dev/null
-                        if [ $? -eq 0 ]; then
-                            if [ $PROC_TIME -gt 300 ]; then
-                                SLEEP_WAIT=0
-                                while [ $SLEEP_WAIT -lt 60 ];
-                                do
-                                    SLEEP_WAIT=$((SLEEP_WAIT + 1))
-                                    SLEEP_PID=$(get-i3pid)
-                                    if [ -z $SLEEP_PID ]; then
-                                        SLEEP_WAIT=-1
-                                        break
-                                    fi        
-                                    sleep 1
-                                done
-                                if [ $SLEEP_WAIT -ne -1 ]; then
-                                    DO_SUSPEND="1"
-                                fi
-                            fi
-                        fi
-                    else
-                        DO_SUSPEND="1"
-                        REQUEST_SUSPEND=""
-                    fi
-                fi
-                
-                if [ -e $DISPLAY_EN ]; then
-                    DO_SUSPEND=""
-                fi
-
-                if [ ! -z $DO_SUSPEND ]; then
-                    systemctl suspend
-                    RAN_SUSPEND=1
-                fi
-            done
-            if [ ! -z $RAN_SUSPEND ]; then
-                change-workspace $WORKSPACE_RELOAD
-            fi
-
-            toggle-backlighting $BACKLIGHT_ON
-        fi
+case $1 in
+    $LOCK_KEYWORD)
+        lock-now
         ;;
-    $TOGGLE_ACTION)
-        if [ -e $DISPLAY_UN ]; then
-            rm $DISPLAY_UN
-            touch $DISPLAY_EN
-            exit 0
-        fi
-
-        if [ -e $DISPLAY_EN ]; then
-                rm $DISPLAY_EN
-                exit 0
-        fi
-
-        touch $DISPLAY_UN
+    $SUSP_KEYWORD)
+        suspend-now
+        ;;
+    $TGL_KEYWORD)
+        toggle-locking
+        ;;
+    $AUTO_KEYWORD)
+        auto-lock-suspend
         ;;
     *)
-        echo "Unknown action: $1"
+        print-help
         ;;
-    esac
-}
-
-USE_ACTION=$LOCK_ACTION
-if [ ! -z "$1" ]; then
-    case $1 in
-        $HELP)
-            get-locking-help
-            exit -1
-            ;;
-    esac
-    USE_ACTION=$1
-fi
-
-lock "$USE_ACTION"
+esac
