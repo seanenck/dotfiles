@@ -60,7 +60,7 @@ function suspend-now()
         while [ ! -z $PID ];
         do
             if [ $SLEEP_COUNT -ge $SLEEP_AFTER ]; then
-                echo "sleeping..."
+                log "sleeping..."
                 SLEEP_COUNT=0
                 toggle-dpms $DPMS_ON
                 systemctl suspend
