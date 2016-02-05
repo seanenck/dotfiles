@@ -116,7 +116,7 @@ bindsym $mod+Shift+i exec subsystem display dpms reset
 
 # Locking handlers
 bindsym $mod+Shift+x exec locking toggle # change lock/suspend enable/disable
-bindsym $mod+Shift+l exec locking lock # lock now
+bindsym $mod+Shift+l exec locking auto # lock now, suspend later
 bindsym $mod+Shift+s exec locking sleep # immediate suspend
 
 # Scracthpad
