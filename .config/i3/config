@@ -87,7 +87,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3? This will end the session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -115,9 +115,9 @@ bindsym $mod+Shift+p exec subsystem workspaces cycle reload
 bindsym $mod+Shift+i exec subsystem display dpms reset
 
 # Locking handlers
-bindsym $mod+Shift+x exec locking toggle # change lock/suspend enable/disable
-bindsym $mod+Shift+l exec locking auto # lock now, suspend later
-bindsym $mod+Shift+s exec locking sleep # immediate suspend
+bindsym $mod+Shift+x exec locking toggle 
+bindsym $mod+Shift+l exec locking auto 
+bindsym $mod+Shift+s exec locking sleep
 
 # Scracthpad
 bindsym $mod+Shift+m move scratchpad
