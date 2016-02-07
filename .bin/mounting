@@ -12,6 +12,7 @@ UMNT_KEYWORD="umount"
 MAPPER_NAME="crypt-img"
 DEFCRYPT_KEYWORD="defcrypt"
 REMCRYPT_KEYWORD="remcrypt"
+OPENCRYPT_KEYWORD="opencrypt"
 NEWMOUNTS="/tmp/crypts/"
 SETUP_CRYPT="setup"
 DEFCRYPT_SIZE="100M"
@@ -54,6 +55,7 @@ function print-help()
     $USB_KEYWORD - mount a usb drive
     $DEFCRYPT_KEYWORD - define a new crypt (optional size)
     $REMCRYPT_KEYWORD - remove a crypt (required path to crypt)
+    $OPENCRYPT_KEYWORD - open an encrypted image (required image file)
 "
 }
 
@@ -90,10 +92,22 @@ function rem-crypt()
     close-crypt $umount_item $use_mapper    
 }
 
+function crypt-name()
+{
+    echo $(uuidgen)"-crypt-mapper"
+}
+
+function crypt-place()
+{
+    mkdir -p ${NEWMOUNTS}
+    MOUNT_CRYPT="${NEWMOUNTS}$1"
+    echo $MOUNT_CRYPT
+}
+
 function def-crypt()
 {
     size=$2
-    MAPPING=$(uuidgen)"-crypt-mapper"
+    MAPPING=$(crypt-name)
     if [ -z $size ]; then
         size=$DEFCRYPT_SIZE
     fi
@@ -105,8 +119,7 @@ function def-crypt()
     fi
 
     file_name=$PWD/$MAPPING".img"
-    mkdir -p ${NEWMOUNTS}
-    DEF_MOUNT=${NEWMOUNTS}$MAPPING
+    DEF_MOUNT=$(crypt-place "$MAPPING")
 
     echo "
 creating file $file_name ($size)
@@ -120,6 +133,20 @@ mapper: $MAPPING
         open-crypt "" "$file_name" "$MAPPING" "$DEF_MOUNT" "$SETUP_CRYPT"
         df -h $DEF_MOUNT
     fi
+}
+
+function crypt-mounting()
+{
+    if [ -z "$2" ]; then
+        echo "requires an image to mount"
+        exit -1
+    fi
+
+    MAPPING=$(crypt-name)
+    DEF_MOUNT=$(crypt-place "$MAPPING")
+    echo $MAPPING
+    echo $DEF_MOUNT
+    open-crypt "" "$2" "$MAPPING" "$DEF_MOUNT" "mounting"
 }
 
 function open-crypt()
@@ -199,6 +226,9 @@ case $1 in
         ;;
     $REMCRYPT_KEYWORD)
         rem-crypt $@
+        ;;
+    $OPENCRYPT_KEYWORD)
+        crypt-mounting $@
         ;;
     *)
         print-help
