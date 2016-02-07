@@ -14,6 +14,7 @@ DEFCRYPT_KEYWORD="defcrypt"
 REMCRYPT_KEYWORD="remcrypt"
 NEWMOUNTS="/tmp/crypts/"
 SETUP_CRYPT="setup"
+DEFCRYPT_SIZE="100M"
 function add-keys()
 {
     IS_MNT=$(is-mounted $CRYPT_MNT)
@@ -94,7 +95,7 @@ function def-crypt()
     size=$2
     MAPPING=$(uuidgen)"-crypt-mapper"
     if [ -z $size ]; then
-        size="5M"
+        size=$DEFCRYPT_SIZE
     fi
 
     check_size=$(echo "$size" | grep "^[0-9][0-9]*" | grep -E "M|G")
@@ -131,6 +132,7 @@ function open-crypt()
     sudo mount /dev/mapper/$3 $4
     if [[ "$5" == "$SETUP_CRYPT" ]]; then
         sudo chown -R $USER:$USER $4
+        rm -rf $4/lost+found
     fi
 }
 
