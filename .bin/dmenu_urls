@@ -42,7 +42,7 @@ function rebuild-suite()
 function run-suite()
 {
     for u in $(echo "$1" | sed "s/$ARG_DELIMITER/ /g"); do
-        $2 $u
+        $2 $u &
     done
 }
 
