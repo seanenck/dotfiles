@@ -1,5 +1,3 @@
-set tabstop=4
-set expandtab
 set noautoindent
 set background=dark
 
@@ -44,3 +42,6 @@ if has("autocmd")
 
 endif " has("autocmd")
 
+set tabstop=4
+set expandtab
+set shiftwidth=4
