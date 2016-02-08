@@ -71,12 +71,7 @@ function create-suite()
         exit -1
     fi
 
-    for b in $(echo "$BROWSERS"); do
-        if [[ "$3" == "$b" ]]; then
-            BROWSER=$b
-            break
-        fi
-    done
+    BROWSER=$(get-browser "$3")
     if [ -z "$BROWSER" ]; then
         echo "browser must be: $BROWSERS"
         exit -1
@@ -176,6 +171,18 @@ function update-index()
     fi
 }
 
+function get-browser()
+{
+    BROWSER=""
+    for browse in $BROWSERS; do
+        if [[ "$browse" == "$1" ]]; then
+            BROWSER=$browse
+            break
+        fi
+    done
+    echo "$BROWSER"
+}
+
 case $1 in
     $REGISTER_KEYWORD)
         DO_HELP=1
@@ -184,13 +191,7 @@ case $1 in
             if [[ "$NAME" == "$INDEX_NAME" ]]; then
                 echo "$INDEX_NAME is a reserved"
             else
-                for browse in $BROWSERS; do
-                    echo "$3" | grep -q "^$browse$"
-                    if [ $? -eq 0 ]; then
-                        BROWSER=$browse
-                        break
-                    fi
-                done
+                BROWSER=$(get-browser "$3")
                 if [ ! -z "$BROWSER" ]; then
                     URL=$4
                     ARGS="${@:6}"
