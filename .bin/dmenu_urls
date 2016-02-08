@@ -2,11 +2,16 @@
 URL_COMMON=$HOME/.cache/dmenu_urls/
 INDEX_NAME="index"
 INDEX_FILE=${URL_COMMON}${INDEX_NAME}
+SUITE_NAME="suite.index"
+SUITE_FILE=${URL_COMMON}${SUITE_NAME}
 REGISTER_KEYWORD="--register"
 HELP_KEYWORD="--help"
 REBUILD_KEYWORD="--rebuild"
 REMOVE_KEYWORD="--remove"
 DISPLAY_KEYWORD="--display"
+SUITE_ADD_KEYWORD="--suite-add"
+SUITE_REM_KEYWORD="--suite-remove"
+SUITE_BLD_KEYWORD="--suite-rebuild"
 BROWSERS="google-chrome-stable chromium"
 DEFAULT_ARGS="--new-window"
 START_LINE="#name,browser,url,args,pre-setup"
@@ -22,6 +27,97 @@ function run-browser()
 
     echo "$browser $url $args"
     $browser $url $args
+}
+
+function rebuild-suite()
+{
+    for entry in $(cat $SUITE_FILE); do
+        suite_file_name=$(echo "$entry" | cut -d "," -f 1)
+        suite_browser=$(echo "$entry" | cut -d "," -f 2)
+        suite_file_urls=$(echo "$entry" | cut -d "," -f 3)
+        suite-script "$suite_file_name" "$suite_file_urls" "$suite_browser"
+    done
+}
+
+function run-suite()
+{
+    for u in $(echo "$1" | sed "s/$ARG_DELIMITER/ /g"); do
+        $2 $u
+    done
+}
+
+function suite-script()
+{
+    FILE_NAME=${URL_COMMON}$1
+    echo "
+#!/bin/bash
+source \$HOME/.bin/dmenu_urls
+
+run-suite '$2' '$3'
+" > $FILE_NAME
+    chmod u+x $FILE_NAME
+}
+
+function create-suite()
+{
+    NAME="$2"
+    if [ -z "$NAME" ]; then
+        echo "suite name required"
+        exit -1
+    fi
+
+    if [[ "$SUITE_NAME" == "$NAME" ]]; then
+        echo "$NAME is reserved"
+        exit -1
+    fi
+
+    for b in $(echo "$BROWSERS"); do
+        if [[ "$3" == "$b" ]]; then
+            BROWSER=$b
+            break
+        fi
+    done
+    if [ -z "$BROWSER" ]; then
+        echo "browser must be: $BROWSERS"
+        exit -1
+    fi
+
+    suite_line=$(echo "${@:4}" | sed "s/ /$ARG_DELIMITER/g")
+    if [ -z "$4" ]; then
+        echo "one or more url values must be given"
+        exit -1
+    fi
+
+    if [ -z "$5" ]; then
+        echo "more than one url must be included"
+        exit -1
+    fi
+
+
+    update-suite "$NAME"
+    echo "$NAME,$BROWSER,$suite_line" >> $SUITE_FILE
+    rebuild-suite
+}
+
+function update-suite()
+{
+    mkdir -p $URL_COMMON
+    touch $SUITE_FILE
+    current=$(cat $SUITE_FILE | grep -v "^$1,")
+    echo "$current" > $SUITE_FILE
+}
+
+function remove-suite()
+{
+    NAME=$2
+    if [ -z "$NAME" ]; then
+        echo "name is required"
+        exit -1
+    fi
+    update-suite "$NAME"
+    if [ -e "${URL_COMMON}$NAME" ]; then
+        rm "${URL_COMMON}$NAME"
+    fi
 }
 
 function create-script()
@@ -128,6 +224,18 @@ case $1 in
     $REBUILD_KEYWORD)
         REBUILD=1
         ;;
+    $SUITE_ADD_KEYWORD)
+        create-suite $@
+        exit 0
+        ;;
+    $SUITE_REM_KEYWORD)
+        remove-suite $@
+        exit 0
+        ;;
+    $SUITE_BLD_KEYWORD)
+        rebuild-suite        
+        exit 0
+        ;;
     $REMOVE_KEYWORD)
         DO_HELP=1
         NAME=$2
@@ -165,5 +273,8 @@ if [ ! -z $DO_HELP ]; then
     $REBUILD_KEYWORD
     $DISPLAY_KEYWORD
     $HELP_KEYWORD
+    $SUITE_BLD_KEYWORD
+    $SUITE_REM_KEYWORD [name]
+    $SUITE_ADD_KEYWORD [name] [browser($BROWSERS)] [url] [url] [...]
 "
 fi
