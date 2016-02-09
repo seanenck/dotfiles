@@ -1,6 +1,7 @@
 #!/bin/bash
 source $HOME/.bin/common
 source $HOME/.bin/install-git-common
+source $HOME/.bin/connect-common
 PID_FILE="$USER_TMP/syncing.pid"
 SLEEP_FOR=5
 ROTATION_COUNT=120
@@ -23,12 +24,12 @@ function start-syncing()
             exit -1
         fi
         if [ $ROTATE_COUNT -eq 0 ]; then
-            available=$(ssh -o BatchMode=yes -o ConnectTimeout=5 $SYNC_TO echo $IS_READY 2>&1)
+            available=$(test-ssh "$SYNC_TO")
             echo "====================="
             echo "running ($PID) "$(date +%Y-%m-%dT%H:%M:%S)
             echo "====================="
             echo "checked for connection...$available"
-            if [[ "$available" == "$IS_READY" ]]; then
+            if [ $available -eq $IS_CONNECTED ]; then
                 rsync -avzc --delete-after /mnt/Synced/ -e ssh $SYNC_TO:~/Sync/
             fi
         fi
