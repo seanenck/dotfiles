@@ -1,5 +1,4 @@
 #!/bin/bash
-source $HOME/.bin/connect-common
 function simple-auto()
 {
     local cur opts 
