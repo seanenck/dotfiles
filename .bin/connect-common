@@ -12,16 +12,32 @@ function test-ssh()
     fi
 }
 
-function connect-to-nspawn()
+function list-nspawn-available()
+{
+    for m in $(nspawn list); do
+        available=$(connect-nspawn-available "$m")
+        if [ ! -z "$available" ]; then
+            printf "    $m\n"
+        fi
+    done 
+}
+
+function connect-nspawn-available()
 {
     available=$(nspawn list | grep "^$1\$")
-    if [ -z "$available" ]; then
-        echo "invalid machine: $1"
-        exit -1
+    if [ ! -z "$available" ]; then
+        ssh_configs=$(cat ~/.config/.nspawn-info | grep "\[$1\].arguments" | grep "INPUT_SSHD_PORT" | sed 's/.*INPUT_SSHD_PORT=//' | cut -d " " -f 1)
+        if [ ! -z "$ssh_configs" ]; then
+            echo "$ssh_configs"
+        fi
     fi
-    ssh_configs=$(cat ~/.config/.nspawn-info | grep "\[$1\].arguments" | grep "INPUT_SSHD_PORT" | sed 's/.*INPUT_SSHD_PORT=//' | cut -d " " -f 1)
+}
+
+function connect-to-nspawn()
+{
+    ssh_configs=$(connect-nspawn-available "$1")
     if [ -z "$ssh_configs" ]; then
-        echo "'$1' machine not configure for external ssh"
+        echo "$1 is not valid/configured for ssh/nspawn"
         exit -1
     fi
     is_running=$(test-ssh "root@localhost -p $ssh_configs")

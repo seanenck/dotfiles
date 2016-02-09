@@ -1,8 +1,7 @@
 #!/bin/bash
 source $HOME/.bin/autocomplete/autocomplete-common
-source $HOME/.bin/connect-common
 _connect()
 {
-    simple-auto "nspawn list"
+    simple-auto "list-nspawn-available"
 }
 complete -F _connect connect
