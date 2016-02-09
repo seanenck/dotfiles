@@ -2,8 +2,11 @@
 source $HOME/.bin/connect-common
 
 if [ -z "$1" ]; then
-    echo "machine required"
-    exit -1
+    available=$(list-nspawn-available)
+    echo "
+Machines available:
+$available
+"
 else
     connect-to-nspawn "$1"
 fi
