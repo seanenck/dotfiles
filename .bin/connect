@@ -1,32 +1,9 @@
 #!/bin/bash
-READY="ready"
+source $HOME/.bin/connect-common
 
-function connect-to()
-{
-    available=$(nspawn list | grep "^$1\$")
-    if [ -z "$available" ]; then
-        echo "invalid machine: $1"
-        exit -1
-    fi
-    ssh_configs=$(cat ~/.config/.nspawn-info | grep "\[$1\].arguments" | grep "INPUT_SSHD_PORT" | sed 's/.*INPUT_SSHD_PORT=//' | cut -d " " -f 1)
-    if [ -z "$ssh_configs" ]; then
-        echo "'$1' machine not configure for external ssh"
-        exit -1
-    fi
-    running=$(ssh -o BatchMode=yes -o ConnectTimeout=5 root@localhost -p $ssh_configs echo $READY 2>&1)
-    if [[ "$running" == "$READY" ]]; then
-        echo "connecting"
-        ssh root@localhost -p $ssh_configs
-    else
-        echo "ssh for $1 is not ready/available"
-        exit -1
-    fi
-}
-
-MACHINE=$1
-if [ -z "$MACHINE" ]; then
+if [ -z "$1" ]; then
     echo "machine required"
     exit -1
+else
+    connect-to-nspawn "$1"
 fi
-
-connect-to "$MACHINE"

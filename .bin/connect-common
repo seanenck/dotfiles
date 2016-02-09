@@ -1,0 +1,36 @@
+#!/bin/bash
+READY="ready"
+IS_CONNECTED=1
+NOT_CONNECTED=0
+function test-ssh()
+{
+    running=$(ssh -o BatchMode=yes -o ConnectTimeout=5 $1 echo $READY 2>&1)
+    if [[ "$running" == "$READY" ]]; then
+        echo $IS_CONNECTED
+    else
+        echo $NOT_CONNECTED
+    fi
+}
+
+function connect-to-nspawn()
+{
+    available=$(nspawn list | grep "^$1\$")
+    if [ -z "$available" ]; then
+        echo "invalid machine: $1"
+        exit -1
+    fi
+    ssh_configs=$(cat ~/.config/.nspawn-info | grep "\[$1\].arguments" | grep "INPUT_SSHD_PORT" | sed 's/.*INPUT_SSHD_PORT=//' | cut -d " " -f 1)
+    if [ -z "$ssh_configs" ]; then
+        echo "'$1' machine not configure for external ssh"
+        exit -1
+    fi
+    is_running=$(test-ssh "root@localhost -p $ssh_configs")
+    if [ $is_running -eq $IS_CONNECTED ]; then
+        echo "connecting"
+        ssh root@localhost -p $ssh_configs
+    else
+        echo "ssh for $1 is not ready/available (also validate ssh keys are loaded, ports are available, etc.)"
+        exit -1
+    fi
+}
+
