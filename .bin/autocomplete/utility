@@ -2,6 +2,6 @@
 source $HOME/.bin/autocomplete/autocomplete-common
 _utility()
 {
-    simple-auto "utility"
+    _simple_autocomplete "utility"
 }
 complete -F _utility utility

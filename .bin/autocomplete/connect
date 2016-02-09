@@ -3,6 +3,6 @@ source $HOME/.bin/autocomplete/autocomplete-common
 source $HOME/.bin/connect-common
 _connect()
 {
-    simple-auto "list-nspawn-available"
+    _simple_autocomplete "list-nspawn-available"
 }
 complete -F _connect connect

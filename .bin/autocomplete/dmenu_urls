@@ -2,6 +2,6 @@
 source $HOME/.bin/autocomplete/autocomplete-common
 _dmenu_urls()
 {
-    simple-auto "dmenu_urls --help"
+    _simple_autocomplete "dmenu_urls --help"
 }
 complete -F _dmenu_urls dmenu_urls

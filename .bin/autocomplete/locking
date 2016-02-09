@@ -2,6 +2,6 @@
 source $HOME/.bin/autocomplete/autocomplete-common
 _locking()
 {
-    simple-auto "locking"
+    _simple_autocomplete "locking"
 }
 complete -F _locking locking
