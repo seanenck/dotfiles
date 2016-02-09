@@ -1,8 +1,0 @@
-#!/bin/bash
-source $HOME/.bin/autocomplete/autocomplete-common
-_connect()
-{
-
-    _simple_autocomplete "connect"
-}
-complete -F _connect connect
