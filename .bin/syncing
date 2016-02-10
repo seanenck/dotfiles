@@ -5,6 +5,8 @@ source $HOME/.bin/connect-common
 PID_FILE="$USER_TMP/syncing.pid"
 SLEEP_FOR=5
 ROTATION_COUNT=120
+CHANGE_DELTA=1800
+CHANGE_MOVE=10
 SERVICE_NAME="syncing@enck.service"
 SERVICE_FILE="$HOME/.bin/sys/$SERVICE_NAME"
 
@@ -38,6 +40,23 @@ function start-syncing()
         if [ $ROTATE_COUNT -gt $ROTATION_COUNT ]; then
             ROTATE_COUNT=0
         fi
+        
+        CURRENT_READ=$(date +%s)
+        if [ -z "$LAST_READ" ]; then
+            LAST_READ=$CURRENT_READ
+        fi
+        READ_DELTA=$((CURRENT_READ-LAST_READ))
+        if [ $READ_DELTA -gt $CHANGE_DELTA ]; then
+            echo "noticed time jump ($CURRENT_READ - $LAST_READ) = $READ_DELTA"
+            NEW_ROTATE=$((ROTATION_COUNT*CHANGE_MOVE/100))
+            NEW_ROTATE=$((ROTATION_COUNT-NEW_ROTATE))
+            if [ $ROTATE_COUNT -lt $NEW_ROTATE ]; then
+                echo "changing rotation to $NEW_ROTATE"
+                ROTATE_COUNT=$NEW_ROTATE
+            fi
+        fi
+
+        LAST_READ=$CURRENT_READ
     done
 }
 
