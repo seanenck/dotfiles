@@ -9,9 +9,10 @@ HELP_KEYWORD="--help"
 REBUILD_KEYWORD="--rebuild"
 REMOVE_KEYWORD="--remove"
 DISPLAY_KEYWORD="--display"
-SUITE_ADD_KEYWORD="--suite-add"
+SUITE_ADD_KEYWORD="--suite-register"
 SUITE_REM_KEYWORD="--suite-remove"
 SUITE_BLD_KEYWORD="--suite-rebuild"
+SUITE_DIS_KEYWORD="--suite-display"
 BROWSERS="google-chrome-stable chromium"
 DEFAULT_ARGS="--new-window"
 START_LINE="#name,browser,url,args,pre-setup"
@@ -237,6 +238,11 @@ case $1 in
         rebuild-suite        
         exit 0
         ;;
+    $SUITE_DIS_KEYWORD)
+        if [ -e $SUITE_FILE ]; then
+            cat $SUITE_FILE
+        fi 
+        ;;
     $REMOVE_KEYWORD)
         DO_HELP=1
         NAME=$2
@@ -277,5 +283,6 @@ if [ ! -z $DO_HELP ]; then
     $SUITE_BLD_KEYWORD
     $SUITE_REM_KEYWORD [name]
     $SUITE_ADD_KEYWORD [name] [browser($BROWSERS)] [url] [url] [...]
+    $SUITE_DIS_KEYWORD
 "
 fi
