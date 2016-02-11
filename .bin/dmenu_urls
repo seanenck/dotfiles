@@ -1,6 +1,6 @@
 #!/bin/bash
 URL_COMMON=$HOME/.cache/dmenu_urls/
-INDEX_NAME="index"
+INDEX_NAME="urls.index"
 INDEX_FILE=${URL_COMMON}${INDEX_NAME}
 SUITE_NAME="suite.index"
 SUITE_FILE=${URL_COMMON}${SUITE_NAME}
