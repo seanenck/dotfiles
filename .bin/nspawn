@@ -2,6 +2,7 @@
 NAME="nspawn"
 AUTO_COMPLETE=/usr/share/bash-completion/completions/nspawn
 source $HOME/.bin/install-git-common
+source $HOME/.bin/common
 $HOME/.bin/install-git $1 "$NAME" "${NAME}-info"
 if [ $? -ne 0 ]; then
     NSPAWN=$(get-path $NAME)/nspawn
@@ -14,6 +15,7 @@ if [ $? -ne 0 ]; then
     export NSPAWN_INFO_SCREEN=1
     export NSPAWN_INFO_CONTAINERS="/opt/workspace/containers"
     export NSPAWN_INFO_ARGS="--bind /opt/workspace/shared"
+    export NSPAWN_INFO_JOURNAL="$NSPAWN_JOURNAL_CATEGORY"
     $NSPAWN $@
 fi
 

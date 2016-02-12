@@ -2,6 +2,7 @@
 source $HOME/.bin/displays
 source $HOME/.bin/sound
 source $HOME/.bin/workspaces
+source $HOME/.bin/common
 LOCK_KEYWORD="lock"
 SUSP_KEYWORD="sleep"
 TGL_KEYWORD="toggle"
@@ -10,7 +11,7 @@ SLEEP_AFTER=600
 
 function log()
 {
-    echo "$1" | systemd-cat -t "locking"
+    echo "$1" | systemd-cat -t "$LOCK_JOURNAL_CATEGORY"
 }
 
 function get-i3lock()
