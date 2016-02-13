@@ -8,3 +8,7 @@ SYNC_JOURNAL_CATEGORY="syncing"
 LOCK_JOURNAL_CATEGORY="locking"
 ALL_JOURNAL_CATEGORIES="$NSPAWN_JOURNAL_CATEGORY $SYNC_JOURNAL_CATEGORY $LOCK_JOURNAL_CATEGORY"
 
+function log-message()
+{
+    echo "$2" | systemd-cat -t "$1"
+}

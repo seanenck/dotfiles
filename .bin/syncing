@@ -10,6 +10,11 @@ CHANGE_MOVE=10
 SERVICE_NAME="syncing@enck.service"
 SERVICE_FILE="$HOME/.bin/sys/$SERVICE_NAME"
 
+function write-log()
+{
+    log-message "$SYNC_JOURNAL_CATEGORY" "$1"
+}
+
 function start-syncing()
 {
     PID=$RANDOM
@@ -22,15 +27,15 @@ function start-syncing()
         touch $PID_FILE
         CURRENT_PID=$(cat $PID_FILE)
         if [[ "$CURRENT_PID" != "$PID" ]]; then
-            echo "$CURRENT_PID is active sync process (not $PID)"
+            write-log "$CURRENT_PID is active sync process (not $PID)"
             exit -1
         fi
         if [ $ROTATE_COUNT -eq 0 ]; then
             available=$(test-ssh "$SYNC_TO")
-            echo "====================="
-            echo "running ($PID) "$(date +%Y-%m-%dT%H:%M:%S)
-            echo "====================="
-            echo "checked for connection...$available"
+            write-log "====================="
+            write-log "running ($PID) "$(date +%Y-%m-%dT%H:%M:%S)
+            write-log "====================="
+            write-log "checked for connection...$available"
             if [ $available -eq $IS_CONNECTED ]; then
                 rsync -avzc --delete-after /mnt/Synced/ -e ssh $SYNC_TO:~/Sync/
             fi
@@ -47,11 +52,11 @@ function start-syncing()
         fi
         READ_DELTA=$((CURRENT_READ-LAST_READ))
         if [ $READ_DELTA -gt $CHANGE_DELTA ]; then
-            echo "noticed time jump ($CURRENT_READ - $LAST_READ) = $READ_DELTA"
+            write-log "noticed time jump ($CURRENT_READ - $LAST_READ) = $READ_DELTA"
             NEW_ROTATE=$((ROTATION_COUNT*CHANGE_MOVE/100))
             NEW_ROTATE=$((ROTATION_COUNT-NEW_ROTATE))
             if [ $ROTATE_COUNT -lt $NEW_ROTATE ]; then
-                echo "changing rotation to $NEW_ROTATE"
+                write-log "changing rotation to $NEW_ROTATE"
                 ROTATE_COUNT=$NEW_ROTATE
             fi
         fi
