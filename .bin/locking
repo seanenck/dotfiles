@@ -9,9 +9,9 @@ TGL_KEYWORD="toggle"
 AUTO_KEYWORD="auto"
 SLEEP_AFTER=600
 
-function log()
+function write-log()
 {
-    echo "$1" | systemd-cat -t "$LOCK_JOURNAL_CATEGORY"
+    log-message "$LOCK_JOURNAL_CATEGORY" "$1"
 }
 
 function get-i3lock()
@@ -26,7 +26,7 @@ function lock-now()
         PID=$(get-i3lock)
         
         if [ -z $PID ]; then
-            log "locking..."
+            write-log "locking..."
             i3lock -c 333333
             PID=$(get-i3lock)
             toggle-backlighting $BACKLIGHT_OFF
@@ -35,7 +35,7 @@ function lock-now()
                 PID=$(get-i3lock)
                 sleep 1
             done
-            log "unlocking..."
+            write-log "unlocking..."
             toggle-backlighting $BACKLIGHT_ON
         fi
     fi
@@ -48,7 +48,7 @@ function suspend-now()
         CUR_VOL=$(change-volume $VOL_STAT)
         CUR_VOL=$(echo $CUR_VOL)
         if [[ "$CUR_VOL" != "0" ]]; then
-            log "muting volume"
+            write-log "muting volume"
             change-volume $VOL_MUTE
         fi
 
@@ -57,11 +57,11 @@ function suspend-now()
         if [ -z "$1" ]; then
             SLEEP_COUNT=$SLEEP_AFTER
         fi
-        log "sleep setting: $SLEEP_COUNT"
+        write-log "sleep setting: $SLEEP_COUNT"
         while [ ! -z $PID ];
         do
             if [ $SLEEP_COUNT -ge $SLEEP_AFTER ]; then
-                log "sleeping..."
+                write-log "sleeping..."
                 SLEEP_COUNT=0
                 toggle-dpms $DPMS_ON
                 systemctl suspend
@@ -71,7 +71,7 @@ function suspend-now()
             PID=$(get-i3lock)
         done
         toggle-dpms $DPMS_OFF
-        log "done sleeping"
+        write-log "done sleeping"
     fi
 }
 
