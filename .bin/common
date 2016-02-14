@@ -2,6 +2,9 @@
 USER_TMP=$HOME/.tmp
 USER_CRYPT=$USER_TMP/crypt.img
 USER_TOUCH=$USER_CRYPT
+INSTALL_KEYWORD="--install"
+REMOVE_KEYWORD="--remove"
+INSTALL_DIR="/opt/"
 
 NSPAWN_JOURNAL_CATEGORY="nspawn"
 SYNC_JOURNAL_CATEGORY="syncing"
@@ -11,4 +14,10 @@ ALL_JOURNAL_CATEGORIES="$NSPAWN_JOURNAL_CATEGORY $SYNC_JOURNAL_CATEGORY $LOCK_JO
 function log-message()
 {
     echo "$2" | systemd-cat -t "$1"
+}
+
+
+function get-install-path()
+{
+    echo "${INSTALL_DIR}$1"
 }

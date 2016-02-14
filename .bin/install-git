@@ -1,7 +1,7 @@
 #!/bin/bash
-source $HOME/.bin/install-git-common
+source $HOME/.bin/common
 
-APP_PATH=$(get-path "$2")
+APP_PATH=$(get-install-path "$2")
 REPO="$3"
 function install-object()
 {

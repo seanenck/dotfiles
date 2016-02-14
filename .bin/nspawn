@@ -1,11 +1,11 @@
 #!/bin/bash
 NAME="nspawn"
 AUTO_COMPLETE=/usr/share/bash-completion/completions/nspawn
-source $HOME/.bin/install-git-common
+source $HOME/.bin/common
 source $HOME/.bin/common
 $HOME/.bin/install-git $1 "$NAME" "${NAME}-info"
 if [ $? -ne 0 ]; then
-    NSPAWN=$(get-path $NAME)/nspawn
+    NSPAWN=$(get-install-path $NAME)/nspawn
     if [ ! -f $AUTO_COMPLETE ]; then
         echo "Creating bash auto-completion script"
         sudo ln -s ${NSPAWN}_autocompletion $AUTO_COMPLETE

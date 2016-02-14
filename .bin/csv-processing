@@ -1,9 +1,9 @@
 #!/bin/bash
 NAME="csv-processing"
-source $HOME/.bin/install-git-common
+source $HOME/.bin/common
 $HOME/.bin/install-git $1 "$NAME" "csv-stats"
 if [ $? -ne 0 ]; then
-    CSV_FILE=$(get-path $NAME)/csvstats.sh
+    CSV_FILE=$(get-install-path $NAME)/csvstats.sh
     INPUT_FILE=$1
     if [ -z $INPUT_FILE ] || [ ! -e $INPUT_FILE ]; then
         echo "Input file expected"
