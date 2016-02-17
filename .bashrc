@@ -66,7 +66,8 @@ for update_time in $(echo "$USER_TOUCH"); do
         touch $update_time
     fi
 done
-find $USER_TMP* -mtime +1 -exec rm {} \;
+find $USER_TMP* -mtime +1 -type f -exec rm {} \;
+find $USER_TMP -empty -type d -delete
 if ! pgrep -u $USER ssh-agent > /dev/null; then
     ssh-agent > ~/.cache/.ssh-agent-indicator
 fi
