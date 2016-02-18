@@ -1,0 +1,24 @@
+#!/bin/bash
+function searching()
+{
+    if [ -z "$2" ]; then
+        echo "requires a search term"
+        exit -1
+    fi
+    SEARCH=""
+    for term in ${@:2}; do
+        SEARCH=$SEARCH" $(perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$term")"
+    done
+    ARGS="--new-window $1"
+    chromium "http://www.google.com/search?q=$SEARCH" $ARGS
+}
+
+function do-search()
+{
+    searching "" $@
+}
+
+function do-search-private()
+{
+    searching "--incognito" $@
+}
