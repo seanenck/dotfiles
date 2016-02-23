@@ -60,16 +60,7 @@ function change-workspace()
         disable-displays
     fi
 
-    case $1 in
-        $WORKSPACE_RELOAD | $WORKSPACE_START)
-            if [[ "$1" == "$WORKSPACE_RELOAD" ]]; then
-                if [[ "$CURRENT" == "$WORKSPACE_DOCK" ]]; then
-                    i3 restart
-                fi
-            fi
-            ;;
-    esac
-
+    i3 restart
     if [ -e $BACKGROUND_IMAGE ]; then
         feh --bg-fill $BACKGROUND_IMAGE
     else
