@@ -1,6 +1,6 @@
 set noautoindent
 set background=dark
-
+set nowrap
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%80v.\+/
 if has('mouse')
