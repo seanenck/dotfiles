@@ -13,11 +13,24 @@ TREE_KEY="tree-dir"
 CHECKSUM_KEY="checksum"
 LOGGING_KEY="logging"
 SNAPSHOT_KEY="snapshot"
+MARKDOWN_KEY="markdown"
 PASS_FILE=/mnt/Synced/passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
+STORAGE=$USER_TMP/markdown-preview/
 
+function markdown()
+{
+    mkdir -p $STORAGE
+    find ${STORAGE}* -type f -mtime +1 -delete &> /dev/null
 
+    ID=$RANDOM
+    printf -v ID "%05d" $ID
+    NOW=$(date +%s)
+    FILE_NAME=${STORAGE}/$NOW-$ID.html
+    pandoc -o $FILE_NAME -f markdown $1
+    (chromium $FILE_NAME &) &>/dev/null
+}
 
 function searching()
 {
@@ -81,6 +94,7 @@ function print-help()
     $CHECKSUM_KEY (get checksum of files under this directory)
     $TREE_KEY (get file and directory tree structure)
     $LOGGING_KEY (systemd logging by journal type: $ALL_JOURNAL_CATEGORIES) 
+    $MARKDOWN_KEY (markdown output generation)
 "
 }
 
@@ -169,7 +183,7 @@ function get-systemd-logging()
     CATEGORIES=" "$(echo "$CATEGORIES" | sed "s/ / -t /g")
     journalctl $CATEGORIES
 }
-
+ 
 if [ ! -z $1 ]; then
     NEED_HELP=0
     case $1 in
@@ -212,6 +226,10 @@ if [ ! -z $1 ]; then
             ;;
         $LOGGING_KEY)
             get-systemd-logging "${@:2}"
+            ;;
+        $MARKDOWN_KEY)
+            file-required $2
+            markdown $2
             ;;
         *)
             NEED_HELP=1
