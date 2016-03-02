@@ -43,7 +43,11 @@ function passwords()
 function rebuild-now()
 {
     mkdir -p $CACHE_PATH
+    rm ${CACHE_PATH}*
     for line in $(print-help | cut -d " " -f 5); do
+        if [[ "$line" == "$REBUILD_KEY" ]]; then
+            continue
+        fi
         file_name=${CACHE_PATH}$line
         echo "#/bin/bash
 helper_cache $line \$@" > $file_name
@@ -60,7 +64,7 @@ function print-help()
     $EDITOR_KEY (open an editor)
     $PASSWORD_KEY (password management)
     $VOLUME_KEY (volume mixer)
-    $REBUILD (rebuild cache)
+    $REBUILD_KEY (rebuild cache)
 "
 }
 
