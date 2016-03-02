@@ -1,0 +1,7 @@
+#!/bin/bash
+source $HOME/.bin/autocomplete/autocomplete-common
+_helper_cache()
+{
+    _simple_autocomplete "helper_cache"
+}
+complete -F _helper_cache helper_cache

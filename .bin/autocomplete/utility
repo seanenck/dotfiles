@@ -1,7 +1,0 @@
-#!/bin/bash
-source $HOME/.bin/autocomplete/autocomplete-common
-_utility()
-{
-    _simple_autocomplete "utility"
-}
-complete -F _utility utility

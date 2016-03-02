@@ -1,4 +1,5 @@
 #!/bin/bash
+source $HOME/.bin/common
 SEARCH_KEY="search"
 SEARCH_PRIVATE_KEY="search-private"
 CLIPBOARD_KEY="clipboard"
@@ -6,8 +7,17 @@ EDITOR_KEY="editor"
 PASSWORD_KEY="passwords"
 VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
+CLEAR_MAIL_KEY="mail-clear"
+SSID_KEY="ssid"
+TREE_KEY="tree-dir"
+CHECKSUM_KEY="checksum"
+LOGGING_KEY="logging"
+SNAPSHOT_KEY="snapshot"
 PASS_FILE=/mnt/Synced/passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
+WORKING=/opt/workspace/shared
+
+
 
 function searching()
 {
@@ -65,6 +75,12 @@ function print-help()
     $PASSWORD_KEY (password management)
     $VOLUME_KEY (volume mixer)
     $REBUILD_KEY (rebuild cache)
+    $CLEAR_MAIL_KEY (clear mail)
+    $SSID_KEY (discover a hidden SSID)
+    $SNAPSHOT_KEY (snapshot workspace)
+    $CHECKSUM_KEY (get checksum of files under this directory)
+    $TREE_KEY (get file and directory tree structure)
+    $LOGGING_KEY (systemd logging by journal type: $ALL_JOURNAL_CATEGORIES) 
 "
 }
 
@@ -81,6 +97,77 @@ function editor()
 function volume-mixer()
 {
     run-terminal "alsamixer"
+}
+
+function snapshot()
+{
+    STAGE=$USER_TMP/git/
+    DATE=`date +%Y-%m-%d`
+    SNAP_FILE=$PWD/snapshot-$DATE.tar.gz
+    mkdir -p $STAGE
+    for f in $(ls $WORKING); do
+	    REPO="$WORKING/$f"
+    	if [ -e "$REPO/.git" ]; then
+    		cd $REPO
+            echo "bundling $f"
+		    git bundle create $STAGE$f.bundle --all &> /dev/null
+    	fi
+    done
+    CUR_DIR=$PWD
+    cd $STAGE && tar -cvzf $SNAP_FILE * && cd $CUR_DIR
+    rm -rf $STAGE
+}
+
+function get-tree()
+{
+    tree .
+}
+
+function get-checksum()
+{
+    find -type f -exec sha512sum "{}" + | sort -k 2
+}
+
+function clear-mail()
+{
+    echo 'd *' | mail -N
+}
+
+function hidden-ssid()
+{
+    if [ -z "$1" ]; then
+        echo "ssid required..."
+        exit -1
+    fi
+    sudo iwlist wlp3s0 scanning essid $1
+}
+
+function get-systemd-logging()
+{
+    CATEGORIES=" "$ALL_JOURNAL_CATEGORIES
+    ALT_CATEGORIES=""
+    for cat in $(echo $@); do
+        matched=""
+        for all in $(echo "$CATEGORIES"); do
+           if [[ ""$cat"" == "$all" ]]; then
+               matched=$cat 
+               break
+           fi 
+        done
+        if [ -z "$matched" ]; then
+            echo "invalid category: $cat (valid: $ALL_JOURNAL_CATEGORIES)"
+            exit -1
+        fi
+
+        ALT_CATEGORIES=$ALT_CATEGORIES" $cat"
+    done
+
+    if [ ! -z "$ALT_CATEGORIES" ]; then
+        CATEGORIES=$ALT_CATEGORIES
+    fi
+
+    CATEGORIES=" "$(echo "$CATEGORIES" | sed "s/ / -t /g")
+    journalctl $CATEGORIES
 }
 
 if [ ! -z $1 ]; then
@@ -107,6 +194,24 @@ if [ ! -z $1 ]; then
             ;;
         $REBUILD_KEY)
             rebuild-now
+            ;;
+        $CLEAR_MAIL_KEY)
+            clear-mail
+            ;;
+        $SSID_KEY)
+            hidden-ssid "$2"
+            ;;
+        $SNAPSHOT_KEY)
+            snapshot
+            ;;
+        $TREE_KEY)
+            get-tree
+            ;;
+        $CHECKSUM_KEY)
+            get-checksum
+            ;;
+        $LOGGING_KEY)
+            get-systemd-logging "${@:2}"
             ;;
         *)
             NEED_HELP=1
