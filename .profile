@@ -12,4 +12,7 @@ if [ -d "$HOME/.bin" ] ; then
     if [ -d "$HOME/.cache/dmenu_urls" ]; then
         PATH="$HOME/.cache/dmenu_urls:$PATH"
     fi
+    if [ -d "$HOME/.cache/helper_cache" ]; then
+        PATH="$HOME/.cache/helper_cache:$PATH"
+    fi
 fi

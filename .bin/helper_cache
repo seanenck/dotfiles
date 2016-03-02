@@ -1,0 +1,117 @@
+#!/bin/bash
+SEARCH_KEY="search"
+SEARCH_PRIVATE_KEY="search-private"
+CLIPBOARD_KEY="clipboard"
+EDITOR_KEY="editor"
+PASSWORD_KEY="passwords"
+VOLUME_KEY="volume"
+REBUILD_KEY="rebuild"
+PASS_FILE=/mnt/Synced/passwords
+CACHE_PATH=$HOME/.cache/helper_cache/
+
+function searching()
+{
+    if [ -z "$2" ]; then
+        echo "requires a search term"
+        exit -1
+    fi
+    SEARCH=""
+    for term in ${@:2}; do
+        SEARCH=$SEARCH" $(perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$term")"
+    done
+    ARGS="--new-window $1"
+    chromium "http://www.google.com/search?q=$SEARCH" $ARGS
+}
+
+function file-required()
+{
+    if [ ! -z $1 ]; then
+        if [ -e $1 ]; then
+            return 0
+        fi
+    fi
+    
+    echo "file required..."
+    exit -1
+}
+
+function passwords()
+{
+    keepassx2 $PASS_FILE
+}
+
+function rebuild-now()
+{
+    mkdir -p $CACHE_PATH
+    for line in $(print-help | cut -d " " -f 5); do
+        file_name=${CACHE_PATH}$line
+        echo "#/bin/bash
+helper_cache $line \$@" > $file_name
+        chmod u+x $file_name
+    done
+}
+
+function print-help()
+{
+    echo "
+    $SEARCH_KEY (search)
+    $SEARCH_PRIVATE_KEY (search privately)
+    $CLIPBOARD_KEY (copy file contents to clipboard)
+    $EDITOR_KEY (open an editor)
+    $PASSWORD_KEY (password management)
+    $VOLUME_KEY (volume mixer)
+    $REBUILD (rebuild cache)
+"
+}
+
+function run-terminal()
+{
+    lxterminal --command "$1"
+}
+
+function editor()
+{
+    run-terminal "vim"
+}
+
+function volume-mixer()
+{
+    run-terminal "alsamixer"
+}
+
+if [ ! -z $1 ]; then
+    NEED_HELP=0
+    case $1 in
+        $PASSWORD_KEY)
+            passwords
+            ;;
+        $SEARCH_KEY)
+            searching "" ${@:2}
+            ;;
+        $SEARCH_PRIVATE_KEY)
+            searching "--incognito" ${@:2}
+            ;;
+        $CLIPBOARD_KEY)
+            file-required $2
+            cat $2 | xclip -selection c
+            ;;
+        $EDITOR_KEY)
+            editor
+            ;;
+        $VOLUME_KEY)
+            volume-mixer
+            ;;
+        $REBUILD_KEY)
+            rebuild-now
+            ;;
+        *)
+            NEED_HELP=1
+            ;;
+    esac
+    
+    if [ $NEED_HELP -eq 0 ]; then
+         exit 0
+    fi
+fi
+
+print-help
