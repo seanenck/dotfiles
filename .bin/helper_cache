@@ -14,6 +14,11 @@ CHECKSUM_KEY="checksum"
 LOGGING_KEY="logging"
 SNAPSHOT_KEY="snapshot"
 MARKDOWN_KEY="markdown"
+CHROME_KEY="chrome"
+PRIVATE_KEY="-private"
+CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
+GOOGLE_CHROME_KEY="google-chrome"
+GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=/mnt/Synced/passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
@@ -44,6 +49,11 @@ function searching()
     done
     ARGS="--new-window $1"
     chromium "http://www.google.com/search?q=$SEARCH" $ARGS
+}
+
+function open-browser()
+{
+    $1 "--new-window" "$2" "$3"
 }
 
 function file-required()
@@ -95,6 +105,10 @@ function print-help()
     $TREE_KEY (get file and directory tree structure)
     $LOGGING_KEY (systemd logging by journal type: $ALL_JOURNAL_CATEGORIES) 
     $MARKDOWN_KEY (markdown output generation)
+    $GOOGLE_CHROME_KEY (start google chrome browsing)
+    $CHROME_KEY (start chromium browsing)
+    $GOOGLE_CHROME_PRIVATE_KEY (start private google chrome browsing)
+    $CHROME_PRIVATE_KEY (start private chromium browsing)
 "
 }
 
@@ -226,6 +240,19 @@ if [ ! -z $1 ]; then
             ;;
         $LOGGING_KEY)
             get-systemd-logging "${@:2}"
+            ;;
+        $GOOGLE_CHROME_KEY | $CHROME_KEY | $GOOGLE_CHROME_PRIVATE_KEY | $CHROME_PRIVATE_KEY)
+            browsing="chromium"
+            if [[ "$1" == "$GOOGLE_CHROME_KEY" ]] || [[ "$1" == "$GOOGLE_CHROME_PRIVATE_KEY" ]]; then
+                browsing="google-chrome-stable"
+            fi
+            
+            added_arg=""
+            if [[ "$1" == "$CHROME_PRIVATE_KEY" ]] || [[ "$1" == "$GOOGLE_CHROME_PRIVATE_KEY" ]]; then
+                added_arg="--incognito"
+            fi
+    
+            open-browser "$browsing" "$added_arg" "$2"
             ;;
         $MARKDOWN_KEY)
             file-required $2
