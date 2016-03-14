@@ -42,11 +42,12 @@ function connect-to-nspawn()
     fi
 
     is_running=$(test-ssh "root@localhost -p $ssh_configs")
+    ssh_command="ssh root@localhost -p $ssh_configs"
     if [ $is_running -eq $IS_CONNECTED ]; then
         echo "connecting"
-        ssh root@localhost -p $ssh_configs
+        $ssh_command
     else
-        echo "ssh for $1 is not ready/available (also validate ssh keys are loaded, ports are available, known hosts are configured, etc.)"
+        echo "ssh for $1 is not ready/available (also validate ssh keys are loaded, ports are available, known hosts are configured, etc.), command was: $ssh_command"
         exit -1
     fi
 }
