@@ -2,7 +2,6 @@
 NAME="nspawn"
 AUTO_COMPLETE=/usr/share/bash-completion/completions/nspawn
 source $HOME/.bin/common
-source $HOME/.bin/common
 $HOME/.bin/install-git $1 "$NAME" "${NAME}-info"
 if [ $? -ne 0 ]; then
     NSPAWN=$(get-install-path $NAME)/nspawn
