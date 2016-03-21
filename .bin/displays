@@ -4,8 +4,8 @@ BACKLIGHT_OFF="down"
 BRIGHTER="brighter"
 DIMMER="dimmer"
 MAIN_DISPLAY="eDP1"
-LEFT_DISPLAY="DP2-1-8"
-RIGHT_DISPLAY="DP2-2-8"
+LEFT_DISPLAY="DP2-1|DP2-1-8"
+RIGHT_DISPLAY="DP2-2|DP2-2-8"
 LEFT_POS="left"
 RIGHT_POS="right"
 CENTER_POS="center"
@@ -100,6 +100,14 @@ function get-display-modes()
     echo "$MODES"
 }
 
+function check-display-loc()
+{
+    echo "$1" | grep -q -E "$2"
+    if [ $? -eq 0 ]; then
+        echo "--$3-of $MAIN_DISPLAY $4"
+    fi
+}
+
 # Enable aux displays
 function enable-displays()
 {
@@ -108,14 +116,8 @@ function enable-displays()
     for display in $CONNECTED; do
         LOCAL_EXT="--output $display "
         LOCAL_EXT=$LOCAL_EXT"--auto --dpi 96 "
-        case $display in
-            $RIGHT_DISPLAY)
-            LOCAL_EXT=$LOCAL_EXT" --right-of $MAIN_DISPLAY "
-            ;;
-            $LEFT_DISPLAY)
-            LOCAL_EXT=$LOCAL_EXT" --left-of $MAIN_DISPLAY --rotate right"
-            ;;
-        esac
+        LOCAL_EXT=$LOCAL_EXT" "$(check-display-loc "$display" "$RIGHT_DISPLAY" "right" "")
+        LOCAL_EXT=$LOCAL_EXT" "$(check-display-loc "$display" "$LEFT_DISPLAY" "left" "--rotate right")
         LOCAL_EXT="$BASIS $LOCAL_EXT"
         eval $LOCAL_EXT
     done
