@@ -7,7 +7,6 @@ MOVE_WORKSPACE=2
 function move-and-focus()
 {
     DISP=$(convert-position-to-display $1)
-    
     case $2 in
         $MOVE_CONTAINER)
             CMD="container"

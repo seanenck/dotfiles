@@ -45,33 +45,33 @@ function toggle-dpms()
 
 function get-positioned-display()
 {
-    for disp in $(get-aux-displays); do
-        is_left=$(display-is-located "$disp" "$LEFT_DISPLAY")
-        if [ $is_left -eq $IS_POSITIONED ]; then
+    use_pos=""
+    case $1 in
+        $LEFT_POS)
+            use_pos="$LEFT_DISPLAY"
+            ;;
+        $RIGHT_POS)
+            use_pos="$RIGHT_DISPLAY"
+            ;;
+    esac
+    if [ ! -z "$use_pos" ]; then
+        for disp in $(get-aux-displays); do
+        is_pos=$(display-is-located "$disp" "$use_pos")
+        if [ $is_pos -eq $IS_POSITIONED ]; then
             echo $disp
-            continue
+            exit 0
         fi
-        is_right=$(display-is-located "$disp" "$RIGHT_DISPLAY")
-        if [ $is_right -eq $IS_POSITIONED ]; then
-            echo $disp
-            continue
-        fi
-    done
+        done
+    fi
 }
 
 # Convert positional information to display name (xrandr name)
 function convert-position-to-display()
 {
-    DISP=$MAIN_DISPLAY
-    case $1 in
-        $LEFT_POS)
-            DISP=$LEFT_DISPLAY
-            ;;
-        $RIGHT_POS)
-            DISP=$RIGHT_DISPLAY
-            ;;
-    esac
-    
+    DISP=$(get-positioned-display "$1")
+    if [ -z "$DISP" ]; then
+        DISP=$MAIN_DISPLAY
+    fi
     ALL_DISPS=$(get-displays | grep -qE "$DISP")
     if [ $? -ne 0 ]; then
         DISP=$MAIN_DISPLAY
