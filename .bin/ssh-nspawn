@@ -56,7 +56,7 @@ function connect-to()
     if [[ "$1" != "localhost" ]]; then
         cmd="ssh -t $1 '$cmd'"
     fi
-    echo $cmd
+    echo "connecting to $2 on $1"
     eval $cmd
 }
 
@@ -70,19 +70,27 @@ $SSH_NSPAWN_HELP (display this help)
 "
 }
 
+function do-connect()
+{
+    valid-container "$1" "$2"
+    connect-to "$1" "$2"
+}
+
 case $1 in
     $SSH_NSPAWN_CONTAINERS)
         valid-host "$2"
         get-containers "$2"
         ;;
     $SSH_NSPAWN_CONNECT)
-        valid-container "$2" "$3"
-        connect-to "$2" "$3" 
+        do-connect "$2" "$3"
         ;;
     $SSH_NSPAWN_HOSTS)
         get-hosts
         ;;
     $SSH_NSPAWN_HELP)
         print-help
+        ;;
+    *)
+        do-connect "$1" "$2"
         ;;
 esac
