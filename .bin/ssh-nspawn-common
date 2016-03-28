@@ -1,0 +1,6 @@
+#!/bin/bash
+SSH_NSPAWN_CONTAINERS="machines"
+SSH_NSPAWN_CONNECT="connect"
+SSH_NSPAWN_HOSTS="hosts"
+SSH_NSPAWN_HELP="help"
+SSH_NSPAWN_LOOKUPS="base=/opt/core/;localhost=$HOME/.bin/"

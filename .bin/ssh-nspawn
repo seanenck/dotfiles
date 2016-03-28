@@ -1,0 +1,88 @@
+#!/bin/bash
+source $HOME/.bin/ssh-nspawn-common
+DELIMITER=","
+# format is "host,container"
+CONFIG_NSPAWN=$HOME/.cache/nspawn-ssh.config
+
+if [ ! -e $CONFIG_NSPAWN ]; then
+    echo "Missing config file to connect via ssh"
+    exit -1
+fi
+
+function get-hosts()
+{
+    cat $CONFIG_NSPAWN | cut -d "$DELIMITER" -f 1 | sort | uniq
+}
+
+function get-containers()
+{
+    cat $CONFIG_NSPAWN | grep "^$1$DELIMITER" | cut -d "$DELIMITER" -f 2 | sort
+}
+
+function valid-host()
+{
+    if [ -z "$1" ]; then
+        echo "host required"
+        exit -1
+    fi
+    get-hosts | grep -q "^$1$"
+    if [ $? -ne 0 ]; then
+        echo "unknown host $1"
+        exit -1
+    fi
+}
+
+function valid-container()
+{
+    valid-host "$1"
+    get-containers "$1" | grep -q "^$2$"
+    if [ $? -ne 0 ]; then
+        echo "unknown container $2 for $1"
+        exit -1
+    fi
+}
+
+function connect-to()
+{
+    nspawn_path=""
+    for loc in $(echo $SSH_NSPAWN_LOOKUPS | sed "s/;/ /g"); do
+        echo "$loc" | grep -q "^$1\="
+        if [ $? -eq 0 ]; then
+            nspawn_path=$(echo "$loc" | cut -d "=" -f 2)
+            break
+        fi
+    done
+    cmd="${nspawn_path}nspawn connect $2"
+    if [[ "$1" != "localhost" ]]; then
+        cmd="ssh -t $1 '$cmd'"
+    fi
+    echo $cmd
+    eval $cmd
+}
+
+function print-help()
+{
+    echo "
+$SSH_NSPAWN_CONTAINERS (list containers given a host)
+$SSH_NSPAWN_CONNECT (connect to a host's containers)
+$SSH_NSPAWN_HOSTS (get the list of hosts)
+$SSH_NSPAWN_HELP (display this help)
+"
+}
+
+case $1 in
+    $SSH_NSPAWN_CONTAINERS)
+        valid-host "$2"
+        get-containers "$2"
+        ;;
+    $SSH_NSPAWN_CONNECT)
+        valid-container "$2" "$3"
+        connect-to "$2" "$3" 
+        ;;
+    $SSH_NSPAWN_HOSTS)
+        get-hosts
+        ;;
+    $SSH_NSPAWN_HELP)
+        print-help
+        ;;
+esac

@@ -1,0 +1,40 @@
+#!/bin/bash
+source $HOME/.bin/ssh-nspawn-common
+_ssh-nspawn()
+{
+    local cur prev opts cmd host item
+    cur=${COMP_WORDS[COMP_CWORD]}
+    prev=${COMP_WORDS[COMP_CWORD-1]}
+    if [ $COMP_CWORD -eq 1 ]; then
+        opts=$(ssh-nspawn help | cut -d " " -f 1)
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    else
+        cmd=""
+        case $prev in
+            $SSH_NSPAWN_CONNECT | $SSH_NSPAWN_CONTAINERS)
+                cmd="$SSH_NSPAWN_HOSTS"
+                ;;
+            *)
+                for item in $(ssh-nspawn $SSH_NSPAWN_HOSTS); do
+                    if [[ $item == $prev ]]; then
+                        cmd=$prev
+                        break
+                    fi
+                done 
+                if [ ! -z "$cmd" ]; then
+                    prev=${COMP_WORDS[COMP_CWORD-2]}
+                    if [[ $prev == $SSH_NSPAWN_CONTAINERS ]]; then
+                        cmd=""
+                    else
+                        cmd="$SSH_NSPAWN_CONTAINERS $cmd"
+                    fi
+                fi
+                ;;
+        esac
+        if [ ! -z "$cmd" ]; then
+            opts=$(ssh-nspawn $cmd)
+            COMPREPLY=( $(compgen -W "$opts" -- $cur) ) 
+        fi
+    fi
+}
+complete -F _ssh-nspawn ssh-nspawn
