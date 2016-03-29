@@ -56,7 +56,7 @@ function connect-to()
     if [[ "$1" != "localhost" ]]; then
         cmd="ssh -t $1 '$cmd'"
     fi
-    echo "connecting to $2 on $1"
+    echo -e "connecting to \e[1m$2\e[0m on \e[1m$1\e[0m"
     eval $cmd
 }
 
