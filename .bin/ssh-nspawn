@@ -1,6 +1,10 @@
 #!/bin/bash
 source $HOME/.bin/ssh-nspawn-common
+source $HOME/.bin/connect-common
 DELIMITER=","
+IS_LOCAL="localhost"
+CACHE_FILE="ssh-nspawn-hosts"
+CACHE_PATH="$HOME/.cache/"
 # format is "host,container"
 CONFIG_NSPAWN=$HOME/.cache/nspawn-ssh.config
 
@@ -11,7 +15,23 @@ fi
 
 function get-hosts()
 {
-    cat $CONFIG_NSPAWN | cut -d "$DELIMITER" -f 1 | sort | uniq
+    find $CACHE_PATH -name "$CACHE_FILE" -type f -mmin +60 -delete
+    cache_full=${CACHE_PATH}${CACHE_FILE}
+    if [ ! -e $cache_full ]; then
+        hosts=$(cat $CONFIG_NSPAWN | cut -d "$DELIMITER" -f 1 | sort | uniq)
+        host_out=""
+        for host in $hosts; do
+            if [[ "$host" != "$IS_LOCAL" ]]; then
+                available=$(test-ssh "$host")
+                if [ $available -ne $IS_CONNECTED ]; then
+                    continue
+                fi
+            fi
+            host_out="$host "
+        done
+        echo $host_out > $cache_full
+    fi
+    cat $cache_full
 }
 
 function get-containers()
@@ -53,7 +73,7 @@ function connect-to()
         fi
     done
     cmd="${nspawn_path}nspawn connect $2"
-    if [[ "$1" != "localhost" ]]; then
+    if [[ "$1" != "$IS_LOCAL" ]]; then
         cmd="ssh -t $1 '$cmd'"
     fi
     echo -e "connecting to \e[1m$2\e[0m on \e[1m$1\e[0m"

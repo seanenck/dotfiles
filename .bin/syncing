@@ -1,5 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
+source $HOME/.bin/connect-common
 PID_FILE="$USER_TMP/syncing.pid"
 SLEEP_FOR=5
 ROTATION_COUNT=120
@@ -7,19 +8,6 @@ CHANGE_DELTA=1800
 CHANGE_MOVE=10
 SERVICE_NAME="syncing@enck.service"
 SERVICE_FILE="$HOME/.bin/sys/$SERVICE_NAME"
-
-READY="ready"
-IS_CONNECTED=1
-NOT_CONNECTED=0
-function test-ssh()
-{
-    running=$(ssh -o BatchMode=yes -o ConnectTimeout=5 $1 echo $READY 2>&1)
-    if [[ "$running" == "$READY" ]]; then
-        echo $IS_CONNECTED
-    else
-        echo $NOT_CONNECTED
-    fi
-}
 
 function write-log()
 {
