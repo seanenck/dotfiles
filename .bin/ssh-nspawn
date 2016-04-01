@@ -56,7 +56,7 @@ function connect-to()
     done
     cmd="${nspawn_path}nspawn connect $2"
     if [[ "$1" != "$IS_LOCAL" ]]; then
-        available=$(test-ssh "$host")
+        available=$(test-ssh "$1")
         if [ $available -ne $IS_CONNECTED ]; then
             echo "$1 is not available via ssh"
             exit -1
