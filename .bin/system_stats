@@ -50,8 +50,14 @@ function sys-stats()
     fi
     DIM=$(xbacklight | awk '{printf "%3.0f", $1}')
     DIM_ICO="\xf0\x9f\x94\x86"
-    if [ $DIM -lt 50 ]; then
-        DIM_ICO="o"
+    if [ $DIM -lt 100 ]; then
+        DIM_ICO="\xf0\x9f\x94\x85"
+        if [ $DIM -lt 50 ]; then
+            DIM_ICO="x"
+            if [ $DIM -lt 25 ]; then
+                DIM_ICO="o"
+            fi
+        fi
     fi
     echo $DIM_ICO > $STATS_ICO
     STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%" "$DIM%")
