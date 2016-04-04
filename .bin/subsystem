@@ -2,6 +2,7 @@
 source $HOME/.bin/displays
 source $HOME/.bin/sound
 source $HOME/.bin/workspaces
+source $HOME/.bin/common
 DISPLAY_KEY="display"
 VOLUME_KEY="volume"
 DISPLAY_TOGGLE="toggle"
@@ -9,8 +10,12 @@ DISPLAY_CHANGE="change"
 SOUND_COMMAND="sound"
 CYCLE_WORKSPACE="cycle"
 WORKSPACES_KEY="workspaces"
+SYS_STATS_KEY="sys-stats"
+SYS_STATS_ENABLE="enable"
+SYS_STATS_ON="on"
+SYS_STATS_OFF="off"
 DPMS_KEY="dpms"
-ALL_AVAILBLE="$DISPLAY_KEY $VOLUME_KEY $WORKSPACES_KEY"
+ALL_AVAILBLE="$DISPLAY_KEY $VOLUME_KEY $WORKSPACES_KEY $SYS_STATS_KEY"
 HELP="help"
 
 function get-help()
@@ -29,8 +34,19 @@ function get-help()
             $WORKSPACES_KEY)
                 get-workspace-help $item $CYCLE_WORKSPACE
                 ;;
+            $SYS_STATS_KEY)
+                get-sys-stats-help $item
+                ;;
         esac
     done
+}
+
+function get-sys-stats-help()
+{
+    echo "
+    $1 $SYS_STATS_ENABLE $SYS_STATS_ON (system stats on) 
+    $1 $SYS_STATS_ENABLE $SYS_STATS_OFF (system stats off) 
+"
 }
 
 if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
@@ -96,6 +112,26 @@ function volume-subsystem()
     esac
 }
 
+# System stats management
+function sys-stats-subsystem()
+{
+    case $1 in
+        $SYS_STATS_ENABLE)
+            case $2 in
+                $SYS_STATS_ON)
+                    touch $USER_STATS_ON
+                    ;;
+                $SYS_STATS_OFF)
+                    rm -f $USER_STATS_ON
+                    ;;
+            esac
+            ;;
+        *)
+            echo "Unknown sys stats command $1"
+            ;;
+    esac
+}
+
 case $1 in
     $DISPLAY_KEY)
         CMD=display-subsystem
@@ -105,6 +141,9 @@ case $1 in
         ;;
     $WORKSPACES_KEY)
         CMD=workspace-subsystem
+        ;;
+    $SYS_STATS_KEY)
+        CMD=sys-stats-subsystem
         ;;
     *)
         echo "Unknown action $1"

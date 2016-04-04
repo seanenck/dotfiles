@@ -24,10 +24,13 @@ function pop-empty()
 
 function report-stats()
 {
-    USE_CPU="cpu: $1"
-    USE_MEM=" | memory: $2 "
-    USE_DSK="| disk: $3 "
-    USE_DIM="| brightness: $4"
+    USE_CPU=""
+    if [ -e $USER_STATS_ON ]; then
+        USE_CPU="cpu: $1"
+        USE_MEM=" | memory: $2 "
+        USE_DSK="| disk: $3 | "
+    fi
+    USE_DIM="brightness: $4"
     CURRENT_STATS="$USE_CPU"
     CURRENT_STATS="$CURRENT_STATS$USE_MEM"
     CURRENT_STATS="$CURRENT_STATS$USE_DSK"
@@ -38,9 +41,11 @@ function report-stats()
 # Produce system stats
 function sys-stats()
 {
-    MEM_USAGE=$(free | grep Mem | awk '{printf "%3.0f", $3/$2 * 100.0}')
-    CPU_USAGE=$(ps axo pcpu | gawk -v cores=`grep -m 1 cores /proc/cpuinfo | cut -d ' ' -f 3` -v cpus=`grep -c processor /proc/cpuinfo`          '{k+=$1}END{print k/(cores * cpus);}' | awk '{printf "%3.0f", $1}' )
-    DSK_USAGE=$(df -h / | tail -n 1 | awk '{printf "%3.0f", substr($5, 0, length($5) - 1)}')
+    if [ -e $USER_STATS_ON ]; then
+        MEM_USAGE=$(free | grep Mem | awk '{printf "%3.0f", $3/$2 * 100.0}')
+        CPU_USAGE=$(ps axo pcpu | gawk -v cores=`grep -m 1 cores /proc/cpuinfo | cut -d ' ' -f 3` -v cpus=`grep -c processor /proc/cpuinfo`          '{k+=$1}END{print k/(cores * cpus);}' | awk '{printf "%3.0f", $1}' )
+        DSK_USAGE=$(df -h / | tail -n 1 | awk '{printf "%3.0f", substr($5, 0, length($5) - 1)}')
+    fi
     DIM=$(xbacklight | awk '{printf "%3.0f", $1}')
     STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%" "$DIM%")
     echo "$STAT_OUT" > $STATS_FILE
