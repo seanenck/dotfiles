@@ -45,6 +45,7 @@ do
     done
 
     CUSTOM="$CUSTOM|"
+    CUSTOM=$(echo "$CUSTOM" | sed "s/|  |/|/g")
     if [ -e $STATS_ICO ]; then
         ADDED_ICOS=$(cat $STATS_ICO)
     fi

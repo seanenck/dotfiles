@@ -35,7 +35,7 @@ function report-stats()
         CURRENT_STATS="$CURRENT_STATS$USE_DSK"
         CURRENT_STATS="$CURRENT_STATS$USE_DIM"
     else
-        CURRENT_STATS="idle"
+        CURRENT_STATS=""
     fi
     echo "$CURRENT_STATS"
 }
