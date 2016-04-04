@@ -45,7 +45,10 @@ do
     done
 
     CUSTOM="$CUSTOM|"
-    echo "$CUSTOM $line |" || exit 1
+    if [ -e $STATS_ICO ]; then
+        ADDED_ICOS=$(cat $STATS_ICO)
+    fi
+    echo -e "$CUSTOM $line |$ADDED_ICOS" || exit 1
     status_local $SYS_STATS_CMD &
 done
 

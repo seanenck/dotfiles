@@ -1,6 +1,7 @@
 #!/bin/bash
 source $HOME/.bin/common
 STATS_FILE=$USER_TMP/system-stats
+STATS_ICO=$USER_TMP/system-icons
 
 # Populate statistics
 function pop-stats()
@@ -24,17 +25,18 @@ function pop-empty()
 
 function report-stats()
 {
-    USE_CPU=""
     if [ -e $USER_STATS_ON ]; then
         USE_CPU="cpu: $1"
         USE_MEM=" | memory: $2 "
         USE_DSK="| disk: $3 | "
+        USE_DIM="brightness: $4"
+        CURRENT_STATS="$USE_CPU"
+        CURRENT_STATS="$CURRENT_STATS$USE_MEM"
+        CURRENT_STATS="$CURRENT_STATS$USE_DSK"
+        CURRENT_STATS="$CURRENT_STATS$USE_DIM"
+    else
+        CURRENT_STATS="idle"
     fi
-    USE_DIM="brightness: $4"
-    CURRENT_STATS="$USE_CPU"
-    CURRENT_STATS="$CURRENT_STATS$USE_MEM"
-    CURRENT_STATS="$CURRENT_STATS$USE_DSK"
-    CURRENT_STATS="$CURRENT_STATS$USE_DIM"
     echo "$CURRENT_STATS"
 }
 
@@ -47,6 +49,11 @@ function sys-stats()
         DSK_USAGE=$(df -h / | tail -n 1 | awk '{printf "%3.0f", substr($5, 0, length($5) - 1)}')
     fi
     DIM=$(xbacklight | awk '{printf "%3.0f", $1}')
+    DIM_ICO="\xf0\x9f\x94\x86"
+    if [ $DIM -lt 50 ]; then
+        DIM_ICO="o"
+    fi
+    echo $DIM_ICO > $STATS_ICO
     STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%" "$DIM%")
     echo "$STAT_OUT" > $STATS_FILE
 }
