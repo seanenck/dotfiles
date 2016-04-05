@@ -1,0 +1,3 @@
+#!/bin/bash
+source $HOME/.bin/status_common
+status_local "$STAT_SECONDARY"

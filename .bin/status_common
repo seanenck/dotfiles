@@ -1,0 +1,3 @@
+#!/bin/bash
+SYS_STATS_CMD="system-stats"
+STAT_SECONDARY="secondary"

@@ -1,15 +1,19 @@
 #!/bin/bash
 source $HOME/.bin/system_stats
 source $HOME/.bin/workspaces
+source $HOME/.bin/status_common
 SYS_STATS_CMD="system-stats"
-
+IS_SECOND=0
 if [ ! -z $1 ]; then
     case $1 in
     $SYS_STATS_CMD)
         sys-stats
+        exit 0
+        ;;
+    $STAT_SECONDARY)
+        IS_SECOND=1
         ;;
     esac
-    exit 0
 fi
 
 i3status | while :
@@ -32,24 +36,30 @@ do
         CUSTOM="$CUSTOM |"
     fi
 
-    for stats in $(echo "$STATS_FILE"); do
-        if [ -e $stats ]; then
-            CURRENT_STATS=$(cat $stats)
-        fi
+    if [ $IS_SECOND -eq 0 ]; then
+        for stats in $(echo "$STATS_FILE"); do
+            if [ -e $stats ]; then
+                CURRENT_STATS=$(cat $stats)
+            fi
         
-        if [ -z "$CURRENT_STATS" ]; then
-            CURRENT_STATS=$(pop-stats)
-        fi
+            if [ -z "$CURRENT_STATS" ]; then
+                CURRENT_STATS=$(pop-stats)
+            fi
 
-        CUSTOM="$CUSTOM $CURRENT_STATS "
-    done
+            CUSTOM="$CUSTOM $CURRENT_STATS "
+        done
+    fi
 
     CUSTOM="$CUSTOM|"
-    CUSTOM=$(echo "$CUSTOM" | sed "s/|  |/|/g")
-    if [ -e $STATS_ICO ]; then
-        ADDED_ICOS=$(cat $STATS_ICO)
+    CUSTOM=$(echo "$CUSTOM" | sed "s/|  |/|/g" | sed "s/||/|/g")
+    if [ $IS_SECOND -eq 0 ]; then
+        if [ -e $STATS_ICO ]; then
+            ADDED_ICOS=$(cat $STATS_ICO)
+        fi
     fi
     echo -e "$CUSTOM $line |$ADDED_ICOS" || exit 1
-    status_local $SYS_STATS_CMD &
+    if [ $IS_SECOND -eq 0 ]; then
+        status_local $SYS_STATS_CMD &
+    fi
 done
 
