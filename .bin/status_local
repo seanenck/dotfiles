@@ -2,8 +2,8 @@
 source $HOME/.bin/system_stats
 source $HOME/.bin/workspaces
 source $HOME/.bin/status_common
-SYS_STATS_CMD="system-stats"
-IS_SECOND=0
+PRIMARY=0
+IS_SECOND=$PRIMARY
 if [ ! -z $1 ]; then
     case $1 in
     $SYS_STATS_CMD)
@@ -20,23 +20,24 @@ i3status | while :
 do
     read line
     CUSTOM=""
-    if [ -e $WORKPLACE_FILE ]; then
-        touch $WORKPLACE_FILE
-        CUSTOM=$(cat $WORKPLACE_FILE)
-    fi
+    ADDED_ICOS=""
+    if [ $IS_SECOND -eq $PRIMARY ]; then
+        if [ -e $WORKPLACE_FILE ]; then
+            touch $WORKPLACE_FILE
+            CUSTOM=$(cat $WORKPLACE_FILE)
+        fi
 
-    if [ -e $DISPLAY_UN ]; then
-        CUSTOM="$CUSTOM (unlocked)"
-    fi
-    if [ -e $DISPLAY_EN ]; then
-        CUSTOM="$CUSTOM (running)"
-    fi
+        if [ -e $DISPLAY_UN ]; then
+            CUSTOM="$CUSTOM (unlocked)"
+        fi
+        if [ -e $DISPLAY_EN ]; then
+            CUSTOM="$CUSTOM (running)"
+        fi
 
-    if [ ! -z "${CUSTOM// }" ]; then
-        CUSTOM="$CUSTOM |"
-    fi
+        if [ ! -z "${CUSTOM// }" ]; then
+            CUSTOM="$CUSTOM |"
+        fi
 
-    if [ $IS_SECOND -eq 0 ]; then
         for stats in $(echo "$STATS_FILE"); do
             if [ -e $stats ]; then
                 CURRENT_STATS=$(cat $stats)
@@ -48,17 +49,16 @@ do
 
             CUSTOM="$CUSTOM $CURRENT_STATS "
         done
-    fi
-
-    CUSTOM="$CUSTOM|"
-    CUSTOM=$(echo "$CUSTOM" | sed "s/|  |/|/g" | sed "s/||/|/g")
-    if [ $IS_SECOND -eq 0 ]; then
+        CUSTOM="$CUSTOM|"
+        CUSTOM=$(echo "$CUSTOM" | sed "s/|  |/|/g" | sed "s/||/|/g")
+        
         if [ -e $STATS_ICO ]; then
             ADDED_ICOS=$(cat $STATS_ICO)
+            ADDED_ICOS="|$ADDED_ICOS"
         fi
     fi
-    echo -e "$CUSTOM $line |$ADDED_ICOS" || exit 1
-    if [ $IS_SECOND -eq 0 ]; then
+    echo -e "$CUSTOM $line $ADDED_ICOS" || exit 1
+    if [ $IS_SECOND -eq $PRIMARY ]; then
         status_local $SYS_STATS_CMD &
     fi
 done
