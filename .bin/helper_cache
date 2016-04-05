@@ -24,8 +24,8 @@ PASS_FILE=/mnt/Synced/passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
 STORAGE=$USER_TMP/markdown-preview/
-STATS_KEY="system-stats"
-STATS_SECOND_KEY="system-stats-secondary"
+STATS_KEY="i3-system-stats"
+STATS_SECOND_KEY="i3-system-stats-secondary"
 
 function markdown()
 {
@@ -263,11 +263,12 @@ if [ ! -z $1 ]; then
             file-required $2
             markdown $2
             ;;
-        $STATS_KEY)
-            i3-stat
-            ;;
-        $STATS_SECOND_KEY)
-            i3-stat $STAT_SECONDARY
+        $STATS_SECOND_KEY | $STATS_KEY)
+            ARGS=""
+            if [[ "$1" == "$STATS_SECOND_KEY" ]]; then
+                ARGS="$STAT_SECONDARY"
+            fi
+            i3-stat $ARGS
             ;;
         *)
             NEED_HELP=1
