@@ -95,12 +95,12 @@ bar {
         output DP2-1
         output DP2-2
         tray_output none
-        status_command status_local_secondary
+        status_command system-stats-secondary
 }
 
 bar {
         output eDP1
-        status_command status_local
+        status_command system-stats
 }
 
 exec --no-startup-id subsystem workspaces cycle startup

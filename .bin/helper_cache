@@ -1,5 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
+source $HOME/.bin/system_stats
 SEARCH_KEY="search"
 SEARCH_PRIVATE_KEY="search-private"
 CLIPBOARD_KEY="clipboard"
@@ -23,6 +24,8 @@ PASS_FILE=/mnt/Synced/passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
 STORAGE=$USER_TMP/markdown-preview/
+STATS_KEY="system-stats"
+STATS_SECOND_KEY="system-stats-secondary"
 
 function markdown()
 {
@@ -109,6 +112,8 @@ function print-help()
     $CHROME_KEY (start chromium browsing)
     $GOOGLE_CHROME_PRIVATE_KEY (start private google chrome browsing)
     $CHROME_PRIVATE_KEY (start private chromium browsing)
+    $STATS_KEY (primary display i3 status)
+    $STATS_SECOND_KEY (secondary display i3 status)
 "
 }
 
@@ -257,6 +262,12 @@ if [ ! -z $1 ]; then
         $MARKDOWN_KEY)
             file-required $2
             markdown $2
+            ;;
+        $STATS_KEY)
+            i3-stat
+            ;;
+        $STATS_SECOND_KEY)
+            i3-stat $STAT_SECONDARY
             ;;
         *)
             NEED_HELP=1
