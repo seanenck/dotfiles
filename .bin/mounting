@@ -190,7 +190,7 @@ function mount-share()
         echo "already mounted"
         exit -1
     fi
-    sudo mount base:$MNT_SHARE $MNT_SHARE
+    sshfs base:$MNT_SHARE $MNT_SHARE
 }
 
 function umount-share()
