@@ -190,7 +190,14 @@ function mount-share()
         echo "already mounted"
         exit -1
     fi
-    sshfs base:$MNT_SHARE $MNT_SHARE
+
+    IS_MNT=$(is-mounted $CRYPT_MNT)
+    if [ $IS_MNT -eq $IS_MOUNTED ]; then
+        sshfs base:$MNT_SHARE $MNT_SHARE
+    else
+        echo "must mount crypt first"
+        exit -1
+    fi
 }
 
 function umount-share()
