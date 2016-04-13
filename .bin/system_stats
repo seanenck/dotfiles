@@ -51,20 +51,8 @@ function sys-stats()
         DSK_USAGE=$(df -h / | tail -n 1 | awk '{printf "%3.0f", substr($5, 0, length($5) - 1)}')
     fi
     DIM=$(xbacklight | awk '{printf "%3.0f", $1}')
-    DIM_ICO="X"
-    if [ $DIM -lt 100 ]; then
-        DIM_ICO="O"
-        if [ $DIM -lt 75 ]; then
-            DIM_ICO="+"
-            if [ $DIM -lt 50 ]; then
-                DIM_ICO="x"
-                if [ $DIM -lt 25 ]; then
-                    DIM_ICO="o"
-                fi
-            fi
-        fi
-    fi
-    echo $DIM_ICO > $STATS_ICO
+    DIM_ICO="$DIM\xf0\x9f\x94\x86"
+    echo "$DIM_ICO" > $STATS_ICO
     STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%" "$DIM%")
     echo "$STAT_OUT" > $STATS_FILE
 }
