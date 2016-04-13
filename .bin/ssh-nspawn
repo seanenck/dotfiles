@@ -11,14 +11,33 @@ if [ ! -e $CONFIG_NSPAWN ]; then
     exit -1
 fi
 
+function get-hostnames()
+{
+    for host in $(cat $CONFIG_NSPAWN | cut -d "$DELIMITER" -f 1); do
+        echo "$host"
+    done
+    echo "$IS_LOCAL"
+}
+
 function get-hosts()
 {
-    cat $CONFIG_NSPAWN | cut -d "$DELIMITER" -f 1 | sort | uniq
+    get-hostnames | sort | uniq
+}
+
+function get-container-names()
+{
+    if [[ $1 == "$IS_LOCAL" ]]; then
+        nspawn list | grep -v "template"
+    else
+        for container in $(cat $CONFIG_NSPAWN | grep "^$1$DELIMITER" | cut -d "$DELIMITER" -f 2); do
+            echo "$container"
+        done
+    fi
 }
 
 function get-containers()
 {
-    cat $CONFIG_NSPAWN | grep "^$1$DELIMITER" | cut -d "$DELIMITER" -f 2 | sort
+    get-container-names "$1" | sort
 }
 
 function valid-host()
@@ -58,9 +77,14 @@ function connect-to()
     if [[ "$1" == "$IS_LOCAL" ]]; then
         nspawn running | grep -q "$2 is RUNNING"
         if [ $? -ne 0 ]; then
-            echo "starting $2..."
-            nspawn background $2
-            sleep 3
+            read -p "start $2 (y/n)? " yn
+            if [[ "$yn" == "y" ]]; then
+                echo "starting $2..."
+                nspawn background $2
+                sleep 3
+            else
+                exit -1
+            fi
         fi
     else
         available=$(test-ssh "$1")
