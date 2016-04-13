@@ -13,6 +13,7 @@ SSID_KEY="ssid"
 TREE_KEY="tree-dir"
 CHECKSUM_KEY="checksum"
 LOGGING_KEY="logging"
+LOGGING_ALL_KEY="logging-all"
 SNAPSHOT_KEY="snapshot"
 MARKDOWN_KEY="markdown"
 CHROME_KEY="chrome"
@@ -106,7 +107,8 @@ function print-help()
     $SNAPSHOT_KEY (snapshot workspace)
     $CHECKSUM_KEY (get checksum of files under this directory)
     $TREE_KEY (get file and directory tree structure)
-    $LOGGING_KEY (systemd logging by journal type: $ALL_JOURNAL_CATEGORIES) 
+    $LOGGING_KEY (systemd logging by journal type and today: $ALL_JOURNAL_CATEGORIES) 
+    $LOGGING_ALL_KEY (systemd logging by journal type: $ALL_JOURNAL_CATEGORIES) 
     $MARKDOWN_KEY (markdown output generation)
     $GOOGLE_CHROME_KEY (start google chrome browsing)
     $CHROME_KEY (start chromium browsing)
@@ -177,9 +179,10 @@ function hidden-ssid()
 
 function get-systemd-logging()
 {
+
     CATEGORIES=" "$ALL_JOURNAL_CATEGORIES
     ALT_CATEGORIES=""
-    for cat in $(echo $@); do
+    for cat in $(echo ${@:2}); do
         matched=""
         for all in $(echo "$CATEGORIES"); do
            if [[ ""$cat"" == "$all" ]]; then
@@ -200,7 +203,11 @@ function get-systemd-logging()
     fi
 
     CATEGORIES=" "$(echo "$CATEGORIES" | sed "s/ / -t /g")
-    journalctl $CATEGORIES
+    MATCH_ALL=""
+    if [ $1 -eq 0 ]; then
+        MATCH_ALL=$(date "+%b %d") 
+    fi
+    journalctl $CATEGORIES | grep "$MATCH_ALL"
 }
  
 if [ ! -z $1 ]; then
@@ -243,8 +250,12 @@ if [ ! -z $1 ]; then
         $CHECKSUM_KEY)
             get-checksum
             ;;
-        $LOGGING_KEY)
-            get-systemd-logging "${@:2}"
+        $LOGGING_KEY | $LOGGING_ALL_KEY)
+            DO_ALL=0
+            if [[ "$1" == "$LOGGING_ALL_KEY" ]]; then
+                DO_ALL=1
+            fi
+            get-systemd-logging $DO_ALL "${@:2}"
             ;;
         $GOOGLE_CHROME_KEY | $CHROME_KEY | $GOOGLE_CHROME_PRIVATE_KEY | $CHROME_PRIVATE_KEY)
             browsing="chromium"
