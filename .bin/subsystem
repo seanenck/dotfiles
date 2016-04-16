@@ -14,6 +14,7 @@ SYS_STATS_KEY="sys-stats"
 SYS_STATS_ENABLE="enable"
 SYS_STATS_ON="on"
 SYS_STATS_OFF="off"
+SYS_STATS_TOGGLE="toggle"
 DPMS_KEY="dpms"
 ALL_AVAILBLE="$DISPLAY_KEY $VOLUME_KEY $WORKSPACES_KEY $SYS_STATS_KEY"
 HELP="help"
@@ -45,7 +46,8 @@ function get-sys-stats-help()
 {
     echo "
     $1 $SYS_STATS_ENABLE $SYS_STATS_ON (system stats on) 
-    $1 $SYS_STATS_ENABLE $SYS_STATS_OFF (system stats off) 
+    $1 $SYS_STATS_ENABLE $SYS_STATS_OFF (system stats off)
+    $1 $SYS_STATS_ENABLE $SYS_STATS_TOGGLE (system stats toggling) 
 "
 }
 
@@ -115,9 +117,17 @@ function volume-subsystem()
 # System stats management
 function sys-stats-subsystem()
 {
+    ACTION=$2
+    if [[ "$ACTION" == "$SYS_STATS_TOGGLE" ]]; then
+        if [ -e $USER_STATS_ON ]; then
+            ACTION=$SYS_STATS_OFF
+        else
+            ACTION=$SYS_STATS_ON
+        fi
+    fi
     case $1 in
         $SYS_STATS_ENABLE)
-            case $2 in
+            case $ACTION in
                 $SYS_STATS_ON)
                     touch $USER_STATS_ON
                     ;;

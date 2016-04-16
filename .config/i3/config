@@ -122,6 +122,9 @@ bindsym $mod+Shift+o exec subsystem workspaces cycle change
 bindsym $mod+Shift+p exec subsystem workspaces cycle reload
 bindsym $mod+Shift+i exec subsystem display dpms reset
 
+# stat bar status
+bindsym $mod+Shift+Tab exec subsystem sys-stats enable toggle
+
 # Locking handlers
 bindsym $mod+Shift+x exec locking toggle 
 bindsym $mod+Shift+l exec locking auto 
