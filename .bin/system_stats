@@ -11,8 +11,7 @@ function pop-stats()
     CPU_VAL=$(pop-empty "$1")
     MEM_VAL=$(pop-empty "$2")
     DSK_VAL=$(pop-empty "$3")
-    DIM_VAL=$(pop-empty "$4")
-    STATS=$(report-stats "$CPU_VAL" "$MEM_VAL" "$DSK_VAL" "$DIM_VAL")
+    STATS=$(report-stats "$CPU_VAL" "$MEM_VAL" "$DSK_VAL")
     echo "$STATS"
 }
 
@@ -31,11 +30,9 @@ function report-stats()
         USE_CPU="cpu: $1"
         USE_MEM=" | memory: $2 "
         USE_DSK="| disk: $3 | "
-        USE_DIM="brightness: $4"
         CURRENT_STATS="$USE_CPU"
         CURRENT_STATS="$CURRENT_STATS$USE_MEM"
         CURRENT_STATS="$CURRENT_STATS$USE_DSK"
-        CURRENT_STATS="$CURRENT_STATS$USE_DIM"
     else
         CURRENT_STATS=""
     fi
@@ -53,7 +50,7 @@ function sys-stats()
     DIM=$(xbacklight | awk '{printf "%3.0f", $1}')
     DIM_ICO="$DIM\xf0\x9f\x94\x86"
     echo "$DIM_ICO" > $STATS_ICO
-    STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%" "$DIM%")
+    STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%")
     echo "$STAT_OUT" > $STATS_FILE
 }
 
