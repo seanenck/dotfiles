@@ -20,6 +20,7 @@ CHROME_KEY="chrome"
 PRIVATE_KEY="-private"
 CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
 GOOGLE_CHROME_KEY="google-chrome"
+INSTALL_CHROME_KEY="setup-chrome"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=/mnt/Synced/passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
@@ -116,6 +117,7 @@ function print-help()
     $CHROME_PRIVATE_KEY (start private chromium browsing)
     $STATS_KEY (primary display i3 status)
     $STATS_SECOND_KEY (secondary display i3 status)
+    $INSTALL_CHROME_KEY (install chrome)
 "
 }
 
@@ -175,6 +177,25 @@ function hidden-ssid()
         exit -1
     fi
     sudo iwlist wlp3s0 scanning essid $1
+}
+
+function install-chrome()
+{
+    id=$(uuidgen)
+    file_name=/tmp/chrome-$id.rpm
+    wget -O $file_name https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+    current=$PWD
+    cd /tmp
+    mkdir -p chrome-install
+    rm -rf chrome-install/*
+    cd chrome-install
+    rpmextract.sh $file_name
+    sudo rm -rf /opt/google/chrome/
+    sudo mv opt/google/chrome/ /opt/google/
+    sudo mv usr/bin/google-chrome-stable /usr/bin/google-chrome-stable
+    sudo chown root:root /opt/google/chrome/chrome-sandbox
+    sudo chmod 4755 /opt/google/chrome/chrome-sandbox
+    cd $current
 }
 
 function get-systemd-logging()
@@ -280,6 +301,9 @@ if [ ! -z $1 ]; then
                 ARGS="$STAT_SECONDARY"
             fi
             i3-stat $ARGS
+            ;;
+        $INSTALL_CHROME_KEY)
+            install-chrome
             ;;
         *)
             NEED_HELP=1
