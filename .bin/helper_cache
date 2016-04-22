@@ -18,6 +18,7 @@ SNAPSHOT_KEY="snapshot"
 MARKDOWN_KEY="markdown"
 CHROME_KEY="chrome"
 PRIVATE_KEY="-private"
+RUN_KEY="spawn"
 CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
 GOOGLE_CHROME_KEY="google-chrome"
 INSTALL_CHROME_KEY="setup-chrome"
@@ -93,6 +94,23 @@ helper_cache $line \$@" > $file_name
     done
 }
 
+function run-command()
+{
+    num=$1
+    if [ -z $num ]; then
+        echo "number of items to run required"
+        exit -1
+    fi
+    commands=${@:2}
+    if [ -z "$commands" ]; then
+        echo "command required"
+        exit -1
+    fi
+    for i in `seq $num`; do
+        lxterminal --command "$commands"
+    done
+}
+
 function print-help()
 {
     echo "
@@ -118,6 +136,7 @@ function print-help()
     $STATS_KEY (primary display i3 status)
     $STATS_SECOND_KEY (secondary display i3 status)
     $INSTALL_CHROME_KEY (install chrome)
+    $RUN_KEY (run command)
 "
 }
 
@@ -234,6 +253,9 @@ function get-systemd-logging()
 if [ ! -z $1 ]; then
     NEED_HELP=0
     case $1 in
+        $RUN_KEY)
+            run-command ${@:2}
+            ;;
         $PASSWORD_KEY)
             passwords
             ;;
