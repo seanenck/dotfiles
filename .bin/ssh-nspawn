@@ -3,9 +3,7 @@ source $HOME/.bin/ssh-nspawn-common
 source $HOME/.bin/connect-common
 DELIMITER=","
 IS_LOCAL="localhost"
-# format is "host,container"
-CONFIG_NSPAWN=$HOME/.cache/nspawn-ssh.config
-
+CONFIG_NSPAWN=$SSH_NSPAWN_CONFIG
 if [ ! -e $CONFIG_NSPAWN ]; then
     echo "Missing config file to connect via ssh"
     exit -1
@@ -66,10 +64,10 @@ function valid-container()
 function connect-to()
 {
     nspawn_path=""
-    for loc in $(echo $SSH_NSPAWN_LOOKUPS | sed "s/;/ /g"); do
-        echo "$loc" | grep -q "^$1\="
+    for loc in $(echo $SSH_NSPAWN_LOOKUPS); do
+        echo "$loc" | grep -q "^$1\,"
         if [ $? -eq 0 ]; then
-            nspawn_path=$(echo "$loc" | cut -d "=" -f 2)
+            nspawn_path=$(echo "$loc" | cut -d "," -f 2)
             break
         fi
     done

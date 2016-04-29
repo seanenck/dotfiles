@@ -3,4 +3,10 @@ SSH_NSPAWN_CONTAINERS="machines"
 SSH_NSPAWN_CONNECT="connect"
 SSH_NSPAWN_HOSTS="hosts"
 SSH_NSPAWN_HELP="help"
-SSH_NSPAWN_LOOKUPS="base=/opt/core/;localhost=$HOME/.bin/"
+SSH_NSPAWN_OFFSET=$HOME/.cache/nspawn/
+
+# format is host,/path/to/nspawn
+SSH_NSPAWN_LOOKUPS=$(cat ${SSH_NSPAWN_OFFSET}lookups.config)
+
+# format is host,container
+SSH_NSPAWN_CONFIG=${SSH_NSPAWN_OFFSET}containers.config
