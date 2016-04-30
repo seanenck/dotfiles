@@ -137,6 +137,7 @@ bindsym $mod+Shift+n scratchpad show
 # Backlight
 bindsym XF86MonBrightnessUp exec subsystem display change brighter
 bindsym XF86MonBrightnessDown exec subsystem display change dimmer
+bindsym XF86Display exec subsystem display change full
 
 # Volume
 bindsym XF86AudioMute exec subsystem volume sound mute
