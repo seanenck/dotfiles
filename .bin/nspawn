@@ -13,7 +13,7 @@ if [ $? -ne 0 ]; then
 
     export NSPAWN_INFO_SCREEN=1
     export NSPAWN_INFO_CONTAINERS="/opt/workspace/containers"
-    export NSPAWN_INFO_ARGS="--bind /opt/workspace/shared --bind /var/cache/pacman/pkg"
+    export NSPAWN_INFO_ARGS="--bind /opt/workspace/shared --bind /var/cache/pacman"
     export NSPAWN_INFO_JOURNAL="$NSPAWN_JOURNAL_CATEGORY"
     $NSPAWN $@
 fi
