@@ -2,6 +2,7 @@
 source $HOME/.bin/common
 CRYPT_MNT=/mnt/crypt
 MNT_SHARE=/mnt/Storage
+CRYPT_ROOT=/mnt/Synced/crypt.img
 IS_MOUNTED=1
 USB_KEYWORD="usb"
 SHARE_KEYWORD="shares"
@@ -67,7 +68,19 @@ function mount-crypt()
         exit -1
     fi
 
-    rsync -vrziut /mnt/Synced/crypt.img $USER_CRYPT
+    SYNC_CRYPT=0
+    if [ -e $USER_CRYPT ]; then
+        current_check=$(sha512sum $USER_CRYPT | cut -d " " -f 1)
+        new_check=$(sha512sum $CRYPT_ROOT | cut -d " " -f 1)
+        if [[ $current_check == $new_check ]]; then
+            echo "no change"
+            SYNC_CRYPT=1
+        fi 
+    fi
+    if [ $SYNC_CRYPT -eq 0 ]; then
+        echo "copying crypt.img..."
+        cp $CRYPT_ROOT $USER_CRYPT
+    fi
     open-crypt "--readonly" "$USER_CRYPT" "$MAPPER_NAME" "$CRYPT_MNT" "open"
 }
 
