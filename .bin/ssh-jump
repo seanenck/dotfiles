@@ -15,14 +15,18 @@ function do-jump()
         exit -1
     fi
 
-    matched=$(cat $JUMP_DEF | grep "$DELIMITER$ARG$")
+    matched=$(cat $JUMP_DEF | grep "$DELIMITER$ARG$DELIMITER")
     if [ -z $matched ]; then
         echo "no machine found matching $1"
         exit -1
     fi
 
     jump=$(echo $matched | cut -d "$DELIMITER" -f 1)
-    ssh -t $jump ssh $1
+    args=$(echo $matched | cut -d "$DELIMITER" -f 3)
+    if [ ! -z $args ]; then
+        args="-o $args"
+    fi
+    ssh -t $jump ssh $1 $args
 }
 
 function print-help()
@@ -31,7 +35,8 @@ function print-help()
         for line in $(cat $JUMP_DEF); do
             avail=$(echo $line | cut -d "$DELIMITER" -f 2)
             host=$(echo $line | cut -d "$DELIMITER" -f 1)
-            echo "    $avail (through $host)"
+            args=$(echo $line | cut -d "$DELIMITER" -f 3)
+            echo "    $avail (through $host) $args"
         done
     fi
 }
