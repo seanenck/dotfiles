@@ -19,7 +19,7 @@ SYS_STATS_TOGGLE="toggle"
 DPMS_KEY="dpms"
 ALL_AVAILBLE="$DISPLAY_KEY $VOLUME_KEY $WORKSPACES_KEY $SYS_STATS_KEY"
 HELP="help"
-PROFILE_DEF=${USER_TMP}/profile
+PROFILE_DEF=${USER_TMP}/profile.next
 
 function get-help()
 {
@@ -150,9 +150,9 @@ function sys-stats-subsystem()
 function cycle-profiles()
 {
     if [[ "$1" == "$PROFILE_CYCLE" ]]; then
-        full_backlight="0"
-        mid_backlight="1"
-        low_backlight="2"
+        full_backlight="full"
+        mid_backlight="mid"
+        low_backlight="low"
         use_profile=$full_backlight
         if [ -e $PROFILE_DEF ]; then
             use_profile=$(cat $PROFILE_DEF)
