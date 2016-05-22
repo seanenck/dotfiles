@@ -3,6 +3,7 @@ BACKLIGHT_ON="up"
 BACKLIGHT_OFF="down"
 BRIGHTER="brighter"
 FULL_BRIGHT="full"
+LOW_BRIGHT="low"
 DIMMER="dimmer"
 MAIN_DISPLAY="eDP1"
 LEFT_DISPLAY="DP2-1"
@@ -15,6 +16,7 @@ DPMS_OFF="off"
 DPMS_RESET="reset"
 CHANGE_BY_STEP=5
 IS_POSITIONED=0
+PROFILE_CYCLE="cycle"
 
 function get-lighting-help()
 {
@@ -27,6 +29,7 @@ function get-lighting-help()
     $1 $4 $DPMS_ON (dpms on)
     $1 $4 $DPMS_OFF (dpms off)
     $1 $4 $DPMS_RESET (dpms reset)
+    $1 $5 $PROFILE_CYCLE (profile cycling)
     "
 }
 
@@ -182,16 +185,19 @@ function toggle-backlighting()
 function change-brightness()
 {
     case $1 in
-        $BRIGHTER | $FULL_BRIGHT)
-            SUBCMD="-inc "
-            if [[ "$1" == "$BRIGHTER" ]]; then
-                SUBCMD=$SUBCMD"$CHANGE_BY_STEP"
-            else
-                SUBCMD=$SUBCMD"100"
-            fi
+        $BRIGHTER)
+            SUBCMD="-inc $CHANGE_BY_STEP"
             ;;
         $DIMMER)
             SUBCMD="-dec $CHANGE_BY_STEP"
+            ;;
+        $LOW_BRIGHT | $FULL_BRIGHT)
+            SUBCMD="-set "
+            if [[ "$1" == "$FULL_BRIGHT" ]]; then
+                SUBCMD=$SUBCMD"100"
+            else
+                SUBCMD=$SUBCMD"10"
+            fi
             ;;
         *)
             echo "unknown command $ACTION"

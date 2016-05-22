@@ -10,6 +10,7 @@ DISPLAY_CHANGE="change"
 SOUND_COMMAND="sound"
 CYCLE_WORKSPACE="cycle"
 WORKSPACES_KEY="workspaces"
+PROF_KEY="profiles"
 SYS_STATS_KEY="sys-stats"
 SYS_STATS_ENABLE="enable"
 SYS_STATS_ON="on"
@@ -18,6 +19,7 @@ SYS_STATS_TOGGLE="toggle"
 DPMS_KEY="dpms"
 ALL_AVAILBLE="$DISPLAY_KEY $VOLUME_KEY $WORKSPACES_KEY $SYS_STATS_KEY"
 HELP="help"
+PROFILE_DEF=${USER_TMP}/profile
 
 function get-help()
 {
@@ -27,7 +29,7 @@ function get-help()
     for item in $ALL_AVAILBLE; do
         case $item in
             $DISPLAY_KEY)
-                get-lighting-help $item $DISPLAY_TOGGLE $DISPLAY_CHANGE $DPMS_KEY
+                get-lighting-help $item $DISPLAY_TOGGLE $DISPLAY_CHANGE $DPMS_KEY $PROF_KEY
                 ;;
             $VOLUME_KEY)
                 get-volume-help $item $SOUND_COMMAND
@@ -95,6 +97,9 @@ function display-subsystem()
         $DPMS_KEY)
             toggle-dpms "$2"
             ;;
+        $PROF_KEY)
+            cycle-profiles "$2"
+            ;;
         *)
             echo "Unknown display command $1"
             exit -1
@@ -140,6 +145,28 @@ function sys-stats-subsystem()
             echo "Unknown sys stats command $1"
             ;;
     esac
+}
+
+function cycle-profiles()
+{
+    if [[ "$1" == "$PROFILE_CYCLE" ]]; then
+        full_backlight="1"
+        low_backlight="2"
+        use_profile=$full_backlight
+        if [ -e $PROFILE_DEF ]; then
+            use_profile=$(cat $PROFILE_DEF)
+        fi
+        
+        if [[ "$use_profile" == "$full_backlight" ]]; then
+            subsystem display change full
+            echo $low_backlight > $PROFILE_DEF
+        else
+            rm -f $PROFILE_DEF
+            change-brightness $LOW_BRIGHT
+        fi
+    else
+        echo "Unknown profile action $1 $2"
+    fi
 }
 
 case $1 in
