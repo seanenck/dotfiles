@@ -150,21 +150,34 @@ function sys-stats-subsystem()
 function cycle-profiles()
 {
     if [[ "$1" == "$PROFILE_CYCLE" ]]; then
-        full_backlight="1"
+        full_backlight="0"
+        mid_backlight="1"
         low_backlight="2"
         use_profile=$full_backlight
         if [ -e $PROFILE_DEF ]; then
             use_profile=$(cat $PROFILE_DEF)
         fi
         
-        if [[ "$use_profile" == "$full_backlight" ]]; then
-            subsystem display change full
-            echo $low_backlight > $PROFILE_DEF
-        else
-            rm -f $PROFILE_DEF
-            change-brightness $LOW_BRIGHT
+        next_back=""
+        case $use_profile in
+            $full_backlight)
+                subsystem display change full
+                next_back=$mid_backlight
+                ;;
+            $low_backlight)
+                change-brightness $LOW_BRIGHT
+                ;;
+            $mid_backlight)
+                change-brightness $MID_BRIGHT
+                next_back=$low_backlight
+                ;;
+        esac
+
+        rm -f $PROFILE_DEF
+        if [ ! -z $next_back ]; then
+            echo $next_back > $PROFILE_DEF
         fi
-    else
+    else 
         echo "Unknown profile action $1 $2"
     fi
 }

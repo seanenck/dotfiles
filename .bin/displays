@@ -4,6 +4,7 @@ BACKLIGHT_OFF="down"
 BRIGHTER="brighter"
 FULL_BRIGHT="full"
 LOW_BRIGHT="low"
+MID_BRIGHT="mid"
 DIMMER="dimmer"
 MAIN_DISPLAY="eDP1"
 LEFT_DISPLAY="DP2-1"
@@ -191,13 +192,18 @@ function change-brightness()
         $DIMMER)
             SUBCMD="-dec $CHANGE_BY_STEP"
             ;;
-        $LOW_BRIGHT | $FULL_BRIGHT)
-            SUBCMD="-set "
+        $LOW_BRIGHT | $FULL_BRIGHT | $MID_BRIGHT)
+            SUBVAL=""
             if [[ "$1" == "$FULL_BRIGHT" ]]; then
-                SUBCMD=$SUBCMD"100"
+                SUBVAL=10
             else
-                SUBCMD=$SUBCMD"10"
+                if [[ "$1" == "$MID_BRIGHT" ]]; then
+                    SUBVAL=5
+                else
+                    SUBVAL=1
+                fi
             fi
+            SUBCMD="-set ${SUBVAL}0"
             ;;
         *)
             echo "unknown command $ACTION"
