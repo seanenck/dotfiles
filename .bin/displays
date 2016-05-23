@@ -195,15 +195,15 @@ function change-brightness()
         $LOW_BRIGHT | $FULL_BRIGHT | $MID_BRIGHT)
             SUBVAL=""
             if [[ "$1" == "$FULL_BRIGHT" ]]; then
-                SUBVAL=10
+                SUBVAL=100
             else
                 if [[ "$1" == "$MID_BRIGHT" ]]; then
-                    SUBVAL=5
+                    SUBVAL=60
                 else
-                    SUBVAL=1
+                    SUBVAL=25
                 fi
             fi
-            SUBCMD="-set ${SUBVAL}0"
+            SUBCMD="-set ${SUBVAL}"
             ;;
         *)
             echo "unknown command $ACTION"
