@@ -4,7 +4,6 @@ source $HOME/.bin/system_stats
 SEARCH_KEY="search"
 SEARCH_PRIVATE_KEY="search-private"
 CLIPBOARD_KEY="clipboard"
-EDITOR_KEY="editor"
 PASSWORD_KEY="passwords"
 VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
@@ -18,7 +17,6 @@ SNAPSHOT_KEY="snapshot"
 MARKDOWN_KEY="markdown"
 CHROME_KEY="chrome"
 PRIVATE_KEY="-private"
-RUN_KEY="spawn"
 CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
 GOOGLE_CHROME_KEY="google-chrome"
 INSTALL_CHROME_KEY="setup-chrome"
@@ -94,30 +92,12 @@ helper_cache $line \$@" > $file_name
     done
 }
 
-function run-command()
-{
-    num=$1
-    if [ -z $num ]; then
-        echo "number of items to run required"
-        exit -1
-    fi
-    commands=${@:2}
-    if [ -z "$commands" ]; then
-        echo "command required"
-        exit -1
-    fi
-    for i in `seq $num`; do
-        lxterminal --command "$commands"
-    done
-}
-
 function print-help()
 {
     echo "
     $SEARCH_KEY (search)
     $SEARCH_PRIVATE_KEY (search privately)
     $CLIPBOARD_KEY (copy file contents to clipboard)
-    $EDITOR_KEY (open an editor)
     $PASSWORD_KEY (password management)
     $VOLUME_KEY (volume mixer)
     $REBUILD_KEY (rebuild cache)
@@ -136,18 +116,12 @@ function print-help()
     $STATS_KEY (primary display i3 status)
     $STATS_SECOND_KEY (secondary display i3 status)
     $INSTALL_CHROME_KEY (install chrome)
-    $RUN_KEY (run command)
 "
 }
 
 function run-terminal()
 {
     lxterminal --command "$1"
-}
-
-function editor()
-{
-    run-terminal "vim"
 }
 
 function volume-mixer()
@@ -195,7 +169,7 @@ function hidden-ssid()
         echo "ssid required..."
         exit -1
     fi
-    sudo iwlist wlp3s0 scanning essid $1
+    sudo iwlist wlp109s0 scanning essid $1
 }
 
 function install-chrome()
@@ -253,9 +227,6 @@ function get-systemd-logging()
 if [ ! -z $1 ]; then
     NEED_HELP=0
     case $1 in
-        $RUN_KEY)
-            run-command ${@:2}
-            ;;
         $PASSWORD_KEY)
             passwords
             ;;
@@ -268,9 +239,6 @@ if [ ! -z $1 ]; then
         $CLIPBOARD_KEY)
             file-required $2
             cat $2 | xclip -selection c
-            ;;
-        $EDITOR_KEY)
-            editor
             ;;
         $VOLUME_KEY)
             volume-mixer
