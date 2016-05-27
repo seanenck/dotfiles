@@ -147,7 +147,7 @@ function check-display-loc()
 # Enable aux displays
 function enable-displays()
 {
-    BASIS="xrandr --output $MAIN_DISPLAY --primary --auto --dpi 96"
+    BASIS="xrandr --output $MAIN_DISPLAY --primary --auto --dpi 192"
     CONNECTED=$(get-aux-displays)
     for display in $CONNECTED; do
         LOCAL_EXT="--output $display "
