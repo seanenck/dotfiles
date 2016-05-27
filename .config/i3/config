@@ -23,12 +23,6 @@ bindsym $mod+Shift+Right move right
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
-# split in horizontal orientation
-bindsym Mod1+h split h
-
-# split in vertical orientation
-bindsym Mod1+v split v
-
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 
@@ -135,8 +129,7 @@ bindsym $mod+Shift+n scratchpad show
 # Backlight
 bindsym XF86MonBrightnessUp exec subsystem display change brighter
 bindsym XF86MonBrightnessDown exec subsystem display change dimmer
-bindsym XF86Display exec subsystem display change full
-bindsym XF86LaunchA exec subsystem display profiles cycle
+bindsym $mod+Shift+u exec subsystem display profiles cycle
 
 # Volume
 bindsym XF86AudioMute exec subsystem volume sound mute
