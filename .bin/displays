@@ -18,6 +18,7 @@ DPMS_RESET="reset"
 CHANGE_BY_STEP=5
 IS_POSITIONED=0
 PROFILE_CYCLE="cycle"
+MAIN_SETTINGS="xrandr --output $MAIN_DISPLAY --primary --auto --dpi 192"
 
 function get-lighting-help()
 {
@@ -144,10 +145,15 @@ function check-display-loc()
     fi
 }
 
+function main-display-on()
+{
+    eval $MAIN_SETTINGS
+}
+
 # Enable aux displays
 function enable-displays()
 {
-    BASIS="xrandr --output $MAIN_DISPLAY --primary --auto --dpi 192"
+    BASIS=$MAIN_SETTINGS
     CONNECTED=$(get-aux-displays)
     for display in $CONNECTED; do
         LOCAL_EXT="--output $display "

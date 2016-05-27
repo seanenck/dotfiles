@@ -29,6 +29,7 @@ function change-workspace()
     CURRENT=$WORKSPACE_NORM
     case $1 in
         $WORKSPACE_START)
+            main-display-on
             AUX=$(get-aux-displays)
             echo "$AUX" | grep -q "^[A-Z]"
             if [ $? -eq 0 ]; then
@@ -53,7 +54,6 @@ function change-workspace()
     esac
     
     echo $CURRENT > $WORKPLACE_FILE
-    synclient TouchpadOff=1
     if [[ "$CURRENT" == "$WORKSPACE_DOCK" ]]; then
         enable-displays
     else
