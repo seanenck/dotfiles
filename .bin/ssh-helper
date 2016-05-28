@@ -1,14 +1,25 @@
 #!/bin/bash
 source $HOME/.bin/connect-common
-JUMP_DEF=$HOME/.cache/ssh.jumps
-SSH_NSPAWN_OFFSET=$HOME/.cache/nspawn/
+CACHE_LOCATION=$HOME/.cache/
+SSH_NSPAWN_OFFSET=${CACHE_LOCATION}nspawn/
+
+#format is relay,destination,ssh-options
+JUMP_DEF=${CACHE_LOCATION}ssh.jumps
+
+#format is host,/path/to/nspawn
 SSH_NSPAWN_LOOKUPS=$(cat ${SSH_NSPAWN_OFFSET}lookups.config)
+
+# format is host,container
 SSH_NSPAWN_CONFIG=${SSH_NSPAWN_OFFSET}containers.config
-CONFIG_NSPAWN=$SSH_NSPAWN_CONFIG
+
 IS_LOCAL="localhost"
 NSPAWN_KEY="nspawn"
 JUMP_KEY="jump"
 DELIMITER=","
+
+touch $JUMP_DEF
+touch $SSH_NSPAWN_CONFIG
+
 function do-jump()
 {
     if [ ! -e $JUMP_DEF ]; then
@@ -71,7 +82,7 @@ function print-help()
 
 function get-hostnames()
 {
-    for host in $(cat $CONFIG_NSPAWN | cut -d "$DELIMITER" -f 1); do
+    for host in $(cat $SSH_NSPAWN_CONFIG | cut -d "$DELIMITER" -f 1); do
         echo "$host"
     done
     echo "$IS_LOCAL"
@@ -87,7 +98,7 @@ function get-container-names()
     if [[ $1 == "$IS_LOCAL" ]]; then
         nspawn list | grep -v "template"
     else
-        for container in $(cat $CONFIG_NSPAWN | grep "^$1$DELIMITER" | cut -d "$DELIMITER" -f 2); do
+        for container in $(cat $SSH_NSPAWN_CONFIG | grep "^$1$DELIMITER" | cut -d "$DELIMITER" -f 2); do
             echo "$container"
         done
     fi
@@ -167,7 +178,7 @@ function print-nspawn-help()
 
 function resolve-nspawn-machine()
 {
-    config=$(cat $CONFIG_NSPAWN | grep "$DELIMITER$1")
+    config=$(cat $SSH_NSPAWN_CONFIG | grep "$DELIMITER$1")
     local_config=$(get-container-names $IS_LOCAL | grep "$1" | sed "s/^/$IS_LOCAL$DELIMITER/g")
     echo $config" "$local_config
 }
