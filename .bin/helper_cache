@@ -17,6 +17,7 @@ SNAPSHOT_KEY="snapshot"
 MARKDOWN_KEY="markdown"
 CHROME_KEY="chrome"
 PRIVATE_KEY="-private"
+WIFI_TOGGLE_KEY="wifi_toggle"
 CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
 GOOGLE_CHROME_KEY="google-chrome"
 INSTALL_CHROME_KEY="setup-chrome"
@@ -116,6 +117,7 @@ function print-help()
     $STATS_KEY (primary display i3 status)
     $STATS_SECOND_KEY (secondary display i3 status)
     $INSTALL_CHROME_KEY (install chrome)
+    $WIFI_TOGGLE_KEY (enable/disable wifi resume on wake)
 "
 }
 
@@ -170,6 +172,15 @@ function hidden-ssid()
         exit -1
     fi
     sudo iwlist wlp109s0 scanning essid $1
+}
+
+function wifi-toggle()
+{
+    if [ -e $WIFI_OFF ]; then
+        rm -f $WIFI_OFF
+    else
+        touch $WIFI_OFF
+    fi 
 }
 
 function install-chrome()
@@ -294,6 +305,9 @@ if [ ! -z $1 ]; then
             ;;
         $INSTALL_CHROME_KEY)
             install-chrome
+            ;;
+        $WIFI_TOGGLE_KEY)
+            wifi-toggle
             ;;
         *)
             NEED_HELP=1

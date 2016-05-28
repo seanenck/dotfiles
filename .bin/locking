@@ -47,7 +47,6 @@ function suspend-now()
     if [ ! -e $DISPLAY_UN -a ! -e $DISPLAY_EN ]; then
         CUR_VOL=$(change-volume $VOL_STAT)
         CUR_VOL=$(echo $CUR_VOL)
-        WIFI_ON=$(nmcli radio wifi)
         if [[ "$CUR_VOL" != "0" ]]; then
             write-log "muting volume"
             change-volume $VOL_MUTE
@@ -72,7 +71,7 @@ function suspend-now()
             PID=$(get-i3lock)
         done
         toggle-dpms $DPMS_OFF
-        if [[ $WIFI_ON == "enabled" ]]; then
+        if [ ! -e "$WIFI_OFF" ]; then
             nmcli radio wifi on
         fi
         write-log "done sleeping"
