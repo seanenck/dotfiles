@@ -71,6 +71,7 @@ function suspend-now()
             PID=$(get-i3lock)
         done
         toggle-dpms $DPMS_OFF
+        nmcli radio wifi on
         write-log "done sleeping"
     fi
 }
