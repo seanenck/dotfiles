@@ -1,0 +1,18 @@
+#!/bin/bash
+_ssh-helper()
+{
+    local cur prev opts item
+    cur=${COMP_WORDS[COMP_CWORD]}
+    prev=${COMP_WORDS[COMP_CWORD-1]}
+    if [ $COMP_CWORD -eq 1 ]; then
+        opts=$(ssh-helper | cut -d " " -f 1)
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    else
+        opts=""
+        for item in $(ssh-helper $prev | cut -d " " -f 5); do
+            opts="$item $opts"
+        done 
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) ) 
+    fi
+}
+complete -F _ssh-helper ssh-helper

@@ -1,7 +1,0 @@
-#!/bin/bash
-source $HOME/.bin/autocomplete/autocomplete-common
-_ssh-jump()
-{
-    _simple_autocomplete "ssh-jump"
-}
-complete -F _ssh-jump ssh-jump
