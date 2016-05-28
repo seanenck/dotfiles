@@ -52,6 +52,10 @@ function print-jump-help()
         for line in $(cat $JUMP_DEF); do
             avail=$(echo $line | cut -d "$DELIMITER" -f 2)
             host=$(echo $line | cut -d "$DELIMITER" -f 1)
+            available=$(test-ssh "$host")
+            if [ $available -ne $IS_CONNECTED ]; then
+                continue
+            fi
             args=$(echo $line | cut -d "$DELIMITER" -f 3)
             echo "    $avail (through $host) $args"
         done
