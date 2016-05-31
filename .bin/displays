@@ -7,7 +7,7 @@ LOW_BRIGHT="low"
 MID_BRIGHT="mid"
 DIMMER="dimmer"
 MAIN_DISPLAY="eDP1"
-LEFT_DISPLAY="DP2-1"
+LEFT_DISPLAY="DP1-2"
 RIGHT_DISPLAY="DP2-2"
 LEFT_POS="left"
 RIGHT_POS="right"
@@ -18,7 +18,7 @@ DPMS_RESET="reset"
 CHANGE_BY_STEP=5
 IS_POSITIONED=0
 PROFILE_CYCLE="cycle"
-MAIN_SETTINGS="xrandr --output $MAIN_DISPLAY --primary --auto --dpi 192"
+MAIN_SETTINGS="xrandr --output $MAIN_DISPLAY --primary --auto --dpi 144"
 
 function get-lighting-help()
 {
@@ -157,7 +157,7 @@ function enable-displays()
     CONNECTED=$(get-aux-displays)
     for display in $CONNECTED; do
         LOCAL_EXT="--output $display "
-        LOCAL_EXT=$LOCAL_EXT"--auto --dpi 96 "
+        LOCAL_EXT=$LOCAL_EXT"--auto "
         LOCAL_EXT=$LOCAL_EXT" "$(check-display-loc "$display" "$RIGHT_DISPLAY" "right" "")
         LOCAL_EXT=$LOCAL_EXT" "$(check-display-loc "$display" "$LEFT_DISPLAY" "left" "--rotate right")
         LOCAL_EXT="$BASIS $LOCAL_EXT"
