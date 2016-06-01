@@ -1,24 +1,13 @@
 #!/bin/bash
-source $HOME/.bin/displays
-source $HOME/.bin/i3-common
-MOVE_CONTAINER=1
-MOVE_WORKSPACE=2
-
-function move-and-focus()
+# Get i3 workspaces (only name/number by default, more grep outputs available via first param)
+function get-i3-workspaces()
 {
-    DISP=$(convert-position-to-display $1)
-    case $2 in
-        $MOVE_CONTAINER)
-            CMD="container"
-            ;;
-        $MOVE_WORKSPACE)
-            CMD="workspace"
-            ;;
-    esac
-    if [ ! -z "$CMD" ]; then
-        i3-msg move $CMD to output $DISP
+    JSON_PATTERN="name"
+    if [ ! -z "$1" ]; then
+        JSON_PATTERN="$JSON_PATTERN|$1"
     fi
-    i3-msg focus output $DISP
+    WORKSPACE_INFO=$(i3-msg -t 'get_workspaces' | sed -e 's/{"num/\n{"num/g' | sed -e 's/,"/\n/g' | grep -E "$JSON_PATTERN" | cut -d\" -f 3)
+    echo "$WORKSPACE_INFO"
 }
 
 function close-all-containers()
@@ -31,21 +20,6 @@ function close-all-containers()
     i3-msg kill
 }
 
-function move-to-focus()
-{
-    move-and-focus $1 0
-}
-
-function move-container-and-focus()
-{
-    move-and-focus $1 $MOVE_CONTAINER
-}
-
-function move-workspace-and-focus()
-{
-    move-and-focus $1 $MOVE_WORKSPACE
-}
-
 function rename-workspace()
 {
     get-i3-workspaces | grep -q $1
@@ -55,3 +29,4 @@ function rename-workspace()
 }
 
 $1 $2
+

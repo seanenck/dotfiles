@@ -19,6 +19,10 @@ bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
+bindsym $mod+Control+Left exec i3-msg move workspace to output left
+bindsym $mod+Control+Up exec i3-msg move workspace to output up
+bindsym $mod+Control+Down exec i3-msg move workspace to output down
+bindsym $mod+Control+Right exec i3-msg move workspace to output right
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -64,17 +68,6 @@ bindsym $mod+Control+7 exec i3_commands rename-workspace 7
 bindsym $mod+Control+8 exec i3_commands rename-workspace 8
 bindsym $mod+Control+9 exec i3_commands rename-workspace 9
 bindsym $mod+Control+0 exec i3_commands rename-workspace 10
-
-# output switching
-bindsym $mod+Shift+bracketright exec i3_commands move-container-and-focus right
-bindsym $mod+Shift+apostrophe exec i3_commands move-container-and-focus center
-bindsym $mod+Shift+bracketleft exec i3_commands move-container-and-focus left
-bindsym $mod+bracketright exec i3_commands move-to-focus right
-bindsym $mod+apostrophe exec i3_commands move-to-focus center
-bindsym $mod+bracketleft exec i3_commands move-to-focus left
-bindsym $mod+Control+bracketright exec i3_commands move-workspace-and-focus right
-bindsym $mod+Control+apostrophe exec i3_commands move-workspace-and-focus center
-bindsym $mod+Control+bracketleft exec i3_commands move-workspace-and-focus left
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
