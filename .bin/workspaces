@@ -98,16 +98,16 @@ function change-workspace()
     fi
     PREV=$((WORKSPACE_NUM-1))
     force-workplace $PREV
-    i3 restart
-    if [ -e $BACKGROUND_IMAGE ]; then
-        feh --bg-fill $BACKGROUND_IMAGE
-    else
-        xsetroot -solid "#333333"
-    fi
 }
 
 function force-workplace()
 {
     set-workplace $OPEN_COMMAND $1
     set-workplace $NAME_COMMAND $1 > $WORKPLACE_FILE
+    i3 restart
+    if [ -e $BACKGROUND_IMAGE ]; then
+        feh --bg-fill $BACKGROUND_IMAGE
+    else
+        xsetroot -solid "#333333"
+    fi
 }
