@@ -44,7 +44,7 @@ function set-workplace()
         for disp in $ALL_DISPLAYS; do
             xrandr --output $disp --off
         done
-        xrandr --output $MAIN_DISPLAY --auto 
+        xrandr --output $MAIN_DISPLAY --primary --auto 
         case $2 in
             $WORK_LEFT_ID)
                 replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
