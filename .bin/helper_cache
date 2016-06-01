@@ -18,6 +18,7 @@ MARKDOWN_KEY="markdown"
 CHROME_KEY="chrome"
 PRIVATE_KEY="-private"
 WIFI_TOGGLE_KEY="wifi_toggle"
+MOUSE_TOGGLE_KEY="touchpad_toggle"
 CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
 GOOGLE_CHROME_KEY="google-chrome"
 INSTALL_CHROME_KEY="setup-chrome"
@@ -118,6 +119,7 @@ function print-help()
     $STATS_SECOND_KEY (secondary display i3 status)
     $INSTALL_CHROME_KEY (install chrome)
     $WIFI_TOGGLE_KEY (enable/disable wifi resume on wake)
+    $MOUSE_TOGGLE_KEY (toggle touchpad on/off)
 "
 }
 
@@ -181,6 +183,19 @@ function wifi-toggle()
     else
         touch $WIFI_OFF
     fi 
+}
+
+function toggle-touchpad()
+{
+    INPUT_ID=$(xinput | grep "ImPS/2" | sed -n -e 's/^.*id=//p' | sed -e "s/\s/ /g" | cut -d " " -f 1)
+    IS_ENABLED=$(xinput list-props $INPUT_ID | grep "Device Enabled" | cut -d ":" -f 2)
+    IS_ENABLED=$(echo $IS_ENABLED)
+    if [ $IS_ENABLED -gt 0 ]; then
+        IS_ENABLED=0
+    else
+        IS_ENABLED=1
+    fi
+    xinput set-prop $INPUT_ID "Device Enabled" $IS_ENABLED
 }
 
 function install-chrome()
@@ -308,6 +323,9 @@ if [ ! -z $1 ]; then
             ;;
         $WIFI_TOGGLE_KEY)
             wifi-toggle
+            ;;
+        $MOUSE_TOGGLE_KEY)
+            toggle-touchpad
             ;;
         *)
             NEED_HELP=1
