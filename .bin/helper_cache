@@ -16,9 +16,11 @@ LOGGING_ALL_KEY="logging-all"
 SNAPSHOT_KEY="snapshot"
 MARKDOWN_KEY="markdown"
 CHROME_KEY="chrome"
+TAR_KEY="tar-cache"
 PRIVATE_KEY="-private"
 WIFI_TOGGLE_KEY="wifi_toggle"
 MOUSE_TOGGLE_KEY="touchpad_toggle"
+TAR_FILES="background.png dmenu_urls/*.index ssh.jumps nspawn/*"
 CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
 GOOGLE_CHROME_KEY="google-chrome"
 INSTALL_CHROME_KEY="setup-chrome"
@@ -29,6 +31,21 @@ WORKING=/opt/workspace/shared
 STORAGE=$USER_TMP/markdown-preview/
 STATS_KEY="i3-system-stats"
 STATS_SECOND_KEY="i3-system-stats-secondary"
+
+function tar-cache()
+{
+    if [ -z $1 ]; then
+        echo "File required..."
+        exit -1
+    fi
+
+    OUT_TAR=$PWD/$1.tar
+    if [ -e $OUT_TAR ]; then
+        echo "$1 already exists..."
+        exit -1
+    fi
+    cd $HOME/.cache && tar cf $OUT_TAR $TAR_FILES
+}
 
 function markdown()
 {
@@ -120,6 +137,7 @@ function print-help()
     $INSTALL_CHROME_KEY (install chrome)
     $WIFI_TOGGLE_KEY (enable/disable wifi resume on wake)
     $MOUSE_TOGGLE_KEY (toggle touchpad on/off)
+    $TAR_KEY (tar cache config items)
 "
 }
 
@@ -283,6 +301,9 @@ if [ ! -z $1 ]; then
             ;;
         $TREE_KEY)
             get-tree
+            ;;
+        $TAR_KEY)
+            tar-cache "$2"
             ;;
         $CHECKSUM_KEY)
             get-checksum
