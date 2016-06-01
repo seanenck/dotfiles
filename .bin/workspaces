@@ -80,7 +80,7 @@ function get-workspace-help()
 function change-workspace()
 {
     WORKSPACE_NUM=$DEFAULT_WORKSPACE_ID
-    if [ $1 != "$WORKSPACE_STARTUP" ]; then
+    if [ $1 != "$WORKSPACE_START" ]; then
         WORKING_NUMBER=$WORKSPACE_NUM
         if [ -e $WORKPLACE_WORKING ]; then
             WORKING_NUMBER=$(cat $WORKPLACE_WORKING)
