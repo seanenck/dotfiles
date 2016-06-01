@@ -1,70 +1,113 @@
 #!/bin/bash
 source $HOME/.bin/common
 source $HOME/.bin/displays
-source $HOME/.bin/i3-common
 WORKPLACE_FILE=$USER_TMP/workplace
+WORKPLACE_WORKING=$USER_TMP/working
 DISPLAY_UN=/tmp/display-unlock
 DISPLAY_EN=/tmp/display-enabled
-LAYOUT_DELIM=":"
-WORKSPACE_DOCK="dock"
-WORKSPACE_NORM="mobile"
 WORKSPACE_START="startup"
 WORKSPACE_RELOAD="reload"
 WORKSPACE_CHANGE="change"
 BACKGROUND_IMAGE=$HOME/.cache/background.png
+DEFAULT_WORKSPACE_ID=1
+WORK_LEFT_ID=2
+WORK_RIGHT_ID=3
+MAX_WORKSPACE=$WORK_RIGHT_ID
+DISP_HOLDER="DISPLAY_VALUE"
+WORK_COMMON_LEFT="--output $DISP_HOLDER --auto --left-of $MAIN_DISPLAY --rotate right"
+WORK_COMMON_RIGHT="--output $DISP_HOLDER --auto --right-of $MAIN_DISPLAY"
+NAME_COMMAND="naming"
+OPEN_COMMAND="open"
+
+function replace-and-execute()
+{
+    VAL="xrandr "$(echo "$1" | sed "s/$DISP_HOLDER/$2/g")
+    eval $VAL
+}
+
+function set-workplace()
+{
+    if [[ $1 == "$NAME_COMMAND" ]]; then
+        case $2 in
+            $WORK_LEFT_ID)
+                echo "work-left"
+                ;;
+            $WORK_RIGHT_ID)
+                echo "work-right"
+                ;;
+            *)
+                echo "mobile"
+                ;;
+        esac
+    else
+        ALL_DISPLAYS=$(get-all-displays | grep -v "$MAIN_DISPLAY")
+        for disp in $ALL_DISPLAYS; do
+            xrandr --output $disp --off
+        done
+        xrandr --output $MAIN_DISPLAY --auto 
+        case $2 in
+            $WORK_LEFT_ID)
+                replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
+                replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
+                ;;
+            $WORK_RIGHT_ID)
+                replace-and-execute "$WORK_COMMON_LEFT" "$DISP_TWO"
+                replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_ONE"
+                ;;
+        esac
+        xrandr --dpi 144
+    fi
+}
 
 # Workspace help
 function get-workspace-help()
 {
+    WORKSPACE_NAMES=""
+    for idx in $(seq $DEFAULT_WORKSPACE_ID $MAX_WORKSPACE); do
+        NAMED=$(set-workplace $NAME_COMMAND $idx)
+        WORKSPACE_NAMES=$WORKSPACE_NAMES"
+    $1 $3 $idx (load $NAMED)"
+    done
     echo "
     $1 $2 $WORKSPACE_START (workspace startup/setup)
     $1 $2 $WORKSPACE_RELOAD (reload current workspace setup)
     $1 $2 $WORKSPACE_CHANGE (change the current workspace setup)
+    $WORKSPACE_NAMES
     "
 }
 
 # Change/toggle workspaces
 function change-workspace()
 {
-    CURRENT=$WORKSPACE_NORM
-    case $1 in
-        $WORKSPACE_START)
-            main-display-on
-            AUX=$(get-aux-displays)
-            echo "$AUX" | grep -q "^[A-Z]"
-            if [ $? -eq 0 ]; then
-                CURRENT=$WORKSPACE_DOCK
-            fi
-            ;;
-        $WORKSPACE_RELOAD | $WORKSPACE_CHANGE)
-            if [ -e $WORKPLACE_FILE ]; then
-                CURRENT=$(cat $WORKPLACE_FILE)
-            fi
-
-            if [[ "$1" == "$WORKSPACE_RELOAD" ]]; then
-                toggle-dpms $DPMS_OFF
-            else
-                if [[ "$CURRENT" == "$WORKSPACE_NORM" ]]; then
-                    CURRENT=$WORKSPACE_DOCK
-                else
-                    CURRENT=$WORKSPACE_NORM
-                fi
-            fi
-            ;;
-    esac
-    
-    echo $CURRENT > $WORKPLACE_FILE
-    if [[ "$CURRENT" == "$WORKSPACE_DOCK" ]]; then
-        enable-displays
-    else
-        disable-displays
+    WORKSPACE_NUM=$DEFAULT_WORKSPACE_ID
+    if [ $1 != "$WORKSPACE_STARTUP" ]; then
+        WORKING_NUMBER=$WORKSPACE_NUM
+        if [ -e $WORKPLACE_WORKING ]; then
+            WORKING_NUMBER=$(cat $WORKPLACE_WORKING)
+            case $1 in
+                $WORKSPACE_RELOAD)
+                    WORKING_NUMBER=$((WORKING_NUMBER-1))
+                    ;;
+            esac
+        fi
+        WORKSPACE_NUM=$((WORKING_NUMBER+1))
     fi
-
+    echo $WORKSPACE_NUM > $WORKPLACE_WORKING
+    if [ $WORKSPACE_NUM -gt $MAX_WORKSPACE ]; then
+        rm -f $WORKPLACE_WORKING
+    fi
+    PREV=$((WORKSPACE_NUM-1))
+    force-workplace $PREV
     i3 restart
     if [ -e $BACKGROUND_IMAGE ]; then
         feh --bg-fill $BACKGROUND_IMAGE
     else
         xsetroot -solid "#333333"
     fi
-    toggle-dpms $DPMS_ON
+}
+
+function force-workplace()
+{
+    set-workplace $OPEN_COMMAND $1
+    set-workplace $NAME_COMMAND $1 > $WORKPLACE_FILE
 }

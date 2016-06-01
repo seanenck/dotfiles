@@ -10,6 +10,7 @@ DISPLAY_CHANGE="change"
 SOUND_COMMAND="sound"
 CYCLE_WORKSPACE="cycle"
 WORKSPACES_KEY="workspaces"
+FORCE_WORKSPACE="force"
 PROF_KEY="profiles"
 SYS_STATS_KEY="sys-stats"
 SYS_STATS_ENABLE="enable"
@@ -35,7 +36,7 @@ function get-help()
                 get-volume-help $item $SOUND_COMMAND
                 ;;
             $WORKSPACES_KEY)
-                get-workspace-help $item $CYCLE_WORKSPACE
+                get-workspace-help $item $CYCLE_WORKSPACE $FORCE_WORKSPACE
                 ;;
             $SYS_STATS_KEY)
                 get-sys-stats-help $item
@@ -76,6 +77,9 @@ function workspace-subsystem()
     case $1 in
         $CYCLE_WORKSPACE)
             change-workspace "$2"
+            ;;
+        $FORCE_WORKSPACE)
+            force-workplace "$2"
             ;;
         *)
             echo "Unknown workspaces request: $1"

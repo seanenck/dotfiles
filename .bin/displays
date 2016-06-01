@@ -6,9 +6,6 @@ FULL_BRIGHT="full"
 LOW_BRIGHT="low"
 MID_BRIGHT="mid"
 DIMMER="dimmer"
-MAIN_DISPLAY="eDP1"
-LEFT_DISPLAY="DP2-2"
-RIGHT_DISPLAY="DP1-2"
 LEFT_POS="left"
 RIGHT_POS="right"
 CENTER_POS="center"
@@ -18,7 +15,9 @@ DPMS_RESET="reset"
 CHANGE_BY_STEP=5
 IS_POSITIONED=0
 PROFILE_CYCLE="cycle"
-MAIN_SETTINGS="xrandr --output $MAIN_DISPLAY --primary --auto --dpi 144"
+MAIN_DISPLAY="eDP1"
+DISP_ONE="DP1-2"
+DISP_TWO="DP2-2"
 
 function get-lighting-help()
 {
@@ -51,118 +50,15 @@ function toggle-dpms()
     esac
 }
 
-function get-positioned-display()
-{
-    use_pos=""
-    case $1 in
-        $LEFT_POS)
-            use_pos="$LEFT_DISPLAY"
-            ;;
-        $RIGHT_POS)
-            use_pos="$RIGHT_DISPLAY"
-            ;;
-    esac
-    if [ ! -z "$use_pos" ]; then
-        for disp in $(get-aux-displays); do
-        is_pos=$(display-is-located "$disp" "$use_pos")
-        if [ $is_pos -eq $IS_POSITIONED ]; then
-            echo $disp
-            exit 0
-        fi
-        done
-    fi
-}
-
-# Convert positional information to display name (xrandr name)
-function convert-position-to-display()
-{
-    DISP=$(get-positioned-display "$1")
-    if [ -z "$DISP" ]; then
-        DISP=$MAIN_DISPLAY
-    fi
-    ALL_DISPS=$(get-displays | grep -qE "$DISP")
-    if [ $? -ne 0 ]; then
-        DISP=$MAIN_DISPLAY
-    fi
-    
-    echo $DISP
-}
-
 # Get displays, first argument can filter out any displays
 function get-displays()
 {
-    DISPLAY_RESULT=$(xrandr | grep " connected" | cut -d " " -f 1)
-    if [ ! -z "$1" ]; then
-        DISPLAY_RESULT=$(echo "$DISPLAY_RESULT" | grep -v "$1")
-    fi
-    echo $DISPLAY_RESULT
+    get-all-displays " "
 }
 
-# Get aux displays (not main)
-function get-aux-displays()
+function get-all-displays()
 {
-    DISPS=$(get-displays "$MAIN_DISPLAY" | sort -r)
-    echo $DISPS
-}
-
-# Disable aux displays
-function disable-displays()
-{
-    CONNECTED=$(get-aux-displays)
-    for disp in ${CONNECTED[@]}; do
-        xrandr --output $disp --off
-    done
-}
-
-# Get display modes for a specified display (or all if no 1 is given)
-function get-display-modes()
-{
-    MODES=$(xrandr | grep -E "DP|[0-9]x[0-9]" | cut -d " " -f 1,4 | sed -e 's/^ /_/g' | cut -d " " -f 1 | sed -e 's/^\([a-zA-Z]\)/display_\1/g' | xargs | sed -e 's/display_/\n/g' | sed -e 's/_//g')
-    if [ ! -z "$1" ]; then
-        MODES=$(echo "$MODES" | grep "$1 ")
-    fi
-
-    echo "$MODES"
-}
-
-# get if a display is at a position
-function display-is-located()
-{
-    echo "$1" | grep -q -E "$2"
-    if [ $? -eq 0 ]; then
-        echo $IS_POSITIONED
-    else
-        echo 1
-    fi
-}
-
-# check display location and report back xrandr info
-function check-display-loc()
-{
-    is_pos=$(display-is-located "$1" "$2")
-    if [ $is_pos -eq $IS_POSITIONED ]; then
-        echo "--$3-of $MAIN_DISPLAY $4"
-    fi
-}
-
-function main-display-on()
-{
-    eval $MAIN_SETTINGS
-}
-
-# Enable aux displays
-function enable-displays()
-{
-    BASIS=$MAIN_SETTINGS
-    CONNECTED=$(get-aux-displays)
-    for display in $CONNECTED; do
-        LOCAL_EXT="--output $display "
-        LOCAL_EXT=$LOCAL_EXT"--auto "
-        LOCAL_EXT=$LOCAL_EXT" "$(check-display-loc "$display" "$RIGHT_DISPLAY" "right" "")
-        LOCAL_EXT=$LOCAL_EXT" "$(check-display-loc "$display" "$LEFT_DISPLAY" "left" "--rotate right")
-        LOCAL_EXT="$BASIS $LOCAL_EXT"
-        eval $LOCAL_EXT
-    done
+    xrandr | grep "${1}connected" | cut -d " " -f 1
 }
 
 # Toggle backlighting up/down to a specified level
