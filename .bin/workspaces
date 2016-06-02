@@ -27,6 +27,7 @@ function replace-and-execute()
 
 function set-workplace()
 {
+    use_dpi=192
     if [[ $1 == "$NAME_COMMAND" ]]; then
         case $2 in
             $WORK_LEFT_ID)
@@ -47,15 +48,17 @@ function set-workplace()
         xrandr --output $MAIN_DISPLAY --primary --auto 
         case $2 in
             $WORK_LEFT_ID)
+                use_dpi=144
                 replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
                 replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
                 ;;
             $WORK_RIGHT_ID)
+                use_dpi=144
                 replace-and-execute "$WORK_COMMON_LEFT" "$DISP_TWO"
                 replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_ONE"
                 ;;
         esac
-        xrandr --dpi 144
+        xrandr --dpi $use_dpi
     fi
 }
 
