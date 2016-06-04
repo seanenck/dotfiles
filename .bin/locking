@@ -36,7 +36,7 @@ function lock-now()
                 sleep 1
             done
             write-log "unlocking..."
-            change-brightness $FULL_BRIGHT
+            change-brightness $MID_BRIGHT
         fi
     fi
 }
@@ -52,6 +52,7 @@ function suspend-now()
             change-volume $VOL_MUTE
         fi
 
+        rm -f $PROFILE_DEF
         PID=$(get-i3lock)
         SLEEP_COUNT=0
         if [ -z "$1" ]; then

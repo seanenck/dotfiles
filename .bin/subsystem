@@ -20,7 +20,6 @@ SYS_STATS_TOGGLE="toggle"
 DPMS_KEY="dpms"
 ALL_AVAILBLE="$DISPLAY_KEY $VOLUME_KEY $WORKSPACES_KEY $SYS_STATS_KEY"
 HELP="help"
-PROFILE_DEF=${USER_TMP}/profile.next
 
 function get-help()
 {

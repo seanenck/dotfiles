@@ -7,6 +7,7 @@ INSTALL_KEYWORD="--install"
 REMOVE_KEYWORD="--remove"
 INSTALL_DIR="/opt/"
 WIFI_OFF="$USER_TMP/wifi-off"
+PROFILE_DEF="${USER_TMP}/profile.next"
 
 NSPAWN_JOURNAL_CATEGORY="nspawn"
 SYNC_JOURNAL_CATEGORY="syncing"
