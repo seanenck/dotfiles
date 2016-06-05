@@ -8,7 +8,6 @@ PASSWORD_KEY="passwords"
 VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
 SSID_KEY="ssid"
-CHECKSUM_KEY="checksum"
 LOGGING_KEY="logging"
 LOGGING_ALL_KEY="logging-all"
 SNAPSHOT_KEY="snapshot"
@@ -103,7 +102,6 @@ function print-help()
     $REBUILD_KEY (rebuild cache)
     $SSID_KEY (discover a hidden SSID)
     $SNAPSHOT_KEY (snapshot workspace)
-    $CHECKSUM_KEY (get checksum of files under this directory)
     $LOGGING_KEY (systemd logging by journal type and today: $ALL_JOURNAL_CATEGORIES) 
     $LOGGING_ALL_KEY (systemd logging by journal type: $ALL_JOURNAL_CATEGORIES) 
     $MARKDOWN_KEY (markdown output generation)
@@ -147,12 +145,6 @@ function snapshot()
     cd $STAGE && tar -cvzf $SNAP_FILE * && cd $CUR_DIR
     rm -rf $STAGE
 }
-
-function get-checksum()
-{
-    find -type f -exec sha512sum "{}" + | sort -k 2
-}
-
 
 function hidden-ssid()
 {
@@ -264,9 +256,6 @@ if [ ! -z $1 ]; then
             ;;
         $SNAPSHOT_KEY)
             snapshot
-            ;;
-        $CHECKSUM_KEY)
-            get-checksum
             ;;
         $LOGGING_KEY | $LOGGING_ALL_KEY)
             DO_ALL=0
