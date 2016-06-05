@@ -186,6 +186,14 @@ function toggle-touchpad()
 
 function install-chrome()
 {
+    chromium_version=$(chromium --version | cut -d " " -f 2)
+    google_version=$(google-chrome-stable --version | cut -d " " -f 3)
+    if [[ $chromium_version == $google_version ]]; then
+        read -p "same version detected, process (y/n)? " yn
+        if [[ -z $yn ]] || [[ "$yn" != "y" ]]; then
+            exit 0
+        fi
+    fi
     id=$(uuidgen)
     file_name=/tmp/chrome-$id.rpm
     wget -O $file_name https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
@@ -200,6 +208,11 @@ function install-chrome()
     sudo mv usr/bin/google-chrome-stable /usr/bin/google-chrome-stable
     sudo chown root:root /opt/google/chrome/chrome-sandbox
     sudo chmod 4755 /opt/google/chrome/chrome-sandbox
+    echo ""
+    echo "version information"
+    echo "-------------------"
+    chromium --version
+    google-chrome-stable --version
     cd $current
 }
 
