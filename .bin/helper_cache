@@ -16,6 +16,7 @@ CHROME_KEY="chrome"
 PRIVATE_KEY="-private"
 WIFI_TOGGLE_KEY="wifi_toggle"
 MOUSE_TOGGLE_KEY="touchpad_toggle"
+FORCE_SYNC_KEY="force-sync"
 CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
 GOOGLE_CHROME_KEY="google-chrome"
 INSTALL_CHROME_KEY="setup-chrome"
@@ -26,6 +27,11 @@ WORKING=/opt/workspace/shared
 STORAGE=$USER_TMP/markdown-preview/
 STATS_KEY="i3-system-stats"
 STATS_SECOND_KEY="i3-system-stats-secondary"
+
+function force-sync()
+{
+    touch $SYNC_NOW
+}
 
 function markdown()
 {
@@ -114,6 +120,7 @@ function print-help()
     $INSTALL_CHROME_KEY (install chrome)
     $WIFI_TOGGLE_KEY (enable/disable wifi resume on wake)
     $MOUSE_TOGGLE_KEY (toggle touchpad on/off)
+    $FORCE_SYNC_KEY (force syncing)
 "
 }
 
@@ -296,6 +303,9 @@ if [ ! -z $1 ]; then
             ;;
         $MOUSE_TOGGLE_KEY)
             toggle-touchpad
+            ;;
+        $FORCE_SYNC_KEY)
+            force-sync
             ;;
         *)
             NEED_HELP=1

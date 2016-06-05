@@ -40,11 +40,17 @@ function start-syncing()
             fi
         fi
         sleep $SLEEP_FOR
+        if [ -e $SYNC_NOW ]; then
+            write-log "FORCE SYNC DETECTED"
+            rm -f $SYNC_NOW
+            ROTATE_COUNT=$ROTATION_COUNT
+        fi
+
         ROTATE_COUNT=$((ROTATE_COUNT+1))
         if [ $ROTATE_COUNT -gt $ROTATION_COUNT ]; then
             ROTATE_COUNT=0
         fi
-        
+
         CURRENT_READ=$(date +%s)
         if [ -z "$LAST_READ" ]; then
             LAST_READ=$CURRENT_READ
