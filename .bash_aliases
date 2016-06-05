@@ -8,3 +8,5 @@ alias sys-stats-off='subsystem sys-stats enable off'
 alias tree='tree .'
 alias clear-mail="echo 'd *' | mail -N"
 alias checksum='find -type f -exec sha512sum "{}" + | sort -k 2'
+alias editor=vim
+alias explore='vim .'
