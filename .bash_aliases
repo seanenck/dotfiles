@@ -10,3 +10,4 @@ alias clear-mail="echo 'd *' | mail -N"
 alias checksum='find -type f -exec sha512sum "{}" + | sort -k 2'
 alias editor=vim
 alias explore='vim .'
+alias git-sub="git submodule update --init --recursive"
