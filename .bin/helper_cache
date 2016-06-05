@@ -7,9 +7,7 @@ CLIPBOARD_KEY="clipboard"
 PASSWORD_KEY="passwords"
 VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
-CLEAR_MAIL_KEY="mail-clear"
 SSID_KEY="ssid"
-TREE_KEY="tree-dir"
 CHECKSUM_KEY="checksum"
 LOGGING_KEY="logging"
 LOGGING_ALL_KEY="logging-all"
@@ -103,11 +101,9 @@ function print-help()
     $PASSWORD_KEY (password management)
     $VOLUME_KEY (volume mixer)
     $REBUILD_KEY (rebuild cache)
-    $CLEAR_MAIL_KEY (clear mail)
     $SSID_KEY (discover a hidden SSID)
     $SNAPSHOT_KEY (snapshot workspace)
     $CHECKSUM_KEY (get checksum of files under this directory)
-    $TREE_KEY (get file and directory tree structure)
     $LOGGING_KEY (systemd logging by journal type and today: $ALL_JOURNAL_CATEGORIES) 
     $LOGGING_ALL_KEY (systemd logging by journal type: $ALL_JOURNAL_CATEGORIES) 
     $MARKDOWN_KEY (markdown output generation)
@@ -152,20 +148,11 @@ function snapshot()
     rm -rf $STAGE
 }
 
-function get-tree()
-{
-    tree .
-}
-
 function get-checksum()
 {
     find -type f -exec sha512sum "{}" + | sort -k 2
 }
 
-function clear-mail()
-{
-    echo 'd *' | mail -N
-}
 
 function hidden-ssid()
 {
@@ -272,17 +259,11 @@ if [ ! -z $1 ]; then
         $REBUILD_KEY)
             rebuild-now
             ;;
-        $CLEAR_MAIL_KEY)
-            clear-mail
-            ;;
         $SSID_KEY)
             hidden-ssid "$2"
             ;;
         $SNAPSHOT_KEY)
             snapshot
-            ;;
-        $TREE_KEY)
-            get-tree
             ;;
         $CHECKSUM_KEY)
             get-checksum
