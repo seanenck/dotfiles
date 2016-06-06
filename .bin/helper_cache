@@ -171,19 +171,6 @@ function wifi-toggle()
     fi 
 }
 
-function toggle-touchpad()
-{
-    INPUT_ID=$(xinput | grep "ImPS/2" | sed -n -e 's/^.*id=//p' | sed -e "s/\s/ /g" | cut -d " " -f 1)
-    IS_ENABLED=$(xinput list-props $INPUT_ID | grep "Device Enabled" | cut -d ":" -f 2)
-    IS_ENABLED=$(echo $IS_ENABLED)
-    if [ $IS_ENABLED -gt 0 ]; then
-        IS_ENABLED=0
-    else
-        IS_ENABLED=1
-    fi
-    xinput set-prop $INPUT_ID "Device Enabled" $IS_ENABLED
-}
-
 function install-chrome()
 {
     chromium_version=$(chromium --version | cut -d " " -f 2)
