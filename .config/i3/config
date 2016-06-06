@@ -80,7 +80,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3? This will end the s
 # finds out, if available)
 bar {
         output DP2
-        output DP1
+        output HDMI1
         tray_output none
         status_command i3-system-stats-secondary
 }
