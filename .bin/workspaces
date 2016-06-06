@@ -11,8 +11,7 @@ WORKSPACE_CHANGE="change"
 BACKGROUND_IMAGE=$HOME/.cache/background.png
 DEFAULT_WORKSPACE_ID=1
 WORK_LEFT_ID=2
-WORK_RIGHT_ID=3
-MAX_WORKSPACE=$WORK_RIGHT_ID
+MAX_WORKSPACE=$WORK_LEFT_ID
 DISP_HOLDER="DISPLAY_VALUE"
 WORK_COMMON_LEFT="--output $DISP_HOLDER --auto --left-of $MAIN_DISPLAY --rotate right"
 WORK_COMMON_RIGHT="--output $DISP_HOLDER --auto --right-of $MAIN_DISPLAY"
@@ -31,10 +30,7 @@ function set-workplace()
     if [[ $1 == "$NAME_COMMAND" ]]; then
         case $2 in
             $WORK_LEFT_ID)
-                echo "work-left"
-                ;;
-            $WORK_RIGHT_ID)
-                echo "work-right"
+                echo "docked"
                 ;;
             *)
                 echo "mobile"
@@ -51,11 +47,6 @@ function set-workplace()
                 use_dpi=144
                 replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
                 replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
-                ;;
-            $WORK_RIGHT_ID)
-                use_dpi=144
-                replace-and-execute "$WORK_COMMON_LEFT" "$DISP_TWO"
-                replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_ONE"
                 ;;
         esac
         xrandr --dpi $use_dpi
