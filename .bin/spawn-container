@@ -33,11 +33,19 @@ if [ -d $NEW_PATH ] || [ -e $NEW_CONF ]; then
     exit -1
 fi
 
+machinectl status $TEMPLATE &> /dev/null
+if [ $? -eq 0 ]; then
+    echo "template is running..."
+    exit -1
+fi
+
 mkdir -p $ETC_NSPAWN
 NEW_BASIS_TEMPLATE=$ETC_NSPAWN${TEMPLATE}.nspawn
 if [ ! -e $NEW_BASIS_TEMPLATE ]; then
     ln -s $TEMPLATE_CONF $NEW_BASIS_TEMPLATE
 fi
 
+echo "copying data..."
 cp -R $TEMPLATE_PATH $NEW_PATH
+echo "and config..." 
 cp $TEMPLATE_CONF $NEW_CONF
