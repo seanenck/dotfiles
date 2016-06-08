@@ -5,6 +5,11 @@ CONFIG=".template"
 TEMPLATE_PATH=${LOCATION}$TEMPLATE
 TEMPLATE_CONF=$TEMPLATE_PATH$CONFIG
 
+if [ $UID -ne 0 ]; then
+    echo "must be run as root"
+    exit -1
+fi
+
 if [ ! -e $TEMPLATE_CONF ]; then
     echo "$TEMPLATE_CONF is required..."
     exit -1
@@ -28,11 +33,11 @@ if [ -d $NEW_PATH ] || [ -e $NEW_CONF ]; then
     exit -1
 fi
 
-sudo mkdir -p $ETC_NSPAWN
+mkdir -p $ETC_NSPAWN
 NEW_BASIS_TEMPLATE=$ETC_NSPAWN${TEMPLATE}.nspawn
 if [ ! -e $NEW_BASIS_TEMPLATE ]; then
-    sudo ln -s $TEMPLATE_CONF $NEW_BASIS_TEMPLATE
+    ln -s $TEMPLATE_CONF $NEW_BASIS_TEMPLATE
 fi
 
-sudo cp -R $TEMPLATE_PATH $NEW_PATH
-sudo cp $TEMPLATE_CONF $NEW_CONF
+cp -R $TEMPLATE_PATH $NEW_PATH
+cp $TEMPLATE_CONF $NEW_CONF
