@@ -6,9 +6,6 @@ SSH_NSPAWN_OFFSET=${CACHE_LOCATION}nspawn/
 #format is relay,destination,ssh-options
 JUMP_DEF=${CACHE_LOCATION}ssh.jumps
 
-#format is host,/path/to/nspawn
-SSH_NSPAWN_LOOKUPS=$(cat ${SSH_NSPAWN_OFFSET}lookups.config)
-
 # format is host,container
 SSH_NSPAWN_CONFIG=${SSH_NSPAWN_OFFSET}containers.config
 
@@ -99,13 +96,9 @@ function get-hosts()
 
 function get-container-names()
 {
-    if [[ $1 == "$IS_LOCAL" ]]; then
-        nspawn list | grep -v "template"
-    else
-        for container in $(cat $SSH_NSPAWN_CONFIG | grep "^$1$DELIMITER" | cut -d "$DELIMITER" -f 2); do
-            echo "$container"
-        done
-    fi
+    for container in $(cat $SSH_NSPAWN_CONFIG | grep "^$1$DELIMITER" | cut -d "$DELIMITER" -f 2); do
+        echo "$container"
+    done
 }
 
 function get-containers()
@@ -138,35 +131,13 @@ function valid-container()
 
 function connect-to()
 {
-    nspawn_path=""
-    for loc in $(echo $SSH_NSPAWN_LOOKUPS); do
-        echo "$loc" | grep -q "^$1\,"
-        if [ $? -eq 0 ]; then
-            nspawn_path=$(echo "$loc" | cut -d "," -f 2)
-            break
-        fi
-    done
-    cmd="${nspawn_path}nspawn connect $2"
-    if [[ "$1" == "$IS_LOCAL" ]]; then
-        nspawn running | grep -q "$2 is RUNNING"
-        if [ $? -ne 0 ]; then
-            read -p "start $2 (y/n)? " yn
-            if [[ "$yn" == "y" ]]; then
-                echo "starting $2..."
-                nspawn background $2
-                sleep 3
-            else
-                exit -1
-            fi
-        fi
-    else
-        available=$(test-ssh "$1")
-        if [ $available -ne $IS_CONNECTED ]; then
-            echo "$1 is not available via ssh"
-            exit -1
-        fi
-        cmd="ssh -t $1 '$cmd'"
+    cmd="sudo machinectl login $2"
+    available=$(test-ssh "$1")
+    if [ $available -ne $IS_CONNECTED ]; then
+        echo "$1 is not available via ssh"
+        exit -1
     fi
+    cmd="ssh -t $1 '$cmd'"
     echo -e "connecting to \e[1m$2\e[0m on \e[1m$1\e[0m"
     eval $cmd
 }
@@ -183,7 +154,6 @@ function print-nspawn-help()
 function resolve-nspawn-machine()
 {
     config=$(cat $SSH_NSPAWN_CONFIG | grep "$DELIMITER$1")
-    local_config=$(get-container-names $IS_LOCAL | grep "$1" | sed "s/^/$IS_LOCAL$DELIMITER/g")
     echo $config" "$local_config
 }
 
