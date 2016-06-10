@@ -17,6 +17,7 @@ PRIVATE_KEY="-private"
 WIFI_TOGGLE_KEY="wifi_toggle"
 MOUSE_TOGGLE_KEY="touchpad_toggle"
 FORCE_SYNC_KEY="force-sync"
+CSV_PROC_KEY="csv-processing"
 CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
 GOOGLE_CHROME_KEY="google-chrome"
 INSTALL_CHROME_KEY="setup-chrome"
@@ -121,6 +122,7 @@ function print-help()
     $WIFI_TOGGLE_KEY (enable/disable wifi resume on wake)
     $MOUSE_TOGGLE_KEY (toggle touchpad on/off)
     $FORCE_SYNC_KEY (force syncing)
+    $CSV_PROC_KEY (csv processing)
 "
 }
 
@@ -169,6 +171,11 @@ function wifi-toggle()
     else
         touch $WIFI_OFF
     fi 
+}
+
+function csv-processing()
+{
+    $HOME/.bin/modules/csv-stats/csvstats.sh $1
 }
 
 function install-chrome()
@@ -306,6 +313,9 @@ if [ ! -z $1 ]; then
             ;;
         $FORCE_SYNC_KEY)
             force-sync
+            ;;
+        $CSV_PROC_KEY)
+            csv-processing $2
             ;;
         *)
             NEED_HELP=1

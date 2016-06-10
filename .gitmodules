@@ -1,0 +1,3 @@
+[submodule ".bin/modules/csv-stats"]
+	path = .bin/modules/csv-stats
+	url = git@github.com:enckse/csv-stats
