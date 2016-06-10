@@ -1,0 +1,7 @@
+#!/bin/bash
+source $HOME/.bin/autocomplete/autocomplete-common
+_machinectl-helper()
+{
+    _simple_autocomplete "machinectl-helper"
+}
+complete -F _machinectl-helper machinectl-helper
