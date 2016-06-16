@@ -8,7 +8,7 @@ bindsym $mod+Return exec lxterminal
 bindsym $mod+Shift+q kill
 bindsym $mod+Control+q exec i3_commands close-all-containers
 
-bindsym $mod+d exec dmenu_run -fn "-*-terminal-medium-*-*-*-18-*-*-*-*-*-*-*"
+bindsym $mod+d exec dmenu_run -i -fn "-*-terminal-medium-*-*-*-18-*-*-*-*-*-*-*"
 
 # Moving and focusing containers
 bindsym $mod+Left focus left
