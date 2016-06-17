@@ -106,6 +106,10 @@ function i3-stat()
                 ADDED_ICOS=$(cat $STATS_ICO)
                 ADDED_ICOS="|$ADDED_ICOS"
             fi
+            TOUCH=$(toggle-touchpad "query")
+            if [ $TOUCH -eq 0 ]; then
+                CUSTOM="$CUSTOM [X]touch |"
+            fi
         fi
         echo -e "$CUSTOM $line $ADDED_ICOS" || exit 1
         if [ $IS_SECOND -eq $PRIMARY ]; then
