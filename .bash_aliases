@@ -13,3 +13,4 @@ alias explore='vim .'
 alias git-sub="git submodule update --init --recursive"
 alias machinectl="sudo machinectl"
 alias spawn-container="sudo spawn-container"
+alias notes="vim notes"
