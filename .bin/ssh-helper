@@ -127,7 +127,7 @@ function valid-container()
 
 function connect-to()
 {
-    cmd="sudo machinectl login $2"
+    cmd="sudo machinectl shell $2"
     available=$(test-ssh "$1")
     if [ $available -ne $IS_CONNECTED ]; then
         echo "$1 is not available via ssh"
