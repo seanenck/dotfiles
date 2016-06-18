@@ -108,7 +108,7 @@ function i3-stat()
             fi
             TOUCH=$(toggle-touchpad "query")
             if [ $TOUCH -eq 0 ]; then
-                CUSTOM="$CUSTOM [X]touch |"
+                CUSTOM="$CUSTOM \xf0\x9f\x8c\x82 |"
             fi
         fi
         echo -e "$CUSTOM $line $ADDED_ICOS" || exit 1
