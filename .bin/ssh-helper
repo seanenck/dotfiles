@@ -1,13 +1,13 @@
 #!/bin/bash
 source $HOME/.bin/connect-common
-CACHE_LOCATION=$HOME/.cache/
-SSH_NSPAWN_OFFSET=${CACHE_LOCATION}nspawn/
+source $HOME/.bin/common
+CACHE_LOCATION=${SYNCED_PATH}/configs/
 
 #format is relay,destination,ssh-options
 JUMP_DEF=${CACHE_LOCATION}ssh.jumps
 
 # format is host,container
-SSH_NSPAWN_CONFIG=${SSH_NSPAWN_OFFSET}containers.config
+SSH_NSPAWN_CONFIG=${CACHE_LOCATION}containers.config
 
 IS_LOCAL="localhost"
 NSPAWN_KEY="nspawn"

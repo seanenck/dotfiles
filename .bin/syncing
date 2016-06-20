@@ -36,7 +36,7 @@ function start-syncing()
             write-log "====================="
             write-log "checked for connection...$available"
             if [ $available -eq $IS_CONNECTED ]; then
-                rsync -avzc --exclude "*.lock" --delete-after /mnt/Synced/ -e ssh $SYNC_TO:~/Sync/
+                rsync -avzc --exclude "*.lock" --delete-after ${SYNCED_PATH} -e ssh $SYNC_TO:~/Sync/
             fi
         fi
         sleep $SLEEP_FOR

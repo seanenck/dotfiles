@@ -2,7 +2,7 @@
 source $HOME/.bin/common
 CRYPT_MNT=/mnt/crypt
 MNT_SHARE=/mnt/Storage
-CRYPT_ROOT=/mnt/Synced/crypt.img
+CRYPT_ROOT=${SYNCED_PATH}/crypt.img
 IS_MOUNTED=1
 USB_KEYWORD="usb"
 SHARE_KEYWORD="shares"
