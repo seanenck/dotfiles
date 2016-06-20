@@ -96,6 +96,10 @@ function pack()
 
 function remove()
 {
+    if [[ "$1" == "$TEMPLATE" ]]; then
+        echo "cannot remove template"
+        exit -1
+    fi
     is-running $1
     if [ -d $CONT_PATH ]; then
         rm -rf $CONT_PATH
