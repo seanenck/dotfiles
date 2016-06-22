@@ -15,7 +15,7 @@ SUITE_BLD_KEYWORD="--suite-rebuild"
 SUITE_DIS_KEYWORD="--suite-display"
 BROWSERS="google-chrome-stable chromium"
 DEFAULT_ARGS="--new-window"
-START_LINE="#name,browser,url,args,pre-setup"
+START_LINE="#name,browser,url,args"
 ARG_DELIMITER="|"
 function run-browser()
 {
@@ -121,18 +121,10 @@ function create-script()
     local SCRIPT_ACTION
     mkdir -p $URL_COMMON
     FILE_NAME=${URL_COMMON}$1
-    if [ ! -z "$5" ]; then
-        SCRIPT_ACTION=$URL_COMMON$5
-        if [ ! -e $SCRIPT_ACTION ]; then
-            echo "Missing referenced script $SCRIPT_ACTION for $1"
-            exit -1
-        fi
-    fi
     echo "
 #!/bin/bash
 # url for $1
 source \$HOME/.bin/dmenu_urls
-$SCRIPT_ACTION
 run-browser $3 $2 $4
 " > $FILE_NAME
     chmod u+x $FILE_NAME
@@ -147,8 +139,7 @@ function build-scripts()
             BROWSER=$(echo "$line" | cut -d "," -f 2)
             URL=$(echo "$line" | cut -d "," -f 3)
             ARGS=$(echo "$line" | cut -d "," -f 4 | sed "s/$ARG_DELIMITER/ /g")
-            PRESETUP=$(echo "$line" | cut -d "," -f 5 | sed 's/"//g')
-            create-script "$NAME" "$URL" "$BROWSER" "$ARGS" "$PRESETUP"
+            create-script "$NAME" "$URL" "$BROWSER" "$ARGS"
         done
     fi
 }
