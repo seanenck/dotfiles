@@ -26,6 +26,7 @@ function add-keys()
     if [ $IS_MNT -eq $IS_MOUNTED ]; then
         keys=$(find ${SSH_KEY_PATH}**/* -type f)
         for key in $keys; do
+            echo
             short_name=$(echo ${key#${SSH_KEY_PATH}})
             entry=$(cat $SSH_PUB_PATH/mappings | grep ",$short_name,")
             if [ -z "$entry" ]; then
