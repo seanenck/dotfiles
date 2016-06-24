@@ -22,7 +22,7 @@ if [ $UID -ne 0 ]; then
     if [ -z "$1" ]; then
         print-help
     else
-        sudo -E $(cd "$(dirname "$0")" ; pwd -P)/machinectl-helper $@
+        echo "must be run as root..."
     fi
     exit -1
 fi
