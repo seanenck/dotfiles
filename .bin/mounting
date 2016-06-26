@@ -20,6 +20,7 @@ DEFCRYPT_SIZE="100M"
 ADD_ALL_KEYS=1
 SSH_KEY_PATH=${CRYPT_MNT}/ssh/
 SSH_PUB_PATH=${SYNCED_PATH}ssh/
+MNT_OPTIONS=${SYNCED_PATH}configs/mounts
 function add-keys()
 {
     IS_MNT=$(is-mounted $CRYPT_MNT)
@@ -230,7 +231,22 @@ function mount-share()
 
     IS_MNT=$(is-mounted $CRYPT_MNT)
     if [ $IS_MNT -eq $IS_MOUNTED ]; then
-        sshfs base:$MNT_SHARE $MNT_SHARE
+        ORIG="$IFS"
+        IFS=$'\n'
+        for f in $(cat $MNT_OPTIONS); do
+            echo $f | cut -d "|" -f 1
+        done
+        read -p "mount which? " mnt_name
+        if [ ! -z "$mnt_name" ]; then
+            result=$(cat $MNT_OPTIONS | grep "$mnt_name|" | cut -d "|" -f 2)
+            result=${result//\{SHARE\}/$MNT_SHARE}
+        fi
+        IFS=$ORIG
+        if [ -z "$result" ]; then
+            echo "invalid request: $mnt_name"
+            exit -1
+        fi
+        $result
     else
         echo "must mount crypt first"
         exit -1
