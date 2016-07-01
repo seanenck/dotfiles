@@ -18,6 +18,7 @@ CSV_PROC_KEY="csv-processing"
 CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
 GOOGLE_CHROME_KEY="google-chrome"
 INSTALL_CHROME_KEY="setup-chrome"
+PROXY_CHROME_KEY="chrome-proxy"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
@@ -25,6 +26,11 @@ WORKING=/opt/workspace/shared
 STORAGE=$USER_TMP/markdown-preview/
 STATS_KEY="i3-system-stats"
 STATS_SECOND_KEY="i3-system-stats-secondary"
+
+function proxy-chrome()
+{
+    chromium --proxy-server="socks5://localhost:$PROXY_PORT" --host-resolver-rules="MAP * 0.0.0.0 , EXCLUDE localhost"
+}
 
 function force-sync()
 {
@@ -117,6 +123,7 @@ function print-help()
     $MOUSE_TOGGLE_KEY (toggle touchpad on/off)
     $FORCE_SYNC_KEY (force syncing)
     $CSV_PROC_KEY (csv processing)
+    $PROXY_CHROME_KEY (chrome with SOCKS proxy)
 "
 }
 
@@ -272,6 +279,9 @@ if [ ! -z $1 ]; then
             ;;
         $CSV_PROC_KEY)
             csv-processing $2
+            ;;
+        $PROXY_CHROME_KEY)
+            proxy-chrome
             ;;
         *)
             NEED_HELP=1

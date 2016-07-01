@@ -8,9 +8,13 @@ JUMP_DEF=${CACHE_LOCATION}ssh.jumps
 # format is host,container
 SSH_NSPAWN_CONFIG=${CACHE_LOCATION}containers.config
 
+# proxy config
+PROXY_DEF=${CACHE_LOCATION}proxy.config
+
 IS_LOCAL="localhost"
 NSPAWN_KEY="nspawn"
 JUMP_KEY="jump"
+SOCKS_KEY="proxy"
 DELIMITER=","
 
 touch $JUMP_DEF
@@ -42,6 +46,22 @@ function do-jump()
     ssh -t $jump ssh $1 $args
 }
 
+function do-socks()
+{
+    if [ ! -e $PROXY_DEF ]; then
+        echo "$PROXY_DEF does not exist..."
+        exit -1
+    fi
+    matched=$(cat $PROXY_DEF | grep "$1$DELIMITER")
+    if [ -z $matched ]; then
+        echo "no proxy found $1"
+        exit -1
+    fi
+    prox=$(echo $matched | cut -d "$DELIMITER" -f 2)
+    dest=$(echo $matched | cut -d "$DELIMITER" -f 3)
+    ssh -t -L $PROXY_PORT:localhost:$PROXY_PORT $prox -4 ssh -f -N -D $PROXY_PORT $dest -4
+}
+
 function print-jump-help()
 {
     if [ -e $JUMP_DEF ]; then
@@ -57,7 +77,20 @@ function print-jump-help()
 function print-basic-help()
 {
     echo "$NSPAWN_KEY (nspawn)
-$JUMP_KEY (jump/forward through)"
+$JUMP_KEY (jump/forward through)
+$SOCKS_KEY (socks proxy)"
+}
+
+function print-proxy-help()
+{
+    if [ -e $PROXY_DEF ]; then
+        for line in $(cat $PROXY_DEF); do
+            avail=$(echo $line | cut -d "$DELIMITER" -f 1)
+            jump=$(echo $line | cut -d "$DELIMITER" -f 2)
+            dest=$(echo $line | cut -d "$DELIMITER" -f 3)
+            echo "    $avail (through $jump -> $dest)"
+        done
+    fi
 }
 
 function print-help()
@@ -68,6 +101,9 @@ function print-help()
             ;;
         $JUMP_KEY)
             print-jump-help
+            ;;
+        $SOCKS_KEY)
+            print-proxy-help
             ;;
         *)
             print-basic-help
@@ -161,6 +197,7 @@ function do-nspawn-connect()
     connect-to "$host" "$cont"
 }
 
+
 ARG=$1
 OPT=$2
 if [ -z $OPT ]; then
@@ -173,6 +210,9 @@ case $ARG in
         ;;
     $JUMP_KEY)
         do-jump "$OPT"
+        ;;
+    $SOCKS_KEY)
+        do-socks "$OPT"
         ;;
     *)
         print-help "$OPT"
