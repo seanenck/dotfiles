@@ -128,5 +128,4 @@ bindsym XF86AudioLowerVolume exec subsystem volume sound down
 bindsym XF86AudioRaiseVolume exec subsystem volume sound up
 
 #helpers...
-bindsym $mod+w exec wifi_toggle
-bindsym $mod+Escape exec touchpad_toggle
+bindsym $mod+Escape exec touchpad-toggle

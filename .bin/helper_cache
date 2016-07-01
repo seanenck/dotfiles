@@ -3,7 +3,6 @@ source $HOME/.bin/common
 source $HOME/.bin/system_stats
 SEARCH_KEY="search"
 SEARCH_PRIVATE_KEY="search-private"
-CLIPBOARD_KEY="clipboard"
 PASSWORD_KEY="passwords"
 VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
@@ -13,7 +12,7 @@ LOGGING_ALL_KEY="logging-all"
 MARKDOWN_KEY="markdown"
 CHROME_KEY="chrome"
 PRIVATE_KEY="-private"
-MOUSE_TOGGLE_KEY="touchpad_toggle"
+MOUSE_TOGGLE_KEY="touchpad-toggle"
 FORCE_SYNC_KEY="force-sync"
 CSV_PROC_KEY="csv-processing"
 CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
@@ -101,7 +100,6 @@ function print-help()
     echo "
     $SEARCH_KEY (search)
     $SEARCH_PRIVATE_KEY (search privately)
-    $CLIPBOARD_KEY (copy file contents to clipboard)
     $PASSWORD_KEY (password management)
     $VOLUME_KEY (volume mixer)
     $REBUILD_KEY (rebuild cache)
@@ -222,10 +220,6 @@ if [ ! -z $1 ]; then
             ;;
         $SEARCH_PRIVATE_KEY)
             searching "--incognito" ${@:2}
-            ;;
-        $CLIPBOARD_KEY)
-            file-required $2
-            cat $2 | xclip -selection c
             ;;
         $VOLUME_KEY)
             volume-mixer
