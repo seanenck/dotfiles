@@ -73,9 +73,6 @@ function suspend-now()
         if [ -e "$TOUCHPAD_SETTING" ]; then
             toggle-touchpad
         fi
-        if [ ! -e "$WIFI_OFF" ]; then
-            nmcli radio wifi on
-        fi
         write-log "done sleeping"
     fi
 }

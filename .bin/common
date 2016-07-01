@@ -4,10 +4,7 @@ USER_CRYPT=$USER_TMP/crypt.img
 USER_STATS_ON=$USER_TMP/system-stats-toggle
 USER_TOUCH="$USER_CRYPT $USER_STATS_ON"
 SYNCED_PATH="$HOME/.synced/"
-INSTALL_KEYWORD="--install"
-REMOVE_KEYWORD="--remove"
 INSTALL_DIR="/opt/"
-WIFI_OFF="$USER_TMP/wifi-off"
 PROFILE_DEF="${USER_TMP}/profile.next"
 SYNC_NOW="${USER_TMP}/sync.now"
 TOUCHPAD_SETTING="${USER_TMP}/touchpad"
@@ -38,10 +35,4 @@ function toggle-touchpad()
 function log-message()
 {
     echo "$2" | systemd-cat -t "$1"
-}
-
-
-function get-install-path()
-{
-    echo "${INSTALL_DIR}$1"
 }

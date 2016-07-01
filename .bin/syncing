@@ -78,11 +78,11 @@ function stop-syncing()
 }
 
 case $1 in
-    $INSTALL_KEYWORD)
+    "--install")
         sudo systemctl enable $SERVICE_FILE
         sudo ln -s $HOME/.bin/syncing /usr/local/bin/
         ;;
-    $REMOVE_KEYWORD)
+    "--remove")
         sudo systemctl disable $SERVICE_NAME
         sudo rm /usr/local/bin/syncing
         ;;

@@ -13,7 +13,6 @@ LOGGING_ALL_KEY="logging-all"
 MARKDOWN_KEY="markdown"
 CHROME_KEY="chrome"
 PRIVATE_KEY="-private"
-WIFI_TOGGLE_KEY="wifi_toggle"
 MOUSE_TOGGLE_KEY="touchpad_toggle"
 FORCE_SYNC_KEY="force-sync"
 CSV_PROC_KEY="csv-processing"
@@ -117,7 +116,6 @@ function print-help()
     $STATS_KEY (primary display i3 status)
     $STATS_SECOND_KEY (secondary display i3 status)
     $INSTALL_CHROME_KEY (install chrome)
-    $WIFI_TOGGLE_KEY (enable/disable wifi resume on wake)
     $MOUSE_TOGGLE_KEY (toggle touchpad on/off)
     $FORCE_SYNC_KEY (force syncing)
     $CSV_PROC_KEY (csv processing)
@@ -141,15 +139,6 @@ function hidden-ssid()
         exit -1
     fi
     sudo iwlist wlp109s0 scanning essid $1
-}
-
-function wifi-toggle()
-{
-    if [ -e $WIFI_OFF ]; then
-        rm -f $WIFI_OFF
-    else
-        touch $WIFI_OFF
-    fi 
 }
 
 function csv-processing()
@@ -280,9 +269,6 @@ if [ ! -z $1 ]; then
             ;;
         $INSTALL_CHROME_KEY)
             install-chrome
-            ;;
-        $WIFI_TOGGLE_KEY)
-            wifi-toggle
             ;;
         $MOUSE_TOGGLE_KEY)
             toggle-touchpad
