@@ -1,58 +1,8 @@
 #!/bin/bash
 source $HOME/.bin/common
 source $HOME/.bin/workspaces
-STATS_FILE=$USER_TMP/system-stats
 STATS_ICO=$USER_TMP/system-icons
 STAT_SECONDARY="secondary"
-
-# Populate statistics
-function pop-stats()
-{
-    CPU_VAL=$(pop-empty "$1")
-    MEM_VAL=$(pop-empty "$2")
-    DSK_VAL=$(pop-empty "$3")
-    STATS=$(report-stats "$CPU_VAL" "$MEM_VAL" "$DSK_VAL")
-    echo "$STATS"
-}
-
-function pop-empty()
-{
-    if [ -z "$1" ]; then
-        echo " n/a"
-    else
-        echo "$1"
-    fi
-}
-
-function report-stats()
-{
-    if [ -e $USER_STATS_ON ]; then
-        USE_CPU="cpu: $1"
-        USE_MEM=" | memory: $2 "
-        USE_DSK="| disk: $3 | "
-        CURRENT_STATS="$USE_CPU"
-        CURRENT_STATS="$CURRENT_STATS$USE_MEM"
-        CURRENT_STATS="$CURRENT_STATS$USE_DSK"
-    else
-        CURRENT_STATS=""
-    fi
-    echo "$CURRENT_STATS"
-}
-
-# Produce system stats
-function sys-stats()
-{
-    if [ -e $USER_STATS_ON ]; then
-        MEM_USAGE=$(free | grep Mem | awk '{printf "%3.0f", $3/$2 * 100.0}')
-        CPU_USAGE=$(ps axo pcpu | gawk -v cores=`grep -m 1 cores /proc/cpuinfo | cut -d ' ' -f 3` -v cpus=`grep -c processor /proc/cpuinfo` '{k+=$1}END{print k/(cores * cpus);}' | awk '{printf "%3.0f", $1}')
-        DSK_USAGE=$(df -h / | tail -n 1 | awk '{printf "%3.0f", substr($5, 0, length($5) - 1)}')
-    fi
-    DIM=$(xbacklight | awk '{printf "%3.0f", $1}')
-    DIM_ICO="$DIM\xf0\x9f\x94\x86"
-    echo "$DIM_ICO" > $STATS_ICO
-    STAT_OUT=$(pop-stats "$CPU_USAGE%" "$MEM_USAGE%" "$DSK_USAGE%")
-    echo "$STAT_OUT" > $STATS_FILE
-}
 
 function i3-stat()
 {
@@ -88,17 +38,6 @@ function i3-stat()
                 CUSTOM="$CUSTOM |"
             fi
     
-            for stats in $(echo "$STATS_FILE"); do
-                if [ -e $stats ]; then
-                    CURRENT_STATS=$(cat $stats)
-                fi
-        
-                if [ -z "$CURRENT_STATS" ]; then
-                    CURRENT_STATS=$(pop-stats)
-                fi
-
-                CUSTOM="$CUSTOM $CURRENT_STATS "
-            done
             CUSTOM="$CUSTOM|"
             CUSTOM=$(echo "$CUSTOM" | sed "s/|  |/|/g" | sed "s/||/|/g")
         
@@ -112,8 +51,5 @@ function i3-stat()
             fi
         fi
         echo -e "$CUSTOM $line $ADDED_ICOS" || exit 1
-        if [ $IS_SECOND -eq $PRIMARY ]; then
-             sys-stats
-        fi
     done
 }

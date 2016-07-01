@@ -12,11 +12,6 @@ CYCLE_WORKSPACE="cycle"
 WORKSPACES_KEY="workspaces"
 FORCE_WORKSPACE="force"
 PROF_KEY="profiles"
-SYS_STATS_KEY="sys-stats"
-SYS_STATS_ENABLE="enable"
-SYS_STATS_ON="on"
-SYS_STATS_OFF="off"
-SYS_STATS_TOGGLE="toggle"
 DPMS_KEY="dpms"
 ALL_AVAILBLE="$DISPLAY_KEY $VOLUME_KEY $WORKSPACES_KEY $SYS_STATS_KEY"
 HELP="help"
@@ -37,20 +32,8 @@ function get-help()
             $WORKSPACES_KEY)
                 get-workspace-help $item $CYCLE_WORKSPACE $FORCE_WORKSPACE
                 ;;
-            $SYS_STATS_KEY)
-                get-sys-stats-help $item
-                ;;
         esac
     done
-}
-
-function get-sys-stats-help()
-{
-    echo "
-    $1 $SYS_STATS_ENABLE $SYS_STATS_ON (system stats on) 
-    $1 $SYS_STATS_ENABLE $SYS_STATS_OFF (system stats off)
-    $1 $SYS_STATS_ENABLE $SYS_STATS_TOGGLE (system stats toggling) 
-"
 }
 
 if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
@@ -122,34 +105,6 @@ function volume-subsystem()
     esac
 }
 
-# System stats management
-function sys-stats-subsystem()
-{
-    ACTION=$2
-    if [[ "$ACTION" == "$SYS_STATS_TOGGLE" ]]; then
-        if [ -e $USER_STATS_ON ]; then
-            ACTION=$SYS_STATS_OFF
-        else
-            ACTION=$SYS_STATS_ON
-        fi
-    fi
-    case $1 in
-        $SYS_STATS_ENABLE)
-            case $ACTION in
-                $SYS_STATS_ON)
-                    touch $USER_STATS_ON
-                    ;;
-                $SYS_STATS_OFF)
-                    rm -f $USER_STATS_ON
-                    ;;
-            esac
-            ;;
-        *)
-            echo "Unknown sys stats command $1"
-            ;;
-    esac
-}
-
 function cycle-profiles()
 {
     if [[ "$1" == "$PROFILE_CYCLE" ]]; then
@@ -194,9 +149,6 @@ case $1 in
         ;;
     $WORKSPACES_KEY)
         CMD=workspace-subsystem
-        ;;
-    $SYS_STATS_KEY)
-        CMD=sys-stats-subsystem
         ;;
     *)
         echo "Unknown action $1"
