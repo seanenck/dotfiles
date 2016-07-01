@@ -1,5 +1,4 @@
 #!/bin/bash
-source $HOME/.bin/connect-common
 source $HOME/.bin/common
 CACHE_LOCATION=${SYNCED_PATH}/configs/
 

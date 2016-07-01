@@ -8,6 +8,9 @@ INSTALL_DIR="/opt/"
 PROFILE_DEF="${USER_TMP}/profile.next"
 SYNC_NOW="${USER_TMP}/sync.now"
 TOUCHPAD_SETTING="${USER_TMP}/touchpad"
+READY="ready"
+IS_CONNECTED=1
+NOT_CONNECTED=0
 
 SYNC_JOURNAL_CATEGORY="syncing"
 LOCK_JOURNAL_CATEGORY="locking"
@@ -35,4 +38,14 @@ function toggle-touchpad()
 function log-message()
 {
     echo "$2" | systemd-cat -t "$1"
+}
+
+function test-ssh()
+{
+    running=$(ssh -o BatchMode=yes -o ConnectTimeout=5 $1 echo $READY 2>&1)
+    if [[ "$running" == "$READY" ]]; then
+        echo $IS_CONNECTED
+    else
+        echo $NOT_CONNECTED
+    fi
 }

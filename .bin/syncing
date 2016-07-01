@@ -1,6 +1,5 @@
 #!/bin/bash
 source $HOME/.bin/common
-source $HOME/.bin/connect-common
 PID_FILE="$USER_TMP/syncing.pid"
 SLEEP_FOR=5
 ROTATION_COUNT=120
