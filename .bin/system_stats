@@ -1,7 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 source $HOME/.bin/workspaces
-STATS_ICO=$USER_TMP/system-icons
 STAT_SECONDARY="secondary"
 
 function i3-stat()
@@ -26,28 +25,20 @@ function i3-stat()
                 touch $WORKPLACE_FILE
                 CUSTOM=$(cat $WORKPLACE_FILE)
             fi
-    
-            if [ -e $DISPLAY_UN ]; then
-                CUSTOM="$CUSTOM (unlocked)"
-            fi
-            if [ -e $DISPLAY_EN ]; then
-                CUSTOM="$CUSTOM (running)"
-            fi
-    
-            if [ ! -z "${CUSTOM// }" ]; then
-                CUSTOM="$CUSTOM |"
-            fi
-    
-            CUSTOM="$CUSTOM|"
-            CUSTOM=$(echo "$CUSTOM" | sed "s/|  |/|/g" | sed "s/||/|/g")
-        
-            if [ -e $STATS_ICO ]; then
-                ADDED_ICOS=$(cat $STATS_ICO)
-                ADDED_ICOS="|$ADDED_ICOS"
-            fi
+ 
+            CUSTOM="$CUSTOM |"
+            DIM=$(xbacklight | awk '{printf "%3.0f", $1}')
+            ADDED_ICOS="|$DIM$ADDED_ICOS"
+            ADDED_ICOS="$ADDED_ICOS\xf0\x9f\x94\x86"
             TOUCH=$(toggle-touchpad "query")
             if [ $TOUCH -eq 0 ]; then
                 ADDED_ICOS="$ADDED_ICOS\xf0\x9f\x8c\x82"
+            fi
+            if [ -e $DISPLAY_UN ]; then
+                ADDED_ICOS="$ADDED_ICOS\xf0\x9f\x94\x93"
+            fi
+            if [ -e $DISPLAY_EN ]; then
+                ADDED_ICOS="$ADDED_ICOS\xf0\x9f\x94\x92"
             fi
         fi
         echo -e "$CUSTOM $line $ADDED_ICOS" || exit 1
