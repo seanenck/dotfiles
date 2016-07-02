@@ -38,6 +38,7 @@ function i3-stat()
             if [ -e $DISPLAY_EN ]; then
                 ADDED_ICOS="$ADDED_ICOS\xf0\x9f\x94\x92"
             fi
+            ADDED_ICOS=$(echo $ADDED_ICOS | sed "s/||/|/g")
         fi
         echo -e "$line $ADDED_ICOS" || exit 1
     done

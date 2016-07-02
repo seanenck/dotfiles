@@ -33,7 +33,7 @@ function set-workplace()
                 echo "\xf0\x9f\x92\xbb"
                 ;;
             *)
-                echo "\xf0\x9f\x93\xb1"
+                echo ""
                 ;;
         esac
     else
