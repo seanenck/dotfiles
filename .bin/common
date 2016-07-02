@@ -4,6 +4,7 @@ USER_CRYPT=$USER_TMP/crypt.img
 USER_STATS_ON=$USER_TMP/system-stats-toggle
 USER_TOUCH="$USER_CRYPT $USER_STATS_ON"
 SYNCED_PATH="$HOME/.synced/"
+SSH_SYNC_PATH=${SYNCED_PATH}ssh/
 INSTALL_DIR="/opt/"
 PROFILE_DEF="${USER_TMP}/profile.next"
 SYNC_NOW="${USER_TMP}/sync.now"

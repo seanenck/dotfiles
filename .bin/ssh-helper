@@ -1,15 +1,14 @@
 #!/bin/bash
 source $HOME/.bin/common
-CACHE_LOCATION=${SYNCED_PATH}/configs/
 
 #format is relay,destination,ssh-options
-JUMP_DEF=${CACHE_LOCATION}ssh.jumps
+JUMP_DEF=${SSH_SYNC_PATH}jumps
 
 # format is host,container
-SSH_NSPAWN_CONFIG=${CACHE_LOCATION}containers.config
+SSH_NSPAWN_CONFIG=${SSH_SYNC_PATH}containers
 
 # proxy config
-PROXY_DEF=${CACHE_LOCATION}proxy.config
+PROXY_DEF=${SSH_SYNC_PATH}proxy
 
 IS_LOCAL="localhost"
 NSPAWN_KEY="nspawn"

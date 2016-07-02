@@ -19,7 +19,6 @@ SETUP_CRYPT="setup"
 DEFCRYPT_SIZE="100M"
 ADD_ALL_KEYS=1
 SSH_KEY_PATH=${CRYPT_MNT}/ssh/
-SSH_PUB_PATH=${SYNCED_PATH}ssh/
 MNT_OPTIONS=${SYNCED_PATH}configs/mounts
 function add-keys()
 {
@@ -29,7 +28,7 @@ function add-keys()
         for key in $keys; do
             echo
             short_name=$(echo ${key#${SSH_KEY_PATH}})
-            entry=$(cat $SSH_PUB_PATH/mappings | grep ",$short_name,")
+            entry=$(cat $SSH_SYNC_PATH/mappings | grep ",$short_name,")
             if [ -z "$entry" ]; then
                 echo "missing pubkey entry for $short_name"
                 exit -1
@@ -40,7 +39,7 @@ function add-keys()
                 echo "ignoring $key"
                 continue
             fi
-            if [ ! -e "$SSH_PUB_PATH/pubkeys/$pub_key" ]; then
+            if [ ! -e "$SSH_SYNC_PATH/pubkeys/$pub_key" ]; then
                 echo "missing pub key $pub_key"
             fi
             if [ $1 -ne $ADD_ALL_KEYS ]; then
