@@ -30,10 +30,10 @@ function set-workplace()
     if [[ $1 == "$NAME_COMMAND" ]]; then
         case $2 in
             $WORK_LEFT_ID)
-                echo "docked"
+                echo "\xf0\x9f\x92\xbb"
                 ;;
             *)
-                echo "mobile"
+                echo "\xf0\x9f\x93\xb1"
                 ;;
         esac
     else

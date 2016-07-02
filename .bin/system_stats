@@ -18,17 +18,15 @@ function i3-stat()
     i3status | while :
     do
         read line
-        CUSTOM=""
         ADDED_ICOS=""
         if [ $IS_SECOND -eq $PRIMARY ]; then
+ 
             if [ -e $WORKPLACE_FILE ]; then
                 touch $WORKPLACE_FILE
-                CUSTOM=$(cat $WORKPLACE_FILE)
+                ADDED_ICOS=$ADDED_ICOS$(cat $WORKPLACE_FILE)"|"
             fi
- 
-            CUSTOM="$CUSTOM |"
             DIM=$(xbacklight | awk '{printf "%3.0f", $1}')
-            ADDED_ICOS="|$DIM$ADDED_ICOS"
+            ADDED_ICOS="|$ADDED_ICOS$DIM"
             ADDED_ICOS="$ADDED_ICOS\xf0\x9f\x94\x86"
             TOUCH=$(toggle-touchpad "query")
             if [ $TOUCH -eq 0 ]; then
@@ -41,6 +39,6 @@ function i3-stat()
                 ADDED_ICOS="$ADDED_ICOS\xf0\x9f\x94\x92"
             fi
         fi
-        echo -e "$CUSTOM $line $ADDED_ICOS" || exit 1
+        echo -e "$line $ADDED_ICOS" || exit 1
     done
 }
