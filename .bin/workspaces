@@ -13,8 +13,6 @@ DOCKED_ID=2
 DISP_HOLDER="DISPLAY_VALUE"
 WORK_COMMON_LEFT="--output $DISP_HOLDER --auto --left-of $MAIN_DISPLAY --rotate right"
 WORK_COMMON_RIGHT="--output $DISP_HOLDER --auto --right-of $MAIN_DISPLAY"
-NAME_COMMAND="naming"
-OPEN_COMMAND="open"
 
 function replace-and-execute()
 {
@@ -30,7 +28,7 @@ function set-workplace()
         xrandr --output $disp --off
     done
     xrandr --output $MAIN_DISPLAY --primary --auto 
-    case $2 in
+    case $1 in
         $DOCKED_ID)
             use_dpi=144
             replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
@@ -43,17 +41,12 @@ function set-workplace()
 # Workspace help
 function get-workspace-help()
 {
-    WORKSPACE_NAMES=""
-    for idx in $(seq $DEFAULT_WORKSPACE_ID $MAX_WORKSPACE); do
-        NAMED=$(set-workplace $NAME_COMMAND $idx)
-        WORKSPACE_NAMES=$WORKSPACE_NAMES"
-    $1 $3 $idx (load $NAMED)"
-    done
     echo "
     $1 $2 $WORKSPACE_START (workspace startup/setup)
     $1 $2 $WORKSPACE_RELOAD (reload current workspace setup)
     $1 $2 $WORKSPACE_CHANGE (change the current workspace setup)
-    $WORKSPACE_NAMES
+    $1 $3 $DEFAULT_WORKSPACE_ID (force default workspace)
+    $1 $3 $DOCKED_ID (force docked workspace)
     "
 }
 
@@ -72,7 +65,7 @@ function change-workspace()
 
 function force-workplace()
 {
-    set-workplace $OPEN_COMMAND $1
+    set-workplace $1
     i3 restart
     if [ -e $BACKGROUND_IMAGE ]; then
         feh --bg-fill $BACKGROUND_IMAGE
