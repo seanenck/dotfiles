@@ -3,7 +3,6 @@ USER_TMP=$HOME/.tmp
 USER_CRYPT=$USER_TMP/crypt.img
 SYNCED_PATH="$HOME/.synced/"
 SSH_SYNC_PATH=${SYNCED_PATH}ssh/
-INSTALL_DIR="/opt/"
 PROFILE_DEF="${USER_TMP}/profile.next"
 TOUCHPAD_SETTING="${USER_TMP}/touchpad"
 READY="ready"
