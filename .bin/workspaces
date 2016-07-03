@@ -1,7 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 source $HOME/.bin/displays
-WORKPLACE_FILE=$USER_TMP/workplace
 WORKPLACE_WORKING=$USER_TMP/working
 DISPLAY_UN=/tmp/display-unlock
 DISPLAY_EN=/tmp/display-enabled
@@ -27,30 +26,19 @@ function replace-and-execute()
 function set-workplace()
 {
     use_dpi=192
-    if [[ $1 == "$NAME_COMMAND" ]]; then
-        case $2 in
-            $WORK_LEFT_ID)
-                echo "\xf0\x9f\x92\xbb"
-                ;;
-            *)
-                echo ""
-                ;;
-        esac
-    else
-        ALL_DISPLAYS=$(get-all-displays | grep -v "$MAIN_DISPLAY")
-        for disp in $ALL_DISPLAYS; do
-            xrandr --output $disp --off
-        done
-        xrandr --output $MAIN_DISPLAY --primary --auto 
-        case $2 in
-            $WORK_LEFT_ID)
-                use_dpi=144
-                replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
-                replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
-                ;;
-        esac
-        xrandr --dpi $use_dpi
-    fi
+    ALL_DISPLAYS=$(get-all-displays | grep -v "$MAIN_DISPLAY")
+    for disp in $ALL_DISPLAYS; do
+        xrandr --output $disp --off
+    done
+    xrandr --output $MAIN_DISPLAY --primary --auto 
+    case $2 in
+        $WORK_LEFT_ID)
+            use_dpi=144
+            replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
+            replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
+            ;;
+    esac
+    xrandr --dpi $use_dpi
 }
 
 # Workspace help
@@ -97,7 +85,6 @@ function change-workspace()
 function force-workplace()
 {
     set-workplace $OPEN_COMMAND $1
-    set-workplace $NAME_COMMAND $1 > $WORKPLACE_FILE
     i3 restart
     if [ -e $BACKGROUND_IMAGE ]; then
         feh --bg-fill $BACKGROUND_IMAGE
