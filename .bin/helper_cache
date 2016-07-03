@@ -13,7 +13,6 @@ MARKDOWN_KEY="markdown"
 CHROME_KEY="chrome"
 PRIVATE_KEY="-private"
 MOUSE_TOGGLE_KEY="touchpad-toggle"
-FORCE_SYNC_KEY="force-sync"
 CSV_PROC_KEY="csv-processing"
 CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
 GOOGLE_CHROME_KEY="google-chrome"
@@ -30,11 +29,6 @@ STATS_SECOND_KEY="i3-system-stats-secondary"
 function proxy-chrome()
 {
     chromium --proxy-server="socks5://localhost:$PROXY_PORT" --host-resolver-rules="MAP * 0.0.0.0 , EXCLUDE localhost"
-}
-
-function force-sync()
-{
-    touch $SYNC_NOW
 }
 
 function markdown()
@@ -121,7 +115,6 @@ function print-help()
     $STATS_SECOND_KEY (secondary display i3 status)
     $INSTALL_CHROME_KEY (install chrome)
     $MOUSE_TOGGLE_KEY (toggle touchpad on/off)
-    $FORCE_SYNC_KEY (force syncing)
     $CSV_PROC_KEY (csv processing)
     $PROXY_CHROME_KEY (chrome with SOCKS proxy)
 "
@@ -273,9 +266,6 @@ if [ ! -z $1 ]; then
             ;;
         $MOUSE_TOGGLE_KEY)
             toggle-touchpad
-            ;;
-        $FORCE_SYNC_KEY)
-            force-sync
             ;;
         $CSV_PROC_KEY)
             csv-processing $2

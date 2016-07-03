@@ -1,0 +1,9 @@
+[Unit]
+Description="File syncing"
+
+[Timer]
+Unit=sync.service
+OnCalendar=*:0/10
+
+[Install]
+WantedBy=timers.target
