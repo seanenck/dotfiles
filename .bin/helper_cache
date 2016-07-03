@@ -95,6 +95,14 @@ helper_cache $line \$@" > $file_name
 
 function print-help()
 {
+    res=$(get-help | grep -v -e '^$' | sort)
+    echo "
+$res
+"
+}
+
+function get-help()
+{
     echo "
     $SEARCH_KEY (search)
     $SEARCH_PRIVATE_KEY (search privately)
