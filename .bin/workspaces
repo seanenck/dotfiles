@@ -9,8 +9,7 @@ WORKSPACE_RELOAD="reload"
 WORKSPACE_CHANGE="change"
 BACKGROUND_IMAGE=$HOME/.config/images/background.png
 DEFAULT_WORKSPACE_ID=1
-WORK_LEFT_ID=2
-MAX_WORKSPACE=$WORK_LEFT_ID
+DOCKED_ID=2
 DISP_HOLDER="DISPLAY_VALUE"
 WORK_COMMON_LEFT="--output $DISP_HOLDER --auto --left-of $MAIN_DISPLAY --rotate right"
 WORK_COMMON_RIGHT="--output $DISP_HOLDER --auto --right-of $MAIN_DISPLAY"
@@ -32,7 +31,7 @@ function set-workplace()
     done
     xrandr --output $MAIN_DISPLAY --primary --auto 
     case $2 in
-        $WORK_LEFT_ID)
+        $DOCKED_ID)
             use_dpi=144
             replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
             replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
@@ -62,24 +61,13 @@ function get-workspace-help()
 function change-workspace()
 {
     WORKSPACE_NUM=$DEFAULT_WORKSPACE_ID
-    if [ $1 != "$WORKSPACE_START" ]; then
-        WORKING_NUMBER=$WORKSPACE_NUM
-        if [ -e $WORKPLACE_WORKING ]; then
-            WORKING_NUMBER=$(cat $WORKPLACE_WORKING)
-            case $1 in
-                $WORKSPACE_RELOAD)
-                    WORKING_NUMBER=$((WORKING_NUMBER-1))
-                    ;;
-            esac
-        fi
-        WORKSPACE_NUM=$((WORKING_NUMBER+1))
-    fi
-    echo $WORKSPACE_NUM > $WORKPLACE_WORKING
-    if [ $WORKSPACE_NUM -gt $MAX_WORKSPACE ]; then
+    if [ -e $WORKPLACE_WORKING ]; then
+        WORKSPACE_NUM=$DOCKED_ID
         rm -f $WORKPLACE_WORKING
+    else
+        touch $WORKPLACE_WORKING
     fi
-    PREV=$((WORKSPACE_NUM-1))
-    force-workplace $PREV
+    force-workplace $WORKSPACE_NUM
 }
 
 function force-workplace()
