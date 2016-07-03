@@ -11,7 +11,7 @@ SLEEP_AFTER=600
 
 function write-log()
 {
-    log-message "$LOCK_JOURNAL_CATEGORY" "$1"
+    echo "$1" | systemd-cat -t "locking"
 }
 
 function get-i3lock()
