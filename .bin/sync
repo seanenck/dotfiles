@@ -17,8 +17,8 @@ function sync-now()
 function install()
 {
     sudo systemctl enable $HOME/.bin/sys/sync.timer
-    sudo systemctl start sync.timer
     sudo ln -s $HOME/.bin/sys/sync.service /etc/systemd/system/sync.service
+    sudo systemctl start sync.timer
 }
 
 case $1 in
