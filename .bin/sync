@@ -1,7 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 SETUP="--install"
-
 function sync-now()
 {
     SYNC_TO="sync"
@@ -27,6 +26,6 @@ case $1 in
         install
         ;;
     *)
-        sync-now
+        sync-now | systemd-cat -t "sync"
         ;;
 esac
