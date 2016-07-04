@@ -1,6 +1,48 @@
 #!/bin/bash
 source $HOME/.bin/common
+DUMP_TO=${SYNCED_PATH}config.dump.lock
+DUMP_TO_OUT=${SYNCED_PATH}configurations.aes
+CACHE_KEY=$HOME/.cache/crypt.key
+PREV_CHECKS=$USER_TMP/configs.prev
+CRNT_CHECKS=$USER_TMP/configs.crnt
+DO_ZIPPING=0
 SETUP="--install"
+
+function check-changes()
+{
+    res=$DO_ZIPPING
+    rm -f $CRNT_CHECKS
+    for d in $(find ${SYNCED_PATH}* -type d | sort); do
+        for f in $(find ${d}* -type f | sort); do
+            sha256sum $f >> $CRNT_CHECKS
+        done
+    done
+    if [ -e $PREV_CHECKS ]; then
+        diff $PREV_CHECKS $CRNT_CHECKS > /dev/null
+        res=$?
+    else
+        res=2
+    fi
+    mv $CRNT_CHECKS $PREV_CHECKS
+    echo $res
+}
+
+function zip-configs()
+{
+    echo "zipping configs ($DUMP_TO)..."
+    for d in $(ls ${SYNCED_PATH}); do
+        echo "zip $d ?..."
+        if [ -d ${SYNCED_PATH}$d ]; then
+            echo "yes"
+            7z a $DUMP_TO ${SYNCED_PATH}$d/
+        fi
+    done
+    echo "encrypting configs ($DUMP_TO_OUT)..."
+    # call with -d to decrypt
+    openssl aes-256-cbc -salt -in $DUMP_TO -out $DUMP_TO_OUT -kfile $HOME/.cache/crypt.key
+    rm -f $DUMP_TO
+}
+
 function sync-now()
 {
     SYNC_TO="sync"
@@ -10,7 +52,16 @@ function sync-now()
     echo "====================="
     echo "checked for connection...$available"
     if [ $available -eq $IS_CONNECTED ]; then
-        rsync -avzc --exclude "*.lock" --delete-after ${SYNCED_PATH} -e ssh $SYNC_TO:~/Sync/
+        if [ ! -e $CACHE_KEY ]; then
+            echo "missing crypt key for caching config ($CACHE_KEY)..."
+            exit -1
+        fi
+        do_zip=$(check-changes)
+        echo "do zipping? $do_zip"
+        if [ $do_zip -ne $DO_ZIPPING ]; then
+            zip-configs
+        fi
+        rsync -avzc --exclude "*.lock" --exclude "*/" --delete-after ${SYNCED_PATH} -e ssh $SYNC_TO:~/Sync/
     fi
 }
 
