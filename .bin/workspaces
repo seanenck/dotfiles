@@ -34,6 +34,10 @@ function set-workplace()
             use_dpi=144
             replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
             replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
+            rm -f $WORKPLACE_WORKING
+            ;;
+        *)
+            touch $WORKPLACE_WORKING
             ;;
     esac
     xrandr --dpi $use_dpi
@@ -55,9 +59,6 @@ function force-workplace()
         WORKSPACE_NUM=$DEFAULT_WORKSPACE_ID
         if [ -e $WORKPLACE_WORKING ]; then
             WORKSPACE_NUM=$DOCKED_ID
-            rm -f $WORKPLACE_WORKING
-        else
-            touch $WORKPLACE_WORKING
         fi
         force-workplace $WORKSPACE_NUM
     else
