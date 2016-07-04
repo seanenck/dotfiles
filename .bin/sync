@@ -7,12 +7,13 @@ PREV_CHECKS=$USER_TMP/configs.prev
 CRNT_CHECKS=$USER_TMP/configs.crnt
 DO_ZIPPING=0
 SETUP="--install"
+IGNORED_DIRS=".git"
 
 function check-changes()
 {
     res=$DO_ZIPPING
     rm -f $CRNT_CHECKS
-    for d in $(find ${SYNCED_PATH}* -type d | sort); do
+    for d in $(find ${SYNCED_PATH}* -type d | grep -v -E "$IGNORED_DIRS" | sort); do
         for f in $(find ${d}* -type f | sort); do
             sha256sum $f >> $CRNT_CHECKS
         done
@@ -30,7 +31,7 @@ function check-changes()
 function zip-configs()
 {
     echo "zipping configs ($DUMP_TO)..."
-    for d in $(ls ${SYNCED_PATH}); do
+    for d in $(ls ${SYNCED_PATH} | grep -v -E "$IGNORED_DIRS"); do
         echo "zip $d ?..."
         if [ -d ${SYNCED_PATH}$d ]; then
             echo "yes"
@@ -61,7 +62,7 @@ function sync-now()
         if [ $do_zip -ne $DO_ZIPPING ]; then
             zip-configs
         fi
-        rsync -avzc --exclude "*.lock" --exclude "*/" --delete-after ${SYNCED_PATH} -e ssh $SYNC_TO:~/Sync/
+        rsync -avzc --exclude "*.lock" --exclude ".gitignore" --exclude "*/" --delete-after ${SYNCED_PATH} -e ssh $SYNC_TO:~/Sync/
     fi
 }
 
