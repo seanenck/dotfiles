@@ -153,7 +153,7 @@ function install-chrome()
     chromium_version=$(chromium --version | cut -d " " -f 2)
     google_version=$(google-chrome-stable --version | cut -d " " -f 3)
     if [[ $chromium_version == $google_version ]]; then
-        read -p "same version detected, process (y/n)? " yn
+        read -p "same version detected, proceed (y/n)? " yn
         if [[ -z $yn ]] || [[ "$yn" != "y" ]]; then
             exit 0
         fi
