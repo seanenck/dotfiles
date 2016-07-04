@@ -7,16 +7,27 @@ PREV_CHECKS=$USER_TMP/configs.prev
 CRNT_CHECKS=$USER_TMP/configs.crnt
 DO_ZIPPING=0
 SETUP="--install"
-IGNORED_DIRS=".git"
+GIT_IGNORE=${SYNCED_PATH}.gitignore
+
+function get-change-dirs()
+{
+    for d in $(find ${SYNCED_PATH} -type d | sort); do
+        for f in $(find ${d}* -type f | sort); do
+            f_name=$(echo "$f" | cut -c${#SYNCED_PATH}- | cut -c2-)
+            cat $GIT_IGNORE | grep -q "$f_name"
+            if [ $? -ne 0 ]; then
+                echo $f
+            fi
+        done
+    done
+}
 
 function check-changes()
 {
     res=$DO_ZIPPING
     rm -f $CRNT_CHECKS
-    for d in $(find ${SYNCED_PATH}* -type d | grep -v -E "$IGNORED_DIRS" | sort); do
-        for f in $(find ${d}* -type f | sort); do
-            sha256sum $f >> $CRNT_CHECKS
-        done
+    for f in $(get-change-dirs); do
+        sha256sum $f >> $CRNT_CHECKS
     done
     if [ -e $PREV_CHECKS ]; then
         diff $PREV_CHECKS $CRNT_CHECKS > /dev/null
@@ -31,12 +42,8 @@ function check-changes()
 function zip-configs()
 {
     echo "zipping configs ($DUMP_TO)..."
-    for d in $(ls ${SYNCED_PATH} | grep -v -E "$IGNORED_DIRS"); do
-        echo "zip $d ?..."
-        if [ -d ${SYNCED_PATH}$d ]; then
-            echo "yes"
-            7z a $DUMP_TO ${SYNCED_PATH}$d/
-        fi
+    for f in $(get-change-dirs); do
+        7z a $DUMP_TO $f > /dev/null
     done
     echo "encrypting configs ($DUMP_TO_OUT)..."
     # call with -d to decrypt
