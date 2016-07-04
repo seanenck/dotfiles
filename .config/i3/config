@@ -91,7 +91,7 @@ bar {
         status_command i3-system-stats
 }
 
-exec --no-startup-id subsystem workspaces cycle startup
+exec --no-startup-id subsystem workspaces force 1
 exec --no-startup-id nm-applet
 exec --no-startup-id cbatticon -d BAT0
 exec --no-startup-id volumeicon
