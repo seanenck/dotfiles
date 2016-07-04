@@ -1,20 +1,19 @@
 #!/bin/bash
 source $HOME/.bin/common
-DUMP_TO=${SYNCED_PATH}config.dump.lock
-DUMP_TO_OUT=${SYNCED_PATH}configurations.aes
+DUMP_TO=config.dump.lock
+DUMP_TO_OUT=configurations.aes
 CACHE_KEY=$HOME/.cache/crypt.key
 PREV_CHECKS=$USER_TMP/configs.prev
 CRNT_CHECKS=$USER_TMP/configs.crnt
 DO_ZIPPING=0
 SETUP="--install"
-GIT_IGNORE=${SYNCED_PATH}.gitignore
 
 function get-change-dirs()
 {
     for d in $(find ${SYNCED_PATH} -type d | sort); do
         for f in $(find ${d}* -type f | sort); do
             f_name=$(echo "$f" | cut -c${#SYNCED_PATH}- | cut -c2-)
-            cat $GIT_IGNORE | grep -q "$f_name"
+            cat ${SYNCED_PATH}.gitignore | grep -q "$f_name"
             if [ $? -ne 0 ]; then
                 echo $f
             fi
@@ -41,14 +40,16 @@ function check-changes()
 
 function zip-configs()
 {
+    c_pwd=$PWD
     echo "zipping configs ($DUMP_TO)..."
-    for f in $(get-change-dirs); do
-        7z a $DUMP_TO $f > /dev/null
-    done
+    cd ${SYNCED_PATH}
+    # call with 7z x for extract 
+    7z a $DUMP_TO -x@.gitignore .
     echo "encrypting configs ($DUMP_TO_OUT)..."
     # call with -d to decrypt
     openssl aes-256-cbc -salt -in $DUMP_TO -out $DUMP_TO_OUT -kfile $HOME/.cache/crypt.key
     rm -f $DUMP_TO
+    cd $c_pwd
 }
 
 function sync-now()
