@@ -1,6 +1,5 @@
 #!/bin/bash
 source $HOME/.bin/common
-source $HOME/.bin/workspaces
 STAT_SECONDARY="secondary"
 
 function i3-stat()

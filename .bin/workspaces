@@ -1,9 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 source $HOME/.bin/displays
-WORKPLACE_WORKING=$USER_TMP/working
-DISPLAY_UN=/tmp/display-unlock
-DISPLAY_EN=/tmp/display-enabled
 WORKSPACE_START="startup"
 WORKSPACE_RELOAD="reload"
 WORKSPACE_CHANGE="change"

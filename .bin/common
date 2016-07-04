@@ -9,6 +9,9 @@ READY="ready"
 IS_CONNECTED=1
 NOT_CONNECTED=0
 PROXY_PORT=60000
+DISPLAY_UN=/tmp/display-unlocked
+DISPLAY_EN=/tmp/display-enabled
+WORKPLACE_WORKING=$USER_TMP/working
 
 function toggle-touchpad()
 {
