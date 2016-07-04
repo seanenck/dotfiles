@@ -8,7 +8,6 @@ VOLUME_KEY="volume"
 DISPLAY_TOGGLE="toggle"
 DISPLAY_CHANGE="change"
 SOUND_COMMAND="sound"
-CYCLE_WORKSPACE="cycle"
 WORKSPACES_KEY="workspaces"
 FORCE_WORKSPACE="force"
 PROF_KEY="profiles"
@@ -30,7 +29,7 @@ function get-help()
                 get-volume-help $item $SOUND_COMMAND
                 ;;
             $WORKSPACES_KEY)
-                get-workspace-help $item $CYCLE_WORKSPACE $FORCE_WORKSPACE
+                get-workspace-help $item $FORCE_WORKSPACE
                 ;;
         esac
     done
@@ -57,9 +56,6 @@ fi
 function workspace-subsystem()
 {
     case $1 in
-        $CYCLE_WORKSPACE)
-            change-workspace "$2"
-            ;;
         $FORCE_WORKSPACE)
             force-workplace "$2"
             ;;

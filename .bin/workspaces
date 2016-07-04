@@ -7,6 +7,7 @@ DISPLAY_EN=/tmp/display-enabled
 WORKSPACE_START="startup"
 WORKSPACE_RELOAD="reload"
 WORKSPACE_CHANGE="change"
+CYCLING="cycle"
 BACKGROUND_IMAGE=$HOME/.config/images/background.png
 DEFAULT_WORKSPACE_ID=1
 DOCKED_ID=2
@@ -42,34 +43,30 @@ function set-workplace()
 function get-workspace-help()
 {
     echo "
-    $1 $2 $WORKSPACE_START (workspace startup/setup)
-    $1 $2 $WORKSPACE_RELOAD (reload current workspace setup)
-    $1 $2 $WORKSPACE_CHANGE (change the current workspace setup)
-    $1 $3 $DEFAULT_WORKSPACE_ID (force default workspace)
-    $1 $3 $DOCKED_ID (force docked workspace)
+    $1 $2 $CYCLING (change the current workspace setup)
+    $1 $2 $DEFAULT_WORKSPACE_ID (force default workspace)
+    $1 $2 $DOCKED_ID (force docked workspace)
     "
-}
-
-# Change/toggle workspaces
-function change-workspace()
-{
-    WORKSPACE_NUM=$DEFAULT_WORKSPACE_ID
-    if [ -e $WORKPLACE_WORKING ]; then
-        WORKSPACE_NUM=$DOCKED_ID
-        rm -f $WORKPLACE_WORKING
-    else
-        touch $WORKPLACE_WORKING
-    fi
-    force-workplace $WORKSPACE_NUM
 }
 
 function force-workplace()
 {
-    set-workplace $1
-    i3 restart
-    if [ -e $BACKGROUND_IMAGE ]; then
-        feh --bg-fill $BACKGROUND_IMAGE
+    if [[ "$1" == "$CYCLING" ]]; then
+        WORKSPACE_NUM=$DEFAULT_WORKSPACE_ID
+        if [ -e $WORKPLACE_WORKING ]; then
+            WORKSPACE_NUM=$DOCKED_ID
+            rm -f $WORKPLACE_WORKING
+        else
+            touch $WORKPLACE_WORKING
+        fi
+        force-workplace $WORKSPACE_NUM
     else
-        xsetroot -solid "#333333"
+        set-workplace $1
+        i3 restart
+        if [ -e $BACKGROUND_IMAGE ]; then
+            feh --bg-fill $BACKGROUND_IMAGE
+        else
+            xsetroot -solid "#333333"
+        fi
     fi
 }

@@ -104,8 +104,7 @@ bindsym $mod+Shift+comma move workspace to left
 bindsym $mod+Shift+period move workspace to right
 
 # Change workplaces
-bindsym $mod+Shift+o exec subsystem workspaces cycle change
-bindsym $mod+Shift+p exec subsystem workspaces cycle reload
+bindsym $mod+Shift+o exec subsystem workspaces force cycle
 bindsym $mod+Shift+i exec subsystem workspaces force 1
 
 # Locking handlers
