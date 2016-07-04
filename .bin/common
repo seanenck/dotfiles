@@ -12,6 +12,8 @@ PROXY_PORT=60000
 DISPLAY_UN=/tmp/display-unlocked
 DISPLAY_EN=/tmp/display-enabled
 WORKPLACE_WORKING=$USER_TMP/working
+CRYPT_MNT=/mnt/crypt
+SSH_KEY_PATH=${CRYPT_MNT}/ssh/
 
 function toggle-touchpad()
 {

@@ -1,6 +1,5 @@
 #!/bin/bash
 source $HOME/.bin/common
-CRYPT_MNT=/mnt/crypt
 MNT_SHARE=/mnt/Storage
 CRYPT_ROOT=${SYNCED_PATH}/crypt.img
 IS_MOUNTED=1
@@ -18,7 +17,6 @@ NEWMOUNTS="/tmp/crypts/"
 SETUP_CRYPT="setup"
 DEFCRYPT_SIZE="100M"
 ADD_ALL_KEYS=1
-SSH_KEY_PATH=${CRYPT_MNT}/ssh/
 MNT_OPTIONS=${SYNCED_PATH}configs/mounts
 function add-keys()
 {

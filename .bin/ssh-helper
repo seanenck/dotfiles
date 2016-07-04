@@ -203,6 +203,14 @@ if [ -z $OPT ]; then
     OPT=$ARG
     ARG=""
 fi
+
+if [ ! -z $OPT ] && [ ! -z $ARG ]; then
+    if [ ! -d $SSH_KEY_PATH ]; then
+        echo "crypt not mounted..."
+        exit -1
+    fi
+fi
+
 case $ARG in
     $NSPAWN_KEY)
         do-nspawn-connect "$OPT"
