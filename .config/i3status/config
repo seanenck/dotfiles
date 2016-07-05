@@ -1,5 +1,0 @@
-order += "tztime local
-
-tztime local {
-    format = "%Y-%m-%d %HH:%M:%S %Z"
-}
