@@ -4,14 +4,14 @@ USER_CRYPT=$USER_TMP/crypt.img
 SYNCED_PATH="$HOME/.synced/"
 SSH_SYNC_PATH=${SYNCED_PATH}ssh/
 PROFILE_DEF="${USER_TMP}/profile.next"
-TOUCHPAD_SETTING="${USER_TMP}/touchpad"
+TOUCHPAD_SETTING="/tmp/touchpad"
 READY="ready"
 IS_CONNECTED=1
 NOT_CONNECTED=0
 PROXY_PORT=60000
 DISPLAY_UN=/tmp/display-unlocked
 DISPLAY_EN=/tmp/display-enabled
-WORKPLACE_WORKING=$USER_TMP/working
+WORKPLACE_WORKING=/tmp/working
 CRYPT_MNT=/mnt/crypt
 SSH_KEY_PATH=${CRYPT_MNT}/ssh/
 
