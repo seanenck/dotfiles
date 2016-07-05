@@ -1,6 +1,5 @@
 #!/bin/bash
 source $HOME/.bin/common
-source $HOME/.bin/system_stats
 SEARCH_KEY="search"
 SEARCH_PRIVATE_KEY="search-private"
 PASSWORD_KEY="passwords"
@@ -21,8 +20,6 @@ PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
 STORAGE=$USER_TMP/markdown-preview/
-STATS_KEY="i3-system-stats"
-STATS_SECOND_KEY="i3-system-stats-secondary"
 
 function proxy-chrome()
 {
@@ -115,8 +112,6 @@ function get-help()
     $CHROME_KEY (start chromium browsing)
     $GOOGLE_CHROME_PRIVATE_KEY (start private google chrome browsing)
     $CHROME_PRIVATE_KEY (start private chromium browsing)
-    $STATS_KEY (primary display i3 status)
-    $STATS_SECOND_KEY (secondary display i3 status)
     $INSTALL_CHROME_KEY (install chrome)
     $MOUSE_TOGGLE_KEY (toggle touchpad on/off)
     $CSV_PROC_KEY (csv processing)
@@ -217,13 +212,6 @@ if [ ! -z $1 ]; then
         $MARKDOWN_KEY)
             file-required $2
             markdown $2
-            ;;
-        $STATS_SECOND_KEY | $STATS_KEY)
-            ARGS=""
-            if [[ "$1" == "$STATS_SECOND_KEY" ]]; then
-                ARGS="$STAT_SECONDARY"
-            fi
-            i3-stat $ARGS
             ;;
         $INSTALL_CHROME_KEY)
             install-chrome
