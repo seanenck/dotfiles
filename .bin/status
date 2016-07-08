@@ -1,0 +1,74 @@
+#!/bin/bash
+source $HOME/.bin/common
+FULL="$HOME/.config/genericon/"
+
+function output-full()
+{
+    echo ${FULL}$1.png
+}
+
+function touchpad-status()
+{
+    status=$(toggle-touchpad "status")
+    IMAGE="mouse"
+    if [ $status -gt 0 ]; then
+        IMAGE="touchpad"
+    fi
+    echo $IMAGE
+}
+
+function backlight-status()
+{
+    brightness=$(xbacklight | awk '{printf "%3.0f", $1}')
+    if [ $brightness -gt 75 ]; then
+        echo "high"
+    else
+        if [ $brightness -gt 30 ]; then
+            echo "mid"
+        else
+            echo "low"
+        fi
+    fi
+}
+
+function workplace-status()
+{
+    if [ -e $WORKPLACE_WORKING ]; then
+        echo "mobile"
+    else
+        echo "docked"
+    fi
+}
+
+function locking-status()
+{
+    if [ -e $DISPLAY_UN ]; then
+        echo "unlocked"
+    else
+        if [ -e $DISPLAY_EN ]; then
+            echo "running"
+        else
+            echo "display"
+        fi
+    fi
+}
+
+case $1 in
+    "workplace")
+        cmd=workplace-status
+        ;;
+    "locking")
+        cmd=locking-status
+        ;;
+    "backlight")
+        cmd=backlight-status
+        ;;
+    "touchpad")
+        cmd=touchpad-status
+        ;;
+esac
+
+if [ ! -z $cmd ]; then
+    result=$($cmd)
+    output-full $result
+fi
