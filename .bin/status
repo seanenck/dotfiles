@@ -10,11 +10,12 @@ function output-full()
     echo "$1" | grep -q "$DELIMIT"
     if [ $? -eq 0 ]; then
         tip=$(echo $1 | cut -d "$DELIMIT" -f 2)
-    else
-        tip=$img
     fi
-    res=$res$DELIMIT$tip
-    echo "$res"
+    json='{"path": "'$res'"'
+    if [ ! -z $tip ]; then
+        json=$json', "tooltip": "'$tip'"'
+    fi 
+    echo $json'}'
 }
 
 function touchpad-status()
