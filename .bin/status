@@ -1,10 +1,20 @@
 #!/bin/bash
 source $HOME/.bin/common
 FULL="$HOME/.config/genericon/"
+DELIMIT="|"
 
 function output-full()
 {
-    echo ${FULL}$1.png
+    img=$(echo $1 | cut -d "$DELIMIT" -f 1)
+    res=${FULL}$img.png
+    echo "$1" | grep -q "$DELIMIT"
+    if [ $? -eq 0 ]; then
+        tip=$(echo $1 | cut -d "$DELIMIT" -f 2)
+    else
+        tip=$img
+    fi
+    res=$res$DELIMIT$tip
+    echo "$res"
 }
 
 function touchpad-status()
@@ -20,15 +30,17 @@ function touchpad-status()
 function backlight-status()
 {
     brightness=$(xbacklight | awk '{printf "%3.0f", $1}')
+    IMAGE="unknown"
     if [ $brightness -gt 75 ]; then
-        echo "high"
+        IMAGE="high"
     else
         if [ $brightness -gt 30 ]; then
-            echo "mid"
+            IMAGE="mid"
         else
-            echo "low"
+            IMAGE="low"
         fi
     fi
+    echo $IMAGE${DELIMIT}$(xbacklight)
 }
 
 function workplace-status()
