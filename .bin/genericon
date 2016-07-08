@@ -1,0 +1,2 @@
+#!/bin/bash
+python $HOME/.bin/modules/genericon/genericon.py $@
