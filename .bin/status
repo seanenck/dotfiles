@@ -41,7 +41,7 @@ function backlight-status()
             IMAGE="low"
         fi
     fi
-    echo $IMAGE${DELIMIT}$(xbacklight)
+    echo $IMAGE${DELIMIT}$(xbacklight | cut -d "." -f 1)
 }
 
 function workplace-status()
