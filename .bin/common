@@ -4,7 +4,6 @@ USER_CRYPT=$USER_TMP/crypt.img
 SYNCED_PATH="$HOME/.synced/"
 SSH_SYNC_PATH=${SYNCED_PATH}ssh/
 PROFILE_DEF="${USER_TMP}/profile.next"
-TOUCHPAD_SETTING="/tmp/touchpad"
 READY="ready"
 IS_CONNECTED=1
 NOT_CONNECTED=0
@@ -22,10 +21,8 @@ function toggle-touchpad()
     IS_ENABLED=$(echo $IS_ENABLED)
     if [ -z $1 ]; then
         if [ $IS_ENABLED -gt 0 ]; then
-            touch $TOUCHPAD_SETTING
             IS_ENABLED=0
         else
-            rm -f $TOUCHPAD_SETTING
             IS_ENABLED=1
         fi
         xinput set-prop $INPUT_ID "Device Enabled" $IS_ENABLED
