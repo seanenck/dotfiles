@@ -47,6 +47,10 @@ function set-workplace()
             ;;
     esac
     xrandr --dpi $use_dpi
+    echo "$1 $use_setting"
+    if [ $1 -eq $use_setting ]; then
+        i3 restart
+    fi
 }
 
 # Workspace help
@@ -69,7 +73,6 @@ function force-workplace()
         force-workplace $WORKSPACE_NUM
     else
         set-workplace $1
-        i3 restart
         if [ -e $BACKGROUND_IMAGE ]; then
             feh --bg-fill $BACKGROUND_IMAGE
         else
