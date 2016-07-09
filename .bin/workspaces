@@ -22,11 +22,20 @@ function set-workplace()
 {
     use_dpi=192
     ALL_DISPLAYS=$(get-all-displays | grep -v "$MAIN_DISPLAY")
+    has_side=0
     for disp in $ALL_DISPLAYS; do
         xrandr --output $disp --off
+        xrandr | grep -q "^$disp connected"
+        if [ $? -eq 0 ]; then
+            has_side=1
+        fi
     done
-    xrandr --output $MAIN_DISPLAY --primary --auto 
-    case $1 in
+    xrandr --output $MAIN_DISPLAY --primary --auto
+    use_setting=$1
+    if [ $has_side -eq 0 ]; then
+        use_setting=$DEFAULT_WORKSPACE_ID
+    fi
+    case $use_setting in
         $DOCKED_ID)
             use_dpi=144
             replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
