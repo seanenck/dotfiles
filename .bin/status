@@ -2,6 +2,10 @@
 source $HOME/.bin/common
 FULL="$HOME/.config/genericon/"
 DELIMIT="|"
+WORKPLACE_KEY="workplace"
+LOCKING_KEY="locking"
+BACKLIGHT_KEY="backlight"
+TOUCHPAD_KEY="touchpad"
 
 function output-full()
 {
@@ -66,18 +70,28 @@ function locking-status()
     fi
 }
 
+function init-now()
+{
+    for item in $(echo "$WORKPLACE_KEY $LOCKING_KEY $BACKLIGHT_KEY $TOUCHPAD_KEY"); do
+        genericon -a $HOME/.bin/status $item &
+    done
+}
+
 case $1 in
-    "workplace")
+    $WORKPLACE_KEY)
         cmd=workplace-status
         ;;
-    "locking")
+    $LOCKING_KEY)
         cmd=locking-status
         ;;
-    "backlight")
+    $BACKLIGHT_KEY)
         cmd=backlight-status
         ;;
-    "touchpad")
+    $TOUCHPAD_KEY)
         cmd=touchpad-status
+        ;;
+    "init")
+        init-now
         ;;
 esac
 
