@@ -13,14 +13,14 @@ DISPLAY_EN=/tmp/display-enabled
 WORKPLACE_WORKING=/tmp/working
 CRYPT_MNT=/mnt/crypt
 SSH_KEY_PATH=${CRYPT_MNT}/ssh/
+TOUCHPAD_ON=0
 
 function toggle-touchpad()
 {
     INPUT_ID=$(xinput | grep "ImPS/2" | sed -n -e 's/^.*id=//p' | sed -e "s/\s/ /g" | cut -d " " -f 1)
     IS_ENABLED=$(xinput list-props $INPUT_ID | grep "Device Enabled" | cut -d ":" -f 2)
-    IS_ENABLED=$(echo $IS_ENABLED)
     if [ -z $1 ]; then
-        if [ $IS_ENABLED -gt 0 ]; then
+        if [ $IS_ENABLED -gt $TOUCHPAD_ON ]; then
             IS_ENABLED=0
         else
             IS_ENABLED=1
