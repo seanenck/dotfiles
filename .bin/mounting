@@ -217,9 +217,14 @@ function umount-crypt()
 
 function mount-usb()
 {
-    sudo fdisk -l | grep "Disk /dev/[sd]" | cut -d ' ' -f 2,3,4 | cut -d ',' -f 1
-    echo "Select drive:"
-    read USBDISK
+    disks=$(sudo fdisk -l | grep "Disk /dev/[sd]" | cut -d ' ' -f 2,3,4 | cut -d ',' -f 1)
+    disk_count=$(echo $disks | wc -l)
+    if [ $disk_count -gt 1 ]; then
+        echo "Select drive:"
+        read USBDISK
+    else
+        USBDISK=$(echo $disks | cut -d ":" -f 1)
+    fi
     USBDISK+="1"
     sudo mount $USBDISK /mnt/usb
 }
