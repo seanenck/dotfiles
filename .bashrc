@@ -61,11 +61,7 @@ fi
 
 source $HOME/.bin/common
 mkdir -p $USER_TMP 
-for update_time in $(echo "$USER_TOUCH"); do
-    if [ -e $update_time ]; then
-        touch $update_time
-    fi
-done
+date +%Y-%m-%d.%s > $LAST_TMP_HIT
 find $USER_TMP* -mtime +1 -type f -exec rm {} \;
 find $USER_TMP -empty -type d -delete
 if ! pgrep -u $USER ssh-agent > /dev/null; then

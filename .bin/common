@@ -14,6 +14,7 @@ WORKPLACE_WORKING=/tmp/working
 CRYPT_MNT=/mnt/crypt
 SSH_KEY_PATH=${CRYPT_MNT}/ssh/
 TOUCHPAD_ON=0
+LAST_TMP_HIT=$USER_TMP/last.tmp
 
 function toggle-touchpad()
 {
