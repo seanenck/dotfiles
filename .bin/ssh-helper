@@ -58,6 +58,7 @@ function do-socks()
     fi
     prox=$(echo $matched | cut -d "$DELIMITER" -f 2)
     dest=$(echo $matched | cut -d "$DELIMITER" -f 3)
+    echo "make sure to open an ssh connection to $1"
     ssh -t -L $PROXY_PORT:localhost:$PROXY_PORT $prox -4 ssh -f -N -D $PROXY_PORT $dest -4
 }
 
