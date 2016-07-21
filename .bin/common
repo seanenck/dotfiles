@@ -15,6 +15,7 @@ CRYPT_MNT=/mnt/crypt
 SSH_KEY_PATH=${CRYPT_MNT}/ssh/
 TOUCHPAD_ON=0
 LAST_TMP_HIT=$USER_TMP/last.tmp
+DEFAULT_REFRESH=1000
 
 function toggle-touchpad()
 {

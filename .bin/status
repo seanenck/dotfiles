@@ -72,7 +72,7 @@ function locking-status()
 
 function init-now()
 {
-    refreshing=1000
+    refreshing=$DEFAULT_REFRESH
     if [ ! -z "$1" ]; then
         refreshing=$1
     fi

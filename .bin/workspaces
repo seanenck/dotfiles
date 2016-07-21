@@ -18,6 +18,16 @@ function replace-and-execute()
     eval $VAL
 }
 
+function kill-icons()
+{
+    for pid in $(pgrep "python"); do
+        ps $pid | grep -q "genericon"
+        if [ $? -eq 0 ]; then
+            kill $pid
+        fi
+    done
+}
+
 function set-workplace()
 {
     use_dpi=192
@@ -35,9 +45,12 @@ function set-workplace()
     if [ $has_side -eq 0 ]; then
         use_setting=$DEFAULT_WORKSPACE_ID
     fi
+    kill-icons
+    rate=$DEFAULT_REFRESH
     case $use_setting in
         $DOCKED_ID)
             use_dpi=144
+            rate=5000
             replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
             replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
             rm -f $WORKPLACE_WORKING
@@ -46,8 +59,8 @@ function set-workplace()
             touch $WORKPLACE_WORKING
             ;;
     esac
+    status init $rate
     xrandr --dpi $use_dpi
-    echo "$1 $use_setting"
     if [ $1 -eq $use_setting ]; then
         i3 restart
     fi
