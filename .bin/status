@@ -73,7 +73,7 @@ function locking-status()
 function init-now()
 {
     for item in $(echo "$WORKPLACE_KEY $LOCKING_KEY $BACKLIGHT_KEY $TOUCHPAD_KEY"); do
-        genericon -a $HOME/.bin/status $item &
+        genericon -a $HOME/.bin/status $item -r 5000 &
     done
 }
 
