@@ -1,8 +1,8 @@
 #!/bin/bash
-URL_COMMON=$HOME/.cache/dmenu_urls/
-INDEX_NAME="urls.index"
+source $HOME/.bin/common
+INDEX_NAME="urls$INDEX_EXT"
 INDEX_FILE=${URL_COMMON}${INDEX_NAME}
-SUITE_NAME="suite.index"
+SUITE_NAME="suite$INDEX_EXT"
 SUITE_FILE=${URL_COMMON}${SUITE_NAME}
 REGISTER_KEYWORD="--register"
 HELP_KEYWORD="--help"
@@ -227,6 +227,7 @@ case $1 in
         ;;
     $SUITE_BLD_KEYWORD)
         rebuild-suite        
+        rm -f $DMENU_ENTRIES
         exit 0
         ;;
     $SUITE_DIS_KEYWORD)
@@ -260,6 +261,7 @@ esac
 
 if [ ! -z $REBUILD ]; then
     build-scripts
+    rm -f $DMENU_ENTRIES
     echo "index update completed"
     exit 0
 fi
