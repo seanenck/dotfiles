@@ -26,6 +26,7 @@ VIMRC=$HOME/.vimrc
 VIMRC_TXT=$HOME/.vimrc_text
 VIMRC_TMP=$USER_TMP/.vimrc_txt
 DMENU_IGNORES="$TEXT_EDITOR_KEY|$DMENU_KEY|$MOUSE_TOGGLE_KEY|$INSTALL_CHROME_KEY|$CSV_PROC_KEY|$PROXY_CHROME_KEY|$REBUILD_KEY|$SSID_KEY|$MARKDOWN_KEY"
+DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 
 function text-editor()
 {
@@ -40,6 +41,9 @@ function dmenu-wrapper()
     if [ ! -e $DMENU_ENTRIES ]; then
         TMP_DMENU=$DMENU_ENTRIES.tmp
         get-help | cut -d " " -f 5 | grep -v "^$" | grep -v -E "$DMENU_IGNORES" > $TMP_DMENU
+        if [ -e $DMENU_INCLUDE ]; then
+            cat $DMENU_INCLUDE >> $TMP_DMENU
+        fi
         ls $URL_COMMON | grep -v "$INDEX_EXT$" >> $TMP_DMENU
         cat $TMP_DMENU | sort > $DMENU_ENTRIES
         rm -f $TMP_DMENU
