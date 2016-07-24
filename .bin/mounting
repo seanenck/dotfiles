@@ -241,7 +241,7 @@ function mount-share()
     if [ $IS_MNT -eq $IS_MOUNTED ]; then
         ORIG="$IFS"
         IFS=$'\n'
-        for f in $(cat $MNT_OPTIONS); do
+        for f in $(cat $MNT_OPTIONS | sort); do
             echo $f | cut -d "|" -f 1
         done
         read -p "mount which? " mnt_name
