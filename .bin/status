@@ -79,7 +79,6 @@ function ping-status()
         avg=$(echo "$raw" | tail -1 | awk '{print $4}' | cut -d '/' -f 2 | cut -d "." -f 1)
     fi
     val="unknown"
-    echo "$avg" > /tmp/test-ping
     if [ ! -z "$avg" ]; then
         if [ $avg -lt 250 ]; then
             val="low"
