@@ -98,11 +98,17 @@ function init-now()
     if [ ! -z "$1" ]; then
         refreshing=$1
     fi
+    
     for item in $(echo "$WORKPLACE_KEY $LOCKING_KEY $BACKLIGHT_KEY $TOUCHPAD_KEY $PING_KEY"); do
+        use_refresh=$refreshing
         if [[ "$item" == "$PING_KEY" ]]; then
-            refreshing=$DEFAULT_PING_REFRESH
+            use_refresh=$DEFAULT_PING_REFRESH
+        else
+            if [[ "$item" == "$WORKPLACE_KEY" ]]; then
+                use_refresh=$DEFAULT_WORKSPACE_REFRESH
+            fi
         fi
-        genericon -a $HOME/.bin/status $item -r $refreshing &
+        genericon -a $HOME/.bin/status $item -r $use_refresh &
     done
 }
 
