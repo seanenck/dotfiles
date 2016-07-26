@@ -75,8 +75,10 @@ function ping-status()
 {
     raw=$(ping -c 1 www.google.com -4 2>/dev/null)
     avg=""
+    unt=""
     if [ ! -z "$raw" ]; then
         avg=$(echo "$raw" | tail -1 | awk '{print $4}' | cut -d '/' -f 2 | cut -d "." -f 1)
+        unt=$(echo "$raw" | tail -1 | cut -d " " -f 5)
     fi
     val="unknown"
     if [ ! -z "$avg" ]; then
@@ -89,7 +91,7 @@ function ping-status()
     if [ -z "$avg" ]; then
         avg="n/a"
     fi
-    echo ${val}"-ping"${DELIMIT}$avg
+    echo ${val}"-ping"${DELIMIT}$avg$unt
 }
 
 function init-now()
