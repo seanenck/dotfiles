@@ -6,6 +6,7 @@ WORKPLACE_KEY="workplace"
 LOCKING_KEY="locking"
 BACKLIGHT_KEY="backlight"
 TOUCHPAD_KEY="touchpad"
+PING_KEY="ping"
 
 function output-full()
 {
@@ -45,7 +46,7 @@ function backlight-status()
             IMAGE="low"
         fi
     fi
-    echo $IMAGE${DELIMIT}$(xbacklight | cut -d "." -f 1)
+    echo $IMAGE"-bright"${DELIMIT}$(xbacklight | cut -d "." -f 1)
 }
 
 function workplace-status()
@@ -70,13 +71,35 @@ function locking-status()
     fi
 }
 
+function ping-status()
+{
+    raw=$(ping -c 1 www.google.com -4 2>/dev/null)
+    avg=""
+    if [ ! -z "$raw" ]; then
+        avg=$(echo "$raw" | tail -1 | awk '{print $4}' | cut -d '/' -f 2 | cut -d "." -f 1)
+    fi
+    val="unknown"
+    echo "$avg" > /tmp/test-ping
+    if [ ! -z "$avg" ]; then
+        if [ $avg -lt 250 ]; then
+            val="low"
+        else
+            val="high"
+        fi
+    fi
+    if [ -z "$avg" ]; then
+        avg="n/a"
+    fi
+    echo ${val}"-ping"${DELIMIT}$avg
+}
+
 function init-now()
 {
     refreshing=$DEFAULT_REFRESH
     if [ ! -z "$1" ]; then
         refreshing=$1
     fi
-    for item in $(echo "$WORKPLACE_KEY $LOCKING_KEY $BACKLIGHT_KEY $TOUCHPAD_KEY"); do
+    for item in $(echo "$WORKPLACE_KEY $LOCKING_KEY $BACKLIGHT_KEY $TOUCHPAD_KEY $PING_KEY"); do
         genericon -a $HOME/.bin/status $item -r $refreshing &
     done
 }
@@ -93,6 +116,9 @@ case $1 in
         ;;
     $TOUCHPAD_KEY)
         cmd=touchpad-status
+        ;;
+    $PING_KEY)
+        cmd=ping-status
         ;;
     "init")
         init-now "$2"
