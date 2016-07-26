@@ -19,6 +19,7 @@ DEFAULT_REFRESH=1000
 URL_COMMON=$HOME/.cache/dmenu_urls
 INDEX_EXT=".index"
 DMENU_ENTRIES="$USER_TMP/dmenu_cache"
+DEFAULT_PING_REFRESH=10000
 
 function toggle-touchpad()
 {
