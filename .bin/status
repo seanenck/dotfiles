@@ -91,7 +91,7 @@ function ping-status()
         fi
     fi
     if [ -z "$avg" ]; then
-        avg="n/a"
+        avg="disconnected"
     fi
     echo ${val}"-ping"${DELIMIT}$avg$unt
 }
