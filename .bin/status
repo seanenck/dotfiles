@@ -85,6 +85,8 @@ function ping-status()
         if [ $avg -lt 250 ]; then
             if [[ "$unt" != "received,"] ]]; then
                 val="low"
+            else
+                avg="unknown"
             fi
         else
             val="high"
