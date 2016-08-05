@@ -20,7 +20,27 @@ URL_COMMON=$HOME/.cache/dmenu_urls
 INDEX_EXT=".index"
 DMENU_ENTRIES="$USER_TMP/dmenu_cache"
 DEFAULT_PING_REFRESH=10000
-DEFAULT_WORKSPACE_REFRESH=60000
+DEFAULT_INTERRUPT_REFRESH=500
+STATUS_WORKPLACE_KEY="workplace"
+STATUS_LOCKING_KEY="locking"
+STATUS_BACKLIGHT_KEY="backlight"
+STATUS_TOUCHPAD_KEY="touchpad"
+STATUS_PING_KEY="ping"
+
+function call-status()
+{
+    signal-status $1 > /dev/null
+}
+
+function signal-status()
+{
+    for p in $(pidof python); do
+        ps $p | grep "genericon" | grep -q "$1"
+        if [ $? -eq 0 ]; then
+            kill -SIGUSR1 $p 
+        fi
+    done
+}
 
 function toggle-touchpad()
 {
@@ -33,6 +53,7 @@ function toggle-touchpad()
             IS_ENABLED=1
         fi
         xinput set-prop $INPUT_ID "Device Enabled" $IS_ENABLED
+        call-status "$STATUS_TOUCHPAD_KEY"
     else
         echo $IS_ENABLED
     fi

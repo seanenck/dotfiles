@@ -85,17 +85,24 @@ function auto-lock-suspend()
 
 function toggle-locking()
 {
+    no_action=0
     if [ -e $DISPLAY_UN ]; then
         rm $DISPLAY_UN
         touch $DISPLAY_EN
-        exit 0
+        no_action=1
     fi
 
-    if [ -e $DISPLAY_EN ]; then
-        rm $DISPLAY_EN
-        exit 0  
+    if [ $no_action -eq 0 ]; then
+        if [ -e $DISPLAY_EN ]; then
+            rm $DISPLAY_EN
+            no_action=1
+        fi
     fi
-    touch $DISPLAY_UN
+
+    if [ $no_action -eq 0 ]; then
+        touch $DISPLAY_UN
+    fi
+    call-status "$STATUS_LOCKING_KEY"
 }
 
 function print-help()

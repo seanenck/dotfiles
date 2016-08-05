@@ -2,11 +2,11 @@
 source $HOME/.bin/common
 FULL="$HOME/.config/genericon/"
 DELIMIT="|"
-WORKPLACE_KEY="workplace"
-LOCKING_KEY="locking"
-BACKLIGHT_KEY="backlight"
-TOUCHPAD_KEY="touchpad"
-PING_KEY="ping"
+WORKPLACE_KEY=$STATUS_WORKPLACE_KEY
+LOCKING_KEY=$STATUS_LOCKING_KEY
+BACKLIGHT_KEY=$STATUS_BACKLIGHT_KEY
+TOUCHPAD_KEY=$STATUS_TOUCHPAD_KEY
+PING_KEY=$STATUS_PING_KEY
 
 function output-full()
 {
@@ -106,15 +106,23 @@ function init-now()
     fi
     
     for item in $(echo "$WORKPLACE_KEY $LOCKING_KEY $BACKLIGHT_KEY $TOUCHPAD_KEY $PING_KEY"); do
+        interrupt=""
         use_refresh=$refreshing
-        if [[ "$item" == "$PING_KEY" ]]; then
-            use_refresh=$DEFAULT_PING_REFRESH
-        else
-            if [[ "$item" == "$WORKPLACE_KEY" ]]; then
-                use_refresh=$DEFAULT_WORKSPACE_REFRESH
-            fi
+        case $item in
+            "$PING_KEY")
+                use_refresh=$DEFAULT_PING_REFRESH
+                ;;
+            "$WORKPLACE_KEY" | "$TOUCHPAD_KEY" | "$LOCKING_KEY")
+                interrupt="-i"
+                use_refresh=$DEFAULT_INTERRUPT_REFRESH
+                ;;
+        esac
+        genericon -a $HOME/.bin/status $item -r $use_refresh $interrupt &
+        sleep 1 
+        if [ ! -z "$interrupt" ]; then
+            signal-status "$item"
+            call-status $item
         fi
-        genericon -a $HOME/.bin/status $item -r $use_refresh &
     done
 }
 
