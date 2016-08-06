@@ -118,7 +118,7 @@ function init-now()
                 ;;
         esac
         genericon -a $HOME/.bin/status $item -r $use_refresh $interrupt &
-        sleep 1 
+        sleep 0.25 
         if [ ! -z "$interrupt" ]; then
             signal-status "$item"
             call-status $item
