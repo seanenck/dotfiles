@@ -76,6 +76,10 @@ function ping-status()
     raw=$(ping -c 1 www.google.com -4 2>/dev/null)
     avg=""
     unt=""
+    echo $raw | grep -q "100% packet loss"
+    if [ $? -eq 0 ]; then
+        raw=""
+    fi
     if [ ! -z "$raw" ]; then
         avg=$(echo "$raw" | tail -1 | awk '{print $4}' | cut -d '/' -f 2 | cut -d "." -f 1)
         unt=$(echo "$raw" | tail -1 | cut -d " " -f 5)
