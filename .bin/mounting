@@ -218,12 +218,20 @@ function umount-crypt()
 function mount-usb()
 {
     disks=$(sudo fdisk -l | grep "Disk /dev/[sd]" | cut -d ' ' -f 2,3,4 | cut -d ',' -f 1)
-    disk_count=$(echo $disks | wc -l)
+    disk_count=0
+    if [ ! -z "$disks" ]; then
+        disk_count=$(echo $disks | wc -l)
+    fi
     if [ $disk_count -gt 1 ]; then
         echo "Select drive:"
         read USBDISK
     else
-        USBDISK=$(echo $disks | cut -d ":" -f 1)
+        if [ $disk_count -ne 1 ]; then
+            echo "no disk to mount"
+            exit -1
+        else
+            USBDISK=$(echo $disks | cut -d ":" -f 1)
+        fi
     fi
     USBDISK+="1"
     sudo mount $USBDISK /mnt/usb
