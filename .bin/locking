@@ -46,7 +46,6 @@ function suspend-now()
     if [ ! -e $DISPLAY_UN -a ! -e $DISPLAY_EN ]; then
         CUR_VOL=$(change-volume $VOL_STAT)
         CUR_VOL=$(echo $CUR_VOL)
-        TOUCH=$(toggle-touchpad "status")
         if [[ "$CUR_VOL" != "0" ]]; then
             write-log "muting volume"
             change-volume $VOL_MUTE
@@ -70,10 +69,7 @@ function suspend-now()
             SLEEP_COUNT=$((SLEEP_COUNT+1))
             PID=$(get-i3lock)
         done
-        write-log "setting touchpad setting...(was $TOUCH)"
-        if [ $TOUCH -le $TOUCHPAD_ON ]; then
-            toggle-touchpad
-        fi
+        call-status "$STATUS_TOUCHPAD_KEY"
         write-log "done sleeping"
     fi
 }
