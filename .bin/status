@@ -2,7 +2,6 @@
 source $HOME/.bin/common
 FULL="$HOME/.config/genericon/"
 DELIMIT="|"
-WORKPLACE_KEY=$STATUS_WORKPLACE_KEY
 LOCKING_KEY=$STATUS_LOCKING_KEY
 BACKLIGHT_KEY=$STATUS_BACKLIGHT_KEY
 TOUCHPAD_KEY=$STATUS_TOUCHPAD_KEY
@@ -47,15 +46,6 @@ function backlight-status()
         fi
     fi
     echo $IMAGE"-bright"${DELIMIT}$(xbacklight | cut -d "." -f 1)
-}
-
-function workplace-status()
-{
-    if [ -e $WORKPLACE_WORKING ]; then
-        echo "mobile"
-    else
-        echo "docked"
-    fi
 }
 
 function locking-status()
@@ -109,14 +99,14 @@ function init-now()
         refreshing=$1
     fi
     
-    for item in $(echo "$WORKPLACE_KEY $LOCKING_KEY $BACKLIGHT_KEY $TOUCHPAD_KEY $PING_KEY"); do
+    for item in $(echo "$LOCKING_KEY $BACKLIGHT_KEY $TOUCHPAD_KEY $PING_KEY"); do
         interrupt=""
         use_refresh=$refreshing
         case $item in
             "$PING_KEY")
                 use_refresh=$DEFAULT_PING_REFRESH
                 ;;
-            "$WORKPLACE_KEY" | "$TOUCHPAD_KEY" | "$LOCKING_KEY")
+            "$TOUCHPAD_KEY" | "$LOCKING_KEY")
                 interrupt="-i"
                 use_refresh=$DEFAULT_INTERRUPT_REFRESH
                 ;;
@@ -131,9 +121,6 @@ function init-now()
 }
 
 case $1 in
-    $WORKPLACE_KEY)
-        cmd=workplace-status
-        ;;
     $LOCKING_KEY)
         cmd=locking-status
         ;;
