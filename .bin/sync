@@ -47,7 +47,7 @@ function zip-configs()
     7z a $DUMP_TO -x@.gitignore .
     echo "encrypting configs ($DUMP_TO_OUT)..."
     # call with -d to decrypt
-    openssl aes-256-cbc -salt -in $DUMP_TO -out $DUMP_TO_OUT -kfile $HOME/.cache/crypt.key
+    openssl aes-256-cbc -salt -in $DUMP_TO -out $DUMP_TO_OUT -kfile $CACHE_KEY
     rm -f $DUMP_TO
     cd $c_pwd
 }
