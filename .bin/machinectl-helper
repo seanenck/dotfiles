@@ -62,7 +62,6 @@ function spawn()
         exit -1
     fi
 
-
     if [ -d $CONT_PATH ] || [ -e $CONT_CONF ]; then
         echo "$1 already exists..."
         exit -1
@@ -76,8 +75,8 @@ function spawn()
 
     echo "copying data...($CONT_PATH)"
     cp -R $TEMPLATE_PATH $CONT_PATH
-    echo "and config...($CONT_CONF)" 
-    cp $TEMPLATE_CONF $CONT_CONF
+    echo "and config...($CONT_CONF)"
+    ln -s $TEMPLATE_CONF $CONT_CONF 
 }
 
 function pack()
