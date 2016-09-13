@@ -26,6 +26,19 @@ STATUS_BACKLIGHT_KEY="backlight"
 STATUS_TOUCHPAD_KEY="touchpad"
 STATUS_PING_KEY="ping"
 
+function socks-command()
+{
+    if [ -z "$1" ]; then
+        echo "requires port"
+        exit -1
+    fi
+    if [ -z "$2" ]; then
+        echo "requires destination"
+        exit -1
+    fi
+    echo "ssh -f -N -D $1 $2 -4"
+}
+
 function call-status()
 {
     signal-status $1 > /dev/null
