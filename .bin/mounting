@@ -19,10 +19,6 @@ DEFCRYPT_SIZE="100M"
 ADD_ALL_KEYS=1
 MNT_OPTIONS=${SYNCED_PATH}configs/mounts
 MNT_SETTINGS=${SYNCED_PATH}/configs/mounting
-MOUNT_HOME_PRE=""
-MOUNT_HOME_PRE=""
-MOUNT_WORK_PST=""
-MOUNT_WORK_PST=""
 if [ -e $MNT_SETTINGS ]; then
     source $MNT_SETTINGS
 fi
@@ -258,18 +254,10 @@ function mount-share()
         if [ ! -z "$mnt_name" ]; then
             segment=$(cat $MNT_OPTIONS | grep "$mnt_name|")
             mnttype=$(echo $segment | cut -d "|" -f 2)
-            use_pre=""
-            use_pst=""
-            case $mnttype in
-                "home")
-                    use_pre="$MOUNT_HOME_PRE"
-                    use_pst="$MOUNT_HOME_PST"
-                    ;;
-                "work")
-                    use_pre="$MOUNT_WORK_PRE"
-                    use_pst="$MOUNT_WORK_PST"
-                    ;;
-            esac
+            use_pre="MOUNT_${mnttype}_PRE"
+            use_pst="MOUNT_${mnttype}_PST"
+            use_pre=${!use_pre}
+            use_pst=${!use_pst}
             result=$(echo $segment | cut -d "|" -f 3)
             result=${result//\{MOUNT_PRE\}/$use_pre}
             result=${result//\{MOUNT_PST\}/$use_pst}
