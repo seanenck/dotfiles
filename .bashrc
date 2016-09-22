@@ -65,10 +65,10 @@ date +%Y-%m-%d.%s > $LAST_TMP_HIT
 find $USER_TMP* -mtime +1 -type f -exec rm {} \;
 find $USER_TMP -empty -type d -delete
 if ! pgrep -u $USER ssh-agent > /dev/null; then
-    ssh-agent > ~/.cache/.ssh-agent-indicator
+    ssh-agent > $SSH_AGENT_IND
 fi
 if [[ "$SSH_AGENT_PID" == "" ]]; then
-    eval $(<~/.cache/.ssh-agent-indicator)
+    ssh-agent-eval
 fi
 ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias ssh; ssh'
 clear
