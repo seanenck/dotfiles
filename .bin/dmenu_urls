@@ -133,6 +133,23 @@ run-browser $3 $2 $4
     chmod u+x $FILE_NAME
 }
 
+function build-hosts()
+{
+    HOSTS_BROWSER=$(echo "$BROWSERS" | cut -d " " -f 2)
+    rm -f ${URL_COMMON}/$NETWORK_INDICATOR*
+    for line in $(cat $HOSTS_FILE | grep -E "\.($HOSTS_FILE_HTTPS|$HOSTS_FILE_HTTP)\." | sed "s/ \+/,/g"); do
+        NAME="network."$(echo "$line" | sed "s/\.$HOSTS_FILE_HTTP.*//g" | cut -d "," -f 2)
+        SCHEME="$HOSTS_FILE_HTTP"
+        echo "$line" | grep -q "$HOSTS_FILE_HTTPS"
+        if [ $? -eq 0 ]; then
+            SCHEME="$HOSTS_FILE_HTTPS"
+        fi
+        NAME="network."$(echo "$line" | sed "s/\.$HOSTS_FILE_HTTP.*//g" | cut -d "," -f 2)
+        URL="$SCHEME://"$(echo "$line" | cut -d "," -f 1)
+        create-script "$NAME" "$URL" "$HOSTS_BROWSER" "$DEFAULT_ARGS"
+    done
+}
+
 function build-scripts()
 {
     if [ -e $INDEX_FILE ]; then
@@ -144,18 +161,7 @@ function build-scripts()
             ARGS=$(echo "$line" | cut -d "," -f 4 | sed "s/$ARG_DELIMITER/ /g")
             create-script "$NAME" "$URL" "$BROWSER" "$ARGS"
         done
-        HOSTS_BROWSER=$(echo "$BROWSERS" | cut -d " " -f 2)
-        for line in $(cat $HOSTS_FILE | grep -E "\.($HOSTS_FILE_HTTPS|$HOSTS_FILE_HTTP)\." | sed "s/ \+/,/g"); do
-            NAME="network."$(echo "$line" | sed "s/\.$HOSTS_FILE_HTTP.*//g" | cut -d "," -f 2)
-            SCHEME="$HOSTS_FILE_HTTP"
-            echo "$line" | grep -q "$HOSTS_FILE_HTTPS"
-            if [ $? -eq 0 ]; then
-                SCHEME="$HOSTS_FILE_HTTPS"
-            fi
-            NAME="network."$(echo "$line" | sed "s/\.$HOSTS_FILE_HTTP.*//g" | cut -d "," -f 2)
-            URL="$SCHEME://"$(echo "$line" | cut -d "," -f 1)
-            create-script "$NAME" "$URL" "$HOSTS_BROWSER" "$DEFAULT_ARGS"
-        done
+        build-hosts
     fi
 }
 
