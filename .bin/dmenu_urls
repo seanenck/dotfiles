@@ -241,8 +241,8 @@ case $1 in
         if [ ! -z "$NAME" ]; then
             REBUILD=1
             update-index "$NAME" ""
-            if [ -e "${URL_COMMON}$NAME" ]; then
-                rm "${URL_COMMON}$NAME"
+            if [ -e "${URL_COMMON}/$NAME" ]; then
+                rm "${URL_COMMON}/$NAME"
             fi
         else
             echo "name is required"
