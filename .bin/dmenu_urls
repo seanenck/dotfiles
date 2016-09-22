@@ -17,6 +17,9 @@ BROWSERS="google-chrome-stable chromium"
 DEFAULT_ARGS="--new-window"
 START_LINE="#name,browser,url,args"
 ARG_DELIMITER="|"
+HOSTS_FILE="/etc/hosts"
+HOSTS_FILE_HTTPS="https"
+HOSTS_FILE_HTTP="http"
 function run-browser()
 {
     browser=$1
@@ -140,6 +143,18 @@ function build-scripts()
             URL=$(echo "$line" | cut -d "," -f 3)
             ARGS=$(echo "$line" | cut -d "," -f 4 | sed "s/$ARG_DELIMITER/ /g")
             create-script "$NAME" "$URL" "$BROWSER" "$ARGS"
+        done
+        HOSTS_BROWSER=$(echo "$BROWSERS" | cut -d " " -f 2)
+        for line in $(cat $HOSTS_FILE | grep -E "\.($HOSTS_FILE_HTTPS|$HOSTS_FILE_HTTP)\." | sed "s/ \+/,/g"); do
+            NAME="network."$(echo "$line" | sed "s/\.$HOSTS_FILE_HTTP.*//g" | cut -d "," -f 2)
+            SCHEME="$HOSTS_FILE_HTTP"
+            echo "$line" | grep -q "$HOSTS_FILE_HTTPS"
+            if [ $? -eq 0 ]; then
+                SCHEME="$HOSTS_FILE_HTTPS"
+            fi
+            NAME="network."$(echo "$line" | sed "s/\.$HOSTS_FILE_HTTP.*//g" | cut -d "," -f 2)
+            URL="$SCHEME://"$(echo "$line" | cut -d "," -f 1)
+            create-script "$NAME" "$URL" "$HOSTS_BROWSER" "$DEFAULT_ARGS"
         done
     fi
 }
