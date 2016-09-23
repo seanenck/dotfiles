@@ -123,7 +123,7 @@ function searching()
 
 function open-browser()
 {
-    $1 "--new-window" "$2" "$3"
+    $1 "--disk-cache-dir=/tmp/cache/$1" "--new-window" "$2" "$3"
 }
 
 function file-required()
