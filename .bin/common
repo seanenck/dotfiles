@@ -26,7 +26,6 @@ STATUS_BACKLIGHT_KEY="backlight"
 STATUS_TOUCHPAD_KEY="touchpad"
 STATUS_PING_KEY="ping"
 SSH_AGENT_IND="$HOME/.cache/.ssh-agent-indicator"
-HOME_WORKPLACE_ID=5
 
 function ssh-agent-eval()
 {
