@@ -81,6 +81,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3? This will end the s
 bar {
         output HDMI1
         output DP2-8
+        output DP1
         tray_output none
         status_command i3status
 }
@@ -107,6 +108,7 @@ bindsym $mod+Shift+period move workspace to right
 # Change workplaces
 bindsym $mod+Shift+o exec subsystem workspaces force cycle
 bindsym $mod+Shift+i exec subsystem workspaces force 1
+bindsym $mod+Shift+h exec subsystem workspaces force 5
 
 # Locking handlers
 bindsym $mod+Shift+x exec locking toggle 

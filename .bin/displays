@@ -18,6 +18,7 @@ PROFILE_CYCLE="cycle"
 MAIN_DISPLAY="eDP1"
 DISP_ONE="DP2-8"
 DISP_TWO="HDMI1"
+HOME_DISP="DP1"
 
 function get-lighting-help()
 {

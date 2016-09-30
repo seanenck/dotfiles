@@ -11,6 +11,7 @@ DOCKED_ID=2
 DISP_HOLDER="DISPLAY_VALUE"
 WORK_COMMON_LEFT="--output $DISP_HOLDER --auto --left-of $MAIN_DISPLAY --rotate right"
 WORK_COMMON_RIGHT="--output $DISP_HOLDER --auto --right-of $MAIN_DISPLAY"
+HOME_COMMON="--output $DISP_HOLDER --auto --left-of $MAIN_DISPLAY"
 
 function replace-and-execute()
 {
@@ -48,11 +49,18 @@ function set-workplace()
     kill-icons
     rate=$DEFAULT_REFRESH
     case $use_setting in
-        $DOCKED_ID)
+        $DOCKED_ID | $HOME_WORKPLACE_ID)
             use_dpi=144
             rate=5000
-            replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
-            replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
+            case $use_setting in
+                $DOCKED_ID)
+                    replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
+                    replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
+                    ;;
+                $HOME_WORKPLACE_ID)
+                    replace-and-execute "$HOME_COMMON" "$HOME_DISP"
+                    ;;
+            esac
             rm -f $WORKPLACE_WORKING
             ;;
         *)
@@ -73,6 +81,7 @@ function get-workspace-help()
     $1 $2 $CYCLING (change the current workspace setup)
     $1 $2 $DEFAULT_WORKSPACE_ID (force default workspace)
     $1 $2 $DOCKED_ID (force docked workspace)
+    $1 $2 $HOME_ID (change to home workspace)
     "
 }
 
