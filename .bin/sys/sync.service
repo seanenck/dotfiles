@@ -4,4 +4,4 @@ Description="File syncing"
 [Service]
 Type=oneshot
 User=enck
-ExecStart=/home/enck/.bin/sync
+ExecStart=/home/enck/.bin/syncing
