@@ -137,7 +137,7 @@ run-browser $3 $2 $4
 function build-hosts()
 {
     HOSTS_BROWSER=$(echo "$BROWSERS" | cut -d " " -f 2)
-    rm -f ${URL_COMMON}/$NETWORK_INDICATOR
+    rm -f ${URL_COMMON}/$NETWORK_INDICATOR*
     for line in $(cat $HOSTS_FILE | grep -E "\.($HOSTS_FILE_HTTPS|$HOSTS_FILE_HTTP)\." | sed "s/ \+/,/g"); do
         NAME=${NETWORK_INDICATOR}$(echo "$line" | sed "s/\.$HOSTS_FILE_HTTP.*//g" | cut -d "," -f 2)
         SCHEME="$HOSTS_FILE_HTTP"
