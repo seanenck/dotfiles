@@ -29,22 +29,27 @@ SSH_AGENT_IND="$HOME/.cache/.ssh-agent-indicator"
 
 function get-all-changes()
 {
-    for d in $(echo "$HOME $SYNCED_PATH"); do
-        cd $d
-        git diff-index --name-only HEAD --
-        git status -sb | grep 'ahead'
-    done
-    cd $HOME
+    git diff-index --name-only HEAD --
+    git status -sb | grep 'ahead'
 }
 
 function git-changes()
 {
-    res=$(get-all-changes)
-    if [ ! -z "$res" ]; then
-        echo "uncommitted changes"
-        red='\033[0;31m'
-        echo -e "\033[1;31m$res\033[0m" | sed "s/^/    /g"
-    fi
+    first=""
+    for d in $(echo "$HOME $SYNCED_PATH"); do
+        cd $d
+        local_res=$(get-all-changes "$d")
+        if [ ! -z "$local_res" ]; then
+            if [ -z $first ]; then
+                echo "uncommitted changes"
+            fi
+            echo -e "$d\033[1;31m"
+            echo -e "$local_res\033[0m" | sed "s/^/    /g"
+            first="false"
+        fi
+    done
+    cd $HOME
+    echo -e "\033[0m"
 }
 
 function ssh-agent-eval()
