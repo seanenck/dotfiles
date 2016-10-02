@@ -72,3 +72,4 @@ if [[ "$SSH_AGENT_PID" == "" ]]; then
 fi
 ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias ssh; ssh'
 clear
+git-changes

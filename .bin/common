@@ -27,7 +27,7 @@ STATUS_TOUCHPAD_KEY="touchpad"
 STATUS_PING_KEY="ping"
 SSH_AGENT_IND="$HOME/.cache/.ssh-agent-indicator"
 
-function git-changes()
+function get-all-changes()
 {
     for d in $(echo "$HOME $SYNCED_PATH"); do
         cd $d
@@ -35,6 +35,16 @@ function git-changes()
         git status -sb | grep 'ahead'
     done
     cd $HOME
+}
+
+function git-changes()
+{
+    res=$(get-all-changes)
+    if [ ! -z "$res" ]; then
+        echo "uncommitted changes"
+        red='\033[0;31m'
+        echo -e "\033[1;31m$res\033[0m" | sed "s/^/    /g"
+    fi
 }
 
 function ssh-agent-eval()
