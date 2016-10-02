@@ -27,6 +27,16 @@ STATUS_TOUCHPAD_KEY="touchpad"
 STATUS_PING_KEY="ping"
 SSH_AGENT_IND="$HOME/.cache/.ssh-agent-indicator"
 
+function git-changes()
+{
+    for d in $(echo "$HOME $SYNCED_PATH"); do
+        cd $d
+        git diff-index --name-only HEAD --
+        git status -sb | grep 'ahead'
+    done
+    cd $HOME
+}
+
 function ssh-agent-eval()
 {
     eval $(<$SSH_AGENT_IND)
