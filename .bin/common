@@ -49,7 +49,6 @@ function git-changes()
         fi
     done
     cd $HOME
-    echo -e "\033[0m"
 }
 
 function ssh-agent-eval()
