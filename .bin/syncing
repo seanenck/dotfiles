@@ -1,56 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
-DUMP_TO=config.dump.lock
-DUMP_TO_OUT=configurations.aes
-CACHE_KEY=$HOME/.cache/crypt.key
-PREV_CHECKS=$USER_TMP/configs.prev
-CRNT_CHECKS=$USER_TMP/configs.crnt
-DO_ZIPPING=0
 SETUP="--install"
-
-function get-change-dirs()
-{
-    for d in $(find ${SYNCED_PATH} -type d | sort); do
-        for f in $(find ${d}* -type f | sort); do
-            f_name=$(echo "$f" | cut -c${#SYNCED_PATH}- | cut -c2-)
-            cat ${SYNCED_PATH}.gitignore | grep -q "$f_name"
-            if [ $? -ne 0 ]; then
-                echo $f
-            fi
-        done
-    done
-}
-
-function check-changes()
-{
-    res=$DO_ZIPPING
-    rm -f $CRNT_CHECKS
-    for f in $(get-change-dirs); do
-        sha256sum $f >> $CRNT_CHECKS
-    done
-    if [ -e $PREV_CHECKS ]; then
-        diff $PREV_CHECKS $CRNT_CHECKS > /dev/null
-        res=$?
-    else
-        res=2
-    fi
-    mv $CRNT_CHECKS $PREV_CHECKS
-    echo $res
-}
-
-function zip-configs()
-{
-    c_pwd=$PWD
-    echo "zipping configs ($DUMP_TO)..."
-    cd ${SYNCED_PATH}
-    # call with 7z x for extract 
-    7z a $DUMP_TO -x@.gitignore .
-    echo "encrypting configs ($DUMP_TO_OUT)..."
-    # call with -d to decrypt
-    openssl aes-256-cbc -salt -in $DUMP_TO -out $DUMP_TO_OUT -kfile $CACHE_KEY
-    rm -f $DUMP_TO
-    cd $c_pwd
-}
 
 function sync-now()
 {
@@ -65,15 +15,6 @@ function sync-now()
     fi
     echo "checked for connection...$available"
     if [ $available -eq $IS_CONNECTED ]; then
-        if [ ! -e $CACHE_KEY ]; then
-            echo "missing crypt key for caching config ($CACHE_KEY)..."
-            exit -1
-        fi
-        do_zip=$(check-changes)
-        echo "do zipping? $do_zip"
-        if [ $do_zip -ne $DO_ZIPPING ]; then
-            zip-configs
-        fi
         rsync -avzc --exclude "*.lock" --exclude ".gitignore" --exclude "*/" --delete-after ${SYNCED_PATH} -e ssh $SYNC_TO:~/Sync/
     fi
 }
