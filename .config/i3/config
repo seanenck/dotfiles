@@ -106,7 +106,7 @@ bindsym $mod+Shift+comma move workspace to left
 bindsym $mod+Shift+period move workspace to right
 
 # Change workplaces
-bindsym $mod+Shift+i exec subsystem workspaces force 1
+bindsym $mod+Shift+m exec subsystem workspaces force 1
 bindsym $mod+Shift+o exec subsystem workspaces force 2 
 bindsym $mod+Shift+h exec subsystem workspaces force 3
 
@@ -115,19 +115,8 @@ bindsym $mod+Shift+x exec locking toggle
 bindsym $mod+Shift+l exec locking auto 
 bindsym $mod+Shift+s exec locking sleep
 
-# Scracthpad
-bindsym $mod+Shift+m move scratchpad
-bindsym $mod+Shift+n scratchpad show
-
 # Backlight
-bindsym XF86MonBrightnessUp exec subsystem display change brighter
-bindsym XF86MonBrightnessDown exec subsystem display change dimmer
 bindsym $mod+Shift+u exec subsystem display profiles cycle
-
-# Volume
-bindsym XF86AudioMute exec subsystem volume sound mute
-bindsym XF86AudioLowerVolume exec subsystem volume sound down
-bindsym XF86AudioRaiseVolume exec subsystem volume sound up
 
 #helpers...
 bindsym $mod+Escape exec touchpad-toggle
