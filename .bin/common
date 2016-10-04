@@ -26,6 +26,19 @@ STATUS_BACKLIGHT_KEY="backlight"
 STATUS_TOUCHPAD_KEY="touchpad"
 STATUS_PING_KEY="ping"
 SSH_AGENT_IND="$HOME/.cache/.ssh-agent-indicator"
+IS_MOUNTED=1
+RED_TEXT="\033[1;31m"
+NORM_TEXT="\033[0m"
+
+function is-mounted()
+{
+    mount | grep -q $1
+    if [ $? -eq 0 ]; then
+        echo $IS_MOUNTED
+    else
+        echo 0
+    fi
+}
 
 function get-all-changes()
 {
@@ -35,6 +48,11 @@ function get-all-changes()
 
 function git-changes()
 {
+    crypt_mnt=$(is-mounted $CRYPT_MNT)
+    if [ $crypt_mnt -ne $IS_MOUNTED ]; then
+        echo "mounting"
+        echo -e "${RED_TEXT}    crypt not mounted${NORM_TEXT}"
+    fi
     first=""
     for d in $(echo "$HOME $SYNCED_PATH"); do
         cd $d
@@ -43,8 +61,8 @@ function git-changes()
             if [ -z $first ]; then
                 echo "uncommitted changes"
             fi
-            echo -e "$d\033[1;31m"
-            echo -e "$local_res\033[0m" | sed "s/^/    /g"
+            echo -e "$d$RED_TEXT"
+            echo -e "$local_res$NORM_TEXT" | sed "s/^/    /g"
             first="false"
         fi
     done

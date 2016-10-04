@@ -61,16 +61,6 @@ function add-keys()
     fi
 }
 
-function is-mounted()
-{
-    mount | grep -q $1
-    if [ $? -eq 0 ]; then
-        echo $IS_MOUNTED
-    else
-        echo 0
-    fi
-}
-
 function print-help()
 {
     echo "
