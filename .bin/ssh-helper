@@ -165,7 +165,7 @@ function valid-container()
 
 function connect-to()
 {
-    cmd="sudo machinectl shell $2"
+    cmd="sudo machinectl $3 $2"
     available=$(test-ssh "$1")
     if [ $available -ne $IS_CONNECTED ]; then
         echo "$1 is not available via ssh"
@@ -196,8 +196,9 @@ function do-nspawn-connect()
     shortcut=$(resolve-nspawn-machine $1)
     host=$(echo $shortcut | cut -d "$DELIMITER" -f 1)
     cont=$(echo $shortcut | cut -d "$DELIMITER" -f 2)
+    method=$(echo $shortcut | cut -d "$DELIMITER" -f 3)
     valid-container "$host" "$cont"
-    connect-to "$host" "$cont"
+    connect-to "$host" "$cont" "$method"
 }
 
 
