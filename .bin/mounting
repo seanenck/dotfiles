@@ -26,11 +26,11 @@ function add-keys()
 {
     IS_MNT=$(is-mounted $CRYPT_MNT)
     if [ $IS_MNT -eq $IS_MOUNTED ]; then
-        keys=$(find ${SSH_KEY_PATH}**/* -type f)
+        keys=$(find ${SSH_KEY_PATH}**/* -type f | grep -v "deprecated")
         for key in $keys; do
             echo
-            short_name=$(echo ${key#${SSH_KEY_PATH}})
-            entry=$(cat $SSH_SYNC_PATH/mappings | grep ",$short_name,")
+            short_name=$(echo ${key#${SSH_KEY_PATH}} | cut -d "/" -f 1)
+            entry=$(cat $SSH_SYNC_PATH/mappings | grep "$short_name")
             if [ -z "$entry" ]; then
                 echo "missing pubkey entry for $short_name"
                 exit -1
