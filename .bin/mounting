@@ -36,7 +36,7 @@ function add-keys()
                 exit -1
             fi
             pub_key=$(echo $entry | cut -d "," -f 1)
-            add_key=$(echo $entry | cut -d "," -f 3)
+            add_key=$(echo $entry | cut -d "," -f 2)
             if [ $add_key -lt 0 ]; then
                 echo "ignoring $key"
                 continue
