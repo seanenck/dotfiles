@@ -60,6 +60,10 @@ if has("autocmd")
 
 endif " has("autocmd")
 
+silent! unmap <C-Up>
+silent! unmap <C-Down>
+silent! unmap <C-Left>
+silent! unmap <C-Right>
 map <C-Up> <PageUp>
 map <C-Down> <PageDown>
 map <C-Right> <end>
