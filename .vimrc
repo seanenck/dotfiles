@@ -60,6 +60,11 @@ if has("autocmd")
 
 endif " has("autocmd")
 
+map <C-Up> <PageUp>
+map <C-Down> <PageDown>
+map <C-Right> <end>
+map <C-Left> <home>
+
 set tabstop=4
 set expandtab
 set shiftwidth=4
