@@ -60,14 +60,12 @@ if has("autocmd")
 
 endif " has("autocmd")
 
-silent! unmap <C-Up>
-silent! unmap <C-Down>
-silent! unmap <C-Left>
-silent! unmap <C-Right>
-map <C-Up> <PageUp>
-map <C-Down> <PageDown>
-map <C-Right> <end>
-map <C-Left> <home>
+for i in ['', 'i']
+    execute i . "map <C-Up> <PageUp>"
+    execute i . "map <C-Down> <PageDown>"
+    execute i . "map <C-Right> <end>"
+    execute i . "map <C-Left> <home>"
+endfor
 
 set tabstop=4
 set expandtab
