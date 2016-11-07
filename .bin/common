@@ -54,7 +54,7 @@ function git-changes()
         echo -e "${RED_TEXT}    crypt not mounted${NORM_TEXT}"
     fi
     first=""
-    for d in $(echo "$HOME $SYNCED_PATH"); do
+    for d in $(echo "$HOME $SYNCED_PATH /opt/perm/*"); do
         cd $d
         local_res=$(get-all-changes "$d")
         if [ ! -z "$local_res" ]; then
