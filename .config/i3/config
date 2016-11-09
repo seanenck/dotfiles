@@ -94,6 +94,7 @@ bar {
 exec --no-startup-id subsystem workspaces force 1
 exec --no-startup-id nm-applet
 exec --no-startup-id cbatticon -d BAT0
+exec --no-startup-id cbatticon -d BAT1
 exec --no-startup-id volumeicon
 exec --no-startup-id genericon -a /home/enck/.bin/status init
 exec --no-startup-id touchpad-toggle
