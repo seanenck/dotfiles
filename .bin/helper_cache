@@ -67,7 +67,7 @@ function socks()
 
 function text-editor()
 {
-    cat $VIMRC | grep -v "^set nowrap" > $VIMRC_TMP
+    cat $VIMRC | grep -v "OverLength" > $VIMRC_TMP
     cat $VIMRC_TXT >> $VIMRC_TMP
     cmd="vim -Nu $VIMRC_TMP $@"
     $cmd

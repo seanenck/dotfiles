@@ -1,3 +1,2 @@
-set wrap
-set tw=79
 set formatoptions+=w
+setlocal spell spelllang=en_us
