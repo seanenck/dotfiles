@@ -2,6 +2,8 @@
 USER_TMP=$HOME/.tmp
 USER_CRYPT=$USER_TMP/crypt.img
 SYNCED_PATH="$HOME/.synced/"
+SYNCED_CONF=${SYNCED_PATH}/configs/
+PASS_ALIASES=${SYNCED_CONF}pass.aliases
 SSH_SYNC_PATH=${SYNCED_PATH}ssh/
 PROFILE_DEF="${USER_TMP}/profile.next"
 READY="ready"

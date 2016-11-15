@@ -60,6 +60,9 @@ if ! shopt -oq posix; then
 fi
 
 source $HOME/.bin/common
+if [ -e $PASS_ALIASES ]; then
+    source $PASS_ALIASES
+fi
 mkdir -p $USER_TMP 
 date +%Y-%m-%d.%s > $LAST_TMP_HIT
 find $USER_TMP* -mtime +1 -type f -exec rm {} \;
