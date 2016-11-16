@@ -3,7 +3,9 @@ USER_TMP=$HOME/.tmp
 USER_CRYPT=$USER_TMP/crypt.img
 SYNCED_PATH="$HOME/.synced/"
 SYNCED_CONF=${SYNCED_PATH}/configs/
-PASS_ALIASES=${SYNCED_CONF}pass.aliases
+PASS_ALIASES=${USER_TMP}/pass.aliases
+PERM_LOCATION=/opt/perm/
+PASS_PREFIX="pass-"
 SSH_SYNC_PATH=${SYNCED_PATH}ssh/
 PROFILE_DEF="${USER_TMP}/profile.next"
 READY="ready"
@@ -31,6 +33,26 @@ SSH_AGENT_IND="$HOME/.cache/.ssh-agent-indicator"
 IS_MOUNTED=1
 RED_TEXT="\033[1;31m"
 NORM_TEXT="\033[0m"
+
+function process-pass-aliases()
+{
+    if [ ! -e $PASS_ALIASES ]; then
+        echo "source /usr/share/bash-completion/completions/pass" > $PASS_ALIASES
+        idx=0
+        for f in $(ls ${PERM_LOCATION} | grep "$PASS_PREFIX"); do
+            f_path=${PERM_LOCATION}$f
+            name="p$idx"
+            echo alias $f=\"PASSWORD_STORE_DIR=$f_path PASSWORD_STORE_GIT=$f_path pass\" >> $PASS_ALIASES
+            echo "_$name(){" >> $PASS_ALIASES
+            echo "    PASSWORD_STORE_DIR=$f_path/ PASSWORD_STORE_GIT=$f_path/ _pass" >> $PASS_ALIASES
+            echo "}" >> $PASS_ALIASES
+            echo >> $PASS_ALIASES
+            echo "complete -o filenames -o nospace -F _$name $f" >> $PASS_ALIASES
+            idx=$((idx+1))
+        done
+    fi
+    source $PASS_ALIASES
+}
 
 function is-mounted()
 {
