@@ -4,20 +4,15 @@ source $HOME/.bin/common
 #format is relay,destination,ssh-options
 JUMP_DEF=${SSH_SYNC_PATH}jumps
 
-# format is host,container
-SSH_NSPAWN_CONFIG=${SSH_SYNC_PATH}containers
-
 # proxy config
 PROXY_DEF=${SSH_SYNC_PATH}proxy
 
 IS_LOCAL="localhost"
-NSPAWN_KEY="nspawn"
 JUMP_KEY="jump"
 SOCKS_KEY="proxy"
 DELIMITER=","
 
 touch $JUMP_DEF
-touch $SSH_NSPAWN_CONFIG
 
 function do-jump()
 {
@@ -79,8 +74,7 @@ function print-jump-help()
 
 function print-basic-help()
 {
-    echo "$NSPAWN_KEY (nspawn)
-$JUMP_KEY (jump/forward through)
+    echo "$JUMP_KEY (jump/forward through)
 $SOCKS_KEY (socks proxy)"
 }
 
@@ -99,9 +93,6 @@ function print-proxy-help()
 function print-help()
 {
     case $1 in
-        $NSPAWN_KEY)
-            print-nspawn-help
-            ;;
         $JUMP_KEY)
             print-jump-help
             ;;
@@ -176,32 +167,6 @@ function connect-to()
     eval $cmd
 }
 
-function print-nspawn-help()
-{
-    for line in $(resolve-nspawn-machine ""); do
-        host=$(echo $line | cut -d "$DELIMITER" -f 1)
-        cont=$(echo $line | cut -d "$DELIMITER" -f 2)
-        echo "    $cont (via $host)"
-    done
-}
-
-function resolve-nspawn-machine()
-{
-    config=$(cat $SSH_NSPAWN_CONFIG | grep "$DELIMITER$1")
-    echo $config" "$local_config
-}
-
-function do-nspawn-connect()
-{
-    shortcut=$(resolve-nspawn-machine $1)
-    host=$(echo $shortcut | cut -d "$DELIMITER" -f 1)
-    cont=$(echo $shortcut | cut -d "$DELIMITER" -f 2)
-    method=$(echo $shortcut | cut -d "$DELIMITER" -f 3)
-    valid-container "$host" "$cont"
-    connect-to "$host" "$cont" "$method"
-}
-
-
 ARG=$1
 OPT=$2
 if [ -z $OPT ]; then
@@ -217,9 +182,6 @@ if [ ! -z $OPT ] && [ ! -z $ARG ]; then
 fi
 
 case $ARG in
-    $NSPAWN_KEY)
-        do-nspawn-connect "$OPT"
-        ;;
     $JUMP_KEY)
         do-jump "$OPT"
         ;;
