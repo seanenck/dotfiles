@@ -11,7 +11,6 @@ SOUND_COMMAND="sound"
 WORKSPACES_KEY="workspaces"
 FORCE_WORKSPACE="force"
 PROF_KEY="profiles"
-DPMS_KEY="dpms"
 ALL_AVAILBLE="$DISPLAY_KEY $VOLUME_KEY $WORKSPACES_KEY $SYS_STATS_KEY"
 HELP="help"
 
@@ -23,7 +22,7 @@ function get-help()
     for item in $ALL_AVAILBLE; do
         case $item in
             $DISPLAY_KEY)
-                get-lighting-help $item $DISPLAY_TOGGLE $DISPLAY_CHANGE $DPMS_KEY $PROF_KEY
+                get-lighting-help $item $DISPLAY_TOGGLE $DISPLAY_CHANGE $PROF_KEY
                 ;;
             $VOLUME_KEY)
                 get-volume-help $item $SOUND_COMMAND
@@ -75,9 +74,6 @@ function display-subsystem()
             ;;
         $DISPLAY_CHANGE)
             change-brightness "$2"
-            ;;
-        $DPMS_KEY)
-            toggle-dpms "$2"
             ;;
         $PROF_KEY)
             cycle-profiles "$2"

@@ -9,9 +9,6 @@ DIMMER="dimmer"
 LEFT_POS="left"
 RIGHT_POS="right"
 CENTER_POS="center"
-DPMS_ON="on"
-DPMS_OFF="off"
-DPMS_RESET="reset"
 CHANGE_BY_STEP=5
 IS_POSITIONED=0
 PROFILE_CYCLE="cycle"
@@ -28,27 +25,8 @@ function get-lighting-help()
     $1 $3 $BRIGHTER (increase backlights)
     $1 $3 $DIMMER (decrease backlights)
     $1 $3 $FULL_BRIGHT (full brightness)
-    $1 $4 $DPMS_ON (dpms on)
-    $1 $4 $DPMS_OFF (dpms off)
-    $1 $4 $DPMS_RESET (dpms reset)
-    $1 $5 $PROFILE_CYCLE (profile cycling)
+    $1 $4 $PROFILE_CYCLE (profile cycling)
     "
-}
-
-function toggle-dpms()
-{
-    case $1 in
-        $DPMS_ON)
-            xset dpms force on
-            ;;
-        $DPMS_OFF)
-            xset dpms force off
-            ;;
-        $DPMS_RESET)
-            toggle-dpms $DPMS_OFF
-            toggle-dpms $DPMS_ON
-            ;;
-    esac
 }
 
 # Get displays, first argument can filter out any displays
