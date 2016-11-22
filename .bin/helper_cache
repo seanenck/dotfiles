@@ -18,7 +18,6 @@ PROXY_CHROME_KEY="chrome-proxy"
 TEXT_EDITOR_KEY="text-editor"
 DMENU_KEY="dmenu-wrapper"
 SOCKS_KEY="socks"
-DD_STAT_KEY="dd-status"
 VIRTMAN_KEY="virtman"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=${SYNCED_PATH}passwords
@@ -37,11 +36,6 @@ function virtman()
 {
     ssh-agent-eval
     virt-manager
-}
-
-function dd-status()
-{
-    sudo kill -USR1 $(pidof dd)
 }
 
 function socks()
@@ -194,7 +188,6 @@ function get-help()
     $DMENU_KEY (dmenu wrapper)
     $SOCKS_KEY (socks proxying)
     $VIRTMAN_KEY (virt-manager with ssh agent loaded)
-    $DD_STAT_KEY (dd status)
 "
 }
 
@@ -257,9 +250,6 @@ function install-chrome()
 if [ ! -z $1 ]; then
     NEED_HELP=0
     case $1 in
-        $DD_STAT_KEY)
-            dd-status
-            ;;
         $SOCKS_KEY)
             socks ${@:2}
             ;;
