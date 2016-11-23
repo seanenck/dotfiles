@@ -28,20 +28,8 @@ function add-keys()
     if [ $IS_MNT -eq $IS_MOUNTED ]; then
         keys=$(find ${SSH_KEY_PATH}**/* -type f | grep -v "deprecated")
         for key in $keys; do
-            echo
-            short_name=$(echo ${key#${SSH_KEY_PATH}} | cut -d "/" -f 1)
-            entry=$(cat $SSH_SYNC_PATH/mappings | grep "$short_name")
-            if [ -z "$entry" ]; then
-                echo "missing pubkey entry for $short_name"
-                exit -1
-            fi
-            pub_key=$(echo $entry | cut -d "," -f 1)
-            add_key=$(echo $entry | cut -d "," -f 2)
-            if [ $add_key -lt 0 ]; then
-                echo "ignoring $key"
-                continue
-            fi
-            if [ ! -e "$SSH_SYNC_PATH/pubkeys/$pub_key" ]; then
+            pub_key=$(echo ${key#${SSH_KEY_PATH}} | cut -d "/" -f 1)
+            if [ ! -e "$SSH_SYNC_PATH/pubkeys/$pub_key.pub" ]; then
                 echo "missing pub key $pub_key"
             fi
             if [ $1 -ne $ADD_ALL_KEYS ]; then
@@ -49,11 +37,7 @@ function add-keys()
                     continue
                 fi
             fi
-            ssh-add -l | grep -qE "$key"
-            if [ $? -ne 0 ]; then
-                echo "adding $key"
-                ssh-add $key
-            fi
+            ssh-add $key
         done
     else
         echo "keys not available"
