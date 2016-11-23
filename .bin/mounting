@@ -16,7 +16,6 @@ OPENCRYPT_KEYWORD="opencrypt"
 NEWMOUNTS="/tmp/crypts/"
 SETUP_CRYPT="setup"
 DEFCRYPT_SIZE="100M"
-ADD_ALL_KEYS=1
 MNT_OPTIONS=${SYNCED_PATH}configs/mounts
 MNT_SETTINGS=${SYNCED_PATH}/configs/mounting
 if [ -e $MNT_SETTINGS ]; then
@@ -31,11 +30,6 @@ function add-keys()
             pub_key=$(echo ${key#${SSH_KEY_PATH}} | cut -d "/" -f 1)
             if [ ! -e "$SSH_SYNC_PATH/pubkeys/$pub_key.pub" ]; then
                 echo "missing pub key $pub_key"
-            fi
-            if [ $1 -ne $ADD_ALL_KEYS ]; then
-                if [ $add_key -ne $ADD_ALL_KEYS ]; then
-                    continue
-                fi
             fi
             ssh-add $key
         done
@@ -274,13 +268,13 @@ case $1 in
         ;;
     $CRYPT_KEYWORD)
         mount-crypt
-        add-keys 0
+        add-keys
         ;;
     $UCRYPT_KEYWORD)
         umount-crypt
         ;;
     $KEYS_KEYWORD)
-        add-keys $ADD_ALL_KEYS
+        add-keys
         ;;
     $USB_KEYWORD)
         mount-usb

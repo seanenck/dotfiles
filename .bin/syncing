@@ -23,7 +23,6 @@ function sync-now()
             auth=$(cat $SSH_AUTH_TMP)
             export SSH_AUTH_SOCK=$auth
             cd ${SYNCED_PATH}
-            git status 2>&1
             git push 2>&1
             cd $current
         else
