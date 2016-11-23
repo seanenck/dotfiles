@@ -15,6 +15,9 @@ function sync-now()
     fi
     echo "checked for connection...$available"
     if [ $available -eq $IS_CONNECTED ]; then
+        echo "### pulling in..."
+        rsync -avzc -e ssh $SYNC_TO:~/Host/ $HOME/.cache/hosted/
+        echo "### syncing out..."
         rsync -avzc --exclude "*.lock" --exclude ".gitignore" --exclude "*/" --delete-after ${SYNCED_PATH} -e ssh $SYNC_TO:~/Sync/
     fi
 }
