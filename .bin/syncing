@@ -2,6 +2,11 @@
 source $HOME/.bin/common
 SETUP="--install"
 
+function do-segment()
+{
+    echo "### $1 ###"
+}
+
 function sync-now()
 {
     SYNC_TO="sync"
@@ -15,9 +20,9 @@ function sync-now()
     fi
     echo "checked for connection...$available"
     if [ $available -eq $IS_CONNECTED ]; then
-        echo "### pulling in..."
+        do-segment "fetch"
         rsync -avzc -e ssh $SYNC_TO:~/Host/ $HOME/.cache/hosted/
-        echo "### pushing sync..."
+        do-segment "git"
         if [ -e $SSH_AUTH_TMP ]; then
             current=$PWD
             auth=$(cat $SSH_AUTH_TMP)
@@ -28,7 +33,7 @@ function sync-now()
         else
             echo "ssh agent unavailable"
         fi
-        echo "### syncing out..."
+        do-segment "sync"
         rsync -avzc --exclude "*.lock" --exclude ".gitignore" --exclude "*/" --delete-after ${SYNCED_PATH} -e ssh $SYNC_TO:~/Sync/
     fi
 }
