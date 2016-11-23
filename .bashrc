@@ -73,5 +73,6 @@ if [[ "$SSH_AGENT_PID" == "" ]]; then
     ssh-agent-eval
 fi
 ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias ssh; ssh'
+echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
 clear
 git-changes

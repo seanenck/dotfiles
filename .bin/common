@@ -33,6 +33,7 @@ SSH_AGENT_IND="$HOME/.cache/.ssh-agent-indicator"
 IS_MOUNTED=1
 RED_TEXT="\033[1;31m"
 NORM_TEXT="\033[0m"
+SSH_AUTH_TMP=$USER_TMP/ssh-auth.sock
 
 function process-pass-aliases()
 {

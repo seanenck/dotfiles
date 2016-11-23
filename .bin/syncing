@@ -18,7 +18,17 @@ function sync-now()
         echo "### pulling in..."
         rsync -avzc -e ssh $SYNC_TO:~/Host/ $HOME/.cache/hosted/
         echo "### pushing sync..."
-        cd ${SYNCED_PATH} && git push
+        if [ -e $SSH_AUTH_TMP ]; then
+            current=$PWD
+            auth=$(cat $SSH_AUTH_TMP)
+            export SSH_AUTH_SOCK=$auth
+            cd ${SYNCED_PATH}
+            git status 2>&1
+            git push 2>&1
+            cd $current
+        else
+            echo "ssh agent unavailable"
+        fi
         echo "### syncing out..."
         rsync -avzc --exclude "*.lock" --exclude ".gitignore" --exclude "*/" --delete-after ${SYNCED_PATH} -e ssh $SYNC_TO:~/Sync/
     fi

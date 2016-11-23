@@ -3,7 +3,7 @@ Description="File syncing"
 
 [Timer]
 Unit=sync.service
-OnCalendar=*:0/10
+OnCalendar=*:0/1
 
 [Install]
 WantedBy=timers.target
