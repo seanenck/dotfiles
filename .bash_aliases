@@ -1,15 +1,7 @@
-alias python=python3
 alias nano=vim
 alias vi=vim
 alias crypt='mounting crypt'
-alias shares='mounting shares'
-alias sys-stats-on='subsystem sys-stats enable on'
-alias sys-stats-off='subsystem sys-stats enable off'
 alias tree='tree .'
-alias clear-mail="echo 'd *' | mail -N"
 alias checksum='find -type f -exec sha512sum "{}" + | sort -k 2'
-alias editor=vim
-alias explore='vim .'
 alias machinectl="sudo machinectl"
-alias spawn-container="sudo spawn-container"
 alias notes="vim notes"
