@@ -10,6 +10,8 @@ function do-segment()
 function sync-now()
 {
     SYNC_TO="sync"
+    auth=$(cat $SSH_AUTH_TMP)
+    export SSH_AUTH_SOCK=$auth
     available=$(test-ssh "$SYNC_TO")
     echo "====================="
     echo "running "$(date +%Y-%m-%dT%H:%M:%S)
@@ -25,8 +27,6 @@ function sync-now()
         do-segment "git"
         if [ -e $SSH_AUTH_TMP ]; then
             current=$PWD
-            auth=$(cat $SSH_AUTH_TMP)
-            export SSH_AUTH_SOCK=$auth
             cd ${SYNCED_PATH}
             git push 2>&1
             cd $current
