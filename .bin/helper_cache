@@ -19,6 +19,7 @@ TEXT_EDITOR_KEY="text-editor"
 DMENU_KEY="dmenu-wrapper"
 SOCKS_KEY="socks"
 VIRTMAN_KEY="virtman"
+PASS_UPDATE_KEY="pass-update"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
@@ -31,6 +32,18 @@ DMENU_LIST="$VIRTMAN_KEY $SEARCH_KEY $SEARCH_PRIVATE_KEY $PASSWORD_KEY $VOLUME_K
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 START_PORT=$((PROXY_PORT+1))
 END_PORT=$((START_PORT+1000))
+
+function pass-update()
+{
+    cpwd=$PWD
+    for f in $(ls ${PERM_LOCATION} | grep "$PASS_PREFIX"); do
+        echo "updated: $f"
+        cd ${PERM_LOCATION}/$f
+        git pull
+        echo
+    done
+    cd $cpwd
+}
 
 function virtman()
 {
@@ -188,6 +201,7 @@ function get-help()
     $DMENU_KEY (dmenu wrapper)
     $SOCKS_KEY (socks proxying)
     $VIRTMAN_KEY (virt-manager with ssh agent loaded)
+    $PASS_UPDATE_KEY (update pass databases)
 "
 }
 
@@ -308,6 +322,9 @@ if [ ! -z $1 ]; then
             ;;
         $VIRTMAN_KEY)
             virtman
+            ;;
+        $PASS_UPDATE_KEY)
+            pass-update
             ;;
         *)
             NEED_HELP=1
