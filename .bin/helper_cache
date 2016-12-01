@@ -221,7 +221,7 @@ function hidden-ssid()
         echo "ssid required..."
         exit -1
     fi
-    sudo iwlist wlp109s0 scanning essid $1
+    sudo iwlist wlp3s0 scanning essid $1
 }
 
 function csv-processing()
