@@ -34,6 +34,7 @@ IS_MOUNTED=1
 RED_TEXT="\033[1;31m"
 NORM_TEXT="\033[0m"
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
+USER_LAST_SYNC=$USER_TMP/last-synced
 
 function process-pass-aliases()
 {

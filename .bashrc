@@ -71,3 +71,7 @@ ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias 
 echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
 clear
 git-changes
+if [ ! -e $USER_LAST_SYNC ]; then
+    echo
+    echo -e "${RED_TEXT}no reset sync${NORM_TEXT}"
+fi
