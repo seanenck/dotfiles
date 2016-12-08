@@ -57,10 +57,13 @@ fi
 source $HOME/.bin/common
 process-pass-aliases
 
+# cleanup user temp
 mkdir -p $USER_TMP 
 date +%Y-%m-%d.%s > $LAST_TMP_HIT
 find $USER_TMP* -mtime +1 -type f -exec rm {} \;
 find $USER_TMP -empty -type d -delete
+
+# ssh agent
 if ! pgrep -u $USER ssh-agent > /dev/null; then
     ssh-agent > $SSH_AGENT_IND
 fi
@@ -69,6 +72,11 @@ if [[ "$SSH_AGENT_PID" == "" ]]; then
 fi
 ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias ssh; ssh'
 echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
+
+# gpg
+export GPG_AGENT_INFO=/tmp/S.gpg-agent.sock
+gpg-connect-agent /bye &>/dev/null || gpg-agent --daemon &>/dev/null
+
 clear
 git-changes
 if [ ! -e $USER_LAST_SYNC ]; then
