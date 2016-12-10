@@ -1,5 +1,5 @@
 [Unit]
-Description="File syncing"
+Description=File syncing
 
 [Timer]
 Unit=sync.service

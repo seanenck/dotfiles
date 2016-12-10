@@ -1,6 +1,5 @@
 #!/bin/bash
 source $HOME/.bin/common
-SETUP="--install"
 
 function do-segment()
 {
@@ -49,18 +48,4 @@ function sync-now()
     fi
 }
 
-function install()
-{
-    sudo systemctl enable $HOME/.bin/sys/sync.timer
-    sudo ln -s $HOME/.bin/sys/sync.service /etc/systemd/system/sync.service
-    sudo systemctl start sync.timer
-}
-
-case $1 in
-    $SETUP)
-        install
-        ;;
-    *)
-        sync-now | systemd-cat -t "sync"
-        ;;
-esac
+sync-now | systemd-cat -t "sync"

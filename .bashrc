@@ -64,18 +64,8 @@ find $USER_TMP* -mtime +1 -type f -exec rm {} \;
 find $USER_TMP -empty -type d -delete
 
 # ssh agent
-if ! pgrep -u $USER ssh-agent > /dev/null; then
-    ssh-agent > $SSH_AGENT_IND
-fi
-if [[ "$SSH_AGENT_PID" == "" ]]; then
-    ssh-agent-eval
-fi
-ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias ssh; ssh'
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket" 
 echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
-
-if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
-  gpg-connect-agent /bye >/dev/null 2>&1
-fi
 
 clear
 git-changes
