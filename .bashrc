@@ -73,9 +73,9 @@ fi
 ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias ssh; ssh'
 echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
 
-# gpg
-export GPG_AGENT_INFO=/tmp/S.gpg-agent.sock
-gpg-connect-agent /bye &>/dev/null || gpg-agent --daemon &>/dev/null
+if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
+  gpg-connect-agent /bye >/dev/null 2>&1
+fi
 
 clear
 git-changes
