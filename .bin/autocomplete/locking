@@ -1,7 +1,0 @@
-#!/bin/bash
-source $HOME/.bin/autocomplete/autocomplete-common
-_locking()
-{
-    _simple_autocomplete "locking"
-}
-complete -F _locking locking

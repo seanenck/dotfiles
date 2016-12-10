@@ -1,7 +1,0 @@
-#!/bin/bash
-source $HOME/.bin/autocomplete/autocomplete-common
-_mounting()
-{
-    _simple_autocomplete "mounting"
-}
-complete -F _mounting mounting

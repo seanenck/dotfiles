@@ -1,7 +1,0 @@
-#!/bin/bash
-source $HOME/.bin/autocomplete/autocomplete-common
-_dmenu_urls()
-{
-    _simple_autocomplete "dmenu_urls --help"
-}
-complete -F _dmenu_urls dmenu_urls

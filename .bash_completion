@@ -1,0 +1,70 @@
+#!/bin/bash
+function _simple_autocomplete()
+{
+    local cur opts 
+    if [ $COMP_CWORD -eq 1 ]; then
+        cur=${COMP_WORDS[COMP_CWORD]}
+        opts=$($1 | grep -v "^$" | cut -d " " -f 5)
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    fi
+}
+
+_dmenu_urls()
+{
+    _simple_autocomplete "dmenu_urls --help"
+}
+complete -F _dmenu_urls dmenu_urls
+
+_helper_cache()
+{
+    _simple_autocomplete "helper_cache"
+}
+complete -F _helper_cache helper_cache
+
+_locking()
+{
+    _simple_autocomplete "locking"
+}
+complete -F _locking locking
+
+_machinectl-helper()
+{
+    _simple_autocomplete "machinectl-helper"
+}
+complete -F _machinectl-helper machinectl-helper
+
+_mounting()
+{
+    _simple_autocomplete "mounting"
+}
+complete -F _mounting mounting
+
+_subsystem()
+{
+    local cur prev opts idx cmd was_prev
+    cmd=$(subsystem help | grep "[[:space:]][a-z]" | cut -d "(" -f 1)
+    cur=${COMP_WORDS[COMP_CWORD]}
+    prev=${COMP_WORDS[COMP_CWORD-1]}
+    idx=0
+    case $COMP_CWORD in
+        1)
+            idx=5
+            prev="[a-z]"
+        ;;
+        2)
+            idx=6
+        ;;
+        3)
+            idx=7
+            was_prev=$prev
+        ;;
+    esac
+    if [ $idx -gt 0 ]; then
+        opts=$(echo "$cmd" | grep "$prev" | cut -d " " -f $idx)
+        if [ ! -z "$was_prev" ]; then
+            opts=$(echo "$opts" | grep -v "$was_prev")
+        fi
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    fi
+}
+complete -F _subsystem subsystem
