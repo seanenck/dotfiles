@@ -5,7 +5,6 @@ SEARCH_PRIVATE_KEY="search-private"
 PASSWORD_KEY="passwords"
 VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
-SSID_KEY="ssid"
 MARKDOWN_KEY="markdown"
 CHROME_KEY="chrome"
 PRIVATE_KEY="-private"
@@ -187,7 +186,6 @@ function get-help()
     $PASSWORD_KEY (password management)
     $VOLUME_KEY (volume mixer)
     $REBUILD_KEY (rebuild cache)
-    $SSID_KEY (discover a hidden SSID)
     $MARKDOWN_KEY (markdown output generation)
     $GOOGLE_CHROME_KEY (start google chrome browsing)
     $CHROME_KEY (start chromium browsing)
@@ -213,15 +211,6 @@ function run-terminal()
 function volume-mixer()
 {
     run-terminal "alsamixer"
-}
-
-function hidden-ssid()
-{
-    if [ -z "$1" ]; then
-        echo "ssid required..."
-        exit -1
-    fi
-    sudo iwlist wlp3s0 scanning essid $1
 }
 
 function csv-processing()
@@ -281,9 +270,6 @@ if [ ! -z $1 ]; then
             ;;
         $REBUILD_KEY)
             rebuild-now
-            ;;
-        $SSID_KEY)
-            hidden-ssid "$2"
             ;;
         $GOOGLE_CHROME_KEY | $CHROME_KEY | $GOOGLE_CHROME_PRIVATE_KEY | $CHROME_PRIVATE_KEY)
             browsing="chromium"
