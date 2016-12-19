@@ -16,11 +16,7 @@ OPENCRYPT_KEYWORD="opencrypt"
 NEWMOUNTS="/tmp/crypts/"
 SETUP_CRYPT="setup"
 DEFCRYPT_SIZE="100M"
-MNT_OPTIONS=${SYNCED_PATH}configs/mounts
-MNT_SETTINGS=${SYNCED_PATH}/configs/mounting
-if [ -e $MNT_SETTINGS ]; then
-    source $MNT_SETTINGS
-fi
+MNT_CFG=${SYNCED_PATH}configs/mount.sh
 function add-keys()
 {
     IS_MNT=$(is-mounted $CRYPT_MNT)
@@ -211,6 +207,7 @@ function mount-usb()
     sudo mount $USBDISK /mnt/usb
 }
 
+
 function mount-share()
 {
     IS_MNT=$(is-mounted $MNT_SHARE)
@@ -221,30 +218,12 @@ function mount-share()
 
     IS_MNT=$(is-mounted $CRYPT_MNT)
     if [ $IS_MNT -eq $IS_MOUNTED ]; then
-        ORIG="$IFS"
-        IFS=$'\n'
-        for f in $(cat $MNT_OPTIONS | sort); do
-            echo $f | cut -d "|" -f 1
+        source $MNT_CFG
+        for f in $(echo $MNT_OPTIONS); do
+            echo $f 
         done
         read -p "mount which? " mnt_name
-        if [ ! -z "$mnt_name" ]; then
-            segment=$(cat $MNT_OPTIONS | grep "$mnt_name|")
-            mnttype=$(echo $segment | cut -d "|" -f 2)
-            use_pre="MOUNT_${mnttype}_PRE"
-            use_pst="MOUNT_${mnttype}_PST"
-            use_pre=${!use_pre}
-            use_pst=${!use_pst}
-            result=$(echo $segment | cut -d "|" -f 3)
-            result=${result//\{MOUNT_PRE\}/$use_pre}
-            result=${result//\{MOUNT_PST\}/$use_pst}
-            result=${result//\{SHARE\}/$MNT_SHARE}
-        fi
-        IFS=$ORIG
-        if [ -z "$result" ]; then
-            echo "invalid request: $mnt_name"
-            exit -1
-        fi
-        $result
+        mount-now $mnt_name $MNT_SHARE
     else
         echo "must mount crypt first"
         exit -1
