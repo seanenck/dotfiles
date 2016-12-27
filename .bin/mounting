@@ -29,6 +29,7 @@ function add-keys()
 function print-help()
 {
     echo "
+    $KEYS_KEYWORD - load keys
     $SHARE_KEYWORD - mount local share(s)
     $UMNT_KEYWORD - umount local share(s)
     $USB_KEYWORD - mount a usb drive
@@ -197,13 +198,6 @@ case $1 in
         ;;
     $UMNT_KEYWORD)
         umount-share
-        ;;
-    $CRYPT_KEYWORD)
-        mount-crypt
-        add-keys
-        ;;
-    $UCRYPT_KEYWORD)
-        umount-crypt
         ;;
     $KEYS_KEYWORD)
         add-keys

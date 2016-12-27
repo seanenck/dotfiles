@@ -73,3 +73,8 @@ if [ ! -e $USER_LAST_SYNC ]; then
     echo
     echo -e "${RED_TEXT}no reset sync${NORM_TEXT}"
 fi
+ssh-add -L >/dev/null
+if [ $? -ne 0 ]; then
+    echo
+    echo -e "${RED_TEXT}keys not loaded${NORM_TEXT}"
+fi
