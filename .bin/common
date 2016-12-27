@@ -1,12 +1,12 @@
 #!/bin/bash
 USER_TMP=$HOME/.tmp
-USER_CRYPT=$USER_TMP/crypt.img
 SYNCED_PATH="$HOME/.synced/"
 SYNCED_CONF=${SYNCED_PATH}/configs/
 PASS_ALIASES=${USER_TMP}/pass.aliases
 PERM_LOCATION=/opt/perm/
 PASS_PREFIX="pass-"
 SSH_SYNC_PATH=${SYNCED_PATH}ssh/
+SSH_KEY_PATH=${SSH_SYNC_PATH}private/
 PROFILE_DEF="${USER_TMP}/profile.next"
 READY="ready"
 IS_CONNECTED=1
@@ -15,8 +15,6 @@ PROXY_PORT=60000
 DISPLAY_UN=/tmp/display-unlocked
 DISPLAY_EN=/tmp/display-enabled
 WORKPLACE_WORKING=/tmp/working
-CRYPT_MNT=/mnt/crypt
-SSH_KEY_PATH=${CRYPT_MNT}/ssh/
 TOUCHPAD_ON=0
 LAST_TMP_HIT=$USER_TMP/last.tmp
 DEFAULT_REFRESH=1000
@@ -74,12 +72,6 @@ function get-all-changes()
 
 function git-changes()
 {
-    crypt_mnt=$(is-mounted $CRYPT_MNT)
-    if [ $crypt_mnt -ne $IS_MOUNTED ]; then
-        echo "mounting"
-        echo -e "${RED_TEXT}    crypt not mounted${NORM_TEXT}"
-    fi
-    first=""
     for d in $(echo "$HOME $SYNCED_PATH /opt/perm/*"); do
         cd $d
         local_res=$(get-all-changes "$d")

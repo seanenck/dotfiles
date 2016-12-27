@@ -5,11 +5,8 @@ CRYPT_ROOT=${SYNCED_PATH}/crypt.img
 IS_MOUNTED=1
 USB_KEYWORD="usb"
 SHARE_KEYWORD="shares"
-CRYPT_KEYWORD="crypt"
-UCRYPT_KEYWORD="ucrypt"
 KEYS_KEYWORD="keys"
 UMNT_KEYWORD="umount"
-MAPPER_NAME="crypt-img"
 DEFCRYPT_KEYWORD="defcrypt"
 REMCRYPT_KEYWORD="remcrypt"
 OPENCRYPT_KEYWORD="opencrypt"
@@ -19,20 +16,14 @@ DEFCRYPT_SIZE="100M"
 MNT_CFG=${SYNCED_PATH}configs/mount.sh
 function add-keys()
 {
-    IS_MNT=$(is-mounted $CRYPT_MNT)
-    if [ $IS_MNT -eq $IS_MOUNTED ]; then
-        keys=$(find ${SSH_KEY_PATH}**/* -type f | grep -v "deprecated")
-        for key in $keys; do
-            pub_key=$(echo ${key#${SSH_KEY_PATH}} | cut -d "/" -f 1)
-            if [ ! -e "$SSH_SYNC_PATH/pubkeys/$pub_key.pub" ]; then
-                echo "missing pub key $pub_key"
-            fi
-            ssh-add $key
-        done
-    else
-        echo "keys not available"
-        exit -1
-    fi
+    keys=$(find ${SSH_KEY_PATH}**/* -type f | grep -v "deprecated")
+    for key in $keys; do
+        pub_key=$(echo ${key#${SSH_KEY_PATH}} | cut -d "/" -f 1)
+        if [ ! -e "$SSH_SYNC_PATH/pubkeys/$pub_key.pub" ]; then
+            echo "missing pub key $pub_key"
+        fi
+        ssh-add $key
+    done
 }
 
 function print-help()
@@ -40,38 +31,11 @@ function print-help()
     echo "
     $SHARE_KEYWORD - mount local share(s)
     $UMNT_KEYWORD - umount local share(s)
-    $CRYPT_KEYWORD - mount encrypted file image(s)
-    $UCRYPT_KEYWORD - umount encrypted file image(s)
-    $KEYS_KEYWORD - load ssh keys from crypt
     $USB_KEYWORD - mount a usb drive
     $DEFCRYPT_KEYWORD - define a new crypt (optional size)
     $REMCRYPT_KEYWORD - remove a crypt (required path to crypt)
     $OPENCRYPT_KEYWORD - open an encrypted image (required image file)
 "
-}
-
-function mount-crypt()
-{
-    IS_MNT=$(is-mounted $CRYPT_MNT)
-    if [ $IS_MNT -eq $IS_MOUNTED ]; then
-        echo "already mounted"
-        exit -1
-    fi
-
-    SYNC_CRYPT=0
-    if [ -e $USER_CRYPT ]; then
-        current_check=$(sha512sum $USER_CRYPT | cut -d " " -f 1)
-        new_check=$(sha512sum $CRYPT_ROOT | cut -d " " -f 1)
-        if [[ $current_check == $new_check ]]; then
-            echo "no change"
-            SYNC_CRYPT=1
-        fi 
-    fi
-    if [ $SYNC_CRYPT -eq 0 ]; then
-        echo "copying crypt.img..."
-        cp $CRYPT_ROOT $USER_CRYPT
-    fi
-    open-crypt "--readonly" "$USER_CRYPT" "$MAPPER_NAME" "$CRYPT_MNT" "open"
 }
 
 function rem-crypt()
@@ -172,11 +136,6 @@ function close-crypt()
     sudo cryptsetup luksClose $2
 }
 
-function umount-crypt()
-{
-    rem-crypt "" "$CRYPT_MNT" "$MAPPER_NAME"
-}
-
 function root-drive()
 {
     drive=$(ls -al /dev/disk/by-uuid | grep "09C3-87C4" | cut -d ">" -f 2 | sed "s/\.\.\/\.\.\///g")
@@ -216,18 +175,12 @@ function mount-share()
         exit -1
     fi
 
-    IS_MNT=$(is-mounted $CRYPT_MNT)
-    if [ $IS_MNT -eq $IS_MOUNTED ]; then
-        source $MNT_CFG
-        for f in $(echo $MNT_OPTIONS); do
-            echo $f 
-        done
-        read -p "mount which? " mnt_name
-        mount-now $mnt_name $MNT_SHARE
-    else
-        echo "must mount crypt first"
-        exit -1
-    fi
+    source $MNT_CFG
+    for f in $(echo $MNT_OPTIONS); do
+        echo $f 
+    done
+    read -p "mount which? " mnt_name
+    mount-now $mnt_name $MNT_SHARE
 }
 
 function umount-share()

@@ -42,8 +42,6 @@ function sync-now()
         else
             echo "ssh agent unavailable"
         fi
-        do-segment "sync"
-        rsync -avzc --exclude "*.lock" --exclude ".gitignore" --exclude "*/" --delete-after ${SYNCED_PATH} -e ssh $SYNC_TO:~/Sync/
         touch $USER_LAST_SYNC
     fi
 }
