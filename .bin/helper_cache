@@ -60,6 +60,7 @@ function pass-update()
 function pass-push()
 {
     pass-git-fxn "push" "push"
+    date +%Y-%m-%d > $PASS_LAST_PUSH
 }
 
 function virtman()

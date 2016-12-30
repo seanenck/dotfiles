@@ -32,7 +32,7 @@ function sync-now()
         else
             echo "ssh agent unavailable"
         fi
-        touch $USER_LAST_SYNC
+        date +%Y-%m-%d > $USER_LAST_SYNC
     fi
 }
 

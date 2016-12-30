@@ -34,23 +34,26 @@ NORM_TEXT="\033[0m"
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 USER_LAST_SYNC=$USER_TMP/last-synced
 CHROME_UPDATED=/tmp/chrome-update
+PASS_LAST_PUSH=$USER_TMP/last-pass-push
 
 function check-timed()
 {
+    if [ $1 == "$USER_TMP*" ]; then
+        touch $1
+    fi
     cat $1 | grep -q $2
     if [ $? -ne 0 ]; then
-        echo
-        echo -e "  ${RED_TEXT}-> $3 update?${NORM_TEXT}"
-        echo
+        echo -e "${RED_TEXT} (maintenance) -> $3 update?${NORM_TEXT}"
     fi
 }
 
 function check-timed-events()
 {
-    touch $CHROME_UPDATED
     today=$(date +%Y-%m-%d)
     check-timed $CHROME_UPDATED $today "google-chrome"
     check-timed /var/log/pacman.log $today "pacman"
+    check-timed $USER_LAST_SYNC $today "sync"
+    check-timed $PASS_LAST_PUSH $today "passwords"
 }
 
 function test-ssh()
