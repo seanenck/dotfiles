@@ -78,3 +78,4 @@ if [ $? -ne 0 ]; then
     echo
     echo -e "${RED_TEXT}keys not loaded${NORM_TEXT}"
 fi
+check-timed-events

@@ -33,6 +33,25 @@ RED_TEXT="\033[1;31m"
 NORM_TEXT="\033[0m"
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 USER_LAST_SYNC=$USER_TMP/last-synced
+CHROME_UPDATED=/tmp/chrome-update
+
+function check-timed()
+{
+    cat $1 | grep -q $2
+    if [ $? -ne 0 ]; then
+        echo
+        echo -e "  ${RED_TEXT}-> $3 update?${NORM_TEXT}"
+        echo
+    fi
+}
+
+function check-timed-events()
+{
+    touch $CHROME_UPDATED
+    today=$(date +%Y-%m-%d)
+    check-timed $CHROME_UPDATED $today "google-chrome"
+    check-timed /var/log/pacman.log $today "pacman"
+}
 
 function test-ssh()
 {
