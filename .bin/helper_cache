@@ -6,11 +6,11 @@ PASSWORD_KEY="passwords"
 VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
 MARKDOWN_KEY="markdown"
-CHROME_KEY="chrome"
 PRIVATE_KEY="-private"
 MOUSE_TOGGLE_KEY="touchpad-toggle"
-CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
 GOOGLE_CHROME_KEY="google-chrome"
+FIREFOX_KEY="browse"
+FIREFOX_PRIVATE_KEY="$FIREFOX_KEY$PRIVATE_KEY"
 INSTALL_CHROME_KEY="setup-chrome"
 TEXT_EDITOR_KEY="text-editor"
 DMENU_KEY="dmenu-wrapper"
@@ -26,7 +26,7 @@ STORAGE=$USER_TMP/markdown-preview/
 VIMRC=$HOME/.vimrc
 VIMRC_TXT=$HOME/.vimrc_text
 VIMRC_TMP=$USER_TMP/.vimrc_txt
-DMENU_LIST="$VIRTMAN_KEY $SEARCH_KEY $SEARCH_PRIVATE_KEY $PASSWORD_KEY $VOLUME_KEY $CHROME_KEY $CHROME_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY"
+DMENU_LIST="$VIRTMAN_KEY $SEARCH_KEY $SEARCH_PRIVATE_KEY $PASSWORD_KEY $VOLUME_KEY $FIREFOX_KEY $FIREFOX_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 START_PORT=$((PROXY_PORT+1))
 END_PORT=$((START_PORT+1000))
@@ -125,7 +125,7 @@ function markdown()
     NOW=$(date +%s)
     FILE_NAME=${STORAGE}/$NOW-$ID.html
     pandoc -o $FILE_NAME -f markdown $1
-    (chromium $FILE_NAME &) &>/dev/null
+    (firefox $FILE_NAME &) &>/dev/null
 }
 
 function searching()
@@ -138,13 +138,11 @@ function searching()
     for term in ${@:2}; do
         SEARCH=$SEARCH" $(perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$term")"
     done
-    ARGS="--new-window $1"
-    chromium "http://www.google.com/search?q=$SEARCH" $ARGS
-}
-
-function open-browser()
-{
-    $1 "--disk-cache-dir=/tmp/cache/$1" "--new-window" "$2" "$3"
+    ARGS="--new-window"
+    if [ ! -z $1 ]; then
+        ARGS=$1
+    fi
+    firefox $ARGS "http://www.google.com/search?q=$SEARCH"
 }
 
 function file-required()
@@ -197,9 +195,9 @@ function get-help()
     $REBUILD_KEY (rebuild cache)
     $MARKDOWN_KEY (markdown output generation)
     $GOOGLE_CHROME_KEY (start google chrome browsing)
-    $CHROME_KEY (start chromium browsing)
+    $FIREFOX_KEY (start browsing)
     $GOOGLE_CHROME_PRIVATE_KEY (start private google chrome browsing)
-    $CHROME_PRIVATE_KEY (start private chromium browsing)
+    $FIREFOX_PRIVATE_KEY (start private browsing)
     $INSTALL_CHROME_KEY (install chrome)
     $MOUSE_TOGGLE_KEY (toggle touchpad on/off)
     $TEXT_EDITOR_KEY (text editor/documentation editor)
@@ -223,14 +221,6 @@ function volume-mixer()
 
 function install-chrome()
 {
-    chromium_version=$(chromium --version | cut -d " " -f 2)
-    google_version=$(google-chrome-stable --version | cut -d " " -f 3)
-    if [[ $chromium_version == $google_version ]]; then
-        read -p "same version detected, proceed (y/n)? " yn
-        if [[ -z $yn ]] || [[ "$yn" != "y" ]]; then
-            exit 0
-        fi
-    fi
     id=$(uuidgen)
     file_name=/tmp/chrome-$id.rpm
     wget -O $file_name https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
@@ -248,7 +238,6 @@ function install-chrome()
     echo ""
     echo "version information"
     echo "-------------------"
-    chromium --version
     google-chrome-stable --version
     cd $current
 }
@@ -266,7 +255,7 @@ if [ ! -z $1 ]; then
             searching "" ${@:2}
             ;;
         $SEARCH_PRIVATE_KEY)
-            searching "--incognito" ${@:2}
+            searching "--private-window" ${@:2}
             ;;
         $VOLUME_KEY)
             volume-mixer
@@ -274,18 +263,21 @@ if [ ! -z $1 ]; then
         $REBUILD_KEY)
             rebuild-now
             ;;
-        $GOOGLE_CHROME_KEY | $CHROME_KEY | $GOOGLE_CHROME_PRIVATE_KEY | $CHROME_PRIVATE_KEY)
-            browsing="chromium"
-            if [[ "$1" == "$GOOGLE_CHROME_KEY" ]] || [[ "$1" == "$GOOGLE_CHROME_PRIVATE_KEY" ]]; then
-                browsing="google-chrome-stable"
-            fi
-            
-            added_arg=""
-            if [[ "$1" == "$CHROME_PRIVATE_KEY" ]] || [[ "$1" == "$GOOGLE_CHROME_PRIVATE_KEY" ]]; then
-                added_arg="--incognito"
+        $FIREFOX_KEY | $FIREFOX_PRIVATE_KEY)
+            arg=""
+            if [[ "$1" == "$FIREFOX_PRIVATE_KEY" ]]; then
+                arg="--private-window"
             fi
     
-            open-browser "$browsing" "$added_arg" "$2"
+            firefox $arg
+            ;;
+        $GOOGLE_CHROME_KEY | $GOOGLE_CHROME_PRIVATE_KEY)
+            arg=""
+            if [[ "$1" == "$GOOGLE_CHROME_PRIVATE_KEY" ]]; then
+                arg="--incognito"
+            fi
+    
+            google-chrome-stable $arg
             ;;
         $MARKDOWN_KEY)
             file-required $2
