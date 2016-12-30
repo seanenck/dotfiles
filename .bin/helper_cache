@@ -12,7 +12,6 @@ MOUSE_TOGGLE_KEY="touchpad-toggle"
 CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
 GOOGLE_CHROME_KEY="google-chrome"
 INSTALL_CHROME_KEY="setup-chrome"
-PROXY_CHROME_KEY="chrome-proxy"
 TEXT_EDITOR_KEY="text-editor"
 DMENU_KEY="dmenu-wrapper"
 SOCKS_KEY="socks"
@@ -27,7 +26,7 @@ STORAGE=$USER_TMP/markdown-preview/
 VIMRC=$HOME/.vimrc
 VIMRC_TXT=$HOME/.vimrc_text
 VIMRC_TMP=$USER_TMP/.vimrc_txt
-DMENU_LIST="$VIRTMAN_KEY $SEARCH_KEY $SEARCH_PRIVATE_KEY $PASSWORD_KEY $VOLUME_KEY $CHROME_KEY $CHROME_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY $PROXY_CHROME_KEY"
+DMENU_LIST="$VIRTMAN_KEY $SEARCH_KEY $SEARCH_PRIVATE_KEY $PASSWORD_KEY $VOLUME_KEY $CHROME_KEY $CHROME_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 START_PORT=$((PROXY_PORT+1))
 END_PORT=$((START_PORT+1000))
@@ -114,15 +113,6 @@ function dmenu-wrapper()
         rm -f $TMP_DMENU
     fi
     cat $DMENU_ENTRIES | dmenu "$@" | ${SHELL:-"/bin/sh"} &
-}
-
-function proxy-chrome()
-{
-    use_port=$PROXY_PORT
-    if [ ! -z "$1" ]; then
-        use_port=$1
-    fi
-    chromium --proxy-server="socks5://localhost:$use_port" --host-resolver-rules="MAP * 0.0.0.0 , EXCLUDE localhost"
 }
 
 function markdown()
@@ -212,10 +202,8 @@ function get-help()
     $CHROME_PRIVATE_KEY (start private chromium browsing)
     $INSTALL_CHROME_KEY (install chrome)
     $MOUSE_TOGGLE_KEY (toggle touchpad on/off)
-    $PROXY_CHROME_KEY (chrome with SOCKS proxy)
     $TEXT_EDITOR_KEY (text editor/documentation editor)
     $DMENU_KEY (dmenu wrapper)
-    $SOCKS_KEY (socks proxying)
     $VIRTMAN_KEY (virt-manager with ssh agent loaded)
     $PASS_UPDATE_KEY (update pass databases)
     $PASS_PUSH_KEY (push pass databases)
@@ -308,9 +296,6 @@ if [ ! -z $1 ]; then
             ;;
         $MOUSE_TOGGLE_KEY)
             toggle-touchpad
-            ;;
-        $PROXY_CHROME_KEY)
-            proxy-chrome $2
             ;;
         $TEXT_EDITOR_KEY)
             text-editor ${@:2}
