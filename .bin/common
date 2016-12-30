@@ -34,6 +34,16 @@ NORM_TEXT="\033[0m"
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 USER_LAST_SYNC=$USER_TMP/last-synced
 
+function test-ssh()
+{
+    running=$(ssh -o BatchMode=yes -o ConnectTimeout=5 $1 echo $READY 2>&1)
+    if [[ "$running" == "$READY" ]]; then
+        echo $IS_CONNECTED
+    else
+        echo $NOT_CONNECTED
+    fi
+}
+
 function process-pass-aliases()
 {
     if [ ! -e $PASS_ALIASES ]; then

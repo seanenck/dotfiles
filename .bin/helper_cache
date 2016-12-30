@@ -31,13 +31,22 @@ DMENU_LIST="$VIRTMAN_KEY $SEARCH_KEY $SEARCH_PRIVATE_KEY $PASSWORD_KEY $VOLUME_K
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 START_PORT=$((PROXY_PORT+1))
 END_PORT=$((START_PORT+1000))
+BASE_SERVER="base"
 
 function pass-git-fxn()
 {
+    is_avail=$(test-ssh $BASE_SERVER)
     cpwd=$PWD
     for f in $(ls ${PERM_LOCATION}); do
         cd ${PERM_LOCATION}/$f
         echo "$1: $f"
+        if [[ $f == *personal* ]]; then
+            if [ $is_avail -ne $IS_CONNECTED ]; then
+                echo "**not available**"
+                echo
+                continue
+            fi
+        fi
         git $2
         echo
     done
