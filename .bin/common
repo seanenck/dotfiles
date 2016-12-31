@@ -33,13 +33,13 @@ RED_TEXT="\033[1;31m"
 NORM_TEXT="\033[0m"
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 USER_LAST_SYNC=$USER_TMP/last-synced
-CHROME_UPDATED=/tmp/chrome-update
+CHROME_UPDATED=/var/log/chrome.log
 PASS_LAST_PUSH=$USER_TMP/last-pass-push
 PACMAN_LOG=/var/log/pacman.log
 
 function check-timed()
 {
-    if [[ $1 != $PACMAN_LOG ]]; then
+    if [[ $1 != /var/log/* ]]; then
         touch $1
     fi
     cat $1 | grep -q -E $2

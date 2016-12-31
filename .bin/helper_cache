@@ -241,7 +241,7 @@ function install-chrome()
     echo "-------------------"
     google-chrome-stable --version
     cd $current
-    date +%Y-%m-%d > $CHROME_UPDATED
+    date +%Y-%m-%d >> $CHROME_UPDATED
 }
 
 if [ ! -z $1 ]; then
