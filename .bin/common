@@ -35,13 +35,14 @@ SSH_AUTH_TMP=/tmp/ssh-auth.sock
 USER_LAST_SYNC=$USER_TMP/last-synced
 CHROME_UPDATED=/tmp/chrome-update
 PASS_LAST_PUSH=$USER_TMP/last-pass-push
+PACMAN_LOG=/var/log/pacman.log
 
 function check-timed()
 {
-    if [ $1 == "$USER_TMP*" ]; then
+    if [[ $1 != $PACMAN_LOG ]]; then
         touch $1
     fi
-    cat $1 | grep -q $2
+    cat $1 | grep -q -E $2
     if [ $? -ne 0 ]; then
         echo -e "${RED_TEXT} (maintenance) -> $3 update?${NORM_TEXT}"
     fi
@@ -49,11 +50,18 @@ function check-timed()
 
 function check-timed-events()
 {
+    all=""
     today=$(date +%Y-%m-%d)
-    check-timed $CHROME_UPDATED $today "google-chrome"
-    check-timed /var/log/pacman.log $today "pacman"
-    check-timed $USER_LAST_SYNC $today "sync"
-    check-timed $PASS_LAST_PUSH $today "passwords"
+    all="$today"
+    for d in $(seq 1 7); do
+        past=$(date +%Y-%m-%d -d "-$d days")
+        all=$all"|$past"
+    done
+    all="($all)"
+    check-timed $CHROME_UPDATED $all "google-chrome"
+    check-timed $PACMAN_LOG $all "pacman"
+    check-timed $USER_LAST_SYNC $all "sync"
+    check-timed $PASS_LAST_PUSH $all "passwords"
 }
 
 function test-ssh()
