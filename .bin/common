@@ -41,7 +41,7 @@ PACMAN_LOG=/var/log/pacman.log
 
 function check-timed()
 {
-    if [[ $1 != /var/log/* ]]; then
+    if [[ $1 == ${VAR_LOG}* ]]; then
         touch $1
     fi
     cat $1 | grep -q -E $2
