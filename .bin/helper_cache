@@ -50,17 +50,17 @@ function pass-git-fxn()
         echo
     done
     cd $cpwd
+    date +%Y-%m-%d >> $3
 }
 
 function pass-update()
 {
-    pass-git-fxn "update" "pull"
+    pass-git-fxn "update" "pull" "$PASS_LAST_PULL"
 }
 
 function pass-push()
 {
-    pass-git-fxn "push" "push"
-    date +%Y-%m-%d > $PASS_LAST_PUSH
+    pass-git-fxn "push" "push" "$PASS_LAST_PUSH"
 }
 
 function virtman()

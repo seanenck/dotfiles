@@ -32,10 +32,12 @@ IS_MOUNTED=1
 RED_TEXT="\033[1;31m"
 NORM_TEXT="\033[0m"
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
-USER_LAST_SYNC=$USER_TMP/last-synced
-CHROME_UPDATED=/var/log/chrome.log
-PASS_LAST_PUSH=$USER_TMP/last-pass-push
-PACMAN_LOG=/var/log/pacman.log
+VAR_LOG=/var/log/
+USER_LAST_SYNC=${VAR_LOG}synced.log
+CHROME_UPDATED=${VAR_LOG}chrome.log
+PASS_LAST_PUSH=${VAR_LOG}pass-push.log
+PASS_LAST_PULL=${VAR_LOG}pass-pull.log
+PACMAN_LOG=${VAR_LOG}pacman.log
 
 function check-timed()
 {
@@ -61,7 +63,8 @@ function check-timed-events()
     check-timed $CHROME_UPDATED $all "google-chrome"
     check-timed $PACMAN_LOG $all "pacman"
     check-timed $USER_LAST_SYNC $all "sync"
-    check-timed $PASS_LAST_PUSH $all "passwords"
+    check-timed $PASS_LAST_PUSH $all "password-push"
+    check-timed $PASS_LAST_PULL $all "password-pull"
 }
 
 function test-ssh()
