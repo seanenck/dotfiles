@@ -32,7 +32,7 @@ IS_MOUNTED=1
 RED_TEXT="\033[1;31m"
 NORM_TEXT="\033[0m"
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
-VAR_LOG=/var/log/enck/
+VAR_LOG=/var/log/$USER/
 USER_LAST_SYNC=${VAR_LOG}synced.log
 CHROME_UPDATED=${VAR_LOG}chrome.log
 PASS_LAST_PUSH=${VAR_LOG}pass-push.log
@@ -41,6 +41,11 @@ PACMAN_LOG=/var/log/pacman.log
 
 function check-timed()
 {
+    if [ ! -d $VAR_LOG ]; then
+        echo "creating $VAR_LOG"
+        sudo mkdir $VAR_LOG
+        sudo chown $USER:$USER $VAR_LOG
+    fi
     if [[ $1 == ${VAR_LOG}* ]]; then
         touch $1
     fi
