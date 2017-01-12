@@ -13,8 +13,7 @@ SUITE_ADD_KEYWORD="--suite-register"
 SUITE_REM_KEYWORD="--suite-remove"
 SUITE_BLD_KEYWORD="--suite-rebuild"
 SUITE_DIS_KEYWORD="--suite-display"
-FIREFOX="firefox"
-BROWSERS="google-chrome-stable $FIREFOX"
+BROWSERS="google-chrome-stable chromium"
 DEFAULT_ARGS="--new-window"
 START_LINE="#name,browser,url,args"
 ARG_DELIMITER="|"
@@ -31,12 +30,7 @@ function run-browser()
         args=$3
     fi
 
-    cmd=""
-    if [[ $browser == "$FIREFOX" ]]; then
-        cmd="$args $url"
-    else
-        cmd="$url $args"
-    fi
+    cmd="$url $args"
     echo "$browser $cmd"
     $browser $cmd
 }

@@ -9,8 +9,8 @@ MARKDOWN_KEY="markdown"
 PRIVATE_KEY="-private"
 MOUSE_TOGGLE_KEY="touchpad-toggle"
 GOOGLE_CHROME_KEY="google-chrome"
-FIREFOX_KEY="browse"
-FIREFOX_PRIVATE_KEY="$FIREFOX_KEY$PRIVATE_KEY"
+BROWSE_KEY="browse"
+BROWSE_PRIVATE_KEY="$BROWSE_KEY$PRIVATE_KEY"
 INSTALL_CHROME_KEY="setup-chrome"
 TEXT_EDITOR_KEY="text-editor"
 DMENU_KEY="dmenu-wrapper"
@@ -26,7 +26,7 @@ STORAGE=$USER_TMP/markdown-preview/
 VIMRC=$HOME/.vimrc
 VIMRC_TXT=$HOME/.vimrc_text
 VIMRC_TMP=$USER_TMP/.vimrc_txt
-DMENU_LIST="$VIRTMAN_KEY $SEARCH_KEY $SEARCH_PRIVATE_KEY $PASSWORD_KEY $VOLUME_KEY $FIREFOX_KEY $FIREFOX_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY"
+DMENU_LIST="$VIRTMAN_KEY $SEARCH_KEY $SEARCH_PRIVATE_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $BROWSE_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 START_PORT=$((PROXY_PORT+1))
 END_PORT=$((START_PORT+1000))
@@ -126,7 +126,7 @@ function markdown()
     NOW=$(date +%s)
     FILE_NAME=${STORAGE}/$NOW-$ID.html
     pandoc -o $FILE_NAME -f markdown $1
-    (firefox $FILE_NAME &) &>/dev/null
+    (chromium $FILE_NAME &) &>/dev/null
 }
 
 function searching()
@@ -143,7 +143,7 @@ function searching()
     if [ ! -z $1 ]; then
         ARGS=$1
     fi
-    firefox $ARGS "http://www.google.com/search?q=$SEARCH"
+    chromium "http://www.google.com/search?q=$SEARCH" $ARGS 
 }
 
 function file-required()
@@ -196,9 +196,9 @@ function get-help()
     $REBUILD_KEY (rebuild cache)
     $MARKDOWN_KEY (markdown output generation)
     $GOOGLE_CHROME_KEY (start google chrome browsing)
-    $FIREFOX_KEY (start browsing)
+    $BROWSE_KEY (start browsing)
     $GOOGLE_CHROME_PRIVATE_KEY (start private google chrome browsing)
-    $FIREFOX_PRIVATE_KEY (start private browsing)
+    $BROWSE_PRIVATE_KEY (start private browsing)
     $INSTALL_CHROME_KEY (install chrome)
     $MOUSE_TOGGLE_KEY (toggle touchpad on/off)
     $TEXT_EDITOR_KEY (text editor/documentation editor)
@@ -257,7 +257,7 @@ if [ ! -z $1 ]; then
             searching "" ${@:2}
             ;;
         $SEARCH_PRIVATE_KEY)
-            searching "--private-window" ${@:2}
+            searching "--incognito" ${@:2}
             ;;
         $VOLUME_KEY)
             volume-mixer
@@ -273,13 +273,16 @@ if [ ! -z $1 ]; then
     
             firefox $arg
             ;;
-        $GOOGLE_CHROME_KEY | $GOOGLE_CHROME_PRIVATE_KEY)
+        $GOOGLE_CHROME_KEY | $GOOGLE_CHROME_PRIVATE_KEY | $BROWSE_KEY | $BROWSE_PRIVATE_KEY)
+            browser="chromium"
+            if [[ "$1" == "$GOOGLE_CHROME_KEY*" ]]; then
+                browser="google-chrome-stable"
+            fi
             arg=""
-            if [[ "$1" == "$GOOGLE_CHROME_PRIVATE_KEY" ]]; then
+            if [[ "$1" == "*$PRIVATE_KEY" ]]; then
                 arg="--incognito"
             fi
-    
-            google-chrome-stable $arg
+            $browser $arg 
             ;;
         $MARKDOWN_KEY)
             file-required $2
