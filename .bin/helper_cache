@@ -222,6 +222,16 @@ function volume-mixer()
 
 function install-chrome()
 {
+    chromium_version=$(chromium --version | sed "s/Chromium //g")
+    google_version=$(google-chrome-stable --version | sed "s/Google Chrome //g")
+    echo "Chromium: $chromium_version"
+    echo "Google Chrome: $google_version"
+    if [[ $chromium_version == $google_version ]]; then
+        read -p "same version detected, continue? " force
+        if [[ $force != "y" ]]; then
+            exit -1
+        fi 
+    fi
     id=$(uuidgen)
     file_name=/tmp/chrome-$id.rpm
     wget -O $file_name https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
@@ -236,10 +246,6 @@ function install-chrome()
     sudo mv usr/bin/google-chrome-stable /usr/bin/google-chrome-stable
     sudo chown root:root /opt/google/chrome/chrome-sandbox
     sudo chmod 4755 /opt/google/chrome/chrome-sandbox
-    echo ""
-    echo "version information"
-    echo "-------------------"
-    google-chrome-stable --version
     cd $current
     date +%Y-%m-%d >> $CHROME_UPDATED
 }
