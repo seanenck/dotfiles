@@ -222,6 +222,7 @@ function volume-mixer()
 
 function install-chrome()
 {
+    date +%Y-%m-%d >> $CHROME_UPDATED
     chromium_version=$(chromium --version | sed "s/Chromium //g")
     google_version=$(google-chrome-stable --version | sed "s/Google Chrome //g")
     echo "Chromium: $chromium_version"
@@ -247,7 +248,6 @@ function install-chrome()
     sudo chown root:root /opt/google/chrome/chrome-sandbox
     sudo chmod 4755 /opt/google/chrome/chrome-sandbox
     cd $current
-    date +%Y-%m-%d >> $CHROME_UPDATED
 }
 
 if [ ! -z $1 ]; then
