@@ -232,7 +232,7 @@ function install-chrome()
     echo "Chromium: $chromium_version"
     echo "Google Chrome: $google_version"
     if [[ $chromium_version == $google_version ]]; then
-        read -p "same version detected, continue? " force
+        read -p "same version detected, continue (y/n)? " force
         if [[ $force != "y" ]]; then
             exit -1
         fi 
