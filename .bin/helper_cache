@@ -9,7 +9,9 @@ MARKDOWN_KEY="markdown"
 PRIVATE_KEY="-private"
 MOUSE_TOGGLE_KEY="touchpad-toggle"
 GOOGLE_CHROME_KEY="google-chrome"
-BROWSE_KEY="chrome"
+CHROME_KEY="chrome"
+CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
+BROWSE_KEY="browse"
 BROWSE_PRIVATE_KEY="$BROWSE_KEY$PRIVATE_KEY"
 INSTALL_CHROME_KEY="setup-chrome"
 TEXT_EDITOR_KEY="text-editor"
@@ -26,7 +28,7 @@ STORAGE=$USER_TMP/markdown-preview/
 VIMRC=$HOME/.vimrc
 VIMRC_TXT=$HOME/.vimrc_text
 VIMRC_TMP=$USER_TMP/.vimrc_txt
-DMENU_LIST="$VIRTMAN_KEY $SEARCH_KEY $SEARCH_PRIVATE_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $BROWSE_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY"
+DMENU_LIST="$VIRTMAN_KEY $SEARCH_KEY $SEARCH_PRIVATE_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $BROWSE_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY $CHROME_KEY $CHROME_PRIVATE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 START_PORT=$((PROXY_PORT+1))
 END_PORT=$((START_PORT+1000))
@@ -206,6 +208,8 @@ function get-help()
     $VIRTMAN_KEY (virt-manager with ssh agent loaded)
     $PASS_UPDATE_KEY (update pass databases)
     $PASS_PUSH_KEY (push pass databases)
+    $CHROME_KEY (chrome key)
+    $CHROME_PRIVATE_KEY (chrome private key)
 "
 }
 
@@ -279,13 +283,13 @@ if [ ! -z $1 ]; then
     
             firefox $arg
             ;;
-        $GOOGLE_CHROME_KEY | $GOOGLE_CHROME_PRIVATE_KEY | $BROWSE_KEY | $BROWSE_PRIVATE_KEY)
+        $GOOGLE_CHROME_KEY | $GOOGLE_CHROME_PRIVATE_KEY | $BROWSE_KEY | $BROWSE_PRIVATE_KEY | $CHROME_PRIVATE_KEY | $CHROME_KEY)
             browser="chromium"
-            if [[ "$1" == "$GOOGLE_CHROME_KEY*" ]]; then
+            if [[ "$1" == $GOOGLE_CHROME_KEY* ]]; then
                 browser="google-chrome-stable"
             fi
             arg=""
-            if [[ "$1" == "*$PRIVATE_KEY" ]]; then
+            if [[ "$1" == *$PRIVATE_KEY ]]; then
                 arg="--incognito"
             fi
             $browser $arg 
