@@ -4,7 +4,6 @@ BACKLIGHT_OFF="down"
 FULL_BRIGHT="full"
 LOW_BRIGHT="low"
 MID_BRIGHT="mid"
-CHANGE_BY_STEP=5
 PROFILE_CYCLE="cycle"
 MAIN_DISPLAY="eDP-1"
 DISP_ONE="DP2-2"
@@ -16,6 +15,8 @@ function get-lighting-help()
     echo "
     $1 $2 $BACKLIGHT_ON (toggle backlights ON)
     $1 $2 $BACKLIGHT_OFF (toggle backlights OFF)
+    $1 $3 $LOW_BRIGHT (low brightness)
+    $1 $3 $MID_BRIGHT (medium brightness)
     $1 $3 $FULL_BRIGHT (full brightness)
     $1 $4 $PROFILE_CYCLE (profile cycling)
     "
