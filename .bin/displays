@@ -40,11 +40,14 @@ function get-all-displays()
 function toggle-backlighting()
 {
     case $1 in
-        $BACKLIGHT_ON)
+        $BACKLIGHT_ON | $FULL_BRIGHT | $BRIGHTER)
             SETTING=1.0
             ;;
-        $BACKLIGHT_OFF)
+        $BACKLIGHT_OFF | $LOW_BRIGHT | $DIMMER)
             SETTING=0.3
+            ;;
+        $MID_BRIGHT)
+            SETTING=0.9
             ;;
         *)
             echo "Unknown command $1"
@@ -62,31 +65,5 @@ function toggle-backlighting()
 # Increase/decrease brightness
 function change-brightness()
 {
-    case $1 in
-        $BRIGHTER)
-            SUBCMD="-inc $CHANGE_BY_STEP"
-            ;;
-        $DIMMER)
-            SUBCMD="-dec $CHANGE_BY_STEP"
-            ;;
-        $LOW_BRIGHT | $FULL_BRIGHT | $MID_BRIGHT)
-            SUBVAL=""
-            if [[ "$1" == "$FULL_BRIGHT" ]]; then
-                SUBVAL=100
-            else
-                if [[ "$1" == "$MID_BRIGHT" ]]; then
-                    SUBVAL=5
-                else
-                    SUBVAL=1
-                fi
-            fi
-            SUBCMD="-set ${SUBVAL}0"
-            ;;
-        *)
-            echo "unknown command $ACTION"
-            ;;
-    esac
-    if [ ! -z "$SUBCMD" ]; then
-        xbacklight $SUBCMD
-    fi
+    toggle-backlighting $1
 }
