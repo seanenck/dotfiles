@@ -69,11 +69,8 @@ function workspace-subsystem()
 function display-subsystem()
 {
     case $1 in
-        $DISPLAY_TOGGLE)
+        $DISPLAY_TOGGLE | $DISPLAY_CHANGE)
             toggle-backlighting "$2"
-            ;;
-        $DISPLAY_CHANGE)
-            change-brightness "$2"
             ;;
         $PROF_KEY)
             cycle-profiles "$2"
@@ -115,10 +112,10 @@ function cycle-profiles()
                 next_back=$mid_backlight
                 ;;
             $low_backlight)
-                change-brightness $LOW_BRIGHT
+                toggle-backlighting $LOW_BRIGHT
                 ;;
             $mid_backlight)
-                change-brightness $MID_BRIGHT
+                toggle-backlighting $MID_BRIGHT
                 next_back=$low_backlight
                 ;;
         esac

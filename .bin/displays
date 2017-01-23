@@ -61,9 +61,3 @@ function toggle-backlighting()
         done
     fi
 }
-
-# Increase/decrease brightness
-function change-brightness()
-{
-    toggle-backlighting $1
-}
