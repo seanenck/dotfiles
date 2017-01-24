@@ -6,9 +6,9 @@ LOW_BRIGHT="low"
 MID_BRIGHT="mid"
 PROFILE_CYCLE="cycle"
 MAIN_DISPLAY="eDP-1"
-DISP_ONE="DP2-2"
-DISP_TWO="DP2-1"
-HOME_DISP="DP2-1"
+DISP_ONE="DP-2-2"
+DISP_TWO="DP-2-1"
+HOME_DISP="DP-2-1"
 
 function get-lighting-help()
 {
