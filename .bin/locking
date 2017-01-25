@@ -35,7 +35,7 @@ function lock-now()
                 sleep 1
             done
             write-log "unlocking..."
-            toggle-backlighting $BACKLIGHT_ON
+            toggle-backlighting $MID_BRIGHT
         fi
     fi
 }
