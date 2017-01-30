@@ -67,8 +67,7 @@ function pass-push()
 
 function virtman()
 {
-    ssh-agent-eval
-    virt-manager
+    /bin/bash `export SSH_AUTH_SOCK=/run/user/1000/ssh-agent.socket; virt-manager`
 }
 
 function socks()

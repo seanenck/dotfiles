@@ -27,7 +27,6 @@ STATUS_LOCKING_KEY="locking"
 STATUS_BACKLIGHT_KEY="backlight"
 STATUS_TOUCHPAD_KEY="touchpad"
 STATUS_PING_KEY="ping"
-SSH_AGENT_IND="$HOME/.cache/.ssh-agent-indicator"
 IS_MOUNTED=1
 RED_TEXT="\033[1;31m"
 NORM_TEXT="\033[0m"
@@ -136,11 +135,6 @@ function git-changes()
         fi
     done
     cd $HOME
-}
-
-function ssh-agent-eval()
-{
-    eval $(<$SSH_AGENT_IND)
 }
 
 function socks-command()
