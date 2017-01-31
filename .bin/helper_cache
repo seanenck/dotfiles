@@ -38,8 +38,12 @@ function pass-git-fxn()
 {
     is_avail=$(test-ssh $BASE_SERVER)
     cpwd=$PWD
-    for f in $(ls ${PERM_LOCATION}); do
-        cd ${PERM_LOCATION}/$f
+    for f_name in $(find ${PERM_LOCATION}/* -maxdepth 1 -type d); do
+        if [ ! -d "$f_name/.git" ]; then
+            continue
+        fi
+        f=$(basename $f_name)
+        cd $f_name
         echo "$1: $f"
         if [[ $f == *personal* ]]; then
             if [ $is_avail -ne $IS_CONNECTED ]; then
