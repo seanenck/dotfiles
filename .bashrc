@@ -27,7 +27,7 @@ esac
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-    PS1="\u@\h:\w> \[$(tput sgr0)\]"
+    PS1="\u@\h:\W> \[$(tput sgr0)\]"
     ;;
 *)
     ;;
