@@ -32,9 +32,14 @@ function touchpad-status()
     echo $IMAGE
 }
 
+function get-brightness()
+{
+    xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk '{printf "%3.0f", $1}' | sed "s/^[ \t]*//g"
+}
+
 function backlight-status()
 {
-    brightness=$(xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk '{printf "%3.0f", $1}')
+    brightness=$(get-brightness)
     IMAGE="unknown"
     if [ $brightness -gt 95 ]; then
         IMAGE="high"
@@ -45,7 +50,7 @@ function backlight-status()
             IMAGE="low"
         fi
     fi
-    echo $IMAGE"-bright"${DELIMIT}$(xbacklight | cut -d "." -f 1)
+    echo $IMAGE"-bright"${DELIMIT}$brightness
 }
 
 function locking-status()
