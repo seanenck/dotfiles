@@ -37,6 +37,7 @@ CHROME_UPDATED=${VAR_LOG}chrome.log
 PASS_LAST_PUSH=${VAR_LOG}pass-push.log
 PASS_LAST_PULL=${VAR_LOG}pass-pull.log
 PACMAN_LOG=/var/log/pacman.log
+EPIPHYTE_CONF=$HOME/.config/epiphyte/env
 
 function check-timed()
 {
