@@ -1,2 +1,4 @@
 set formatoptions+=w
 setlocal spell spelllang=en_us
+set wrap
+set textwidth=80
