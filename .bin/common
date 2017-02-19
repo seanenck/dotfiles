@@ -120,7 +120,14 @@ function get-all-changes()
 
 function git-changes()
 {
-    for d in $(echo "$HOME $SYNCED_PATH /opt/perm/*/*"); do
+    d_paths="$HOME $SYNCED_PATH"
+    for found in $(find /opt/perm/ -maxdepth 2 -type d); do
+        if [ ! -d "$found/.git" ]; then
+            continue
+        fi
+        d_paths=$d_paths" "$found
+    done
+    for d in $(echo "$d_paths"); do
         if [ ! -d "$d/.git" ]; then
             continue
         fi
