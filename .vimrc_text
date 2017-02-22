@@ -1,4 +1,6 @@
 set formatoptions+=w
+set formatoptions+=a
+set formatoptions+=n
 setlocal spell spelllang=en_us
-set wrap
+set wrap nolist linebreak
 set textwidth=80
