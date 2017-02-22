@@ -19,6 +19,7 @@ runtime! archlinux.vim
 set noautoindent
 set background=dark
 set nowrap
+set number
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%80v.\+/
 if has('mouse')
@@ -71,3 +72,5 @@ set tabstop=4
 set expandtab
 set shiftwidth=4
 set complete-=i
+set foldmethod=indent
+set foldlevelstart=99
