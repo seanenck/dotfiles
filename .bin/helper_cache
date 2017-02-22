@@ -18,8 +18,8 @@ TEXT_EDITOR_KEY="text-editor"
 DMENU_KEY="dmenu-wrapper"
 SOCKS_KEY="socks"
 VIRTMAN_KEY="virtman"
-PASS_UPDATE_KEY="pass-update"
-PASS_PUSH_KEY="pass-push"
+PERM_UPDATE_KEY="perm-pull"
+PERM_PUSH_KEY="perm-push"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
@@ -34,11 +34,11 @@ START_PORT=$((PROXY_PORT+1))
 END_PORT=$((START_PORT+1000))
 BASE_SERVER="base"
 
-function pass-git-fxn()
+function push-pull-git-fxn()
 {
     is_avail=$(test-ssh $BASE_SERVER)
     cpwd=$PWD
-    for f_name in $(find ${PERM_LOCATION}/* -maxdepth 1 -type d); do
+    for f_name in $(get-perm-objs); do
         if [ ! -d "$f_name/.git" ]; then
             continue
         fi
@@ -59,14 +59,14 @@ function pass-git-fxn()
     date +%Y-%m-%d >> $3
 }
 
-function pass-update()
+function perm-pull()
 {
-    pass-git-fxn "update" "pull" "$PASS_LAST_PULL"
+    push-pull-git-fxn "update" "pull" "$PERM_LAST_PULL"
 }
 
-function pass-push()
+function perm-push()
 {
-    pass-git-fxn "push" "push" "$PASS_LAST_PUSH"
+    push-pull-git-fxn "push" "push" "$PERM_LAST_PUSH"
 }
 
 function virtman()
@@ -209,8 +209,8 @@ function get-help()
     $TEXT_EDITOR_KEY (text editor/documentation editor)
     $DMENU_KEY (dmenu wrapper)
     $VIRTMAN_KEY (virt-manager with ssh agent loaded)
-    $PASS_UPDATE_KEY (update pass databases)
-    $PASS_PUSH_KEY (push pass databases)
+    $PERM_UPDATE_KEY (update pass databases)
+    $PERM_PUSH_KEY (push pass databases)
     $CHROME_KEY (chrome key)
     $CHROME_PRIVATE_KEY (chrome private key)
 "
@@ -316,11 +316,11 @@ if [ ! -z $1 ]; then
         $VIRTMAN_KEY)
             virtman
             ;;
-        $PASS_UPDATE_KEY)
-            pass-update
+        $PERM_UPDATE_KEY)
+            perm-pull
             ;;
-        $PASS_PUSH_KEY)
-            pass-push
+        $PERM_PUSH_KEY)
+            perm-push
             ;;
         *)
             NEED_HELP=1

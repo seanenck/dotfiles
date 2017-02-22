@@ -34,8 +34,8 @@ SSH_AUTH_TMP=/tmp/ssh-auth.sock
 VAR_LOG=/var/log/$USER/
 USER_LAST_SYNC=${VAR_LOG}synced.log
 CHROME_UPDATED=${VAR_LOG}chrome.log
-PASS_LAST_PUSH=${VAR_LOG}pass-push.log
-PASS_LAST_PULL=${VAR_LOG}pass-pull.log
+PERM_LAST_PUSH=${VAR_LOG}perm-push.log
+PERM_LAST_PULL=${VAR_LOG}perm-pull.log
 PACMAN_LOG=/var/log/pacman.log
 EPIPHYTE_CONF=$HOME/.config/epiphyte/env
 
@@ -68,8 +68,8 @@ function check-timed-events()
     check-timed $CHROME_UPDATED $all "google-chrome"
     check-timed $PACMAN_LOG $all "pacman"
     check-timed $USER_LAST_SYNC $all "sync"
-    check-timed $PASS_LAST_PUSH $all "password-push"
-    check-timed $PASS_LAST_PULL $all "password-pull"
+    check-timed $PERM_LAST_PUSH $all "permanent-push"
+    check-timed $PERM_LAST_PULL $all "permanent-pull"
 }
 
 function test-ssh()
@@ -118,10 +118,15 @@ function get-all-changes()
     git status -sb | grep 'ahead'
 }
 
+function get-perm-objs()
+{
+    find ${PERM_LOCATION} -maxdepth 2 -type d | sort
+}
+
 function git-changes()
 {
     d_paths="$HOME $SYNCED_PATH"
-    for found in $(find /opt/perm/ -maxdepth 2 -type d); do
+    for found in $(get-perm-objs); do
         if [ ! -d "$found/.git" ]; then
             continue
         fi
