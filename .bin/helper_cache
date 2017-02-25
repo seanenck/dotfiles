@@ -45,7 +45,7 @@ function push-pull-git-fxn()
         f=$(basename $f_name)
         cd $f_name
         echo "$1: $f"
-        if [[ $f == *personal* ]]; then
+        if [[ $f == *${PERM_PERSONAL}* ]]; then
             if [ $is_avail -ne $IS_CONNECTED ]; then
                 echo "**not available**"
                 echo

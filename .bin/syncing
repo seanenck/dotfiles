@@ -28,6 +28,11 @@ function sync-now()
             current=$PWD
             cd ${SYNCED_PATH}
             git push 2>&1
+            for personal in $(ls ${PERM_LOCATION} | grep $PERM_PERSONAL); do
+                echo "pushing $personal"
+                cd ${PERM_LOCATION}/$personal
+                git push 2>&1
+            done
             cd $current
         else
             echo "ssh agent unavailable"
