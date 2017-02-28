@@ -121,18 +121,19 @@ function get-all-changes()
 
 function get-perm-objs()
 {
-    find ${PERM_LOCATION} -maxdepth 2 -type d | sort
+    res=""
+    for f in $(find ${PERM_LOCATION} -maxdepth 2 -type d | sort); do
+        if [ ! -d "$f/.git" ]; then
+            continue
+        fi
+        res=$res" "$f
+    done
+    echo $res
 }
 
 function git-changes()
 {
-    d_paths="$HOME $SYNCED_PATH"
-    for found in $(get-perm-objs); do
-        if [ ! -d "$found/.git" ]; then
-            continue
-        fi
-        d_paths=$d_paths" "$found
-    done
+    d_paths="$HOME $SYNCED_PATH "$(get-perm-objs)
     for d in $(echo "$d_paths"); do
         if [ ! -d "$d/.git" ]; then
             continue

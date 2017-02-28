@@ -39,9 +39,6 @@ function push-pull-git-fxn()
     is_avail=$(test-ssh $BASE_SERVER)
     cpwd=$PWD
     for f_name in $(get-perm-objs); do
-        if [ ! -d "$f_name/.git" ]; then
-            continue
-        fi
         f=$(basename $f_name)
         cd $f_name
         echo "$1: $f"
