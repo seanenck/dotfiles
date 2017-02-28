@@ -4,7 +4,6 @@ FULL="$HOME/.config/genericon/"
 DELIMIT="|"
 LOCKING_KEY=$STATUS_LOCKING_KEY
 BACKLIGHT_KEY=$STATUS_BACKLIGHT_KEY
-TOUCHPAD_KEY=$STATUS_TOUCHPAD_KEY
 PING_KEY=$STATUS_PING_KEY
 
 function output-full()
@@ -20,16 +19,6 @@ function output-full()
         json=$json', "tooltip": "'$tip'"'
     fi 
     echo $json'}'
-}
-
-function touchpad-status()
-{
-    status=$(toggle-touchpad "status")
-    IMAGE="mouse"
-    if [ $status -gt 0 ]; then
-        IMAGE="touchpad"
-    fi
-    echo $IMAGE
 }
 
 function get-brightness()
@@ -111,7 +100,7 @@ function init-now()
             "$PING_KEY")
                 use_refresh=$DEFAULT_PING_REFRESH
                 ;;
-            "$TOUCHPAD_KEY" | "$LOCKING_KEY")
+            "$LOCKING_KEY")
                 interrupt="-i"
                 use_refresh=$DEFAULT_INTERRUPT_REFRESH
                 ;;
@@ -131,9 +120,6 @@ case $1 in
         ;;
     $BACKLIGHT_KEY)
         cmd=backlight-status
-        ;;
-    $TOUCHPAD_KEY)
-        cmd=touchpad-status
         ;;
     $PING_KEY)
         cmd=ping-status
