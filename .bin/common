@@ -91,9 +91,9 @@ function process-pass-aliases()
         for f in $(ls ${PERM_LOCATION} | grep "$PASS_PREFIX"); do
             f_path=${PERM_LOCATION}$f
             name="p$idx"
-            echo alias $f=\"PASSWORD_STORE_DIR=$f_path PASSWORD_STORE_GIT=$f_path pass\" >> $PASS_ALIASES
+            echo alias $f=\"PASSWORD_STORE_DIR=$f_path pass\" >> $PASS_ALIASES
             echo "_$name(){" >> $PASS_ALIASES
-            echo "    PASSWORD_STORE_DIR=$f_path/ PASSWORD_STORE_GIT=$f_path/ _pass" >> $PASS_ALIASES
+            echo "    PASSWORD_STORE_DIR=$f_path/ _pass" >> $PASS_ALIASES
             echo "}" >> $PASS_ALIASES
             echo >> $PASS_ALIASES
             echo "complete -o filenames -o nospace -F _$name $f" >> $PASS_ALIASES
