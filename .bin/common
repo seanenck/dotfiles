@@ -120,21 +120,6 @@ function get-all-changes()
     git status -sb | grep 'ahead'
 }
 
-function pass-all()
-{
-    if [ ! -d $PASS_ALL_STORE ]; then
-        mkdir -p $PASS_ALL_STORE
-        for f in $(get-perm-objs); do
-            echo $f | grep -q "pass\-"
-            if [ $? -eq 0 ]; then
-                partial=$(echo $f | cut -d "/" -f 4 | sed "s/pass-//g")
-                rsync -acv --exclude=".git/" --exclude=".git*" $f/* ${PASS_ALL_STORE}$partial
-            fi
-        done
-    fi
-    PASSWORD_STORE_DIR=$PASS_ALL_STORE pass $@
-}
-
 function get-perm-objs()
 {
     res=""

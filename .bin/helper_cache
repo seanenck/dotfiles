@@ -55,6 +55,16 @@ function push-pull-git-fxn()
     done
     cd $cpwd
     rm -rf $PASS_ALL_STORE
+    if [ ! -d $PASS_ALL_STORE ]; then
+        mkdir -p $PASS_ALL_STORE
+        for f in $(get-perm-objs); do
+            echo $f | grep -q "pass\-"
+            if [ $? -eq 0 ]; then
+                partial=$(echo $f | cut -d "/" -f 4 | sed "s/pass-//g")
+                rsync -ac --exclude=".git/" --exclude=".git*" $f/* ${PASS_ALL_STORE}$partial
+            fi
+        done
+    fi
     date +%Y-%m-%d >> $3
 }
 
@@ -317,7 +327,7 @@ if [ ! -z $1 ]; then
             virtman
             ;;
         $PASS_ALL_KEY)
-            pass-all ${@:2}
+            PASSWORD_STORE_DIR=$PASS_ALL_STORE pass ${@:2}
             ;;
         $PERM_UPDATE_KEY)
             perm-pull
