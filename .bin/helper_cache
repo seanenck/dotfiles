@@ -68,20 +68,38 @@ function push-pull-git-fxn()
     date +%Y-%m-%d >> $3
 }
 
+function pass-all-cmd()
+{
+    echo "$1" | grep -q -E "(ls|-c|show)"
+    echo $?
+}
+
 function pass-all-wrapper()
 {
+    valid=0
     if [ -z $1 ]; then
         echo "subcommand required"
         exit
+    else
+        is_valid=$(pass-all-cmd $1)
+        if [ $is_valid -eq 0 ]; then
+            valid=1
+        else
+            if [ -z $2 ]; then
+                valid=1
+            else
+                is_valid=$(pass-all-cmd $2)
+                if [ $is_valid -eq 0 ]; then
+                    valid=1
+                fi
+            fi
+        fi
     fi
-    case $1 in
-        "ls" | "-c" | "show")
-            PASSWORD_STORE_DIR=$PASS_ALL_STORE pass $@ 
-            ;;
-        *)
-            echo "not supported"
-            ;;
-    esac
+    if [ $valid -eq 1 ]; then
+        PASSWORD_STORE_DIR=$PASS_ALL_STORE pass $@ 
+    else
+        echo "unsupported command $1 $2"
+    fi
 }
 
 function perm-pull()
