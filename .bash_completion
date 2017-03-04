@@ -68,3 +68,10 @@ _subsystem()
     fi
 }
 complete -F _subsystem subsystem
+
+source /usr/share/bash-completion/completions/pass
+_pass-all(){
+    PASSWORD_STORE_DIR=/tmp/pass-all/ _pass
+}
+
+complete -o filenames -o nospace -F _pass-all pass-all

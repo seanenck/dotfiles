@@ -39,6 +39,7 @@ PERM_LAST_PULL=${VAR_LOG}perm-pull.log
 PACMAN_LOG=/var/log/pacman.log
 EPIPHYTE_CONF=$HOME/.config/epiphyte/env
 PERM_PERSONAL=personal
+PASS_ALL_STORE=/tmp/pass-all/
 
 function check-timed()
 {
@@ -117,6 +118,21 @@ function get-all-changes()
 {
     git diff-index --name-only HEAD --
     git status -sb | grep 'ahead'
+}
+
+function pass-all()
+{
+    if [ ! -d $PASS_ALL_STORE ]; then
+        mkdir -p $PASS_ALL_STORE
+        for f in $(get-perm-objs); do
+            echo $f | grep -q "pass\-"
+            if [ $? -eq 0 ]; then
+                partial=$(echo $f | cut -d "/" -f 4 | sed "s/pass-//g")
+                rsync -acv --exclude=".git/" --exclude=".git*" $f/* ${PASS_ALL_STORE}$partial
+            fi
+        done
+    fi
+    PASSWORD_STORE_DIR=$PASS_ALL_STORE pass $@
 }
 
 function get-perm-objs()

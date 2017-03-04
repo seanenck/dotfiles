@@ -18,6 +18,7 @@ TEXT_EDITOR_KEY="text-editor"
 DMENU_KEY="dmenu-wrapper"
 SOCKS_KEY="socks"
 VIRTMAN_KEY="virtman"
+PASS_ALL_KEY="pass-all"
 PERM_UPDATE_KEY="perm-pull"
 PERM_PUSH_KEY="perm-push"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
@@ -53,6 +54,7 @@ function push-pull-git-fxn()
         echo
     done
     cd $cpwd
+    rm -rf $PASS_ALL_STORE
     date +%Y-%m-%d >> $3
 }
 
@@ -210,6 +212,7 @@ function get-help()
     $PERM_PUSH_KEY (push pass databases)
     $CHROME_KEY (chrome key)
     $CHROME_PRIVATE_KEY (chrome private key)
+    $PASS_ALL_KEY (pass wrapper for multiple pass stores)
 "
 }
 
@@ -312,6 +315,9 @@ if [ ! -z $1 ]; then
             ;;
         $VIRTMAN_KEY)
             virtman
+            ;;
+        $PASS_ALL_KEY)
+            pass-all ${@:2}
             ;;
         $PERM_UPDATE_KEY)
             perm-pull
