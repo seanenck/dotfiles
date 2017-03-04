@@ -68,6 +68,22 @@ function push-pull-git-fxn()
     date +%Y-%m-%d >> $3
 }
 
+function pass-all-wrapper()
+{
+    if [ -z $1 ]; then
+        echo "subcommand required"
+        exit
+    fi
+    case $1 in
+        "ls" | "-c" | "show")
+            PASSWORD_STORE_DIR=$PASS_ALL_STORE pass $@ 
+            ;;
+        *)
+            echo "not supported"
+            ;;
+    esac
+}
+
 function perm-pull()
 {
     push-pull-git-fxn "update" "pull" "$PERM_LAST_PULL"
@@ -327,7 +343,7 @@ if [ ! -z $1 ]; then
             virtman
             ;;
         $PASS_ALL_KEY)
-            PASSWORD_STORE_DIR=$PASS_ALL_STORE pass ${@:2}
+            pass-all-wrapper ${@:2}
             ;;
         $PERM_UPDATE_KEY)
             perm-pull
