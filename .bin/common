@@ -57,6 +57,20 @@ function check-timed()
     fi
 }
 
+function pop-pass-all()
+{
+    if [ ! -d $PASS_ALL_STORE ]; then
+        mkdir -p $PASS_ALL_STORE
+        for f in $(get-perm-objs); do
+            echo $f | grep -q "pass\-"
+            if [ $? -eq 0 ]; then
+                partial=$(echo $f | cut -d "/" -f 4 | sed "s/pass-//g")
+                rsync -ac --exclude=".git/" --exclude=".git*" $f/* ${PASS_ALL_STORE}$partial
+            fi
+        done
+    fi
+}
+
 function check-timed-events()
 {
     all=""

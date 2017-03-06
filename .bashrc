@@ -59,6 +59,7 @@ if [ -e "$EPIPHYTE_CONF" ]; then
     source $EPIPHYTE_CONF
 fi
 process-pass-aliases
+pop-pass-all
 
 # cleanup user temp
 mkdir -p $USER_TMP 
