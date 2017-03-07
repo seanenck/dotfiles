@@ -88,11 +88,6 @@ function ping-status()
 
 function init-now()
 {
-    refreshing=$DEFAULT_REFRESH
-    if [ ! -z "$1" ]; then
-        refreshing=$1
-    fi
-   
     python $HOME/.bin/modules/genericon/genericon.py -c $SYNCED_CONF/genericon.config
     sleep 0.25 
     signal-status "$LOCKING_KEY"

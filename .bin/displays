@@ -104,10 +104,8 @@ function set-workplace()
         use_setting=$DEFAULT_WORKSPACE_ID
     fi
     kill-icons
-    rate=$DEFAULT_REFRESH
     case $use_setting in
         $DOCKED_ID | $HOME_WORKPLACE_ID)
-            rate=5000
             case $use_setting in
                 $DOCKED_ID)
                     replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
@@ -123,7 +121,7 @@ function set-workplace()
             touch $WORKPLACE_WORKING
             ;;
     esac
-    status init $rate
+    status init &
     toggle-backlighting $MID_BRIGHT
     if [ $1 -eq $use_setting ]; then
         i3 restart
