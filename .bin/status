@@ -92,26 +92,11 @@ function init-now()
     if [ ! -z "$1" ]; then
         refreshing=$1
     fi
-    
-    for item in $(echo "$LOCKING_KEY $BACKLIGHT_KEY $PING_KEY"); do
-        interrupt=""
-        use_refresh=$refreshing
-        case $item in
-            "$PING_KEY")
-                use_refresh=$DEFAULT_PING_REFRESH
-                ;;
-            "$LOCKING_KEY")
-                interrupt="-i"
-                use_refresh=$DEFAULT_INTERRUPT_REFRESH
-                ;;
-        esac
-        genericon -a $HOME/.bin/status $item -r $use_refresh $interrupt &
-        sleep 0.25 
-        if [ ! -z "$interrupt" ]; then
-            signal-status "$item"
-            call-status $item
-        fi
-    done
+   
+    python $HOME/.bin/modules/genericon/genericon.py -c $SYNCED_CONF/genericon.config
+    sleep 0.25 
+    signal-status "$LOCKING_KEY"
+    call-status $LOCKING_KEY
 }
 
 case $1 in

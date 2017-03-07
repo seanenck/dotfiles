@@ -188,7 +188,7 @@ function call-status()
 function signal-status()
 {
     for p in $(pidof python); do
-        ps $p | grep "genericon" | grep -q "$1"
+        ps $p | grep "genericon"
         if [ $? -eq 0 ]; then
             kill -SIGUSR1 $p 
         fi
