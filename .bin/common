@@ -37,6 +37,7 @@ PACMAN_LOG=/var/log/pacman.log
 EPIPHYTE_CONF=$HOME/.config/epiphyte/env
 PERM_PERSONAL=personal
 PASS_ALL_STORE=/tmp/pass-all/
+PRIV_CONF=${SYNCED_CONF}priv.aliases
 
 function check-timed()
 {

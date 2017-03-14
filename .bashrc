@@ -58,6 +58,9 @@ source $HOME/.bin/common
 if [ -e "$EPIPHYTE_CONF" ]; then
     source $EPIPHYTE_CONF
 fi
+if [ -e "$PRIV_CONF" ]; then
+    source $PRIV_CONF
+fi
 process-pass-aliases
 pop-pass-all
 
