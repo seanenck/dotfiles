@@ -20,6 +20,7 @@ VIRTMAN_KEY="virtman"
 PASS_ALL_KEY="pass-all"
 PERM_UPDATE_KEY="perm-pull"
 PERM_PUSH_KEY="perm-push"
+WORKSPACER_KEY="workspacer"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
@@ -56,6 +57,12 @@ function push-pull-git-fxn()
     rm -rf $PASS_ALL_STORE
     pop-pass-all
     date +%Y-%m-%d >> $3
+}
+
+function i3-workspacer()
+{
+    sleep 5
+    python $HOME/.bin/i3workspacer.py
 }
 
 function pass-all-cmd()
@@ -226,6 +233,7 @@ function get-help()
     $CHROME_KEY (chrome key)
     $CHROME_PRIVATE_KEY (chrome private key)
     $PASS_ALL_KEY (pass wrapper for multiple pass stores)
+    $WORKSPACER_KEY (i3 workspace name management)
 "
 }
 
@@ -319,6 +327,9 @@ if [ ! -z $1 ]; then
             ;;
         $TEXT_EDITOR_KEY)
             text-editor ${@:2}
+            ;;
+        $WORKSPACER_KEY)
+            i3-workspacer &
             ;;
         $DMENU_KEY)
             dmenu-wrapper ${@:2}
