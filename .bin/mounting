@@ -136,17 +136,9 @@ function close-crypt()
     sudo cryptsetup luksClose $2
 }
 
-function root-drive()
-{
-    drive=$(ls -al /dev/disk/by-uuid | grep "09C3-87C4" | cut -d ">" -f 2 | sed "s/\.\.\/\.\.\///g")
-    drive=$(echo -e ${drive::-1})
-    echo /dev/$drive
-}
-
 function mount-usb()
 {
-    skip=$(root-drive)
-    disks=$(sudo fdisk -l | grep "Disk /dev/[sd]" | grep -v $skip | cut -d ' ' -f 2,3,4 | cut -d ',' -f 1)
+    disks=$(sudo fdisk -l | grep "Disk /dev/[sd]" | cut -d ' ' -f 2,3,4 | cut -d ',' -f 1)
     disk_count=0
     if [ ! -z "$disks" ]; then
         disk_count=$(echo $disks | wc -l)
