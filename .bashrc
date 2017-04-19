@@ -75,12 +75,17 @@ export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
 
 # workspacer
+start_workspacer=1
 for p in $(pidof python); do
     ps $p | grep -q "i3workspacer"
-    if [ $? -ne 0 ]; then
-        workspacer
+    if [ $? -eq 0 ]; then
+        start_workspacer=0
     fi
 done
+
+if [ $start_workspacer -eq 1 ]; then
+    workspacer
+fi
 
 clear
 git-changes
