@@ -84,7 +84,7 @@ for p in $(pidof python); do
 done
 
 if [ $start_workspacer -eq 1 ]; then
-    workspacer
+    nohup workspacer > /tmp/i3workspace.log &
 fi
 
 clear
