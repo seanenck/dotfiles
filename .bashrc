@@ -74,6 +74,14 @@ find $USER_TMP -empty -type d -delete
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket" 
 echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
 
+# workspacer
+for p in $(pidof python); do
+    ps $p | grep -q "i3workspacer"
+    if [ $? -ne 0 ]; then
+        workspacer
+    fi
+done
+
 clear
 git-changes
 if [ ! -e $USER_LAST_SYNC ]; then

@@ -61,7 +61,6 @@ function push-pull-git-fxn()
 
 function i3-workspacer()
 {
-    sleep 5
     python $HOME/.bin/i3workspacer.py
 }
 
