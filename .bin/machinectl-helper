@@ -1,13 +1,13 @@
 #!/bin/bash
-LOCATION=/var/lib/machines/
-TEMPLATE="new"
-CONFIG=".template"
-TEMPLATE_PATH=${LOCATION}$TEMPLATE
-TEMPLATE_CONF=$TEMPLATE_PATH$CONFIG
 ETC_NSPAWN=/etc/systemd/nspawn/
+BASE_CONF=${ETC_NSPAWN}base.template
+LOCATION=/var/lib/machines/
 SPAWN_KEY="spawn"
 REM_KEY="remove"
 PACK_KEY="pack"
+
+CONT_PATH=${LOCATION}$2
+CONT_CONF=$ETC_NSPAWN$2".nspawn"
 
 function print-help()
 {
@@ -27,19 +27,20 @@ if [ $UID -ne 0 ]; then
     exit -1
 fi
 
-mkdir -p $ETC_NSPAWN
-if [ -z "$1" ]; then
-    echo "action required..."
-    exit -1
-fi
-
-if [ -z "$2" ]; then
-    echo "name required..."
-    exit -1
-fi
-
-CONT_PATH=${LOCATION}$2
-CONT_CONF=$ETC_NSPAWN$2".nspawn"
+function create()
+{
+    if [ -d $CONT_PATH ]; then
+        echo "$CONT_PATH already exists..."
+        exit -1
+    fi
+    if [ -e $CONT_CONF ]; then
+        echo "$CONT_CONF already exists..."
+        exit -1
+    fi
+    mkdir $CONT_PATH
+    pacstrap -i -c -d $CONT_PATH base git vim base-devel
+    ln -s $BASE_CONF $CONT_CONF
+}
 
 function is-running()
 {
@@ -50,33 +51,16 @@ function is-running()
     fi
 }
 
-function spawn()
+function remove()
 {
-    if [ ! -e $TEMPLATE_CONF ]; then
-        echo "$TEMPLATE_CONF is required..."
-        exit -1
+    is-running $1
+    if [ -d $CONT_PATH ]; then
+        rm -rf $CONT_PATH
     fi
 
-    if [ ! -d "$TEMPLATE_PATH" ]; then
-        echo "$TEMPLATE_PATH must be a pacstrap container..."
-        exit -1
+    if [ -e $CONT_CONF ]; then
+        rm -f $CONT_CONF
     fi
-
-    if [ -d $CONT_PATH ] || [ -e $CONT_CONF ]; then
-        echo "$1 already exists..."
-        exit -1
-    fi
-
-    is-running $TEMPLATE
-    NEW_BASIS_TEMPLATE=$ETC_NSPAWN${TEMPLATE}.nspawn
-    if [ ! -e $NEW_BASIS_TEMPLATE ]; then
-        ln -s $TEMPLATE_CONF $NEW_BASIS_TEMPLATE
-    fi
-
-    echo "copying data...($CONT_PATH)"
-    cp -R $TEMPLATE_PATH $CONT_PATH
-    echo "and config...($CONT_CONF)"
-    ln -s $TEMPLATE_CONF $CONT_CONF 
 }
 
 function pack()
@@ -93,33 +77,14 @@ function pack()
     cd $SAVE_TO
 }
 
-function remove()
-{
-    if [[ "$1" == "$TEMPLATE" ]]; then
-        echo "cannot remove template"
-        exit -1
-    fi
-    is-running $1
-    if [ -d $CONT_PATH ]; then
-        rm -rf $CONT_PATH
-    fi
-
-    if [ -e $CONT_CONF ]; then
-        rm -f $CONT_CONF
-    fi
-}
-
 case $1 in
     $SPAWN_KEY)
-        spawn $2
+        create $2
         ;;
     $REM_KEY)
         remove $2
         ;;
     $PACK_KEY)
         pack $2
-        ;;
-    *)
-        print-help
         ;;
 esac
