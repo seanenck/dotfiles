@@ -38,7 +38,7 @@ function create()
         exit -1
     fi
     mkdir $CONT_PATH
-    pacstrap -i -c -d $CONT_PATH base git vim base-devel
+    pacstrap -i -c -d $CONT_PATH base git vim base-devel ${@:2}
     ln -s $BASE_CONF $CONT_CONF
 }
 
@@ -79,7 +79,7 @@ function pack()
 
 case $1 in
     $SPAWN_KEY)
-        create $2
+        create ${@:2}
         ;;
     $REM_KEY)
         remove $2
