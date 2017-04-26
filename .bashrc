@@ -83,8 +83,13 @@ for p in $(pidof python); do
     fi
 done
 
-if [ $start_workspacer -eq 1 ]; then
+function nohup-workspace()
+{
     nohup workspacer > /tmp/i3workspace.log &
+}
+
+if [ $start_workspacer -eq 1 ]; then
+    nohup-workspace > /dev/null 2>&1
 fi
 
 clear
