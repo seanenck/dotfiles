@@ -112,6 +112,12 @@ function process-pass-aliases()
             echo "complete -o filenames -o nospace -F _$name $f" >> $PASS_ALIASES
             idx=$((idx+1))
         done
+        if [ -e $EPIPHYTE_CONF ]; then
+            source $EPIPHYTE_CONF
+            for l in $(echo $LUKS_ALIASES); do
+                echo "alias luks-$l=\"enterkeys luks-$l\"" >> $PASS_ALIASES
+            done
+        fi
     fi
     source $PASS_ALIASES
 }
