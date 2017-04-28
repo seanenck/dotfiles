@@ -21,6 +21,7 @@ PASS_ALL_KEY="pass-all"
 PERM_UPDATE_KEY="perm-pull"
 PERM_PUSH_KEY="perm-push"
 WORKSPACER_KEY="workspacer"
+ENTER_KEY="enterkeys"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
@@ -34,6 +35,45 @@ DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 START_PORT=$((PROXY_PORT+1))
 END_PORT=$((START_PORT+1000))
 BASE_SERVER="base"
+ENTRIES=$HOME/.config/window.entries
+
+function enter-keys()
+{
+    if [ -e $ENTRIES ]; then
+        source $ENTRIES
+    fi
+
+    function enter()
+    {
+        word=$1
+        echo "please activate the window to enter the text into"
+        sleep 3
+        for i in $(seq 1 ${#word})
+        do
+            xdotool key ${word:i-1:1}
+        done
+        for i in ${@:2}; do
+            xdotool key $i
+        done
+    }
+
+    if [ -z $1 ]; then
+        echo "must provide input"
+    else
+        using=$1
+        ran=0
+        if [ -e $ENTRIES ]; then
+            result=$($ENTRIES $using)
+            if [ ! -z "$result" ]; then
+                ran=1
+                enter $result
+            fi
+        fi
+        if [ $ran -eq 0 ]; then
+            enter $@
+        fi
+    fi
+}
 
 function push-pull-git-fxn()
 {
@@ -233,6 +273,7 @@ function get-help()
     $CHROME_PRIVATE_KEY (chrome private key)
     $PASS_ALL_KEY (pass wrapper for multiple pass stores)
     $WORKSPACER_KEY (i3 workspace name management)
+    $ENTER_KEY (enter keys into a non-paste friendly place)
 "
 }
 
@@ -313,6 +354,9 @@ if [ ! -z $1 ]; then
                 arg="--incognito"
             fi
             $browser $arg 
+            ;;
+        $ENTER_KEY)
+            enter-keys ${@:2}
             ;;
         $MARKDOWN_KEY)
             file-required $2
