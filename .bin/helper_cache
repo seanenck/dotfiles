@@ -46,8 +46,18 @@ function enter-keys()
     function enter()
     {
         word=$1
-        echo "please activate the window to enter the text into"
-        sleep 3
+        echo "please activate the browser window to enter the text into"
+        window=0
+        while [ $window -eq 0 ]; do
+            sleep 3
+            active=$(xdotool getactivewindow)
+            xdotool search --class Chromium | grep -q $active
+            if [ $? -eq 0 ]; then
+                window=1
+            else
+                echo "please select a browser window"
+            fi
+        done
         for i in $(seq 1 ${#word})
         do
             xdotool key ${word:i-1:1}
