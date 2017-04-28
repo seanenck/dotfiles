@@ -39,6 +39,28 @@ PERM_PERSONAL=personal
 PASS_ALL_STORE=/tmp/pass-all/
 PRIV_CONF=${SYNCED_CONF}priv.aliases
 
+
+function enter-window-vals()
+{
+    word=$2
+    window=0
+    while [ $window -eq 0 ]; do
+        echo "please activate the $1 window to enter the text into"
+        sleep 3
+        active=$(xdotool getactivewindow)
+        xdotool search --class $1 | grep -q $active
+        if [ $? -eq 0 ]; then
+            window=1
+        else
+            echo "please select a $1 window"
+        fi
+    done
+    xdotool type $word
+    for i in ${@:3}; do
+        xdotool key $i
+    done
+}
+
 function check-timed()
 {
     if [ ! -d $VAR_LOG ]; then
