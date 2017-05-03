@@ -22,7 +22,8 @@ function get-i3lock()
 function lock-now()
 {
     perl $HOME/.bin/pcsc.pl
-    if [ $? -ne 0 ] && [ ! -e $DISPLAY_UN ]; then
+    card=$?
+    if [ $card -ne 0 ] && [ ! -e $DISPLAY_UN ]; then
         PID=$(get-i3lock)
         
         if [ -z $PID ]; then
