@@ -21,8 +21,10 @@ function get-i3lock()
 
 function card-status()
 {
-    perl $HOME/.bin/pcsc.pl &> /dev/null
-    echo $?
+    output=$(perl $HOME/.bin/pcsc.pl)
+    res=$?
+    write-log "$output"
+    echo $res
 }
 
 function lock-now()
