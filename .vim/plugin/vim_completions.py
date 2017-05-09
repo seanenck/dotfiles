@@ -13,8 +13,12 @@ ADDED_ATTRS = ["__" + x + "__" for x in ["dict",
                                          "subclasses"]]
 
 DOT_ATTR = dir(object) + ADDED_ATTRS
-AVAIL_BUILTINS = [x + "(" for x in dir(__builtins__) if not x.endswith("Error") and not x.endswith("Warning") and not x.endswith("Exception") and (x[0] >= 'Z' or x[0] <= 'A')]
-ERRORS = [x + "(" for x in dir(__builtins__) if x.endswith("Error")]
+AVAIL_BUILTINS = [x for x in dir(__builtins__) if not x.endswith("Error") \
+                                            and not x.endswith("Warning") \
+                                            and not x.endswith("Exception") \
+                                            and (x[0] >= 'Z' or x[0] <= 'A')]
+ERRORS = [x for x in dir(__builtins__) if x.endswith("Error")] 
+IS_RAISE = "raise"
 
 def get_selections(segment, inputs, reversing):
     """Get selections given input."""
@@ -39,6 +43,7 @@ def get_selections(segment, inputs, reversing):
         result = nxt
     return (result, matched)
 
+
 try:
     pos = vim.current.window.cursor
     if pos and pos[0] > 0 and pos[1] > 0:
@@ -55,6 +60,11 @@ try:
             use_values = DOT_ATTR
         if ch == " ":
             use_values = AVAIL_BUILTINS
+            len_raise = len(IS_RAISE) + 1
+            if len(cur) >= len_raise and col >= len_raise:
+                if cur[col - len(IS_RAISE):col] == IS_RAISE:
+                    use_values = ERRORS
+            use_values = [x + "(" for x in use_values]
         if use_values:
             selections = get_selections(after, use_values, reversing)
         if selections is not None:
