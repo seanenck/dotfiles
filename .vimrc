@@ -58,7 +58,8 @@ if has("autocmd")
     \ endif
 
   augroup END
-
+  autocmd FileType python noremap <S-Tab> :call PyCompletion()<CR>
+  autocmd FileType python noremap <C-S-Tab> :call PyCompletionReverse()<CR>
 endif " has("autocmd")
 
 for i in ['', 'i']
@@ -67,6 +68,7 @@ for i in ['', 'i']
     execute i . "map <C-Right> <end>"
     execute i . "map <C-Left> <home>"
 endfor
+
 
 set tabstop=4
 set expandtab
