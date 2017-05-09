@@ -58,7 +58,6 @@ if has("autocmd")
     \ endif
 
   augroup END
-  " autocmd FileType python noremap <C-S-Tab> :call PyCompletionReverse()<CR>
   autocmd FileType python noremap <S-Up> :call PyCompletion(0)<CR>
   autocmd FileType python noremap <S-Down> :call PyCompletion(1)<CR>
 endif " has("autocmd")

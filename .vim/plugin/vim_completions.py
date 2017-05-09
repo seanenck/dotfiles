@@ -14,25 +14,26 @@ ADDED_ATTRS = ["__" + x + "__" for x in ["dict",
 
 def get_selections(segment, inputs, reversing):
     """Get selections given input."""
-    before = []
     matched = None
-    after = []
-    print(segment)
-    for ins in sorted(set(inputs)):
-        if matched is not None:
-            after.append(ins)
+    input_set = list(reversed(sorted(set(inputs))))
+    result = ""
+    lst = "" 
+    nxt = ""
+    for ins in input_set:
+        if matched:
+            nxt = ins
+            break
         if segment.startswith(ins):
             matched = ins
         if not matched:
-            before.append(ins)
-    if reversing:
-        result = list(reversed(before))
-    else:
-        result = after
-    if matched is None:
+            lst = ins
+    if not matched:
         matched = ""
+    if reversing:
+        result = lst
+    else:
+        result = nxt
     return (result, matched)
-
 
 try:
     pos = vim.current.window.cursor
@@ -49,11 +50,7 @@ try:
             dot_attr = dir(object) + ADDED_ATTRS
             after = cur[col_off:]
             results = get_selections(after, dot_attr, reversing)
-            remaining = results[0]
-            if len(remaining) == 0:
-                replacing = ""
-            else:
-                replacing = remaining[0]
+            replacing = results[0]
             after_attr = results[1]
         if replacing is not None and after_attr is not None:
             new_cur = "{}{}{}".format(cur[0:col_off],
