@@ -58,8 +58,8 @@ if has("autocmd")
     \ endif
 
   augroup END
-  autocmd FileType python noremap <S-Up> :call PyCompletion(0)<CR>
-  autocmd FileType python noremap <S-Down> :call PyCompletion(1)<CR>
+  autocmd FileType python inoremap <S-Up> <C-o>:call PyCompletion(0)<CR>
+  autocmd FileType python inoremap <S-Down> <C-o>:call PyCompletion(1)<CR>
 endif " has("autocmd")
 
 for i in ['', 'i']
