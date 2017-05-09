@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import vim
 import sys
+import types
 
 # https://docs.python.org/3/library/stdtypes.html
 ADDED_ATTRS = ["__" + x + "__" for x in ["dict",
@@ -11,6 +12,9 @@ ADDED_ATTRS = ["__" + x + "__" for x in ["dict",
                                          "mro",
                                          "subclasses"]]
 
+DOT_ATTR = dir(object) + ADDED_ATTRS
+AVAIL_BUILTINS = [x + "(" for x in dir(__builtins__) if not x.endswith("Error") and not x.endswith("Warning") and not x.endswith("Exception") and (x[0] >= 'Z' or x[0] <= 'A')]
+ERRORS = [x + "(" for x in dir(__builtins__) if x.endswith("Error")]
 
 def get_selections(segment, inputs, reversing):
     """Get selections given input."""
@@ -46,9 +50,13 @@ try:
         col_off = col + 1
         after = cur[col_off:]
         selections = None
+        use_values = None
         if ch == ".":
-            dot_attr = dir(object) + ADDED_ATTRS
-            selections = get_selections(after, dot_attr, reversing)
+            use_values = DOT_ATTR
+        if ch == " ":
+            use_values = AVAIL_BUILTINS
+        if use_values:
+            selections = get_selections(after, use_values, reversing)
         if selections is not None:
             replacing = selections[0]
             after_attr = selections[1]
