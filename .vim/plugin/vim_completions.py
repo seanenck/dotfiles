@@ -44,15 +44,14 @@ try:
         ch = cur[col]
         reversing = vim.eval("a:direction") == "1"
         col_off = col + 1
-        replacing = None
-        after_attr = None
+        after = cur[col_off:]
+        selections = None
         if ch == ".":
             dot_attr = dir(object) + ADDED_ATTRS
-            after = cur[col_off:]
-            results = get_selections(after, dot_attr, reversing)
-            replacing = results[0]
-            after_attr = results[1]
-        if replacing is not None and after_attr is not None:
+            selections = get_selections(after, dot_attr, reversing)
+        if selections is not None:
+            replacing = selections[0]
+            after_attr = selections[1]
             new_cur = "{}{}{}".format(cur[0:col_off],
                                       replacing,
                                       cur[col_off + len(after_attr):])
