@@ -3,6 +3,8 @@ import vim
 import sys
 import types
 
+IS_ERROR = "Error"
+
 # https://docs.python.org/3/library/stdtypes.html
 ADDED_ATTRS = ["__" + x + "__" for x in ["dict",
                                          "class",
@@ -13,12 +15,13 @@ ADDED_ATTRS = ["__" + x + "__" for x in ["dict",
                                          "subclasses"]]
 
 DOT_ATTR = dir(object) + ADDED_ATTRS
-AVAIL_BUILTINS = [x for x in dir(__builtins__) if not x.endswith("Error") \
+AVAIL_BUILTINS = [x for x in dir(__builtins__) if not x.endswith(IS_ERROR) \
                                             and not x.endswith("Warning") \
                                             and not x.endswith("Exception") \
                                             and (x[0] >= 'Z' or x[0] <= 'A')]
-ERRORS = [x for x in dir(__builtins__) if x.endswith("Error")] 
+ERRORS = [x for x in dir(__builtins__) if x.endswith(IS_ERROR)] 
 IS_RAISE = "raise"
+
 
 def get_selections(segment, inputs, reversing):
     """Get selections given input."""
