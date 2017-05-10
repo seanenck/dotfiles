@@ -63,10 +63,10 @@ if has("autocmd")
 endif " has("autocmd")
 
 for i in ['', 'i']
-    execute i . "map <C-Up> <PageUp>"
-    execute i . "map <C-Down> <PageDown>"
-    execute i . "map <C-Right> <end>"
-    execute i . "map <C-Left> <home>"
+    execute i . "noremap <C-Up> <PageUp>"
+    execute i . "noremap <C-Down> <PageDown>"
+    execute i . "noremap <C-Right> <end>"
+    execute i . "noremap <C-Left> <home>"
 endfor
 
 
