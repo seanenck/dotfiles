@@ -5,6 +5,14 @@ LOCATION=/var/lib/machines/
 SPAWN_KEY="spawn"
 REM_KEY="remove"
 PACK_KEY="pack"
+REFRESH_KEY="refresh"
+FILES="
+/etc/pacman.conf:/etc/pacman.conf
+/home/enck/.vimrc:/etc/vimrc
+/home/enck/.synced/configs/.gitconfig:/root/.gitconfig 
+/home/enck/.config/.gitexclude:/home/enck/.config/.gitconfig
+/home/enck/.vim/:/home/enck/.vim/
+"
 
 CONT_PATH=${LOCATION}$2
 CONT_CONF=$ETC_NSPAWN$2".nspawn"
@@ -15,6 +23,7 @@ function print-help()
     $SPAWN_KEY (create a new container)
     $REM_KEY (force remove a container)
     $PACK_KEY (pack a container)
+    $REFRESH_KEY (refresh files in a container)
 "
 }
 
@@ -40,6 +49,7 @@ function create()
     mkdir $CONT_PATH
     pacstrap -i -c -d $CONT_PATH base git vim base-devel ${@:2}
     ln -s $BASE_CONF $CONT_CONF
+    refresh $1
 }
 
 function is-running()
@@ -61,6 +71,20 @@ function remove()
     if [ -e $CONT_CONF ]; then
         rm -f $CONT_CONF
     fi
+}
+
+function refresh()
+{
+    is-running $1
+    if [ ! -d $CONT_PATH ]; then
+        echo "not a valid container..."
+        exit -1
+    fi
+    for f in $FILES; do
+        from=$(echo $f | cut -d ":" -f 1)
+        to=$(echo $f | cut -d ":" -f 2)
+        rsync -vrc $from $CONT_PATH$to
+    done
 }
 
 function pack()
@@ -86,5 +110,8 @@ case $1 in
         ;;
     $PACK_KEY)
         pack $2
+        ;;
+    $REFRESH_KEY)
+        refresh $2
         ;;
 esac
