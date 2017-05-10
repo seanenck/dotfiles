@@ -62,6 +62,9 @@ if has("autocmd")
   autocmd FileType python inoremap <S-Down> <C-o>:call PyCompletion(1)<CR>
 endif " has("autocmd")
 
+inoremap <S-Left> <C-o>:call PyShift(0)<CR>
+inoremap <S-Right> <C-o>:call PyShift(1)<CR>
+
 for i in ['', 'i']
     execute i . "noremap <C-Up> <PageUp>"
     execute i . "noremap <C-Down> <PageDown>"
