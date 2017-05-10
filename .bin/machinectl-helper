@@ -6,12 +6,19 @@ SPAWN_KEY="spawn"
 REM_KEY="remove"
 PACK_KEY="pack"
 REFRESH_KEY="refresh"
+USER_NAME="enck"
+USER_HOME="/home/$USER_NAME/"
+VIMPLUG=$USER_HOME".vim/"
+VIMRC=$USER_HOME".vimrc"
 FILES="
 /etc/pacman.conf:/etc/pacman.conf
-/home/enck/.vimrc:/etc/vimrc
-/home/enck/.synced/configs/.gitconfig:/root/.gitconfig 
-/home/enck/.config/.gitexclude:/home/enck/.config/.gitconfig
-/home/enck/.vim/:/home/enck/.vim/
+$VIMRC:/etc/vimrc
+$VIMRC:/root/.vimrc
+$VIMRC:$USER_HOME.vimrc
+$USER_HOME.synced/configs/.gitconfig:/root/.gitconfig 
+$USER_HOME.config/.gitexclude:$USER_HOME.config/.gitconfig
+$VIMPLUG:$VIMPLUG
+$VIMPLUG:/root/.vim/
 "
 
 CONT_PATH=${LOCATION}$2
@@ -85,6 +92,7 @@ function refresh()
         to=$(echo $f | cut -d ":" -f 2)
         rsync -vrc $from $CONT_PATH$to
     done
+    chown -R $USER_NAME:$USER_NAME ${CONT_PATH}/home/enck
 }
 
 function pack()
