@@ -1,7 +1,6 @@
 #!/usr/bin/python
 """Provides simple completion of python builtin attrs/dirs."""
 import vim
-import sys
 import types
 
 IS_ERROR = "Error"
