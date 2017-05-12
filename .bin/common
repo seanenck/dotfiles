@@ -55,7 +55,7 @@ function enter-window-vals()
             echo "please select a $1 window"
         fi
     done
-    xdotool type $word
+    xdotool type "$word"
     for i in ${@:3}; do
         xdotool key $i
     done
