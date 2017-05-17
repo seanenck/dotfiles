@@ -21,6 +21,7 @@ PERM_UPDATE_KEY="perm-pull"
 PERM_PUSH_KEY="perm-push"
 WORKSPACER_KEY="workspacer"
 ENTER_KEY="enterkeys"
+AUTO_CLIP_KEY="auto-clip"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
@@ -35,6 +36,12 @@ START_PORT=$((PROXY_PORT+1))
 END_PORT=$((START_PORT+1000))
 BASE_SERVER="base"
 ENTRIES=$HOME/.config/window.entries
+
+function auto-clip()
+{
+    source $PRIV_CONF
+    auto-clipboard $PERM_LOCATION
+}
 
 function enter-keys()
 {
@@ -259,6 +266,7 @@ function get-help()
     $PASS_ALL_KEY (pass wrapper for multiple pass stores)
     $WORKSPACER_KEY (i3 workspace name management)
     $ENTER_KEY (enter keys into a non-paste friendly place)
+    $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
 "
 }
 
@@ -370,6 +378,9 @@ if [ ! -z $1 ]; then
             ;;
         $PERM_PUSH_KEY)
             perm-push
+            ;;
+        $AUTO_CLIP_KEY)
+            auto-clip
             ;;
         *)
             NEED_HELP=1

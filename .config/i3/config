@@ -3,6 +3,7 @@ font pango:Adobe Courier 12
 floating_modifier $mod
 
 bindsym $mod+Return exec lxterminal
+bindsym $mod+S exec auto-clip
 
 # kill focused window
 bindsym $mod+Shift+q kill
