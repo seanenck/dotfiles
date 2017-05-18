@@ -59,7 +59,7 @@ function enter-keys()
             result=$($ENTRIES $using)
             if [ ! -z "$result" ]; then
                 ran=1
-                enter $result
+                enter-window-vals "Chromium" $result
             fi
         fi
         if [ $ran -eq 0 ]; then
