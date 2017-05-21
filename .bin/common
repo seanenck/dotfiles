@@ -160,10 +160,10 @@ function get-all-changes()
     git status -sb | grep 'ahead'
 }
 
-function get-perm-objs()
+function get-git-folders()
 {
     res=""
-    for f in $(find ${PERM_LOCATION} -maxdepth 2 -type d | sort); do
+    for f in $(find $1 -type d | sort); do
         if [ ! -d "$f/.git" ]; then
             continue
         fi
@@ -172,9 +172,19 @@ function get-perm-objs()
     echo $res
 }
 
+function get-workspace-objs()
+{
+    get-git-folders "$HOME/workspace/"
+}
+
+function get-perm-objs()
+{
+    get-git-folders "${PERM_LOCATION} -maxdepth 2"
+}
+
 function git-changes()
 {
-    d_paths="$HOME $SYNCED_PATH "$(get-perm-objs)
+    d_paths="$HOME $SYNCED_PATH "$(get-perm-objs)" "$(get-workspace-objs)
     for d in $(echo "$d_paths"); do
         if [ ! -d "$d/.git" ]; then
             continue
