@@ -25,8 +25,9 @@ if (defined $context)
 if (!$valid)
 {
     my $error = $Chipcard::PCSC::errno;
-    print "Smartcard status: $error\n";
-    if ($error eq "No smartcard inserted.")
+    my $raw = int $error;
+    print "Smartcard status ($raw): $error\n";
+    if ($error == $Chipcard::PCSC::SCARD_E_NO_SMARTCARD)
     {
         exit 1;
     }
