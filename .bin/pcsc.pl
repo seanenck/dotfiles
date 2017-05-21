@@ -27,7 +27,7 @@ if (!$valid)
     my $error = $Chipcard::PCSC::errno;
     my $raw = int $error;
     print "Smartcard status ($raw): $error\n";
-    if ($error == $Chipcard::PCSC::SCARD_E_NO_SMARTCARD)
+    if ($raw == $Chipcard::PCSC::SCARD_E_NO_SMARTCARD)
     {
         exit 1;
     }
