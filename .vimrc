@@ -64,7 +64,7 @@ endif " has("autocmd")
 
 inoremap <S-Left> <C-o>:call PyShift(0)<CR>
 inoremap <S-Right> <C-o>:call PyShift(1)<CR>
-noremap <C-g> <C-o>:call PyGitDiff()<CR>
+noremap <C-d> <C-o>:call PyGitDiff()<CR>
 
 for i in ['', 'i']
     execute i . "noremap <C-Up> <PageUp>"
