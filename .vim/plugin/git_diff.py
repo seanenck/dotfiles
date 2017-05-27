@@ -21,31 +21,28 @@ def main():
         command = ["git",
                    "diff",
                    "--exit-code"]
-        if os.path.exists(os.path.join(dir_path, ".git")):
-            if not do_all:
-                command.append(file_name)
-            with open(os.devnull, 'w') as DEVNULL:
-                proc = subprocess.Popen(command,
-                                        cwd=dir_path,
-                                        stdout=DEVNULL,
-                                        stderr=subprocess.STDOUT).wait()
-                if proc == 0 or not display:
-                    changes = "changes detected"
-                    if proc == 0:
-                        changes = "no " + changes
-                    if not do_all:
-                        changes += " to {}".format(file_name)
-                    print(changes)
-                else:
-                    if display:
-                        command = ["cd",
-                                   dir_path,
-                                   "&&"] + [x for x in
-                                            command if x != "--exit-code"]
-                        cmd = "\ ".join(command)
-                        vim.command(":vert new +read!{}".format(cmd))
-        else:
-            print("not a git repo")
+        if not do_all:
+            command.append(file_name)
+        with open(os.devnull, 'w') as DEVNULL:
+            proc = subprocess.Popen(command,
+                                    cwd=dir_path,
+                                    stdout=DEVNULL,
+                                    stderr=subprocess.STDOUT).wait()
+            if proc == 0 or not display:
+                changes = "changes detected"
+                if proc == 0:
+                    changes = "no " + changes
+                if not do_all:
+                    changes += " to {}".format(file_name)
+                print(changes)
+            else:
+                if display:
+                    command = ["cd",
+                               dir_path,
+                               "&&"] + [x for x in
+                                        command if x != "--exit-code"]
+                    cmd = "\ ".join(command)
+                    vim.command(":vert new +read!{}".format(cmd))
     except Exception as e:
         print(str(e))
 
