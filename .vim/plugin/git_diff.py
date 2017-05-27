@@ -17,6 +17,8 @@ def main():
         do_all = do_buf in [DIFF_ALL_SHOW, DIFF_ALL_TEXT]
         display = do_buf in [DIFF_ALL_SHOW, DIFF_ONE_SHOW]
         file_name = vim.current.buffer.name
+        if not file_name or len(file_name.strip()) == 0:
+            return
         dir_path = os.path.dirname(file_name)
         command = ["git",
                    "diff",
