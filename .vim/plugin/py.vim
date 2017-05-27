@@ -14,6 +14,6 @@ function! PyShift(direction)
     :pyfile $PYSHIFT
 endfunc
 
-function! PyGitDiff()
+function! PyGitDiff(buffer)
     :pyfile $PYGITDIFF
 endfunc

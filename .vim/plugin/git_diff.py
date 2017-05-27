@@ -8,19 +8,24 @@ import subprocess
 def main():
     """Main entry point."""
     try:
+        do_all = vim.eval("a:buffer") == "0"
         file_name = vim.current.buffer.name
         dir_path = os.path.dirname(file_name)
         command = ["git",
                    "diff",
-                   "--exit-code",
-                   file_name]
+                   "--exit-code"]
+        if not do_all:
+            command.append(file_name)
         with open(os.devnull, 'w') as DEVNULL:
             proc = subprocess.Popen(command, 
                                     cwd=dir_path,
                                     stdout=DEVNULL,
                                     stderr=subprocess.STDOUT).wait()
             if proc == 0:
-                print('no changes to {}'.format(file_name))
+                no_changes = "no_changes"
+                if not do_all:
+                    no_changes += " to {}".format(file_name)
+                print(no_changes)
             else:
                 command = ["cd",
                            dir_path,
