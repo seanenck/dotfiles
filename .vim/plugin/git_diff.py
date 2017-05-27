@@ -22,7 +22,7 @@ def main():
                                     stdout=DEVNULL,
                                     stderr=subprocess.STDOUT).wait()
             if proc == 0:
-                no_changes = "no_changes"
+                no_changes = "no changes"
                 if not do_all:
                     no_changes += " to {}".format(file_name)
                 print(no_changes)
