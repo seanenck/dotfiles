@@ -50,6 +50,10 @@ endif " has("autocmd")
 
 inoremap <S-Left> <C-o>:call PyShift(0)<CR>
 inoremap <S-Right> <C-o>:call PyShift(1)<CR>
+noremap e :call PyGitDiff(2)<CR>
+noremap r :call PyGitDiff(3)<CR>
+noremap EE :call PyGitDiff(0)<CR>
+noremap RR :call PyGitDiff(1)<CR>
 
 " map to command and insert
 for i in ['', 'i']
@@ -59,10 +63,6 @@ for i in ['', 'i']
     execute i . "noremap <C-Left> <home>"
     execute i . "noremap <F1> :Texplore<CR>"
     execute i . "noremap <F2> :q<CR>"
-    execute i . "noremap <F5> :call PyGitDiff(0)<CR>"
-    execute i . "noremap <F6> :call PyGitDiff(1)<CR>"
-    execute i . "noremap <F3> :call PyGitDiff(2)<CR>"
-    execute i . "noremap <F4> :call PyGitDiff(3)<CR>"
 endfor
 
 
