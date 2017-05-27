@@ -14,24 +14,27 @@ def main():
         command = ["git",
                    "diff",
                    "--exit-code"]
-        if not do_all:
-            command.append(file_name)
-        with open(os.devnull, 'w') as DEVNULL:
-            proc = subprocess.Popen(command, 
-                                    cwd=dir_path,
-                                    stdout=DEVNULL,
-                                    stderr=subprocess.STDOUT).wait()
-            if proc == 0:
-                no_changes = "no changes"
-                if not do_all:
-                    no_changes += " to {}".format(file_name)
-                print(no_changes)
-            else:
-                command = ["cd",
-                           dir_path,
-                           "&&"] + [x for x in command if x != "--exit-code"]
-                cmd = "\ ".join(command)
-                vim.command(":vert new +read!{}".format(cmd))
+        if os.path.exists(os.path.join(dir_path, ".git")):
+            if not do_all:
+                command.append(file_name)
+            with open(os.devnull, 'w') as DEVNULL:
+                proc = subprocess.Popen(command,
+                                        cwd=dir_path,
+                                        stdout=DEVNULL,
+                                        stderr=subprocess.STDOUT).wait()
+                if proc == 0:
+                    no_changes = "no changes"
+                    if not do_all:
+                        no_changes += " to {}".format(file_name)
+                    print(no_changes)
+                else:
+                    command = ["cd",
+                               dir_path,
+                               "&&"] + [x for x in command if x != "--exit-code"]
+                    cmd = "\ ".join(command)
+                    vim.command(":vert new +read!{}".format(cmd))
+        else:
+            print("not a git repo")
     except Exception as e:
         print(str(e))
 
