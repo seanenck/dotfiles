@@ -58,8 +58,10 @@ for i in ['', 'i']
     execute i . "noremap <C-Left> <home>"
     execute i . "noremap <F1> :Texplore<CR>"
     execute i . "noremap <F2> :q<CR>"
-    execute i . "noremap <F3> :call PyGitDiff(0)<CR>"
-    execute i . "noremap <F4> :call PyGitDiff(1)<CR>"
+    execute i . "noremap <F5> :call PyGitDiff(0)<CR>"
+    execute i . "noremap <F6> :call PyGitDiff(1)<CR>"
+    execute i . "noremap <F3> :call PyGitDiff(2)<CR>"
+    execute i . "noremap <F4> :call PyGitDiff(3)<CR>"
 endfor
 
 

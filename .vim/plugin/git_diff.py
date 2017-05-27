@@ -5,10 +5,17 @@ import os
 import subprocess
 
 
+DIFF_ALL_SHOW = "0"
+DIFF_ONE_SHOW = "1"
+DIFF_ALL_TEXT = "2"
+
+
 def main():
     """Main entry point."""
     try:
-        do_all = vim.eval("a:buffer") == "0"
+        do_buf = vim.eval("a:buffer")
+        do_all = do_buf in [DIFF_ALL_SHOW, DIFF_ALL_TEXT]
+        display = do_buf in [DIFF_ALL_SHOW, DIFF_ONE_SHOW]
         file_name = vim.current.buffer.name
         dir_path = os.path.dirname(file_name)
         command = ["git",
@@ -22,17 +29,21 @@ def main():
                                         cwd=dir_path,
                                         stdout=DEVNULL,
                                         stderr=subprocess.STDOUT).wait()
-                if proc == 0:
-                    no_changes = "no changes"
+                if proc == 0 or not display:
+                    changes = "changes detected"
+                    if proc == 0:
+                        changes = "no " + changes
                     if not do_all:
-                        no_changes += " to {}".format(file_name)
-                    print(no_changes)
+                        changes += " to {}".format(file_name)
+                    print(changes)
                 else:
-                    command = ["cd",
-                               dir_path,
-                               "&&"] + [x for x in command if x != "--exit-code"]
-                    cmd = "\ ".join(command)
-                    vim.command(":vert new +read!{}".format(cmd))
+                    if display:
+                        command = ["cd",
+                                   dir_path,
+                                   "&&"] + [x for x in
+                                            command if x != "--exit-code"]
+                        cmd = "\ ".join(command)
+                        vim.command(":vert new +read!{}".format(cmd))
         else:
             print("not a git repo")
     except Exception as e:
