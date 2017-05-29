@@ -40,7 +40,12 @@ function lock-now()
         
         if [ -z $PID ]; then
             write-log "locking..."
-            i3lock -c 333333
+            PID=$(get-i3lock)
+            write-log "i3lock pid: $PID"
+            if [ -z "$PID" ]; then
+                write-log "starting i3lock"
+                i3lock -c 333333
+            fi
             PID=$(get-i3lock)
             toggle-backlighting $BACKLIGHT_OFF
             while [ ! -z $PID ];
