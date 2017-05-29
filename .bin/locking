@@ -72,22 +72,28 @@ function suspend-now()
         fi
 
         rm -f $PROFILE_DEF
-        PID=$(get-i3lock)
         SLEEP_COUNT=0
         if [ -z "$1" ]; then
             SLEEP_COUNT=$SLEEP_AFTER
         fi
         write-log "sleep setting: $SLEEP_COUNT"
-        while [ ! -z $PID ];
-        do
+        PID=""
+        while [ -z $PID ]; do
+            PID=$(get-i3lock)
+        done
+        while [ 1 -eq 1 ]; do
             if [ $SLEEP_COUNT -ge $SLEEP_AFTER ]; then
                 write-log "sleeping..."
                 SLEEP_COUNT=0
                 systemctl suspend
+                break
             fi
             sleep 1
             SLEEP_COUNT=$((SLEEP_COUNT+1))
             PID=$(get-i3lock)
+            if [ -z $PID ]; then
+                break
+            fi
         done
         write-log "done sleeping"
     fi
