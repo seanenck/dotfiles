@@ -36,8 +36,8 @@ function lock-now()
         rm -f $DISPLAY_UN
     fi
     if [ $card -ne 0 ] && [ ! -e $DISPLAY_UN ]; then
+        write-log "going to lock"
         PID=$(get-i3lock)
-        
         if [ -z $PID ]; then
             write-log "locking..."
             PID=$(get-i3lock)
@@ -46,6 +46,7 @@ function lock-now()
                 write-log "starting i3lock"
                 i3lock -c 333333
             fi
+            write-log "polling mode"
             PID=$(get-i3lock)
             toggle-backlighting $BACKLIGHT_OFF
             while [ ! -z $PID ];
@@ -81,6 +82,7 @@ function suspend-now()
         while [ -z $PID ]; do
             PID=$(get-i3lock)
         done
+        sleep 1
         while [ 1 -eq 1 ]; do
             if [ $SLEEP_COUNT -ge $SLEEP_AFTER ]; then
                 write-log "sleeping..."
