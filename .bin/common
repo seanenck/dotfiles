@@ -1,5 +1,7 @@
 #!/bin/bash
 USER_TMP=$HOME/.tmp
+BASH_HISTORY=$HOME/.bash_history
+BASH_NEW_HIST=${USER_TMP}/bash_history
 SYNCED_PATH="$HOME/.synced/"
 SYNCED_CONF=${SYNCED_PATH}/configs/
 PASS_ALIASES=${USER_TMP}/pass.aliases

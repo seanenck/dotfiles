@@ -92,6 +92,10 @@ if [ $start_workspacer -eq 1 ]; then
     nohup-workspace > /dev/null 2>&1
 fi
 
+if [ ! -f $BASH_NEW_HIST ]; then
+    awk '!a[$0]++' $BASH_HISTORY > $BASH_NEW_HIST
+    cp $BASH_NEW_HIST $BASH_HISTORY
+fi
 clear
 git-changes
 if [ ! -e $USER_LAST_SYNC ]; then
