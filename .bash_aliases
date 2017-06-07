@@ -1,4 +1,4 @@
-alias tree='tree .'
+alias tree='tree -J | python -c "import sys, json; print(json.dumps(json.loads(sys.stdin.read()), indent=1, sort_keys=True, separators=(\",\", \":\")))"'
 alias checksum='find -type f -exec sha512sum "{}" + | sort -k 2'
 alias machinectl="sudo machinectl"
 alias notes="vim notes"
