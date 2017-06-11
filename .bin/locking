@@ -44,6 +44,9 @@ function lock-now()
             write-log "i3lock pid: $PID"
             if [ -z "$PID" ]; then
                 write-log "starting i3lock"
+                for p in $(pidof i3lock); do
+                    kill $p
+                done
                 i3lock -c 333333
             fi
             write-log "polling mode"
