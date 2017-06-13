@@ -34,7 +34,6 @@ DMENU_LIST="$VIRTMAN_KEY $SEARCH_KEY $SEARCH_PRIVATE_KEY $PASSWORD_KEY $VOLUME_K
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 START_PORT=$((PROXY_PORT+1))
 END_PORT=$((START_PORT+1000))
-BASE_SERVER="base"
 ENTRIES=$HOME/.config/window.entries
 
 function auto-clip()

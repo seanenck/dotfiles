@@ -8,10 +8,9 @@ function do-segment()
 
 function sync-now()
 {
-    SYNC_TO="sync"
     auth=$(cat $SSH_AUTH_TMP)
     export SSH_AUTH_SOCK=$auth
-    available=$(test-ssh "$SYNC_TO")
+    available=$(test-ssh $BASE_SERVER)
     echo "====================="
     echo "running "$(date +%Y-%m-%dT%H:%M:%S)
     echo "====================="
@@ -21,8 +20,6 @@ function sync-now()
     fi
     echo "checked for connection...$available"
     if [ $available -eq $IS_CONNECTED ]; then
-        do-segment "fetch"
-        rsync -avzc -e ssh $SYNC_TO:~/Host/ $HOME/.cache/hosted/
         do-segment "git"
         if [ -e $SSH_AUTH_TMP ]; then
             current=$PWD
