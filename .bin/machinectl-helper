@@ -6,6 +6,7 @@ SPAWN_KEY="spawn"
 REM_KEY="remove"
 PACK_KEY="pack"
 REFRESH_KEY="refresh"
+REFRESH_ALL_KEY="refresh-all"
 USER_NAME="enck"
 USER_HOME="/home/$USER_NAME/"
 VIMPLUG=$USER_HOME".vim/"
@@ -31,6 +32,7 @@ function print-help()
     $REM_KEY (force remove a container)
     $PACK_KEY (pack a container)
     $REFRESH_KEY (refresh files in a container)
+    $REFRESH_ALL_KEY (refresh files in all containers)
 "
 }
 
@@ -84,19 +86,28 @@ function remove()
     fi
 }
 
+function refresh-all()
+{
+    for item in $(ls $LOCATION); do
+        refresh $item
+    done
+}
+
 function refresh()
 {
     is-running $1
-    if [ ! -d $CONT_PATH ]; then
+    cont_path=$CONT_PATH/$1
+    if [ ! -d $cont_path ]; then
         echo "not a valid container..."
         exit -1
     fi
+    echo $1
     for f in $FILES; do
         from=$(echo $f | cut -d ":" -f 1)
         to=$(echo $f | cut -d ":" -f 2)
-        rsync -vrc $from $CONT_PATH$to
+        rsync -vrc $from $cont_path$to
     done
-    full_home=${CONT_PATH}/$USER_HOME
+    full_home=${cont_path}/$USER_HOME
     mkdir -p $full_home
     chown -R $USER_NAME:$USER_NAME $full_home
 }
@@ -127,5 +138,8 @@ case $1 in
         ;;
     $REFRESH_KEY)
         refresh $2
+        ;;
+    $REFRESH_ALL_KEY)
+        refresh-all
         ;;
 esac
