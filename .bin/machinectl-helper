@@ -12,11 +12,11 @@ USER_HOME="/home/$USER_NAME/"
 VIMPLUG=$USER_HOME".vim/"
 VIMRC=$USER_HOME".vimrc"
 FILES="
-/etc/pacman.conf:/etc/pacman.conf
 $VIMRC:/etc/vimrc
 $VIMRC:/root/.vimrc
 $VIMRC:$USER_HOME.vimrc
 $USER_HOME.synced/configs/.gitconfig:/root/.gitconfig 
+$USER_HOME.synced/configs/pacman.conf:/etc/pacman.conf
 $USER_HOME.config/.gitexclude:$USER_HOME.config/.gitconfig
 $VIMPLUG:$VIMPLUG
 $VIMPLUG:/root/.vim/
