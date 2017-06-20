@@ -96,7 +96,7 @@ function refresh-all()
 function refresh()
 {
     is-running $1
-    cont_path=$CONT_PATH/$1
+    cont_path=$LOCATION/$1
     if [ ! -d $cont_path ]; then
         echo "not a valid container..."
         exit -1
