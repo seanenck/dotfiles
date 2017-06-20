@@ -10,14 +10,17 @@ REFRESH_ALL_KEY="refresh-all"
 USER_NAME="enck"
 USER_HOME="/home/$USER_NAME/"
 VIMPLUG=$USER_HOME".vim/"
+SYNC_CFG=$USER_HOME.synced/configs/
+USER_CFG="$USER_HOME.config/"
+DIRS="$VIMPLUG $USER_CFG"
 VIMRC=$USER_HOME".vimrc"
 FILES="
 $VIMRC:/etc/vimrc
 $VIMRC:/root/.vimrc
 $VIMRC:$USER_HOME.vimrc
-$USER_HOME.synced/configs/.gitconfig:/root/.gitconfig 
-$USER_HOME.synced/configs/pacman.conf:/etc/pacman.conf
-$USER_HOME.config/.gitexclude:$USER_HOME.config/.gitconfig
+$SYNC_CFG/.gitconfig:/root/.gitconfig 
+$SYNC_CFG/pacman.conf:/etc/pacman.conf
+$USER_HOME.config/.gitexclude:$USER_CFG.gitconfig
 $VIMPLUG:$VIMPLUG
 $VIMPLUG:/root/.vim/
 "
@@ -101,7 +104,9 @@ function refresh()
         echo "not a valid container..."
         exit -1
     fi
-    echo $1
+    for d in $DIRS; do
+        mkdir -p $cont_path/$d
+    done
     for f in $FILES; do
         from=$(echo $f | cut -d ":" -f 1)
         to=$(echo $f | cut -d ":" -f 2)
