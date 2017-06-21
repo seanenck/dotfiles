@@ -96,6 +96,8 @@ if [ ! -f $BASH_NEW_HIST ]; then
     awk '!a[$0]++' $BASH_HISTORY > $BASH_NEW_HIST
     cp $BASH_NEW_HIST $BASH_HISTORY
 fi
+CHROOT=$CHROOT_LOCATION
+export CHROOT
 clear
 git-changes
 if [ ! -e $USER_LAST_SYNC ]; then
