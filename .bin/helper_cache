@@ -22,6 +22,7 @@ PERM_PUSH_KEY="perm-push"
 WORKSPACER_KEY="workspacer"
 ENTER_KEY="enterkeys"
 AUTO_CLIP_KEY="auto-clip"
+ARCH_CHROOT_KEY="archroot"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
@@ -128,6 +129,25 @@ function pass-all-wrapper()
     else
         echo "unsupported command $1 $2"
     fi
+}
+
+function update-chroot()
+{
+    echo "updating chroot..."
+    arch-nspawn -C /etc/pacman.conf ${CHROOT}/root pacman -Syu
+}
+
+function arch-chroot-manage()
+{
+    if [ -d $CHROOT ]; then
+        update-chroot
+    fi
+    if [ ! -d $CHROOT ]; then
+        echo "creating chroot..."
+        mkarchchroot -C /etc/pacman.conf $CHROOT/root base-devel
+        update-chroot
+    fi
+    date +%Y-%m-%d >> $LAST_CHROOT_UPDATE
 }
 
 function perm-pull()
@@ -266,6 +286,7 @@ function get-help()
     $WORKSPACER_KEY (i3 workspace name management)
     $ENTER_KEY (enter keys into a non-paste friendly place)
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
+    $ARCH_CHROOT_KEY (arch-chroot management)
 "
 }
 
@@ -380,6 +401,9 @@ if [ ! -z $1 ]; then
             ;;
         $AUTO_CLIP_KEY)
             auto-clip
+            ;;
+        $ARCH_CHROOT_KEY)
+            arch-chroot-manage
             ;;
         *)
             NEED_HELP=1

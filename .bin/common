@@ -36,6 +36,7 @@ USER_LAST_SYNC=${VAR_LOG}synced.log
 CHROME_UPDATED=${VAR_LOG}chrome.log
 PERM_LAST_PUSH=${VAR_LOG}perm-push.log
 PERM_LAST_PULL=${VAR_LOG}perm-pull.log
+LAST_CHROOT_UPDATE=${VAR_LOG}last-chroot.log
 PACMAN_LOG=/var/log/pacman.log
 EPIPHYTE_CONF=$HOME/.config/epiphyte/env
 PERM_PERSONAL=personal
@@ -110,6 +111,7 @@ function check-timed-events()
     check-timed $USER_LAST_SYNC $all "sync"
     check-timed $PERM_LAST_PUSH $all "permanent-push"
     check-timed $PERM_LAST_PULL $all "permanent-pull"
+    check-timed $LAST_CHROOT_UPDATE $all "chroot-status"
 }
 
 function test-ssh()
