@@ -99,8 +99,6 @@ fi
 
 # chroot
 CHROOT=$CHROOT_LOCATION
-CHROOT_BINDS="-D /root/.gnupg"
-export CHROOT_BINDS
 export CHROOT
 
 clear
