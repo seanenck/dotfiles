@@ -21,6 +21,7 @@ PERM_UPDATE_KEY="perm-pull"
 PERM_PUSH_KEY="perm-push"
 WORKSPACER_KEY="workspacer"
 ENTER_KEY="enterkeys"
+IRC_BRIDGE_KEY="irc-bridge"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
@@ -288,6 +289,7 @@ function get-help()
     $ENTER_KEY (enter keys into a non-paste friendly place)
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
     $ARCH_CHROOT_KEY (arch-chroot management)
+    $IRC_BRIDGE_KEY (irc bridge container)
 "
 }
 
@@ -301,6 +303,13 @@ function volume-mixer()
     run-terminal "alsamixer"
 }
 
+function restart-ircbridge()
+{
+    sudo machinectl poweroff irc
+    echo "...waiting..."
+    sleep 5
+    sudo machinectl start irc
+}
 
 function install-chrome()
 {
@@ -405,6 +414,9 @@ if [ ! -z $1 ]; then
             ;;
         $ARCH_CHROOT_KEY)
             arch-chroot-manage
+            ;;
+        $IRC_BRIDGE_KEY)
+            restart-ircbridge
             ;;
         *)
             NEED_HELP=1
