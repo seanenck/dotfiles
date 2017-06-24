@@ -42,7 +42,9 @@ EPIPHYTE_CONF=$HOME/.config/epiphyte/env
 PERM_PERSONAL=personal
 PASS_ALL_STORE=/tmp/pass-all/
 PRIV_CONF=${SYNCED_CONF}priv.aliases
+SERVLIST=${SYNCED_CONF}ircservers.conf
 BASE_SERVER="base"
+SERVLIST_RUN=$HOME/.config/hexchat/servlist.conf
 
 
 function enter-window-vals()

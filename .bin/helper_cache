@@ -24,6 +24,7 @@ ENTER_KEY="enterkeys"
 IRC_BRIDGE_KEY="irc-bridge"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
+IRC_CLIENT_KEY="irc"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
@@ -32,11 +33,21 @@ STORAGE=$USER_TMP/markdown-preview/
 VIMRC=$HOME/.vimrc
 VIMRC_TXT=$HOME/.vimrc_text
 VIMRC_TMP=$USER_TMP/.vimrc_txt
-DMENU_LIST="$VIRTMAN_KEY $SEARCH_KEY $SEARCH_PRIVATE_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $BROWSE_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY $CHROME_KEY $CHROME_PRIVATE_KEY"
+DMENU_LIST="$IRC_CLIENT_KEY $VIRTMAN_KEY $SEARCH_KEY $SEARCH_PRIVATE_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $BROWSE_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY $CHROME_KEY $CHROME_PRIVATE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 START_PORT=$((PROXY_PORT+1))
 END_PORT=$((START_PORT+1000))
 ENTRIES=$HOME/.config/window.entries
+
+function irc-client-start()
+{
+    available=$(test-ssh $BASE_SERVER)
+    cat $SERVLIST > $SERVLIST_RUN
+    if [ $available -eq $IS_CONNECTED ]; then
+        sed -i "s#S=$BASE_SERVER/6667#S=127.0.0.1:9999#g" $SERVLIST_RUN
+    fi
+    hexchat
+}
 
 function auto-clip()
 {
@@ -290,6 +301,7 @@ function get-help()
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
     $ARCH_CHROOT_KEY (arch-chroot management)
     $IRC_BRIDGE_KEY (irc bridge container)
+    $IRC_CLIENT_KEY (irc client)
 "
 }
 
@@ -417,6 +429,9 @@ if [ ! -z $1 ]; then
             ;;
         $IRC_BRIDGE_KEY)
             restart-ircbridge
+            ;;
+        $IRC_CLIENT_KEY)
+            irc-client-start
             ;;
         *)
             NEED_HELP=1
