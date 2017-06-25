@@ -47,7 +47,7 @@ function irc-client-start()
     echo "available? $available"
     cat $SERVLIST > $SERVLIST_RUN
     if [ $available -ne $IS_CONNECTED ]; then
-        sed -i "s#S=$BASE_SERVER/6667#S=127.0.0.1/6667#g" $SERVLIST_RUN
+        sed -i "s#S=$BASE_SERVER/6060#S=127.0.0.1/6060#g" $SERVLIST_RUN
         for p in $(pidof ssh); do
             ps -up $p | grep -q irc-tunnel
             if [ $? -eq 0 ]; then
