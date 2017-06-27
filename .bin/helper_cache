@@ -38,12 +38,31 @@ DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 START_PORT=$((PROXY_PORT+1))
 END_PORT=$((START_PORT+1000))
 ENTRIES=$HOME/.config/window.entries
+NET_CURRENT=$USER_TMP/network.cache
+
+function network-change()
+{
+    res=1
+    net=$(ip addr | grep "inet " | grep -v 127.0.0.1 | sed "s/inet //g;s/^[[:space:]]*//g" | cut -d " " -f 1)
+    if [ -e $NET_CURRENT ]; then
+        old=$(cat $NET_CURRENT)
+        if [[ "$net" == "$old" ]]; then
+            res=0
+        fi
+    fi
+    echo $net > $NET_CURRENT
+    echo $res
+}
 
 function irc-client-start()
 {
-    cat $SERVLIST > $SERVLIST_RUN
-    ping -c 1 $BASE_SERVER &> /dev/null
-    if [ $? -ne 0 ]; then
+    changed=$(network-change)
+    if [ $changed -ne 0 ]; then
+        cat $SERVLIST > $SERVLIST_RUN
+        ping -c 1 $BASE_SERVER &> /dev/null
+        changed=$?
+    fi
+    if [ $changed -ne 0 ]; then
         sed -i "s#S=$BASE_SERVER/6060#S=127.0.0.1/6060#g" $SERVLIST_RUN
         for p in $(pidof ssh); do
             ps -up $p | grep -q irc-tunnel
