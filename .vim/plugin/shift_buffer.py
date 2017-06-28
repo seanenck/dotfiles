@@ -34,7 +34,6 @@ def main():
         if pos and pos[0] >= 0 and pos[1] >= 0:
             row = pos[0] - 1
             cur = vim.current.buffer[row]
-            print(cur)
             if len(cur) >= 0:
                 new_cur = None
                 change = 0
