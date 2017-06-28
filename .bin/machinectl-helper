@@ -60,6 +60,10 @@ function create()
     fi
     mkdir $CONT_PATH
     pacstrap -i -c -d $CONT_PATH base git vim base-devel --ignore linux --ignore nano --ignore linux-firmware ${@:2}
+    if [ $? -ne 0 ]; then
+        echo "unable to continue, pacstrap failed"
+        exit 1
+    fi
     ln -s $BASE_CONF $CONT_CONF
     refresh $1
 }
@@ -107,10 +111,15 @@ function refresh()
     for d in $DIRS; do
         mkdir -p $cont_path/$d
     done
+    echo "refreshing..."
     for f in $FILES; do
         from=$(echo $f | cut -d ":" -f 1)
         to=$(echo $f | cut -d ":" -f 2)
-        rsync -vrc $from $cont_path$to
+        rsync -vrc $from $cont_path$to | grep -v -E "^(sent|total|sending)" | grep -v "^$"
+        if [ $? -eq 0 ]; then
+            echo "failed refreshing $f"
+            exit 1
+        fi
     done
     full_home=${cont_path}/$USER_HOME
     mkdir -p $full_home
