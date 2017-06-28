@@ -64,7 +64,6 @@ if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
 fi
 process-pass-aliases
-pop-pass-all
 
 # cleanup user temp
 mkdir -p $USER_TMP 
