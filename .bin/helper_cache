@@ -52,7 +52,7 @@ function remote-systems()
     done
     echo
     bashrc=/home/enck/.bashrc
-    for s in $(cat ${SYNCED_CONF}maintained | grep -E "$1"); do
+    for s in $(cat ${SYNCED_CONF}maintained | grep -v "^#" | grep -E "$1"); do
         echo "pushing to: $s"
         avail=$(test-ssh $s)
         if [ $avail -eq $IS_CONNECTED ]; then
