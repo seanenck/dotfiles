@@ -44,16 +44,10 @@ if has("autocmd")
     \ endif
 
   augroup END
-  autocmd FileType python inoremap <S-Up> <C-o>:call PyCompletion(0)<CR>
-  autocmd FileType python inoremap <S-Down> <C-o>:call PyCompletion(1)<CR>
 endif " has("autocmd")
 
 inoremap <S-Left> <C-o>:call PyShift(0)<CR>
 inoremap <S-Right> <C-o>:call PyShift(1)<CR>
-noremap e :call PyGitDiff(2)<CR>
-noremap r :call PyGitDiff(3)<CR>
-noremap EE :call PyGitDiff(0)<CR>
-noremap RR :call PyGitDiff(1)<CR>
 
 " map to command and insert
 for i in ['', 'i']
