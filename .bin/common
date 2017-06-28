@@ -40,7 +40,6 @@ LAST_CHROOT_UPDATE=${VAR_LOG}last-chroot.log
 PACMAN_LOG=/var/log/pacman.log
 EPIPHYTE_CONF=$HOME/.config/epiphyte/env
 PERM_PERSONAL=personal
-PASS_ALL_STORE=/tmp/pass-all/
 PRIV_CONF=${SYNCED_CONF}priv.aliases
 SERVLIST=${SYNCED_CONF}ircservers.conf
 BASE_SERVER="base"
@@ -81,20 +80,6 @@ function check-timed()
     cat $1 | grep -q -E $2
     if [ $? -ne 0 ]; then
         echo -e "${RED_TEXT} (maintenance) -> $3 update?${NORM_TEXT}"
-    fi
-}
-
-function pop-pass-all()
-{
-    if [ ! -d $PASS_ALL_STORE ]; then
-        mkdir -p $PASS_ALL_STORE
-        for f in $(get-perm-objs); do
-            echo $f | grep -q "pass\-"
-            if [ $? -eq 0 ]; then
-                partial=$(echo $f | cut -d "/" -f 4 | sed "s/pass-//g")
-                rsync -ac --exclude=".git/" --exclude=".git*" $f/* ${PASS_ALL_STORE}$partial
-            fi
-        done
     fi
 }
 

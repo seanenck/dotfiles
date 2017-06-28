@@ -1,7 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 SEARCH_KEY="search"
-SEARCH_PRIVATE_KEY="search-private"
 PASSWORD_KEY="passwords"
 VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
@@ -15,13 +14,10 @@ BROWSE_PRIVATE_KEY="$BROWSE_KEY$PRIVATE_KEY"
 INSTALL_CHROME_KEY="setup-chrome"
 TEXT_EDITOR_KEY="text-editor"
 DMENU_KEY="dmenu-wrapper"
-VIRTMAN_KEY="virtman"
-PASS_ALL_KEY="pass-all"
 PERM_UPDATE_KEY="perm-pull"
 PERM_PUSH_KEY="perm-push"
 WORKSPACER_KEY="workspacer"
 ENTER_KEY="enterkeys"
-IRC_BRIDGE_KEY="irc-bridge"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
 IRC_CLIENT_KEY="irc"
@@ -34,7 +30,7 @@ STORAGE=$USER_TMP/markdown-preview/
 VIMRC=$HOME/.vimrc
 VIMRC_TXT=$HOME/.vimrc_text
 VIMRC_TMP=$USER_TMP/.vimrc_txt
-DMENU_LIST="$IRC_CLIENT_KEY $VIRTMAN_KEY $SEARCH_KEY $SEARCH_PRIVATE_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $BROWSE_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY $CHROME_KEY $CHROME_PRIVATE_KEY"
+DMENU_LIST="$IRC_CLIENT_KEY $SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $BROWSE_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY $CHROME_KEY $CHROME_PRIVATE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 START_PORT=$((PROXY_PORT+1))
 END_PORT=$((START_PORT+1000))
@@ -141,48 +137,12 @@ function push-pull-git-fxn()
         echo
     done
     cd $cpwd
-    rm -rf $PASS_ALL_STORE
-    pop-pass-all
     date +%Y-%m-%d >> $3
 }
 
 function i3-workspacer()
 {
     python $HOME/.bin/i3workspacer.py
-}
-
-function pass-all-cmd()
-{
-    echo "$1" | grep -q -E "(ls|-c|show)"
-    echo $?
-}
-
-function pass-all-wrapper()
-{
-    valid=0
-    if [ -z $1 ]; then
-        echo "subcommand required"
-        exit
-    else
-        is_valid=$(pass-all-cmd $1)
-        if [ $is_valid -eq 0 ]; then
-            valid=1
-        else
-            if [ -z $2 ]; then
-                valid=1
-            else
-                is_valid=$(pass-all-cmd $2)
-                if [ $is_valid -eq 0 ]; then
-                    valid=1
-                fi
-            fi
-        fi
-    fi
-    if [ $valid -eq 1 ]; then
-        PASSWORD_STORE_DIR=$PASS_ALL_STORE pass $@ 
-    else
-        echo "unsupported command $1 $2"
-    fi
 }
 
 function update-chroot()
@@ -213,11 +173,6 @@ function perm-pull()
 function perm-push()
 {
     push-pull-git-fxn "push" "push" "$PERM_LAST_PUSH"
-}
-
-function virtman()
-{
-    /bin/bash `export SSH_AUTH_SOCK=/run/user/1000/ssh-agent.socket; virt-manager`
 }
 
 function text-editor()
@@ -320,7 +275,6 @@ function get-help()
 {
     echo "
     $SEARCH_KEY (search)
-    $SEARCH_PRIVATE_KEY (search privately)
     $PASSWORD_KEY (password management)
     $VOLUME_KEY (volume mixer)
     $REBUILD_KEY (rebuild cache)
@@ -332,7 +286,6 @@ function get-help()
     $INSTALL_CHROME_KEY (install chrome)
     $TEXT_EDITOR_KEY (text editor/documentation editor)
     $DMENU_KEY (dmenu wrapper)
-    $VIRTMAN_KEY (virt-manager with ssh agent loaded)
     $PERM_UPDATE_KEY (update pass databases)
     $PERM_PUSH_KEY (push pass databases)
     $CHROME_KEY (chrome key)
@@ -342,7 +295,6 @@ function get-help()
     $ENTER_KEY (enter keys into a non-paste friendly place)
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
     $ARCH_CHROOT_KEY (arch-chroot management)
-    $IRC_BRIDGE_KEY (irc bridge container)
     $IRC_CLIENT_KEY (irc client)
     $MACHINECTL_NSPAWN_KEY (machinectl wrapper for creating systems)
 "
@@ -356,14 +308,6 @@ function run-terminal()
 function volume-mixer()
 {
     run-terminal "alsamixer"
-}
-
-function restart-ircbridge()
-{
-    sudo machinectl poweroff irc
-    echo "...waiting..."
-    sleep 5
-    sudo machinectl start irc
 }
 
 function install-chrome()
@@ -407,9 +351,6 @@ if [ ! -z $1 ]; then
             ;;
         $SEARCH_KEY)
             searching "" ${@:2}
-            ;;
-        $SEARCH_PRIVATE_KEY)
-            searching "--incognito" ${@:2}
             ;;
         $VOLUME_KEY)
             volume-mixer
@@ -455,12 +396,6 @@ if [ ! -z $1 ]; then
         $DMENU_KEY)
             dmenu-wrapper ${@:2}
             ;;
-        $VIRTMAN_KEY)
-            virtman
-            ;;
-        $PASS_ALL_KEY)
-            pass-all-wrapper ${@:2}
-            ;;
         $PERM_UPDATE_KEY)
             perm-pull
             ;;
@@ -472,9 +407,6 @@ if [ ! -z $1 ]; then
             ;;
         $ARCH_CHROOT_KEY)
             arch-chroot-manage
-            ;;
-        $IRC_BRIDGE_KEY)
-            restart-ircbridge
             ;;
         $IRC_CLIENT_KEY)
             irc-client-start
