@@ -32,8 +32,6 @@ VIMRC_TXT=$HOME/.vimrc_text
 VIMRC_TMP=$USER_TMP/.vimrc_txt
 DMENU_LIST="$IRC_CLIENT_KEY $SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $BROWSE_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY $CHROME_KEY $CHROME_PRIVATE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
-START_PORT=$((PROXY_PORT+1))
-END_PORT=$((START_PORT+1000))
 ENTRIES=$HOME/.config/window.entries
 NET_CURRENT=$USER_TMP/network.cache
 
@@ -290,7 +288,6 @@ function get-help()
     $PERM_PUSH_KEY (push pass databases)
     $CHROME_KEY (chrome key)
     $CHROME_PRIVATE_KEY (chrome private key)
-    $PASS_ALL_KEY (pass wrapper for multiple pass stores)
     $WORKSPACER_KEY (i3 workspace name management)
     $ENTER_KEY (enter keys into a non-paste friendly place)
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
