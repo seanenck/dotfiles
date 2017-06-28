@@ -59,7 +59,7 @@ function create()
         exit -1
     fi
     mkdir $CONT_PATH
-    pacstrap -i -c -d $CONT_PATH base git vim base-devel ${@:2}
+    pacstrap -i -c -d $CONT_PATH base git vim base-devel --ignore linux --ignore nano --ignore linux-firmware ${@:2}
     ln -s $BASE_CONF $CONT_CONF
     refresh $1
 }
