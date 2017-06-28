@@ -25,6 +25,7 @@ IRC_BRIDGE_KEY="irc-bridge"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
 IRC_CLIENT_KEY="irc"
+MACHINECTL_NSPAWN_KEY="machinectl-nspawn"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
@@ -39,6 +40,19 @@ START_PORT=$((PROXY_PORT+1))
 END_PORT=$((START_PORT+1000))
 ENTRIES=$HOME/.config/window.entries
 NET_CURRENT=$USER_TMP/network.cache
+
+function make-nspawn()
+{
+    if [ -z "$1" ]; then
+        echo "operation required"
+        exit
+    fi
+    if [ -z "$2" ]; then
+        echo "target required"
+        exit
+    fi
+    sudo make $1 -f $HOME/.bin/makefile.nspawn TARGET=$2
+}
 
 function network-change()
 {
@@ -330,6 +344,7 @@ function get-help()
     $ARCH_CHROOT_KEY (arch-chroot management)
     $IRC_BRIDGE_KEY (irc bridge container)
     $IRC_CLIENT_KEY (irc client)
+    $MACHINECTL_NSPAWN_KEY (machinectl wrapper for creating systems)
 "
 }
 
@@ -384,6 +399,9 @@ function install-chrome()
 if [ ! -z $1 ]; then
     NEED_HELP=0
     case $1 in
+        $MACHINECTL_NSPAWN_KEY)
+            make-nspawn ${@:2}
+            ;;
         $PASSWORD_KEY)
             passwords
             ;;

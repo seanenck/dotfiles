@@ -27,11 +27,16 @@ _locking()
 }
 complete -F _locking locking
 
-_machinectl-helper()
+_machinectl-nspawn()
 {
-    _simple_autocomplete "machinectl-helper"
+    local cur opts 
+    if [ $COMP_CWORD -eq 1 ]; then
+        cur=${COMP_WORDS[COMP_CWORD]}
+        opts=$(cat /home/enck/.bin/makefile.nspawn | grep "^[a-z]" | grep ":" | cut -d ":" -f 1 | grep -v "empty" | sort | uniq)
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    fi
 }
-complete -F _machinectl-helper machinectl-helper
+complete -F _machinectl-nspawn machinectl-nspawn
 
 _mounting()
 {

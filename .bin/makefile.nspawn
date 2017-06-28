@@ -1,0 +1,80 @@
+TARGET=
+USER=$(shell whoami)
+ifeq ($(TARGET),)
+    $(error TARGET is required)
+endif
+
+USER_NAME=enck
+USER_HOME=home/$(USER_NAME)/
+USER_SYNC=$(USER_HOME).synced/configs/
+
+VAR_LIB=/var/lib/machines/
+ETC_NSPAWN=/etc/systemd/nspawn/
+PWD=$(shell pwd)
+
+CONTAINER_PATH=$(VAR_LIB)$(TARGET)/
+CONTAINER_HOME=$(CONTAINER_PATH)$(USER_HOME)
+CONTAINER_CONF=$(ETC_NSPAWN)$(TARGET).nspawn
+CONTAINER_ROOT=$(CONTAINER_PATH)root/
+CONTAINER_ETC=$(CONTAINER_PATH)etc/
+
+PACKAGES=base git vim base-devel
+IGNORES=--ignore linux --ignore nano --ignore linux-firmware
+
+PACMAN=pacman.conf
+ETC_PACMAN=etc/$(PACMAN)
+GITEXCLUDE=.gitexclude
+CONFIG_DIR=.config/
+GIT=.gitconfig
+VIM=.vim/
+VIMPLUGIN=$(CONTAINER_HOME)$(VIM)
+CONFIG=$(CONTAINER_HOME)$(CONFIG_DIR)
+VIMRC_FILE=.vimrc
+VIMRC=/$(USER_HOME)$(VIMRC_FILE)
+USER_GIT=/$(USER_HOME)$(GIT)
+PLUGINS=$(shell find /$(USER_HOME)$(VIM) -type f)
+
+.PHONY:
+
+empty:
+	$(error no command given)
+
+root:
+ifneq ($(USER), root)
+	$(error must be run as root)
+endif
+
+running: root
+	! machinectl status $(TARGET) &> /dev/null
+
+spawn: create refresh
+
+create: root
+	test ! -d $(CONTAINER_PATH)
+	test ! -e $(CONTAINER_CONF)
+	mkdir -p $(CONTAINER_PATH)
+	pacstrap -i -c -d $(CONTAINER_PATH) $(PACKAGES) $(IGNORES)
+	ln -s $(ETC_NSPAWN)base.template $(CONTAINER_CONF)
+
+remove: running
+	rm -rf $(CONTAINER_PATH)
+	rm -f $(CONTAINER_CONF)
+
+refresh: running
+	test -d $(CONTAINER_PATH)
+	mkdir -p $(CONTAINER_HOME)
+	mkdir -p $(VIMPLUGIN)
+	mkdir -p $(CONFIG)
+	mkdir -p $(CONTAINER_ROOT)$(VIM)
+	chown -R $(USER_NAME):$(USER_NAME) $(CONTAINER_HOME)
+	install -Dm644 $(VIMRC) $(CONTAINER_HOME)$(VIMRC_FILE)
+	install -Dm644 $(VIMRC) $(CONTAINER_ROOT)$(VIMRC_FILE)
+	install -Dm644 $(VIMRC) $(CONTAINER_ETC)vimrc
+	install -Dm644 $(USER_GIT) $(CONTAINER_ROOT)$(GIT)
+	install -Dm644 $(USER_GIT) $(CONTAINER_HOME)$(GIT)
+	install -Dm644 /$(USER_HOME)$(CONFIG_DIR)$(GITEXCLUDE) $(CONTAINER_HOME)$(CONFIG)$(GITEXCLUDE)
+	install -Dm644 /$(USER_SYNC)$(PACMAN) $(CONTAINER_PATH)$(ETC_PACMAN)
+	rsync -avc /$(USER_HOME)$(VIM)* $(VIMPLUGIN)
+
+pack: running
+	cd $(VAR_LIB) && tar -czvpf $(PWD)/pack.tar.gz --one-file-system $(TARGET)/
