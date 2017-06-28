@@ -20,6 +20,7 @@ WORKSPACER_KEY="workspacer"
 ENTER_KEY="enterkeys"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
+REMOTE_SYS_KEY="remotes"
 IRC_CLIENT_KEY="irc"
 MACHINECTL_NSPAWN_KEY="machinectl-nspawn"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
@@ -34,6 +35,34 @@ DMENU_LIST="$IRC_CLIENT_KEY $SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $B
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 ENTRIES=$HOME/.config/window.entries
 NET_CURRENT=$USER_TMP/network.cache
+
+function remote-systems()
+{
+    PUSH=$(mktemp -d)
+    echo "working: $PUSH"
+    cat $HOME/.vimrc | sed "/call Py/d" > $PUSH/.vimrc
+    cat $HOME/.profile_paths > $PUSH/.profile_paths
+    cat $HOME/.bashrc | sed '/#end-general/q' > $PUSH/.bashrc
+    echo "source $HOME/.profile_paths" >> $PUSH/.bashrc
+    echo "pushing"
+    files=""
+    for f in $(find $PUSH -type f); do
+        echo $f
+        files=$files" $f"
+    done
+    echo
+    bashrc=/home/enck/.bashrc
+    for s in $(cat ${SYNCED_CONF}maintained | grep -E "$1"); do
+        echo "pushing to: $s"
+        avail=$(test-ssh $s)
+        if [ $avail -eq $IS_CONNECTED ]; then
+            scp $files $s:~/
+            ssh -t $s "mkdir -p $HOME/.bin/"
+        else
+            echo "is unavailable"
+        fi
+    done
+}
 
 function make-nspawn()
 {
@@ -294,6 +323,7 @@ function get-help()
     $ARCH_CHROOT_KEY (arch-chroot management)
     $IRC_CLIENT_KEY (irc client)
     $MACHINECTL_NSPAWN_KEY (machinectl wrapper for creating systems)
+    $REMOTE_SYS_KEY (push configuration to remote systems)
 "
 }
 
@@ -407,6 +437,9 @@ if [ ! -z $1 ]; then
             ;;
         $IRC_CLIENT_KEY)
             irc-client-start
+            ;;
+        $REMOTE_SYS_KEY)
+            remote-systems ${@:2}
             ;;
         *)
             NEED_HELP=1

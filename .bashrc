@@ -54,6 +54,8 @@ if ! shopt -oq posix; then
   fi
 fi
 
+#end-general
+
 source $HOME/.bin/common
 if [ -e "$EPIPHYTE_CONF" ]; then
     source $EPIPHYTE_CONF
