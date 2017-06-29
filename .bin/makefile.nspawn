@@ -74,7 +74,7 @@ refresh: running
 	install -Dm644 $(USER_GIT) $(CONTAINER_HOME)$(GIT)
 	install -Dm644 /$(USER_HOME)$(CONFIG_DIR)$(GITEXCLUDE) $(CONTAINER_HOME)$(CONFIG)$(GITEXCLUDE)
 	install -Dm644 /$(USER_SYNC)$(PACMAN) $(CONTAINER_PATH)$(ETC_PACMAN)
-	rsync -avc /$(USER_HOME)$(VIM)* $(VIMPLUGIN)
+	rsync -avc /$(USER_HOME)$(VIM)* $(VIMPLUGIN) --delete-after
 
 pack: running
 	cd $(VAR_LIB) && tar -czvpf $(PWD)/pack.tar.gz --one-file-system $(TARGET)/
