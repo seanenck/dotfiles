@@ -21,7 +21,6 @@ ENTER_KEY="enterkeys"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
 REMOTE_SYS_KEY="remotes"
-IRC_CLIENT_KEY="irc"
 MACHINECTL_NSPAWN_KEY="machinectl-nspawn"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=${SYNCED_PATH}passwords
@@ -31,7 +30,7 @@ STORAGE=$USER_TMP/markdown-preview/
 VIMRC=$HOME/.vimrc
 VIMRC_TXT=$HOME/.vimrc_text
 VIMRC_TMP=$USER_TMP/.vimrc_txt
-DMENU_LIST="$IRC_CLIENT_KEY $SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $BROWSE_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY $CHROME_KEY $CHROME_PRIVATE_KEY"
+DMENU_LIST="$SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $BROWSE_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY $CHROME_KEY $CHROME_PRIVATE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 ENTRIES=$HOME/.config/window.entries
 NET_CURRENT=$USER_TMP/network.cache
@@ -75,43 +74,6 @@ function make-nspawn()
         exit
     fi
     sudo make $1 -f $HOME/.bin/makefile.nspawn TARGET=$2
-}
-
-function network-change()
-{
-    res=1
-    net=$(ip addr | grep "inet " | grep -v 127.0.0.1 | sed "s/inet //g;s/^[[:space:]]*//g" | cut -d " " -f 1)
-    if [ -e $NET_CURRENT ]; then
-        old=$(cat $NET_CURRENT)
-        if [[ "$net" == "$old" ]]; then
-            res=0
-        fi
-    fi
-    echo $net > $NET_CURRENT
-    echo $res
-}
-
-function irc-client-start()
-{
-    changed=$(network-change)
-    if [ $changed -ne 0 ]; then
-        cat $SERVLIST > $SERVLIST_RUN
-        ping -c 1 $BASE_SERVER &> /dev/null
-        changed=$?
-    fi
-    if [ $changed -ne 0 ]; then
-        sed -i "s#S=$BASE_SERVER/6060#S=127.0.0.1/6060#g" $SERVLIST_RUN
-        for p in $(pidof ssh); do
-            ps -up $p | grep -q irc-tunnel
-            if [ $? -eq 0 ]; then
-                kill -9 $p
-            fi
-        done
-        auth=$(cat $SSH_AUTH_TMP)
-        export SSH_AUTH_SOCK=$auth
-        ssh irc-tunnel -f -N
-    fi
-    hexchat
 }
 
 function auto-clip()
@@ -321,7 +283,6 @@ function get-help()
     $ENTER_KEY (enter keys into a non-paste friendly place)
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
     $ARCH_CHROOT_KEY (arch-chroot management)
-    $IRC_CLIENT_KEY (irc client)
     $MACHINECTL_NSPAWN_KEY (machinectl wrapper for creating systems)
     $REMOTE_SYS_KEY (push configuration to remote systems)
 "
@@ -434,9 +395,6 @@ if [ ! -z $1 ]; then
             ;;
         $ARCH_CHROOT_KEY)
             arch-chroot-manage
-            ;;
-        $IRC_CLIENT_KEY)
-            irc-client-start
             ;;
         $REMOTE_SYS_KEY)
             remote-systems ${@:2}
