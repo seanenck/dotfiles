@@ -6,11 +6,30 @@ handles processing and naming i3 workspaces based on content
 import i3ipc
 import subprocess 
 import os
+import signal
+from subprocess import check_output
 
 conn = i3ipc.Connection()
 window_cache = {}
 devnull = open(os.devnull, 'w')
 
+def _is_active():
+    for proc in ["weechat"]:
+        pid = get_pid(proc)
+        if pid < 0:
+            continue
+        if not os.path.exists("/tmp/" + proc + ".ready"):
+            continue
+        os.kill(pid, signal.SIGUSR2)
+
+def get_pid(name):
+    """Get pid."""
+    try:
+        pid = check_output(["pidof", name]).decode("utf-8").strip()
+        val = int(pid)
+        return val
+    except:
+        return -1
 
 def uncurl(obj):
     """uncurl nest nodes down."""
@@ -28,6 +47,7 @@ def on_change(self, event):
         tree = conn.get_tree()
         for t in tree.workspaces():
             rename_workspaces(t)
+        _is_active()
     except:
         pass
 
