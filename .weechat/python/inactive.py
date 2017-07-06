@@ -12,7 +12,7 @@ THRESHOLD = 900
 def signal_handler(signal, frame):
     global PAUSE
     with lock:
-        PAUSE = 30
+        PAUSE = 15
 
 
 def inactivity_cb(data, remaining_calls):
