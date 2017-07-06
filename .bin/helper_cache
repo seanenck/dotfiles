@@ -21,6 +21,7 @@ ENTER_KEY="enterkeys"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
 REMOTE_SYS_KEY="remotes"
+IRC_KEY="irc"
 MACHINECTL_NSPAWN_KEY="machinectl-nspawn"
 GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=${SYNCED_PATH}passwords
@@ -30,7 +31,7 @@ STORAGE=$USER_TMP/markdown-preview/
 VIMRC=$HOME/.vimrc
 VIMRC_TXT=$HOME/.vimrc_text
 VIMRC_TMP=$USER_TMP/.vimrc_txt
-DMENU_LIST="$SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $BROWSE_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY $CHROME_KEY $CHROME_PRIVATE_KEY"
+DMENU_LIST="$IRC_KEY $SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $BROWSE_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY $CHROME_KEY $CHROME_PRIVATE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 ENTRIES=$HOME/.config/window.entries
 NET_CURRENT=$USER_TMP/network.cache
@@ -285,7 +286,13 @@ function get-help()
     $ARCH_CHROOT_KEY (arch-chroot management)
     $MACHINECTL_NSPAWN_KEY (machinectl wrapper for creating systems)
     $REMOTE_SYS_KEY (push configuration to remote systems)
+    $IRC_KEY (load irc client)
 "
+}
+
+function weechat-term()
+{
+    lxterminal --command "weechat"
 }
 
 function run-terminal()
@@ -374,6 +381,9 @@ if [ ! -z $1 ]; then
             ;;
         $INSTALL_CHROME_KEY)
             install-chrome
+            ;;
+        $IRC_KEY)
+            weechat-term
             ;;
         $TEXT_EDITOR_KEY)
             text-editor ${@:2}
