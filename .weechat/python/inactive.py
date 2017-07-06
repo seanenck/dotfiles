@@ -2,14 +2,28 @@ import weechat
 import copy
 import threading
 import os
+import signal
 
 SERVERS = []
+PAUSE = 0
 lock = threading.RLock()
+THRESHOLD = 900
+
+def signal_handler(signal, frame):
+    global PAUSE
+    with lock:
+        PAUSE = 30
+
 
 def inactivity_cb(data, remaining_calls):
     global SERVERS
+    global PAUSE
     inactive = int(weechat.info_get("inactivity", ""))
-    if inactive < 900:
+    with lock:
+        if PAUSE > 0:
+            inactive = THRESHOLD + 1
+            PAUSE -= 1
+    if inactive < THRESHOLD:
         with lock:
             if len(SERVERS) > 0:
                 weechat.prnt("", "reconnecting...")
@@ -38,3 +52,4 @@ def inactivity_cb(data, remaining_calls):
 
 if weechat.register("inactive", "enckse", "1.0", "MIT", "Disconnect after inactivity periods", "", ""):
     weechat.hook_timer(1000, 0, 0, "inactivity_cb", "")
+    signal.signal(signal.SIGUSR1, signal_handler)
