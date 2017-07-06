@@ -40,6 +40,11 @@ function lock-now()
         PID=$(get-i3lock)
         if [ -z $PID ]; then
             write-log "locking..."
+            IRC=$(pidof weechat)
+            if [ ! -z "$IRC" ]; then
+                write-log "disconnecting $IRC"
+                kill -10 $IRC
+            fi
             PID=$(get-i3lock)
             write-log "i3lock pid: $PID"
             if [ -z "$PID" ]; then
