@@ -38,7 +38,8 @@ PACMAN_LOG=/var/log/pacman.log
 EPIPHYTE_CONF=$HOME/.config/epiphyte/env
 PERM_PERSONAL=personal
 PRIV_CONF=${SYNCED_CONF}priv.aliases
-
+GIT_PARTIAL_PATTERN="weechat|random_seed"
+GIT_PARTIAL_TMP=$HOME/.tmp/git-partial
 
 function enter-window-vals()
 {
@@ -178,6 +179,9 @@ function git-changes()
         fi
         cd $d
         local_res=$(get-all-changes "$d")
+        if [ -e "$GIT_PARTIAL_TMP" ]; then
+            local_res=$(echo "$local_res" | grep -E -v "$GIT_PARTIAL_PATTERN")
+        fi
         if [ ! -z "$local_res" ]; then
             if [ -z $first ]; then
                 echo "uncommitted changes"
@@ -187,6 +191,7 @@ function git-changes()
             first="false"
         fi
     done
+    touch $GIT_PARTIAL_TMP
     cd $HOME
 }
 
