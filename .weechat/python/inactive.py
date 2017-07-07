@@ -3,18 +3,24 @@ import copy
 import threading
 import os
 import signal
+import time
+import calendar
 
 SERVERS = []
 PAUSE = 0
 lock = threading.RLock()
 THRESHOLD = 900
-ACTIVE = False
+
+def get_time():
+    return calendar.timegm(time.gmtime())
+
+ACTIVE = get_time()
 
 def enable_handler(signal, frame):
     global ACTIVE
     global PAUSE
     with lock:
-        ACTIVE = True
+        ACTIVE = get_time()
         PAUSE = 0
 
 
@@ -34,8 +40,8 @@ def inactivity_cb(data, remaining_calls):
         if PAUSE > 0:
             inactive = THRESHOLD + 1
             PAUSE -= 1
-        force_active = ACTIVE
-        ACTIVE = False
+        timed = get_time()
+        force_active = timed - ACTIVE <= THRESHOLD
     if inactive < THRESHOLD or force_active:
         with lock:
             if len(SERVERS) > 0:
