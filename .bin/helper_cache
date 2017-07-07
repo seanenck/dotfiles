@@ -137,7 +137,7 @@ function i3-workspacer()
 function update-chroot()
 {
     echo "updating chroot..."
-    arch-nspawn -C /etc/pacman.conf ${CHROOT}/root pacman -Syu
+    arch-nspawn -C /etc/pacman.conf ${CHROOT}/root pacman -Syyu
 }
 
 function arch-chroot-manage()
