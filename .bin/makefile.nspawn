@@ -33,6 +33,7 @@ VIMRC_FILE=.vimrc
 VIMRC=/$(USER_HOME)$(VIMRC_FILE)
 USER_GIT=/$(USER_HOME)$(GIT)
 PLUGINS=$(shell find /$(USER_HOME)$(VIM) -type f)
+REPOS=$(CONTAINER_PATH)/mnt/repositories/local/
 
 .PHONY:
 
@@ -66,6 +67,8 @@ refresh: running
 	mkdir -p $(VIMPLUGIN)
 	mkdir -p $(CONFIG)
 	mkdir -p $(CONTAINER_ROOT)$(VIM)
+	mkdir -p $(REPOS)
+	touch $(REPOS)local.conf
 	chown -R $(USER_NAME):$(USER_NAME) $(CONTAINER_HOME)
 	install -Dm644 $(VIMRC) $(CONTAINER_HOME)$(VIMRC_FILE)
 	install -Dm644 $(VIMRC) $(CONTAINER_ROOT)$(VIMRC_FILE)
