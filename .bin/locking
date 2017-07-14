@@ -71,8 +71,7 @@ function lock-now()
 function suspend-now()
 {
     lock-now "$FORCE_KEYWORD" &
-    card=$(card-status)
-    if [ $card -ne 0 ] && [ ! -e $DISPLAY_UN -a ! -e $DISPLAY_EN ]; then
+    if [ ! -e $DISPLAY_UN -a ! -e $DISPLAY_EN ]; then
         CUR_VOL=$(change-volume $VOL_STAT)
         CUR_VOL=$(echo $CUR_VOL)
         if [[ "$CUR_VOL" != "0" ]]; then
