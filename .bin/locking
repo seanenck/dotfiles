@@ -73,6 +73,7 @@ function suspend-now()
 {
     pass_keyword=""
     if [ -z "$1" ]; then
+        write-log "forcing"
         pass_keyword=$FORCE_KEYWORD
     fi
     lock-now "$pass_keyword" &
