@@ -71,7 +71,11 @@ function lock-now()
 
 function suspend-now()
 {
-    lock-now "$FORCE_KEYWORD" &
+    pass_keyword=""
+    if [ -z "$1" ]; then
+        pass_keyword=$FORCE_KEYWORD
+    fi
+    lock-now "$pass_keyword" &
     if [ ! -e $DISPLAY_UN -a ! -e $DISPLAY_EN ]; then
         CUR_VOL=$(change-volume $VOL_STAT)
         CUR_VOL=$(echo $CUR_VOL)
