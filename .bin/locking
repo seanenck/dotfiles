@@ -33,6 +33,7 @@ function lock-now()
     card=$(card-status)
     if [ ! -z "$1" ] && [[ "$1" == $FORCE_KEYWORD ]]; then
         card=1
+        write-log "force-lock:$1"
         rm -f $DISPLAY_UN
     fi
     if [ $card -ne 0 ] && [ ! -e $DISPLAY_UN ]; then
