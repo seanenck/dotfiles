@@ -5,9 +5,7 @@ runtime! archlinux.vim
 set noautoindent
 set background=dark
 set nowrap
-set number
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%80v.\+/
 if has('mouse')
   set mouse=a
 endif
@@ -59,10 +57,23 @@ for i in ['', 'i']
     execute i . "noremap <F2> :q<CR>"
 endfor
 
-
-set tabstop=4
-set expandtab
-set shiftwidth=4
-set complete-=i
-set foldmethod=indent
-set foldlevelstart=99
+let tmode = "/tmp/textmode"
+if findfile(tmode, ".") == tmode
+    set formatoptions+=w
+    set formatoptions+=a
+    set formatoptions+=n
+    setlocal spell spelllang=en_us
+    set wrap nolist linebreak
+    set textwidth=80
+    set list
+    call delete(expand(tmode))
+else
+    set number
+    match OverLength /\%80v.\+/
+    set tabstop=4
+    set expandtab
+    set shiftwidth=4
+    set complete-=i
+    set foldmethod=indent
+    set foldlevelstart=99
+endif
