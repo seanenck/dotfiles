@@ -4,7 +4,6 @@ SEARCH_KEY="search"
 PASSWORD_KEY="passwords"
 VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
-MARKDOWN_KEY="markdown"
 PRIVATE_KEY="-private"
 GOOGLE_CHROME_KEY="google-chrome"
 CHROME_KEY="chrome"
@@ -26,7 +25,6 @@ GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
-STORAGE=$USER_TMP/markdown-preview/
 VIMRC=$HOME/.vimrc
 VIMRC_TXT=$HOME/.vimrc_text
 VIMRC_TMP=$USER_TMP/.vimrc_txt
@@ -190,19 +188,6 @@ function dmenu-wrapper()
     cat $DMENU_ENTRIES | dmenu "$@" | ${SHELL:-"/bin/sh"} &
 }
 
-function markdown()
-{
-    mkdir -p $STORAGE
-    find ${STORAGE}* -type f -mtime +1 -delete &> /dev/null
-
-    ID=$RANDOM
-    printf -v ID "%05d" $ID
-    NOW=$(date +%s)
-    FILE_NAME=${STORAGE}/$NOW-$ID.html
-    pandoc -o $FILE_NAME -f markdown $1
-    (chromium $FILE_NAME &) &>/dev/null
-}
-
 function searching()
 {
     if [ -z "$2" ]; then
@@ -218,18 +203,6 @@ function searching()
         ARGS=$1
     fi
     chromium "http://www.google.com/search?q=$SEARCH" $ARGS 
-}
-
-function file-required()
-{
-    if [ ! -z $1 ]; then
-        if [ -e $1 ]; then
-            return 0
-        fi
-    fi
-    
-    echo "file required..."
-    exit -1
 }
 
 function passwords()
@@ -267,7 +240,6 @@ function get-help()
     $PASSWORD_KEY (password management)
     $VOLUME_KEY (volume mixer)
     $REBUILD_KEY (rebuild cache)
-    $MARKDOWN_KEY (markdown output generation)
     $GOOGLE_CHROME_KEY (start google chrome browsing)
     $BROWSE_KEY (start browsing)
     $GOOGLE_CHROME_PRIVATE_KEY (start private google chrome browsing)
@@ -367,10 +339,6 @@ if [ ! -z $1 ]; then
             ;;
         $ENTER_KEY)
             enter-keys ${@:2}
-            ;;
-        $MARKDOWN_KEY)
-            file-required $2
-            markdown $2
             ;;
         $INSTALL_CHROME_KEY)
             install-chrome
