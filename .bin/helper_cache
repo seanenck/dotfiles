@@ -11,7 +11,6 @@ CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
 BROWSE_KEY="browse"
 BROWSE_PRIVATE_KEY="$BROWSE_KEY$PRIVATE_KEY"
 INSTALL_CHROME_KEY="setup-chrome"
-TEXT_EDITOR_KEY="text-editor"
 DMENU_KEY="dmenu-wrapper"
 PERM_UPDATE_KEY="perm-pull"
 PERM_PUSH_KEY="perm-push"
@@ -26,8 +25,6 @@ PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
 VIMRC=$HOME/.vimrc
-VIMRC_TXT=$HOME/.vimrc_text
-VIMRC_TMP=$USER_TMP/.vimrc_txt
 DMENU_LIST="$SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $BROWSE_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY $CHROME_KEY $CHROME_PRIVATE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 ENTRIES=$HOME/.config/window.entries
@@ -162,14 +159,6 @@ function perm-push()
     push-pull-git-fxn "push" "push" "$PERM_LAST_PUSH"
 }
 
-function text-editor()
-{
-    cat $VIMRC | grep -v "OverLength" | grep -v "set number" > $VIMRC_TMP
-    cat $VIMRC_TXT >> $VIMRC_TMP
-    cmd="vim -Nu $VIMRC_TMP $@"
-    $cmd
-}
-
 function dmenu-wrapper()
 {
     if [ ! -e $DMENU_ENTRIES ]; then
@@ -245,7 +234,6 @@ function get-help()
     $GOOGLE_CHROME_PRIVATE_KEY (start private google chrome browsing)
     $BROWSE_PRIVATE_KEY (start private browsing)
     $INSTALL_CHROME_KEY (install chrome)
-    $TEXT_EDITOR_KEY (text editor/documentation editor)
     $DMENU_KEY (dmenu wrapper)
     $PERM_UPDATE_KEY (update pass databases)
     $PERM_PUSH_KEY (push pass databases)
@@ -342,9 +330,6 @@ if [ ! -z $1 ]; then
             ;;
         $INSTALL_CHROME_KEY)
             install-chrome
-            ;;
-        $TEXT_EDITOR_KEY)
-            text-editor ${@:2}
             ;;
         $WORKSPACER_KEY)
             i3-workspacer &
