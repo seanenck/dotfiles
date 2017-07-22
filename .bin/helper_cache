@@ -68,7 +68,7 @@ function make-nspawn()
         echo "target required"
         exit
     fi
-    sudo make $1 -f $HOME/.bin/makefile.nspawn TARGET=$2
+    sudo make $1 -f $HOME/.bin/makefile.nspawn TARGET=$2 ${@:3}
 }
 
 function auto-clip()
