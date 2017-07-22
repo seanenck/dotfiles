@@ -21,7 +21,7 @@ CONTAINER_ROOT=$(CONTAINER_PATH)root/
 CONTAINER_ETC=$(CONTAINER_PATH)etc/
 
 PACKAGES=base git vim base-devel
-IGNORES=--ignore linux --ignore nano --ignore linux-firmware
+IGNORES=--ignore linux --ignore nano --ignore linux-firmware --ignore dmd --ignore libphobos
 
 TMP_PACMAN=/tmp/pacman.conf
 PACMAN=pacman.conf
