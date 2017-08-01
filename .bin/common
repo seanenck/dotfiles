@@ -38,8 +38,9 @@ EPIPHYTE_CONF=$HOME/.config/epiphyte/env
 PERM_PERSONAL=personal
 PRIV_CONF=${SYNCED_CONF}priv.aliases
 GIT_PARTIAL_PATTERN="weechat|random_seed"
-GIT_PARTIAL_TMP=$HOME/.tmp/git-partial
+GIT_PARTIAL_TMP=$USER_TMP/git-partial
 BASE_SERVER="base"
+COPY_INDICATOR=$USER_TMP/backup.files
 
 function enter-window-vals()
 {

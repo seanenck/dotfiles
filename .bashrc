@@ -71,6 +71,11 @@ date +%Y-%m-%d.%s > $LAST_TMP_HIT
 find $USER_TMP* -mtime +1 -type f -exec rm {} \;
 find $USER_TMP -empty -type d -delete
 
+if [ ! -e "$COPY_INDICATOR" ]; then
+    cp /etc/hosts ${SYNCED_CONF}hosts
+    touch $COPY_INDICATOR
+fi
+
 # ssh agent
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket" 
 echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
