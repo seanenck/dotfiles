@@ -3,7 +3,6 @@ source $HOME/.bin/common
 MNT_SHARE=/mnt/Storage
 IS_MOUNTED=1
 USB_KEYWORD="usb"
-SHARE_KEYWORD="shares"
 KEYS_KEYWORD="keys"
 UMNT_KEYWORD="umount"
 DEFCRYPT_KEYWORD="defcrypt"
@@ -12,7 +11,6 @@ OPENCRYPT_KEYWORD="opencrypt"
 NEWMOUNTS="/tmp/crypts/"
 SETUP_CRYPT="setup"
 DEFCRYPT_SIZE="100M"
-MNT_CFG=${SYNCED_PATH}configs/mount.sh
 function add-keys()
 {
     keys=$(find ${SSH_KEY_PATH}**/* -type f | grep -v "deprecated")
@@ -29,7 +27,6 @@ function print-help()
 {
     echo "
     $KEYS_KEYWORD - load keys
-    $SHARE_KEYWORD - mount local share(s)
     $UMNT_KEYWORD - umount local share(s)
     $USB_KEYWORD - mount a usb drive
     $DEFCRYPT_KEYWORD - define a new crypt (optional size)
@@ -158,23 +155,6 @@ function mount-usb()
     sudo mount $USBDISK /mnt/usb
 }
 
-
-function mount-share()
-{
-    IS_MNT=$(is-mounted $MNT_SHARE)
-    if [ $IS_MNT -eq $IS_MOUNTED ]; then
-        echo "already mounted"
-        exit -1
-    fi
-
-    source $MNT_CFG
-    for f in $(echo $MNT_OPTIONS); do
-        echo $f 
-    done
-    read -p "mount which? " mnt_name
-    mount-now $mnt_name $MNT_SHARE
-}
-
 function umount-share()
 {
     IS_MNT=$(is-mounted $MNT_SHARE)
@@ -184,9 +164,6 @@ function umount-share()
 }
 
 case $1 in
-    $SHARE_KEYWORD)
-        mount-share
-        ;;
     $UMNT_KEYWORD)
         umount-share
         ;;
