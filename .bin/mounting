@@ -1,6 +1,5 @@
 #!/bin/bash
 source $HOME/.bin/common
-MNT_SHARE=/mnt/Storage
 IS_MOUNTED=1
 USB_KEYWORD="usb"
 KEYS_KEYWORD="keys"
