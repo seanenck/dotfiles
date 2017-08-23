@@ -148,6 +148,7 @@ function get-all-changes()
 {
     git diff-index --name-only HEAD --
     git status -sb | grep 'ahead'
+    git branch | grep "^\*" | grep -v "master"
 }
 
 function get-git-folders()
