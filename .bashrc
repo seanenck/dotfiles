@@ -73,6 +73,7 @@ find $USER_TMP -empty -type d -delete
 
 if [ ! -e "$COPY_INDICATOR" ]; then
     cp /etc/hosts ${SYNCED_CONF}hosts
+    cp /etc/systemd/network/* $HOME/.config/networkd/
     touch $COPY_INDICATOR
 fi
 
