@@ -104,16 +104,18 @@ xinput set-prop $(xinput | grep "SynPS/2" | sed -n -e 's/^.*id=//p' | sed -e "s/
 
 if [ ! -e $BASH_NEW_HIST ]; then
     python -c "
+import operator
 with open('$BASH_HISTORY') as f:
     lines = [x for x in f.readlines()]
-    cur = []
+    cur = {}
+    idx = 0
     for l in lines:
-        if l in cur:
-            continue
-        cur.append(l)
+        cur[l] = idx
+        idx = idx + 1
+    vals = sorted(cur.items(), key=operator.itemgetter(1))
     with open('$BASH_NEW_HIST', 'w') as w:
-        for l in cur:
-            w.write(l)
+        for l in vals:
+            w.write(l[0])
 "
     cp $BASH_NEW_HIST $BASH_HISTORY
 fi
