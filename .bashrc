@@ -106,7 +106,7 @@ if [ ! -e $BASH_NEW_HIST ]; then
     python -c "
 import operator
 with open('$BASH_HISTORY') as f:
-    lines = [x for x in f.readlines()]
+    lines = [x.strip() for x in f.readlines()]
     cur = {}
     idx = 0
     for l in lines:
@@ -116,6 +116,7 @@ with open('$BASH_HISTORY') as f:
     with open('$BASH_NEW_HIST', 'w') as w:
         for l in vals:
             w.write(l[0])
+            w.write('\n')
 "
     cp $BASH_NEW_HIST $BASH_HISTORY
 fi
