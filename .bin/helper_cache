@@ -92,7 +92,7 @@ function push-pull-git-fxn()
         echo
     done
     cd $cpwd
-    date +%Y-%m-%d >> $3
+    date +%Y-%m-%d > $3
 }
 
 function i3-workspacer()
@@ -117,7 +117,7 @@ function arch-chroot-manage()
         mkarchroot -C /etc/pacman.conf $CHROOT/root base-devel
         update-chroot
     fi
-    date +%Y-%m-%d >> $LAST_CHROOT_UPDATE
+    date +%Y-%m-%d > $LAST_CHROOT_UPDATE
 }
 
 function perm-pull()
@@ -230,7 +230,7 @@ function volume-mixer()
 
 function install-chrome()
 {
-    date +%Y-%m-%d >> $CHROME_UPDATED
+    date +%Y-%m-%d > $CHROME_UPDATED
     chromium_version=$(chromium --version | sed "s/Chromium //g")
     google_version=$(google-chrome-stable --version | sed "s/Google Chrome //g")
     echo "Chromium: $chromium_version"
