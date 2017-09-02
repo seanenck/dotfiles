@@ -13,7 +13,6 @@ HOME_DISP="DP-2-1"
 WORKSPACE_START="startup"
 WORKSPACE_RELOAD="reload"
 WORKSPACE_CHANGE="change"
-BACKGROUND_IMAGE=$HOME/.config/images/background.png
 DEFAULT_WORKSPACE_ID=1
 DOCKED_ID=2
 DISP_HOLDER="DISPLAY_VALUE"
@@ -141,9 +140,5 @@ function get-workspace-help()
 function force-workplace()
 {
     set-workplace $1
-    if [ -e $BACKGROUND_IMAGE ]; then
-        feh --bg-fill $BACKGROUND_IMAGE
-    else
-        xsetroot -solid "#333333"
-    fi
+    xsetroot -solid "#333333"
 }
