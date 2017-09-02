@@ -1,11 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 
-function do-segment()
-{
-    echo "### $1 ###"
-}
-
 function sync-now()
 {
     auth=$(cat $SSH_AUTH_TMP)
@@ -20,7 +15,6 @@ function sync-now()
     fi
     echo "checked for connection...$available"
     if [ $available -eq $IS_CONNECTED ]; then
-        do-segment "git"
         if [ -e $SSH_AUTH_TMP ]; then
             current=$PWD
             cd ${SYNCED_PATH}
