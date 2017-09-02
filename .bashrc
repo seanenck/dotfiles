@@ -6,7 +6,7 @@ esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-HISTCONTROL=ignoreboth
+HISTCONTROL=ignore-both:erasedups
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -97,11 +97,6 @@ function nohup-workspace()
 
 if [ $start_workspacer -eq 1 ]; then
     nohup-workspace > /dev/null 2>&1
-fi
-
-if [ ! -f $BASH_NEW_HIST ]; then
-    awk '!a[$0]++' $BASH_HISTORY > $BASH_NEW_HIST
-    cp $BASH_NEW_HIST $BASH_HISTORY
 fi
 
 # chroot
