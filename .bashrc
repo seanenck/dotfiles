@@ -4,10 +4,6 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignore-both:erasedups
-
 # append to the history file, don't overwrite it
 shopt -s histappend
 
@@ -105,6 +101,22 @@ export CHROOT
 
 # touchpad
 xinput set-prop $(xinput | grep "SynPS/2" | sed -n -e 's/^.*id=//p' | sed -e "s/\s/ /g" | cut -d " " -f 1) "Device Enabled" 0
+
+if [ ! -e $BASH_NEW_HIST ]; then
+    python -c "
+with open('$BASH_HISTORY') as f:
+    lines = [x for x in f.readlines()]
+    cur = []
+    for l in lines:
+        if l in cur:
+            continue
+        cur.append(l)
+    with open('$BASH_NEW_HIST', 'w') as w:
+        for l in cur:
+            w.write(l)
+"
+    cp $BASH_NEW_HIST $BASH_HISTORY
+fi
 
 clear
 git-changes
