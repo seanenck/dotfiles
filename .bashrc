@@ -121,6 +121,15 @@ with open('$BASH_HISTORY') as f:
     cp $BASH_NEW_HIST $BASH_HISTORY
 fi
 
+_SND_MUTE="/tmp/.mute"
+if [ ! -e $_SND_MUTE ]; then
+    _snd=$(subsystem volume sound status | sed "s/ //g")
+    if [ $_snd -ne 0 ]; then
+        subsystem volume sound mute
+    fi
+    touch $_SND_MUTE
+fi
+
 clear
 git-changes
 if [ ! -e $USER_LAST_SYNC ]; then
