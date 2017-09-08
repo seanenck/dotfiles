@@ -33,6 +33,7 @@ bindsym $mod+Shift+space floating toggle
 
 # scratchpad
 bindsym $mod+Shift+n mark "in_scratchpad", move scratchpad
+bindsym $mod+Shift+z exec i3_commands close-scratch na
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle

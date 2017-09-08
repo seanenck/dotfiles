@@ -89,13 +89,7 @@ function suspend-now()
         while [ 1 -eq 1 ]; do
             if [ $SLEEP_COUNT -ge $SLEEP_AFTER ]; then
                 write-log "killing scratchpad..."
-                scratch=0
-                while [ $scratch -eq 0 ]; do
-                    i3-msg [con_mark='in_scratchpad'] kill
-                    i3-msg -t get_tree | grep -q in_scratchpad
-                    scratch=$?
-                    echo "scratchpad: $scratch"
-                done
+                close-scratchpad
                 write-log "sleeping..."
                 SLEEP_COUNT=0
                 systemctl suspend

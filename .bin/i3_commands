@@ -29,4 +29,3 @@ function rename-workspace()
 }
 
 $1 $2
-
