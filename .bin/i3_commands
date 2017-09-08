@@ -1,4 +1,10 @@
 #!/bin/bash
+source $HOME/.bin/common
+function close-scratch()
+{
+    close-scratchpad
+}
+
 # Get i3 workspaces (only name/number by default, more grep outputs available via first param)
 function get-i3-workspaces()
 {
