@@ -105,10 +105,6 @@ exec --no-startup-id wsw-applet
 # Handle auto-locking
 exec xautolock -time 5 -locker "/usr/local/bin/locking auto" &
 
-# Move workspaces left/right via comma/period
-bindsym $mod+Shift+comma move workspace to left
-bindsym $mod+Shift+period move workspace to right
-
 # Change workplaces
 bindsym $mod+Shift+m exec subsystem workspaces force 1
 bindsym $mod+Shift+o exec subsystem workspaces force 2 
