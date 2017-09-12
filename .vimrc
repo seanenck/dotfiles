@@ -53,8 +53,6 @@ for i in ['', 'i']
     execute i . "noremap <C-Down> <PageDown>"
     execute i . "noremap <C-Right> <end>"
     execute i . "noremap <C-Left> <home>"
-    execute i . "noremap <F1> :Texplore<CR>"
-    execute i . "noremap <F2> :q<CR>"
 endfor
 
 let tmode = "/tmp/textmode"
