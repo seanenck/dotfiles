@@ -44,6 +44,12 @@ if has("autocmd")
   augroup END
 endif " has("autocmd")
 
+if has('persistent_undo')
+    set undodir=$HOME/.vim/undo
+    set undofile
+    set undolevels=5000
+endif
+
 inoremap <S-Left> <C-o>:call PyShift(0)<CR>
 inoremap <S-Right> <C-o>:call PyShift(1)<CR>
 
