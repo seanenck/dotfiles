@@ -31,6 +31,8 @@ CONFIG_DIR=.config/
 GIT=.gitconfig
 VIM=.vim/
 VIMPLUGIN=$(CONTAINER_HOME)$(VIM)
+VIMSWAP=$(VIMPLUGIN)swap
+VIMUNDO=$(VIMPLUGIN)undo
 CONFIG=$(CONTAINER_HOME)$(CONFIG_DIR)
 VIMRC_FILE=.vimrc
 VIMRC=/$(USER_HOME)$(VIMRC_FILE)
@@ -72,6 +74,8 @@ refresh: running
 	test -d $(CONTAINER_PATH)
 	mkdir -p $(CONTAINER_HOME)
 	mkdir -p $(VIMPLUGIN)
+	mkdir -p $(VIMSWAP)
+	mkdir -p $(VIMUNDO)
 	mkdir -p $(CONFIG)
 	mkdir -p $(CONTAINER_ROOT)$(VIM)
 	mkdir -p $(REPOS)
