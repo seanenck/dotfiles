@@ -44,6 +44,7 @@ if has("autocmd")
   augroup END
 endif " has("autocmd")
 
+set directory=$HOME/.vim/swap
 if has('persistent_undo')
     set undodir=$HOME/.vim/undo
     set undofile

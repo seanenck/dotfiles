@@ -131,6 +131,7 @@ if [ ! -e $_SND_MUTE ]; then
 fi
 
 mkdir -p $HOME/.vim/undo
+mkdir -p $HOME/.vim/swap
 clear
 git-changes
 if [ ! -e $USER_LAST_SYNC ]; then
