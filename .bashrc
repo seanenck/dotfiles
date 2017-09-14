@@ -131,6 +131,7 @@ if [ ! -e $_SND_MUTE ]; then
 fi
 
 mkdir -p $HOME/.vim/undo
+find $HOME/.vim/undo/ -mmin +1440 -type f -exec rm {} \;
 mkdir -p $HOME/.vim/swap
 clear
 git-changes
