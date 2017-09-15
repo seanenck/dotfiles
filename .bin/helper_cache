@@ -5,12 +5,8 @@ PASSWORD_KEY="passwords"
 VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
 PRIVATE_KEY="-private"
-GOOGLE_CHROME_KEY="google-chrome"
-CHROME_KEY="chrome"
-CHROME_PRIVATE_KEY="$CHROME_KEY$PRIVATE_KEY"
-BROWSE_KEY="browse"
-BROWSE_PRIVATE_KEY="$BROWSE_KEY$PRIVATE_KEY"
-INSTALL_CHROME_KEY="setup-chrome"
+FIREFOX_KEY="firefox"
+FIREFOX_PRIVATE_KEY="$FIREFOX_KEY$PRIVATE_KEY"
 DMENU_KEY="dmenu-wrapper"
 PERM_UPDATE_KEY="perm-pull"
 PERM_PUSH_KEY="perm-push"
@@ -19,15 +15,15 @@ ENTER_KEY="enterkeys"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
 MACHINECTL_NSPAWN_KEY="machinectl-nspawn"
-GOOGLE_CHROME_PRIVATE_KEY="$GOOGLE_CHROME_KEY$PRIVATE_KEY"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
 VIMRC=$HOME/.vimrc
-DMENU_LIST="$SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $BROWSE_KEY $BROWSE_PRIVATE_KEY $GOOGLE_CHROME_KEY $GOOGLE_CHROME_PRIVATE_KEY $CHROME_KEY $CHROME_PRIVATE_KEY"
+DMENU_LIST="$SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $FIREFOX_KEY $FIREFOX_PRIVATE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 ENTRIES=$HOME/.config/window.entries
 NET_CURRENT=$USER_TMP/network.cache
+FIREFOX=/usr/bin/firefox
 
 function make-nspawn()
 {
@@ -162,7 +158,7 @@ function searching()
     if [ ! -z $1 ]; then
         ARGS=$1
     fi
-    chromium "http://www.google.com/search?q=$SEARCH" $ARGS 
+    $FIREFOX "http://www.google.com/search?q=$SEARCH" $ARGS 
 }
 
 function passwords()
@@ -200,21 +196,16 @@ function get-help()
     $PASSWORD_KEY (password management)
     $VOLUME_KEY (volume mixer)
     $REBUILD_KEY (rebuild cache)
-    $GOOGLE_CHROME_KEY (start google chrome browsing)
-    $BROWSE_KEY (start browsing)
-    $GOOGLE_CHROME_PRIVATE_KEY (start private google chrome browsing)
-    $BROWSE_PRIVATE_KEY (start private browsing)
-    $INSTALL_CHROME_KEY (install chrome)
     $DMENU_KEY (dmenu wrapper)
     $PERM_UPDATE_KEY (update pass databases)
     $PERM_PUSH_KEY (push pass databases)
-    $CHROME_KEY (chrome key)
-    $CHROME_PRIVATE_KEY (chrome private key)
     $WORKSPACER_KEY (i3 workspace name management)
     $ENTER_KEY (enter keys into a non-paste friendly place)
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
     $ARCH_CHROOT_KEY (arch-chroot management)
     $MACHINECTL_NSPAWN_KEY (machinectl wrapper for creating systems)
+    $FIREFOX_KEY (firefox)
+    $FIREFOX_PRIVATE_KEY (firefox private window)
 "
 }
 
@@ -226,36 +217,6 @@ function run-terminal()
 function volume-mixer()
 {
     run-terminal "alsamixer"
-}
-
-function install-chrome()
-{
-    date +%Y-%m-%d > $CHROME_UPDATED
-    chromium_version=$(chromium --version | sed "s/Chromium //g")
-    google_version=$(google-chrome-stable --version | sed "s/Google Chrome //g")
-    echo "Chromium: $chromium_version"
-    echo "Google Chrome: $google_version"
-    if [[ $chromium_version == $google_version ]]; then
-        read -p "same version detected, continue (y/n)? " force
-        if [[ $force != "y" ]]; then
-            exit -1
-        fi 
-    fi
-    id=$(uuidgen)
-    file_name=/tmp/chrome-$id.rpm
-    wget -O $file_name https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
-    current=$PWD
-    cd /tmp
-    mkdir -p chrome-install
-    rm -rf chrome-install/*
-    cd chrome-install
-    rpmextract.sh $file_name
-    sudo rm -rf /opt/google/chrome/
-    sudo mv opt/google/chrome/ /opt/google/
-    sudo mv usr/bin/google-chrome-stable /usr/bin/google-chrome-stable
-    sudo chown root:root /opt/google/chrome/chrome-sandbox
-    sudo chmod 4755 /opt/google/chrome/chrome-sandbox
-    cd $current
 }
 
 if [ ! -z $1 ]; then
@@ -282,24 +243,10 @@ if [ ! -z $1 ]; then
                 arg="--private-window"
             fi
     
-            firefox $arg
-            ;;
-        $GOOGLE_CHROME_KEY | $GOOGLE_CHROME_PRIVATE_KEY | $BROWSE_KEY | $BROWSE_PRIVATE_KEY | $CHROME_PRIVATE_KEY | $CHROME_KEY)
-            browser="chromium"
-            if [[ "$1" == $GOOGLE_CHROME_KEY* ]]; then
-                browser="google-chrome-stable"
-            fi
-            arg=""
-            if [[ "$1" == *$PRIVATE_KEY ]]; then
-                arg="--incognito"
-            fi
-            $browser $arg 
+            $FIREFOX $arg
             ;;
         $ENTER_KEY)
             enter-keys ${@:2}
-            ;;
-        $INSTALL_CHROME_KEY)
-            install-chrome
             ;;
         $WORKSPACER_KEY)
             i3-workspacer &
