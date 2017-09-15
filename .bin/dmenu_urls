@@ -8,13 +8,9 @@ REBUILD_KEYWORD="--rebuild"
 REMOVE_KEYWORD="--remove"
 DISPLAY_KEYWORD="--display"
 BROWSERS="firefox"
-DEFAULT_ARGS="--new-window"
+DEFAULT_ARGS=""
 START_LINE="#name,browser,url,args"
 ARG_DELIMITER="|"
-HOSTS_FILE="/etc/hosts"
-HOSTS_FILE_HTTPS="https"
-HOSTS_FILE_HTTP="http"
-NETWORK_INDICATOR="network."
 function run-browser()
 {
     browser=$1
