@@ -15,15 +15,25 @@ ENTER_KEY="enterkeys"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
 MACHINECTL_NSPAWN_KEY="machinectl-nspawn"
+NET_CURRENT=$USER_TMP/network.cache
+SUITE_KEY="suite"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
 VIMRC=$HOME/.vimrc
-DMENU_LIST="$SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $FIREFOX_KEY $FIREFOX_PRIVATE_KEY"
+DMENU_LIST="$SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $FIREFOX_KEY $FIREFOX_PRIVATE_KEY $SUITE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 ENTRIES=$HOME/.config/window.entries
-NET_CURRENT=$USER_TMP/network.cache
 FIREFOX=/usr/bin/firefox
+SUITE_FILE="$SYNCED_CONF/suite.dmenu_urls"
+
+function suite-open()
+{
+    for f in $(cat $SUITE_FILE); do
+        $f &
+        sleep 1
+    done
+}
 
 function make-nspawn()
 {
@@ -206,6 +216,7 @@ function get-help()
     $MACHINECTL_NSPAWN_KEY (machinectl wrapper for creating systems)
     $FIREFOX_KEY (firefox)
     $FIREFOX_PRIVATE_KEY (firefox private window)
+    $SUITE_KEY (open a set of website as a suite)
 "
 }
 
@@ -265,6 +276,9 @@ if [ ! -z $1 ]; then
             ;;
         $ARCH_CHROOT_KEY)
             arch-chroot-manage
+            ;;
+        $SUITE_KEY)
+            suite-open
             ;;
         *)
             NEED_HELP=1
