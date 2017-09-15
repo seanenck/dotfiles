@@ -31,8 +31,10 @@ CONFIG_DIR=.config/
 GIT=.gitconfig
 VIM=.vim/
 VIMPLUGIN=$(CONTAINER_HOME)$(VIM)
-VIMSWAP=$(VIMPLUGIN)swap
-VIMUNDO=$(VIMPLUGIN)undo
+SWAP=swap
+UNDO=undo
+VIMSWAP=$(VIMPLUGIN)$(SWAP)
+VIMUNDO=$(VIMPLUGIN)$(UNDO)
 CONFIG=$(CONTAINER_HOME)$(CONFIG_DIR)
 VIMRC_FILE=.vimrc
 VIMRC=/$(USER_HOME)$(VIMRC_FILE)
@@ -87,7 +89,7 @@ refresh: running
 	install -Dm644 $(USER_GIT) $(CONTAINER_ROOT)$(GIT)
 	install -Dm644 $(USER_GIT) $(CONTAINER_HOME)$(GIT)
 	install -Dm644 /$(USER_HOME)$(CONFIG_DIR)$(GITEXCLUDE) $(CONTAINER_HOME)$(CONFIG)$(GITEXCLUDE)
-	rsync -avc /$(USER_HOME)$(VIM)* $(VIMPLUGIN) --exclude=undo --delete-after
+	rsync -avc /$(USER_HOME)$(VIM)* $(VIMPLUGIN) --exclude=$(UNDO) --exclude=$(SWAP) --delete-after
 
 pack: running
 	cd $(VAR_LIB) && tar -czvpf $(PWD)/pack.tar.gz --one-file-system $(TARGET)/
