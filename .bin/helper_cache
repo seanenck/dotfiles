@@ -5,7 +5,7 @@ PASSWORD_KEY="passwords"
 VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
 PRIVATE_KEY="-private"
-FIREFOX_KEY="firefox"
+FIREFOX_KEY="browser"
 FIREFOX_PRIVATE_KEY="$FIREFOX_KEY$PRIVATE_KEY"
 DMENU_KEY="dmenu-wrapper"
 PERM_UPDATE_KEY="perm-pull"
@@ -24,7 +24,6 @@ VIMRC=$HOME/.vimrc
 DMENU_LIST="$SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $FIREFOX_KEY $FIREFOX_PRIVATE_KEY $SUITE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 ENTRIES=$HOME/.config/window.entries
-FIREFOX=/usr/bin/firefox
 SUITE_FILE="$SYNCED_CONF/suite.dmenu_urls"
 
 function suite-open()
@@ -168,7 +167,7 @@ function searching()
     if [ ! -z $1 ]; then
         ARGS=$1
     fi
-    $FIREFOX "http://www.google.com/search?q=$SEARCH" $ARGS 
+    firefox "http://www.google.com/search?q=$SEARCH" $ARGS 
 }
 
 function passwords()
@@ -254,7 +253,7 @@ if [ ! -z $1 ]; then
                 arg="--private-window"
             fi
     
-            $FIREFOX $arg
+            firefox $arg
             ;;
         $ENTER_KEY)
             enter-keys ${@:2}
