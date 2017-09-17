@@ -22,10 +22,19 @@ function run-browser()
 
     cmd="$url $args"
     echo "$browser $cmd"
-    if [ -z $(pidof $browser) ]; then
-        $browser &
+    pid=$(pidof $browser)
+    cnt=0
+    while [ -z "$pid" ]; do
+        if [ $cnt -eq 0 ]; then
+            $browser &
+        fi
+        cnt=$((cnt+1))
         sleep 1
-    fi
+        pid=$(pidof $browser)
+        if [ $cnt -eq 5 ]; then
+            break
+        fi
+    done
     $browser $cmd
 }
 
