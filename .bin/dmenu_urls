@@ -22,7 +22,11 @@ function run-browser()
 
     cmd="$url $args"
     echo "$browser $cmd"
-    /usr/bin/$browser $cmd
+    if [ -z $(pidof $browser) ]; then
+        $browser &
+        sleep 1
+    fi
+    $browser $cmd
 }
 
 function create-script()
