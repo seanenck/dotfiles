@@ -29,7 +29,6 @@ NORM_TEXT="\033[0m"
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 VAR_LOG=/var/log/$USER/
 USER_LAST_SYNC=${VAR_LOG}synced.log
-CHROME_UPDATED=${VAR_LOG}chrome.log
 PERM_LAST_PUSH=${VAR_LOG}perm-push.log
 PERM_LAST_PULL=${VAR_LOG}perm-pull.log
 LAST_CHROOT_UPDATE=${VAR_LOG}last-chroot.log
@@ -100,7 +99,6 @@ function check-timed-events()
         all=$all"|$past"
     done
     all="($all)"
-    check-timed $CHROME_UPDATED $all "google-chrome"
     check-timed $PACMAN_LOG $all "pacman"
     check-timed $USER_LAST_SYNC $all "sync"
     check-timed $PERM_LAST_PUSH $all "permanent-push"
