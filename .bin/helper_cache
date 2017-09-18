@@ -69,11 +69,11 @@ function enter-keys()
             result=$($ENTRIES $using)
             if [ ! -z "$result" ]; then
                 ran=1
-                enter-window-vals "Chromium" $result
+                enter-window-vals "Firefox" $result
             fi
         fi
         if [ $ran -eq 0 ]; then
-            enter-window-vals "Chromium" $@
+            enter-window-vals "Firefox" $@
         fi
     fi
 }
