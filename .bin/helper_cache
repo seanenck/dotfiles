@@ -25,6 +25,7 @@ DMENU_LIST="$SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $FIREFOX_KEY $FIREFOX_PRIVATE_
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 ENTRIES=$HOME/.config/window.entries
 SUITE_FILE="$SYNCED_CONF/suite.dmenu_urls"
+BROWSER_WINDOW="Firefox"
 
 function suite-open()
 {
@@ -69,11 +70,11 @@ function enter-keys()
             result=$($ENTRIES $using)
             if [ ! -z "$result" ]; then
                 ran=1
-                enter-window-vals "Firefox" $result
+                enter-window-vals $BROWSER_WINDOW $result
             fi
         fi
         if [ $ran -eq 0 ]; then
-            enter-window-vals "Firefox" $@
+            enter-window-vals $BROWSER_WINDOW $@
         fi
     fi
 }
