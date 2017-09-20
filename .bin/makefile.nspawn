@@ -26,7 +26,6 @@ IGNORES=--ignore linux --ignore nano --ignore linux-firmware --ignore dmd --igno
 TMP_PACMAN=/tmp/pacman.conf
 PACMAN=pacman.conf
 ETC_PACMAN=etc/$(PACMAN)
-GITEXCLUDE=.gitexclude
 CONFIG_DIR=.config/
 GIT=.gitconfig
 VIM=.vim/
@@ -92,7 +91,6 @@ refresh: running
 	install -Dm644 $(VIMRC) $(CONTAINER_ETC)vimrc
 	install -Dm644 $(USER_GIT) $(CONTAINER_ROOT)$(GIT)
 	install -Dm644 $(USER_GIT) $(CONTAINER_HOME)$(GIT)
-	install -Dm644 /$(USER_HOME)$(CONFIG_DIR)$(GITEXCLUDE) $(CONTAINER_HOME)$(CONFIG)$(GITEXCLUDE)
 	rsync -avc /$(USER_HOME)$(VIM)* $(VIMPLUGIN) --exclude=$(UNDO) --exclude=$(SWAP) --delete-after
 
 pack: running
