@@ -156,19 +156,15 @@ function dmenu-wrapper()
 
 function searching()
 {
-    if [ -z "$2" ]; then
+    if [ -z "$1" ]; then
         echo "requires a search term"
         exit -1
     fi
     SEARCH=""
-    for term in ${@:2}; do
+    for term in ${@:1}; do
         SEARCH=$SEARCH" $(perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$term")"
     done
-    ARGS="--new-window"
-    if [ ! -z $1 ]; then
-        ARGS=$1
-    fi
-    firefox "http://www.google.com/search?q=$SEARCH" $ARGS 
+    firefox "http://www.google.com/search?q=$SEARCH"
 }
 
 function passwords()
@@ -240,7 +236,7 @@ if [ ! -z $1 ]; then
             passwords
             ;;
         $SEARCH_KEY)
-            searching "" ${@:2}
+            searching ${@:2}
             ;;
         $VOLUME_KEY)
             volume-mixer
