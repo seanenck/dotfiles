@@ -29,7 +29,7 @@ function run-browser()
             $browser &
         fi
         cnt=$((cnt+1))
-        sleep 1
+        sleep 3
         pid=$(pidof $browser)
         if [ $cnt -eq 5 ]; then
             break
