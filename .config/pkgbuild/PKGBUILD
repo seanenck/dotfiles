@@ -1,0 +1,53 @@
+# Maintainer: Sean Enck <enckse@gmail.com>
+pkgname=enckse-install
+pkgver=20170924
+pkgrel=1
+pkgdesc="install settings/setup/etc."
+url="https://github.com/enckse/home"
+license=('MIT')
+arch=("any")
+depends=('alsa-utils'
+         'bash-completion'
+         'firefox'
+         'feh'
+         'i3'
+         'i3lock'
+         'i3status'
+         'dmenu'
+         'gsfonts'
+         'lxterminal'
+         'p7zip'
+         'pandoc'
+         'unzip'
+         'xautolock'
+         'xorg-xdm'
+         'cbatticon'
+         'volumeicon'
+         'base-devel'
+         'cifs-utils'
+         'pass'
+         'keepassx'
+         'devtools'
+         'xdotool'
+         'compton'
+         'pwgen'
+         'ttf-liberation'
+         'ttf-freefont'
+         'ttf-arphic-uming'
+         'ttf-baekmuk'
+         'noto-fonts'
+         'noto-fonts-cjk'
+         'noto-fonts-emoji'
+         'xorg-xrandr'
+         'xorg'
+         'keepassx2'
+         'gconf'
+         'arch-install-scripts'
+         'wget'
+         'tree'
+         'weechat'
+         'vlc'
+         'epiphyte-build'
+         'wsw'
+         'wsw-applet')
+source=("git+$url")
