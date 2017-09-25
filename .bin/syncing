@@ -6,10 +6,18 @@ function backup()
     today=$(date +%Y-%m-%d)
     backup=/tmp/.synced.$today
     if [ ! -e $backup ]; then
-        rm -f $ARCHIVE
-        7z a -t7z -bd $ARCHIVE /home/enck/.cache/home/ /home/enck/.mozilla/
+        zip-now
         scp $ARCHIVE $BASE_SERVER:~/.profile.7z
+        rm -f $ARCHIVE
         touch $backup
+    fi
+}
+    
+function zip-now()
+{
+    if [ ! -e $ARCHIVE ]; then
+        echo "zipping profile(s)"
+        7z a -t7z -bd $ARCHIVE /home/enck/.cache/home/ /home/enck/.mozilla/
     fi
 }
 
@@ -25,6 +33,7 @@ function sync-now()
         echo "$SSH_KEY_PATH not mounted..."
         exit -1
     fi
+    zip-now
     echo "checked for connection...$available"
     if [ $available -eq $IS_CONNECTED ]; then
         if [ -e $SSH_AUTH_TMP ]; then
