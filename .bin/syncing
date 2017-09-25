@@ -1,6 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
-ARCHIVE=/tmp/profile.7z
+ARCHIVE=$USER_TMP/profile.7z
 function backup()
 {
     today=$(date +%Y-%m-%d)
