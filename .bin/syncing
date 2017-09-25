@@ -18,7 +18,8 @@ function zip-now()
 {
     if [ ! -e $ARCHIVE ]; then
         echo "zipping profile(s)"
-        7z a -t7z -bd $ARCHIVE /home/enck/.cache/home/ /home/enck/.mozilla/
+        7z a -t7z -bd $ARCHIVE /home/enck/.cache/home/ /home/enck/.mozilla/ &>/dev/null
+        echo "zip done: $?"
     fi
 }
 
