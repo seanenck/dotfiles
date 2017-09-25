@@ -88,8 +88,6 @@ function suspend-now()
         sleep 1
         while [ 1 -eq 1 ]; do
             if [ $SLEEP_COUNT -ge $SLEEP_AFTER ]; then
-                write-log "killing scratchpad..."
-                close-scratchpad
                 write-log "sleeping..."
                 SLEEP_COUNT=0
                 systemctl suspend
