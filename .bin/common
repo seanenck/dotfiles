@@ -42,16 +42,6 @@ BASE_SERVER="base"
 COPY_INDICATOR=$USER_TMP/backup.files
 MNT_SHARE=/mnt/Storage
 
-function close-scratchpad()
-{
-    scratch=0
-    while [ $scratch -eq 0 ]; do
-        i3-msg [con_mark='in_scratchpad'] kill
-        i3-msg -t get_tree | grep -q "in_scratchpad"
-        scratch=$?
-    done
-}
-
 function enter-window-vals()
 {
     word=$2
