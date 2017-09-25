@@ -4,11 +4,11 @@ ARCHIVE=$USER_TMP/profile.7z
 function backup()
 {
     today=$(date +%Y-%m-%d)
-    backup=/tmp/.synced.$today
+    backup=/tmp/.profile.synced.$today
     if [ ! -e $backup ]; then
         zip-now
         echo "pushing profile out"
-        scp $ARCHIVE $BASE_SERVER:~/.profile.7z
+        scp $ARCHIVE $BASE_SERVER:/mnt/Storage/Active/Rolling/profiles/mobile.7z
         rm -f $ARCHIVE
         touch $backup
     fi
