@@ -7,6 +7,7 @@ function backup()
     backup=/tmp/.synced.$today
     if [ ! -e $backup ]; then
         zip-now
+        echo "pushing profile out"
         scp $ARCHIVE $BASE_SERVER:~/.profile.7z
         rm -f $ARCHIVE
         touch $backup
