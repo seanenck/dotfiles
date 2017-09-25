@@ -32,6 +32,7 @@ depends=('alsa-utils'
          'openssh'
          'p7zip'
          'pass'
+         'pass-freeradius'
          'perl-uri'
          'pwgen'
          'rsync'
@@ -75,5 +76,4 @@ package() {
     install 644 nobeep.conf $pkgdir/etc/modprobe.d/nobeep.conf
     install 644 base.template $pkgdir/etc/systemd/nspawn/base.template
     cd $srcdir/home/
-    install 644 .config/firewall/iptables.rules $pkgdir/etc/iptables/iptables.rules
 }
