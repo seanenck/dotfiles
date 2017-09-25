@@ -20,7 +20,6 @@ depends=('alsa-utils'
          'firefox'
          'feh'
          'git'
-         'i3'
          'i3lock'
          'i3status'
          'gsfonts'
@@ -50,7 +49,6 @@ depends=('alsa-utils'
          'wsw-applet'
          'xautolock'
          'xdotool'
-         'xorg'
          'xorg-xdm'
          'xorg-xrandr')
 source=("git+$url")
@@ -73,7 +71,6 @@ BindReadOnly=/home/enck/.gnupg" > base.template
 }
 
 package() {
-    install 644 nobeep.conf $pkgdir/etc/modprobe.d/nobeep.conf
-    install 644 base.template $pkgdir/etc/systemd/nspawn/base.template
-    cd $srcdir/home/
+    install -Dm644 nobeep.conf $pkgdir/etc/modprobe.d/nobeep.conf
+    install -Dm644 base.template $pkgdir/etc/systemd/nspawn/base.template
 }
