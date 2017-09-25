@@ -51,8 +51,11 @@ if has('persistent_undo')
     set undolevels=5000
 endif
 
-inoremap <S-Left> <C-o>:call PyShift(0)<CR>
-inoremap <S-Right> <C-o>:call PyShift(1)<CR>
+let pymode = $HOME . "/.vim/plugin/py.vim"
+if findfile(pymode, ".") == pymode
+    inoremap <S-Left> <C-o>:call PyShift(0)<CR>
+    inoremap <S-Right> <C-o>:call PyShift(1)<CR>
+endif
 
 " map to command and insert
 for i in ['', 'i']
