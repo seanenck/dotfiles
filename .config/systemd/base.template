@@ -1,0 +1,12 @@
+[Files]
+Bind=/opt/shared:/root/workspace
+Bind=/opt/shared
+Bind=/var/cache/pacman
+Bind=/mnt/repositories
+BindReadOnly=/root/.gnupg
+BindReadOnly=/etc/passwd
+BindReadOnly=/etc/shadow
+BindReadOnly=/etc/group
+BindReadOnly=/etc/gshadow
+BindReadOnly=/etc/sudoers
+BindReadOnly=/home/enck/.gnupg
