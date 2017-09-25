@@ -1,2 +1,5 @@
 /*
 !.bin/
+!.config/
+.config/*
+!.config/home/
