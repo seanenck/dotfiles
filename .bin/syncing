@@ -1,5 +1,17 @@
 #!/bin/bash
 source $HOME/.bin/common
+ARCHIVE=/tmp/profile.7z
+function backup()
+{
+    today=$(date +%Y-%m-%d)
+    backup=/tmp/.synced.$today
+    if [ ! -e $backup ]; then
+        rm -f $ARCHIVE
+        7z a -t7z -bd $ARCHIVE /home/enck/.cache/home/ /home/enck/.mozilla/
+        scp $ARCHIVE $BASE_SERVER:~/.profile.7z
+        touch $backup
+    fi
+}
 
 function sync-now()
 {
@@ -16,6 +28,7 @@ function sync-now()
     echo "checked for connection...$available"
     if [ $available -eq $IS_CONNECTED ]; then
         if [ -e $SSH_AUTH_TMP ]; then
+            echo "git push"
             current=$PWD
             cd ${SYNCED_PATH}
             git push 2>&1
@@ -25,6 +38,8 @@ function sync-now()
                 git push 2>&1
             done
             cd $current
+            echo "daily backup"
+            backup
         else
             echo "ssh agent unavailable"
         fi
