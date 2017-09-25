@@ -64,7 +64,7 @@ create: root
 	mkdir -p $(CONTAINER_PATH)
 	cat /$(USER_SYNC)$(PACMAN) | sed "s/Architecture = auto/Architecture = $(_ARCH_ARCH)/g" > $(TMP_PACMAN)
 	pacstrap -i -c -d -C $(TMP_PACMAN) $(CONTAINER_PATH) $(PACKAGES) $(IGNORES)
-	cat $(ETC_NSPAWN)base.template > $(CONTAINER_CONF)
+	cat $(USER_HOME)/.config/systemd/base.template > $(CONTAINER_CONF)
 	echo "[Exec]" >> $(CONTAINER_CONF)
 	echo "Personality=$(ARCH)" >> $(CONTAINER_CONF)
 	install -Dm644 $(TMP_PACMAN) $(CONTAINER_PATH)$(ETC_PACMAN)
