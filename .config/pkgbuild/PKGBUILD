@@ -8,7 +8,6 @@ license=('MIT')
 arch=("any")
 depends=('alsa-utils'
          'arch-install-scripts'
-         'base-devel'
          'bash-completion'
          'cbatticon'
          'cifs-utils'
