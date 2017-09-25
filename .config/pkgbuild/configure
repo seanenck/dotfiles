@@ -44,7 +44,7 @@ depends=('alsa-utils'
          'xorg-xdm'
          'xorg-xrandr')
 
-grps=$('i3' 'xorg' 'base-devel')
+grps=('i3' 'xorg' 'base-devel')
 sudo pacman -S $depends $grps
 echo "blacklist pcspkr" > $NOBEEP
 sudo install -Dm644 $NOBEEP
