@@ -57,8 +57,23 @@ md5sums=("SKIP")
 
 build() {
     echo "blacklist pcspkr" > nobeep.conf
+    echo "[Files]
+Bind=/opt/shared:/root/workspace
+Bind=/opt/shared
+Bind=/var/cache/pacman
+Bind=/mnt/repositories
+BindReadOnly=/root/.gnupg
+BindReadOnly=/etc/passwd
+BindReadOnly=/etc/shadow
+BindReadOnly=/etc/group
+BindReadOnly=/etc/gshadow
+BindReadOnly=/etc/sudoers
+BindReadOnly=/home/enck/.gnupg" > base.template
 }
 
 package() {
     install 644 nobeep.conf $pkgdir/etc/modprobe.d/nobeep.conf
+    install 644 base.template $pkgdir/etc/systemd/nspawn/base.template
+    cd $srcdir/home/
+    install 644 .config/firewall/iptables.rules $pkgdir/etc/iptables/iptables.rules
 }
