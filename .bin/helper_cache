@@ -5,7 +5,9 @@ PASSWORD_KEY="passwords"
 VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
 PRIVATE_KEY="-private"
-FIREFOX_KEY="browser"
+BROWSER_KEY="browser"
+BROWSER_PRIVATE_KEY="$BROWSER_KEY$PRIVATE_KEY"
+FIREFOX_KEY="ff"
 FIREFOX_PRIVATE_KEY="$FIREFOX_KEY$PRIVATE_KEY"
 DMENU_KEY="dmenu-wrapper"
 PERM_UPDATE_KEY="perm-pull"
@@ -21,7 +23,7 @@ PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
 VIMRC=$HOME/.vimrc
-DMENU_LIST="$SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $FIREFOX_KEY $FIREFOX_PRIVATE_KEY $SUITE_KEY"
+DMENU_LIST="$SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $FIREFOX_KEY $FIREFOX_PRIVATE_KEY $SUITE_KEY $BROWSER_KEY $BROWSER_PRIVATE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 ENTRIES=$HOME/.config/window.entries
 SUITE_FILE="$SYNCED_CONF/suite.dmenu_urls"
@@ -212,6 +214,8 @@ function get-help()
     $MACHINECTL_NSPAWN_KEY (machinectl wrapper for creating systems)
     $FIREFOX_KEY (firefox)
     $FIREFOX_PRIVATE_KEY (firefox private window)
+    $BROWSER_KEY (default browser)
+    $BROWSER_PRIVATE_KEY (default browser - private)
     $SUITE_KEY (open a set of website as a suite)
 "
 }
@@ -228,7 +232,8 @@ function volume-mixer()
 
 if [ ! -z $1 ]; then
     NEED_HELP=0
-    case $1 in
+    cmd=$(echo "$1" | sed "s/$BROWSER_KEY/$FIREFOX_KEY/g")
+    case $cmd in
         $MACHINECTL_NSPAWN_KEY)
             make-nspawn ${@:2}
             ;;
@@ -246,7 +251,7 @@ if [ ! -z $1 ]; then
             ;;
         $FIREFOX_KEY | $FIREFOX_PRIVATE_KEY)
             arg=""
-            if [[ "$1" == "$FIREFOX_PRIVATE_KEY" ]]; then
+            if [[ "$cmd" == "$FIREFOX_PRIVATE_KEY" ]]; then
                 arg="--private-window"
             fi
     
