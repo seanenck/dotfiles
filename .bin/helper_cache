@@ -177,6 +177,7 @@ function passwords()
 function rebuild-now()
 {
     mkdir -p $CACHE_PATH
+    rm -f $DMENU_ENTRIES
     rm ${CACHE_PATH}*
     for line in $(print-help | cut -d " " -f 5); do
         if [[ "$line" == "$REBUILD_KEY" ]]; then
