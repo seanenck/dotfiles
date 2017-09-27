@@ -6,5 +6,13 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-# load paths
-. ~/.profile_paths
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.bin" ] ; then
+    PATH="$HOME/.bin:$PATH"
+    if [ -d "$HOME/.cache/dmenu_urls" ]; then
+        PATH="$HOME/.cache/dmenu_urls:$PATH"
+    fi
+    if [ -d "$HOME/.cache/helper_cache" ]; then
+        PATH="$HOME/.cache/helper_cache:$PATH"
+    fi
+fi
