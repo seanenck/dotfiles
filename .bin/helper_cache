@@ -31,7 +31,7 @@ function suite-open()
 {
     for f in $(cat $SUITE_FILE); do
         $f &
-        sleep 1
+        sleep 0.5
     done
 }
 
