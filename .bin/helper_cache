@@ -30,7 +30,7 @@ BROWSER_WINDOW="Firefox"
 function suite-open()
 {
     for f in $(cat $SUITE_FILE); do
-        $f &
+        $f
         sleep 0.5
     done
 }
