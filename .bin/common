@@ -107,11 +107,14 @@ function check-timed-events()
             warnings=$warnings" missing_events"
         fi
         if [ ! -z "$warnings" ]; then
-            echo
+            echo -e "${RED_TEXT}"
+            echo "system events"
+            echo "==="
             for w in $(echo $warnings); do
                 changed=$(echo $w |  sed "s/_/ /g")
-                echo -e "${RED_TEXT} -> (maintanence) $changed${NORM_TEXT}"
+                echo -e "  -> (maintanence) $changed"
             done
+            echo -e "${NORM_TEXT}"
             process-logs
         fi
     fi
