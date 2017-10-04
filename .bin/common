@@ -100,7 +100,7 @@ function check-timed-events()
             d=$(echo $item | cut -d "," -f 2)
             echo $d | grep -q -E "$all"
             if [ $? -ne 0 ]; then
-                warnings=" ${i}_outdated_(${d})"
+                warnings=" ${i}_(${d})"
             fi
         done
         if [ $cnt -ne 5 ]; then
