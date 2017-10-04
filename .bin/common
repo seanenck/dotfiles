@@ -119,7 +119,7 @@ function check-timed-events()
             fi
         done
         if [ $cnt -ne 8 ]; then
-            warnings=$warnings" missing_events"
+            warnings=$warnings" wrong_number_of_events"
         fi
         if [ ! -z "$warnings" ]; then
             echo -e "${RED_TEXT}"
