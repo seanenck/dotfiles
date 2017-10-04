@@ -26,6 +26,33 @@ DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 ENTRIES=$HOME/.config/window.entries
 SUITE_FILE="$SYNCED_CONF/suite.dmenu_urls"
 BROWSER_WINDOW="Firefox"
+BUILD_PKG="buildpkg"
+
+function build-pkg()
+{
+    case $1 in
+        "firefox-nightly")
+            ;;
+        "pcsclite-git")
+            ;;
+        "ccid-git")
+            ;;
+        *)
+            echo "unknown pkgbuild: $1"
+            exit 1
+            ;;
+    esac
+    work_dir=$(mktemp -d)
+    cwd=$pwd
+    cd $work_dir
+    _f=pkg.tar.gz
+    curl https://aur.archlinux.org/cgit/aur.git/snapshot/$1.tar.gz > $_f
+    tar xf $_f
+    cd $1
+    makepkg -sri
+    sudo cp *.pkg.tar.xz /var/cache/pacman/pkg/
+    cd $cwd
+}
 
 function suite-open()
 {
@@ -216,6 +243,7 @@ function get-help()
     $BROWSER_KEY (default browser)
     $BROWSER_PRIVATE_KEY (default browser - private)
     $SUITE_KEY (open a set of website as a suite)
+    $BUILD_PKG (handle pkgbuilds)
 "
 }
 
@@ -233,6 +261,9 @@ if [ ! -z $1 ]; then
     NEED_HELP=0
     cmd=$(echo "$1" | sed "s/$BROWSER_KEY/$FIREFOX_KEY/g")
     case $cmd in
+        $BUILD_PKG)
+            build-pkg $2
+            ;;
         $MACHINECTL_NSPAWN_KEY)
             make-nspawn ${@:2}
             ;;
