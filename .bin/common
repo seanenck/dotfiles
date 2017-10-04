@@ -38,6 +38,7 @@ COPY_INDICATOR=$USER_TMP/backup.files
 MNT_SHARE=/mnt/Storage
 LAST_TIMES=$HOME/.cache/last-timed.log
 LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
+PKGBUILD_IND="pkgbuild-"
 
 function update-time()
 {
@@ -88,6 +89,8 @@ function check-timed-events()
         past=$(date +%Y-%m-%d -d "-$d days")
         all=$all"|$past"
     done
+    year=$(date +%Y)
+    months="($year-"$(date +%m)"|"$year-$(date -d "last month" +%m)")"
     all="($all)"
     if [ ! -e "$LAST_TIMES" ]; then
         touch $LAST_TIMES
@@ -100,7 +103,19 @@ function check-timed-events()
             d=$(echo $item | cut -d "," -f 2)
             echo $d | grep -q -E "$all"
             if [ $? -ne 0 ]; then
-                warnings=" ${i}_(${d})"
+                _warn=1
+                if [[ $i == "$PKGBUILD_IND"* ]]; then
+                    if [[ $i == *"-git" ]]; then
+                        echo "HERE"
+                        echo $d | grep -q -E "$months"
+                        if [ $? -eq 0 ]; then
+                            _warn=0
+                        fi
+                    fi
+                fi
+                if [ $_warn -eq 1 ]; then
+                    warnings="$warnings ${i}_(${d})"
+                fi
             fi
         done
         if [ $cnt -ne 6 ]; then

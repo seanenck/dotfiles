@@ -55,7 +55,7 @@ function build-pkg()
     sudo cp *.pkg.tar.xz /var/cache/pacman/pkg/
     cd $cwd
     if [ $_report -eq 1 ]; then
-        update-time $1
+        update-time "$PKGBUILD_IND"$1
     fi
 }
 
