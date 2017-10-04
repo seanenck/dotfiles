@@ -30,8 +30,10 @@ BUILD_PKG="buildpkg"
 
 function build-pkg()
 {
+    _report=0
     case $1 in
         "firefox-nightly")
+            _report=1
             ;;
         "pcsclite-git")
             ;;
@@ -52,6 +54,9 @@ function build-pkg()
     makepkg -sri
     sudo cp *.pkg.tar.xz /var/cache/pacman/pkg/
     cd $cwd
+    if [ $_report -eq 1 ]; then
+        update-time $1
+    fi
 }
 
 function suite-open()

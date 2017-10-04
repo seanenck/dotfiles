@@ -103,7 +103,7 @@ function check-timed-events()
                 warnings=" ${i}_(${d})"
             fi
         done
-        if [ $cnt -ne 5 ]; then
+        if [ $cnt -ne 6 ]; then
             warnings=$warnings" missing_events"
         fi
         if [ ! -z "$warnings" ]; then
