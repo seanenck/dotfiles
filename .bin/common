@@ -42,6 +42,12 @@ BASE_SERVER="base"
 COPY_INDICATOR=$USER_TMP/backup.files
 MNT_SHARE=/mnt/Storage
 
+function update-time()
+{
+    d=$(date +%Y-%m-%d)
+    c=$1
+}
+
 function enter-window-vals()
 {
     word=$2

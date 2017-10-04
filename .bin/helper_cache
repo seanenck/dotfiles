@@ -98,6 +98,7 @@ function push-pull-git-fxn()
         echo
     done
     cd $cpwd
+    update-time "perm-$2"
     date +%Y-%m-%d > $3
 }
 
@@ -123,6 +124,7 @@ function arch-chroot-manage()
         mkarchroot -C /etc/pacman.conf $CHROOT/root base-devel
         update-chroot
     fi
+    update-time "last-chroot"
     date +%Y-%m-%d > $LAST_CHROOT_UPDATE
 }
 

@@ -54,6 +54,7 @@ function sync-now()
         else
             echo "ssh agent unavailable"
         fi
+        update-time "user-sync"
         date +%Y-%m-%d > $USER_LAST_SYNC
     fi
 }
