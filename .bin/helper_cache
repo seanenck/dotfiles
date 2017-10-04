@@ -99,7 +99,6 @@ function push-pull-git-fxn()
     done
     cd $cpwd
     update-time "perm-$2"
-    date +%Y-%m-%d > $3
 }
 
 function i3-workspacer()
@@ -125,17 +124,16 @@ function arch-chroot-manage()
         update-chroot
     fi
     update-time "last-chroot"
-    date +%Y-%m-%d > $LAST_CHROOT_UPDATE
 }
 
 function perm-pull()
 {
-    push-pull-git-fxn "update" "pull" "$PERM_LAST_PULL"
+    push-pull-git-fxn "update" "pull"
 }
 
 function perm-push()
 {
-    push-pull-git-fxn "push" "push" "$PERM_LAST_PUSH"
+    push-pull-git-fxn "push" "push"
 }
 
 function dmenu-wrapper()
