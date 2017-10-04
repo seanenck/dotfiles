@@ -144,6 +144,7 @@ export GPG_TTY=$(tty)
 today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
 rm -f $today_check
 if [ ! -e $today_check ]; then
-    check-timed-events
+    process-logs
     touch $today_check
 fi
+check-timed-events

@@ -42,11 +42,25 @@ BASE_SERVER="base"
 COPY_INDICATOR=$USER_TMP/backup.files
 MNT_SHARE=/mnt/Storage
 LAST_TIMES=$HOME/.cache/last-timed.log
+LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 
 function update-time()
 {
     d=$(date +%Y-%m-%d)
-    c=$1
+    update-time-log "$1" $d
+}
+
+function update-time-log()
+{
+    cat $LAST_TIMES | grep -v "$1," > $LAST_TIMES_TMP
+    cat $LAST_TIMES_TMP > $LAST_TIMES
+    echo "$1,$2" >> $LAST_TIMES
+}
+
+function process-logs()
+{
+    d=$(cat $PACMAN_LOG | grep $(date +%Y) | cut -d " " -f 1 | cut -d "[" -f 2 | sort | uniq | tail -n 1)
+    update-time-log "pacman" $d
 }
 
 function enter-window-vals()
@@ -70,22 +84,6 @@ function enter-window-vals()
     done
 }
 
-function check-timed()
-{
-    if [ ! -d $VAR_LOG ]; then
-        echo "creating $VAR_LOG"
-        sudo mkdir $VAR_LOG
-        sudo chown $USER:$USER $VAR_LOG
-    fi
-    if [[ $1 == ${VAR_LOG}* ]]; then
-        touch $1
-    fi
-    cat $1 | grep -q -E $2
-    if [ $? -ne 0 ]; then
-        echo -e "${RED_TEXT} (maintenance) -> $3 update?${NORM_TEXT}"
-    fi
-}
-
 function check-timed-events()
 {
     all=""
@@ -105,27 +103,23 @@ function check-timed-events()
             cnt=$((cnt+1))
             i=$(echo $item | cut -d "," -f 1)
             d=$(echo $item | cut -d "," -f 2)
-            echo $4 | grep -q -E "$all"
+            echo $d | grep -q -E "$all"
             if [ $? -ne 0 ]; then
-                warnings=":$i-outdated-$d"
+                warnings=" ${i}_outdated_(${d})"
             fi
-            echo $item
         done
         if [ $cnt -ne 5 ]; then
-            warnings=$warnings" missing-events"
+            warnings=$warnings" missing_events"
         fi
         if [ ! -z "$warnings" ]; then
+            echo
             for w in $(echo $warnings); do
-                changed=$(echo $w |  sed "s/-/ /g")
+                changed=$(echo $w |  sed "s/_/ /g")
                 echo -e "${RED_TEXT} -> (maintanence) $changed${NORM_TEXT}"
             done
+            process-logs
         fi
     fi
-    check-timed $PACMAN_LOG $all "pacman"
-    check-timed $USER_LAST_SYNC $all "sync"
-    check-timed $PERM_LAST_PUSH $all "permanent-push"
-    check-timed $PERM_LAST_PULL $all "permanent-pull"
-    check-timed $LAST_CHROOT_UPDATE $all "chroot-status"
 }
 
 function test-ssh()
