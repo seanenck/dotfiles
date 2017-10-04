@@ -135,14 +135,15 @@ find $HOME/.vim/undo/ -mmin +1440 -type f -exec rm {} \;
 mkdir -p $HOME/.vim/swap
 clear
 git-changes
-if [ ! -e $USER_LAST_SYNC ]; then
-    echo
-    echo -e "${RED_TEXT}no reset sync${NORM_TEXT}"
-fi
 ssh-add -L >/dev/null
 if [ $? -ne 0 ]; then
     echo
     echo -e "${RED_TEXT}keys not loaded${NORM_TEXT}"
 fi
 export GPG_TTY=$(tty)
-check-timed-events
+today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
+rm -f $today_check
+if [ ! -e $today_check ]; then
+    check-timed-events
+    touch $today_check
+fi

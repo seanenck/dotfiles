@@ -41,6 +41,7 @@ GIT_PARTIAL_TMP=$USER_TMP/git-partial
 BASE_SERVER="base"
 COPY_INDICATOR=$USER_TMP/backup.files
 MNT_SHARE=/mnt/Storage
+LAST_TIMES=$HOME/.cache/last-timed.log
 
 function update-time()
 {
@@ -95,6 +96,31 @@ function check-timed-events()
         all=$all"|$past"
     done
     all="($all)"
+    if [ ! -e "$LAST_TIMES" ]; then
+        touch $LAST_TIMES
+    else
+        warnings=""
+        cnt=0
+        for item in $(cat $LAST_TIMES); do
+            cnt=$((cnt+1))
+            i=$(echo $item | cut -d "," -f 1)
+            d=$(echo $item | cut -d "," -f 2)
+            echo $4 | grep -q -E "$all"
+            if [ $? -ne 0 ]; then
+                warnings=":$i-outdated-$d"
+            fi
+            echo $item
+        done
+        if [ $cnt -ne 5 ]; then
+            warnings=$warnings" missing-events"
+        fi
+        if [ ! -z "$warnings" ]; then
+            for w in $(echo $warnings); do
+                changed=$(echo $w |  sed "s/-/ /g")
+                echo -e "${RED_TEXT} -> (maintanence) $changed${NORM_TEXT}"
+            done
+        fi
+    fi
     check-timed $PACMAN_LOG $all "pacman"
     check-timed $USER_LAST_SYNC $all "sync"
     check-timed $PERM_LAST_PUSH $all "permanent-push"
