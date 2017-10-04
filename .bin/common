@@ -118,7 +118,7 @@ function check-timed-events()
                 fi
             fi
         done
-        if [ $cnt -ne 6 ]; then
+        if [ $cnt -ne 8 ]; then
             warnings=$warnings" missing_events"
         fi
         if [ ! -z "$warnings" ]; then
