@@ -39,6 +39,25 @@ LAST_TIMES=$HOME/.cache/last-timed.log
 LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 PKGBUILD_IND="pkgbuild-"
 
+function set-system()
+{
+    # disable touchpad
+    xinput set-prop $(xinput | grep "SynPS/2" | sed -n -e 's/^.*id=//p' | sed -e "s/\s/ /g" | cut -d " " -f 1) "Device Enabled" 0
+
+    # mute
+    _SND_MUTE="/tmp/.mute"
+    if [ ! -e $_SND_MUTE ]; then
+        _snd=$(subsystem volume sound status | sed "s/ //g")
+        if [ $_snd -ne 0 ]; then
+            subsystem volume sound mute
+        fi
+        touch $_SND_MUTE
+    fi
+
+    # user services
+    systemctl --user start i3workspacer.service
+}
+
 function update-time()
 {
     d=$(date +%Y-%m-%d)

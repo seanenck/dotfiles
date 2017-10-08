@@ -60,6 +60,7 @@ if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
 fi
 process-pass-aliases
+set-system
 set-user-files
 
 # ssh agent
@@ -69,9 +70,6 @@ echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
 # chroot
 CHROOT=$CHROOT_LOCATION
 export CHROOT
-
-# touchpad
-xinput set-prop $(xinput | grep "SynPS/2" | sed -n -e 's/^.*id=//p' | sed -e "s/\s/ /g" | cut -d " " -f 1) "Device Enabled" 0
 
 if [ ! -e $BASH_NEW_HIST ]; then
     python -c "
@@ -92,16 +90,6 @@ with open('$BASH_HISTORY') as f:
     cp $BASH_NEW_HIST $BASH_HISTORY
 fi
 
-_SND_MUTE="/tmp/.mute"
-if [ ! -e $_SND_MUTE ]; then
-    _snd=$(subsystem volume sound status | sed "s/ //g")
-    if [ $_snd -ne 0 ]; then
-        subsystem volume sound mute
-    fi
-    touch $_SND_MUTE
-fi
-
-systemctl --user start i3workspacer.service
 clear
 git-changes
 ssh-add -L >/dev/null
