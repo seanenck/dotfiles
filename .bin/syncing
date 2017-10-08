@@ -1,5 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
+PROFILE_PATH=/mnt/Storage/Active/Rolling/profiles
 ARCHIVE=$USER_TMP/profile.7z
 function backup()
 {
@@ -8,7 +9,8 @@ function backup()
     if [ ! -e $backup ]; then
         zip-now
         echo "pushing profile out"
-        scp $ARCHIVE $BASE_SERVER:/mnt/Storage/Active/Rolling/profiles/mobile.7z
+        scp $ARCHIVE $BASE_SERVER:$PROFILE_PATH/mobile.$today.7z
+        ssh $BASE_SERVER "find $PROFILE_PATH -type f -mtime +7 -exec rm {} \;"
         rm -f $ARCHIVE
         touch $backup
     fi
