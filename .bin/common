@@ -17,7 +17,6 @@ NOT_CONNECTED=0
 DISPLAY_UN=/tmp/display-unlocked
 DISPLAY_EN=/tmp/display-enabled
 WORKPLACE_WORKING=/tmp/working
-LAST_TMP_HIT=$USER_TMP/last.tmp
 URL_COMMON=$HOME/.cache/dmenu_urls
 INDEX_EXT=".index"
 DMENU_ENTRIES="$USER_TMP/dmenu_cache"
@@ -186,6 +185,25 @@ function get-all-changes()
     git diff-index --name-only HEAD --
     git status -sb | grep 'ahead'
     git branch | grep "^\*" | grep -v "master"
+}
+
+function set-user-files()
+{
+    # user tmp
+    mkdir -p $USER_TMP
+    find $USER_TMP* -mtime +1 -type f -exec rm {} \;
+    find $USER_TMP -empty -type d -delete
+
+    if [ ! -e "$COPY_INDICATOR" ]; then
+        cp /etc/hosts ${SYNCED_CONF}hosts
+        cp /etc/systemd/network/* $HOME/.config/networkd/
+        touch $COPY_INDICATOR
+    fi
+
+    # vim
+    mkdir -p $HOME/.vim/undo
+    find $HOME/.vim/undo/ -mmin +1440 -type f -exec rm {} \;
+    mkdir -p $HOME/.vim/swap
 }
 
 function get-git-folders()

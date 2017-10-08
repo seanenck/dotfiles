@@ -60,18 +60,7 @@ if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
 fi
 process-pass-aliases
-
-# cleanup user temp
-mkdir -p $USER_TMP 
-date +%Y-%m-%d.%s > $LAST_TMP_HIT
-find $USER_TMP* -mtime +1 -type f -exec rm {} \;
-find $USER_TMP -empty -type d -delete
-
-if [ ! -e "$COPY_INDICATOR" ]; then
-    cp /etc/hosts ${SYNCED_CONF}hosts
-    cp /etc/systemd/network/* $HOME/.config/networkd/
-    touch $COPY_INDICATOR
-fi
+set-user-files
 
 # ssh agent
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket" 
@@ -112,9 +101,6 @@ if [ ! -e $_SND_MUTE ]; then
     touch $_SND_MUTE
 fi
 
-mkdir -p $HOME/.vim/undo
-find $HOME/.vim/undo/ -mmin +1440 -type f -exec rm {} \;
-mkdir -p $HOME/.vim/swap
 systemctl --user start i3workspacer.service
 clear
 git-changes
