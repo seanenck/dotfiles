@@ -12,7 +12,6 @@ FIREFOX_PRIVATE_KEY="$FIREFOX_KEY$PRIVATE_KEY"
 DMENU_KEY="dmenu-wrapper"
 PERM_UPDATE_KEY="perm-pull"
 PERM_PUSH_KEY="perm-push"
-WORKSPACER_KEY="workspacer"
 ENTER_KEY="enterkeys"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
@@ -129,11 +128,6 @@ function push-pull-git-fxn()
     update-time "perm-$2"
 }
 
-function i3-workspacer()
-{
-    python $HOME/.bin/i3workspacer.py
-}
-
 function update-chroot()
 {
     echo "updating chroot..."
@@ -234,7 +228,6 @@ function get-help()
     $DMENU_KEY (dmenu wrapper)
     $PERM_UPDATE_KEY (update pass databases)
     $PERM_PUSH_KEY (push pass databases)
-    $WORKSPACER_KEY (i3 workspace name management)
     $ENTER_KEY (enter keys into a non-paste friendly place)
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
     $ARCH_CHROOT_KEY (arch-chroot management)
@@ -290,9 +283,6 @@ if [ ! -z $1 ]; then
             ;;
         $ENTER_KEY)
             enter-keys ${@:2}
-            ;;
-        $WORKSPACER_KEY)
-            i3-workspacer &
             ;;
         $DMENU_KEY)
             dmenu-wrapper ${@:2}
