@@ -1,0 +1,12 @@
+[Unit]
+Description=i3 workspace naming/manager
+
+[Service]
+Type=simple
+ExecStart=/home/enck/.bin/i3workspacer.py
+Environment=DISPLAY=:0
+User=enck
+Group=enck
+
+[Install]
+WantedBy=default.target
