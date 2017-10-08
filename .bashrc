@@ -77,24 +77,6 @@ fi
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket" 
 echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
 
-# workspacer
-start_workspacer=1
-for p in $(pidof python); do
-    ps $p | grep -q "i3workspacer"
-    if [ $? -eq 0 ]; then
-        start_workspacer=0
-    fi
-done
-
-function nohup-workspace()
-{
-    nohup workspacer > /tmp/i3workspace.log &
-}
-
-if [ $start_workspacer -eq 1 ]; then
-    nohup-workspace > /dev/null 2>&1
-fi
-
 # chroot
 CHROOT=$CHROOT_LOCATION
 export CHROOT
