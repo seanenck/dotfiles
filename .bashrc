@@ -115,6 +115,7 @@ fi
 mkdir -p $HOME/.vim/undo
 find $HOME/.vim/undo/ -mmin +1440 -type f -exec rm {} \;
 mkdir -p $HOME/.vim/swap
+systemctl --user start i3workspacer.service
 clear
 git-changes
 ssh-add -L >/dev/null
