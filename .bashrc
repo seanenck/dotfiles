@@ -103,7 +103,6 @@ if [ $? -ne 0 ]; then
 fi
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
-
 today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
 rm -f $today_check
 if [ ! -e $today_check ]; then
