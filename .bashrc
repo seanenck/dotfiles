@@ -64,7 +64,11 @@ set-system
 set-user-files
 
 # ssh agent
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket" 
+# Set SSH to use gpg-agent
+unset SSH_AGENT_PID
+if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+  export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
+fi
 echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
 
 # chroot
@@ -98,6 +102,8 @@ if [ $? -ne 0 ]; then
     echo -e "${RED_TEXT}keys not loaded${NORM_TEXT}"
 fi
 export GPG_TTY=$(tty)
+gpg-connect-agent updatestartuptty /bye >/dev/null
+
 today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
 rm -f $today_check
 if [ ! -e $today_check ]; then
