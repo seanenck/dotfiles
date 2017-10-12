@@ -124,7 +124,6 @@ function check-timed-events()
                 _warn=1
                 if [[ $i == "$PKGBUILD_IND"* ]]; then
                     if [[ $i == *"-git" ]]; then
-                        echo "HERE"
                         echo $d | grep -q -E "$months"
                         if [ $? -eq 0 ]; then
                             _warn=0
