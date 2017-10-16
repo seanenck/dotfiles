@@ -38,6 +38,7 @@ MNT_SHARE=/mnt/Storage
 LAST_TIMES=$HOME/.cache/last-timed.log
 LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 PKGBUILD_IND="pkgbuild-"
+BUILD_PKG_LIST="firefox-nightly|ccid-git|pcsclite-git"
 
 function set-system()
 {
