@@ -57,7 +57,7 @@ function locking-status()
 function init-now()
 {
     sleep 1
-    python $HOME/.bin/modules/genericon/genericon.py -c $SYNCED_CONF/genericon.config
+    python $HOME/.bin/modules/genericon/genericon.py -c $FULL/genericon.config
     sleep 0.25 
     signal-status "$LOCKING_KEY"
     call-status $LOCKING_KEY
