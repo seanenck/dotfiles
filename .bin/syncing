@@ -2,13 +2,15 @@
 source $HOME/.bin/common
 PROFILE_PATH=/mnt/Storage/Active/Rolling/profiles
 ARCHIVE=$USER_TMP/profile.7z
+SPACING="    "
+
 function backup()
 {
     today=$(date +%Y-%m-%d)
     backup=/tmp/.profile.synced.$today
     if [ ! -e $backup ]; then
         zip-now
-        echo "pushing profile out"
+        echo "${SPACING}pushing profile out"
         scp $ARCHIVE $BASE_SERVER:$PROFILE_PATH/mobile.$today.7z
         ssh $BASE_SERVER "find $PROFILE_PATH -type f -mtime +7 -exec rm {} \;"
         rm -f $ARCHIVE
@@ -19,9 +21,9 @@ function backup()
 function zip-now()
 {
     if [ ! -e $ARCHIVE ]; then
-        echo "zipping profile(s)"
+        echo "${SPACING}zipping profile(s)"
         7z a -t7z -bd $ARCHIVE /home/enck/.cache/home/ /home/enck/.mozilla/ &>/dev/null
-        echo "zip done: $?"
+        echo "${SPACING}zip done: $?"
     fi
 }
 
@@ -46,9 +48,9 @@ function sync-now()
             cd ${SYNCED_PATH}
             git push 2>&1
             for personal in $(ls ${PERM_LOCATION} | grep $PERM_PERSONAL); do
-                echo "pushing $personal"
+                echo "${SPACING}pushing $personal"
                 cd ${PERM_LOCATION}/$personal
-                git push 2>&1
+                git push 2>&1 | sed "s/^/$SPACING/g"
             done
             cd $current
             echo "daily backup"
