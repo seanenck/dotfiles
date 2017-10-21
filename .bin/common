@@ -201,6 +201,7 @@ function is-mounted()
 
 function get-all-changes()
 {
+    git update-index -q --refresh 
     git diff-index --name-only HEAD --
     git status -sb | grep 'ahead'
     git branch | grep "^\*" | grep -v "master"
