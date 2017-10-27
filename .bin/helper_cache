@@ -26,6 +26,29 @@ ENTRIES=$HOME/.config/window.entries
 SUITE_FILE="$SYNCED_CONF/suite.dmenu_urls"
 BROWSER_WINDOW="Firefox"
 BUILD_PKG="buildpkg"
+BASH_HIST="bash-history"
+BASH_NEW_HISTORY=$USER_TMP/bash_history.tmp
+
+function cleanup-bash-history()
+{
+    python -c "
+import operator
+with open('$BASH_HISTORY') as f:
+    lines = [x.strip() for x in f.readlines()]
+    cur = {}
+    idx = 0
+    for l in lines:
+        cur[l] = idx
+        idx = idx + 1
+    vals = sorted(cur.items(), key=operator.itemgetter(1))
+    with open('$BASH_NEW_HISTORY', 'w') as w:
+        for l in vals:
+            w.write(l[0])
+            w.write('\n')
+"
+    cat $BASH_NEW_HISTORY > $BASH_HISTORY
+    update-time "history"    
+}
 
 function build-pkg()
 {
@@ -231,6 +254,7 @@ function get-help()
     $BROWSER_PRIVATE_KEY (default browser - private)
     $SUITE_KEY (open a set of website as a suite)
     $BUILD_PKG (handle pkgbuilds)
+    $BASH_HIST (cleanup bash history)
 "
 }
 
@@ -294,6 +318,9 @@ if [ ! -z $1 ]; then
             ;;
         $SUITE_KEY)
             suite-open
+            ;;
+        $BASH_HIST)
+            cleanup-bash-history
             ;;
         *)
             NEED_HELP=1
