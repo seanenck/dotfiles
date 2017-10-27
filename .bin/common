@@ -135,7 +135,7 @@ function check-timed-events()
                 fi
             fi
         done
-        if [ $cnt -ne 8 ]; then
+        if [ $cnt -ne 9 ]; then
             warnings=$warnings" wrong_number_of_events"
         fi
         if [ ! -z "$warnings" ]; then
