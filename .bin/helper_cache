@@ -46,8 +46,14 @@ with open('$BASH_HISTORY') as f:
             w.write(l[0])
             w.write('\n')
 "
-    cat $BASH_NEW_HISTORY > $BASH_HISTORY
-    update-time "history"    
+    new_count=$(cat $BASH_NEW_HISTORY | wc -l)
+    old_count=$(cat $BASH_HISTORY | wc -l)
+    echo "history cleaned up, entries: $new_count (previous: $old_count)"
+    read -p "save cleaned up history (y/n)? " yn
+    if [[ "$yn" == "y" ]]; then
+        cat $BASH_NEW_HISTORY > $BASH_HISTORY
+        update-time "history"
+    fi
 }
 
 function build-pkg()
