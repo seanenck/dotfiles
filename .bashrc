@@ -75,25 +75,6 @@ echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
 CHROOT=$CHROOT_LOCATION
 export CHROOT
 
-if [ ! -e $BASH_NEW_HIST ]; then
-    python -c "
-import operator
-with open('$BASH_HISTORY') as f:
-    lines = [x.strip() for x in f.readlines()]
-    cur = {}
-    idx = 0
-    for l in lines:
-        cur[l] = idx
-        idx = idx + 1
-    vals = sorted(cur.items(), key=operator.itemgetter(1))
-    with open('$BASH_NEW_HIST', 'w') as w:
-        for l in vals:
-            w.write(l[0])
-            w.write('\n')
-"
-    cp $BASH_NEW_HIST $BASH_HISTORY
-fi
-
 clear
 git-changes
 ssh-add -L >/dev/null
