@@ -152,8 +152,7 @@ function push-pull-git-fxn()
 
 function update-chroot()
 {
-    echo "updating chroot..."
-    arch-nspawn -C /etc/pacman.conf ${CHROOT}/root pacman -Syyu
+    epiphyte-archroot update
 }
 
 function arch-chroot-manage()
@@ -162,9 +161,8 @@ function arch-chroot-manage()
         update-chroot
     fi
     if [ ! -d $CHROOT ]; then
-        echo "creating chroot..."
         mkdir -p $CHROOT
-        mkarchroot -C /etc/pacman.conf $CHROOT/root base-devel
+        epiphtey-archroot build
         update-chroot
     fi
     update-time "last-chroot"
