@@ -11,3 +11,5 @@ alias tree='tree -J | python -c "import sys, json; print(json.dumps(json.loads(s
 alias vimtext="touch /tmp/textmode && vim"
 alias weechat="rm -f /tmp/weechat.ready && weechat"
 alias xhost-local="xhost +local:"
+alias vi="vim"
+alias nano="vim"
