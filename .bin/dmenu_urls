@@ -20,21 +20,8 @@ function run-browser()
         args=$3
     fi
 
-    cmd="$url $args"
+    cmd="$args $url"
     echo "$browser $cmd"
-    pid=$(pidof $browser)
-    cnt=0
-    while [ -z "$pid" ]; do
-        if [ $cnt -eq 0 ]; then
-            $browser &
-        fi
-        cnt=$((cnt+1))
-        sleep 3
-        pid=$(pidof $browser)
-        if [ $cnt -eq 5 ]; then
-            break
-        fi
-    done
     $browser $cmd
 }
 
