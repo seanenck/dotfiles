@@ -87,6 +87,9 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
 rm -f $today_check
 if [ ! -e $today_check ]; then
+    XERRORS=$HOME/.xsession-errors
+    rm -r $XERRORS
+    ln -s /dev/null $XERRORS
     process-logs
     touch $today_check
 fi
