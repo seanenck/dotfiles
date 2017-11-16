@@ -36,6 +36,7 @@ COPY_INDICATOR=$USER_TMP/backup.files
 MNT_SHARE=/mnt/Storage
 LAST_TIMES=$HOME/.cache/last-timed.log
 LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
+REQUIRED_EVENTS=6
 
 function set-system()
 {
@@ -133,7 +134,7 @@ function check-timed-events()
                 fi
             fi
         done
-        if [ $cnt -ne 9 ]; then
+        if [ $cnt -ne $REQUIRED_EVENTS ]; then
             warnings=$warnings" wrong_number_of_events"
         fi
         if [ ! -z "$warnings" ]; then
