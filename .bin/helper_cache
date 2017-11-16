@@ -25,7 +25,6 @@ DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 ENTRIES=$HOME/.config/window.entries
 SUITE_FILE="$SYNCED_CONF/suite.dmenu_urls"
 BROWSER_WINDOW="Nightly"
-BUILD_PKG="buildpkg"
 BASH_HIST="bash-history"
 BASH_NEW_HISTORY=$USER_TMP/bash_history.tmp
 
@@ -54,26 +53,6 @@ with open('$BASH_HISTORY') as f:
         cat $BASH_NEW_HISTORY > $BASH_HISTORY
         update-time "history"
     fi
-}
-
-function build-pkg()
-{
-    echo $1 | grep -q -E "($BUILD_PKG_LIST)"
-    if [ $? -ne 0 ]; then
-        echo "unknown pkgbuild: $1"
-        exit 1
-    fi
-    work_dir=$(mktemp -d)
-    cwd=$pwd
-    cd $work_dir
-    _f=pkg.tar.gz
-    curl https://aur.archlinux.org/cgit/aur.git/snapshot/$1.tar.gz > $_f
-    tar xf $_f
-    cd $1
-    makepkg -sri
-    sudo cp *.pkg.tar.xz /var/cache/pacman/pkg/
-    cd $cwd
-    update-time "$PKGBUILD_IND"$1
 }
 
 function suite-open()
@@ -257,7 +236,6 @@ function get-help()
     $BROWSER_KEY (default browser)
     $BROWSER_PRIVATE_KEY (default browser - private)
     $SUITE_KEY (open a set of website as a suite)
-    $BUILD_PKG (handle pkgbuilds)
     $BASH_HIST (cleanup bash history)
 "
 }
@@ -276,9 +254,6 @@ if [ ! -z $1 ]; then
     NEED_HELP=0
     cmd=$(echo "$1" | sed "s/$BROWSER_KEY/$FIREFOX_KEY/g")
     case $cmd in
-        $BUILD_PKG)
-            build-pkg $2
-            ;;
         $MACHINECTL_NSPAWN_KEY)
             make-nspawn ${@:2}
             ;;
