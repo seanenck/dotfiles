@@ -9,19 +9,6 @@ function _simple_autocomplete()
     fi
 }
 
-_buildpkg()
-{
-    local cur opts 
-    if [ $COMP_CWORD -eq 1 ]; then
-        source ~/.bin/common
-        cur=${COMP_WORDS[COMP_CWORD]}
-        opts=$(echo $BUILD_PKG_LIST | sed "s/|/ /g")
-        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-    fi
-}
-
-complete -F _buildpkg buildpkg
-
 _dmenu_urls()
 {
     _simple_autocomplete "dmenu_urls --help"
