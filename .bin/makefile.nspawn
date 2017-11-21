@@ -59,7 +59,7 @@ create: root
 	test ! -d $(CONTAINER_PATH)
 	test ! -e $(CONTAINER_CONF)
 	mkdir -p $(CONTAINER_PATH)
-	pacstrap -i -c -d -C $(CONTAINER_PATH) $(PACKAGES) $(IGNORES)
+	pacstrap -i -c -d $(CONTAINER_PATH) $(PACKAGES) $(IGNORES)
 	cat /$(USER_HOME)/.config/home/base.template > $(CONTAINER_CONF)
 	echo "[Exec]" >> $(CONTAINER_CONF)
 	install -Dm644 $(USER_SYNC)$(PACMAN) $(CONTAINER_PATH)$(ETC_PACMAN)
