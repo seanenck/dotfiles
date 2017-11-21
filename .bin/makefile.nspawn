@@ -4,8 +4,6 @@ ifeq ($(TARGET),)
     $(error TARGET is required)
 endif
 
-ARCH=x86-64
-_ARCH_ARCH=$(shell echo $(ARCH) | sed "s/-/_/g")
 USER_NAME=enck
 USER_HOME=home/$(USER_NAME)/
 USER_SYNC=$(USER_HOME).synced/configs/
@@ -23,7 +21,6 @@ CONTAINER_ETC=$(CONTAINER_PATH)etc/
 PACKAGES=base git vim base-devel
 IGNORES=--ignore linux --ignore nano --ignore linux-firmware --ignore dmd --ignore libphobos
 
-TMP_PACMAN=/tmp/pacman.conf
 PACMAN=pacman.conf
 ETC_PACMAN=etc/$(PACMAN)
 CONFIG_DIR=.config/
@@ -62,12 +59,10 @@ create: root
 	test ! -d $(CONTAINER_PATH)
 	test ! -e $(CONTAINER_CONF)
 	mkdir -p $(CONTAINER_PATH)
-	cat /$(USER_SYNC)$(PACMAN) | sed "s/Architecture = auto/Architecture = $(_ARCH_ARCH)/g" > $(TMP_PACMAN)
-	pacstrap -i -c -d -C $(TMP_PACMAN) $(CONTAINER_PATH) $(PACKAGES) $(IGNORES)
+	pacstrap -i -c -d -C $(CONTAINER_PATH) $(PACKAGES) $(IGNORES)
 	cat /$(USER_HOME)/.config/home/base.template > $(CONTAINER_CONF)
 	echo "[Exec]" >> $(CONTAINER_CONF)
-	echo "Personality=$(ARCH)" >> $(CONTAINER_CONF)
-	install -Dm644 $(TMP_PACMAN) $(CONTAINER_PATH)$(ETC_PACMAN)
+	install -Dm644 $(USER_SYNC)$(PACMAN) $(CONTAINER_PATH)$(ETC_PACMAN)
 
 remove: running
 	rm -rf $(CONTAINER_PATH)
