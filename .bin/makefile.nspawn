@@ -39,8 +39,11 @@ PLUGINS=$(shell find /$(USER_HOME)$(VIM) -type f)
 REPOS=$(CONTAINER_PATH)/mnt/repositories/local/
 VIM_SWAP_RT=$(CONTAINER_ROOT)$(VIM)$(SWAP)
 VIM_UNDO_RT=$(CONTAINER_ROOT)$(VIM)$(UNDO)
+ETC=/etc/
 
 .PHONY:
+
+containeretc = install -Dm$2 /etc/$1 $(CONTAINER_ETC)$1
 
 empty:
 	$(error no command given)
@@ -85,6 +88,11 @@ refresh: running
 	install -Dm644 $(VIMRC) $(CONTAINER_ETC)vimrc
 	install -Dm644 $(USER_GIT) $(CONTAINER_ROOT)$(GIT)
 	install -Dm644 $(USER_GIT) $(CONTAINER_HOME)$(GIT)
+	$(call containeretc,passwd,644)
+	$(call containeretc,group,644)
+	$(call containeretc,shadow,600)
+	$(call containeretc,gshadow,600)
+	$(call containeretc,sudoers,440)
 	rsync -avc /$(USER_HOME)$(VIM)* $(VIMPLUGIN) --exclude=$(UNDO) --exclude=$(SWAP) --delete-after
 
 pack: running
