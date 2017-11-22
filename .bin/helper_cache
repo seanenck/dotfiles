@@ -57,10 +57,13 @@ with open('$BASH_HISTORY') as f:
 
 function suite-open()
 {
-    for f in $(cat $SUITE_FILE); do
-        $f
-        sleep 0.5
+    all=""
+    for f in  $(cat $SUITE_FILE); do
+        next=$(echo $f | cut -d " " -f 1)
+        entry=$(dmenu_urls --entry $f)
+        all=$all" "$entry
     done
+    firefox $all
 }
 
 function make-nspawn()

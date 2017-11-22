@@ -7,6 +7,7 @@ HELP_KEYWORD="--help"
 REBUILD_KEYWORD="--rebuild"
 REMOVE_KEYWORD="--remove"
 DISPLAY_KEYWORD="--display"
+ENTRY_KEYWORD="--entry"
 BROWSERS="firefox"
 DEFAULT_ARGS=""
 START_LINE="#name,browser,url,args"
@@ -145,6 +146,23 @@ case $1 in
         fi
         exit 0
         ;;
+    $ENTRY_KEYWORD)
+        if [ -z "$2" ]; then
+            echo "entry name required"
+            exit 1
+        fi
+        if [ -e $INDEX_FILE ]; then
+            for f in $(cat $INDEX_FILE); do
+                echo $f | cut -d "," -f 1 | sed 's/"//g' | grep -q "^"$2"$"
+                if [ $? -eq 0 ]; then
+                    echo $f | cut -d "," -f 3,4 | sed 's/"//g' | sed "s/,/ /g"
+                    exit 0
+                fi
+            done
+        fi
+        echo "unable to find $2"
+        exit 1
+        ;;
     $HELP_KEYWORD)
         DO_HELP=1
         ;;
@@ -164,5 +182,6 @@ if [ ! -z $DO_HELP ]; then
     $REBUILD_KEYWORD
     $DISPLAY_KEYWORD
     $HELP_KEYWORD
+    $ENTRY_KEYWORD [name]
 "
 fi
