@@ -35,9 +35,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias ls='ls --color=auto'
 fi
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
+. ~/.bash_aliases
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -52,7 +50,7 @@ fi
 
 #end-general
 
-source $HOME/.bin/common
+. $HOME/.bin/common
 if [ -e "$EPIPHYTE_CONF" ]; then
     source $EPIPHYTE_CONF
 fi
