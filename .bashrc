@@ -73,15 +73,13 @@ echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
 CHROOT=$CHROOT_LOCATION
 export CHROOT
 
-clear
-git-changes
-ssh-add -L >/dev/null
-if [ $? -ne 0 ]; then
-    echo
-    echo -e "${RED_TEXT}keys not loaded${NORM_TEXT}"
-fi
+# gpg setup
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
+
+clear
+git-changes
+
 today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
 rm -f $today_check
 if [ ! -e $today_check ]; then
@@ -91,4 +89,5 @@ if [ ! -e $today_check ]; then
     process-logs
     touch $today_check
 fi
+
 check-timed-events
