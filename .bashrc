@@ -77,9 +77,6 @@ export CHROOT
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
-# manage network connectivity
-auto-connect
-
 clear
 git-changes
 

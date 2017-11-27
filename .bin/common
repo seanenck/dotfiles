@@ -37,28 +37,6 @@ MNT_SHARE=/mnt/Storage
 LAST_TIMES=$HOME/.cache/last-timed.log
 LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 REQUIRED_EVENTS=6
-LAST_AUTO_STATE=$USER_TMP/auto-state
-
-function auto-connect()
-{
-    _state='down'
-    if [ -e $LAST_AUTO_STATE ]; then
-        _state=$(cat $LAST_AUTO_STATE)
-    fi
-
-    _current=$(cat /sys/class/net/enp0s31f6/operstate)
-    echo $_current > $LAST_AUTO_STATE
-    if [[ "$_current" != "$_state" ]]; then
-        case $_current in
-            "down")
-                wsw --change 3
-                ;;
-            "up")
-                wsw --change 2
-                ;;
-        esac
-    fi
-}
 
 function set-system()
 {
