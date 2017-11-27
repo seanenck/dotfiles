@@ -37,6 +37,25 @@ MNT_SHARE=/mnt/Storage
 LAST_TIMES=$HOME/.cache/last-timed.log
 LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 REQUIRED_EVENTS=6
+WAS_DOCKED=$USER_TMP/docked
+
+function docked()
+{
+    local _docked _isdock _profile
+    lsusb | grep -q "Lenovo"
+    _isdock=$?
+    if [ -e $WAS_DOCKED ]; then
+        _docked=$(cat $WAS_DOCKED)
+        if [ $_isdock -ne $_docked ]; then
+            _profile=3
+            if [ $_isdock -eq 0 ]; then
+                _profile=2
+            fi
+            wsw --change $_profile
+        fi
+    fi
+    echo $_isdock > $WAS_DOCKED
+}
 
 function set-system()
 {
