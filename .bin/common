@@ -37,28 +37,25 @@ MNT_SHARE=/mnt/Storage
 LAST_TIMES=$HOME/.cache/last-timed.log
 LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 REQUIRED_EVENTS=6
-WAS_DOCKED=$USER_TMP/docked
+DOCK_SLEEP=$USER_TMP/dock.check
 
 function docked()
 {
-    local _docked _isdock _profile
-    lsusb | grep -q "Lenovo"
-    _isdock=$?
-    if [ -e $WAS_DOCKED ]; then
-        _docked=$(cat $WAS_DOCKED)
+    if [ ! -e $DOCK_SLEEP ]; then
+        local _isdock _isconnected _profile
+        lsusb | grep -q "Lenovo"
+        _isdock=$?
         wget -q --tries=10 --timeout=20 --spider https://google.com
-        if [ $? -eq 0 ]; then
-            _docked=$_isdock
-        fi
-        if [ $_isdock -ne $_docked ]; then
+        _isconnected=$?
+        if [ $_isconnected -ne 0 ]; then
             _profile=3
             if [ $_isdock -eq 0 ]; then
                 _profile=2
             fi
             wsw --change $_profile
         fi
+        touch $DOCK_SLEEP
     fi
-    echo $_isdock > $WAS_DOCKED
 }
 
 function set-system()

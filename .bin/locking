@@ -76,6 +76,7 @@ function suspend-now()
         fi
 
         rm -f $PROFILE_DEF
+        rm -f $DOCK_SLEEP
         SLEEP_COUNT=0
         if [ -z "$1" ]; then
             SLEEP_COUNT=$SLEEP_AFTER
