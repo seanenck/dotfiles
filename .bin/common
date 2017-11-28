@@ -46,6 +46,10 @@ function docked()
     _isdock=$?
     if [ -e $WAS_DOCKED ]; then
         _docked=$(cat $WAS_DOCKED)
+        wget -q --tries=10 --timeout=20 --spider https://google.com
+        if [ $? -eq 0 ]; then
+            _docked=$_isdock
+        fi
         if [ $_isdock -ne $_docked ]; then
             _profile=3
             if [ $_isdock -eq 0 ]; then
