@@ -56,9 +56,9 @@ endif
 running: root
 	! machinectl status $(TARGET) &> /dev/null
 
-spawn: create refresh
+create: instance refresh
 
-create: root
+instance: root
 	test ! -d $(CONTAINER_PATH)
 	test ! -e $(CONTAINER_CONF)
 	mkdir -p $(CONTAINER_PATH)
