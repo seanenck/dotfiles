@@ -147,7 +147,7 @@ function arch-chroot-manage()
         epiphtey-archroot build
         update-chroot
     fi
-    update-time "last-chroot"
+    update-time "archroot"
 }
 
 function perm-pull()
