@@ -32,7 +32,7 @@ _machinectl-nspawn()
     local cur opts 
     if [ $COMP_CWORD -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        opts=$(cat /home/enck/.bin/makefile.nspawn | grep "^[a-z]" | grep ":" | cut -d ":" -f 1 | grep -v "empty" | sort | uniq)
+        opts=$(cat /home/enck/.bin/makefile.nspawn | grep "^[a-z]" | grep ":" | cut -d ":" -f 1 | grep -v -E "running|root|empty|instance" | sort | uniq)
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     fi
 }
