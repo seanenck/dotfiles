@@ -1,7 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 IS_MOUNTED=1
-USB_KEYWORD="usb"
 KEYS_KEYWORD="keys"
 UMNT_KEYWORD="umount"
 DEFCRYPT_KEYWORD="defcrypt"
@@ -27,7 +26,6 @@ function print-help()
     echo "
     $KEYS_KEYWORD - load keys
     $UMNT_KEYWORD - umount local share(s)
-    $USB_KEYWORD - mount a usb drive
     $DEFCRYPT_KEYWORD - define a new crypt (optional size)
     $REMCRYPT_KEYWORD - remove a crypt (required path to crypt)
     $OPENCRYPT_KEYWORD - open an encrypted image (required image file)
@@ -132,28 +130,6 @@ function close-crypt()
     sudo cryptsetup luksClose $2
 }
 
-function mount-usb()
-{
-    disks=$(sudo fdisk -l | grep "Disk /dev/[sd]" | cut -d ' ' -f 2,3,4 | cut -d ',' -f 1)
-    disk_count=0
-    if [ ! -z "$disks" ]; then
-        disk_count=$(echo $disks | wc -l)
-    fi
-    if [ $disk_count -gt 1 ]; then
-        echo "Select drive:"
-        read USBDISK
-    else
-        if [ $disk_count -ne 1 ]; then
-            echo "no disk to mount"
-            exit -1
-        else
-            USBDISK=$(echo $disks | cut -d ":" -f 1)
-        fi
-    fi
-    USBDISK+="1"
-    sudo mount $USBDISK /mnt/usb
-}
-
 function umount-share()
 {
     IS_MNT=$(is-mounted $MNT_SHARE)
@@ -168,9 +144,6 @@ case $1 in
         ;;
     $KEYS_KEYWORD)
         add-keys
-        ;;
-    $USB_KEYWORD)
-        mount-usb
         ;;
     $DEFCRYPT_KEYWORD)
         def-crypt $@
