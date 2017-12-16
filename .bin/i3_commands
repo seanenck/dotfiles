@@ -1,5 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
+PRIMARY_ICON="cbatticon"
 
 # Get i3 workspaces (only name/number by default, more grep outputs available via first param)
 function get-i3-workspaces()
@@ -47,12 +48,12 @@ function _run_if_not()
     if [ $(_tray_count $2) -lt $((val+1)) ]; then
         $cmd $3 &
     fi
-    sleep 0.5
+    sleep 1.0
 }
 
-function kill_tray()
+function _kill_tray()
 {
-    if [ $(_tray_count "cbatticon") -eq 0 ]; then
+    if [ $(_tray_count "$PRIMARY_ICON") -eq 0 ]; then
         pkill cbatticon
         pkill volumeicon
         for p in $(pidof python); do
@@ -64,9 +65,36 @@ function kill_tray()
     fi
 }
 
+function tray_reload()
+{
+    _force_kill
+}
+
+function _force_kill()
+{
+    pkill $PRIMARY_ICON
+    _kill_tray
+    if [ -z "$1" ]; then
+        sleep 0.5
+    else
+        i3-msg $1
+    fi
+    tray_icons
+}
+
+function reload()
+{
+    _force_kill "reload"
+}
+
+function restart()
+{
+    _force_kill "restart"
+}
+
 function _tray_icons()
 {
-    kill_tray
+    _kill_tray
     for b in $(echo "0 1"); do
         _run_if_not $b "cbatticon" "-d BAT$b"
     done
@@ -82,4 +110,4 @@ function tray_icons()
     _tray_icons &
 }
 
-$1 $2
+$1 $2 
