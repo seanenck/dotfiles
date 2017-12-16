@@ -102,7 +102,7 @@ exec --no-startup-id volumeicon
 exec --no-startup-id genericon -a /home/enck/.bin/status init
 exec --no-startup-id compton --config ~/.config/i3/compton.conf
 exec --no-startup-id wsw-applet
-exec --no-startup-id udiskie --no-notify --no-automount --tray -f ""
+exec --no-startup-id udiskie --no-notify --no-automount --no-config --tray -f ""
 
 # Handle auto-locking
 exec xautolock -time 5 -locker "/usr/local/bin/locking auto" &
