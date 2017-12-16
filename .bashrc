@@ -81,7 +81,9 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 docked
 
 # tray icons
-tray
+if [ ! -e $TRAY_SET ]; then
+    tray
+fi
 
 clear
 git-changes

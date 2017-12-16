@@ -38,6 +38,7 @@ LAST_TIMES=$HOME/.cache/last-timed.log
 LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 REQUIRED_EVENTS=6
 DOCK_SLEEP=$USER_TMP/dock.check
+TRAY_SET=/tmp/.tray
 
 function tray()
 {

@@ -76,16 +76,6 @@ function replace-and-execute()
     eval $VAL
 }
 
-function kill-icons()
-{
-    for pid in $(pgrep "python"); do
-        ps $pid | grep -q "genericon"
-        if [ $? -eq 0 ]; then
-            kill $pid
-        fi
-    done
-}
-
 function set-workplace()
 {
     ALL_DISPLAYS=$(get-all-displays | grep -v "$MAIN_DISPLAY")
@@ -102,7 +92,8 @@ function set-workplace()
     if [ $has_side -eq 0 ]; then
         use_setting=$DEFAULT_WORKSPACE_ID
     fi
-    kill-icons
+    rm -f $TRAY_SET
+    i3_commands tray_reload 
     case $use_setting in
         $DOCKED_ID | $HOME_WORKPLACE_ID)
             case $use_setting in
@@ -120,7 +111,6 @@ function set-workplace()
             touch $WORKPLACE_WORKING
             ;;
     esac
-    status init &
     toggle-backlighting $MID_BRIGHT
     if [ $1 -eq $use_setting ]; then
         i3 restart
