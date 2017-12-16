@@ -29,10 +29,16 @@ complete -F _locking locking
 
 _machinectl-nspawn()
 {
-    local cur opts 
+    local cur opts cmd
+    cmd=""
     if [ $COMP_CWORD -eq 1 ]; then
+        cmd='cat /home/enck/.bin/makefile.nspawn | grep "^[a-z]" | grep ":" | cut -d ":" -f 1 | grep -v -E "running|root|empty|instance" | sort | uniq'
+    else
+        cmd='/usr/bin/machinectl list-images | grep -v "NAME" | grep -v "^$" | cut -d " " -f 1 | head -n -1'
+    fi
+    if [ ! -z "$cmd" ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        opts=$(cat /home/enck/.bin/makefile.nspawn | grep "^[a-z]" | grep ":" | cut -d ":" -f 1 | grep -v -E "running|root|empty|instance" | sort | uniq)
+        opts=$(eval $cmd)
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     fi
 }
