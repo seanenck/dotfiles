@@ -39,6 +39,11 @@ LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 REQUIRED_EVENTS=6
 DOCK_SLEEP=$USER_TMP/dock.check
 
+function tray()
+{
+    i3_commands tray_icons > /dev/null 2>&1 &
+}
+
 function docked()
 {
     if [ ! -e $DOCK_SLEEP ]; then

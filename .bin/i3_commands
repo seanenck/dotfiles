@@ -50,14 +50,29 @@ function _run_if_not()
     sleep 0.5
 }
 
+function kill_tray()
+{
+    if [ $(_tray_count "cbatticon") -eq 0 ]; then
+        pkill cbatticon
+        pkill volumeicon
+        for p in $(pidof python); do
+            cat /proc/$p/cmdline | grep -q -E "udiskie|wsw-applet|genericon"
+            if [ $? -eq 0 ]; then
+                kill $p
+            fi
+        done
+    fi
+}
+
 function _tray_icons()
 {
+    kill_tray
     for b in $(echo "0 1"); do
         _run_if_not $b "cbatticon" "-d BAT$b"
     done
     _run_if_not 0 "volumeicon"
     _run_python "wsw-applet" ""
-    _run_python "udiskie" "--no-notify --no-automount --no-config --tray -f ''"
+    _run_python "udiskie" "--no-notify --no-automount --no-config --tray -f \"\""
     _run_python "genericon" "-a /home/enck/.bin/status init"
 
 }

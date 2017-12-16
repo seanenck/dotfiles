@@ -81,7 +81,7 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 docked
 
 # tray icons
-i3_commands tray_icons > /dev/null 2>&1
+tray
 
 clear
 git-changes
