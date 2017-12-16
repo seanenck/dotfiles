@@ -84,6 +84,9 @@ docked
 if [ ! -e $TRAY_SET ]; then
     tray
 fi
+if [ ! -e $PKG_QUERY ]; then
+    list-packages
+fi
 
 clear
 git-changes

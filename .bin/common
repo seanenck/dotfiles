@@ -39,6 +39,12 @@ LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 REQUIRED_EVENTS=6
 DOCK_SLEEP=$USER_TMP/dock.check
 TRAY_SET=/tmp/.tray
+PKG_QUERY=$USER_TMP/package.query
+
+function list-packages()
+{
+    /usr/bin/pacman -Qqe > $HOME/.config/packages
+}
 
 function tray()
 {
