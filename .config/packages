@@ -66,10 +66,8 @@ man-db
 man-pages
 mdadm
 netctl
-nim
 noto-fonts-cjk
 noto-fonts-emoji
-ntp
 opensc
 openssh
 p7zip
@@ -87,9 +85,7 @@ procps-ng
 psmisc
 pwgen
 python-markdown
-python-systemd
 reiserfsprogs
-rpmextract
 rsync
 s-nail
 sed
@@ -118,7 +114,6 @@ which
 wpa_supplicant
 wsw
 wsw-applet
-wxgtk2
 xautolock
 xdotool
 xf86-video-vesa
