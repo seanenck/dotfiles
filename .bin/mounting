@@ -1,31 +1,16 @@
 #!/bin/bash
 source $HOME/.bin/common
 IS_MOUNTED=1
-KEYS_KEYWORD="keys"
-UMNT_KEYWORD="umount"
 DEFCRYPT_KEYWORD="defcrypt"
 REMCRYPT_KEYWORD="remcrypt"
 OPENCRYPT_KEYWORD="opencrypt"
 NEWMOUNTS="/tmp/crypts/"
 SETUP_CRYPT="setup"
 DEFCRYPT_SIZE="100M"
-function add-keys()
-{
-    keys=$(find ${SSH_KEY_PATH}**/* -type f | grep -v "deprecated")
-    for key in $keys; do
-        pub_key=$(echo ${key#${SSH_KEY_PATH}} | cut -d "/" -f 1)
-        if [ ! -e "$SSH_SYNC_PATH/pubkeys/$pub_key.pub" ]; then
-            echo "missing pub key $pub_key"
-        fi
-        ssh-add $key
-    done
-}
 
 function print-help()
 {
     echo "
-    $KEYS_KEYWORD - load keys
-    $UMNT_KEYWORD - umount local share(s)
     $DEFCRYPT_KEYWORD - define a new crypt (optional size)
     $REMCRYPT_KEYWORD - remove a crypt (required path to crypt)
     $OPENCRYPT_KEYWORD - open an encrypted image (required image file)
@@ -130,21 +115,7 @@ function close-crypt()
     sudo cryptsetup luksClose $2
 }
 
-function umount-share()
-{
-    IS_MNT=$(is-mounted $MNT_SHARE)
-    if [ $IS_MNT -eq $IS_MOUNTED ]; then
-        sudo umount $MNT_SHARE
-    fi    
-}
-
 case $1 in
-    $UMNT_KEYWORD)
-        umount-share
-        ;;
-    $KEYS_KEYWORD)
-        add-keys
-        ;;
     $DEFCRYPT_KEYWORD)
         def-crypt $@
         ;;
