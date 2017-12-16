@@ -80,6 +80,9 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 # check for docking actions
 docked
 
+# tray icons
+i3_commands tray_icons > /dev/null 2>&1
+
 clear
 git-changes
 

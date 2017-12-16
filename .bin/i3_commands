@@ -30,4 +30,41 @@ function rename-workspace()
     fi
 }
 
+function _tray_count()
+{
+    ps ax | grep -v "grep" | grep $1 | wc -l
+}
+
+function _run_python()
+{
+    _run_if_not 0 "python.*$1" "$2"
+}
+
+function _run_if_not()
+{
+    val=$1
+    cmd=$(echo "$2" | sed "s/python\.\*//g")
+    if [ $(_tray_count $2) -lt $((val+1)) ]; then
+        $cmd $3 &
+    fi
+    sleep 0.5
+}
+
+function _tray_icons()
+{
+    for b in $(echo "0 1"); do
+        _run_if_not $b "cbatticon" "-d BAT$b"
+    done
+    _run_if_not 0 "volumeicon"
+    _run_python "wsw-applet" ""
+    _run_python "udiskie" "--no-notify --no-automount --no-config --tray -f ''"
+    _run_python "genericon" "-a /home/enck/.bin/status init"
+
+}
+
+function tray_icons()
+{
+    _tray_icons &
+}
+
 $1 $2
