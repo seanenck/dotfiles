@@ -1,6 +1,7 @@
 #!/bin/bash
 source $HOME/.bin/common
 PRIMARY_ICON="cbatticon"
+CUSTOM_STATS=$HOME/.cache/i3stats
 
 # Get i3 workspaces (only name/number by default, more grep outputs available via first param)
 function get-i3-workspaces()
@@ -111,4 +112,16 @@ function tray_icons()
     touch $TRAY_SET
 }
 
+function stats()
+{
+    if [ -e $CUSTOM_STATS ]; then
+        $CUSTOM_STATS
+    else
+        i3status | while :
+        do
+            read line
+            echo "$line" || exit 1
+        done
+    fi
+}
 $1 $2 
