@@ -82,7 +82,6 @@ refresh: running
 	mkdir -p $(VIM_SWAP_RT)
 	mkdir -p $(VIM_UNDO_RT)
 	touch $(REPOS)local.conf
-	chown -R $(USER_NAME):$(USER_NAME) $(CONTAINER_HOME)
 	install -Dm644 $(VIMRC) $(CONTAINER_HOME)$(VIMRC_FILE)
 	install -Dm644 $(VIMRC) $(CONTAINER_ROOT)$(VIMRC_FILE)
 	install -Dm644 $(VIMRC) $(CONTAINER_ETC)vimrc
@@ -94,6 +93,8 @@ refresh: running
 	$(call containeretc,gshadow,600)
 	$(call containeretc,sudoers,440)
 	rsync -avc /$(USER_HOME)$(VIM)* $(VIMPLUGIN) --exclude=$(UNDO) --exclude=$(SWAP) --delete-after
+	chown -R $(USER_NAME):$(USER_NAME) $(CONTAINER_HOME)
+
 
 pack: running
 	cd $(VAR_LIB) && tar -czvpf $(PWD)/pack.tar.gz --one-file-system $(TARGET)/
