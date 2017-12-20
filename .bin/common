@@ -251,9 +251,11 @@ function set-user-files()
     fi
 
     # vim
-    mkdir -p $HOME/.vim/undo
-    find $HOME/.vim/undo/ -mmin +1440 -type f -exec rm {} \;
-    mkdir -p $HOME/.vim/swap
+    for v in $(echo "undo swap"); do
+        vim_dir=$HOME/.vim/$v
+        mkdir -p $vim_dir
+        find $vim_dir -mmin +1440 -type f -exec rm {} \;
+    done
 }
 
 function get-git-folders()
