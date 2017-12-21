@@ -1,5 +1,6 @@
 [Files]
 Bind=/opt/shared:/root/workspace
+Bind=/opt/shared:/home/enck/workspace
 Bind=/opt/shared
 Bind=/var/cache/pacman
 BindReadOnly=/root/.gnupg
