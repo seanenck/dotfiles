@@ -40,10 +40,11 @@ REQUIRED_EVENTS=6
 DOCK_SLEEP=$USER_TMP/dock.check
 TRAY_SET=/tmp/.tray
 PKG_QUERY=$USER_TMP/package.query
+CONF_HOME=$HOME/.config/
 
 function list-packages()
 {
-    /usr/bin/pacman -Qqe > $HOME/.config/packages
+    /usr/bin/pacman -Qqe > ${CONF_HOME}/packages
 }
 
 function tray()
