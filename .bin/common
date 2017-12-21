@@ -40,7 +40,7 @@ REQUIRED_EVENTS=6
 DOCK_SLEEP=$USER_TMP/dock.check
 TRAY_SET=/tmp/.tray
 PKG_QUERY=$USER_TMP/package.query
-CONF_HOME=$HOME/.config/
+CONF_HOME=$HOME/.config/home
 
 function list-packages()
 {
