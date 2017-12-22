@@ -12,7 +12,6 @@ FIREFOX_PRIVATE_KEY="$FIREFOX_KEY$PRIVATE_KEY"
 DMENU_KEY="dmenu-wrapper"
 PERM_UPDATE_KEY="perm-pull"
 PERM_PUSH_KEY="perm-push"
-GENERICON_KEY="genericon"
 ENTER_KEY="enterkeys"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
@@ -241,7 +240,6 @@ function get-help()
     $BROWSER_PRIVATE_KEY (default browser - private)
     $SUITE_KEY (open a set of website as a suite)
     $BASH_HIST (cleanup bash history)
-    $GENERICON_KEY (genericon)
 "
 }
 
@@ -261,9 +259,6 @@ if [ ! -z $1 ]; then
     case $cmd in
         $MACHINECTL_NSPAWN_KEY)
             make-nspawn ${@:2}
-            ;;
-        $GENERICON_KEY)
-            python $HOME/.bin/modules/genericon/genericon.py ${@:2}
             ;;
         $PASSWORD_KEY)
             passwords
