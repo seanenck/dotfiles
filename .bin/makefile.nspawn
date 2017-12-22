@@ -6,7 +6,7 @@ endif
 
 USER_NAME=enck
 USER_HOME=home/$(USER_NAME)/
-USER_SYNC=$(USER_HOME).synced/configs/
+USER_CONF=$(USER_HOME).config/home/
 
 VAR_LIB=/var/lib/machines/
 ETC_NSPAWN=/etc/systemd/nspawn/
@@ -64,7 +64,7 @@ instance: root
 	mkdir -p $(CONTAINER_PATH)
 	pacstrap -i -c -d $(CONTAINER_PATH) $(PACKAGES) $(IGNORES)
 	cat /$(USER_HOME)/.config/home/base.template > $(CONTAINER_CONF)
-	install -Dm644 /$(USER_SYNC)$(PACMAN) $(CONTAINER_PATH)$(ETC_PACMAN)
+	install -Dm644 /$(USER_CONF)$(PACMAN) $(CONTAINER_PATH)$(ETC_PACMAN)
 
 destroy: running
 	rm -rf $(CONTAINER_PATH)
