@@ -1,18 +1,17 @@
 #!/usr/bin/python
-
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject
 import subprocess
 import os
-import sys
 
+_HOME = "/home/enck/"
 _IS_UNLOCK = 0
 _IS_SUSPEND = 1
 _BRIGHTNESS = 'xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk \'{printf "%3.0f", $1}\' | sed "s/^[ \t]*//g"'
 _LOCKED = """
 #!/bin/bash
-source /home/enck/.bin/common
+source """ + _HOME + """.bin/common
 if [ -e $DISPLAY_UN ]; then
     echo """ + str(_IS_UNLOCK) + """
 else
@@ -99,7 +98,7 @@ class Generic:
 
 def main():
     """Entry point."""
-    path = sys.argv[1]
+    path = os.path.join(_HOME, ".config", "genericon")
     Generic(brightness, path)
     Generic(locked, path)
     Gtk.main()
