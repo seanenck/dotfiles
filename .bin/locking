@@ -129,7 +129,6 @@ function toggle-locking()
     if [ $no_action -eq 0 ]; then
         touch $DISPLAY_UN
     fi
-    call-status "$STATUS_LOCKING_KEY"
 }
 
 function print-help()
