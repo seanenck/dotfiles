@@ -36,7 +36,6 @@ VIMRC_FILE=.vimrc
 VIMRC=/$(USER_HOME)$(VIMRC_FILE)
 USER_GIT=/$(USER_HOME)$(GIT)
 PLUGINS=$(shell find /$(USER_HOME)$(VIM) -type f)
-REPOS=$(CONTAINER_PATH)/mnt/repositories/local/
 VIM_SWAP_RT=$(CONTAINER_ROOT)$(VIM)$(SWAP)
 VIM_UNDO_RT=$(CONTAINER_ROOT)$(VIM)$(UNDO)
 ETC=/etc/
@@ -78,10 +77,8 @@ refresh: running
 	mkdir -p $(VIMUNDO)
 	mkdir -p $(CONFIG)
 	mkdir -p $(CONTAINER_ROOT)$(VIM)
-	mkdir -p $(REPOS)
 	mkdir -p $(VIM_SWAP_RT)
 	mkdir -p $(VIM_UNDO_RT)
-	touch $(REPOS)local.conf
 	install -Dm644 $(VIMRC) $(CONTAINER_HOME)$(VIMRC_FILE)
 	install -Dm644 $(VIMRC) $(CONTAINER_ROOT)$(VIMRC_FILE)
 	install -Dm644 $(VIMRC) $(CONTAINER_ETC)vimrc
