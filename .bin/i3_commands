@@ -58,7 +58,7 @@ function _kill_tray()
         pkill cbatticon
         pkill volumeicon
         for p in $(pidof python); do
-            cat /proc/$p/cmdline | grep -q -E "udiskie|wsw-applet"
+            cat /proc/$p/cmdline | grep -q -E "udiskie|wsw-applet|icons"
             if [ $? -eq 0 ]; then
                 kill $p
             fi
@@ -102,6 +102,7 @@ function _tray_icons()
     _run_if_not 0 "volumeicon"
     _run_python "wsw-applet" ""
     _run_python "udiskie" "--no-notify --no-automount --no-config --tray -f \"\""
+    _run_python "icons" ""
 
 }
 
