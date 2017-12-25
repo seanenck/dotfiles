@@ -77,16 +77,10 @@ export CHROOT
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
-# check for docking actions
+# docking change, tray icons, package updates
 docked
-
-# tray icons
-if [ ! -e $TRAY_SET ]; then
-    tray
-fi
-if [ ! -e $PKG_QUERY ]; then
-    list-packages
-fi
+tray
+list-packages
 
 clear
 git-changes

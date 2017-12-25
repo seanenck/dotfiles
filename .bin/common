@@ -44,12 +44,16 @@ CONF_HOME=$HOME/.config/home
 
 function list-packages()
 {
-    /usr/bin/pacman -Qqe > ${CONF_HOME}/packages
+    if [ ! -e $PKG_QUERY ]; then
+        /usr/bin/pacman -Qqe > ${CONF_HOME}/packages
+    fi
 }
 
 function tray()
 {
-    i3_commands tray_icons > /dev/null 2>&1 &
+    if [ ! -e $TRAY_SET ]; then
+        i3_commands tray_icons > /dev/null 2>&1 &
+    fi
 }
 
 function docked()
