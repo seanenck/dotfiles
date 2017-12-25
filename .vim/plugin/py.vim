@@ -1,4 +1,5 @@
 if !has('python3')
+    :echo "python(3) installed?"
 	finish
 endif
 
