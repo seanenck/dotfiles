@@ -53,6 +53,7 @@ endif
 
 let pymode = $HOME . "/.vim/plugin/py.vim"
 if findfile(pymode, ".") == pymode
+    let g:pymode_python = 'python3'
     inoremap <S-Left> <C-o>:call PyShift(0)<CR>
     inoremap <S-Right> <C-o>:call PyShift(1)<CR>
 endif
