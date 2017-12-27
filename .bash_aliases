@@ -14,7 +14,7 @@ alias xhost-local="xhost +local:"
 machinectl() {
     local did=0
     if [ ! -z "$1" ]; then
-        if [[ "$1" == "shell" ]]; then
+        if [[ "$1" == "$USER" ]]; then
             sudo /usr/bin/machinectl shell $USER@$2
             did=1
         fi
