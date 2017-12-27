@@ -14,10 +14,22 @@ alias xhost-local="xhost +local:"
 machinectl() {
     local did=0
     if [ ! -z "$1" ]; then
-        if [[ "$1" == "$USER" ]]; then
-            sudo /usr/bin/machinectl shell $USER@$2
-            did=1
-        fi
+        case "$1" in
+            "$USER")
+                sudo /usr/bin/machinectl shell $USER@$2
+                did=1
+                ;;
+            "shell")
+                if [ ! -z "$2" ]; then
+                    machinectl status $2 &> /dev/null
+                    if [ $? -ne 0 ]; then
+                        echo "starting $2"
+                        machinectl start $2
+                        sleep 1
+                    fi
+                fi
+                ;;
+        esac
     fi
     if [ $did -eq 0 ]; then
         sudo /usr/bin/machinectl $@
