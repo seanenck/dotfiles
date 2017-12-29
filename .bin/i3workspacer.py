@@ -95,7 +95,6 @@ def _rename_workspaces(workspaces):
                          stdout=devnull,
                          stderr=subprocess.STDOUT)
 
-
 def main():
     """Main entry."""
     last_hash = None
