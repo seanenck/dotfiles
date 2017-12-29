@@ -105,9 +105,19 @@ class Generic:
 def workspacing():
     """Handles workspace naming."""
     last_hash = None
+    last_work = None
+    debug = False
+    count = 0
     while True:
-        last_hash = on_change(last_hash, False)
-        time.sleep(1)
+        forcing = _force_change(last_work, debug)
+        last_work = forcing[0]
+        force = forcing[1]
+        if count == 0 or force:
+            last_hash = on_change(last_hash, debug, force)
+        count += 1
+        time.sleep(0.25)
+        if count == 4:
+            count = 0
 
 def main():
     """Entry point."""
@@ -147,21 +157,42 @@ def uncurl(obj):
     return children
 
 
-def on_change(hashed, debug):
+def _get_hash(cmd):
+    """Run i3-msg command and get return/hash."""
+    val = check_output(["i3-msg", "-t", cmd])
+    m = hashlib.md5()
+    m.update(val)
+    cur = m.digest()
+    return (val, cur)
+
+def _force_change(hashed, debug):
+    changed = []
+    def _flagged(value):
+        changed.append(1)
+    hashed = _changing(hashed, debug, False, "get_workspaces", _flagged)
+    return (hashed, len(changed) > 0)
+
+def on_change(hashed, debug, force):
     """on interested changes, call this."""
-    try:
-        tree = check_output(["i3-msg", "-t", "get_tree"])
-        m = hashlib.md5()
-        m.update(tree)
-        cur = m.digest()
-        if cur == hashed:
-            if debug:
-                print("no change")
-            return cur
-        j = json.loads(tree)
+    def _update(value):
+        j = json.loads(value)
         workspaces = _get_workspaces(j)
         _rename_workspaces(workspaces)
         _is_active()
+    return _changing(hashed, debug, force, "get_tree", _update)
+
+
+def _changing(hashed, debug, force, command, callback):
+    try:
+        val = _get_hash(command)
+        cur = val[1]
+        tree = val[0]
+        if cur == hashed:
+            if not force:
+                if debug:
+                    print("no change")
+                return cur
+        callback(tree)
         return cur
     except Exception as e:
         if debug:
