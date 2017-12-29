@@ -9,6 +9,7 @@ import time
 import json
 import hashlib
 from subprocess import check_output
+import threading
 
 devnull = open(os.devnull, 'w')
 
@@ -101,16 +102,21 @@ class Generic:
         # has to have timeout added
         GObject.timeout_add(3000, self.on_timeout)
 
-
-def main():
-    """Entry point."""
-    path = os.path.join(_HOME, ".config", "genericon")
-    Generic(brightness, path)
-    Generic(locked, path)
+def workspacing():
+    """Handles workspace naming."""
     last_hash = None
     while True:
         last_hash = on_change(last_hash, False)
         time.sleep(1)
+
+def main():
+    """Entry point."""
+    workspaces = threading.Thread(target=workspacing)
+    workspaces.daemon = True
+    workspaces.start()
+    path = os.path.join(_HOME, ".config", "genericon")
+    Generic(brightness, path)
+    Generic(locked, path)
     Gtk.main()
 
 def _is_active():
