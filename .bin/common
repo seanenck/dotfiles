@@ -89,9 +89,6 @@ function set-system()
         fi
         touch $_SND_MUTE
     fi
-
-    # user services
-    systemctl --user start i3workspacer.service
 }
 
 function update-time()
