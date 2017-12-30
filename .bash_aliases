@@ -1,6 +1,5 @@
 alias checksum='find -type f -exec sha512sum "{}" + | sort -k 2'
 alias clip="xclip -selection 'clip-board'"
-alias csv-processing="$HOME/.bin/modules/csv-stats/csvstats.sh"
 alias nano="vim"
 alias notes="vim notes"
 alias pacman="sudo pacman"
