@@ -55,7 +55,7 @@ function docked()
         local _isdock _isconnected _profile
         lsusb | grep -q "Lenovo"
         _isdock=$?
-        wget -q --tries=10 --timeout=20 --spider https://google.com
+        wget -o /tmp/wget-log -q --tries=10 --timeout=20 --spider "https://google.com"
         _isconnected=$?
         if [ $_isconnected -ne 0 ]; then
             _profile=3
