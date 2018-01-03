@@ -2,6 +2,7 @@
 USER_TMP=$HOME/.tmp
 BASH_HISTORY=$HOME/.bash_history
 SYNCED_PATH="$HOME/.synced/"
+WSW_NET=${SYNCED_PATH}networks/
 SYNCED_CONF=${SYNCED_PATH}/configs/
 PASS_ALIASES=${USER_TMP}/pass.aliases
 PERM_LOCATION=/opt/perm/
@@ -250,6 +251,11 @@ function set-user-files()
         vim_dir=$HOME/.vim/$v
         mkdir -p $vim_dir
         find $vim_dir -mmin +1440 -type f -exec rm {} \;
+    done
+
+    for w in $(find /etc/wsw/ -type f); do
+        name=$(basename $w)
+        cp $w $WSW_NET$name
     done
     
     # packages
