@@ -62,7 +62,7 @@ function docked()
             if [ $_isdock -eq 0 ]; then
                 _profile=2
             fi
-            wsw --change $_profile
+            wsw --change $_profile > /dev/null
         fi
         touch $DOCK_SLEEP
     fi
