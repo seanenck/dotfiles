@@ -80,7 +80,6 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 # docking change, tray icons, package updates
 docked
 tray
-list-packages
 
 clear
 git-changes

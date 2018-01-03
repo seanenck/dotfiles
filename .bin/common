@@ -42,13 +42,6 @@ TRAY_SET=/tmp/.tray
 PKG_QUERY=$USER_TMP/package.query
 CONF_HOME=$HOME/.config/home
 
-function list-packages()
-{
-    if [ ! -e $PKG_QUERY ]; then
-        /usr/bin/pacman -Qqe > ${CONF_HOME}/packages
-    fi
-}
-
 function tray()
 {
     if [ ! -e $TRAY_SET ]; then
@@ -258,6 +251,11 @@ function set-user-files()
         mkdir -p $vim_dir
         find $vim_dir -mmin +1440 -type f -exec rm {} \;
     done
+    
+    # packages
+    if [ ! -e $PKG_QUERY ]; then
+        /usr/bin/pacman -Qqe > ${CONF_HOME}/packages
+    fi
 }
 
 function get-git-folders()
