@@ -57,9 +57,6 @@ fi
 if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
 fi
-process-pass-aliases
-set-system
-set-user-files
 
 # ssh agent
 # Set SSH to use gpg-agent
@@ -77,11 +74,19 @@ export CHROOT
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
-# docking change, tray icons, package updates
-docked
-tray
+# things to do to setup shell/env
+_setup() {
+    process-pass-aliases
+    set-system
+    set-user-files
+    docked
+    tray
+}
 
-clear
+_setup > $SETUP_LOG
+if [ -s $SETUP_LOG ]; then
+    cat $SETUP_LOG
+fi
 git-changes
 
 today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)

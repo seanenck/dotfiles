@@ -42,6 +42,7 @@ DOCK_SLEEP=$USER_TMP/dock.check
 TRAY_SET=/tmp/.tray
 PKG_QUERY=$USER_TMP/package.query
 CONF_HOME=$HOME/.config/home
+SETUP_LOG="$USER_TMP/bash_setup.log"
 
 function tray()
 {
