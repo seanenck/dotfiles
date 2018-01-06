@@ -20,11 +20,16 @@ machinectl() {
                 ;;
             "shell")
                 if [ ! -z "$2" ]; then
-                    machinectl status $2 &> /dev/null
+                    machinectl list-images | grep -q $2
                     if [ $? -ne 0 ]; then
-                        echo "starting $2"
-                        machinectl start $2
-                        sleep 1
+                        echo "machine $2 does not exist"
+                    else
+                        machinectl status $2 &> /dev/null
+                        if [ $? -ne 0 ]; then
+                            echo "starting $2"
+                            machinectl start $2
+                            sleep 1
+                        fi
                     fi
                 fi
                 ;;
