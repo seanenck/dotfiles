@@ -1,3 +1,5 @@
 #!/bin/bash
 source /home/enck/.bin/common
-git-changes > $GIT_CHANGES
+if [ ! -e $GIT_CHANGES ]; then
+    git-changes > $GIT_CHANGES
+fi
