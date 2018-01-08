@@ -14,9 +14,9 @@ PROFILE_DEF="${USER_TMP}/profile.next"
 READY="ready"
 IS_CONNECTED=1
 NOT_CONNECTED=0
-DISPLAY_UN=/tmp/display-unlocked
-DISPLAY_EN=/tmp/display-enabled
-WORKPLACE_WORKING=/tmp/working
+DISPLAY_UN=$USER_TMP/display-unlocked
+DISPLAY_EN=$USER_TMP/display-enabled
+WORKPLACE_WORKING=$USER_TMP/working
 URL_COMMON=$HOME/.cache/dmenu_urls
 INDEX_EXT=".index"
 DMENU_ENTRIES="$USER_TMP/dmenu_cache"
@@ -39,11 +39,13 @@ LAST_TIMES=$HOME/.cache/last-timed.log
 LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 REQUIRED_EVENTS=6
 DOCK_SLEEP=$USER_TMP/dock.check
-TRAY_SET=/tmp/.tray
+TRAY_SET=$USER_TMP/.tray
 PKG_QUERY=$USER_TMP/package.query
 CONF_HOME=$HOME/.config/home
 SETUP_LOG="$USER_TMP/bash_setup.log"
 GIT_CHANGES=$USER_TMP/git.changes
+SND_MUTE="$USER_TMP/.mute"
+PROFILE_TMP="$USER_TMP/.profile.synced."
 
 function tray()
 {
@@ -77,13 +79,12 @@ function set-system()
     xinput set-prop $(xinput | grep "SynPS/2" | sed -n -e 's/^.*id=//p' | sed -e "s/\s/ /g" | cut -d " " -f 1) "Device Enabled" 0
 
     # mute
-    _SND_MUTE="/tmp/.mute"
-    if [ ! -e $_SND_MUTE ]; then
+    if [ ! -e $SND_MUTE ]; then
         _snd=$(subsystem volume sound status | sed "s/ //g")
         if [ $_snd -ne 0 ]; then
             subsystem volume sound mute
         fi
-        touch $_SND_MUTE
+        touch $SND_MUTE
     fi
 }
 

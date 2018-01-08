@@ -6,9 +6,9 @@ alias pacman="sudo pacman"
 alias reset-brightness="sudo tee /sys/class/backlight/intel_backlight/brightness <<< 2000"
 alias ssid="sudo iwlist wlp3s0 scanning essid"
 alias tree='tree -J | python -c "import sys, json; print(json.dumps(json.loads(sys.stdin.read()), indent=1, sort_keys=True, separators=(\",\", \":\")))"'
-alias vimtext="touch /tmp/textmode && vim"
+alias vimtext="touch /home/enck/.tmp/textmode && vim"
 alias vi="vim"
-alias weechat="rm -f /tmp/weechat.ready && weechat"
+alias weechat="rm -f /home/enck/.tmp/weechat.ready && weechat"
 alias xhost-local="xhost +local:"
 machinectl() {
     local did=0

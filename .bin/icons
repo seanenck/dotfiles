@@ -139,7 +139,7 @@ def _is_active():
         pid = get_pid(proc)
         if pid < 0:
             continue
-        if not os.path.exists("/tmp/" + proc + ".ready"):
+        if not os.path.exists(_HOME + ".tmp/" + proc + ".ready"):
             continue
         os.kill(pid, signal.SIGUSR2)
 

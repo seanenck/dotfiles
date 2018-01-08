@@ -73,5 +73,5 @@ if weechat.register("inactive", "enckse", "1.0", "MIT", "Disconnect after inacti
     weechat.hook_timer(1000, 0, 0, "inactivity_cb", "")
     signal.signal(signal.SIGUSR1, disable_handler)
     signal.signal(signal.SIGUSR2, enable_handler)
-    with open("/tmp/weechat.ready", 'w') as f:
+    with open("/home/enck/.tmp/weechat.ready", 'w') as f:
         f.write("ready")

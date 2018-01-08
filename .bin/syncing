@@ -7,7 +7,7 @@ SPACING="    "
 function backup()
 {
     today=$(date +%Y-%m-%d)
-    backup=/tmp/.profile.synced.$today
+    backup=$PROFILE_TMP$today
     if [ ! -e $backup ]; then
         zip-now
         echo "${SPACING}pushing profile out"

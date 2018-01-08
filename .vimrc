@@ -66,7 +66,7 @@ for i in ['', 'i']
     execute i . "noremap <C-Left> <home>"
 endfor
 
-let tmode = "/tmp/textmode"
+let tmode = $HOME . "/.tmp/textmode"
 if findfile(tmode, ".") == tmode
     set formatoptions+=w
     set formatoptions+=a
