@@ -83,7 +83,11 @@ _setup() {
     tray
 }
 
-_setup > $SETUP_LOG
+_ready() {
+    _setup > $SETUP_LOG
+}
+
+(_ready &)
 if [ -s $SETUP_LOG ]; then
     cat $SETUP_LOG
 fi
