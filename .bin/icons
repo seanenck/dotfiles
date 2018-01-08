@@ -14,6 +14,7 @@ import threading
 devnull = open(os.devnull, 'w')
 
 _HOME = "/home/enck/"
+_HOME_TMP = _HOME + ".tmp/"
 _IS_UNLOCK = 0
 _IS_SUSPEND = 1
 _BRIGHTNESS = 'xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk \'{printf "%3.0f", $1}\' | sed "s/^[ \t]*//g"'
@@ -104,21 +105,34 @@ class Generic:
 
 def workspacing():
     """Handles workspace naming."""
+    import datetime
     last_hash = None
     last_work = None
     debug = False
     count = 0
+    success = True
+    date = str(datetime.datetime.now()).replace(":", "-").replace(" ", "_").replace(".", "_")
     while True:
-        forcing = _force_change(last_work, debug)
-        last_work = forcing[0]
-        force = forcing[1]
-        if count == 0 or force:
-            last_hash = on_change(last_hash, debug, force)
-            subprocess.call(["/home/enck/.bin/secondly.sh &"],
-                            shell=True,
-                            stdout=devnull,
-                            stderr=subprocess.STDOUT)
-
+        try:
+            forcing = _force_change(last_work, debug)
+            last_work = forcing[0]
+            force = forcing[1]
+            if count == 0 or force:
+                last_hash = on_change(last_hash, debug, force)
+                subprocess.call(["/home/enck/.bin/secondly.sh &"],
+                                shell=True,
+                                stdout=devnull,
+                                stderr=subprocess.STDOUT)
+            success = True
+        except Exception as e:
+            with open(_HOME_TMP + date + ".tray.log", "a") as f:
+                if success:
+                    f.write("error")
+                    f.write(str(e))
+                    success = False
+                else:
+                    f.write("still broken")
+                f.write("\n")
         count += 1
         time.sleep(0.25)
         if count == 4:
@@ -134,12 +148,13 @@ def main():
     Generic(locked, path)
     Gtk.main()
 
+
 def _is_active():
     for proc in ["weechat"]:
         pid = get_pid(proc)
         if pid < 0:
             continue
-        if not os.path.exists(_HOME + ".tmp/" + proc + ".ready"):
+        if not os.path.exists(_HOME_TMP + proc + ".ready"):
             continue
         os.kill(pid, signal.SIGUSR2)
 
