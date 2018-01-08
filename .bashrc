@@ -81,7 +81,6 @@ _setup() {
     set-user-files
     docked
     tray
-    git-changes
 }
 
 _ready() {
