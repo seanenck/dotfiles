@@ -84,10 +84,10 @@ _setup() {
 }
 
 _ready() {
+    git-changes
     _setup > $SETUP_LOG
 }
 
-(_ready &)
 if [ -s $SETUP_LOG ]; then
     cat $SETUP_LOG
 fi
@@ -95,8 +95,7 @@ fi
 if [ -e $GIT_CHANGES ]; then
     cat $GIT_CHANGES
 fi
-
-(git-changes &)
+(_ready &)
 
 today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
 rm -f $today_check
