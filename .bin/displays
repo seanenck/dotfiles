@@ -105,10 +105,6 @@ function set-workplace()
                     replace-and-execute "$HOME_COMMON" "$HOME_DISP"
                     ;;
             esac
-            rm -f $WORKPLACE_WORKING
-            ;;
-        *)
-            touch $WORKPLACE_WORKING
             ;;
     esac
     toggle-backlighting $MID_BRIGHT
