@@ -92,9 +92,7 @@ if [ -e $GIT_CHANGES ]; then
     cat $GIT_CHANGES
 fi
 
-set +m
-git-changes &
-set -m
+(git-changes &)
 
 today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
 rm -f $today_check
