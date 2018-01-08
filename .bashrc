@@ -81,19 +81,15 @@ _setup() {
     set-user-files
     docked
     tray
+    git-changes
 }
 
 _ready() {
-    git-changes
     _setup > $SETUP_LOG
 }
 
 if [ -s $SETUP_LOG ]; then
     cat $SETUP_LOG
-fi
-
-if [ -e $GIT_CHANGES ]; then
-    cat $GIT_CHANGES
 fi
 (_ready &)
 

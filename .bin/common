@@ -43,7 +43,6 @@ TRAY_SET=/tmp/.tray
 PKG_QUERY=$USER_TMP/package.query
 CONF_HOME=$HOME/.config/home
 SETUP_LOG="$USER_TMP/bash_setup.log"
-GIT_CHANGES=$USER_TMP/git.changes
 
 function tray()
 {
@@ -288,7 +287,7 @@ function get-perm-objs()
     get-git-folders "${PERM_LOCATION} -maxdepth 2"
 }
 
-function git-changes-startup()
+function git-changes()
 {
     d_paths="$HOME $SYNCED_PATH "$(get-perm-objs)" "$(get-workspace-objs)
     for d in $(echo "$d_paths"); do
@@ -311,9 +310,4 @@ function git-changes-startup()
     done
     touch $GIT_PARTIAL_TMP
     cd $HOME
-}
-
-function git-changes()
-{
-    git-changes-startup > $GIT_CHANGES
 }
