@@ -43,6 +43,7 @@ TRAY_SET=/tmp/.tray
 PKG_QUERY=$USER_TMP/package.query
 CONF_HOME=$HOME/.config/home
 SETUP_LOG="$USER_TMP/bash_setup.log"
+GIT_CHANGES=$USER_TMP/git.changes
 
 function tray()
 {

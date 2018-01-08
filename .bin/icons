@@ -114,6 +114,11 @@ def workspacing():
         force = forcing[1]
         if count == 0 or force:
             last_hash = on_change(last_hash, debug, force)
+            subprocess.call(["/home/enck/.bin/secondly.sh &"],
+                            shell=True,
+                            stdout=devnull,
+                            stderr=subprocess.STDOUT)
+
         count += 1
         time.sleep(0.25)
         if count == 4:

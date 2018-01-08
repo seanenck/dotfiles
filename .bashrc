@@ -87,10 +87,14 @@ _ready() {
     _setup > $SETUP_LOG
 }
 
+_ready 
 if [ -s $SETUP_LOG ]; then
     cat $SETUP_LOG
 fi
-(_ready &)
+
+if [ -e $GIT_CHANGES ]; then
+    cat $GIT_CHANGES
+fi
 
 today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
 rm -f $today_check
