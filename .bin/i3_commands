@@ -127,6 +127,8 @@ function stats()
 
 function onchanging()
 {
-    git-changes > $GIT_CHANGES
+    GIT_TMP=$USER_TMP/.git.tmp
+    git-changes > $GIT_TMP
+    mv $GIT_TMP $GIT_CHANGES
 }
 $1 $2 
