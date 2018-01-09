@@ -90,7 +90,6 @@ _setup() {
     process-pass-aliases
     set-system
     set-user-files
-    docked
     tray
 }
 
