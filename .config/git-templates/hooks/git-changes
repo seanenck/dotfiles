@@ -1,4 +1,4 @@
 #!/bin/sh
-_idx=$(cat $HOME/.bin/common | grep "^GIT_CHANGES" | head -n 1 | cut -d "=" -f 2 | sed 's#$USER_TMP#/home/enck/.tmp#g')
-echo "triggering git change indexing $(_idx)"
-rm -f $_idx
+GIT_IDX=$(cat $HOME/.bin/common | grep "^GIT_CHANGES" | head -n 1 | cut -d "=" -f 2 | sed 's#$USER_TMP#/home/enck/.tmp#g')
+echo "triggering git change indexing ($GIT_IDX)"
+rm -f $GIT_IDX
