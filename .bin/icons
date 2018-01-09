@@ -194,10 +194,6 @@ def on_change(hashed, debug, force):
         j = json.loads(value)
         workspaces = _get_workspaces(j)
         _rename_workspaces(workspaces)
-        subprocess.call([_HOME + ".bin/i3_commands onchanging &"],
-                        shell=True,
-                        stdout=devnull,
-                        stderr=subprocess.STDOUT)
         _is_active()
     return _changing(hashed, debug, force, "get_tree", _update)
 
