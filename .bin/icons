@@ -119,10 +119,6 @@ def workspacing():
             force = forcing[1]
             if count == 0 or force:
                 last_hash = on_change(last_hash, debug, force)
-                subprocess.call(["/home/enck/.bin/secondly.sh &"],
-                                shell=True,
-                                stdout=devnull,
-                                stderr=subprocess.STDOUT)
             success = True
         except Exception as e:
             with open(_HOME_TMP + date + ".tray.log", "a") as f:
@@ -198,6 +194,10 @@ def on_change(hashed, debug, force):
         j = json.loads(value)
         workspaces = _get_workspaces(j)
         _rename_workspaces(workspaces)
+        subprocess.call([_HOME + ".bin/i3_commands onchanging &"],
+                        shell=True,
+                        stdout=devnull,
+                        stderr=subprocess.STDOUT)
         _is_active()
     return _changing(hashed, debug, force, "get_tree", _update)
 
