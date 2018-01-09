@@ -289,7 +289,7 @@ function get-perm-objs()
     get-git-folders "${PERM_LOCATION} -maxdepth 2"
 }
 
-function git-changes()
+function git-changing()
 {
     d_paths="$HOME $SYNCED_PATH "$(get-perm-objs)" "$(get-workspace-objs)
     for d in $(echo "$d_paths"); do
@@ -312,4 +312,9 @@ function git-changes()
     done
     touch $GIT_PARTIAL_TMP
     cd $HOME
+}
+
+function git-changes()
+{
+    git-changing > $GIT_CHANGES
 }

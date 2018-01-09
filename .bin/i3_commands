@@ -127,7 +127,7 @@ function stats()
 
 function onchanging()
 {
-    git-changes > $GIT_CHANGES
+    git-changes
 }
 
 function usbchange()
