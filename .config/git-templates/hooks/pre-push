@@ -1,3 +1,4 @@
 #!/bin/bash
 source ~/.bin/common
+echo "trigger git changes index"
 rm -f $GIT_CHANGES
