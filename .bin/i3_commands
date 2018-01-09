@@ -129,4 +129,10 @@ function onchanging()
 {
     git-changes > $GIT_CHANGES
 }
+
+function usbchange()
+{
+    docked
+    exit 0
+}
 $1 $2 

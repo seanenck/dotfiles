@@ -245,6 +245,7 @@ function set-user-files()
     if [ ! -e "$COPY_INDICATOR" ]; then
         cp /etc/hosts ${SYNCED_CONF}hosts
         cp /etc/systemd/network/* $HOME/.config/networkd/
+        cp /etc/udev/rules.d/* $HOME/.config/udev/
         touch $COPY_INDICATOR
     fi
 
