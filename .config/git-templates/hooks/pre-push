@@ -1,4 +1,2 @@
 #!/bin/sh
-. $HOME/.bin/common
-echo "trigger git changes index"
-rm -f $GIT_CHANGES
+/bin/sh $HOME/.config/git-templates/hooks/git-changes

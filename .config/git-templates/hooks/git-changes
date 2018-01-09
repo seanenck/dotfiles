@@ -1,0 +1,3 @@
+#!/bin/sh
+echo "triggering git changes index"
+rm -f $(cat $HOME/.bin/common | grep "^GIT_CHANGES" | head -n 1 | cut -d "=" -f 2 | sed 's#$USER_TMP#/home/enck/.tmp#g')
