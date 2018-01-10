@@ -86,6 +86,7 @@ pkg-config
 procps-ng
 psmisc
 pwgen
+pygenkee
 python-markdown
 reiserfsprogs
 rsync
