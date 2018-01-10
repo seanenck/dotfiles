@@ -127,6 +127,7 @@ function stats()
 
 function onchanging()
 {
+    sleep 5
     git-changes
 }
 
