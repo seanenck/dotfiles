@@ -91,6 +91,7 @@ _setup() {
     set-system
     set-user-files
     tray
+    docked
 }
 
 _ready() {
@@ -104,7 +105,6 @@ fi
 
 if [ -e $GIT_CHANGES ]; then
     cat $GIT_CHANGES
-    rm -f $GIT_CHANGES
 fi
 
 today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)

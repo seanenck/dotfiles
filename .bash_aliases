@@ -12,7 +12,7 @@ alias weechat="rm -f /home/enck/.tmp/weechat.ready && weechat"
 alias xhost-local="xhost +local:"
 git() {
     /usr/bin/git "$@" || return
-    echo "$@" | grep -E -q "(push|commit|reset|checkout|branch|stash)"
+    echo "$@" | grep -E -q "(push|commit|reset|checkout|branch|stash|status)"
     if [ $? -eq 0 ]; then
         (i3_commands onchanging &)
     fi
