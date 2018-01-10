@@ -59,6 +59,14 @@ function lock-now()
     fi
 }
 
+function waking()
+{
+    if [ -e $SUSPENDING ]; then
+        rm -f $SUSPENDING
+        docked
+    fi
+}
+
 function suspend-now()
 {
     pass_keyword=""
@@ -91,6 +99,7 @@ function suspend-now()
             if [ $SLEEP_COUNT -ge $SLEEP_AFTER ]; then
                 write-log "sleeping..."
                 SLEEP_COUNT=0
+                touch $SUSPENDING
                 systemctl suspend
                 break
             fi
@@ -102,6 +111,7 @@ function suspend-now()
             fi
         done
         write-log "done sleeping"
+        (waking &)
     fi
 }
 

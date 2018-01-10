@@ -45,6 +45,7 @@ SETUP_LOG="$USER_TMP/bash_setup.log"
 GIT_CHANGES=$USER_TMP/git.changes
 SND_MUTE="$USER_TMP/.mute"
 PROFILE_TMP="$USER_TMP/.profile.synced."
+SUSPENDING="$USER_TMP/suspended"
 
 function tray()
 {
