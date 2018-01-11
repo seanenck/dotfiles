@@ -127,10 +127,11 @@ function stats()
                     _git_cnt=$(cat $GIT_CHANGES | grep "    " | wc -l)
                     rm -f $GIT_CHANGES
                 fi
+                _git_text=" local changes|"
                 if [ $_git_cnt -eq 0 ]; then
-                    _git_text=""
+                    _git_text="no$_git_text"
                 else
-                    _git_text="$_git_cnt local changes|"
+                    _git_text="$_git_cnt$_git_text"
                 fi
                 update-git &
             fi
