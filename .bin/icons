@@ -41,22 +41,19 @@ normal=0
 full=0
 score=-1
 for b in $(echo '0 1'); do
-    _path='/sys/class/power_supply/BAT'$b'/capacity_level'
+    _path='/sys/class/power_supply/BAT'$b'/capacity'
     if [ -e $_path ]; then
         if [ $score -lt 0 ]; then
             score=0
         fi
         _bat=$(cat $_path)
-        case $_bat in
-            'Normal')
+        if [ $_bat -le 30 ]; then
+            score=$((score+$LOW))
+        else
+            if [ $_bat -le 80 ]; then
                 score=$((score+$NORMAL))
-                ;;
-            'Full')
-                ;;
-            *)
-                score=$((score+$LOW))
-                ;;
-        esac
+            fi
+        fi
     fi
 done
 flag='1'
@@ -73,9 +70,8 @@ echo $flag$charging
 """
 
 def _battery(val):
-    if val == 11:
-        img = "caution"
-    elif val == 21:
+    img = "caution"
+    if val == 21 or val == 11:
         img = "low-charging"
     elif val == 20:
         img = "good"
