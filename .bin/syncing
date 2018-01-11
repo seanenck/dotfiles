@@ -47,7 +47,6 @@ function sync-now()
             current=$PWD
             cd ${SYNCED_PATH}
             git push 2>&1
-            (git-changes &)
             for personal in $(ls ${PERM_LOCATION} | grep $PERM_PERSONAL); do
                 echo "${SPACING}pushing $personal"
                 cd ${PERM_LOCATION}/$personal

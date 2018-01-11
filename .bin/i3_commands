@@ -106,23 +106,40 @@ function tray_icons()
     touch $TRAY_SET
 }
 
+function update-git()
+{
+    git-changes >/dev/null
+}
+
 function stats()
 {
     if [ -e $CUSTOM_STATS ]; then
         $CUSTOM_STATS
     else
+        _last_git=0
+        _git_text=""
         i3status | while :
         do
             read line
-            echo "$line" || exit 1
+            if [ $_last_git -eq 0 ]; then
+                _git_cnt=0
+                if [ -e $GIT_CHANGES ]; then
+                    _git_cnt=$(cat $GIT_CHANGES | grep "    " | wc -l)
+                fi
+                if [ $_git_cnt -eq 0 ]; then
+                    _git_text=""
+                else
+                    _git_text="$_git_cnt local changes|"
+                fi
+                update-git &
+            fi
+            echo "$_git_text$line" || exit 1
+            _last_git=$((_last_git+1))
+            if [ $_last_git -eq 3 ]; then
+                _last_git=0
+            fi
         done
     fi
-}
-
-function onchanging()
-{
-    sleep 5
-    git-changes
 }
 
 function usbchange()
