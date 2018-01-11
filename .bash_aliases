@@ -10,6 +10,13 @@ alias vimtext="touch /home/enck/.tmp/textmode && vim"
 alias vi="vim"
 alias weechat="rm -f /home/enck/.tmp/weechat.ready && weechat"
 alias xhost-local="xhost +local:"
+git() {
+    /usr/bin/git "$@" || return
+    echo "$@" | grep -E -q "(push|commit|reset|checkout|branch|stash|status)"
+    if [ $? -eq 0 ]; then
+        rm -rf /home/enck/.tmp/git.changes
+    fi
+}
 machinectl() {
     local did=0
     if [ ! -z "$1" ]; then

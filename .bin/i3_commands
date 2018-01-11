@@ -118,6 +118,7 @@ function stats()
     else
         _last_git=0
         _git_text=""
+        _last_cnt=0
         i3status | while :
         do
             read line
@@ -125,8 +126,10 @@ function stats()
                 _git_cnt=0
                 if [ -e $GIT_CHANGES ]; then
                     _git_cnt=$(cat $GIT_CHANGES | grep "    " | wc -l)
-                    rm -f $GIT_CHANGES
+                else
+                    _git_cnt=$_last_cnt
                 fi
+                _last_cnt=$_git_cnt
                 _git_text=" local changes|"
                 if [ $_git_cnt -eq 0 ]; then
                     _git_text="no$_git_text"

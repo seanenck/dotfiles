@@ -321,5 +321,7 @@ function git-changing()
 
 function git-changes()
 {
-    git-changing > $GIT_CHANGES
+    if [ ! -e $GIT_CHANGES ]; then
+        git-changing > $GIT_CHANGES
+    fi
 }
