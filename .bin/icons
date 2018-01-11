@@ -31,6 +31,59 @@ else
 fi
 """
 _VOLUME = "if [[ $(pamixer --get-mute) == 'true' ]]; then echo 1; else echo 0; fi"
+_BAT = """
+#!/bin/bash
+charging=$(cat /sys/class/power_supply/AC/online)
+NORMAL=5
+LOW=20
+low=0
+normal=0
+full=0
+score=-1
+for b in $(echo '0 1'); do
+    _path='/sys/class/power_supply/BAT'$b'/capacity_level'
+    if [ -e $_path ]; then
+        if [ $score -lt 0 ]; then
+            score=0
+        fi
+        _bat=$(cat $_path)
+        case $_bat in
+            'Normal')
+                score=$((score+$NORMAL))
+                ;;
+            'Full')
+                ;;
+            *)
+                score=$((score+$LOW))
+                ;;
+        esac
+    fi
+done
+flag='1'
+if [ $score -lt $NORMAL ]; then
+    if [ $score -ge 0 ]; then
+        flag='3'
+    fi
+else
+    if [ $score -lt $LOW ]; then
+        flag='2'
+    fi
+fi
+echo $flag$charging
+"""
+
+def _battery(val):
+    if val == 11:
+        img = "caution"
+    elif val == 21:
+        img = "low-charging"
+    elif val == 20:
+        img = "good"
+    elif val == 30:
+        img = "full"
+    elif val == 31:
+        img = "good-charging"
+    return "battery-{}".format(img)
 
 def _call(command):
     """Make a call, get change (else None)."""
@@ -77,6 +130,14 @@ def volume(last, icon):
     """Handle volume."""
     val = _call(_VOLUME)
     val = _handle_val(val, last, _volume, icon)
+    if val:
+        last = val
+    return val
+
+def battery(last, icon):
+    """Handle batteries."""
+    val = _call(_BAT)
+    val = _handle_val(val, last, _battery, icon)
     if val:
         last = val
     return val
@@ -163,6 +224,7 @@ def main():
     workspaces.daemon = True
     workspaces.start()
     path = os.path.join(_HOME, ".config", "genericon")
+    Generic(battery, path)
     Generic(volume, path)
     Generic(brightness, path)
     Generic(locked, path)

@@ -1,6 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
-PRIMARY_ICON="cbatticon"
+PRIMARY_ICON="wsw-applet"
 CUSTOM_STATS=$HOME/.cache/i3stats
 
 # Get i3 workspaces (only name/number by default, more grep outputs available via first param)
@@ -55,8 +55,6 @@ function _run_if_not()
 function _kill_tray()
 {
     if [ $(_tray_count "$PRIMARY_ICON") -eq 0 ]; then
-        pkill cbatticon
-        pkill volumeicon
         for p in $(pidof python); do
             cat /proc/$p/cmdline | grep -q -E "udiskie|wsw-applet|icons"
             if [ $? -eq 0 ]; then
@@ -96,9 +94,6 @@ function restart()
 function _tray_icons()
 {
     _kill_tray
-    for b in $(echo "0 1"); do
-        _run_if_not $b "cbatticon" "-d BAT$b"
-    done
     _run_python "wsw-applet" ""
     _run_python "udiskie" "--no-notify --no-automount --no-config --tray -f \"\""
     _run_python "icons" ""

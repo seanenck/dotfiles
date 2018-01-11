@@ -8,7 +8,6 @@ bison
 bootctl-update
 btrfs-progs
 bzip2
-cbatticon
 ccid-git
 cifs-utils
 compton
