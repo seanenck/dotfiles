@@ -163,9 +163,9 @@ def main():
     workspaces.daemon = True
     workspaces.start()
     path = os.path.join(_HOME, ".config", "genericon")
+    Generic(volume, path)
     Generic(brightness, path)
     Generic(locked, path)
-    Generic(volume, path)
     Gtk.main()
 
 

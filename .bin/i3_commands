@@ -99,7 +99,6 @@ function _tray_icons()
     for b in $(echo "0 1"); do
         _run_if_not $b "cbatticon" "-d BAT$b"
     done
-    _run_if_not 0 "volumeicon"
     _run_python "wsw-applet" ""
     _run_python "udiskie" "--no-notify --no-automount --no-config --tray -f \"\""
     _run_python "icons" ""
