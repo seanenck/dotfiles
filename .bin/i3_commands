@@ -125,6 +125,7 @@ function stats()
                 _git_cnt=0
                 if [ -e $GIT_CHANGES ]; then
                     _git_cnt=$(cat $GIT_CHANGES | grep "    " | wc -l)
+                    rm -f $GIT_CHANGES
                 fi
                 if [ $_git_cnt -eq 0 ]; then
                     _git_text=""
@@ -135,7 +136,7 @@ function stats()
             fi
             echo "$_git_text$line" || exit 1
             _last_git=$((_last_git+1))
-            if [ $_last_git -eq 3 ]; then
+            if [ $_last_git -eq 5 ]; then
                 _last_git=0
             fi
         done

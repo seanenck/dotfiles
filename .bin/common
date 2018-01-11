@@ -322,11 +322,7 @@ function git-changing()
 function git-changes()
 {
     update=1
-    if [ -e $GIT_CHANGES ]; then
-        if [ ! -s $GIT_CHANGES ]; then
-            update=0
-        fi
-    else
+    if [ ! -e $GIT_CHANGES ]; then
         update=0
     fi
     if [ $update -eq 0 ]; then
