@@ -30,6 +30,7 @@ else
     fi
 fi
 """
+_VOLUME = "if [[ $(pamixer --get-mute) == 'true' ]]; then echo 1; else echo 0; fi"
 
 def _call(command):
     """Make a call, get change (else None)."""
@@ -64,6 +65,21 @@ def _handle_val(val, last, callback, icon):
         if last != val:
             img = callback(val)
             icon.set_image(img)
+
+def _volume(val):
+    """Get volume icon."""
+    if val == 1:
+        return "muted"
+    else:
+        return "unmuted"
+
+def volume(last, icon):
+    """Handle volume."""
+    val = _call(_VOLUME)
+    val = _handle_val(val, last, _volume, icon)
+    if val:
+        last = val
+    return val
 
 def _brightness(val):
     use = "low"
@@ -149,6 +165,7 @@ def main():
     path = os.path.join(_HOME, ".config", "genericon")
     Generic(brightness, path)
     Generic(locked, path)
+    Generic(volume, path)
     Gtk.main()
 
 
