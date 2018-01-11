@@ -264,7 +264,10 @@ function set-user-files()
     
     # packages
     if [ ! -e $PKG_QUERY ]; then
-        /usr/bin/pacman -Qqe > ${CONF_HOME}/packages
+        running=$(pidof pacman)
+        if [ -z "$running" ]; then
+            /usr/bin/pacman -Qqe > ${CONF_HOME}/packages
+        fi
     fi
 }
 
