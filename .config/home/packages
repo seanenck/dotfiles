@@ -58,7 +58,6 @@ linux
 linux-rotate
 logrotate
 lvm2
-lxterminal
 m4
 make
 man-db
@@ -102,6 +101,7 @@ sysfsutils
 syslinux
 systemd-sysvcompat
 tar
+termite
 texinfo
 ttf-arphic-uming
 ttf-baekmuk

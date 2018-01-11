@@ -243,11 +243,6 @@ function get-help()
 "
 }
 
-function run-terminal()
-{
-    lxterminal --command "$1"
-}
-
 function volume-mixer()
 {
     pavucontrol

@@ -1,0 +1,13 @@
+[options]
+font = Adobe Courier 12
+scrollback_lines = -1
+scrollbar = right
+
+[colors]
+foreground = #39ff14
+foreground_bold = #ffffff
+background = #000000
+
+[hints]
+
+# vim: ft=dosini cms=#%s
