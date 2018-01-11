@@ -1,4 +1,3 @@
-alsa-utils
 arch-install-scripts
 autoconf
 automake
@@ -76,9 +75,11 @@ opensc
 openssh
 p7zip
 pacman
+pamixer
 pass
 pass-freeradius
 patch
+pavucontrol
 pciutils
 pcmciautils
 pcsclite-git
@@ -88,6 +89,7 @@ phare-client
 pkg-config
 procps-ng
 psmisc
+pulseaudio
 pwgen
 pygenkee
 python-markdown

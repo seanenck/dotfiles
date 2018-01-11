@@ -80,10 +80,7 @@ function set-system()
 
     # mute
     if [ ! -e $SND_MUTE ]; then
-        _snd=$(subsystem volume sound status | sed "s/ //g")
-        if [ $_snd -ne 0 ]; then
-            subsystem volume sound mute
-        fi
+        subsystem volume sound mute
         touch $SND_MUTE
     fi
 }

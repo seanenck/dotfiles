@@ -250,7 +250,7 @@ function run-terminal()
 
 function volume-mixer()
 {
-    run-terminal "alsamixer"
+    pavucontrol
 }
 
 if [ ! -z $1 ]; then

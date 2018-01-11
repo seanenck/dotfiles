@@ -77,13 +77,8 @@ function suspend-now()
     fi
     lock-now "$pass_keyword" &
     if [ ! -e $DISPLAY_UN -a ! -e $DISPLAY_EN ]; then
-        CUR_VOL=$(change-volume $VOL_STAT)
-        CUR_VOL=$(echo $CUR_VOL)
-        if [[ "$CUR_VOL" != "0" ]]; then
-            write-log "muting volume"
-            change-volume $VOL_MUTE
-        fi
-
+        write-log "muting volume"
+        change-volume $VOL_MUTE
         rm -f $PROFILE_DEF
         rm -f $DOCK_SLEEP
         SLEEP_COUNT=0
