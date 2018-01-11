@@ -84,6 +84,7 @@ pcmciautils
 pcsclite-git
 perl
 perl-uri
+phare-client
 pkg-config
 procps-ng
 psmisc
