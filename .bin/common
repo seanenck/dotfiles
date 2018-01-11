@@ -311,7 +311,8 @@ function git-changing()
             if [ -z $first ]; then
                 echo "uncommitted changes"
             fi
-            echo -e "$local_res" | sed "s/^/    /g"
+            echo -e "$d${RED_TEXT}"
+            echo -e "$local_res${NORM_TEXT}" | sed "s/^/    /g"
             first="false"
         fi
     done
