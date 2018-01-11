@@ -4,7 +4,7 @@ scrollback_lines = -1
 scrollbar = right
 
 [colors]
-foreground = #39ff14
+foreground = #99e699
 foreground_bold = #ffffff
 background = #000000
 
