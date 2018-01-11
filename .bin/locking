@@ -1,6 +1,5 @@
 #!/bin/bash
 source $HOME/.bin/displays
-source $HOME/.bin/sound
 source $HOME/.bin/common
 LOCK_KEYWORD="lock"
 SUSP_KEYWORD="sleep"
@@ -77,8 +76,7 @@ function suspend-now()
     fi
     lock-now "$pass_keyword" &
     if [ ! -e $DISPLAY_UN -a ! -e $DISPLAY_EN ]; then
-        write-log "muting volume"
-        change-volume $VOL_MUTE
+        mute
         rm -f $PROFILE_DEF
         rm -f $DOCK_SLEEP
         SLEEP_COUNT=0

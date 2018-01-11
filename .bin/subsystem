@@ -1,16 +1,13 @@
 #!/bin/bash
 source $HOME/.bin/displays
-source $HOME/.bin/sound
 source $HOME/.bin/common
 DISPLAY_KEY="display"
-VOLUME_KEY="volume"
 DISPLAY_TOGGLE="toggle"
 DISPLAY_CHANGE="change"
-SOUND_COMMAND="sound"
 WORKSPACES_KEY="workspaces"
 FORCE_WORKSPACE="force"
 PROF_KEY="profiles"
-ALL_AVAILBLE="$DISPLAY_KEY $VOLUME_KEY $WORKSPACES_KEY $SYS_STATS_KEY"
+ALL_AVAILBLE="$DISPLAY_KEY $WORKSPACES_KEY $SYS_STATS_KEY"
 HELP="help"
 
 function get-help()
@@ -22,9 +19,6 @@ function get-help()
         case $item in
             $DISPLAY_KEY)
                 get-lighting-help $item $DISPLAY_TOGGLE $DISPLAY_CHANGE $PROF_KEY
-                ;;
-            $VOLUME_KEY)
-                get-volume-help $item $SOUND_COMMAND
                 ;;
             $WORKSPACES_KEY)
                 get-workspace-help $item $FORCE_WORKSPACE
@@ -80,19 +74,6 @@ function display-subsystem()
     esac
 }
 
-# Volume commands
-function volume-subsystem()
-{
-    case $1 in
-        $SOUND_COMMAND)
-            change-volume "$2"
-            ;;
-        *)
-            echo "Unknown volume command $1"
-            exit -1
-    esac
-}
-
 function cycle-profiles()
 {
     if [[ "$1" == "$PROFILE_CYCLE" ]]; then
@@ -131,9 +112,6 @@ function cycle-profiles()
 case $1 in
     $DISPLAY_KEY)
         CMD=display-subsystem
-        ;;
-    $VOLUME_KEY)
-        CMD=volume-subsystem
         ;;
     $WORKSPACES_KEY)
         CMD=workspace-subsystem

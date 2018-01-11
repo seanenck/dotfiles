@@ -47,6 +47,11 @@ SND_MUTE="$USER_TMP/.mute"
 PROFILE_TMP="$USER_TMP/.profile.synced."
 SUSPENDING="$USER_TMP/suspended"
 
+function mute()
+{
+    pamixer -m
+}
+
 function tray()
 {
     if [ ! -e $TRAY_SET ]; then
@@ -80,7 +85,7 @@ function set-system()
 
     # mute
     if [ ! -e $SND_MUTE ]; then
-        subsystem volume sound mute
+        mute
         touch $SND_MUTE
     fi
 }
