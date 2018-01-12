@@ -130,7 +130,7 @@ function stats()
                     _git_cnt=$_last_cnt
                 fi
                 _last_cnt=$_git_cnt
-                _git_text=" git notice|"
+                _git_text=" git notices|"
                 if [ $_git_cnt -eq 0 ]; then
                     _git_text="no$_git_text"
                 else
