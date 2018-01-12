@@ -14,9 +14,14 @@ git() {
     /usr/bin/git "$@" || return
     echo "$@" | grep -E -q "(push|commit|reset|checkout|branch|stash|status)"
     if [ $? -eq 0 ]; then
-        rm -rf /home/enck/.tmp/git.changes
+        rm -f /home/enck/.tmp/git.changes
     fi
 }
+
+ssh() {
+    TERM=xterm /usr/bin/ssh "$@" || return
+}
+
 machinectl() {
     local did=0
     if [ ! -z "$1" ]; then
