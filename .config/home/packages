@@ -98,9 +98,11 @@ s-nail
 sed
 shadow
 sudo
+surf
 sysfsutils
 syslinux
 systemd-sysvcompat
+tabbed
 tar
 termite
 texinfo
