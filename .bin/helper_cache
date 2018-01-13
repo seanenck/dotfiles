@@ -10,6 +10,7 @@ BROWSER_PRIVATE_KEY="$BROWSER_KEY$PRIVATE_KEY"
 FIREFOX_KEY="ff"
 FIREFOX_PRIVATE_KEY="$FIREFOX_KEY$PRIVATE_KEY"
 DMENU_KEY="dmenu-wrapper"
+RELEASE_KEY="github-releases"
 PERM_UPDATE_KEY="perm-pull"
 PERM_PUSH_KEY="perm-push"
 ENTER_KEY="enterkeys"
@@ -240,6 +241,7 @@ function get-help()
     $BROWSER_PRIVATE_KEY (default browser - private)
     $SUITE_KEY (open a set of website as a suite)
     $BASH_HIST (cleanup bash history)
+    $RELEASE_KEY (check if anything needs releasing)
 "
 }
 
@@ -252,6 +254,9 @@ if [ ! -z $1 ]; then
     NEED_HELP=0
     cmd=$(echo "$1" | sed "s/$BROWSER_KEY/$FIREFOX_KEY/g")
     case $cmd in
+        $RELEASE_KEY)
+            github-releases
+            ;;
         $MACHINECTL_NSPAWN_KEY)
             make-nspawn ${@:2}
             ;;

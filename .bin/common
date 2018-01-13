@@ -319,6 +319,33 @@ function git-changing()
     touch $GIT_PARTIAL_TMP
     cd $HOME
 }
+function github-commit() {
+    local _hash
+    _hash=$(git ls-remote --$1 $2 | tail -n 1)
+    if [ ! -z "$_hash" ]; then
+        commit=$(echo "$_hash" | cut -d " " -f 1 | cut -d "/" -f 1 | sed "s#refs##g")
+        echo $commit
+    fi
+}
+
+function github-releases()
+{
+    local lastyear
+    lastyear=$(date -d "1 month ago" +%Y-%m-%d)
+    for u in $(echo "enckse epiphyte"); do
+        _file=$USER_TMP/repos.$u
+        curl -s "https://api.github.com/search/repositories?q=user:$u+pushed:%3E=$lastyear&sort=updated" | grep "clone_url" | cut -d ":" -f 2,3 | sed 's/"//g;s/ //g;s/,//g' > $_file
+        for r in $(cat $_file | sort | grep -v -E "https://github.com/(enckse|epiphyte)/(home|batchy).git"); do
+            tag=$(github-commit "tags" $r)
+            if [ ! -z "$tag" ]; then
+                head=$(github-commit "head" $r)
+                if [[ "$head" != "$tag" ]]; then
+                    echo "$r"
+                fi
+            fi
+        done
+    done
+}
 
 function git-changes()
 {
