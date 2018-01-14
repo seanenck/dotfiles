@@ -17,6 +17,7 @@ CONTAINER_HOME=$(CONTAINER_PATH)$(USER_HOME)
 CONTAINER_CONF=$(ETC_NSPAWN)$(TARGET).nspawn
 CONTAINER_ROOT=$(CONTAINER_PATH)root/
 CONTAINER_ETC=$(CONTAINER_PATH)etc/
+CONTAINER_PROFILE=$(CONTAINER_ETC)profile.d/startup.sh
 
 PACKAGES=base git vim base-devel python termite-terminfo
 IGNORES=--ignore linux --ignore nano --ignore linux-firmware
@@ -38,6 +39,7 @@ USER_GIT=/$(USER_HOME)$(GIT)
 PLUGINS=$(shell find /$(USER_HOME)$(VIM) -type f)
 VIM_SWAP_RT=$(CONTAINER_ROOT)$(VIM)$(SWAP)
 VIM_UNDO_RT=$(CONTAINER_ROOT)$(VIM)$(UNDO)
+CACHE_START=/var/cache/.start
 
 .PHONY:
 
@@ -90,6 +92,14 @@ refresh: running
 	$(call containeretc,sudoers,440)
 	$(call containeretc,locale.gen,644)
 	$(call containeretc,locale.conf,644)
+	rm -f $(CONTAINER_PATH)$(CACHE_START)
+	@echo "#!/bin/sh" > $(CONTAINER_PROFILE)
+	@echo "if [ ! -e '$(CACHE_START)' ]; then " >> $(CONTAINER_PROFILE)
+	@echo "    echo 'performing first-time startup'" >> $(CONTAINER_PROFILE)
+	@echo "    locale-gen" >> $(CONTAINER_PROFILE)
+	@echo "    touch '$(CACHE_START)'" >> $(CONTAINER_PROFILE)
+	@echo "fi" >> $(CONTAINER_PROFILE)
+	chmod uga+x $(CONTAINER_PROFILE)
 	rsync -avc /$(USER_HOME)$(VIM)* $(VIMPLUGIN) --exclude=$(UNDO) --exclude=$(SWAP) --delete-after
 	chown -R $(USER_NAME):$(USER_NAME) $(CONTAINER_HOME)
 
