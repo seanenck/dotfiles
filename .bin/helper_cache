@@ -1,6 +1,5 @@
 #!/bin/bash
 source $HOME/.bin/common
-SEARCH_KEY="search"
 PASSWORD_KEY="passwords"
 VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
@@ -16,12 +15,13 @@ PERM_PUSH_KEY="perm-push"
 ENTER_KEY="enterkeys"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
+DMENU_UNKNOWN_KEY="dmenu-unknown"
 MACHINECTL_NSPAWN_KEY="machinectl-nspawn"
 SUITE_KEY="suite"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
-DMENU_LIST="$SEARCH_KEY $PASSWORD_KEY $VOLUME_KEY $FIREFOX_KEY $FIREFOX_PRIVATE_KEY $SUITE_KEY $BROWSER_KEY $BROWSER_PRIVATE_KEY"
+DMENU_LIST="$PASSWORD_KEY $VOLUME_KEY $FIREFOX_KEY $FIREFOX_PRIVATE_KEY $SUITE_KEY $BROWSER_KEY $BROWSER_PRIVATE_KEY"
 DMENU_INCLUDE="$HOME/.config/menus/dmenu_entries"
 ENTRIES=$HOME/.config/window.entries
 SUITE_FILE="$SYNCED_CONF/suite.dmenu_urls"
@@ -176,7 +176,30 @@ function dmenu-wrapper()
         cat $TMP_DMENU | sort > $DMENU_ENTRIES
         rm -f $TMP_DMENU
     fi
-    cat $DMENU_ENTRIES | dmenu "$@" | ${SHELL:-"/bin/sh"} &
+    cat $DMENU_ENTRIES | dmenu "$@" | dmenu-unknown  | ${SHELL:-"/bin/sh"} &
+}
+
+function _dmenu-unknown()
+{
+    _inputs="$@"
+    if [ -e $DMENU_ENTRIES ]; then
+        cat $DMENU_ENTRIES | grep -q "^$_inputs$"
+        if [ $? -ne 0 ]; then
+            echo "$_inputs" | grep -q "^http"
+            if [ $? -eq 0 ]; then
+                firefox "$_inputs"
+            else
+                searching "$_inputs"
+            fi
+        fi
+    fi
+}
+
+function dmenu-unknown()
+{
+    _input=$(cat -)
+    echo "$_input"
+    _dmenu-unknown "$_input" >> /tmp/test
 }
 
 function searching()
@@ -224,7 +247,6 @@ $res
 function get-help()
 {
     echo "
-    $SEARCH_KEY (search)
     $PASSWORD_KEY (password management)
     $VOLUME_KEY (volume mixer)
     $REBUILD_KEY (rebuild cache)
@@ -242,6 +264,7 @@ function get-help()
     $SUITE_KEY (open a set of website as a suite)
     $BASH_HIST (cleanup bash history)
     $RELEASE_KEY (check if anything needs releasing)
+    $DMENU_UNKNOWN_KEY (handle unknown dmenu items)
 "
 }
 
@@ -254,6 +277,9 @@ if [ ! -z $1 ]; then
     NEED_HELP=0
     cmd=$(echo "$1" | sed "s/$BROWSER_KEY/$FIREFOX_KEY/g")
     case $cmd in
+        $DMENU_UNKNOWN_KEY)
+            dmenu-unknown ${@:2}
+            ;;
         $RELEASE_KEY)
             github-releases
             ;;
@@ -262,9 +288,6 @@ if [ ! -z $1 ]; then
             ;;
         $PASSWORD_KEY)
             passwords
-            ;;
-        $SEARCH_KEY)
-            searching ${@:2}
             ;;
         $VOLUME_KEY)
             volume-mixer
