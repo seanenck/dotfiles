@@ -185,12 +185,21 @@ function _dmenu-unknown()
     if [ -e $DMENU_ENTRIES ]; then
         cat $DMENU_ENTRIES | grep -q "^$_inputs$"
         if [ $? -ne 0 ]; then
-            echo "$_inputs" | grep -q "^http"
-            if [ $? -eq 0 ]; then
-                firefox "$_inputs"
-            else
-                searching "$_inputs"
-            fi
+            _clean=$(echo "$_inputs" | sed 's/"/\\"/g')
+            _clean="\"$_clean\""
+            _url=$(python -c "
+def is_valid_url(url):
+    for tld in ['com', 'network', 'org', 'mil', 'net', 'edu', 'gov', 'io', 'info']:
+        if url.endswith('.{}'.format(tld)):
+            return url
+    return None
+if is_valid_url($_clean) is not None:
+    print($_clean)
+else:
+    import urllib.parse
+    print('https://www.google.com/search?q={}'.format(urllib.parse.quote($_clean)))
+")
+            firefox "$_url"
         fi
     fi
 }
@@ -199,20 +208,7 @@ function dmenu-unknown()
 {
     _input=$(cat -)
     echo "$_input"
-    _dmenu-unknown "$_input" >> /tmp/test
-}
-
-function searching()
-{
-    if [ -z "$1" ]; then
-        echo "requires a search term"
-        exit -1
-    fi
-    SEARCH=""
-    for term in ${@:1}; do
-        SEARCH=$SEARCH" $(perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$term")"
-    done
-    firefox "http://www.google.com/search?q=$SEARCH"
+    _dmenu-unknown "$_input" >/dev/null 2>&1
 }
 
 function passwords()
