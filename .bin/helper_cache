@@ -188,16 +188,31 @@ function _dmenu-unknown()
             _clean=$(echo "$_inputs" | sed 's/"/\\"/g')
             _clean="\"$_clean\""
             _url=$(python -c "
+check = $_clean
 def is_valid_url(url):
     for tld in ['com', 'network', 'org', 'mil', 'net', 'edu', 'gov', 'io', 'info']:
         if url.endswith('.{}'.format(tld)):
             return url
     return None
-if is_valid_url($_clean) is not None:
-    print($_clean)
+def check_chars(url):
+    valid = True
+    if len(url) == 0:
+        valid = False
+    for c in url:
+        if c.isalnum() or c in ['.', ':', '/']:
+            continue
+        if not valid:
+            break
+        valid = False
+    return valid
+
+if check_chars(check) and is_valid_url(check) is not None:
+    print(check)
 else:
     import urllib.parse
-    print('https://www.google.com/search?q={}'.format(urllib.parse.quote($_clean)))
+    if check.startswith('search '):
+        check = check[7:]
+    print('https://www.google.com/search?q={}'.format(urllib.parse.quote(check)))
 ")
             firefox "$_url"
         fi
