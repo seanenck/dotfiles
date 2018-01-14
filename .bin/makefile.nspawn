@@ -38,7 +38,6 @@ USER_GIT=/$(USER_HOME)$(GIT)
 PLUGINS=$(shell find /$(USER_HOME)$(VIM) -type f)
 VIM_SWAP_RT=$(CONTAINER_ROOT)$(VIM)$(SWAP)
 VIM_UNDO_RT=$(CONTAINER_ROOT)$(VIM)$(UNDO)
-ETC=/etc/
 
 .PHONY:
 
@@ -89,6 +88,8 @@ refresh: running
 	$(call containeretc,shadow,600)
 	$(call containeretc,gshadow,600)
 	$(call containeretc,sudoers,440)
+	$(call containeretc,locale.gen,644)
+	$(call containeretc,locale.conf,644)
 	rsync -avc /$(USER_HOME)$(VIM)* $(VIMPLUGIN) --exclude=$(UNDO) --exclude=$(SWAP) --delete-after
 	chown -R $(USER_NAME):$(USER_NAME) $(CONTAINER_HOME)
 
