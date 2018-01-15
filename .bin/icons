@@ -5,6 +5,7 @@ from gi.repository import Gtk, GObject
 import subprocess
 import os
 import signal
+import datetime
 import time
 import json
 from subprocess import check_output
@@ -163,17 +164,32 @@ class Generic:
         self._callback = callback
         self._last = None
         self.set_image("unknown")
+        self._called = None
         self.on_timeout()
+
+    def reset(self):
+        """Reset the icon."""
+        self._called = None
 
     def set_image(self, image):
         """Set icon image."""
         self.statusicon.set_from_file(os.path.join(self._images, image + ".png"))
 
-    def on_timeout(self):
+    def on_timeout(self, do_callback=True):
         """On timeout do a callback."""
-        self._last = self._callback(self._last, self)
+        run = False
+        next_call = datetime.datetime.now()
+        if self._called is None:
+            run = True
+        else:
+            delta_s = (next_call - self._called).total_seconds()
+            run =  delta_s > 10
+        if run:
+            self._called = next_call
+            self._last = self._callback(self._last, self)
         # has to have timeout added
-        GObject.timeout_add(3000, self.on_timeout)
+        if do_callback:
+            GObject.timeout_add(500, self.on_timeout)
 
 def _get_socket():
     import socket
@@ -189,7 +205,6 @@ def _get_socket():
 
 def workspacing():
     """Handles workspace naming."""
-    import datetime
     date = str(datetime.datetime.now()).replace(":", "-").replace(" ", "_").replace(".", "_")
     sock = None
     success = True
@@ -220,12 +235,18 @@ def main():
     workspaces.daemon = True
     workspaces.start()
     path = os.path.join(_HOME, ".config", "genericon")
-    Generic(battery, path)
-    Generic(volume, path)
-    Generic(brightness, path)
-    Generic(locked, path)
+    i = []
+    i.append(Generic(battery, path))
+    i.append(Generic(volume, path))
+    i.append(Generic(brightness, path))
+    i.append(Generic(locked, path))
+    def sig_handler(signum, frame):
+        for icon in i:
+            icon.reset()
+    signal.signal(signal.SIGUSR1, sig_handler)
+    with open(_HOME_TMP + "icons.pid", 'w') as f:
+        f.write(str(os.getpid()))
     Gtk.main()
-
 
 def _is_active():
     for proc in ["weechat"]:
