@@ -4,8 +4,6 @@ PASSWORD_KEY="passwords"
 VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
 PRIVATE_KEY="-private"
-BROWSER_KEY="browser"
-BROWSER_PRIVATE_KEY="$BROWSER_KEY$PRIVATE_KEY"
 FIREFOX_KEY="ff"
 FIREFOX_PRIVATE_KEY="$FIREFOX_KEY$PRIVATE_KEY"
 RELEASE_KEY="github-releases"
@@ -195,8 +193,6 @@ function get-help()
     $MACHINECTL_NSPAWN_KEY (machinectl wrapper for creating systems)
     $FIREFOX_KEY (firefox)
     $FIREFOX_PRIVATE_KEY (firefox private window)
-    $BROWSER_KEY (default browser)
-    $BROWSER_PRIVATE_KEY (default browser - private)
     $BASH_HIST (cleanup bash history)
     $RELEASE_KEY (check if anything needs releasing)
 "
@@ -209,8 +205,7 @@ function volume-mixer()
 
 if [ ! -z $1 ]; then
     NEED_HELP=0
-    cmd=$(echo "$1" | sed "s/$BROWSER_KEY/$FIREFOX_KEY/g")
-    case $cmd in
+    case $1 in
         $RELEASE_KEY)
             github-releases
             ;;
