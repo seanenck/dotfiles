@@ -113,9 +113,9 @@ bindsym $mod+Shift+l exec locking auto
 bindsym $mod+Shift+s exec locking sleep
 
 # Sound
-bindsym XF86AudioMute exec pamixer -t
-bindsym XF86AudioRaiseVolume exec pamixer -i 10
-bindsym XF86AudioLowerVolume exec pamixer -d 10
+bindsym XF86AudioMute exec pamixer-wrapper -t
+bindsym XF86AudioRaiseVolume exec pamixer-wrapper -i 10
+bindsym XF86AudioLowerVolume exec pamixer-wrapper -d 10
 
 # Backlight
 bindsym XF86MonBrightnessUp exec subsystem display toggle up

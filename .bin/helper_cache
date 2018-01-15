@@ -20,6 +20,7 @@ ENTRIES=$HOME/.config/window.entries
 BROWSER_WINDOW="Nightly"
 BASH_HIST="bash-history"
 BASH_NEW_HISTORY=$USER_TMP/bash_history.tmp
+PAMIXER_KEY="pamixer-wrapper"
 
 function dmenu-local()
 {
@@ -190,7 +191,14 @@ function get-help()
     $MACHINECTL_NSPAWN_KEY (machinectl wrapper for creating systems)
     $BASH_HIST (cleanup bash history)
     $RELEASE_KEY (check if anything needs releasing)
+    $PAMIXER_KEY (wrap pamixer)
 "
+}
+
+function pamixer-wrapper()
+{
+    pamixer $@
+    refresh-usr1
 }
 
 function volume-mixer()
@@ -201,6 +209,9 @@ function volume-mixer()
 if [ ! -z $1 ]; then
     NEED_HELP=0
     case $1 in
+        $PAMIXER_KEY)
+            pamixer-wrapper ${@:2}
+            ;;
         $RELEASE_KEY)
             github-releases
             ;;
