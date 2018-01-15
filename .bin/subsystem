@@ -1,5 +1,4 @@
 #!/bin/bash
-source $HOME/.bin/displays
 source $HOME/.bin/common
 DISPLAY_KEY="display"
 DISPLAY_TOGGLE="toggle"
@@ -9,6 +8,161 @@ FORCE_WORKSPACE="force"
 PROF_KEY="profiles"
 ALL_AVAILBLE="$DISPLAY_KEY $WORKSPACES_KEY $SYS_STATS_KEY"
 HELP="help"
+BACKLIGHT_ON="up"
+BACKLIGHT_OFF="down"
+FULL_BRIGHT="full"
+LOW_BRIGHT="low"
+MID_BRIGHT="mid"
+PROFILE_CYCLE="cycle"
+MAIN_DISPLAY="eDP-1"
+DISP_ONE="DP-2-2"
+DISP_TWO="DP-2-1"
+HOME_DISP="DP-2-1"
+WORKSPACE_START="startup"
+WORKSPACE_RELOAD="reload"
+WORKSPACE_CHANGE="change"
+DEFAULT_WORKSPACE_ID=1
+DOCKED_ID=2
+DISP_HOLDER="DISPLAY_VALUE"
+WORK_COMMON_LEFT="--output $DISP_HOLDER --auto --left-of $MAIN_DISPLAY --rotate right"
+WORK_COMMON_RIGHT="--output $DISP_HOLDER --auto --right-of $MAIN_DISPLAY"
+HOME_COMMON="--output $DISP_HOLDER --auto --left-of $MAIN_DISPLAY --rotate left"
+HOME_WORKPLACE_ID=3
+TRACK_LIGHTING=$USER_TMP/.backlight
+
+function get-lighting-help()
+{
+    echo "
+    $1 $2 $BACKLIGHT_ON (toggle backlights ON)
+    $1 $2 $BACKLIGHT_OFF (toggle backlights OFF)
+    $1 $3 $LOW_BRIGHT (low brightness)
+    $1 $3 $MID_BRIGHT (medium brightness)
+    $1 $3 $FULL_BRIGHT (full brightness)
+    $1 $4 $PROFILE_CYCLE (profile cycling)
+    "
+}
+
+# Get displays, first argument can filter out any displays
+function get-displays()
+{
+    get-all-displays " "
+}
+
+function get-all-displays()
+{
+    xrandr | grep "${1}connected" | cut -d " " -f 1
+}
+
+# Toggle backlighting up/down to a specified level
+function toggle-backlighting()
+{
+    if [ ! -e $TRACK_LIGHTING ]; then
+        echo "$MID_BRIGHT" > $TRACK_LIGHTING
+    fi
+
+    local _action=$1
+    local _current=$(cat $TRACK_LIGHTING)
+    case $1 in
+        $BACKLIGHT_ON)
+            if [[ "$_current" == "$LOW_BRIGHT" ]]; then
+                _action=$MID_BRIGHT
+            else
+                _action=$FULL_BRIGHT
+            fi
+            ;;
+        $BACKLIGHT_OFF)
+            if [[ "$_current" == "$FULL_BRIGHT" ]]; then
+                _action=$MID_BRIGHT
+            else
+                _action=$LOW_BRIGHT
+            fi
+            ;;
+    esac
+    if [[ "$_action" != "$1" ]]; then
+        echo "$_action" > $TRACK_LIGHTING
+    fi
+
+    case $_action in
+        $FULL_BRIGHT)
+            SETTING=1.0
+            ;;
+        $LOW_BRIGHT)
+            SETTING=0.3
+            ;;
+        $MID_BRIGHT)
+            SETTING=0.9
+            ;;
+        *)
+            echo "Unknown command $1"
+            ;;
+    esac
+    
+    if [ ! -z "$SETTING" ]; then
+        DISPLAYS=$(get-displays)
+        for disp in ${DISPLAYS[@]}; do
+            xrandr --output $disp --brightness $SETTING
+        done
+    fi
+}
+
+function replace-and-execute()
+{
+    VAL="xrandr "$(echo "$1" | sed "s/$DISP_HOLDER/$2/g")
+    eval $VAL
+}
+
+function set-workplace()
+{
+    ALL_DISPLAYS=$(get-all-displays | grep -v "$MAIN_DISPLAY")
+    has_side=0
+    for disp in $ALL_DISPLAYS; do
+        xrandr --output $disp --off
+        xrandr | grep -q "^$disp connected"
+        if [ $? -eq 0 ]; then
+            has_side=1
+        fi
+    done
+    xrandr --output $MAIN_DISPLAY --primary --auto
+    use_setting=$1
+    if [ $has_side -eq 0 ]; then
+        use_setting=$DEFAULT_WORKSPACE_ID
+    fi
+    rm -f $TRAY_SET
+    i3_commands tray_reload 
+    case $use_setting in
+        $DOCKED_ID | $HOME_WORKPLACE_ID)
+            case $use_setting in
+                $DOCKED_ID)
+                    replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
+                    replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
+                    ;;
+                $HOME_WORKPLACE_ID)
+                    replace-and-execute "$HOME_COMMON" "$HOME_DISP"
+                    ;;
+            esac
+            ;;
+    esac
+    toggle-backlighting $MID_BRIGHT
+    if [ $1 -eq $use_setting ]; then
+        i3 restart
+    fi
+}
+
+# Workspace help
+function get-workspace-help()
+{
+    echo "
+    $1 $2 $DEFAULT_WORKSPACE_ID (force default workspace)
+    $1 $2 $DOCKED_ID (force docked workspace)
+    $1 $2 $HOME_WORKPLACE_ID (change to home workspace)
+    "
+}
+
+function force-workplace()
+{
+    set-workplace $1
+    xsetroot -solid "#333333"
+}
 
 function get-help()
 {
