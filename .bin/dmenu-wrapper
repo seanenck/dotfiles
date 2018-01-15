@@ -50,6 +50,18 @@ def _read_csv(csv_file):
         return results
 
 
+def _get_temp_name(temp_dir):
+    """Get the location of the dmenu entry cache."""
+    import datetime
+    now = datetime.datetime.now()
+    name = ".dmenu.{}.{}.{}.{}.{}".format(now.year,
+                                          now.month,
+                                          now.day,
+                                          now.hour,
+                                          int(5 * round(float(now.minute)/5)))
+    return os.path.join(temp_dir, name)
+
+
 def _intercepting(args, unknown):
     """Intercepting calls."""
     import sys
@@ -71,15 +83,15 @@ def _intercepting(args, unknown):
 
 def _producing(args, unknown):
     """Producing a dmenu list."""
-    cache_file = os.path.join(args.temp, "dmenu.cache")
+    cache_file = _get_temp_name(args.temp)
     if not os.path.exists(cache_file):
-        print('building cache')
         urls = _read_csv(args.urls)
         with open(cache_file, 'w') as f:
             for item in sorted(list(urls.keys()) + args.list):
                 f.write("{}\n".format(item))
     cmd = _DMENU_CALL.replace("{CACHE}", cache_file).replace("{ARGS}", " ".join(unknown))
     subprocess.call(cmd, shell=True)
+   
 
 def main():
     """Main entry."""
