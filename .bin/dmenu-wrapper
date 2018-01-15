@@ -1,0 +1,113 @@
+#!/usr/bin/python
+import csv
+import os
+import subprocess
+import argparse
+
+
+_DMENU_CALL = 'cat {CACHE} | dmenu {ARGS} | dmenu-local --intercept | ${SHELL:-"/bin/sh" } &'
+
+def _read_csv(csv_file):
+    """Read csv of urls."""
+    with open(csv_file, 'r') as f:
+        reader = csv.reader(f)
+        results = {}
+        group_sets = {}
+        for line in reader:
+            if len(line) != 4:
+                print("invalid csv (shortcut, url, args, groups)")
+                exit(1)
+            shortcut = line[0]
+            url = line[1]
+            args = line[2]
+            groups = line[3]
+            if not args:
+                args = ""
+            if not groups:
+                groups = ""
+            if not url or len(url.strip()) == 0:
+                print('invalid url')
+                exit(1)
+            if not shortcut or len(shortcut.strip()) == 0:
+                print('invalid shortcut')
+            grouping = []
+            use_args = [x for x in args.split(" ") if len(x.strip()) > 0]
+            for g in [x for x in groups.split(" ") if len(x.strip()) > 0]:
+                if g not in group_sets:
+                    group_sets[g] = []
+                group_sets[g].append((url, use_args))
+                grouping += g
+            results[shortcut] = (url, use_args)
+        for g in group_sets:
+            subs = group_sets[g]
+            urls = []
+            args = []
+            for u in subs:
+                urls.append(u[0])
+                for a in u[1]:
+                    args.append(a)
+            results[g] = (" ".join(urls), args)
+        return results
+
+
+def _intercepting(args, unknown):
+    """Intercepting calls."""
+    import sys
+    inputs = sys.stdin.read().strip()
+    urls = _read_csv(args.urls)
+    if inputs in args.list:
+        # we know how to handle this from shell
+        print(inputs)
+        return
+    if inputs in urls.keys():
+        # it's a url, follow it
+        obj = urls[inputs]
+        addresses = obj[0]
+        use_args = obj[1]
+        cmd = "{} {} {}".format(args.browser, " ".join(use_args), addresses)
+        print(cmd)
+        return
+    
+
+def _producing(args, unknown):
+    """Producing a dmenu list."""
+    cache_file = os.path.join(args.temp, "dmenu.cache")
+    if not os.path.exists(cache_file):
+        print('building cache')
+        urls = _read_csv(args.urls)
+        with open(cache_file, 'w') as f:
+            for item in sorted(list(urls.keys()) + args.list):
+                f.write("{}\n".format(item))
+    cmd = _DMENU_CALL.replace("{CACHE}", cache_file).replace("{ARGS}", " ".join(unknown))
+    subprocess.call(cmd, shell=True)
+
+def main():
+    """Main entry."""
+    parser = argparse.ArgumentParser("a dmenu wrapper")
+    parser.add_argument("--list", type=str, default=None, help="list of commands to send to dmenu")
+    parser.add_argument("--temp", type=str, default="/tmp/", help="working area")
+    parser.add_argument("--intercept", action="store_true", help="intercept dmenu outputs")
+    parser.add_argument("--urls", type=str, default=None, help="csv of urls to read")
+    parser.add_argument("--browser", type=str, default=None, help="browser for urls")
+    args, unknown  = parser.parse_known_args()
+    if not args.browser or not os.path.exists(args.browser):
+        print('browser does not exist')
+        exit(1)
+    if args.list is None:
+        args.list = ""
+    args.list = args.list.split(" ")
+    if not os.path.exists(args.temp):
+        print("no temp directory exists")
+        exit(1)
+    if args.urls:
+        if not os.path.exists(args.urls):
+            print("url path does not exist")
+            exit(1)
+    if args.intercept:
+        _intercepting(args, unknown)
+    else:
+        _producing(args, unknown)
+
+
+if __name__ == "__main__":
+    main()
