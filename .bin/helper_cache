@@ -191,7 +191,7 @@ function _dmenu-unknown()
 check = $_clean
 def is_valid_url(url):
     for tld in ['com', 'network', 'org', 'mil', 'net', 'edu', 'gov', 'io', 'info']:
-        if url.endswith('.{}'.format(tld)):
+        if '.{}'.format(tld) in url:
             return url
     return None
 def check_chars(url):
