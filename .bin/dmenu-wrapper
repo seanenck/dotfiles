@@ -1,10 +1,11 @@
 #!/usr/bin/python
+"""dmenu-wrapper to handle using urls, searching, apps."""
 import csv
 import os
 import subprocess
 import argparse
 
-
+# Call to make to dmenu
 _DMENU_CALL = """#!//bin/bash
 _call() {
     local _results=$(cat {CACHE} | dmenu {ARGS} && echo $?)
@@ -14,6 +15,10 @@ _call() {
 }
 
 _call"""
+
+_TLDS = ['com', 'network', 'org', 'mil', 'net', 'edu', 'gov', 'io', 'info']
+_SEARCH = "https://www.google.com/search?q={}"
+
 
 def _read_csv(csv_file):
     """Read csv of urls."""
@@ -71,13 +76,15 @@ def _get_temp_name(temp_dir):
 
 
 def _is_valid_url(url):
-    for tld in ['com', 'network', 'org', 'mil', 'net', 'edu', 'gov', 'io', 'info']:
+    """Simple validity check for url."""
+    for tld in _TLDS:
         if '.{}'.format(tld) in url:
             return url
     return None
 
 
 def _check_chars(url):
+    """Simple character scan on url."""
     valid = True
     if len(url) == 0:
         valid = False
@@ -116,12 +123,12 @@ def _intercepting(args, unknown):
         searching = inputs
         if searching.startswith("search "):
             searching = search[7:]
-        calling = "https://www.google.com/search?q={}".format(urllib.parse.quote(searching))
+        calling = _SEARCH.format(urllib.parse.quote(searching))
     if calling is not None:
         print("{} {}".format(args.browser, calling))
         return
     print(inputs)
-    
+
 
 def _producing(args, unknown):
     """Producing a dmenu list."""
@@ -131,19 +138,25 @@ def _producing(args, unknown):
         with open(cache_file, 'w') as f:
             for item in sorted(list(urls.keys()) + args.list):
                 f.write("{}\n".format(item))
-    cmd = _DMENU_CALL.replace("{CACHE}", cache_file).replace("{ARGS}", " ".join(unknown))
+    cmd = _DMENU_CALL.replace("{CACHE}", cache_file).replace("{ARGS}",
+                                                             " ".join(unknown))
     subprocess.call(cmd, shell=True)
-   
+
 
 def main():
     """Main entry."""
     parser = argparse.ArgumentParser("a dmenu wrapper")
-    parser.add_argument("--list", type=str, default=None, help="list of commands to send to dmenu")
-    parser.add_argument("--temp", type=str, default="/tmp/", help="working area")
-    parser.add_argument("--intercept", action="store_true", help="intercept dmenu outputs")
-    parser.add_argument("--urls", type=str, default=None, help="csv of urls to read")
-    parser.add_argument("--browser", type=str, default=None, help="browser for urls")
-    args, unknown  = parser.parse_known_args()
+    parser.add_argument("--list", type=str, default=None,
+                        help="list of commands to send to dmenu")
+    parser.add_argument("--temp", type=str, default="/tmp/",
+                        help="working area")
+    parser.add_argument("--intercept", action="store_true",
+                        help="intercept dmenu outputs")
+    parser.add_argument("--urls", type=str, default=None,
+                        help="csv of urls to read")
+    parser.add_argument("--browser", type=str, default=None,
+                        help="browser for urls")
+    args, unknown = parser.parse_known_args()
     if not args.browser or not os.path.exists(args.browser):
         print('browser does not exist')
         exit(1)
