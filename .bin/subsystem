@@ -103,6 +103,7 @@ function toggle-backlighting()
             xrandr --output $disp --brightness $SETTING
         done
     fi
+    refresh-usr1
 }
 
 function replace-and-execute()

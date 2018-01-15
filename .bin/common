@@ -44,6 +44,14 @@ SND_MUTE="$USER_TMP/.mute"
 PROFILE_TMP="$USER_TMP/.profile.synced."
 SUSPENDING="$USER_TMP/suspended"
 
+function refresh-usr1()
+{
+    local _pids=$USER_TMP/icons.pid
+    if [ -e $_pids ]; then
+        kill -USR1 $(cat $_pids)
+    fi
+}
+
 function mute()
 {
     pamixer -m
