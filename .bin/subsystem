@@ -27,23 +27,6 @@ function get-help()
     done
 }
 
-if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
-    HEADER="subsystem, command, and value required ($1 and $2 and $3 ?)"
-    if [ ! -z "$1" ]; then
-        if [[ "$1" == "$HELP" ]]; then
-            HEADER=""
-        fi
-    fi
-    
-    if [ ! -z "$HEADER" ]; then
-        echo $HEADER
-        echo
-    fi
-    
-    get-help
-    exit -1
-fi
-
 # Workspace commands
 function workspace-subsystem()
 {
@@ -109,18 +92,38 @@ function cycle-profiles()
     fi
 }
 
-case $1 in
-    $DISPLAY_KEY)
-        CMD=display-subsystem
-        ;;
-    $WORKSPACES_KEY)
-        CMD=workspace-subsystem
-        ;;
-    *)
-        echo "Unknown action $1"
-        ;;
+if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
+    echo > /dev/null
+else
+    if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
+        HEADER="subsystem, command, and value required ($1 and $2 and $3 ?)"
+        if [ ! -z "$1" ]; then
+            if [[ "$1" == "$HELP" ]]; then
+                HEADER=""
+            fi
+        fi
+        
+        if [ ! -z "$HEADER" ]; then
+            echo $HEADER
+            echo
+        fi
+        
+        get-help
+        exit -1
+    fi
+    case $1 in
+        $DISPLAY_KEY)
+            CMD=display-subsystem
+            ;;
+        $WORKSPACES_KEY)
+            CMD=workspace-subsystem
+            ;;
+        *)
+            echo "Unknown action $1"
+            ;;
 esac
 
-if [ ! -z $CMD ]; then
-    $CMD "$2" "$3"
+    if [ ! -z $CMD ]; then
+        $CMD "$2" "$3"
+    fi
 fi
