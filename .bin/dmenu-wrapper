@@ -63,7 +63,7 @@ def _read_csv(csv_file):
         return results
 
 
-def _get_temp_name(temp_dir):
+def _get_temp_name(temp_dir, dur):
     """Get the location of the dmenu entry cache."""
     import datetime
     now = datetime.datetime.now()
@@ -71,7 +71,7 @@ def _get_temp_name(temp_dir):
                                           now.month,
                                           now.day,
                                           now.hour,
-                                          int(5 * round(float(now.minute)/5)))
+                                          int(dur * round(float(now.minute)/dur)))
     return os.path.join(temp_dir, name)
 
 
@@ -132,7 +132,7 @@ def _intercepting(args, unknown):
 
 def _producing(args, unknown):
     """Producing a dmenu list."""
-    cache_file = _get_temp_name(args.temp)
+    cache_file = _get_temp_name(args.temp, args.duration)
     if not os.path.exists(cache_file):
         urls = _read_csv(args.urls)
         with open(cache_file, 'w') as f:
@@ -156,6 +156,8 @@ def main():
                         help="csv of urls to read")
     parser.add_argument("--browser", type=str, default=None,
                         help="browser for urls")
+    parser.add_argument("--duration", type=int, default=30,
+                        help="caching duration")
     args, unknown = parser.parse_known_args()
     if not args.browser or not os.path.exists(args.browser):
         print('browser does not exist')
