@@ -16,7 +16,6 @@ DMENU_LOCAL_KEY="dmenu-local"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
 MACHINECTL_NSPAWN_KEY="machinectl-nspawn"
-SUITE_KEY="suite"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
@@ -57,17 +56,6 @@ with open('$BASH_HISTORY') as f:
         cat $BASH_NEW_HISTORY > $BASH_HISTORY
         update-time "history"
     fi
-}
-
-function suite-open()
-{
-    all=""
-    for f in  $(cat $SUITE_FILE); do
-        next=$(echo $f | cut -d " " -f 1)
-        entry=$(dmenu_urls --entry $f)
-        all=$all" "$entry
-    done
-    firefox $all
 }
 
 function make-nspawn()
@@ -209,7 +197,6 @@ function get-help()
     $FIREFOX_PRIVATE_KEY (firefox private window)
     $BROWSER_KEY (default browser)
     $BROWSER_PRIVATE_KEY (default browser - private)
-    $SUITE_KEY (open a set of website as a suite)
     $BASH_HIST (cleanup bash history)
     $RELEASE_KEY (check if anything needs releasing)
 "
@@ -261,9 +248,6 @@ if [ ! -z $1 ]; then
             ;;
         $ARCH_CHROOT_KEY)
             arch-chroot-manage
-            ;;
-        $SUITE_KEY)
-            suite-open
             ;;
         $BASH_HIST)
             cleanup-bash-history
