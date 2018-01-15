@@ -62,23 +62,56 @@ def _get_temp_name(temp_dir):
     return os.path.join(temp_dir, name)
 
 
+def _is_valid_url(url):
+    for tld in ['com', 'network', 'org', 'mil', 'net', 'edu', 'gov', 'io', 'info']:
+        if '.{}'.format(tld) in url:
+            return url
+    return None
+
+
+def _check_chars(url):
+    valid = True
+    if len(url) == 0:
+        valid = False
+    for c in url:
+        if c.isalnum() or c in ['.', ':', '/']:
+            continue
+        if not valid:
+            break
+        valid = False
+    return valid
+
+
 def _intercepting(args, unknown):
     """Intercepting calls."""
     import sys
+    import urllib.parse
     inputs = sys.stdin.read().strip()
     urls = _read_csv(args.urls)
     if inputs in args.list:
         # we know how to handle this from shell
         print(inputs)
         return
+    calling = None
     if inputs in urls.keys():
         # it's a url, follow it
         obj = urls[inputs]
         addresses = obj[0]
         use_args = obj[1]
-        cmd = "{} {} {}".format(args.browser, " ".join(use_args), addresses)
-        print(cmd)
-        return
+        calling = "{} {}".format(" ".join(use_args), addresses)
+    if calling is None:
+        # handle urls
+        if _check_chars(inputs):
+            calling = _is_valid_url(inputs)
+    if calling is None:
+        # handle search
+        searching = inputs
+        if searching.startswith("search "):
+            searching = search[7:]
+        calling = "https://www.google.com/search?q={}".format(urllib.parse.quote(searching))
+    if calling is not None:
+        print("{} {}".format(args.browser, calling))
+    print(inputs)
     
 
 def _producing(args, unknown):
