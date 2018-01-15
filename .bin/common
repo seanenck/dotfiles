@@ -249,6 +249,10 @@ function set-user-files()
         touch $COPY_INDICATOR
     fi
 
+    for f in $(find $USER_TMP -type f -mmin +30 | grep "dmenu"); do
+        rm -f $f
+    done
+
     # vim
     for v in $(echo "undo swap"); do
         vim_dir=$HOME/.vim/$v
