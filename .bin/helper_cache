@@ -12,6 +12,7 @@ RELEASE_KEY="github-releases"
 PERM_UPDATE_KEY="perm-pull"
 PERM_PUSH_KEY="perm-push"
 ENTER_KEY="enterkeys"
+DMENU_LOCAL_KEY="dmenu-local"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
 MACHINECTL_NSPAWN_KEY="machinectl-nspawn"
@@ -19,11 +20,17 @@ SUITE_KEY="suite"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
-DMENU_LIST="$PASSWORD_KEY $VOLUME_KEY $FIREFOX_KEY $FIREFOX_PRIVATE_KEY $SUITE_KEY $BROWSER_KEY $BROWSER_PRIVATE_KEY"
+DMENU_APPS="vlc"
+DMENU_LIST="$DMENU_APPS $PASSWORD_KEY $VOLUME_KEY $FIREFOX_KEY $FIREFOX_PRIVATE_KEY"
 ENTRIES=$HOME/.config/window.entries
 BROWSER_WINDOW="Nightly"
 BASH_HIST="bash-history"
 BASH_NEW_HISTORY=$USER_TMP/bash_history.tmp
+
+function dmenu-local()
+{
+    $HOME/.bin/dmenu-wrapper --browser "/usr/bin/firefox" --list "$DMENU_LIST" --temp "$USER_TMP" --urls "${SYNCED_CONF}urls.csv" "$@"
+}
 
 function cleanup-bash-history()
 {
@@ -188,6 +195,7 @@ $res
 function get-help()
 {
     echo "
+    $DMENU_LOCAL_KEY (dmenu wrapper for local operations)
     $PASSWORD_KEY (password management)
     $VOLUME_KEY (volume mixer)
     $REBUILD_KEY (rebuild cache)
@@ -259,6 +267,9 @@ if [ ! -z $1 ]; then
             ;;
         $BASH_HIST)
             cleanup-bash-history
+            ;;
+        $DMENU_LOCAL_KEY)
+            dmenu-local ${@:2}
             ;;
         *)
             NEED_HELP=1
