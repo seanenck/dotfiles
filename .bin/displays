@@ -20,6 +20,7 @@ WORK_COMMON_LEFT="--output $DISP_HOLDER --auto --left-of $MAIN_DISPLAY --rotate 
 WORK_COMMON_RIGHT="--output $DISP_HOLDER --auto --right-of $MAIN_DISPLAY"
 HOME_COMMON="--output $DISP_HOLDER --auto --left-of $MAIN_DISPLAY --rotate left"
 HOME_WORKPLACE_ID=3
+TRACK_LIGHTING=$USER_TMP/.backlight
 
 function get-lighting-help()
 {
@@ -47,11 +48,37 @@ function get-all-displays()
 # Toggle backlighting up/down to a specified level
 function toggle-backlighting()
 {
+    if [ ! -e $TRACK_LIGHTING ]; then
+        echo "$MID_BRIGHT" > $TRACK_LIGHTING
+    fi
+
+    local _action=$1
+    local _current=$(cat $TRACK_LIGHTING)
     case $1 in
-        $BACKLIGHT_ON | $FULL_BRIGHT)
+        $BACKLIGHT_ON)
+            if [[ "$_current" == "$LOW_BRIGHT" ]]; then
+                _action=$MID_BRIGHT
+            else
+                _action=$FULL_BRIGHT
+            fi
+            ;;
+        $BACKLIGHT_OFF)
+            if [[ "$_current" == "$FULL_BRIGHT" ]]; then
+                _action=$MID_BRIGHT
+            else
+                _action=$LOW_BRIGHT
+            fi
+            ;;
+    esac
+    if [[ "$_action" != "$1" ]]; then
+        echo "$_action" > $TRACK_LIGHTING
+    fi
+
+    case $_action in
+        $FULL_BRIGHT)
             SETTING=1.0
             ;;
-        $BACKLIGHT_OFF | $LOW_BRIGHT)
+        $LOW_BRIGHT)
             SETTING=0.3
             ;;
         $MID_BRIGHT)
