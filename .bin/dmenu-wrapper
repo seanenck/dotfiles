@@ -50,7 +50,7 @@ def _read_csv(csv_file):
                     group_sets[g] = []
                 group_sets[g].append((url, use_args))
                 grouping += g
-            results[shortcut] = (url, use_args)
+            results[shortcut] = ("'{}'".format(url), use_args)
         for g in group_sets:
             subs = group_sets[g]
             urls = []
@@ -59,7 +59,7 @@ def _read_csv(csv_file):
                 urls.append(u[0])
                 for a in u[1]:
                     args.append(a)
-            results[g] = (" ".join(urls), args)
+            results[g] = ("'" + "' '".join(urls) + "'", args)
         return results
 
 
