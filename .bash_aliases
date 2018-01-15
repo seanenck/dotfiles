@@ -61,6 +61,8 @@ machinectl() {
                             machinectl start $2
                             sleep 1
                         fi
+                        machinectl $USER ${@:2}
+                        did=1
                     fi
                 fi
                 ;;
