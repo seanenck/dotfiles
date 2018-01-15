@@ -82,7 +82,7 @@ _setup() {
         rm -f $DISPLAY_EN
         rm -f $SND_MUTE
         rm -f $TRAY_SET
-        rm -f $DOCK_SLEEP
+        rm -f $NET_SLEEP
         for f in $(find $USER_TMP -type f | grep "${PROFILE_TMP}"); do
             rm -f $f
         done
