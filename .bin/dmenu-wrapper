@@ -5,7 +5,15 @@ import subprocess
 import argparse
 
 
-_DMENU_CALL = 'cat {CACHE} | dmenu {ARGS} | dmenu-local --intercept | ${SHELL:-"/bin/sh" } &'
+_DMENU_CALL = """#!//bin/bash
+_call() {
+    local _results=$(cat {CACHE} | dmenu {ARGS} && echo $?)
+    if [ ! -z \"$_results\" ]; then
+        echo \"$_results\" | head -n 1 | dmenu-local --intercept | ${SHELL:-\"/bin/sh\" } &
+    fi
+}
+
+_call"""
 
 def _read_csv(csv_file):
     """Read csv of urls."""
@@ -111,6 +119,7 @@ def _intercepting(args, unknown):
         calling = "https://www.google.com/search?q={}".format(urllib.parse.quote(searching))
     if calling is not None:
         print("{} {}".format(args.browser, calling))
+        return
     print(inputs)
     
 
