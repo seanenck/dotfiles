@@ -14,16 +14,6 @@ function get-i3-workspaces()
     echo "$WORKSPACE_INFO"
 }
 
-function close-all-containers()
-{
-    PARENT="true"
-    while [[ "$PARENT" == *"true"* ]];
-    do
-        PARENT=$(i3-msg focus parent);
-    done
-    i3-msg kill
-}
-
 function rename-workspace()
 {
     get-i3-workspaces | grep -q $1

@@ -8,7 +8,6 @@ bindsym $mod+S exec auto-clip
 
 # kill focused window
 bindsym $mod+Shift+q kill
-bindsym $mod+Control+q exec i3_commands close-all-containers
 
 bindsym $mod+d exec dmenu-local -i -fn "-*-terminal-medium-*-*-*-18-*-*-*-*-*-*-*"
 
