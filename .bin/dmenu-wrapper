@@ -133,7 +133,7 @@ def _intercepting(args, unknown):
         # handle search
         searching = inputs
         if searching.startswith("search "):
-            searching = search[7:]
+            searching = searching[7:]
         calling = _SEARCH.format(urllib.parse.quote(searching))
     if calling is not None:
         print("{} {}".format(args.browser, calling))
