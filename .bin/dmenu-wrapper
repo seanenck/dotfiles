@@ -4,11 +4,12 @@ import csv
 import os
 import subprocess
 import argparse
+import pickle
 
 # Call to make to dmenu
 _DMENU_CALL = """#!//bin/bash
 _call() {
-    local _results=$(cat {CACHE} | dmenu {ARGS} && echo $?)
+    local _results=$(echo {CACHE} | tr ' ' '\\n' | dmenu {ARGS} && echo $?)
     if [ ! -z \"$_results\" ]; then
         echo \"$_results\" | head -n 1 | dmenu-local --intercept | ${SHELL:-\"/bin/sh\" } &
     fi
@@ -18,6 +19,10 @@ _call"""
 
 _TLDS = ['com', 'network', 'org', 'mil', 'net', 'edu', 'gov', 'io', 'info']
 _SEARCH = "https://www.google.com/search?q={}"
+
+# pickle caching object
+_CACHE_URLS = "urls"
+_CACHE_LIST = "list"
 
 
 def _read_csv(csv_file):
@@ -102,7 +107,13 @@ def _intercepting(args, unknown):
     import sys
     import urllib.parse
     inputs = sys.stdin.read().strip()
-    urls = _read_csv(args.urls)
+    cache_file = _get_temp_name(args.temp, args.duration)
+    urls = None
+    if os.path.exists(cache_file):
+        with open(cache_file, 'rb') as f:
+            urls = pickle.load(f)[_CACHE_URLS]
+    if urls is None:
+        urls = _read_csv(args.urls)
     if inputs in args.list:
         # we know how to handle this from shell
         print(inputs)
@@ -129,17 +140,27 @@ def _intercepting(args, unknown):
         return
     print(inputs)
 
-
 def _producing(args, unknown):
     """Producing a dmenu list."""
     cache_file = _get_temp_name(args.temp, args.duration)
+    use_list = None
     if not os.path.exists(cache_file):
         urls = _read_csv(args.urls)
-        with open(cache_file, 'w') as f:
-            for item in sorted(list(urls.keys()) + args.list):
-                f.write("{}\n".format(item))
-    cmd = _DMENU_CALL.replace("{CACHE}", cache_file).replace("{ARGS}",
-                                                             " ".join(unknown))
+        obj = {}
+        obj[_CACHE_URLS] = urls
+        use_list = list(urls.keys()) + args.list
+        obj[_CACHE_LIST] = use_list
+        with open(cache_file, 'wb') as f:
+            pickle.dump(obj, f)
+    if use_list is None:
+        with open(cache_file, 'rb') as f:
+            use_list = pickle.load(f)[_CACHE_LIST]
+    replacing = {}
+    replacing["CACHE"] = " ".join(use_list)
+    replacing["ARGS"] = " ".join(unknown)
+    cmd = _DMENU_CALL
+    for r in replacing:
+        cmd = cmd.replace("{" + r + "}", replacing[r])
     subprocess.call(cmd, shell=True)
 
 
