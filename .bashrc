@@ -99,7 +99,7 @@ _ready() {
     _setup > $SETUP_LOG
 }
 
-_ready 
+(_ready &)
 if [ -s $SETUP_LOG ]; then
     cat $SETUP_LOG
 fi
