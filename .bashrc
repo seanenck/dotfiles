@@ -88,8 +88,6 @@ _setup() {
         done
         cleanup-bash-history
     fi
-    process-pass-aliases
-    set-system
     set-user-files
     tray
     docked
@@ -99,7 +97,12 @@ _ready() {
     _setup > $SETUP_LOG
 }
 
+_shell() {
+    set-system
+    process-pass-aliases
+}
 (_ready &)
+_shell
 if [ -s $SETUP_LOG ]; then
     cat $SETUP_LOG
 fi
