@@ -283,6 +283,11 @@ function set-user-files()
         cp /etc/hosts ${SYNCED_CONF}hosts
         cp /etc/systemd/network/* $HOME/.config/networkd/
         cp /etc/udev/rules.d/* $HOME/.config/udev/
+
+        for w in $(find /etc/wsw/ -type f); do
+            name=$(basename $w)
+            cp $w $WSW_NET$name
+        done
         touch $COPY_INDICATOR
     fi
 
@@ -295,11 +300,6 @@ function set-user-files()
         vim_dir=$HOME/.vim/$v
         mkdir -p $vim_dir
         find $vim_dir -mmin +1440 -type f -exec rm {} \;
-    done
-
-    for w in $(find /etc/wsw/ -type f); do
-        name=$(basename $w)
-        cp $w $WSW_NET$name
     done
     
     # packages
