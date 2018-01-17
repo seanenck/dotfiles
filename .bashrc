@@ -76,13 +76,17 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 
 # things to do to setup shell/env
 _setup() {
-    HAS_RAN=/tmp/.systeminit
-    if [ ! -e $HAS_RAN ]; then
+    BOOTED=$USER_TMP/".booted."$(uptime -s | sed "s/ /-/g;s/:/-/g")
+    if [ ! -e $BOOTED ]; then
         rm -f $DISPLAY_UN
         rm -f $DISPLAY_EN
         rm -f $SND_MUTE
         rm -f $TRAY_SET
         rm -f $NET_SLEEP
+    fi
+    touch $BOOTED
+    HAS_RAN=/tmp/.systeminit
+    if [ ! -e $HAS_RAN ]; then
         for f in $(find $USER_TMP -type f | grep "${PROFILE_TMP}"); do
             rm -f $f
         done
