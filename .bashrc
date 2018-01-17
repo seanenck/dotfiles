@@ -83,14 +83,9 @@ _setup() {
         rm -f $SND_MUTE
         rm -f $TRAY_SET
         rm -f $NET_SLEEP
-    fi
-    touch $BOOTED
-    HAS_RAN=/tmp/.systeminit
-    if [ ! -e $HAS_RAN ]; then
         for f in $(find $USER_TMP -type f | grep "${PROFILE_TMP}"); do
             rm -f $f
         done
-        touch $HAS_RAN
     fi
     process-pass-aliases
     set-system
