@@ -18,40 +18,11 @@ DMENU_APPS="vlc termite"
 DMENU_LIST="$DMENU_APPS $PASSWORD_KEY $VOLUME_KEY"
 ENTRIES=$HOME/.config/window.entries
 BROWSER_WINDOW="Nightly"
-BASH_HIST="bash-history"
-BASH_NEW_HISTORY=$USER_TMP/bash_history.tmp
 PAMIXER_KEY="pamixer-wrapper"
 
 function dmenu-local()
 {
     $HOME/.bin/dmenu-wrapper --browser "/usr/bin/firefox" --list "$DMENU_LIST" --temp "$USER_TMP" --urls "${SYNCED_CONF}urls.csv" "$@"
-}
-
-function cleanup-bash-history()
-{
-    python -c "
-import operator
-with open('$BASH_HISTORY') as f:
-    lines = [x.strip() for x in f.readlines()]
-    cur = {}
-    idx = 0
-    for l in lines:
-        cur[l] = idx
-        idx = idx + 1
-    vals = sorted(cur.items(), key=operator.itemgetter(1))
-    with open('$BASH_NEW_HISTORY', 'w') as w:
-        for l in vals:
-            w.write(l[0])
-            w.write('\n')
-"
-    new_count=$(cat $BASH_NEW_HISTORY | wc -l)
-    old_count=$(cat $BASH_HISTORY | wc -l)
-    echo "history cleaned up, entries: $new_count (previous: $old_count)"
-    read -p "save cleaned up history (y/n)? " yn
-    if [[ "$yn" == "y" ]]; then
-        cat $BASH_NEW_HISTORY > $BASH_HISTORY
-        update-time "history"
-    fi
 }
 
 function make-nspawn()
@@ -189,7 +160,6 @@ function get-help()
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
     $ARCH_CHROOT_KEY (arch-chroot management)
     $MACHINECTL_NSPAWN_KEY (machinectl wrapper for creating systems)
-    $BASH_HIST (cleanup bash history)
     $RELEASE_KEY (check if anything needs releasing)
     $PAMIXER_KEY (wrap pamixer)
 "
@@ -241,9 +211,6 @@ if [ ! -z $1 ]; then
             ;;
         $ARCH_CHROOT_KEY)
             arch-chroot-manage
-            ;;
-        $BASH_HIST)
-            cleanup-bash-history
             ;;
         $DMENU_LOCAL_KEY)
             dmenu-local ${@:2}

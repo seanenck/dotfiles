@@ -86,6 +86,7 @@ _setup() {
         for f in $(find $USER_TMP -type f | grep "${PROFILE_TMP}"); do
             rm -f $f
         done
+        cleanup-bash-history
     fi
     process-pass-aliases
     set-system
