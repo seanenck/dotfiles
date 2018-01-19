@@ -90,7 +90,7 @@ function docked()
     if [ ! -e $NET_SLEEP ]; then
         idx=0
         ready=1
-        active=$(wsw --active | cut -d "(" -f 2 | cut -d ")" -f 1| cut -d "=" -f 2)
+        active=$(wsw --active | cut -d "(" -f 2 | cut -d ")" -f 1 | cut -d "=" -f 2)
         while [ $idx -lt 5 ]; do
             wget -o /tmp/wget-log -q --tries=10 --timeout=20 --spider "https://google.com"
             if [ $? -eq 0 ]; then
