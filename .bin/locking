@@ -58,15 +58,6 @@ function lock-now()
     fi
 }
 
-function waking()
-{
-    if [ -e $SUSPENDING ]; then
-        write-log "performing wake actions"
-        rm -f $SUSPENDING
-        docked
-    fi
-}
-
 function suspend-now()
 {
     pass_keyword=""
@@ -105,7 +96,6 @@ function suspend-now()
             fi
         done
         write-log "done sleeping"
-        (waking &)
     fi
 }
 

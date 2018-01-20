@@ -90,7 +90,7 @@ _setup() {
     fi
     set-user-files
     tray
-    docked | systemd-cat -t "docking"
+    docked
 }
 
 _ready() {
