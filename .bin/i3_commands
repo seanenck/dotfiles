@@ -98,7 +98,7 @@ function tray_icons()
 
 function update-git()
 {
-    if [ -e $GIT_CHANGES ]; then
+    if [ ! -e $GIT_CHANGES ]; then
         git-changing > $GIT_CHANGES
     fi
 }
