@@ -83,7 +83,6 @@ function suspend-now()
             if [ $SLEEP_COUNT -ge $SLEEP_AFTER ]; then
                 write-log "sleeping..."
                 SLEEP_COUNT=0
-                touch $SUSPENDING
                 systemctl suspend
                 break
             fi

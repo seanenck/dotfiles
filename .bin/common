@@ -26,7 +26,6 @@ GIT_PARTIAL_PATTERN="weechat|random_seed"
 GIT_PARTIAL_TMP=$USER_TMP/git-partial
 BASE_SERVER="base"
 COPY_INDICATOR=$USER_TMP/backup.files
-MNT_SHARE=/mnt/Storage
 LAST_TIMES=$HOME/.cache/last-timed.log
 LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 REQUIRED_EVENTS=6
@@ -37,7 +36,6 @@ SETUP_LOG="$USER_TMP/bash_setup.log"
 GIT_CHANGES=$USER_TMP/git.changes
 SND_MUTE="$USER_TMP/.mute"
 PROFILE_TMP="$USER_TMP/.profile.synced."
-SUSPENDING="$USER_TMP/suspended"
 
 function refresh-usr1()
 {
