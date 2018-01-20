@@ -66,27 +66,24 @@ function tray()
 function docked()
 {
     if [ ! -e $NET_SLEEP ]; then
+        touch $NET_SLEEP
+        sleep 10
         idx=0
-        ready=1
-        active=$(wsw --active | cut -d "(" -f 2 | cut -d ")" -f 1 | cut -d "=" -f 2)
-        while [ $idx -lt 5 ]; do
+        _profile=3
+        while [ $idx -lt 10 ]; do
             wget -o /tmp/wget-log -q --tries=10 --timeout=20 --spider "https://google.com"
             if [ $? -eq 0 ]; then
-                ready=0
                 break
             fi
-            sleep 1
+            if [ $_profile -eq 2 ]; then
+                _profile=3
+            else
+                _profile=2
+            fi
+            wsw --change $_profile > /dev/null
+            sleep 3
             idx=$((idx+1))
         done
-        if [ $ready -eq 1 ]; then
-            if [[ "$active" == "3" ]]; then
-                active=2
-            else
-                active=3
-            fi
-            wsw --change $active > /dev/null
-        fi
-        touch $NET_SLEEP
     fi
 }
 
