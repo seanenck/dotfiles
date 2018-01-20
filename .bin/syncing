@@ -22,7 +22,7 @@ function zip-now()
 {
     if [ ! -e $ARCHIVE ]; then
         echo "${SPACING}zipping profile(s)"
-        7z a -t7z -bd $ARCHIVE $HOME/.cache/home/ $BASH_HISTORY $HOME/.mozilla/ &>/dev/null
+        7z a -t7z -bd $ARCHIVE $HOME/.cache/home/ $HOME/.mozilla/ &>/dev/null
         echo "${SPACING}zip done: $?"
     fi
 }
