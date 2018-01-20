@@ -3,7 +3,6 @@ USER_TMP=$HOME/.tmp
 SYNCED_PATH="$HOME/.synced/"
 WSW_NET=${SYNCED_PATH}networks/
 SYNCED_CONF=${SYNCED_PATH}/configs/
-PASS_ALIASES=${USER_TMP}/pass.aliases
 PERM_LOCATION=/opt/perm/
 CHROOT_LOCATION=${PERM_LOCATION}chroot
 PASS_PREFIX="pass-"
@@ -176,32 +175,6 @@ function test-ssh()
     else
         echo $NOT_CONNECTED
     fi
-}
-
-function process-pass-aliases()
-{
-    if [ ! -e $PASS_ALIASES ]; then
-        echo "source /usr/share/bash-completion/completions/pass" > $PASS_ALIASES
-        idx=0
-        for f in $(ls ${PERM_LOCATION} | grep "$PASS_PREFIX"); do
-            f_path=${PERM_LOCATION}$f
-            name="p$idx"
-            echo alias $f=\"PASSWORD_STORE_DIR=$f_path pass\" >> $PASS_ALIASES
-            echo "_$name(){" >> $PASS_ALIASES
-            echo "    PASSWORD_STORE_DIR=$f_path/ _pass" >> $PASS_ALIASES
-            echo "}" >> $PASS_ALIASES
-            echo >> $PASS_ALIASES
-            echo "complete -o filenames -o nospace -F _$name $f" >> $PASS_ALIASES
-            idx=$((idx+1))
-        done
-        if [ -e $EPIPHYTE_CONF ]; then
-            source $EPIPHYTE_CONF
-            for l in $(echo $LUKS_ALIASES); do
-                echo "alias luks-$l=\"enterkeys luks-$l\"" >> $PASS_ALIASES
-            done
-        fi
-    fi
-    source $PASS_ALIASES
 }
 
 function is-mounted()

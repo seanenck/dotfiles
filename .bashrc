@@ -98,7 +98,6 @@ _ready() {
 
 _shell() {
     set-system
-    process-pass-aliases
 }
 (_ready &)
 _shell
