@@ -289,7 +289,7 @@ function github-releases()
             if [ ! -z "$tag" ]; then
                 head=$(github-commit "head" $r)
                 if [[ "$head" != "$tag" ]]; then
-                    echo "$r"
+                    echo "$r" | sed "s/\.git$/\/releases/g"
                 fi
             fi
         done
