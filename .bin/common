@@ -280,7 +280,9 @@ function git-changing()
     touch $GIT_PARTIAL_TMP
     cd $HOME
 }
-function github-commit() {
+
+function github-commit()
+{
     local _hash
     _hash=$(git ls-remote --$1 $2 | tail -n 1)
     if [ ! -z "$_hash" ]; then
@@ -307,11 +309,4 @@ function github-releases()
         done
     done
     update-time "github-releases"
-}
-
-function git-changes()
-{
-    if [ ! -e $GIT_CHANGES ]; then
-        git-changing > $GIT_CHANGES
-    fi
 }
