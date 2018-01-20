@@ -19,6 +19,18 @@ DMENU_LIST="$DMENU_APPS $PASSWORD_KEY $VOLUME_KEY"
 ENTRIES=$HOME/.config/window.entries
 BROWSER_WINDOW="Nightly"
 PAMIXER_KEY="pamixer-wrapper"
+WSW_CYCLE_KEY="wsw-cycle"
+
+function cycle-wsw()
+{
+    local active new
+    new=3
+    active=$(wsw --active | cut -d " " -f 2 | cut -d "=" -f 2 | cut -d ")" -f 1)
+    if [ $active -eq 3 ]; then
+        new=2
+    fi
+    wsw --change $new
+}
 
 function dmenu-local()
 {
@@ -162,6 +174,7 @@ function get-help()
     $MACHINECTL_NSPAWN_KEY (machinectl wrapper for creating systems)
     $RELEASE_KEY (check if anything needs releasing)
     $PAMIXER_KEY (wrap pamixer)
+    $WSW_CYCLE_KEY (cycle wsw profiles)
 "
 }
 
@@ -179,6 +192,9 @@ function volume-mixer()
 if [ ! -z $1 ]; then
     NEED_HELP=0
     case $1 in
+        $WSW_CYCLE_KEY)
+            cycle-wsw
+            ;;
         $PAMIXER_KEY)
             pamixer-wrapper ${@:2}
             ;;
