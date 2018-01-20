@@ -368,11 +368,11 @@ function github-commit() {
 
 function github-releases()
 {
-    local lastyear
-    lastyear=$(date -d "1 month ago" +%Y-%m-%d)
+    local last
+    last=$(date -d "1 month ago" +%Y-%m-%d)
     for u in $(echo "enckse epiphyte"); do
         _file=$USER_TMP/repos.$u
-        curl -s "https://api.github.com/search/repositories?q=user:$u+pushed:%3E=$lastyear&sort=updated" | grep "clone_url" | cut -d ":" -f 2,3 | sed 's/"//g;s/ //g;s/,//g' > $_file
+        curl -s "https://api.github.com/search/repositories?q=user:$u+pushed:%3E=$last&sort=updated" | grep "clone_url" | cut -d ":" -f 2,3 | sed 's/"//g;s/ //g;s/,//g' > $_file
         for r in $(cat $_file | sort | grep -v -E "https://github.com/(enckse|epiphyte)/(home|batchy).git"); do
             tag=$(github-commit "tags" $r)
             if [ ! -z "$tag" ]; then
