@@ -5,7 +5,6 @@ WSW_NET=${SYNCED_PATH}networks/
 SYNCED_CONF=${SYNCED_PATH}/configs/
 PERM_LOCATION=/opt/perm/
 CHROOT_LOCATION=${PERM_LOCATION}chroot
-PASS_PREFIX="pass-"
 SSH_SYNC_PATH=${SYNCED_PATH}ssh/
 SSH_KEY_PATH=${SSH_SYNC_PATH}private/
 PROFILE_DEF="${USER_TMP}/profile.next"
@@ -16,7 +15,6 @@ DISPLAY_UN=$USER_TMP/display-unlocked
 DISPLAY_EN=$USER_TMP/display-enabled
 STATUS_LOCKING_KEY="locking"
 STATUS_BACKLIGHT_KEY="backlight"
-IS_MOUNTED=1
 RED_TEXT="\033[1;31m"
 NORM_TEXT="\033[0m"
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
@@ -174,16 +172,6 @@ function test-ssh()
         echo $IS_CONNECTED
     else
         echo $NOT_CONNECTED
-    fi
-}
-
-function is-mounted()
-{
-    mount | grep -q $1
-    if [ $? -eq 0 ]; then
-        echo $IS_MOUNTED
-    else
-        echo 0
     fi
 }
 

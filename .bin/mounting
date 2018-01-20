@@ -7,6 +7,7 @@ OPENCRYPT_KEYWORD="opencrypt"
 NEWMOUNTS="/tmp/crypts/"
 SETUP_CRYPT="setup"
 DEFCRYPT_SIZE="100M"
+IS_MOUNTED=1
 
 function print-help()
 {
@@ -15,6 +16,16 @@ function print-help()
     $REMCRYPT_KEYWORD - remove a crypt (required path to crypt)
     $OPENCRYPT_KEYWORD - open an encrypted image (required image file)
 "
+}
+
+function is-mounted()
+{
+    mount | grep -q $1
+    if [ $? -eq 0 ]; then
+        echo $IS_MOUNTED
+    else
+        echo 0
+    fi
 }
 
 function rem-crypt()
