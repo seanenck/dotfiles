@@ -1,7 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 PASSWORD_KEY="passwords"
-VOLUME_KEY="volume"
 REBUILD_KEY="rebuild"
 RELEASE_KEY="github-releases"
 PERM_UPDATE_KEY="perm-pull"
@@ -14,8 +13,8 @@ MACHINECTL_NSPAWN_KEY="machinectl-nspawn"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
-DMENU_APPS="vlc termite"
-DMENU_LIST="$DMENU_APPS $PASSWORD_KEY $VOLUME_KEY"
+DMENU_APPS="vlc termite pavucontrol"
+DMENU_LIST="$DMENU_APPS $PASSWORD_KEY"
 ENTRIES=$HOME/.config/window.entries
 BROWSER_WINDOW="Nightly"
 PAMIXER_KEY="pamixer-wrapper"
@@ -164,7 +163,6 @@ function get-help()
     echo "
     $DMENU_LOCAL_KEY (dmenu wrapper for local operations)
     $PASSWORD_KEY (password management)
-    $VOLUME_KEY (volume mixer)
     $REBUILD_KEY (rebuild cache)
     $PERM_UPDATE_KEY (update pass databases)
     $PERM_PUSH_KEY (push pass databases)
@@ -184,11 +182,6 @@ function pamixer-wrapper()
     refresh-usr1
 }
 
-function volume-mixer()
-{
-    pavucontrol
-}
-
 if [ ! -z $1 ]; then
     NEED_HELP=0
     case $1 in
@@ -206,9 +199,6 @@ if [ ! -z $1 ]; then
             ;;
         $PASSWORD_KEY)
             passwords
-            ;;
-        $VOLUME_KEY)
-            volume-mixer
             ;;
         $REBUILD_KEY)
             rebuild-now
