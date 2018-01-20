@@ -90,7 +90,6 @@ _setup() {
     fi
     set-user-files
     tray
-    docked
 }
 
 _ready() {

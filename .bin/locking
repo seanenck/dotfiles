@@ -69,7 +69,6 @@ function suspend-now()
     if [ ! -e $DISPLAY_UN -a ! -e $DISPLAY_EN ]; then
         mute
         rm -f $PROFILE_DEF
-        rm -f $NET_SLEEP
         SLEEP_COUNT=0
         if [ -z "$1" ]; then
             SLEEP_COUNT=$SLEEP_AFTER

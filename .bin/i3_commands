@@ -137,9 +137,4 @@ function stats()
     fi
 }
 
-function usbchange()
-{
-    docked
-    exit 0
-}
 $1 $2 

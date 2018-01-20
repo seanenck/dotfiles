@@ -1,2 +1,0 @@
-ACTION=="add", SUBSYSTEM=="usb", RUN+="/home/enck/.bin/i3_commands usbchange"
-ACTION=="remove", SUBSYSTEM=="usb", RUN+="/home/enck/.bin/i3_commands usbchange"
