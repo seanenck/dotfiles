@@ -106,7 +106,7 @@ if [ -s $SETUP_LOG ]; then
 fi
 
 if [ -e $GIT_CHANGES ]; then
-    cat $GIT_CHANGES
+    cat $GIT_CHANGES 2>/dev/null
     rm -f $GIT_CHANGES
 fi
 
