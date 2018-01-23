@@ -31,6 +31,7 @@ HOME_WORKPLACE_ID=3
 TRACK_LIGHTING=$USER_TMP/.backlight
 AUTO_WORKSPACE="auto"
 XRANDR="xrandr"
+LAST_AUTO="$USER_TMP/last.display"
 
 function get-lighting-help()
 {
@@ -122,14 +123,19 @@ function auto-workplace()
         local switch_to
         cnt=$(xrandr | grep " connected" | wc -l)
         switch_to=$DEFAULT_WORKSPACE_ID
-        case $cnt in
-            "2")
-                switch_to=$HOME_WORKPLACE_ID
-                ;;
-            "3")
-                switch_to=$DOCKED_ID
-                ;;
-        esac
+        if [ -e $LAST_AUTO ]; then
+            rm -f $LAST_AUTO
+        else
+            case $cnt in
+                "2")
+                    switch_to=$HOME_WORKPLACE_ID
+                    ;;
+                "3")
+                    switch_to=$DOCKED_ID
+                    ;;
+            esac
+            touch $LAST_AUTO
+        fi
         force-workplace $switch_to
     fi
 }
