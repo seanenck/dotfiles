@@ -63,6 +63,7 @@ make
 man-db
 man-pages
 mdadm
+mumble
 ncmpc
 netctl
 noto-fonts
