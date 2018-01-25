@@ -94,7 +94,7 @@ _setup() {
 }
 
 _ready() {
-    _setup > $SETUP_LOG
+    _setup > $SETUP_LOG 2&>1
 }
 
 _shell() {
