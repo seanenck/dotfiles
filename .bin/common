@@ -208,6 +208,7 @@ function set-user-files()
         running=$(pidof pacman)
         if [ -z "$running" ]; then
             /usr/bin/pacman -Qqe > ${CONF_HOME}/packages
+            touch $PKG_QUERY
         fi
     fi
 }

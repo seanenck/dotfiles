@@ -109,6 +109,7 @@ _setup() {
         rm -f $SND_MUTE
         rm -f $TRAY_SET
         rm -f $NET_SLEEP
+        rm -f $PKG_QUERY
         for f in $(find $USER_TMP -type f | grep "${PROFILE_TMP}"); do
             rm -f $f
         done
