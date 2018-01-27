@@ -82,13 +82,11 @@ pciutils
 pcmciautils
 pcsclite-git
 perl
-phare-client
 pkg-config
 procps-ng
 psmisc
 pulseaudio
 pwgen
-pygenkee
 python-markdown
 reiserfsprogs
 rsync
