@@ -126,7 +126,8 @@ _ready() {
 _shell() {
     set-system
 }
-(_ready &)
+_ready
+clear
 _shell
 if [ -s $SETUP_LOG ]; then
     cat $SETUP_LOG
