@@ -121,7 +121,7 @@ function toggle-locking()
     if [ $no_action -eq 0 ]; then
         touch $DISPLAY_UN
     fi
-    refresh-usr1
+    refresh-tray
 }
 
 function print-help()

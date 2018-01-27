@@ -37,12 +37,9 @@ GIT_CHANGES=$USER_TMP/git.changes
 SND_MUTE="$USER_TMP/.mute"
 PROFILE_TMP="$USER_TMP/.profile.synced."
 
-function refresh-usr1()
+function refresh-tray()
 {
-    local _pids=$USER_TMP/icons.pid
-    if [ -e $_pids ]; then
-        kill -USR1 $(cat $_pids)
-    fi
+    touch $USER_TMP/tray.refresh
 }
 
 function mute()

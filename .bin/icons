@@ -240,12 +240,6 @@ def main():
     i.append(Generic(volume, path))
     i.append(Generic(brightness, path))
     i.append(Generic(locked, path))
-    def sig_handler(signum, frame):
-        for icon in i:
-            icon.reset()
-    signal.signal(signal.SIGUSR1, sig_handler)
-    with open(_HOME_TMP + "icons.pid", 'w') as f:
-        f.write(str(os.getpid()))
     Gtk.main()
 
 def _is_active():

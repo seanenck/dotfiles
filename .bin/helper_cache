@@ -173,7 +173,7 @@ function get-help()
 function pamixer-wrapper()
 {
     pamixer $@
-    refresh-usr1
+    refresh-tray
 }
 
 if [ ! -z $1 ]; then
