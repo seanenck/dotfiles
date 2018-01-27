@@ -165,11 +165,14 @@ class Generic:
         self._last = None
         self.set_image("unknown")
         self._called = None
+        self._last_mod = self._get_last_mod()
         self.on_timeout()
 
-    def reset(self):
-        """Reset the icon."""
-        self._called = None
+    def _get_last_mod(self):
+        path = _HOME_TMP + "tray.refresh"
+        if not os.path.exists(path):
+            return None
+        return os.path.getmtime(path)
 
     def set_image(self, image):
         """Set icon image."""
@@ -179,6 +182,11 @@ class Generic:
         """On timeout do a callback."""
         run = False
         next_call = datetime.datetime.now()
+        if self._last_mod is not None:
+            current_mod = self._get_last_mod()
+            if current_mod is not None and self._last_mod != current_mod:
+                self._called = None
+        self._last_mod = self._get_last_mod()
         if self._called is None:
             run = True
         else:
