@@ -49,7 +49,6 @@ if ! shopt -oq posix; then
 fi
 
 #end-general
-
 . $HOME/.bin/common
 HISTFILE="$USER_TMP/.bash_history_"$(uptime -s | sed "s/ /-/g;s/:/-/g")
 if [ -e "$EPIPHYTE_CONF" ]; then
@@ -58,6 +57,32 @@ fi
 if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
 fi
+
+function _history-tree()
+{
+    local last chr path lck
+    lck=$USER_TMP/.bhlock
+    path="$HOME/.cache/bh/"
+    if [ ! -d "$path" ]; then
+        mkdir -p $path
+    fi
+    last=$(fc -ln 1 | tail -n 1 | sed "1s/^[[:space:]]*//")
+    if [ ! -z "$last" ]; then
+        chr=${last::1}
+        path=${path}$chr".history"
+        while [ -e $lck ]; do
+            sleep 0.1
+        done
+        touch $lck
+        if [ ! -e "$path" ]; then
+            touch $path
+        fi
+        grep -qF "$last" "$path" || echo "$last" >> "$path"
+        rm -f $lck
+    fi
+}
+
+PROMPT_COMMAND=_history-tree
 
 # ssh agent
 # Set SSH to use gpg-agent
