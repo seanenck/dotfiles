@@ -5,3 +5,4 @@ Bind=/opt/shared
 Bind=/var/cache/pacman
 BindReadOnly=/root/.gnupg
 BindReadOnly=/home/enck/.gnupg
+Bind=/home/enck/.cache/pkgs:/home/enck/.cache/naaman/pkgs
