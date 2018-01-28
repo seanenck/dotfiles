@@ -73,8 +73,13 @@ function _history-tree()
     if [ ! -z "$last" ]; then
         chr=${last::1}
         path=${path}$chr".history"
+        cnt=0
         while [ -e $lck ]; do
             sleep 0.1
+            cnt=$((cnt+1))
+            if [ $cnt -eq 10 ]; then
+                rm -f $lck
+            fi
         done
         touch $lck
         if [ ! -e "$path" ]; then
