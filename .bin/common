@@ -25,7 +25,6 @@ PRIV_CONF=${SYNCED_CONF}priv.aliases
 GIT_PARTIAL_PATTERN="weechat|random_seed"
 GIT_PARTIAL_TMP=$USER_TMP/git-partial
 BASE_SERVER="base"
-COPY_INDICATOR=$USER_TMP/backup.files
 LAST_TIMES=$HOME/.cache/last-timed.log
 LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 REQUIRED_EVENTS=6
@@ -184,13 +183,6 @@ function set-user-files()
     mkdir -p $USER_TMP
     find $USER_TMP* -mtime +1 -type f -exec rm {} \;
     find $USER_TMP -empty -type d -delete
-
-    if [ ! -e "$COPY_INDICATOR" ]; then
-        cp /etc/hosts ${SYNCED_CONF}hosts
-        cp /etc/systemd/network/* $HOME/.config/networkd/
-        cp /etc/wsw/* $WSW_NET
-        touch $COPY_INDICATOR
-    fi
 
     for f in $(find $USER_TMP -type f -mmin +30 | grep "dmenu"); do
         rm -f $f
