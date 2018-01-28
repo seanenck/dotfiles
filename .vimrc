@@ -51,6 +51,7 @@ if has('persistent_undo')
     set undolevels=5000
 endif
 
+set viminfo+=n$HOME/.cache/viminfo
 let pymode = $HOME . "/.vim/plugin/py.vim"
 if findfile(pymode, ".") == pymode
     let g:pymode_python = 'python3'
