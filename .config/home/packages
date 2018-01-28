@@ -41,7 +41,6 @@ gsfonts
 gstyle
 gzip
 i3-wm
-i3blocks
 i3lock
 i3status
 inetutils
@@ -49,7 +48,6 @@ intel-ucode
 iproute2
 iputils
 jfsutils
-keepassx
 keepassx2
 less
 libtool
@@ -90,7 +88,6 @@ pwgen
 python-markdown
 reiserfsprogs
 rsync
-s-nail
 sed
 shadow
 sudo
