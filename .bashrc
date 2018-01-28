@@ -78,6 +78,7 @@ function _history-tree()
             sleep 0.1
             cnt=$((cnt+1))
             if [ $cnt -eq 10 ]; then
+                echo "bh was locked..."
                 rm -f $lck
             fi
         done
