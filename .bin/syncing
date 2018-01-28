@@ -52,6 +52,9 @@ function sync-now()
                 cd ${PERM_LOCATION}/$personal
                 git push 2>&1 | sed "s/^/$SPACING/g"
             done
+            echo "/etc"
+            cd /etc
+            git push 2>&1
             cd $current
             echo "daily backup"
             backup

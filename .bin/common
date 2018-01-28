@@ -229,7 +229,7 @@ function get-perm-objs()
 
 function git-changing()
 {
-    d_paths="$HOME $SYNCED_PATH "$(get-perm-objs)" "$(get-workspace-objs)
+    d_paths="/etc $HOME $SYNCED_PATH "$(get-perm-objs)" "$(get-workspace-objs)
     for d in $(echo "$d_paths"); do
         if [ ! -d "$d/.git" ]; then
             continue
