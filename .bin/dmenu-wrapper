@@ -130,6 +130,18 @@ def _intercepting(args, unknown):
         if _check_chars(inputs):
             calling = _is_valid_url(inputs)
     if calling is None:
+        if "." in inputs:
+            addr = inputs.split(".")
+            if len(addr) >= 4:
+                invalid = False
+                for i in [addr[0], addr[1], addr[2], addr[3]]:
+                    alpha = [x for x in i if (x >= 'a' and x <= 'z') or (x >= 'A' and X <= 'Z')]
+                    if len(alpha) > 0:
+                        invalid = True
+                        break
+                if not invalid:
+                    calling = inputs
+    if calling is None:
         # handle search
         searching = inputs
         if searching.lower().startswith("search "):
