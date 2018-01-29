@@ -10,6 +10,14 @@ alias vimtext="touch /home/enck/.tmp/textmode && vim"
 alias vi="vim"
 alias weechat="rm -f /home/enck/.tmp/weechat.ready && weechat"
 alias xhost-local="xhost +local:"
+sbh() {
+    local search
+    search=""
+    if [ ! -z "$1" ]; then
+        search="$@"
+    fi
+    cat $HOME/.cache/bh/* | grep -E "$search"
+}
 git() {
     /usr/bin/git "$@" || return
     echo "$@" | grep -E -q "(push|commit|reset|checkout|branch|stash|status)"
