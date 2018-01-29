@@ -18,6 +18,7 @@ sbh() {
     fi
     cat $HOME/.cache/sbh/* | grep -E "$search"
 }
+
 git() {
     /usr/bin/git "$@" || return
     echo "$@" | grep -E -q "(push|commit|reset|checkout|branch|stash|status)"
