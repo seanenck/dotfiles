@@ -64,8 +64,8 @@ fi
 function _history-tree()
 {
     local last chr path lck
-    lck=$USER_TMP/.bhlock
-    path="$HOME/.cache/bh/"
+    lck=$USER_TMP/.sbhlock
+    path="$HOME/.cache/sbh/"
     if [ ! -d "$path" ]; then
         mkdir -p $path
     fi

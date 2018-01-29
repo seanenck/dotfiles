@@ -16,7 +16,7 @@ sbh() {
     if [ ! -z "$1" ]; then
         search="$@"
     fi
-    cat $HOME/.cache/bh/* | grep -E "$search"
+    cat $HOME/.cache/sbh/* | grep -E "$search"
 }
 git() {
     /usr/bin/git "$@" || return
