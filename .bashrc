@@ -72,6 +72,7 @@ function _history-tree()
     last=$(fc -ln 1 | tail -n 1 | sed "1s/^[[:space:]]*//")
     if [ ! -z "$last" ]; then
         chr=${last::1}
+        chr=$(echo "$chr" | tr '[:upper:]' '[:lower:]')
         path=${path}$chr".history"
         cnt=0
         while [ -e $lck ]; do
