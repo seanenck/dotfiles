@@ -13,6 +13,7 @@ PWD=$(shell pwd)
 
 CONTAINER_PATH=$(VAR_LIB)$(TARGET)/
 CONTAINER_HOME=$(CONTAINER_PATH)$(USER_HOME)
+CACHE_NAAMAN=".cache/naaman"
 CONTAINER_CONF=$(ETC_NSPAWN)$(TARGET).nspawn
 CONTAINER_ROOT=$(CONTAINER_PATH)root/
 CONTAINER_ETC=$(CONTAINER_PATH)etc/
@@ -85,6 +86,7 @@ refresh: running
 	install -Dm644 $(VIMRC) $(CONTAINER_ETC)vimrc
 	install -Dm644 $(USER_GIT) $(CONTAINER_ROOT)$(GIT)
 	install -Dm644 $(USER_GIT) $(CONTAINER_HOME)$(GIT)
+	install -Dm755 -d $(CONTAINER_HOME)$(CACHE_NAAMAN)
 	$(call containeretc,passwd,644)
 	$(call containeretc,group,644)
 	$(call containeretc,shadow,600)
