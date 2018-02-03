@@ -38,12 +38,12 @@ _killpy() {
 
 poweroff() {
     _killpy
-    /usr/bin/poweroff "$@"
+    sudo /usr/bin/poweroff "$@"
 }
 
 reboot() {
     _killpy
-    /usr/bin/reboot "$@"
+    sudo /usr/bin/reboot "$@"
 }
 
 ssh() {
