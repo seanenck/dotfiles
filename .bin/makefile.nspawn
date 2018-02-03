@@ -41,6 +41,7 @@ PLUGINS=$(shell find /$(USER_HOME)$(VIM) -type f)
 VIM_SWAP_RT=$(CONTAINER_ROOT)$(VIM)$(SWAP)
 VIM_UNDO_RT=$(CONTAINER_ROOT)$(VIM)$(UNDO)
 CACHE_START=/var/cache/.start
+ALIASES=.bash_aliases
 
 .PHONY:
 
@@ -87,6 +88,7 @@ refresh: running
 	install -Dm644 $(USER_GIT) $(CONTAINER_ROOT)$(GIT)
 	install -Dm644 $(USER_GIT) $(CONTAINER_HOME)$(GIT)
 	install -Dm755 -d $(CONTAINER_HOME)$(CACHE_NAAMAN)
+	install -Dm644 /$(USER_HOME)$(ALIASES) $(CONTAINER_HOME)$(ALIASES)
 	$(call containeretc,passwd,644)
 	$(call containeretc,group,644)
 	$(call containeretc,shadow,600)
@@ -110,6 +112,7 @@ refresh: running
 	@echo "	   done" >> $(CONTAINER_PROFILE)
 	@echo "    sudo touch '$(CACHE_START)'" >> $(CONTAINER_PROFILE)
 	@echo "fi" >> $(CONTAINER_PROFILE)
+	@echo "source /"$(USER_HOME)$(ALIASES) >> $(CONTAINER_PROFILE)
 	chmod uga+x $(CONTAINER_PROFILE)
 	rsync -avc /$(USER_HOME)$(VIM)* $(VIMPLUGIN) --exclude=$(UNDO) --exclude=$(SWAP) --delete-after
 	chown -R $(USER_NAME):$(USER_NAME) $(CONTAINER_HOME)
