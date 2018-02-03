@@ -11,12 +11,15 @@ alias vi="vim"
 alias weechat="rm -f /home/enck/.tmp/weechat.ready && weechat"
 alias xhost-local="xhost +local:"
 sbh() {
-    local search
-    search=""
-    if [ ! -z "$1" ]; then
-        search="$@"
+    local _search _cached
+    _cached=$HOME/.cache/sbh/
+    if [ -d $_cached ]; then
+        _search=""
+        if [ ! -z "$1" ]; then
+            _search="$@"
+        fi
+        cat ${_cached}* | grep -E "$_search"
     fi
-    cat $HOME/.cache/sbh/* | grep -E "$search"
 }
 
 git() {
