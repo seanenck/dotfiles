@@ -19,7 +19,7 @@ CONTAINER_ROOT=$(CONTAINER_PATH)root/
 CONTAINER_ETC=$(CONTAINER_PATH)etc/
 CONTAINER_PROFILE=$(CONTAINER_ETC)profile.d/startup.sh
 
-EXTRAS=python git vim termite-terminfo
+EXTRAS=python git vim termite-terminfo bash-completion
 PACKAGES=base base-devel python $(EXTRAS)
 IGNORES=--ignore linux --ignore nano --ignore linux-firmware
 
