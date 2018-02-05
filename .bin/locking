@@ -93,6 +93,7 @@ function suspend-now()
                 break
             fi
         done
+        wsw --reload > /dev/null
         write-log "done sleeping"
     fi
 }
