@@ -79,12 +79,10 @@ function suspend-now()
             PID=$(get-i3lock)
         done
         sleep 1
-        slept=0
         while [ 1 -eq 1 ]; do
             if [ $SLEEP_COUNT -ge $SLEEP_AFTER ]; then
                 write-log "sleeping..."
                 SLEEP_COUNT=0
-                slept=1
                 systemctl suspend
                 break
             fi
@@ -95,10 +93,6 @@ function suspend-now()
                 break
             fi
         done
-        if [ $slept -ne 0 ]; then
-            write-log "reload network profile"
-            wsw --reload > /dev/null
-        fi
         write-log "done sleeping"
     fi
 }
