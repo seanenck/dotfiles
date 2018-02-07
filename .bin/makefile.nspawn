@@ -24,7 +24,9 @@ PACKAGES=base base-devel python $(EXTRAS)
 IGNORES=--ignore linux --ignore nano --ignore linux-firmware
 
 PACMAN=pacman.conf
+MAKEPKG=makepkg.conf
 ETC_PACMAN=etc/$(PACMAN)
+ETC_MAKEPKG=etc/$(MAKEPKG)
 CONFIG_DIR=.config/
 GIT=.gitconfig
 VIM=.vim/
@@ -89,6 +91,7 @@ refresh: running
 	install -Dm644 $(USER_GIT) $(CONTAINER_HOME)$(GIT)
 	install -Dm755 -d $(CONTAINER_HOME)$(CACHE_NAAMAN)
 	install -Dm644 /$(USER_HOME)$(ALIASES) $(CONTAINER_HOME)$(ALIASES)
+	install -Dm644 /$(ETC_MAKEPKG) $(CONTAINER_PATH)$(ETC_MAKEPKG)
 	$(call containeretc,passwd,644)
 	$(call containeretc,group,644)
 	$(call containeretc,shadow,600)
