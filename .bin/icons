@@ -242,7 +242,7 @@ def main():
     workspaces = threading.Thread(target=workspacing)
     workspaces.daemon = True
     workspaces.start()
-    path = os.path.join(_HOME, ".config", "genericon")
+    path = os.path.join(_HOME, ".config", "icons")
     i = []
     i.append(Generic(battery, path))
     i.append(Generic(volume, path))
