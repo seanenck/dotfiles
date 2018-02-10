@@ -11,7 +11,7 @@ _DMENU_CALL = """#!//bin/bash
 _call() {
     local _results=$(echo {CACHE} | tr ' ' '\\n' | dmenu {ARGS} && echo $?)
     if [ ! -z \"$_results\" ]; then
-        echo \"$_results\" | head -n 1 | dmenu-local --intercept | ${SHELL:-\"/bin/sh\" } &
+        echo \"$_results\" | head -n 1 | {DMENU_WRAPPER} --intercept | ${SHELL:-\"/bin/sh\" } &
     fi
 }
 
@@ -170,6 +170,7 @@ def _producing(args, unknown):
     replacing = {}
     replacing["CACHE"] = " ".join(use_list)
     replacing["ARGS"] = " ".join(unknown)
+    replacing["DMENU_WRAPPER"] = args.dmenu_wrapper
     cmd = _DMENU_CALL
     for r in replacing:
         cmd = cmd.replace("{" + r + "}", replacing[r])
@@ -179,6 +180,8 @@ def _producing(args, unknown):
 def main():
     """Main entry."""
     parser = argparse.ArgumentParser("a dmenu wrapper")
+    parser.add_argument("--dmenu-wrapper", type=str, default="dmenu-local",
+                        help="dmenu local call")
     parser.add_argument("--list", type=str, default=None,
                         help="list of commands to send to dmenu")
     parser.add_argument("--temp", type=str, default="/tmp/",
