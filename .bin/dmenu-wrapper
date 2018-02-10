@@ -11,7 +11,7 @@ _DMENU_CALL = """#!//bin/bash
 _call() {
     local _results=$(echo {CACHE} | tr ' ' '\\n' | dmenu {ARGS} && echo $?)
     if [ ! -z \"$_results\" ]; then
-        echo \"$_results\" | head -n 1 | dmenu-local --intercept | ${SHELL:-\"/bin/sh\" } &
+        echo \"$_results\" | head -n 1 | dmenu-wrapper --intercept | ${SHELL:-\"/bin/sh\" } &
     fi
 }
 
