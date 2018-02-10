@@ -6,6 +6,7 @@ RELEASE_KEY="github-releases"
 PERM_UPDATE_KEY="perm-pull"
 PERM_PUSH_KEY="perm-push"
 ENTER_KEY="enterkeys"
+DMENU_LOCAL_KEY="dmenu-local"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
 MACHINECTL_NSPAWN_KEY="machinectl-nspawn"
@@ -27,6 +28,11 @@ function cycle-wsw()
         new=2
     fi
     wsw --change $new
+}
+
+function dmenu-local()
+{
+    $HOME/.bin/dmenu-wrapper --browser "/usr/bin/firefox" --list "$DMENU_LIST" --temp "$USER_TMP" --urls "${SYNCED_CONF}urls.csv" "$@"
 }
 
 function make-nspawn()
@@ -149,6 +155,7 @@ $res
 function get-help()
 {
     echo "
+    $DMENU_LOCAL_KEY (dmenu wrapper for local operations)
     $PASSWORD_KEY (password management)
     $REBUILD_KEY (rebuild cache)
     $PERM_UPDATE_KEY (update pass databases)
@@ -204,6 +211,9 @@ if [ ! -z $1 ]; then
             ;;
         $ARCH_CHROOT_KEY)
             arch-chroot-manage
+            ;;
+        $DMENU_LOCAL_KEY)
+            dmenu-local ${@:2}
             ;;
         *)
             NEED_HELP=1
