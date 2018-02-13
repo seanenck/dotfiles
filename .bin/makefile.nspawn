@@ -109,7 +109,7 @@ refresh: running
 	@echo "    echo ''" >> $(CONTAINER_PROFILE)
 	@echo "    sudo locale-gen" >> $(CONTAINER_PROFILE)
 	@echo "    for p in \$$(echo '$(EXTRAS)'); do" >> $(CONTAINER_PROFILE)
-	@echo "        echo 'checking if \$$p is installed'" >> $(CONTAINER_PROFILE)
+	@echo "        echo 'checking if '\$$p' is installed'" >> $(CONTAINER_PROFILE)
 	@echo "        pacman -Q \$$p" >> $(CONTAINER_PROFILE)
 	@echo "        if [ \$$? -ne 0 ]; then sudo pacman -S \$$p; fi" >> $(CONTAINER_PROFILE)
 	@echo "	   done" >> $(CONTAINER_PROFILE)
