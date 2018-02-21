@@ -80,8 +80,14 @@ if findfile(tmode, ".") == tmode
 else
     set number
     match OverLength /\%80v.\+/
-    set tabstop=4
-    set expandtab
+    let extension = expand('%:e')
+    if extension == "go"
+        set tabstop=4
+        set noexpandtab
+    else
+        set tabstop=4
+        set expandtab
+    endif
     set shiftwidth=4
     set complete-=i
     set foldmethod=indent
