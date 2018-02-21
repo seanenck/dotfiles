@@ -29,6 +29,11 @@ def get_layouts(strvalue):
 def main():
     """Main entry point."""
     try:
+        from os.path import splitext
+        use_tab = False
+        file_name,extension = splitext(vim.current.window.buffer.name)
+        if extension in ['.go'] or file_name in ['Makefile']:
+            use_tab = True
         pos = vim.current.window.cursor
         direction = vim.eval("a:direction") == "1"
         if pos and pos[0] >= 0 and pos[1] >= 0:
@@ -43,7 +48,7 @@ def main():
                 is_tab = layout[2]
                 if direction:
                     adding = "    "
-                    if is_tab:
+                    if is_tab or use_tab:
                         adding = "\t"
                     elif is_two and not is_four:
                         adding = "  "
