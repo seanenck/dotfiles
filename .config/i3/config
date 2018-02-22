@@ -111,6 +111,10 @@ bindsym $mod+Shift+o exec subsystem workspaces force 2
 bindsym $mod+Shift+h exec subsystem workspaces force 3
 bindsym XF86Display exec subsystem workspaces auto xrandr
 
+# firefox
+bindsym $mod+Shift+n exec firefox
+bindsym $mod+Shift+p exec firefox --private-window
+
 # Locking handlers
 bindsym $mod+Shift+x exec locking toggle 
 bindsym $mod+Shift+l exec locking auto 
