@@ -73,6 +73,9 @@ function _history-tree()
     if [ ! -z "$last" ]; then
         chr=${last::1}
         chr=$(echo "$chr" | tr '[:upper:]' '[:lower:]')
+        if [[ "$chr" =~ [^a-z0-9] ]]; then
+            chr="special"
+        fi
         path=${path}$chr".history"
         cnt=0
         while [ -e $lck ]; do
