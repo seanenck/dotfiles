@@ -79,12 +79,12 @@ if findfile(tmode, ".") == tmode
     call delete(expand(tmode))
 else
     set number
-    match OverLength /\%80v.\+/
     let extension = expand('%:e')
     if extension == "go"
         set tabstop=4
         set noexpandtab
     else
+        match OverLength /\%80v.\+/
         set tabstop=4
         set expandtab
     endif
