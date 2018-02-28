@@ -18,7 +18,7 @@ sbh() {
         if [ ! -z "$1" ]; then
             _search="$@"
         fi
-        if [ -z "$search" ]; then
+        if [ -z "$_search" ]; then
             for f in $(ls $_cached -t | tac ); do
                 cat $_cached$f
             done
