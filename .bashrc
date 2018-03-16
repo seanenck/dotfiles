@@ -117,6 +117,12 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 _setup() {
     BOOTED=$USER_TMP/".booted."$(uptime -s | sed "s/ /-/g;s/:/-/g")
     if [ ! -e $BOOTED ]; then
+        for f in $(echo "wget-hsts lesshst"); do 
+            _hst_file=$HOME/.$f
+            if [ -e $_hst_file ]; then
+                rm -f $_hst_file
+            fi
+        done
         rm -f $DISPLAY_UN
         rm -f $DISPLAY_EN
         rm -f $SND_MUTE
