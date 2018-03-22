@@ -14,14 +14,6 @@ function get-i3-workspaces()
     echo "$WORKSPACE_INFO"
 }
 
-function rename-workspace()
-{
-    get-i3-workspaces | grep -q $1
-    if [ $? -ne 0 ]; then
-        i3-msg rename workspace to $1
-    fi
-}
-
 function _tray_count()
 {
     ps ax | grep -v "grep" | grep $1 | wc -l
