@@ -104,6 +104,10 @@ function _firefox_toplevel() {
 
 }
 
+function _windows() {
+    _firefox_toplevel &
+}
+
 function stats()
 {
     if [ -e $CUSTOM_STATS ]; then
@@ -114,7 +118,7 @@ function stats()
         _last_cnt=0
         i3status | while :
         do
-            _firefox_toplevel &
+            _windows > /dev/null
             read line
             if [ $_last_git -eq 0 ]; then
                 _git_cnt=0
