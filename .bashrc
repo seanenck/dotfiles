@@ -132,6 +132,7 @@ _setup() {
         for f in $(find $USER_TMP -type f | grep "${PROFILE_TMP}"); do
             rm -f $f
         done
+        xhost +local:
         touch $BOOTED
     fi
     set-user-files

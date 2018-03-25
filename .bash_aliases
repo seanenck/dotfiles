@@ -7,7 +7,6 @@ alias tree='tree -J | python -c "import sys, json; print(json.dumps(json.loads(s
 alias vimtext="touch /home/enck/.tmp/textmode && vim"
 alias vi="vim"
 alias weechat="rm -f /home/enck/.tmp/weechat.ready && weechat"
-alias xhost-local="xhost +local:"
 sbh() {
     local _search _cached
     _cached=$HOME/.cache/sbh/
