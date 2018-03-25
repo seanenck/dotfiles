@@ -95,6 +95,15 @@ function update-git()
     fi
 }
 
+function _firefox_toplevel() {
+    for f in $(xdotool search --all --onlyvisible --name "Firefox"); do
+        if echo $f; xprop -id $f | grep Nightly | grep -q "Toplevel"; then
+            i3-msg "[id=$f] kill"
+        fi
+    done
+
+}
+
 function stats()
 {
     if [ -e $CUSTOM_STATS ]; then
@@ -105,6 +114,7 @@ function stats()
         _last_cnt=0
         i3status | while :
         do
+            _firefox_toplevel &
             read line
             if [ $_last_git -eq 0 ]; then
                 _git_cnt=0
