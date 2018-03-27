@@ -312,7 +312,7 @@ def _rename_workspaces(workspaces):
         if len(vals[1]) == 0:
             named = str(k)
         else:
-            named = ",".join([x[0:20].lower() for x in vals[1]])
+            named = ",".join([x[0:20].lower().split(" ")[0] for x in vals[1]])
             named = str(k) + ":" + named
         subprocess.call(["i3-msg",
                          "rename workspace \"{}\" to \"{}\"".format(vals[0], named)],
