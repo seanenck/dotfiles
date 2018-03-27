@@ -79,6 +79,7 @@ pcmciautils
 pcsclite-git
 perl
 pkg-config
+pkgseed
 procps-ng
 psmisc
 pulseaudio
