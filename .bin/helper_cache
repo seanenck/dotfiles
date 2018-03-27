@@ -15,7 +15,7 @@ CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
 DMENU_APPS="vlc termite pavucontrol"
 DMENU_LIST="$DMENU_APPS $PASSWORD_KEY"
-BROWSER_WINDOW="Nightly"
+BROWSER_WINDOW="Developer"
 PAMIXER_KEY="pamixer-wrapper"
 WSW_CYCLE_KEY="wsw-cycle"
 
