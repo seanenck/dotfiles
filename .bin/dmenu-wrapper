@@ -18,7 +18,7 @@ _call() {
 _call"""
 
 _TLDS = ['com', 'network', 'org', 'mil', 'net', 'edu', 'gov', 'io', 'info']
-_SEARCH = "https://www.google.com/search?q={}"
+_SEARCH = "https://www.duckduckgo.com/?q={}"
 
 # pickle caching object
 _CACHE_URLS = "urls"
