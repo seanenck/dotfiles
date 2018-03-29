@@ -23,11 +23,11 @@ function cycle-wsw()
 {
     local active new
     new=3
-    active=$(wsw --active | cut -d " " -f 2 | cut -d "=" -f 2 | cut -d ")" -f 1)
+    active=$(wsw --command active 2>&1 | cut -d " " -f 2 | cut -d "=" -f 2 | cut -d ")" -f 1)
     if [ $active -eq 3 ]; then
         new=2
     fi
-    wsw --change $new
+    wsw --command change --profile $new
 }
 
 function dmenu-local()
