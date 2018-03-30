@@ -26,6 +26,7 @@ function weechat-ready()
     for f in $(find $HOME/.weechat/logs/ -type f); do
         fname=$USER_TMP/.$(basename $f)
         cat $f | grep -v -E "^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9][[:space:]]+(<|-)-" > $fname
+        cp $f $fname.$(date +%s)
         mv $fname $f
     done
     weechat 
