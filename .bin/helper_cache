@@ -18,6 +18,18 @@ DMENU_LIST="$DMENU_APPS $PASSWORD_KEY"
 BROWSER_WINDOW="Developer"
 PAMIXER_KEY="pamixer-wrapper"
 WSW_CYCLE_KEY="wsw-cycle"
+WEECHAT_READY="weechat-wrapper"
+
+function weechat-ready()
+{
+    rm -rf $USER_TMP/weechat.ready
+    for f in $(find $HOME/.weechat/logs/ -type f); do
+        fname=$USER_TMP/.$(basename $f)
+        cat $f | grep -v -E "^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9][[:space:]]+(<|-)-" > $fname
+        mv $fname $f
+    done
+    weechat 
+}
 
 function cycle-wsw()
 {
@@ -167,6 +179,7 @@ function get-help()
     $RELEASE_KEY (check if anything needs releasing)
     $PAMIXER_KEY (wrap pamixer)
     $WSW_CYCLE_KEY (cycle wsw profiles)
+    $WEECHAT_READY (weechat wrapper)
 "
 }
 
@@ -179,6 +192,9 @@ function pamixer-wrapper()
 if [ ! -z $1 ]; then
     NEED_HELP=0
     case $1 in
+        $WEECHAT_READY)
+            weechat-ready
+            ;;
         $WSW_CYCLE_KEY)
             cycle-wsw
             ;;
