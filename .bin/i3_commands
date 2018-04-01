@@ -36,9 +36,10 @@ function _run_if_not()
 
 function _kill_tray()
 {
+    pkill wsw-applet
     if [ $(_tray_count "$PRIMARY_ICON") -eq 0 ]; then
         for p in $(pidof python); do
-            cat /proc/$p/cmdline | grep -q -E "udiskie|wsw-applet|icons"
+            cat /proc/$p/cmdline | grep -q -E "udiskie|icons"
             if [ $? -eq 0 ]; then
                 kill $p
             fi
@@ -76,7 +77,8 @@ function restart()
 function _tray_icons()
 {
     _kill_tray
-    _run_python "wsw-applet" ""
+    wsw-applet &
+    sleep 1.0
     _run_python "udiskie" "--no-notify --no-automount --no-config --tray -f \"\""
     _run_python "icons" ""
 
