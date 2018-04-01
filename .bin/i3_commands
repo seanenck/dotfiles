@@ -37,14 +37,12 @@ function _run_if_not()
 function _kill_tray()
 {
     pkill wsw-applet
-    if [ $(_tray_count "$PRIMARY_ICON") -eq 0 ]; then
-        for p in $(pidof python); do
-            cat /proc/$p/cmdline | grep -q -E "udiskie|icons"
-            if [ $? -eq 0 ]; then
-                kill $p
-            fi
-        done
-    fi
+    for p in $(pidof python); do
+        cat /proc/$p/cmdline | grep -q -E "udiskie|icons"
+        if [ $? -eq 0 ]; then
+            kill $p
+        fi
+    done
 }
 
 function tray_reload()
