@@ -71,7 +71,6 @@ p7zip
 pacman
 pamixer
 pass
-pass-freeradius
 patch
 pavucontrol
 pciutils
@@ -85,6 +84,7 @@ psmisc
 pulseaudio
 pwgen
 python-markdown
+radiucal-utils
 reiserfsprogs
 rsync
 sed
