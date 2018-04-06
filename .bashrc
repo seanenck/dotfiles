@@ -147,6 +147,11 @@ _shell() {
     set-system
 }
 _ready
+trays=$(pidof wsw-applet)
+if [ -z "$trays" ]; then
+    i3_commands tray_reload > /dev/null 2>&1
+fi
+
 clear
 _shell
 if [ -s $SETUP_LOG ]; then
