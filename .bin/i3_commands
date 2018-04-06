@@ -95,6 +95,14 @@ function update-git()
     fi
 }
 
+function _reboot_tray()
+{
+    p=$(pidof wsw-applet)
+    if [ -z "$p" ]; then
+        tray_icons
+    fi
+}
+
 function stats()
 {
     if [ -e $CUSTOM_STATS ]; then
@@ -122,6 +130,7 @@ function stats()
                 fi
                 update-git &
             fi
+            _reboot_tray > /dev/null 2>&1
             echo "$_git_text$line" || exit 1
             _last_git=$((_last_git+1))
             if [ $_last_git -eq 1 ]; then
