@@ -1,2 +1,21 @@
 #!/bin/bash
-
+MY_HOME=/home/enck/
+source ${MY_HOME}.bin/common
+BOOTED=/tmp/user.booted-$(uptime -s | sed "s/ /-/g;s/:/-/g")
+if [ ! -e $BOOTED ]; then
+    echo "booting up..."
+    for f in $(echo "wget-hsts python_history esd_auth lesshst"); do
+        fname=${MY_HOME}$f
+        echo "deleting app file: $fname"
+        rm -f $fname
+    done
+    for f in $(echo "$DISPLAY_UN $DISPLAY_EN $SND_MUTE $TRAY_SET $NET_SLEEP $PKG_QUERY"); do
+        echo "deleting tmp file: $f"
+        rm -f $f
+    done
+    for f in $(find $USER_TMP -type f | grep "${PROFILE_TMP}"); do
+        echo "deleting profile: $f"
+        rm -f $f
+    done
+    touch $BOOTED
+fi

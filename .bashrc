@@ -117,21 +117,6 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 _setup() {
     BOOTED=$USER_TMP/".booted."$(uptime -s | sed "s/ /-/g;s/:/-/g")
     if [ ! -e $BOOTED ]; then
-        for f in $(echo "wget-hsts python_history esd_auth lesshst"); do 
-            _hst_file=$HOME/.$f
-            if [ -e $_hst_file ]; then
-                rm -f $_hst_file
-            fi
-        done
-        rm -f $DISPLAY_UN
-        rm -f $DISPLAY_EN
-        rm -f $SND_MUTE
-        rm -f $TRAY_SET
-        rm -f $NET_SLEEP
-        rm -f $PKG_QUERY
-        for f in $(find $USER_TMP -type f | grep "${PROFILE_TMP}"); do
-            rm -f $f
-        done
         xhost +local: > /dev/null
         touch $BOOTED
     fi
