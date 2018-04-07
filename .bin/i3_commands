@@ -21,13 +21,8 @@ function _tray_count()
 
 function _run_python()
 {
-    _run_if_not 0 "python.*$1" "$2"
-}
-
-function _run_if_not()
-{
-    val=$1
-    cmd=$(echo "$2" | sed "s/python\.\*//g")
+    val=0
+    cmd=$(echo "python.*$1" | sed "s/python\.\*//g")
     if [ $(_tray_count $2) -lt $((val+1)) ]; then
         $cmd $3 &
     fi
