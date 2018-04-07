@@ -21,3 +21,4 @@ if [ ! -e $BOOTED ]; then
 fi
 set-user-files
 process-logs
+check-timed-events

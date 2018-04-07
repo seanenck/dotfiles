@@ -129,5 +129,3 @@ if [ ! -e $today_check ]; then
     rm -f $XERRORS
     ln -s /dev/null $XERRORS
 fi
-
-check-timed-events
