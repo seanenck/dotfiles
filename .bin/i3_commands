@@ -14,17 +14,12 @@ function get-i3-workspaces()
     echo "$WORKSPACE_INFO"
 }
 
-function _tray_count()
-{
-    ps ax | grep -v "grep" | grep $1 | wc -l
-}
-
 function _run_python()
 {
     val=0
     cmd=$(echo "python.*$1" | sed "s/python\.\*//g")
-    if [ $(_tray_count $2) -lt $((val+1)) ]; then
-        $cmd $3 &
+    if [ $(ps ax | grep -v "grep" | grep $1 | wc -l) -lt $((val+1)) ]; then
+        $cmd $2 &
     fi
     sleep 1.0
 }
