@@ -63,7 +63,7 @@ instance: root
 	test ! -e $(CONTAINER_CONF)
 	mkdir -p $(CONTAINER_PATH)
 	pacstrap -i -c -d $(CONTAINER_PATH) $(PACKAGES) $(IGNORES)
-	cat /$(USER_HOME)/.config/home/base.template > $(CONTAINER_CONF)
+	cat /$(USER_HOME)/.config/home/nspawn.template > $(CONTAINER_CONF)
 	install -Dm644 /$(ETC_PACMAN) $(CONTAINER_PATH)$(ETC_PACMAN)
 
 destroy: running
