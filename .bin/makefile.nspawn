@@ -33,8 +33,6 @@ VIM=.vim/
 VIMPLUGIN=$(CONTAINER_HOME)$(VIM)
 SWAP=swap
 UNDO=undo
-VIMSWAP=$(VIMPLUGIN)$(SWAP)
-VIMUNDO=$(VIMPLUGIN)$(UNDO)
 CONFIG=$(CONTAINER_HOME)$(CONFIG_DIR)
 VIMRC_FILE=.vimrc
 VIMRC=/$(USER_HOME)$(VIMRC_FILE)
@@ -78,8 +76,8 @@ refresh: running
 	test -d $(CONTAINER_PATH)
 	mkdir -p $(CONTAINER_HOME)
 	mkdir -p $(VIMPLUGIN)
-	mkdir -p $(VIMSWAP)
-	mkdir -p $(VIMUNDO)
+	mkdir -p $(VIMPLUGIN)$(SWAP)
+	mkdir -p $(VIMPLUGIN)$(UNDO)
 	mkdir -p $(CONFIG)
 	mkdir -p $(CONTAINER_ROOT)$(VIM)
 	mkdir -p $(VIM_SWAP_RT)
