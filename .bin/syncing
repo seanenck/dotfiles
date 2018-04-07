@@ -35,10 +35,6 @@ function sync-now()
     echo "====================="
     echo "running "$(date +%Y-%m-%dT%H:%M:%S)
     echo "====================="
-    if [ ! -d $SSH_KEY_PATH ]; then
-        echo "$SSH_KEY_PATH not mounted..."
-        exit -1
-    fi
     zip-now
     echo "checked for connection...$available"
     if [ $available -eq $IS_CONNECTED ]; then
