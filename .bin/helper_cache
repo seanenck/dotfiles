@@ -159,14 +159,6 @@ helper_cache $line \$@" > $file_name
 
 function print-help()
 {
-    res=$(get-help | grep -v -e '^$' | sort)
-    echo "
-$res
-"
-}
-
-function get-help()
-{
     echo "
     $DMENU_LOCAL_KEY (dmenu wrapper for local operations)
     $PASSWORD_KEY (password management)
@@ -181,7 +173,7 @@ function get-help()
     $PAMIXER_KEY (wrap pamixer)
     $WSW_CYCLE_KEY (cycle wsw profiles)
     $WEECHAT_READY (weechat wrapper)
-"
+" | grep -v -e '^$' | sort
 }
 
 function pamixer-wrapper()
