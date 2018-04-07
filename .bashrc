@@ -113,13 +113,16 @@ export CHROOT
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 tray > /dev/null 2>&1
-xhost +local: > /dev/null
 clear
-set-system
 if [ -e $GIT_CHANGES ]; then
     cat $GIT_CHANGES 2>/dev/null
     rm -f $GIT_CHANGES
 fi
+
+_setup() {
+    set-system
+    xhost +local:
+}
 
 today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
 rm -f $today_check
@@ -128,4 +131,5 @@ if [ ! -e $today_check ]; then
     XERRORS=$HOME/.xsession-errors
     rm -f $XERRORS
     ln -s /dev/null $XERRORS
+    _setup > /dev/null
 fi
