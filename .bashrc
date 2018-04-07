@@ -113,25 +113,15 @@ export CHROOT
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
-# things to do to setup shell/env
-_setup() {
-    BOOTED=$USER_TMP/".booted."$(uptime -s | sed "s/ /-/g;s/:/-/g")
-    if [ ! -e $BOOTED ]; then
-        xhost +local: > /dev/null
-        touch $BOOTED
-    fi
-    set-user-files
-    tray
-}
-
 _ready() {
-    _setup > $SETUP_LOG 2>&1
+    tray > /dev/null 2>&1
 }
 
 _shell() {
     set-system
 }
 _ready
+xhost +local: > /dev/null
 clear
 _shell
 if [ -s $SETUP_LOG ]; then

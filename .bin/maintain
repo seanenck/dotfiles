@@ -19,3 +19,4 @@ if [ ! -e $BOOTED ]; then
     done
     touch $BOOTED
 fi
+set-user-files
