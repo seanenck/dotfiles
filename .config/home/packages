@@ -65,7 +65,7 @@ netctl
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
-opensc
+opensc-git
 openssh
 p7zip
 pacman
