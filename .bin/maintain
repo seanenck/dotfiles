@@ -19,6 +19,89 @@ if [ ! -e $BOOTED ]; then
     done
     touch $BOOTED
 fi
+
+function check-timed-events()
+{
+    all=""
+    today=$(date +%Y-%m-%d)
+    all="$today"
+    for d in $(seq 1 7); do
+        past=$(date +%Y-%m-%d -d "-$d days")
+        all=$all"|$past"
+    done
+    year=$(date +%Y)
+    months="($year-"$(date +%m)"|"$year-$(date -d "last month" +%m)")"
+    all="($all)"
+    if [ ! -e "$LAST_TIMES" ]; then
+        touch $LAST_TIMES
+    else
+        warnings=""
+        cnt=0
+        for item in $(cat $LAST_TIMES); do
+            cnt=$((cnt+1))
+            i=$(echo $item | cut -d "," -f 1)
+            d=$(echo $item | cut -d "," -f 2)
+            echo $d | grep -q -E "$all"
+            if [ $? -ne 0 ]; then
+                _warn=1
+                if [[ $i == "$PKGBUILD_IND"* ]]; then
+                    if [[ $i == *"-git" ]]; then
+                        echo $d | grep -q -E "$months"
+                        if [ $? -eq 0 ]; then
+                            _warn=0
+                        fi
+                    fi
+                fi
+                if [ $_warn -eq 1 ]; then
+                    warnings="$warnings ${i}_(${d})"
+                fi
+            fi
+        done
+        if [ $cnt -ne $REQUIRED_EVENTS ]; then
+            warnings=$warnings" wrong_number_of_events"
+        fi
+        if [ ! -z "$warnings" ]; then
+            echo -e "${RED_TEXT}"
+            echo "system events"
+            echo "==="
+            for w in $(echo $warnings); do
+                changed=$(echo $w |  sed "s/_/ /g")
+                echo -e "  -> (maintanence) $changed"
+            done
+            echo -e "${NORM_TEXT}"
+            process-logs
+        fi
+    fi
+}
+
+function set-user-files()
+{
+    # user tmp
+    mkdir -p $USER_TMP
+    find $USER_TMP* -mtime +1 -type f -exec rm {} \;
+    find $USER_TMP -empty -type d -delete
+
+    for f in $(find $USER_TMP -type f -mmin +30 | grep "dmenu"); do
+        rm -f $f
+    done
+
+    # vim
+    for v in $(echo "undo swap"); do
+        vim_dir=$HOME/.vim/$v
+        mkdir -p $vim_dir
+        find $vim_dir -mmin +1440 -type f -exec rm {} \;
+    done
+    
+    # packages
+    if [ ! -e $PKG_QUERY ]; then
+        running=$(pidof pacman)
+        if [ -z "$running" ]; then
+            /usr/bin/pacman -Qqe > ${CONF_HOME}/packages
+            touch $PKG_QUERY
+        fi
+    fi
+}
+
 set-user-files
 process-logs
 check-timed-events
