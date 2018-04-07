@@ -128,7 +128,6 @@ if [ ! -e $today_check ]; then
     XERRORS=$HOME/.xsession-errors
     rm -f $XERRORS
     ln -s /dev/null $XERRORS
-    process-logs
 fi
 
 check-timed-events

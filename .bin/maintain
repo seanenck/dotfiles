@@ -20,3 +20,4 @@ if [ ! -e $BOOTED ]; then
     touch $BOOTED
 fi
 set-user-files
+process-logs
