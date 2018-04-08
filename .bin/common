@@ -18,8 +18,14 @@ SSH_AUTH_TMP=/tmp/ssh-auth.sock
 USER_TMP=$HOME/.tmp
 SYNCED_PATH=$HOME/.synced/
 HOME_CONF=$HOME/.config/
+HOME_CACHE=$HOME/.cache/
+
+# cache
+LAST_TIMES=${HOME_CACHE}.cache/last-timed.log
+CACHE_PATH=${HOME_CACHE}.cache/helper_cache/
+
+# config
 EPIPHYTE_CONF=${HOME_CONF}epiphyte/env
-LAST_TIMES=$HOME/.cache/last-timed.log
 CONF_HOME=${HOME_CONF}home
 
 # perm
@@ -27,6 +33,7 @@ CHROOT_LOCATION=${PERM_LOCATION}chroot
 
 # syncing
 SYNCED_CONF=${SYNCED_PATH}/configs/
+PASS_FILE=${SYNCED_PATH}passwords
 PRIV_CONF=${SYNCED_CONF}priv.aliases
 
 # user temp
@@ -39,6 +46,9 @@ PKG_QUERY=$USER_TMP/package.query
 GIT_CHANGES=$USER_TMP/git.changes
 SND_MUTE=$USER_TMP/.mute
 PROFILE_TMP=$USER_TMP/.profile.synced.
+
+WORKING=/opt/workspace/shared
+
 
 function mute()
 {
