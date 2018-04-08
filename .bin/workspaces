@@ -1,12 +1,10 @@
 #!/usr/bin/python
 import subprocess
 import os
-import signal
 import datetime
 import time
 import json
 from subprocess import check_output
-import threading
 
 devnull = open(os.devnull, 'w')
 
@@ -54,29 +52,8 @@ def workspacing():
 
 def main():
     """Entry point."""
-    workspaces = threading.Thread(target=workspacing)
-    workspaces.daemon = True
-    workspaces.start()
-    path = os.path.join(_HOME, ".config", "icons")
-    i = []
+    workspacing()
 
-def _is_active():
-    for proc in ["weechat"]:
-        pid = get_pid(proc)
-        if pid < 0:
-            continue
-        if not os.path.exists(_HOME_TMP + proc + ".ready"):
-            continue
-        os.kill(pid, signal.SIGUSR2)
-
-def get_pid(name):
-    """Get pid."""
-    try:
-        pid = check_output(["pidof", name]).decode("utf-8").strip()
-        val = int(pid)
-        return val
-    except:
-        return -1
 
 def uncurl(obj):
     """uncurl nest nodes down."""
@@ -94,7 +71,6 @@ def on_change():
     j = json.loads(value)
     workspaces = _get_workspaces(j)
     _rename_workspaces(workspaces)
-    _is_active()
 
 
 def _get_workspaces(j):
