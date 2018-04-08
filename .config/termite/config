@@ -7,58 +7,36 @@ dynamic_title = false
 fullscreen = false
 
 [colors]
-foreground = #99e699
-foreground_bold = #ffffff
+foreground = #b0b0b0
+foreground_bold = #e0e0e0
 background = #000000
 
-# teal
-color0 = #7afdc0
+# Black, Gray, Silver, White
+color0  = #151515
+color8  = #505050
+color7  = #D0D0D0
+color15 = #FFFFFF
 
-# red
-color1 = #ff0000
+# Red
+color1  = #ff0000
+color9  = #ff0000
 
-# white
-color13 = #ffffff
+# Yellow
+color2  = #cff72f
+color10 = #cff72f
 
-# grey
-color3 = #c3c6c5
+# Green 
+color3  = #62fd62
+color11 = #62fd62
 
-# tan
-#color4 = #fdc599
+# Blue
+color4  = #3777E6
+color12 = #3777E6
 
-# yellow
-color8 = #ffd707
+# Orange
+color5  = #ff7001
+color13 = #ff7001
 
-# purple
-color5 = #ff07d7
-
-# violet
-color6 = #b18cfa
-
-# pink
-color7 = #ffb5d0
-
-# red
-color9 = #ff4141
-
-# yellow green
-color2 = #cff72f
-
-# green
-color15 = #62fd62
-
-# light blue
-color10 = #62fdfd
-
-# light purple
-#color12 = #f7c9ff
-
-# orange
-color14 = #ff7001
-
-# orange grey
-color11 = #dcc3af
-
-[hints]
-
-# vim: ft=dosini cms=#%s
+# White
+color6  = #ffffff
+color14 = #ffffff
