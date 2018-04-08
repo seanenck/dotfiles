@@ -133,6 +133,40 @@ function _locking()
     fi
 }
 
+function get-all-changes()
+{
+    git update-index -q --refresh 
+    git diff-index --name-only HEAD --
+    git status -sb | grep 'ahead'
+    git branch | grep "^\*" | grep -v "master"
+}
+
+function git-changing()
+{
+    cwd=$PWD
+    d_paths="/etc $HOME $SYNCED_PATH "$(get-perm-objs)" "$(get-workspace-objs)
+    for d in $(echo "$d_paths"); do
+        if [ ! -d "$d/.git" ]; then
+            continue
+        fi
+        cd $d
+        local_res=$(get-all-changes "$d")
+        if [ -e "$GIT_PARTIAL_TMP" ]; then
+            local_res=$(echo "$local_res" | grep -E -v "$GIT_PARTIAL_PATTERN")
+        fi
+        if [ ! -z "$local_res" ]; then
+            if [ -z $first ]; then
+                echo "uncommitted changes"
+            fi
+            echo -e "$d${RED_TEXT}"
+            echo -e "$local_res${NORM_TEXT}" | sed "s/^/    /g"
+            first="false"
+        fi
+    done
+    touch $GIT_PARTIAL_TMP
+    cd $cwd
+}
+
 function stats()
 {
     if [ -e $CUSTOM_STATS ]; then
