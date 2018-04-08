@@ -15,7 +15,6 @@ WORKING=/opt/workspace/shared
 DMENU_APPS="vlc termite pavucontrol"
 DMENU_LIST="$DMENU_APPS $PASSWORD_KEY"
 BROWSER_WINDOW="Developer"
-PAMIXER_KEY="pamixer-wrapper"
 WSW_CYCLE_KEY="wsw-cycle"
 
 function cycle-wsw()
@@ -142,14 +141,8 @@ function print-help()
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
     $ARCH_CHROOT_KEY (arch-chroot management)
     $RELEASE_KEY (check if anything needs releasing)
-    $PAMIXER_KEY (wrap pamixer)
     $WSW_CYCLE_KEY (cycle wsw profiles)
 " | grep -v -e '^$' | sort
-}
-
-function pamixer-wrapper()
-{
-    pamixer $@
 }
 
 if [ ! -z $1 ]; then
@@ -157,9 +150,6 @@ if [ ! -z $1 ]; then
     case $1 in
         $WSW_CYCLE_KEY)
             cycle-wsw
-            ;;
-        $PAMIXER_KEY)
-            pamixer-wrapper ${@:2}
             ;;
         $RELEASE_KEY)
             github-releases
