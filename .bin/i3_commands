@@ -110,13 +110,14 @@ function _battery()
     printf '\xf0\x9f\x94\x8b %2i%s' $lowest $charge
 }
 
-function _muted()
+function _sound()
 {
+    icon="\xf0\x9f\x94\x8a"
     if [[ $(pamixer --get-mute) == 'true' ]]; then
-        printf '\xf0\x9f\x94\x87'
-    else 
-        printf '\xf0\x9f\x94\x8a'
+        icon='\xf0\x9f\x94\x87'
     fi
+    level=$(pamixer --get-volume)
+    printf "$icon %3i" $level
 }
 
 function _locking()
@@ -160,7 +161,7 @@ function stats()
                 update-git &
             fi
             bright=$(_brightness)
-            muting=$(_muted)
+            muting=$(_sound)
             bat=$(_battery)
             disp=$(_locking)
             echo "$_git_text$line|$bright|$muting|$bat|$disp|" || exit 1
