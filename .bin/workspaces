@@ -14,7 +14,9 @@ _HOME_TMP = _HOME + ".tmp/"
 def _get_socket():
     import socket
     import struct
-    socket_path = subprocess.check_output(['i3', '--get-socketpath'], close_fds=True, universal_newlines=True).strip()
+    socket_path = subprocess.check_output(['i3', '--get-socketpath'],
+                                          close_fds=True,
+                                          universal_newlines=True).strip()
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     sock.connect(socket_path)
     pay = '["window"]'.encode("utf-8")
@@ -23,14 +25,17 @@ def _get_socket():
     sock.sendall(sending)
     return sock
 
+
 def workspacing():
     """Handles workspace naming."""
+
 
 def main():
     """Entry point."""
     sock = _get_socket()
     data = sock.recv(1024).decode("utf-8", 'ignore')
     on_change()
+
 
 def uncurl(obj):
     """uncurl nest nodes down."""
@@ -68,6 +73,7 @@ def _get_workspaces(j):
                 matched[n] = (name, children)
     return matched
 
+
 def _rename_workspaces(workspaces):
     """rename a workspace."""
     for k in workspaces:
@@ -78,10 +84,11 @@ def _rename_workspaces(workspaces):
             named = ",".join([x[0:20].lower().split(" ")[0] for x in vals[1]])
             named = str(k) + ":" + named
         with open(os.devnull, 'w') as devnull:
+            rename = "rename workspace \"{}\" to \"{}\"".format(vals[0], named)
             subprocess.call(["i3-msg",
-                             "rename workspace \"{}\" to \"{}\"".format(vals[0], named)],
-                             stdout=devnull,
-                             stderr=subprocess.STDOUT)
+                             rename],
+                            stdout=devnull,
+                            stderr=subprocess.STDOUT)
 
 
 if __name__ == "__main__":
