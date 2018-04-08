@@ -15,86 +15,7 @@ devnull = open(os.devnull, 'w')
 
 _HOME = "/home/enck/"
 _HOME_TMP = _HOME + ".tmp/"
-_IS_UNLOCK = 0
-_IS_SUSPEND = 1
-_LOCKED = """
-#!/bin/bash
-source """ + _HOME + """.bin/common
-if [ -e $DISPLAY_UN ]; then
-    echo """ + str(_IS_UNLOCK) + """
-else
-    if [ -e $DISPLAY_EN ]; then
-        echo """ + str(_IS_SUSPEND) + """
-    else
-        echo 2
-    fi
-fi
-"""
 
-def _call(command):
-    """Make a call, get change (else None)."""
-    try:
-        ret = subprocess.check_output(command, shell=True, executable='/bin/bash').decode("ascii").strip()
-        return int(ret)
-    except Exception as e:
-        pass
-    return None
-
-def _locked(val):
-    """Get locking image."""
-    img = "display"
-    if val == _IS_UNLOCK:
-        img = "unlocked"
-    elif val == _IS_SUSPEND:
-        img = "running"
-    return img
-            
-
-def locked(last, icon):
-    """Locking status."""
-    val = _call(_LOCKED)
-    val = _handle_val(val, last, _locked, icon)
-    if val:
-        last = val
-    return last
-
-def _handle_val(val, last, callback, icon):
-    """Handle value switching."""
-    if val is not None:
-        if last != val:
-            img = callback(val)
-            icon.set_image(img)
-
-class Generic:
-    def __init__(self, callback, image_path):
-        """Init the instance."""
-        self.statusicon = Gtk.StatusIcon()
-        self._images = image_path
-        self._callback = callback
-        self._last = None
-        self.set_image("unknown")
-        self._called = None
-        self.on_timeout()
-
-    def set_image(self, image):
-        """Set icon image."""
-        self.statusicon.set_from_file(os.path.join(self._images, image + ".png"))
-
-    def on_timeout(self, do_callback=True):
-        """On timeout do a callback."""
-        run = False
-        next_call = datetime.datetime.now()
-        if self._called is None:
-            run = True
-        else:
-            delta_s = (next_call - self._called).total_seconds()
-            run =  delta_s > 1
-        if run:
-            self._called = next_call
-            self._last = self._callback(self._last, self)
-        # has to have timeout added
-        if do_callback:
-            GObject.timeout_add(100, self.on_timeout)
 
 def _get_socket():
     import socket
@@ -141,7 +62,6 @@ def main():
     workspaces.start()
     path = os.path.join(_HOME, ".config", "icons")
     i = []
-    i.append(Generic(locked, path))
     Gtk.main()
 
 def _is_active():
