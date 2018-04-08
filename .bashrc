@@ -119,12 +119,19 @@ if [ -e $GIT_CHANGES ]; then
 fi
 
 _setup() {
-    set-system
+    # disable touchpad
+    xinput set-prop $(xinput | grep "SynPS/2" | sed -n -e 's/^.*id=//p' | sed -e "s/\s/ /g" | cut -d " " -f 1) "Device Enabled" 0
+
+    # mute
+    if [ ! -e $SND_MUTE ]; then
+        mute
+        touch $SND_MUTE
+    fi
+
     xhost +local:
 }
 
 today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
-rm -f $today_check
 if [ ! -e $today_check ]; then
     touch $today_check
     XERRORS=$HOME/.xsession-errors

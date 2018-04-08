@@ -33,7 +33,6 @@ function mute()
     pamixer -m
 }
 
-
 function set-system()
 {
     # disable touchpad
