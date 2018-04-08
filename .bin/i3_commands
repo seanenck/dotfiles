@@ -28,7 +28,7 @@ function _kill_tray()
 {
     pkill $PRIMARY_ICON
     for p in $(pidof python); do
-        cat /proc/$p/cmdline | grep -q -E "udiskie|icons"
+        cat /proc/$p/cmdline | grep -q -E "udiskie"
         if [ $? -eq 0 ]; then
             kill $p
         fi
@@ -67,7 +67,6 @@ function _tray_icons()
     wsw-applet &
     sleep 1.0
     _run_python "udiskie" "--no-notify --no-automount --no-config --tray -f \"\""
-    _run_python "icons" ""
 
 }
 
