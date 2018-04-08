@@ -30,55 +30,6 @@ else
     fi
 fi
 """
-_BAT = """
-#!/bin/bash
-charging=$(cat /sys/class/power_supply/AC/online)
-NORMAL=5
-LOW=20
-low=0
-normal=0
-full=0
-score=-1
-for b in $(echo '0 1'); do
-    _path='/sys/class/power_supply/BAT'$b'/capacity'
-    if [ -e $_path ]; then
-        if [ $score -lt 0 ]; then
-            score=0
-        fi
-        _bat=$(cat $_path)
-        if [ $_bat -le 30 ]; then
-            score=$((score+$LOW))
-        else
-            if [ $_bat -le 80 ]; then
-                score=$((score+$NORMAL))
-            fi
-        fi
-    fi
-done
-flag='1'
-if [ $score -lt $NORMAL ]; then
-    if [ $score -ge 0 ]; then
-        flag='3'
-    fi
-else
-    if [ $score -lt $LOW ]; then
-        flag='2'
-    fi
-fi
-echo $flag$charging
-"""
-
-def _battery(val):
-    img = "caution"
-    if val == 21 or val == 11:
-        img = "low-charging"
-    elif val == 20:
-        img = "good"
-    elif val == 30:
-        img = "full"
-    elif val == 31:
-        img = "good-charging"
-    return "battery-{}".format(img)
 
 def _call(command):
     """Make a call, get change (else None)."""
@@ -113,15 +64,6 @@ def _handle_val(val, last, callback, icon):
         if last != val:
             img = callback(val)
             icon.set_image(img)
-
-def battery(last, icon):
-    """Handle batteries."""
-    val = _call(_BAT)
-    val = _handle_val(val, last, _battery, icon)
-    if val:
-        last = val
-    return val
-
 
 class Generic:
     def __init__(self, callback, image_path):
@@ -199,7 +141,6 @@ def main():
     workspaces.start()
     path = os.path.join(_HOME, ".config", "icons")
     i = []
-    i.append(Generic(battery, path))
     i.append(Generic(locked, path))
     Gtk.main()
 

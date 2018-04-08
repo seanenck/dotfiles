@@ -91,6 +91,26 @@ function _brightness()
     printf '\xf0\x9f\x94\x86 %3i' $b    
 }
 
+function _battery()
+{
+    charging=$(cat /sys/class/power_supply/AC/online)
+    charge="-"
+    if [ $charging -eq 1 ]; then
+        charge="+"
+    fi
+    lowest=100
+    for b in $(echo '0 1'); do
+        _path='/sys/class/power_supply/BAT'$b'/capacity'
+        if [ -e $_path ]; then
+            _bat=$(cat $_path)
+            if [ $_bat -lt $lowest ]; then
+                lowest=$_bat
+            fi
+        fi
+    done
+    printf '\xf0\x9f\x94\x8b %2i%s' $lowest $charge
+}
+
 function _muted()
 {
     if [[ $(pamixer --get-mute) == 'true' ]]; then
@@ -129,7 +149,8 @@ function stats()
             fi
             bright=$(_brightness)
             muting=$(_muted)
-            echo "$_git_text$line | $bright | $muting |" || exit 1
+            bat=$(_battery)
+            echo "$_git_text$line | $bright | $muting | $bat |" || exit 1
             _last_git=$((_last_git+1))
             if [ $_last_git -eq 1 ]; then
                 _last_git=0
