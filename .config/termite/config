@@ -53,10 +53,10 @@ color10 = #62fdfd
 color13 = #f7c9ff
 
 # orange
-color14 = #ff7001
+color11 = #ff7001
 
 # orange grey
-color11 = #dcc3af
+color14 = #dcc3af
 
 [hints]
 
