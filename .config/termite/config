@@ -14,7 +14,7 @@ background = #000000
 color0 = #7afdc0
 
 # red
-color2 = #ff0000
+color1 = #ff0000
 
 # white
 color12 = #ffffff
@@ -41,7 +41,7 @@ color7 = #ffb5d0
 color9 = #ff4141
 
 # yellow green
-color1 = #cff72f
+color2 = #cff72f
 
 # green
 color15 = #62fd62
