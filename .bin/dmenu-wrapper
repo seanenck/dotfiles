@@ -11,7 +11,10 @@ _DMENU_CALL = """#!//bin/bash
 _call() {
     local _results=$(echo {CACHE} | tr ' ' '\\n' | dmenu {ARGS} && echo $?)
     if [ ! -z \"$_results\" ]; then
-        echo \"$_results\" | head -n 1 | {DMENU_WRAPPER} --intercept | ${SHELL:-\"/bin/sh\" } &
+        echo \"$_results\" | \
+                head -n 1 | \
+                {DMENU_WRAPPER} --intercept | \
+                ${SHELL:-\"/bin/sh\" } &
     fi
 }
 
@@ -72,11 +75,12 @@ def _get_temp_name(temp_dir, dur):
     """Get the location of the dmenu entry cache."""
     import datetime
     now = datetime.datetime.now()
+    dur = int(dur * round(float(now.minute)/dur))
     name = ".dmenu.{}.{}.{}.{}.{}".format(now.year,
                                           now.month,
                                           now.day,
                                           now.hour,
-                                          int(dur * round(float(now.minute)/dur)))
+                                          dur)
     return os.path.join(temp_dir, name)
 
 
@@ -135,7 +139,8 @@ def _intercepting(args, unknown):
             if len(addr) >= 4:
                 invalid = False
                 for i in [addr[0], addr[1], addr[2], addr[3]]:
-                    alpha = [x for x in i if (x >= 'a' and x <= 'z') or (x >= 'A' and X <= 'Z')]
+                    alpha = [x for x in i if (x >= 'a' and x <= 'z') or
+                             (x >= 'A' and X <= 'Z')]
                     if len(alpha) > 0:
                         invalid = True
                         break
@@ -151,6 +156,7 @@ def _intercepting(args, unknown):
         print("{} {}".format(args.browser, calling))
         return
     print(inputs)
+
 
 def _producing(args, unknown):
     """Producing a dmenu list."""
