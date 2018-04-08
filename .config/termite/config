@@ -10,22 +10,38 @@ foreground = #99e699
 foreground_bold = #ffffff
 background = #000000
 
-color0 = #31373a
-color1 = #cc0000
-color2 = #4e9a06
-color3 = #d64937
-color4 = #1793d1
-color5 = #10ea8a
-color6 = #06989a
-color7 = #d2d2d2
-color8 = #555753
-color9 = #ef2929
-color10 = #8ae234
-color11 = #1793d1
-color12 = #1793d1
-color13 = #ad7fa8
-color14 = #34e2e2
-color15 = #ffffff
+# red
+color0 = #ff0000
+# white
+color1 = #ffffff
+# teal
+color2 = #7afdc0
+# grey
+color3 = #c3c6c5
+# yellow
+color4 = #ffd707
+# purple
+color5 = #ff07d7
+# violet
+color6 = #b18cfa
+# pink
+color7 = #ffb5d0
+# tan
+color8 = #fdc599
+# red
+color9 = #ff4141
+# yellow green
+color10 = #cff72f
+# green
+color11 = #62fd62
+# light blue
+color12 = #62fdfd
+# light purple
+color13 = #f7c9ff
+# orange
+color14 = #ff7001
+# orange grey
+color15 = #dcc3af
 
 [hints]
 
