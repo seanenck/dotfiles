@@ -14,6 +14,7 @@ DMENU_LIST="$DMENU_APPS $PASSWORD_KEY"
 BROWSER_WINDOW="Developer"
 WSW_CYCLE_KEY="wsw-cycle"
 CACHE_PATH=${HOME_CACHE}helper_cache/
+PASS_FILE=${SYNCED_PATH}passwords
 
 
 function cycle-wsw()
