@@ -93,9 +93,10 @@ function git-changing()
     cd $cwd
 }
 
+
+
 function stats()
 {
-    DISPLAY=:0
     _last_git=0
     _git_text=""
     _last_cnt=0
