@@ -44,25 +44,6 @@ machinectl-nspawn() {
     fi
 }
 
-_killpy() {
-    pythons=$(pidof python)
-    if [ ! -z "$pythons" ]; then
-        for p in $(echo "$pythons"); do
-            kill $p
-        done
-    fi
-}
-
-poweroff() {
-    _killpy
-    sudo /usr/bin/poweroff "$@"
-}
-
-reboot() {
-    _killpy
-    sudo /usr/bin/reboot "$@"
-}
-
 ssh() {
     TERM=xterm /usr/bin/ssh "$@" || return
 }
