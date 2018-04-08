@@ -83,8 +83,11 @@ function stats()
         i3status | while :
         do
             read line
-            d=$(cat $MAIN_STATS)
-            echo "$d|$line|" || exit 1
+            d=""
+            if [ -e $MAIN_STATS ]; then
+                d=$(cat $MAIN_STATS)
+            fi
+            echo "$d$line|" || exit 1
         done
     fi
 }
