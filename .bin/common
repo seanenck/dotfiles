@@ -13,7 +13,6 @@ DISPLAY_EN=$USER_TMP/display-enabled
 RED_TEXT="\033[1;31m"
 NORM_TEXT="\033[0m"
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
-PACMAN_LOG=/var/log/pacman.log
 EPIPHYTE_CONF=$HOME/.config/epiphyte/env
 PERM_PERSONAL=personal
 PRIV_CONF=${SYNCED_CONF}priv.aliases
@@ -58,12 +57,6 @@ function update-time-log()
     cat $LAST_TIMES | grep -v "$1," > $LAST_TIMES_TMP
     cat $LAST_TIMES_TMP > $LAST_TIMES
     echo "$1,$2" >> $LAST_TIMES
-}
-
-function process-logs()
-{
-    d=$(cat $PACMAN_LOG | grep $(date +%Y) | cut -d " " -f 1 | cut -d "[" -f 2 | sort | uniq | tail -n 1)
-    update-time-log "pacman" $d
 }
 
 function enter-window-vals()
