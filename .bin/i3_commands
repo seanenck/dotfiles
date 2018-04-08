@@ -26,7 +26,7 @@ function _run_python()
 
 function _kill_tray()
 {
-    pkill wsw-applet
+    pkill $PRIMARY_ICON
     for p in $(pidof python); do
         cat /proc/$p/cmdline | grep -q -E "udiskie|icons"
         if [ $? -eq 0 ]; then
@@ -42,7 +42,6 @@ function tray_reload()
 
 function _force_kill()
 {
-    pkill $PRIMARY_ICON
     _kill_tray
     if [ -z "$1" ]; then
         sleep 0.5
