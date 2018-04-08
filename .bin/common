@@ -21,8 +21,8 @@ HOME_CONF=$HOME/.config/
 HOME_CACHE=$HOME/.cache/
 
 # cache
-LAST_TIMES=${HOME_CACHE}.cache/last-timed.log
-CACHE_PATH=${HOME_CACHE}.cache/helper_cache/
+LAST_TIMES=${HOME_CACHE}last-timed.log
+CACHE_PATH=${HOME_CACHE}helper_cache/
 
 # config
 EPIPHYTE_CONF=${HOME_CONF}epiphyte/env
@@ -46,9 +46,6 @@ PKG_QUERY=$USER_TMP/package.query
 GIT_CHANGES=$USER_TMP/git.changes
 SND_MUTE=$USER_TMP/.mute
 PROFILE_TMP=$USER_TMP/.profile.synced.
-
-WORKING=/opt/workspace/shared
-
 
 function mute()
 {
