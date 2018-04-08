@@ -95,6 +95,7 @@ function git-changing()
 
 function stats()
 {
+    DISPLAY=:0
     _last_git=0
     _git_text=""
     _last_cnt=0
@@ -119,7 +120,7 @@ function stats()
         muting=$(_sound)
         bat=$(_battery)
         disp=$(_locking)
-        echo "$_git_text$bright|$muting|$bat|$disp|"
+        echo "$_git_text$bright|$muting|$bat|$disp|" > $MAIN_STATS
         _last_git=$((_last_git+1))
         if [ $_last_git -eq 1 ]; then
             _last_git=0

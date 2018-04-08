@@ -2,6 +2,7 @@
 Description=System status management
 
 [Service]
+Environment=DISPLAY=:0
 Type=simple
 ExecStart=/home/enck/.bin/status
 

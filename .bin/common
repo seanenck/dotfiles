@@ -39,6 +39,7 @@ LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 GIT_CHANGES=$USER_TMP/git.changes
 SND_MUTE=$USER_TMP/.mute
 PROFILE_TMP=$USER_TMP/.profile.synced.
+MAIN_STATS=$USER_TMP/stats
 
 function mute()
 {
