@@ -1,6 +1,3 @@
-NOBEEP=/tmp/nobeep.conf
 depends=$(cat packages | grep -v -E "^(glib2)$")
 grps=('i3' 'xorg' 'base-devel')
 sudo pacman -S $depends $grps
-echo "blacklist pcspkr" > $NOBEEP
-sudo install -Dm644 $NOBEEP /etc/modprobe.d/nobeep.conf
