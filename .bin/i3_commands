@@ -31,7 +31,7 @@ function restart()
 function _kill_tray()
 {
     pkill wsw-applet
-    if [ -z "$1" ]; then
+    if [ ! -z "$1" ]; then
         i3-msg $1
     fi
 }
