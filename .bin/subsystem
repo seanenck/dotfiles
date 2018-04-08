@@ -106,7 +106,6 @@ function toggle-backlighting()
             xrandr --output $disp --brightness $SETTING
         done
     fi
-    refresh-tray
 }
 
 function replace-and-execute()
@@ -156,7 +155,6 @@ function set-workplace()
     if [ $has_side -eq 0 ]; then
         use_setting=$DEFAULT_WORKSPACE_ID
     fi
-    rm -f $TRAY_SET
     i3_commands tray_reload 
     case $use_setting in
         $DOCKED_ID | $HOME_WORKPLACE_ID)

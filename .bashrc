@@ -112,7 +112,6 @@ export CHROOT
 # gpg setup
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
-tray > /dev/null 2>&1
 clear
 if [ -e $GIT_CHANGES ]; then
     cat $GIT_CHANGES 2>/dev/null

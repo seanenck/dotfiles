@@ -179,7 +179,6 @@ function print-help()
 function pamixer-wrapper()
 {
     pamixer $@
-    refresh-tray
 }
 
 if [ ! -z $1 ]; then

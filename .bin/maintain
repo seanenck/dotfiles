@@ -9,7 +9,7 @@ if [ ! -e $BOOTED ]; then
         echo "deleting app file: $fname"
         rm -f $fname
     done
-    for f in $(echo "$DISPLAY_UN $DISPLAY_EN $SND_MUTE $TRAY_SET $NET_SLEEP $PKG_QUERY"); do
+    for f in $(echo "$DISPLAY_UN $DISPLAY_EN $SND_MUTE $NET_SLEEP $PKG_QUERY"); do
         echo "deleting tmp file: $f"
         rm -f $f
     done

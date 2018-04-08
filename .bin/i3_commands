@@ -75,7 +75,6 @@ function _tray_icons()
 function tray_icons()
 {
     _tray_icons &
-    touch $TRAY_SET
 }
 
 function update-git()

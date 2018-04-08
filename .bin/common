@@ -23,29 +23,17 @@ BASE_SERVER="base"
 LAST_TIMES=$HOME/.cache/last-timed.log
 LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 REQUIRED_EVENTS=6
-TRAY_SET=$USER_TMP/.tray
 PKG_QUERY=$USER_TMP/package.query
 CONF_HOME=$HOME/.config/home
 GIT_CHANGES=$USER_TMP/git.changes
 SND_MUTE="$USER_TMP/.mute"
 PROFILE_TMP="$USER_TMP/.profile.synced."
 
-function refresh-tray()
-{
-    touch $USER_TMP/tray.refresh
-}
-
 function mute()
 {
     pamixer -m
 }
 
-function tray()
-{
-    if [ ! -e $TRAY_SET ]; then
-        i3_commands tray_icons > /dev/null 2>&1 &
-    fi
-}
 
 function set-system()
 {
