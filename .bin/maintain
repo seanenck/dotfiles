@@ -133,6 +133,7 @@ function set-user-files()
 function process-logs()
 {
     d=$(cat /var/log/pacman.log | grep $(date +%Y) | cut -d " " -f 1 | cut -d "[" -f 2 | sort | uniq | tail -n 1)
+    pacman -Qm | systemd-cat -p err
     update-time-log "pacman" $d
 }
 
