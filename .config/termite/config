@@ -9,7 +9,7 @@ fullscreen = false
 [colors]
 foreground = #b0b0b0
 foreground_bold = #e0e0e0
-background = #000000
+background = #101010
 
 # Black, Gray, Silver, White
 color0  = #151515
