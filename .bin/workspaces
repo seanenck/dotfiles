@@ -7,10 +7,6 @@ import json
 from subprocess import check_output
 
 
-_HOME = "/home/enck/"
-_HOME_TMP = _HOME + ".tmp/"
-
-
 def _get_socket():
     import socket
     import struct
