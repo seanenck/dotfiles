@@ -164,7 +164,7 @@ function stats()
             muting=$(_sound)
             bat=$(_battery)
             disp=$(_locking)
-            echo "$_git_text$line|$bright|$muting|$bat|$disp|" || exit 1
+            echo "$_git_text$bright|$muting|$bat|$disp|$line|" || exit 1
             _last_git=$((_last_git+1))
             if [ $_last_git -eq 1 ]; then
                 _last_git=0
