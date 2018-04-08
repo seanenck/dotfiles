@@ -1,0 +1,131 @@
+#!/bin/bash
+source $HOME/.bin/common
+
+function update-git()
+{
+    if [ ! -e $GIT_CHANGES ]; then
+        git-changing > $GIT_CHANGES
+    fi
+}
+
+function _brightness()
+{
+    b=$(xrandr --current --verbose | grep "Brightness" | \
+        cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | \
+        tail -n 1 | awk '{printf "%3.0f", $1}' | sed "s/^[ \t]*//g")
+    printf '\xf0\x9f\x94\x86 %3i' $b    
+}
+
+function _battery()
+{
+    charging=$(cat /sys/class/power_supply/AC/online)
+    charge="-"
+    if [ $charging -eq 1 ]; then
+        charge="+"
+    fi
+    lowest=100
+    for b in $(echo '0 1'); do
+        _path='/sys/class/power_supply/BAT'$b'/capacity'
+        if [ -e $_path ]; then
+            _bat=$(cat $_path)
+            if [ $_bat -lt $lowest ]; then
+                lowest=$_bat
+            fi
+        fi
+    done
+    printf '\xf0\x9f\x94\x8b %2i%s' $lowest $charge
+}
+
+function _sound()
+{
+    icon="\xf0\x9f\x94\x8a"
+    if [[ $(pamixer --get-mute) == 'true' ]]; then
+        icon='\xf0\x9f\x94\x87'
+    fi
+    level=$(pamixer --get-volume)
+    printf "$icon %3i" $level
+}
+
+function _locking()
+{
+    if [ -e $DISPLAY_UN ]; then
+        echo "unlocked"
+    else
+        if [ -e $DISPLAY_EN ]; then
+            echo "no sleep"
+        else
+            echo " normal "
+        fi
+    fi
+}
+
+function get-all-changes()
+{
+    git update-index -q --refresh 
+    git diff-index --name-only HEAD --
+    git status -sb | grep 'ahead'
+    git branch | grep "^\*" | grep -v "master"
+}
+
+function git-changing()
+{
+    cwd=$PWD
+    d_paths="/etc $HOME $SYNCED_PATH "$(get-perm-objs)" "$(get-workspace-objs)
+    for d in $(echo "$d_paths"); do
+        if [ ! -d "$d/.git" ]; then
+            continue
+        fi
+        cd $d
+        local_res=$(get-all-changes "$d")
+        if [ -e "$GIT_PARTIAL_TMP" ]; then
+            local_res=$(echo "$local_res" | grep -E -v "$GIT_PARTIAL_PATTERN")
+        fi
+        if [ ! -z "$local_res" ]; then
+            if [ -z $first ]; then
+                echo "uncommitted changes"
+            fi
+            echo -e "$d${RED_TEXT}"
+            echo -e "$local_res${NORM_TEXT}" | sed "s/^/    /g"
+            first="false"
+        fi
+    done
+    touch $GIT_PARTIAL_TMP
+    cd $cwd
+}
+
+function stats()
+{
+    _last_git=0
+    _git_text=""
+    _last_cnt=0
+    while [ 1 -eq 1 ]; do
+        if [ $_last_git -eq 0 ]; then
+            _git_cnt=0
+            if [ -e $GIT_CHANGES ]; then
+                _git_cnt=$(cat $GIT_CHANGES | grep "    " | wc -l)
+            else
+                _git_cnt=$_last_cnt
+            fi
+            _last_cnt=$_git_cnt
+            _git_text=" git notices|"
+            if [ $_git_cnt -eq 0 ]; then
+                _git_text="no$_git_text"
+            else
+                _git_text="$_git_cnt$_git_text"
+            fi
+            update-git &
+        fi
+        bright=$(_brightness)
+        muting=$(_sound)
+        bat=$(_battery)
+        disp=$(_locking)
+        echo "$_git_text$bright|$muting|$bat|$disp|"
+        _last_git=$((_last_git+1))
+        if [ $_last_git -eq 1 ]; then
+            _last_git=0
+        fi
+        sleep 1
+    done
+}
+
+stats

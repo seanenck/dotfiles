@@ -1,0 +1,9 @@
+[Unit]
+Description=System status management
+
+[Service]
+Type=simple
+ExecStart=/home/enck/.bin/status
+
+[Install]
+WantedBy=multi-user.target
