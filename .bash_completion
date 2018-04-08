@@ -9,12 +9,6 @@ function _simple_autocomplete()
     fi
 }
 
-_dmenu_urls()
-{
-    _simple_autocomplete "dmenu_urls --help"
-}
-complete -F _dmenu_urls dmenu_urls
-
 _helper_cache()
 {
     _simple_autocomplete "helper_cache"
