@@ -17,7 +17,6 @@ _HOME = "/home/enck/"
 _HOME_TMP = _HOME + ".tmp/"
 _IS_UNLOCK = 0
 _IS_SUSPEND = 1
-_BRIGHTNESS = 'xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk \'{printf "%3.0f", $1}\' | sed "s/^[ \t]*//g"'
 _LOCKED = """
 #!/bin/bash
 source """ + _HOME + """.bin/common
@@ -31,7 +30,6 @@ else
     fi
 fi
 """
-_VOLUME = "if [[ $(pamixer --get-mute) == 'true' ]]; then echo 1; else echo 0; fi"
 _BAT = """
 #!/bin/bash
 charging=$(cat /sys/class/power_supply/AC/online)
@@ -116,21 +114,6 @@ def _handle_val(val, last, callback, icon):
             img = callback(val)
             icon.set_image(img)
 
-def _volume(val):
-    """Get volume icon."""
-    if val == 1:
-        return "muted"
-    else:
-        return "unmuted"
-
-def volume(last, icon):
-    """Handle volume."""
-    val = _call(_VOLUME)
-    val = _handle_val(val, last, _volume, icon)
-    if val:
-        last = val
-    return val
-
 def battery(last, icon):
     """Handle batteries."""
     val = _call(_BAT)
@@ -139,22 +122,6 @@ def battery(last, icon):
         last = val
     return val
 
-def _brightness(val):
-    use = "low"
-    if val > 50:
-        use = "mid"
-    if val > 90:
-        use = "high"
-    return use + "-bright" 
-
-def brightness(last, icon):
-    """Get brightness."""
-    val = _call(_BRIGHTNESS)
-    val = _handle_val(val, last, _brightness, icon)
-    if val:
-        last = val
-    return last
-    
 
 class Generic:
     def __init__(self, callback, image_path):
@@ -179,7 +146,7 @@ class Generic:
             run = True
         else:
             delta_s = (next_call - self._called).total_seconds()
-            run =  delta_s > 5
+            run =  delta_s > 1
         if run:
             self._called = next_call
             self._last = self._callback(self._last, self)
@@ -233,8 +200,6 @@ def main():
     path = os.path.join(_HOME, ".config", "icons")
     i = []
     i.append(Generic(battery, path))
-    i.append(Generic(volume, path))
-    i.append(Generic(brightness, path))
     i.append(Generic(locked, path))
     Gtk.main()
 
