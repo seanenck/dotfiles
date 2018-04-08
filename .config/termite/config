@@ -24,7 +24,7 @@ color13 = #ffffff
 color3 = #c3c6c5
 
 # tan
-color4 = #fdc599
+#color4 = #fdc599
 
 # yellow
 color8 = #ffd707
@@ -51,7 +51,7 @@ color15 = #62fd62
 color10 = #62fdfd
 
 # light purple
-color12 = #f7c9ff
+#color12 = #f7c9ff
 
 # orange
 color14 = #ff7001
