@@ -26,35 +26,12 @@ def _get_socket():
 
 def workspacing():
     """Handles workspace naming."""
-    date = str(datetime.datetime.now()).replace(":", "-").replace(" ", "_").replace(".", "_")
-    sock = None
-    success = True
-    while True:
-        try:
-            if sock is None:
-                sock = _get_socket()
-            data = sock.recv(1024).decode("utf-8", 'ignore')
-            on_change()
-            success = True
-            time.sleep(0.1)
-        except Exception as e:
-            if sock:
-                sock.close()
-            with open(_HOME_TMP + date + ".tray.log", "a") as f:
-                sock = None
-                if success:
-                    f.write("error")
-                    f.write(str(e))
-                    success = False
-                else:
-                    f.write("still broken")
-                f.write("\n")
-            time.sleep(5)
 
 def main():
     """Entry point."""
-    workspacing()
-
+    sock = _get_socket()
+    data = sock.recv(1024).decode("utf-8", 'ignore')
+    on_change()
 
 def uncurl(obj):
     """uncurl nest nodes down."""

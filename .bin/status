@@ -93,6 +93,31 @@ function git-changing()
     cd $cwd
 }
 
+function _applets()
+{
+    pids=$(pidof wsw-applet)
+    if [ -z "$pids" ]; then
+        wsw-applet &
+        pkill udiskie
+        sleep 0.1
+    fi
+    ps aux | grep -v "grep" | grep -q "udiskie"
+    if [ $? -ne 0 ]; then
+        udiskie --no-notify --no-automount --no-config --tray -f "" &
+    fi
+}
+
+function _workspaces()
+{
+    python $HOME/.bin/workspaces
+}
+
+function _partials()
+{
+    _applets
+    _workspaces
+}
+
 function stats()
 {
     _last_git=0
@@ -102,6 +127,9 @@ function stats()
     while [ 1 -eq 1 ]; do
         sleep 0.1
         _partial=$((_partial+1))
+        if [ $_partial -eq 1 ] || [ $_partial -eq 5 ]; then
+            _partials > /dev/null 2>&1
+        fi
         if [ $_partial -lt 10 ]; then
             continue
         fi
