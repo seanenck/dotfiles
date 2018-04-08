@@ -1,7 +1,4 @@
 #!/usr/bin/python
-import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, GObject
 import subprocess
 import os
 import signal
@@ -62,7 +59,6 @@ def main():
     workspaces.start()
     path = os.path.join(_HOME, ".config", "icons")
     i = []
-    Gtk.main()
 
 def _is_active():
     for proc in ["weechat"]:
