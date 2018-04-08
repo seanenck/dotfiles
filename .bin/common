@@ -7,6 +7,7 @@ RED_TEXT="\033[1;31m"
 NORM_TEXT="\033[0m"
 BASE_SERVER="base"
 REQUIRED_EVENTS=6
+GIT_PARTIAL_PATTERN="weechat|random_seed"
 
 # standalone files/dirs
 PERM_LOCATION=/opt/perm/
@@ -21,19 +22,23 @@ EPIPHYTE_CONF=${HOME_CONF}epiphyte/env
 LAST_TIMES=$HOME/.cache/last-timed.log
 CONF_HOME=${HOME_CONF}home
 
-SYNCED_CONF=${SYNCED_PATH}/configs/
+# perm
 CHROOT_LOCATION=${PERM_LOCATION}chroot
-PROFILE_DEF="${USER_TMP}/profile.next"
+
+# syncing
+SYNCED_CONF=${SYNCED_PATH}/configs/
+PRIV_CONF=${SYNCED_CONF}priv.aliases
+
+# user temp
+PROFILE_DEF=$USER_TMP/profile.next
 DISPLAY_UN=$USER_TMP/display-unlocked
 DISPLAY_EN=$USER_TMP/display-enabled
-PRIV_CONF=${SYNCED_CONF}priv.aliases
-GIT_PARTIAL_PATTERN="weechat|random_seed"
 GIT_PARTIAL_TMP=$USER_TMP/git-partial
 LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 PKG_QUERY=$USER_TMP/package.query
 GIT_CHANGES=$USER_TMP/git.changes
-SND_MUTE="$USER_TMP/.mute"
-PROFILE_TMP="$USER_TMP/.profile.synced."
+SND_MUTE=$USER_TMP/.mute
+PROFILE_TMP=$USER_TMP/.profile.synced.
 
 function mute()
 {
