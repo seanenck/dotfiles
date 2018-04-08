@@ -54,6 +54,7 @@ fi
 #end-general
 . $HOME/.bin/common
 HISTFILE="$USER_TMP/.bash_history_"$(uptime -s | sed "s/ /-/g;s/:/-/g")
+EPIPHYTE_CONF=${HOME_CONF}epiphyte/env
 if [ -e "$EPIPHYTE_CONF" ]; then
     source $EPIPHYTE_CONF
 fi

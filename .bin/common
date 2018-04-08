@@ -22,11 +22,6 @@ HOME_CACHE=$HOME/.cache/
 
 # cache
 LAST_TIMES=${HOME_CACHE}last-timed.log
-CACHE_PATH=${HOME_CACHE}helper_cache/
-
-# config
-EPIPHYTE_CONF=${HOME_CONF}epiphyte/env
-CONF_HOME=${HOME_CONF}home
 
 # perm
 CHROOT_LOCATION=${PERM_LOCATION}chroot

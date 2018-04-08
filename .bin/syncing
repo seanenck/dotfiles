@@ -3,6 +3,7 @@ source $HOME/.bin/common
 PROFILE_PATH=/mnt/Storage/Active/Rolling/profiles
 ARCHIVE=$USER_TMP/profile.7z
 SPACING="    "
+SSH_AUTH_TMP=/tmp/ssh-auth.sock
 
 function backup()
 {

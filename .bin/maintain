@@ -1,6 +1,7 @@
 #!/bin/bash
 MY_HOME=/home/enck/
 source ${MY_HOME}.bin/common
+CONF_HOME=${HOME_CONF}home
 BOOTED=/tmp/user.booted-$(uptime -s | sed "s/ /-/g;s/:/-/g")
 if [ ! -e $BOOTED ]; then
     echo "booting up..."

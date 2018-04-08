@@ -13,6 +13,8 @@ DMENU_APPS="vlc termite pavucontrol"
 DMENU_LIST="$DMENU_APPS $PASSWORD_KEY"
 BROWSER_WINDOW="Developer"
 WSW_CYCLE_KEY="wsw-cycle"
+CACHE_PATH=${HOME_CACHE}helper_cache/
+
 
 function cycle-wsw()
 {
