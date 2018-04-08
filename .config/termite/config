@@ -4,6 +4,7 @@ font = Adobe Courier 14
 scrollback_lines = -1
 scrollbar = right
 dynamic_title = false
+fullscreen = false
 
 [colors]
 foreground = #99e699
