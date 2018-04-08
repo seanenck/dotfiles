@@ -93,14 +93,19 @@ function git-changing()
     cd $cwd
 }
 
-
-
 function stats()
 {
     _last_git=0
     _git_text=""
     _last_cnt=0
+    _partial=0
     while [ 1 -eq 1 ]; do
+        sleep 0.1
+        _partial=$((_partial+1))
+        if [ $_partial -lt 10 ]; then
+            continue
+        fi
+        _partial=0
         if [ $_last_git -eq 0 ]; then
             _git_cnt=0
             if [ -e $GIT_CHANGES ]; then
@@ -126,7 +131,6 @@ function stats()
         if [ $_last_git -eq 1 ]; then
             _last_git=0
         fi
-        sleep 1
     done
 }
 
