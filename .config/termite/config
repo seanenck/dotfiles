@@ -10,38 +10,53 @@ foreground = #99e699
 foreground_bold = #ffffff
 background = #000000
 
-# red
-color0 = #ff0000
-# white
-color1 = #ffffff
 # teal
-color2 = #7afdc0
+color0 = #7afdc0
+
+# red
+color2 = #ff0000
+
+# white
+color12 = #ffffff
+
 # grey
 color3 = #c3c6c5
+
+# tan
+color4 = #fdc599
+
 # yellow
-color4 = #ffd707
+color8 = #ffd707
+
 # purple
 color5 = #ff07d7
+
 # violet
 color6 = #b18cfa
+
 # pink
 color7 = #ffb5d0
-# tan
-color8 = #fdc599
+
 # red
 color9 = #ff4141
+
 # yellow green
-color10 = #cff72f
+color1 = #cff72f
+
 # green
-color11 = #62fd62
+color15 = #62fd62
+
 # light blue
-color12 = #62fdfd
+color10 = #62fdfd
+
 # light purple
 color13 = #f7c9ff
+
 # orange
 color14 = #ff7001
+
 # orange grey
-color15 = #dcc3af
+color11 = #dcc3af
 
 [hints]
 
