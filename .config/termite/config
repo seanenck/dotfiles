@@ -10,6 +10,23 @@ foreground = #99e699
 foreground_bold = #ffffff
 background = #000000
 
+color0 = #31373a
+color1 = #cc0000
+color2 = #4e9a06
+color3 = #d64937
+color4 = #1793d1
+color5 = #10ea8a
+color6 = #06989a
+color7 = #d2d2d2
+color8 = #555753
+color9 = #ef2929
+color10 = #8ae234
+color11 = #1793d1
+color12 = #1793d1
+color13 = #ad7fa8
+color14 = #34e2e2
+color15 = #ffffff
+
 [hints]
 
 # vim: ft=dosini cms=#%s
