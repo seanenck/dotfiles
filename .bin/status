@@ -127,7 +127,7 @@ function stats()
     while [ 1 -eq 1 ]; do
         sleep 0.1
         _partial=$((_partial+1))
-        if [ $_partial -eq 1 ] || [ $_partial -eq 5 ]; then
+        if [ $_partial -eq 1 ] || [ $_partial -eq 6 ]; then
             _partials > /dev/null 2>&1
         fi
         if [ $_partial -lt 10 ]; then
