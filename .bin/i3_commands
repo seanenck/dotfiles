@@ -38,12 +38,16 @@ function _kill_tray()
 
 function stats()
 {
+    local last
+    last=""
     i3status | while :
     do
         read line
-        d=""
-        if [ -e $MAIN_STATS ]; then
-            d=$(cat $MAIN_STATS)
+        d=$(cat $MAIN_STATS)
+        if [ -z "$d" ]; then
+            d="$last"
+        else
+            last="$d"
         fi
         echo "$d$line|" || exit 1
     done
