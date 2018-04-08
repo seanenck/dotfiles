@@ -32,6 +32,18 @@ git() {
     fi
 }
 
+machinectl-nspawn() {
+    if [ -z "$1" ]; then
+        echo "operation required"
+    else
+        if [ -z "$2" ]; then
+            echo "target required"
+        else
+            sudo make $1 -f $HOME/.bin/makefile.nspawn TARGET=$2 ${@:3}
+        fi
+    fi
+}
+
 _killpy() {
     pythons=$(pidof python)
     if [ ! -z "$pythons" ]; then

@@ -9,7 +9,6 @@ ENTER_KEY="enterkeys"
 DMENU_LOCAL_KEY="dmenu-local"
 AUTO_CLIP_KEY="auto-clip"
 ARCH_CHROOT_KEY="archroot"
-MACHINECTL_NSPAWN_KEY="machinectl-nspawn"
 PASS_FILE=${SYNCED_PATH}passwords
 CACHE_PATH=$HOME/.cache/helper_cache/
 WORKING=/opt/workspace/shared
@@ -33,19 +32,6 @@ function cycle-wsw()
 function dmenu-local()
 {
     $HOME/.bin/dmenu-wrapper --browser "/usr/bin/firefox" --list "$DMENU_LIST" --temp "$USER_TMP" --urls "${SYNCED_CONF}urls.csv" "$@"
-}
-
-function make-nspawn()
-{
-    if [ -z "$1" ]; then
-        echo "operation required"
-        exit
-    fi
-    if [ -z "$2" ]; then
-        echo "target required"
-        exit
-    fi
-    sudo make $1 -f $HOME/.bin/makefile.nspawn TARGET=$2 ${@:3}
 }
 
 function auto-clip()
@@ -155,7 +141,6 @@ function print-help()
     $ENTER_KEY (enter keys into a non-paste friendly place)
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
     $ARCH_CHROOT_KEY (arch-chroot management)
-    $MACHINECTL_NSPAWN_KEY (machinectl wrapper for creating systems)
     $RELEASE_KEY (check if anything needs releasing)
     $PAMIXER_KEY (wrap pamixer)
     $WSW_CYCLE_KEY (cycle wsw profiles)
@@ -178,9 +163,6 @@ if [ ! -z $1 ]; then
             ;;
         $RELEASE_KEY)
             github-releases
-            ;;
-        $MACHINECTL_NSPAWN_KEY)
-            make-nspawn ${@:2}
             ;;
         $PASSWORD_KEY)
             passwords
