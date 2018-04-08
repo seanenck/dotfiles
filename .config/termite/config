@@ -17,7 +17,7 @@ color0 = #7afdc0
 color1 = #ff0000
 
 # white
-color12 = #ffffff
+color13 = #ffffff
 
 # grey
 color3 = #c3c6c5
@@ -50,7 +50,7 @@ color15 = #62fd62
 color10 = #62fdfd
 
 # light purple
-color13 = #f7c9ff
+color12 = #f7c9ff
 
 # orange
 color11 = #ff7001
