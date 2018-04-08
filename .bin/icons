@@ -179,13 +179,13 @@ class Generic:
             run = True
         else:
             delta_s = (next_call - self._called).total_seconds()
-            run =  delta_s > 10
+            run =  delta_s > 5
         if run:
             self._called = next_call
             self._last = self._callback(self._last, self)
         # has to have timeout added
         if do_callback:
-            GObject.timeout_add(500, self.on_timeout)
+            GObject.timeout_add(100, self.on_timeout)
 
 def _get_socket():
     import socket
