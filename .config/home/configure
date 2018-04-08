@@ -1,3 +1,0 @@
-depends=$(cat packages | grep -v -E "^(glib2)$")
-grps=('i3' 'xorg' 'base-devel')
-sudo pacman -S $depends $grps

@@ -35,7 +35,6 @@ gcc-libs
 gconf
 gettext
 git
-glib2
 glibc
 grep
 gsfonts
@@ -159,3 +158,8 @@ xorg-xvinfo
 xorg-xwd
 xorg-xwininfo
 xorg-xwud
+
+i3
+xorg
+base-devel
+
