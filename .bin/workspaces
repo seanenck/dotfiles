@@ -36,6 +36,7 @@ def workspacing():
             data = sock.recv(1024).decode("utf-8", 'ignore')
             on_change()
             success = True
+            time.sleep(0.1)
         except Exception as e:
             if sock:
                 sock.close()
