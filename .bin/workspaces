@@ -6,7 +6,6 @@ import time
 import json
 from subprocess import check_output
 
-devnull = open(os.devnull, 'w')
 
 _HOME = "/home/enck/"
 _HOME_TMP = _HOME + ".tmp/"
@@ -78,10 +77,11 @@ def _rename_workspaces(workspaces):
         else:
             named = ",".join([x[0:20].lower().split(" ")[0] for x in vals[1]])
             named = str(k) + ":" + named
-        subprocess.call(["i3-msg",
-                         "rename workspace \"{}\" to \"{}\"".format(vals[0], named)],
-                         stdout=devnull,
-                         stderr=subprocess.STDOUT)
+        with open(os.devnull, 'w') as devnull:
+            subprocess.call(["i3-msg",
+                             "rename workspace \"{}\" to \"{}\"".format(vals[0], named)],
+                             stdout=devnull,
+                             stderr=subprocess.STDOUT)
 
 
 if __name__ == "__main__":
