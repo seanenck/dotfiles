@@ -121,7 +121,6 @@ function set-user-files()
     
     # packages
     if [ ! -e $PKG_QUERY ]; then
-        pacman -Qm | systemd-cat -p err -t "maintain"
         running=$(pidof pacman)
         if [ -z "$running" ]; then
             /usr/bin/pacman -Qqe | grep -v -E "$IGNORED_PACKAGES" > $PACKAGE_SET
@@ -134,6 +133,7 @@ function set-user-files()
 function process-logs()
 {
     d=$(cat /var/log/pacman.log | grep $(date +%Y) | cut -d " " -f 1 | cut -d "[" -f 2 | sort | uniq | tail -n 1)
+    pacman -Qm | systemd-cat -p err -t "maintain"
     update-time-log "pacman" $d
 }
 
