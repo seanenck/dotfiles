@@ -24,6 +24,14 @@ sbh() {
     fi
 }
 
+proxy() {
+    if [ -z "$1" ]; then
+        echo "host required"
+    else
+        ssh -D 1234 -N $1
+    fi
+}
+
 git() {
     /usr/bin/git "$@" || return
     echo "$@" | grep -E -q "(push|commit|reset|checkout|branch|stash|status)"
