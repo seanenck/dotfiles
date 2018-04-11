@@ -23,17 +23,16 @@ function _battery()
     if [ $charging -eq 1 ]; then
         charge="+"
     fi
-    lowest=100
+    val=""
     for b in $(echo '0 1'); do
         _path='/sys/class/power_supply/BAT'$b'/capacity'
         if [ -e $_path ]; then
             _bat=$(cat $_path)
-            if [ $_bat -lt $lowest ]; then
-                lowest=$_bat
-            fi
+            val="$val,$_bat"
         fi
     done
-    printf '\xf0\x9f\x94\x8b %2i%s' $lowest $charge
+    val=$(echo "$val" | sed "s/^,//g")
+    printf '\xf0\x9f\x94\x8b (%4s)%s' $val $charge
 }
 
 function _sound()
