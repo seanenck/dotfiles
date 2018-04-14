@@ -32,7 +32,7 @@ function _battery()
         fi
     done
     val=$(echo "$val" | sed "s/^,//g")
-    printf '\xf0\x9f\x94\x8b (%4s)%s' $val $charge
+    printf '\xf0\x9f\x94\x8b (%3s)%s' $val $charge
 }
 
 function _sound()
