@@ -21,6 +21,7 @@ diffutils
 dmenu
 dosfstools
 e2fsprogs
+eltoritopy
 epiphyte-build
 exfat-utils
 fakeroot
