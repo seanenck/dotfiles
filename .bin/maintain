@@ -4,6 +4,7 @@ source ${MY_HOME}.bin/common
 CONF_HOME=${HOME_CONF}home
 PKG_QUERY=$USER_TMP/package.query
 PACKAGE_SET=${CONF_HOME}/packages
+WEECHAT_PLUGINS=${USER_TMP}/weechat.plugins
 IGNORED_PACKAGES="glib2"
 PACKAGE_GROUPS="
 i3
@@ -44,6 +45,18 @@ function weechat-logs()
             cp $f $fname.$(date +%s)
             mv $fname $f
         done
+        if [ ! -e $WEECHAT_PLUGINS ]; then
+            touch $WEECHAT_PLUGINS
+            echo "downloading latest scripts"
+            for p in $(echo "buffer_autoset autosort"); do
+                tmpfile=$USER_TMP/$p.py
+                curl -s https://www.weechat.org/files/scripts/$p.py > $tmpfile
+                diff -u $MY_HOME/.weechat/python/$p.py $tmpfile > /dev/null
+                if [ $? -ne 0 ]; then
+                    echo "$p weechat plugin updated ($tmpfile)" | systemd-cat -p err -t maintain
+                fi
+            done
+        fi
     fi
 }
 
