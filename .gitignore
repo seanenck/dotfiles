@@ -3,3 +3,6 @@
 !.config/
 .config/*
 !.config/home/
+!.weechat/
+.weechat/logs/*
+.weechat/*.log
