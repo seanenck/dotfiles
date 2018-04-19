@@ -161,6 +161,7 @@ function stats()
 
 if [ ! -z "$1" ]; then
     if [[ "$1" == "init" ]]; then
+        sleep 1
         _applets
         exit 0
     fi
