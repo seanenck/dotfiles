@@ -102,14 +102,10 @@ function check-timed-events()
             warnings=$warnings" wrong_number_of_events"
         fi
         if [ ! -z "$warnings" ]; then
-            echo -e "${RED_TEXT}"
-            echo "system events"
-            echo "==="
             for w in $(echo $warnings); do
                 changed=$(echo $w |  sed "s/_/ /g")
-                echo -e "  -> (maintanence) $changed"
+                echo -e "$changed" | systemd-cat -p err -t maintain
             done
-            echo -e "${NORM_TEXT}"
         fi
     fi
 }
