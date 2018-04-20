@@ -120,20 +120,6 @@ if [ -e $GIT_CHANGES ]; then
     rm -f $GIT_CHANGES
 fi
 
-_d=$(date +"%Y-%m-%d")
-_last_check=$USER_TMP/last.journalctl.$_d
-if [ ! -e "$_last_check" ]; then
-    jrnl=$(journalctl -p err --since "yesterday" | grep -v -E "^(\-\-|\s)" | grep -v "kernel:")
-    if [ ! -z "$jrnl" ]; then
-        echo "journal errors"
-        echo "=============="
-        echo -e "${RED_TEXT}"
-        echo -e "$jrnl"
-        echo -e "${NORM_TEXT}"
-    fi
-    touch $_last_check
-fi
-
 _setup() {
     # disable touchpad
     xinput set-prop $(xinput | grep "SynPS/2" | sed -n -e 's/^.*id=//p' | sed -e "s/\s/ /g" | cut -d " " -f 1) "Device Enabled" 0
@@ -146,11 +132,22 @@ _setup() {
     xhost +local:
 }
 
-today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
-if [ ! -e $today_check ]; then
-    touch $today_check
-    XERRORS=$HOME/.xsession-errors
-    rm -f $XERRORS
-    ln -s /dev/null $XERRORS
-    _setup > /dev/null
-fi
+_check_today() {
+    today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
+    if [ ! -e $today_check ]; then
+        touch $today_check
+        XERRORS=$HOME/.xsession-errors
+        rm -f $XERRORS
+        ln -s /dev/null $XERRORS
+        jrnl=$(journalctl -p err --since "yesterday" | grep -v -E "^(\-\-|\s)" | grep -v "kernel:")
+        if [ ! -z "$jrnl" ]; then
+            echo "journal errors"
+            echo "=============="
+            echo -e "${RED_TEXT}"
+            echo -e "$jrnl"
+            echo -e "${NORM_TEXT}"
+        fi
+        _setup > /dev/null
+    fi
+}
+_check_today
