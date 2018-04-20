@@ -120,11 +120,10 @@ if [ -e $GIT_CHANGES ]; then
     rm -f $GIT_CHANGES
 fi
 
-_last_check=$USER_TMP/last.journalctl
-_d=$(date +"%H:%M:%S")
-if [ -e "$_last_check" ]; then
-    _last=$(cat $_last_check)
-    jrnl=$(journalctl -p err --since $_last | grep -v -E "^(\-\-|\s)" | grep -v "kernel:")
+_d=$(date +"%Y-%m-%d")
+_last_check=$USER_TMP/last.journalctl.$_d
+if [ ! -e "$_last_check" ]; then
+    jrnl=$(journalctl -p err --since "yesterday" | grep -v -E "^(\-\-|\s)" | grep -v "kernel:")
     if [ ! -z "$jrnl" ]; then
         echo "journal errors"
         echo "=============="
@@ -132,8 +131,8 @@ if [ -e "$_last_check" ]; then
         echo -e "$jrnl"
         echo -e "${NORM_TEXT}"
     fi
+    touch $_last_check
 fi
-echo $_d > $_last_check
 
 _setup() {
     # disable touchpad
