@@ -124,7 +124,7 @@ _last_check=$USER_TMP/last.journalctl
 _d=$(date +"%H:%M:%S")
 if [ -e "$_last_check" ]; then
     _last=$(cat $_last_check)
-    journalctl -p err --since $_last | grep -v "^\-\-"
+    journalctl -p err --since $_last | grep -v -E "^(\-\-|\s)" | grep -v "kernel:"
 fi
 echo $_d > $_last_check
 
