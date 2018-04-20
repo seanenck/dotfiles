@@ -120,6 +120,14 @@ if [ -e $GIT_CHANGES ]; then
     rm -f $GIT_CHANGES
 fi
 
+_last_check=$USER_TMP/last.journalctl
+_d=$(date +"%H:%M:%S")
+if [ -e "$_last_check" ]; then
+    _last=$(cat $_last_check)
+    journalctl -p err --since $_last | grep -v "^\-\-"
+fi
+echo $_d > $_last_check
+
 _setup() {
     # disable touchpad
     xinput set-prop $(xinput | grep "SynPS/2" | sed -n -e 's/^.*id=//p' | sed -e "s/\s/ /g" | cut -d " " -f 1) "Device Enabled" 0
