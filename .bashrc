@@ -133,6 +133,7 @@ _setup() {
 }
 
 _check_today() {
+    local today_check jrnl
     today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
     if [ ! -e $today_check ]; then
         touch $today_check
