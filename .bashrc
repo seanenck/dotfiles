@@ -133,19 +133,21 @@ _setup() {
 }
 
 _check_today() {
-    local today_check jrnl
+    local today_check jrnl yesterday
     today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
     if [ ! -e $today_check ]; then
         touch $today_check
         XERRORS=$HOME/.xsession-errors
         rm -f $XERRORS
         ln -s /dev/null $XERRORS
-        jrnl=$(journalctl -p err --since "yesterday" | grep -v -E "^(\-\-|\s)" | grep -v "kernel:")
+        yesterday=$(date -d "1 days ago" +%Y-%m-%d)
+        jrnl=$(journalctl -p err --since "$yesterday 00:00:00" --until "$yesterday 23:59:59" | grep -v -E "^(\-\-|\s)" | grep -v "kernel:")
         if [ ! -z "$jrnl" ]; then
+            echo
             echo "journal errors"
             echo "=============="
             echo -e "${RED_TEXT}"
-            echo -e "$jrnl"
+            echo -e "$jrnl" | sed "s/^/    /g"
             echo -e "${NORM_TEXT}"
         fi
         _setup > /dev/null
