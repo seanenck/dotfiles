@@ -150,7 +150,7 @@ _check_today() {
             echo -e "$jrnl" | sed "s/^/    /g"
             echo -e "${NORM_TEXT}"
         fi
-        _setup > /dev/null
     fi
+    _setup > /dev/null
 }
 _check_today
