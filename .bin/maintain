@@ -38,7 +38,6 @@ function weechat-logs()
     running=$(pidof weechat)
     if [ -z "$running" ]; then
         echo "cleaning up weechat logs"
-        
         for f in $(find $HOME/.weechat/logs/ -type f); do
             fname=${logs}$(basename $f)
             cat $f | grep -v -E "^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9][[:space:]]+(<|-)-" > $fname
@@ -112,6 +111,8 @@ function check-timed-events()
 
 function set-user-files()
 {
+    echo "set user files"
+
     # user tmp
     mkdir -p $USER_TMP
     find $USER_TMP* -mtime +1 -type f -exec rm {} \;
@@ -141,6 +142,7 @@ function set-user-files()
 
 function process-logs()
 {
+    echo "checking pacman status"
     d=$(cat /var/log/pacman.log | grep $(date +%Y) | cut -d " " -f 1 | cut -d "[" -f 2 | sort | uniq | tail -n 1)
     pacman -Qm | systemd-cat -p err -t "maintain"
     update-time-log "pacman" $d
