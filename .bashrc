@@ -141,7 +141,7 @@ _check_today() {
         rm -f $XERRORS
         ln -s /dev/null $XERRORS
         yesterday=$(date -d "1 days ago" +%Y-%m-%d)
-        jrnl=$(journalctl -p err -q -b -0 --since "$yesterday 00:00:00" --until "$yesterday 23:59:59" | grep -v "kernel:")
+        jrnl=$(journalctl -p err -q -b -0 --since "$yesterday 00:00:00" --until "$yesterday 23:59:59" | grep -v -E "kernel:|systemd-coredump|^\s")
         if [ ! -z "$jrnl" ]; then
             echo
             echo "journal errors"
