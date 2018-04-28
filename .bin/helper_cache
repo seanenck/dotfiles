@@ -8,7 +8,6 @@ PERM_PUSH_KEY="perm-push"
 ENTER_KEY="enterkeys"
 DMENU_LOCAL_KEY="dmenu-local"
 AUTO_CLIP_KEY="auto-clip"
-ARCH_CHROOT_KEY="archroot"
 DMENU_APPS="vlc termite pavucontrol"
 DMENU_LIST="$DMENU_APPS $PASSWORD_KEY"
 BROWSER_WINDOW="Developer"
@@ -81,24 +80,6 @@ function push-pull-git-fxn()
     update-time "perm-$2"
 }
 
-function update-chroot()
-{
-    epiphyte-archroot update
-}
-
-function arch-chroot-manage()
-{
-    if [ -d $CHROOT ]; then
-        update-chroot
-    fi
-    if [ ! -d $CHROOT ]; then
-        mkdir -p $CHROOT
-        epiphtey-archroot build
-        update-chroot
-    fi
-    update-time "archroot"
-}
-
 function perm-pull()
 {
     push-pull-git-fxn "update" "pull"
@@ -139,7 +120,6 @@ function print-help()
     $PERM_PUSH_KEY (push pass databases)
     $ENTER_KEY (enter keys into a non-paste friendly place)
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
-    $ARCH_CHROOT_KEY (arch-chroot management)
     $RELEASE_KEY (check if anything needs releasing)
     $WSW_CYCLE_KEY (cycle wsw profiles)
 " | grep -v -e '^$' | sort
@@ -200,9 +180,6 @@ if [ ! -z $1 ]; then
             ;;
         $AUTO_CLIP_KEY)
             auto-clip
-            ;;
-        $ARCH_CHROOT_KEY)
-            arch-chroot-manage
             ;;
         $DMENU_LOCAL_KEY)
             dmenu-local ${@:2}
