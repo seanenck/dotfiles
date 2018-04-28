@@ -140,7 +140,18 @@ function pacman-check()
     check-pacman-update "$CHROOT_LOCATION/root"
 }
 
+function daily()
+{
+    local f
+    f=$USER_TMP/maintain.$(date +%Y-%m-%d)
+    if [ ! -e $f ]; then
+        touch $f
+        echo "running daily checks..."
+        process-logs
+        check-timed-events
+    fi
+}
+
 weechat-logs
 set-user-files
-process-logs
-check-timed-events
+daily
