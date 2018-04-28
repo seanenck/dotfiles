@@ -6,6 +6,7 @@ PKG_QUERY=$USER_TMP/package.query
 PACKAGE_SET=${CONF_HOME}/packages
 WEECHAT_PLUGINS=${USER_TMP}/weechat.plugins
 IGNORED_PACKAGES="glib2"
+REQUIRED_EVENTS=4
 PACKAGE_GROUPS="
 i3
 xorg
@@ -145,7 +146,6 @@ function process-logs()
     echo "checking pacman status"
     d=$(cat /var/log/pacman.log | grep $(date +%Y) | cut -d " " -f 1 | cut -d "[" -f 2 | sort | uniq | tail -n 1)
     pacman -Qm | systemd-cat -p err -t "maintain"
-    update-time-log "pacman" $d
 }
 
 weechat-logs

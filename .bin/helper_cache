@@ -172,7 +172,6 @@ function github-releases()
             fi
         done
     done
-    update-time "github-releases"
 }
 
 if [ ! -z $1 ]; then
