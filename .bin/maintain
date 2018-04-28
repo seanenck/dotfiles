@@ -93,7 +93,7 @@ function check-timed-events()
                     fi
                 fi
                 if [ $_warn -eq 1 ]; then
-                    warnings="$warnings ${i}_(${d})"
+                    warnings="$warnings ${i}"
                 fi
             fi
         done
