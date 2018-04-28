@@ -40,6 +40,12 @@ SND_MUTE=$USER_TMP/.mute
 PROFILE_TMP=$USER_TMP/.profile.synced.
 MAIN_STATS=$USER_TMP/stats
 
+# checks
+CHECK_STATUS=$USER_TMP/stat.
+PERM_PUSH=${CHECK_STATUS}pushed
+PERM_PULL=${CHECK_STATUS}pushed
+USER_SYNC=${CHECK_STATUS}synced
+
 function mute()
 {
     pamixer -m
