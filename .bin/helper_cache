@@ -77,17 +77,18 @@ function push-pull-git-fxn()
         echo
     done
     cd $cpwd
-    update-time "perm-$2"
 }
 
 function perm-pull()
 {
     push-pull-git-fxn "update" "pull"
+    touch $PERM_PULL
 }
 
 function perm-push()
 {
     push-pull-git-fxn "push" "push"
+    touch $PERM_PUSH
 }
 
 function passwords()

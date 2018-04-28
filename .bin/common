@@ -19,9 +19,6 @@ SYNCED_PATH=$HOME/.synced/
 HOME_CONF=$HOME/.config/
 HOME_CACHE=$HOME/.cache/
 
-# cache
-LAST_TIMES=${HOME_CACHE}last-timed.log
-
 # perm
 CHROOT_LOCATION=${PERM_LOCATION}chroot
 
@@ -34,7 +31,6 @@ PROFILE_DEF=$USER_TMP/profile.next
 DISPLAY_UN=$USER_TMP/display-unlocked
 DISPLAY_EN=$USER_TMP/display-enabled
 GIT_PARTIAL_TMP=$USER_TMP/git-partial
-LAST_TIMES_TMP=$USER_TMP/.last_time.tmp
 GIT_CHANGES=$USER_TMP/git.changes
 SND_MUTE=$USER_TMP/.mute
 PROFILE_TMP=$USER_TMP/.profile.synced.
@@ -43,26 +39,12 @@ MAIN_STATS=$USER_TMP/stats
 # checks
 CHECK_STATUS=$USER_TMP/stat.
 PERM_PUSH=${CHECK_STATUS}pushed
-PERM_PULL=${CHECK_STATUS}pushed
+PERM_PULL=${CHECK_STATUS}pulled
 USER_SYNC=${CHECK_STATUS}synced
 
 function mute()
 {
     pamixer -m
-}
-
-function update-time()
-{
-    local d
-    d=$(date +%Y-%m-%d)
-    update-time-log "$1" $d
-}
-
-function update-time-log()
-{
-    cat $LAST_TIMES | grep -v "$1," > $LAST_TIMES_TMP
-    cat $LAST_TIMES_TMP > $LAST_TIMES
-    echo "$1,$2" >> $LAST_TIMES
 }
 
 function enter-window-vals()

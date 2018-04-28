@@ -6,7 +6,6 @@ PKG_QUERY=$USER_TMP/package.query
 PACKAGE_SET=${CONF_HOME}/packages
 WEECHAT_PLUGINS=${USER_TMP}/weechat.plugins
 IGNORED_PACKAGES="glib2"
-REQUIRED_EVENTS=3
 PACKAGE_GROUPS="
 i3
 xorg
@@ -60,54 +59,23 @@ function weechat-logs()
     fi
 }
 
+function last-done()
+{
+    local moddate
+    if [ ! -e $1 ]; then
+        echo "missing: $1"
+    else
+        moddate=$(stat $1 | grep "^Modify" | cut -d " " -f 2)
+        outdated $moddate $1
+    fi
+}
+
 function check-timed-events()
 {
     echo "checking timed events"
-    all=""
-    today=$(date +%Y-%m-%d)
-    all="$today"
-    for d in $(seq 1 7); do
-        past=$(date +%Y-%m-%d -d "-$d days")
-        all=$all"|$past"
+    for f in $(echo "$USER_SYNC $PERM_PUSH $PERM_PULL"); do
+        last-done $f | systemd-cat -p err -t "maintain"
     done
-    year=$(date +%Y)
-    months="($year-"$(date +%m)"|"$year-$(date -d "last month" +%m)")"
-    all="($all)"
-    if [ ! -e "$LAST_TIMES" ]; then
-        touch $LAST_TIMES
-    else
-        warnings=""
-        cnt=0
-        for item in $(cat $LAST_TIMES); do
-            cnt=$((cnt+1))
-            i=$(echo $item | cut -d "," -f 1)
-            d=$(echo $item | cut -d "," -f 2)
-            echo $d | grep -q -E "$all"
-            if [ $? -ne 0 ]; then
-                _warn=1
-                if [[ $i == "$PKGBUILD_IND"* ]]; then
-                    if [[ $i == *"-git" ]]; then
-                        echo $d | grep -q -E "$months"
-                        if [ $? -eq 0 ]; then
-                            _warn=0
-                        fi
-                    fi
-                fi
-                if [ $_warn -eq 1 ]; then
-                    warnings="$warnings ${i}"
-                fi
-            fi
-        done
-        if [ $cnt -ne $REQUIRED_EVENTS ]; then
-            warnings=$warnings" wrong_number_of_events"
-        fi
-        if [ ! -z "$warnings" ]; then
-            for w in $(echo $warnings); do
-                changed=$(echo $w |  sed "s/_/ /g")
-                echo -e "$changed" | systemd-cat -p err -t maintain
-            done
-        fi
-    fi
 }
 
 function set-user-files()
@@ -147,16 +115,22 @@ function process-logs()
     pacman-check | systemd-cat -p err -t "maintain"
 }
 
+function outdated()
+{
+    local d
+    d=$(date -d "$1" +%s)
+    weekago=$(date -d "1 week ago" +%s)
+    if [ $d -lt $weekago ]; then
+        echo "outdated? $2"
+    fi
+}
+
 function check-pacman-update()
 {
     local d weekago f
     f=$1/var/log/pacman.log
     d=$(cat $1/var/log/pacman.log | grep $(date +%Y) | cut -d " " -f 1 | cut -d "[" -f 2 | sort | uniq | tail -n 1)
-    d=$(date -d "$d" +%s)
-    weekago=$(date -d "1 week ago" +%s)
-    if [ $d -lt $weekago ]; then
-        echo "system update? $f"
-    fi
+    outdated "$d" "$f"
 }
 
 function pacman-check()
