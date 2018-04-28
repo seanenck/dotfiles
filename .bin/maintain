@@ -146,6 +146,11 @@ function process-logs()
     echo "checking pacman status"
     d=$(cat /var/log/pacman.log | grep $(date +%Y) | cut -d " " -f 1 | cut -d "[" -f 2 | sort | uniq | tail -n 1)
     pacman -Qm | systemd-cat -p err -t "maintain"
+    d=$(date -d "$d" +%s)
+    weekago=$(date -d "1 week ago" +%s)
+    if [ $d -lt $weekago ]; then
+        echo "system update?" | systemd-cat -p err -t "maintain"
+    fi
 }
 
 weechat-logs
