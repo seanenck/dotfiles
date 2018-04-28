@@ -163,7 +163,7 @@ function pacman-check()
 {
     pacman -Qm
     check-pacman-update ""
-    check-pacman-update "$CHROOT/root"
+    check-pacman-update "$CHROOT_LOCATION/root"
 }
 
 weechat-logs
