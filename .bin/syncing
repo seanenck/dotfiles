@@ -55,10 +55,10 @@ function sync-now()
             cd $current
             echo "daily backup"
             backup
+            update-time "user-sync"
         else
             echo "ssh agent unavailable"
         fi
-        update-time "user-sync"
     fi
 }
 
