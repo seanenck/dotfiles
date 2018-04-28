@@ -147,15 +147,23 @@ function process-logs()
     pacman-check | systemd-cat -p err -t "maintain"
 }
 
-function pacman-check()
+function check-pacman-update()
 {
-    pacman -Qm
-    d=$(cat /var/log/pacman.log | grep $(date +%Y) | cut -d " " -f 1 | cut -d "[" -f 2 | sort | uniq | tail -n 1)
+    local d weekago f
+    f=$1/var/log/pacman.log
+    d=$(cat $1/var/log/pacman.log | grep $(date +%Y) | cut -d " " -f 1 | cut -d "[" -f 2 | sort | uniq | tail -n 1)
     d=$(date -d "$d" +%s)
     weekago=$(date -d "1 week ago" +%s)
     if [ $d -lt $weekago ]; then
-        echo "system update?"
+        echo "system update? $f"
     fi
+}
+
+function pacman-check()
+{
+    pacman -Qm
+    check-pacman-update ""
+    check-pacman-update "$CHROOT/root"
 }
 
 weechat-logs
