@@ -42,6 +42,10 @@ PERM_PUSH=${CHECK_STATUS}pushed
 PERM_PULL=${CHECK_STATUS}pulled
 USER_SYNC=${CHECK_STATUS}synced
 
+# sbh
+SBH_LOCK=$USER_TMP/.sbhlock
+SBH_STORE=${HOME_CACHE}sbh/
+
 function mute()
 {
     pamixer -m

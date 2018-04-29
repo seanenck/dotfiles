@@ -7,8 +7,9 @@ alias tree='tree -J | python -c "import sys, json; print(json.dumps(json.loads(s
 alias vimtext="touch /home/enck/.tmp/textmode && vim"
 alias vi="vim"
 sbh() {
+    source $HOME/.bin/common
     local _search _cached
-    _cached=$HOME/.cache/sbh/
+    _cached=$SBH_STORE
     if [ -d $_cached ]; then
         _search=""
         if [ ! -z "$1" ]; then

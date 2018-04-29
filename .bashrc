@@ -64,9 +64,10 @@ fi
 
 function _history-tree()
 {
+    source $HOME/.bin/common
     local last chr path lck
-    lck=$USER_TMP/.sbhlock
-    path="$HOME/.cache/sbh/"
+    lck=$SBH_LOCK
+    path="$SBH_STORE"
     if [ ! -d "$path" ]; then
         mkdir -p $path
     fi
