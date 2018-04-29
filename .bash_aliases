@@ -34,10 +34,11 @@ proxy() {
 }
 
 git() {
+    source $HOME/.bin/common
     /usr/bin/git "$@" || return
     echo "$@" | grep -E -q "(push|commit|reset|checkout|branch|stash|status)"
     if [ $? -eq 0 ]; then
-        rm -f /home/enck/.tmp/git.changes
+        rm -f $GIT_CHANGES
     fi
 }
 
