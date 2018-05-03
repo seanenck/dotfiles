@@ -106,3 +106,8 @@ function get-perm-objs()
 {
     get-git-folders "${PERM_LOCATION} -maxdepth 2"
 }
+
+function update-stat()
+{
+    touch $1.$(date +%Y-%m-%d)
+}

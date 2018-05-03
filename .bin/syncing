@@ -55,7 +55,7 @@ function sync-now()
             cd $current
             echo "daily backup"
             backup
-            touch $USER_SYNC
+            update-stat $USER_SYNC
         else
             echo "ssh agent unavailable"
         fi

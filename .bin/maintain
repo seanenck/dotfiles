@@ -61,12 +61,19 @@ function weechat-logs()
 
 function last-done()
 {
-    local moddate
-    if [ ! -e $1 ]; then
+    local found d f
+    found=0
+    for s in $(seq 0 6); do
+        d=$(date -d "$s days ago" +%Y-%m-%d)
+        f=$1.$d
+        if [ -e $f ]; then
+            touch $f
+            found=1
+            break
+        fi
+    done
+    if [ $found -eq 0 ]; then
         echo "missing: $1"
-    else
-        moddate=$(stat $1 | grep "^Modify" | cut -d " " -f 2)
-        outdated $moddate $1
     fi
 }
 
