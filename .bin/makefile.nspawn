@@ -97,6 +97,7 @@ refresh: running
 	$(call containeretc,locale.gen,644)
 	$(call containeretc,locale.conf,644)
 	rm -f $(CONTAINER_PATH)$(CACHE_START)
+	@echo "DISPLAY=:0" > $(CONTAINER_ETC)environment
 	@echo "#!/bin/sh" > $(CONTAINER_PROFILE)
 	@echo "if [ ! -e '$(CACHE_START)' ]; then " >> $(CONTAINER_PROFILE)
 	@echo "    echo ''" >> $(CONTAINER_PROFILE)
