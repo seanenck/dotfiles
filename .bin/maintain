@@ -128,7 +128,7 @@ function outdated()
     d=$(date -d "$1" +%s)
     weekago=$(date -d "1 week ago" +%s)
     if [ $d -lt $weekago ]; then
-        echo "outdated? $2"
+        echo "outdated? $2 ($1)"
     fi
 }
 
@@ -136,7 +136,7 @@ function check-pacman-update()
 {
     local d weekago f
     f=$1/var/log/pacman.log
-    d=$(cat $1/var/log/pacman.log | grep $(date +%Y) | cut -d " " -f 1 | cut -d "[" -f 2 | sort | uniq | tail -n 1)
+    d=$(cat $f | grep $(date +%Y) | cut -d " " -f 1 | cut -d "[" -f 2 | sort | uniq | tail -n 1)
     outdated "$d" "$f"
 }
 
