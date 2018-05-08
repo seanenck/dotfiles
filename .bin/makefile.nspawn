@@ -17,7 +17,7 @@ CONTAINER_ROOT=$(CONTAINER_PATH)root/
 CONTAINER_ETC=$(CONTAINER_PATH)etc/
 CONTAINER_PROFILE=$(CONTAINER_ETC)profile.d/startup.sh
 
-EXTRAS=python git vim termite-terminfo bash-completion go gtk2 noto-fonts
+EXTRAS=python git vim termite-terminfo bash-completion go gtk2 noto-fonts go-tools dep
 PACKAGES=base base-devel python $(EXTRAS)
 IGNORES=--ignore linux --ignore nano --ignore linux-firmware
 
@@ -98,6 +98,7 @@ refresh: running
 	$(call containeretc,locale.conf,644)
 	rm -f $(CONTAINER_PATH)$(CACHE_START)
 	@echo "DISPLAY=:0" > $(CONTAINER_ETC)environment
+	@echo "GOPATH=/home/enck/go" > $(CONTAINER_ETC)environment
 	@echo "#!/bin/sh" > $(CONTAINER_PROFILE)
 	@echo "if [ ! -e '$(CACHE_START)' ]; then " >> $(CONTAINER_PROFILE)
 	@echo "    echo ''" >> $(CONTAINER_PROFILE)
