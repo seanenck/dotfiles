@@ -138,9 +138,6 @@ _check_today() {
     today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
     if [ ! -e $today_check ]; then
         touch $today_check
-        XERRORS=$HOME/.xsession-errors
-        rm -f $XERRORS
-        ln -s /dev/null $XERRORS
         yesterday=$(date -d "1 days ago" +%Y-%m-%d)
         jrnl=$(journalctl -p err -q -b -0 --since "$yesterday 00:00:00" | grep -v -E "kernel:|systemd-coredump|^\s" | cut -d " " -f 6- | sort -u)
         if [ ! -z "$jrnl" ]; then
