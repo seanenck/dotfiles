@@ -59,7 +59,8 @@ ssh() {
 }
 
 machinectl() {
-    local did=0
+    local did result
+    did=0
     if [ ! -z "$1" ]; then
         case "$1" in
             "$USER")
@@ -73,9 +74,10 @@ machinectl() {
                         echo "machine $2 does not exist"
                     else
                         machinectl status $2 &> /dev/null
-                        if [ $? -ne 0 ]; then
+                        result=$?
+                        machinectl start $2
+                        if [ $result -ne 0 ]; then
                             echo "starting $2"
-                            machinectl start $2
                             sleep 1
                         fi
                         machinectl $USER ${@:2}
