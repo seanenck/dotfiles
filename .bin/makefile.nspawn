@@ -20,6 +20,7 @@ CONTAINER_PROFILE=$(CONTAINER_ETC)profile.d/startup.sh
 EXTRAS=python git vim termite-terminfo bash-completion go gtk2 noto-fonts go-tools dep
 PACKAGES=base base-devel python $(EXTRAS)
 IGNORES=--ignore linux --ignore nano --ignore linux-firmware
+PACMAN_INPUTS="n\nn\n\n\nY"
 
 PACMAN=pacman.conf
 MAKEPKG=makepkg.conf
@@ -62,7 +63,7 @@ instance: root
 	test ! -d $(CONTAINER_PATH)
 	test ! -e $(CONTAINER_CONF)
 	mkdir -p $(CONTAINER_PATH)
-	pacstrap -i -c -d $(CONTAINER_PATH) $(PACKAGES) $(IGNORES)
+	printf $(PACMAN_INPUTS) | pacstrap -i -c -d $(CONTAINER_PATH) $(PACKAGES) $(IGNORES)
 	cat /$(USER_HOME)/.config/home/nspawn.template > $(CONTAINER_CONF)
 	install -Dm644 /$(ETC_PACMAN) $(CONTAINER_PATH)$(ETC_PACMAN)
 
