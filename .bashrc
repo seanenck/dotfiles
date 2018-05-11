@@ -137,16 +137,21 @@ _check_today() {
     local today_check jrnl yesterday
     today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
     if [ ! -e $today_check ]; then
-        touch $today_check
         yesterday=$(date -d "1 days ago" +%Y-%m-%d)
         jrnl=$(journalctl -p err -q -b -0 --since "$yesterday 00:00:00" | grep -v -E "kernel:|systemd-coredump|^\s" | cut -d " " -f 6- | sort -u)
         if [ ! -z "$jrnl" ]; then
+            echo "1" > $today_check
             echo
             echo "journal errors"
             echo "=============="
             echo -e "${RED_TEXT}"
             echo -e "$jrnl" | sed "s/^/    /g"
             echo -e "${NORM_TEXT}"
+        fi
+        touch $today_check
+    else
+        if [[ $(cat $today_check) != "" ]]; then
+            echo -e "${RED_TEXT}errors previously reported${NORM_TEXT}"
         fi
     fi
     _setup > /dev/null
