@@ -142,7 +142,9 @@ _check_today() {
         yesterday=$(date -d "1 days ago" +%Y-%m-%d)
         jrnl=$(journalctl -p err -q -b -0 --since "$yesterday 00:00:00" | grep -v -E "kernel:|systemd-coredump|^\s" | cut -d " " -f 6- | sort -u)
         if [ ! -z "$jrnl" ]; then
-            echo "$jrnl" | sed "s/^/$today: /g" >> $journal
+            echo "$today:" >> $journal
+            echo "$jrnl" >> $journal
+            echo "" >> $journal
         fi
         touch $today_check
     fi
