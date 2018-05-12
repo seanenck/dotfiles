@@ -134,20 +134,27 @@ _setup() {
 }
 
 _check_today() {
-    local today_check jrnl yesterday
-    today_check=$USER_TMP/last.checked.$(date +%Y-%m-%d)
+    local today_check jrnl yesterday journal today
+    today=$(date +%Y-%m-%d)
+    today_check=$USER_TMP/last.checked.$today
+    journal=$USER_TMP/journal.log
     if [ ! -e $today_check ]; then
         yesterday=$(date -d "1 days ago" +%Y-%m-%d)
         jrnl=$(journalctl -p err -q -b -0 --since "$yesterday 00:00:00" | grep -v -E "kernel:|systemd-coredump|^\s" | cut -d " " -f 6- | sort -u)
         if [ ! -z "$jrnl" ]; then
+            echo "$jrnl" | sed "s/^/$today: /g" >> $journal
+        fi
+        touch $today_check
+    fi
+    if [ -e $journal ]; then
+        if [ -s $journal ]; then
             echo
             echo "journal errors"
             echo "=============="
             echo -e "${RED_TEXT}"
-            echo -e "$jrnl" | sed "s/^/    /g"
+            cat $journal | sed "s/^/    /g"
             echo -e "${NORM_TEXT}"
         fi
-        touch $today_check
     fi
     _setup > /dev/null
 }
