@@ -133,7 +133,6 @@ _setup() {
     xhost +local:
 }
 
-USER_JOURNAL=$USER_TMP/journal.log
 clear-journal() {
     rm -f $USER_JOURNAL
 }

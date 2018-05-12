@@ -35,6 +35,7 @@ GIT_CHANGES=$USER_TMP/git.changes
 SND_MUTE=$USER_TMP/.mute
 PROFILE_TMP=$USER_TMP/.profile.synced.
 MAIN_STATS=$USER_TMP/stats
+USER_JOURNAL=$USER_TMP/journal.log
 
 # checks
 CHECK_STATUS=$USER_TMP/stat.
