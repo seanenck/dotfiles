@@ -133,11 +133,16 @@ _setup() {
     xhost +local:
 }
 
+USER_JOURNAL=$USER_TMP/journal.log
+clear-journal() {
+    rm -f $USER_JOURNAL
+}
+
 _check_today() {
     local today_check jrnl yesterday journal today
     today=$(date +%Y-%m-%d)
     today_check=$USER_TMP/last.checked.$today
-    journal=$USER_TMP/journal.log
+    journal=$USER_JOURNAL
     if [ ! -e $today_check ]; then
         yesterday=$(date -d "1 days ago" +%Y-%m-%d)
         jrnl=$(journalctl -p err -q -b -0 --since "$yesterday 00:00:00" | grep -v -E "kernel:|systemd-coredump|^\s" | cut -d " " -f 6- | sort -u)
