@@ -50,6 +50,9 @@ function weechat-logs()
             for p in $(echo "buffer_autoset autosort"); do
                 tmpfile=$USER_TMP/$p.py
                 curl -s https://www.weechat.org/files/scripts/$p.py > $tmpfile
+                if [ ! -s "$tmpfile" ]; then
+                    continue
+                fi
                 diff -u $MY_HOME/.weechat/python/$p.py $tmpfile > /dev/null
                 if [ $? -ne 0 ]; then
                     echo "$p weechat plugin updated ($tmpfile)" | systemd-cat -p err -t maintain
