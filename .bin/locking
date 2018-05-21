@@ -85,6 +85,7 @@ function suspend-now()
                 write-log "sleeping..."
                 _slept=0
                 SLEEP_COUNT=0
+                chvt 1
                 systemctl suspend
                 break
             fi
@@ -98,6 +99,7 @@ function suspend-now()
         if [ $_slept eq 0 ]; then
             wsw --reload
         fi
+        chvt 2
         write-log "done sleeping"
     fi
 }
