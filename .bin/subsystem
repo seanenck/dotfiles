@@ -212,7 +212,14 @@ function get-help()
 # Workspace commands
 function workspace-subsystem()
 {
-    case $1 in
+    local has_main cmd
+    has_main=$(get-all-displays | grep "^$MAIN_DISPLAY$")
+    cmd=$1
+    if [ -z "$has_main" ]; then
+        echo "MISSING MAIN DISPLAY: $MAIN_DISPLAY"
+        cmd=""
+    fi
+    case $cmd in
         $AUTO_WORKSPACE)
             auto-workplace "$2"
             ;;
