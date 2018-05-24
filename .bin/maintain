@@ -157,6 +157,7 @@ function daily()
     if [ ! -e $f ]; then
         touch $f
         echo "running daily checks..."
+        rm -f $HOME/.xsession-errors
         process-logs
         check-timed-events
     fi
