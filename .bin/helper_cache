@@ -8,18 +8,12 @@ PERM_PUSH_KEY="perm-push"
 ENTER_KEY="enterkeys"
 DMENU_LOCAL_KEY="dmenu-local"
 AUTO_CLIP_KEY="auto-clip"
-WEECHAT_KEY="irc"
 DMENU_APPS="vlc termite pavucontrol"
-DMENU_LIST="$DMENU_APPS $PASSWORD_KEY $WEECHAT_KEY"
+DMENU_LIST="$DMENU_APPS $PASSWORD_KEY"
 BROWSER_WINDOW="Developer"
 WSW_CYCLE_KEY="wsw-cycle"
 CACHE_PATH=${HOME_CACHE}helper_cache/
 PASS_FILE=${SYNCED_PATH}passwords
-
-function irc-client()
-{
-    termite -e weechat
-}
 
 function cycle-wsw()
 {
@@ -128,7 +122,6 @@ function print-help()
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
     $RELEASE_KEY (check if anything needs releasing)
     $WSW_CYCLE_KEY (cycle wsw profiles)
-    $WEECHAT_KEY (weechat irc client)
 " | grep -v -e '^$' | sort
 }
 
@@ -190,9 +183,6 @@ if [ ! -z $1 ]; then
             ;;
         $DMENU_LOCAL_KEY)
             dmenu-local ${@:2}
-            ;;
-        $WEECHAT_KEY)
-            irc-client
             ;;
         *)
             NEED_HELP=1
