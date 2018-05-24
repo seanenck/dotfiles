@@ -87,6 +87,7 @@ refresh: running
 	install -Dm644 $(USER_GIT) $(CONTAINER_ROOT)$(GIT)
 	install -Dm644 $(USER_GIT) $(CONTAINER_HOME)$(GIT)
 	install -Dm755 -d $(CONTAINER_HOME).cache/naaman
+	install -Dm755 -d $(CONTAINER_HOME)go/src
 	install -Dm644 /$(USER_HOME)$(ALIASES) $(CONTAINER_HOME)$(ALIASES)
 	install -Dm644 /$(USER_HOME)$(COMMON) $(CONTAINER_HOME)$(COMMON)
 	install -Dm644 /$(ETC_MAKEPKG) $(CONTAINER_PATH)$(ETC_MAKEPKG)
