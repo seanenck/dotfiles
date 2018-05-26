@@ -133,10 +133,6 @@ _setup() {
     xhost +local:
 }
 
-clear-journal() {
-    rm -f $USER_JOURNAL
-}
-
 _check_today() {
     local today_check jrnl yesterday journal today yest since filename
     today=$(date +%Y-%m-%d)

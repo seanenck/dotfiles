@@ -25,6 +25,11 @@ sbh() {
     fi
 }
 
+clear-journal() {
+    source $HOME/.bin/common
+    rm -f $USER_JOURNAL
+}
+
 proxy() {
     if [ -z "$1" ]; then
         echo "host required"
