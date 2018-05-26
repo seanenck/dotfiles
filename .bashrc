@@ -138,19 +138,24 @@ clear-journal() {
 }
 
 _check_today() {
-    local today_check jrnl yesterday journal today
+    local today_check jrnl yesterday journal today yest since
     today=$(date +%Y-%m-%d)
     today_check=$USER_TMP/last.checked.$today
     journal=$USER_JOURNAL
     if [ ! -e $today_check ]; then
         yesterday=$(date -d "1 days ago" +%Y-%m-%d)
+        yest=$USER_TMP/last.checked.$yesterday
+        since="$yesterday 00:00:00"
+        if [ -e $yest ]; then
+            since=$(cat $yest)
+        fi
         jrnl=$(journalctl -p err -q -b -0 --since "$yesterday 00:00:00" | grep -v -E "kernel:|systemd-coredump|^\s" | cut -d " " -f 6- | sort -u)
         if [ ! -z "$jrnl" ]; then
             echo "$today:" >> $journal
             echo "$jrnl" >> $journal
             echo "" >> $journal
         fi
-        touch $today_check
+        date +"%Y-%m-%d %H:%M:%S" > $today_check
     fi
     if [ -e $journal ]; then
         if [ -s $journal ]; then
