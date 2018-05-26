@@ -54,7 +54,7 @@ machinectl-nspawn() {
         if [ -z "$2" ]; then
             echo "target required"
         else
-            sudo make $1 -f $HOME/.bin/makefile.nspawn TARGET=$2 ${@:3}
+            sudo make $1 -f $HOME/.bin/makefile.nspawn TARGET=$2
         fi
     fi
 }
