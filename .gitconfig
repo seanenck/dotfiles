@@ -1,0 +1,13 @@
+[core]
+    editor = vim
+    autocrlf = input
+[push]
+    default = simple
+[url "git@github.com:enckse/"]
+    insteadOf = enckse:
+[url "ssh://aur@aur.archlinux.org/"]
+    insteadOf = aur:
+[commit]
+    gpgsign = true
+[include]
+    path = ~/.synced/configs/gitconfig.priv
