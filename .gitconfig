@@ -1,6 +1,8 @@
 [core]
     editor = vim
     autocrlf = input
+[grep]
+    lineNumber=true
 [push]
     default = simple
 [user]
