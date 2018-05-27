@@ -3,6 +3,10 @@
     autocrlf = input
 [push]
     default = simple
+[user]
+    name = Sean Enck
+    email = enckse@gmail.com
+    signingKey = A7D812B7A501CEBB2AA30289F08D2E576641A175
 [url "git@github.com:enckse/"]
     insteadOf = enckse:
 [url "ssh://aur@aur.archlinux.org/"]
