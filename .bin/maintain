@@ -152,12 +152,16 @@ function pacman-check()
 
 function daily()
 {
-    local f
+    local f xsess
     f=$USER_TMP/maintain.$(date +%Y-%m-%d)
     if [ ! -e $f ]; then
         touch $f
         echo "running daily checks..."
-        rm -f $HOME/.xsession-errors
+        xsess=$HOME/.xsession-errors
+        if [ -e $xsess ]; then
+            cat $xsess >> $USER_TMP/xsession.$(date +%Y-%m-%d)
+            rm -f $xsess
+        fi
         process-logs
         check-timed-events
     fi
