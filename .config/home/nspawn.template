@@ -1,9 +1,7 @@
 [Files]
-Bind=/opt/shared:/root/workspace
 Bind=/opt/shared:/home/enck/go/src/
 Bind=/opt/shared:/home/enck/workspace
 Bind=/opt/shared
-Bind=/opt/perm/network:/home/enck/network
 Bind=/var/cache/pacman
 BindReadOnly=/root/.gnupg
 BindReadOnly=/home/enck/.gnupg
