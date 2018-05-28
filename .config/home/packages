@@ -10,8 +10,6 @@ bootctl-update
 btrfs-progs
 bzip2
 ccid-git
-cifs-utils
-compton
 coreutils
 cryptsetup
 device-mapper
