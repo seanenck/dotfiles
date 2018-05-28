@@ -8,8 +8,7 @@ PERM_PUSH_KEY="perm-push"
 ENTER_KEY="enterkeys"
 DMENU_LOCAL_KEY="dmenu-local"
 AUTO_CLIP_KEY="auto-clip"
-DMENU_APPS="vlc termite pavucontrol"
-DMENU_LIST="$DMENU_APPS $PASSWORD_KEY"
+DMENU_APPS="vlc termite pavucontrol $PASSWORD_KEY"
 BROWSER_WINDOW="Developer"
 WSW_CYCLE_KEY="wsw-cycle"
 CACHE_PATH=${HOME_CACHE}helper_cache/
@@ -28,7 +27,7 @@ function cycle-wsw()
 
 function dmenu-local()
 {
-    $HOME/.bin/dmenu-wrapper --browser "/usr/bin/firefox" --list "$DMENU_LIST" --temp "$USER_TMP" --urls "${SYNCED_CONF}urls.csv" "$@"
+    $HOME/.bin/dmenu-wrapper --browser "/usr/bin/firefox" --list "$DMENU_APPS" --temp "$USER_TMP" --urls "${SYNCED_CONF}urls.csv" "$@"
 }
 
 function auto-clip()
