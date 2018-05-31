@@ -38,6 +38,11 @@ if [ -x /usr/bin/dircolors ]; then
     alias ls='ls --color=auto'
 fi
 
+if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+  exec startx $HOME/.xinitrc
+  return
+fi
+
 . ~/.bash_aliases
 
 # enable programmable completion features (you don't need to enable
