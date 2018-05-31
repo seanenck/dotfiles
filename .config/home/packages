@@ -74,6 +74,9 @@ pciutils
 pcmciautils
 pcsclite-git
 perl
+perl-authen-sasl
+perl-mime-tools
+perl-net-smtp-ssl
 pkg-config
 pkgseed
 procps-ng
