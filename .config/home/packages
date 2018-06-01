@@ -77,7 +77,7 @@ perl
 perl-authen-sasl
 perl-mime-tools
 perl-net-smtp-ssl
-pkg-config
+pkgconf
 pkgseed
 procps-ng
 psmisc
