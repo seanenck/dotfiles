@@ -17,7 +17,7 @@ CONTAINER_ROOT=$(CONTAINER_PATH)root/
 CONTAINER_ETC=$(CONTAINER_PATH)etc/
 CONTAINER_PROFILE=$(CONTAINER_ETC)profile.d/startup.sh
 
-EXTRAS=python git vim termite-terminfo bash-completion go-pie gtk2 noto-fonts go-tools dep
+EXTRAS=python git vim termite-terminfo bash-completion go gtk2 noto-fonts go-tools dep
 PACKAGES=base base-devel python $(EXTRAS)
 IGNORES=--ignore linux --ignore nano --ignore linux-firmware
 PACMAN_INPUTS="n\nn\n\n\nY"
