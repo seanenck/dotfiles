@@ -1,46 +1,46 @@
-TARGET=
-USER=$(shell whoami)
+TARGET            :=
 ifeq ($(TARGET),)
     $(error TARGET is required)
 endif
 
-USER_NAME=enck
-USER_HOME=home/$(USER_NAME)/
+USER_NAME         := enck
+USER_HOME         := home/$(USER_NAME)/
+VAR_LIB           := /var/lib/machines/
+ETC_NSPAWN        := /etc/systemd/nspawn/
 
-VAR_LIB=/var/lib/machines/
-ETC_NSPAWN=/etc/systemd/nspawn/
+# container dirs/filepaths
+CONTAINER_PATH    := $(VAR_LIB)$(TARGET)/
+CONTAINER_HOME    := $(CONTAINER_PATH)$(USER_HOME)
+CONTAINER_CONF    := $(ETC_NSPAWN)$(TARGET).nspawn
+CONTAINER_ROOT    := $(CONTAINER_PATH)root/
+CONTAINER_ETC     := $(CONTAINER_PATH)etc/
+CONTAINER_PROFILE := $(CONTAINER_ETC)profile.d/startup.sh
 
-CONTAINER_PATH=$(VAR_LIB)$(TARGET)/
-CONTAINER_HOME=$(CONTAINER_PATH)$(USER_HOME)
-CONTAINER_CONF=$(ETC_NSPAWN)$(TARGET).nspawn
-CONTAINER_ROOT=$(CONTAINER_PATH)root/
-CONTAINER_ETC=$(CONTAINER_PATH)etc/
-CONTAINER_PROFILE=$(CONTAINER_ETC)profile.d/startup.sh
+# package settings
+EXTRAS            := python git vim termite-terminfo bash-completion go-pie gtk2 noto-fonts go-tools dep
+PACKAGES          := base base-devel
+IGNORES           := --ignore linux --ignore nano --ignore linux-firmware
+PACMAN_INPUTS     :="n\nn\n\n\nY"
 
-EXTRAS=python git vim termite-terminfo bash-completion go-pie gtk2 noto-fonts go-tools dep
-PACKAGES=base base-devel python $(EXTRAS)
-IGNORES=--ignore linux --ignore nano --ignore linux-firmware
-PACMAN_INPUTS="n\nn\n\n\nY"
-
-PACMAN=pacman.conf
-MAKEPKG=makepkg.conf
-ETC_PACMAN=etc/$(PACMAN)
-ETC_MAKEPKG=etc/$(MAKEPKG)
-CONFIG_DIR=.config/
-GIT=.gitconfig
-VIM=.vim/
-VIMPLUGIN=$(CONTAINER_HOME)$(VIM)
-SWAP=swap
-UNDO=undo
-CONFIG=$(CONTAINER_HOME)$(CONFIG_DIR)
-VIMRC_FILE=.vimrc
-VIMRC=/$(USER_HOME)$(VIMRC_FILE)
-USER_GIT=/$(USER_HOME)$(GIT)
-PLUGINS=$(shell find /$(USER_HOME)$(VIM) -type f)
-VIM_CONTAINER=$(CONTAINER_ROOT)$(VIM)
-CACHE_START=/var/cache/.start
-ALIASES=.bash_aliases
-COMMON=.bin/common
+PACMAN            := pacman.conf
+MAKEPKG           := makepkg.conf
+ETC_PACMAN        := etc/$(PACMAN)
+ETC_MAKEPKG       := etc/$(MAKEPKG)
+CONFIG_DIR        := .config/
+GIT               := .gitconfig
+VIM               := .vim/
+VIMPLUGIN         := $(CONTAINER_HOME)$(VIM)
+SWAP              := swap
+UNDO              := undo
+CONFIG            := $(CONTAINER_HOME)$(CONFIG_DIR)
+VIMRC_FILE        := .vimrc
+VIMRC             := /$(USER_HOME)$(VIMRC_FILE)
+USER_GIT          := /$(USER_HOME)$(GIT)
+PLUGINS           := $(shell find /$(USER_HOME)$(VIM) -type f)
+VIM_CONTAINER     := $(CONTAINER_ROOT)$(VIM)
+CACHE_START       := /var/cache/.start
+ALIASES           := .bash_aliases
+COMMON            := .bin/common
 
 .PHONY:
 
@@ -50,7 +50,7 @@ empty:
 	$(error no command given)
 
 root:
-ifneq ($(USER), root)
+ifneq ($(shell whoami), root)
 	$(error must be run as root)
 endif
 
