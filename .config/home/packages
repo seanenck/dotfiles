@@ -71,7 +71,6 @@ pass
 patch
 pavucontrol
 pciutils
-pcmciautils
 pcsclite-git
 perl
 perl-authen-sasl
@@ -101,7 +100,6 @@ ttf-baekmuk
 ttf-freefont
 ttf-liberation
 udiskie
-unzip
 usbutils
 util-linux
 vim
