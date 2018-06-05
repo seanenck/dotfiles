@@ -61,4 +61,6 @@ refresh: running
 	$(call containeretc,sudoers,440)
 	$(call containeretc,locale.gen,644)
 	$(call containeretc,locale.conf,644)
+	mkdir -p $(CONTAINER_HOME/go
+	mkdir -p $(CONTAINER_HOME/.bin
 	chown -R $(USER_NAME):$(USER_NAME) $(CONTAINER_HOME)
