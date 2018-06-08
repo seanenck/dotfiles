@@ -78,7 +78,7 @@ machinectl() {
                     if [ $? -ne 0 ]; then
                         echo "machine $2 does not exist"
                     else
-                        machinectl status $2 &> /dev/null
+                        machinectl | grep -q "^$2 "
                         result=$?
                         machinectl start $2
                         if [ $result -ne 0 ]; then
