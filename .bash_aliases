@@ -83,7 +83,7 @@ machinectl() {
                         machinectl start $2
                         if [ $result -ne 0 ]; then
                             echo "starting $2"
-                            sleep 1
+                            sleep 2
                         fi
                         machinectl $USER ${@:2}
                         did=1
