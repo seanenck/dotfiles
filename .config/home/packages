@@ -57,6 +57,7 @@ make
 man-db
 man-pages
 mdadm
+mkinitcpio
 netctl
 noto-fonts
 noto-fonts-cjk
