@@ -59,4 +59,42 @@ as root, finalize some dirs
 ```
 rm -f /etc/vimrc
 ln -s /home/enck/.vimrc /etc/vimrc
+ln -s /home/enck/.bin/locking /usr/local/bin/
+mkdir -p /etc/systemd/nspawn
+```
+
+services
+```
+timedatectl set-ntp true
+systemctl enable iptables
+```
+
+package setup
+```
+# make sure pkgseed is installed
+sudo pacman -Syyu
+sudo pacman -Sc
+sudo pacman-key --refresh-key
+mkinitcpio -p linux
+# make sure gpg keys for epiphyte are in place
+# make sure configs are in place
+# install from ~/.config/home/packages (groups first)
+```
+
+as enck, cleaning up/prep
+```
+systemctl --user enable sync.timer
+systemctl --user enable maintain.timer
+cd ~
+mkdir -p $HOME/.cache/helper_cache
+touch $HOME/.cache/helper_cache/tmp
+cd ~/.bin
+./helper_cache rebuild
+```
+
+as root, networking and reboot
+```
+systemctl enable systemd-networkd
+systemctl enable wsw
+reboot
 ```
