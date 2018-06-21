@@ -25,6 +25,23 @@ sbh() {
     fi
 }
 
+_turnoff() {
+    for m in $(machinectl | tail -n +2 | head -n -2 | cut -d " " -f 1); do
+        echo "stopping $m"
+        machinectl poweroff $m
+    done
+}
+
+reboot() {
+    _turnoff
+    /usr/bin/reboot
+}
+
+poweroff() {
+    _turnoff
+    /usr/bin/poweroff
+}
+
 clear-journal() {
     source $HOME/.bin/common
     rm -f $USER_JOURNAL
