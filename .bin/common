@@ -9,7 +9,7 @@ BASE_SERVER="blip"
 GIT_PARTIAL_PATTERN="weechat|random_seed"
 
 # standalone files/dirs
-PERM_LOCATION=/opt/perm/
+PERM_LOCATION=$HOME/store/
 PERM_PERSONAL=personal
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 

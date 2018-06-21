@@ -1,7 +1,6 @@
 [Files]
-Bind=/opt/shared:/home/enck/go/src/
-Bind=/opt/shared:/home/enck/workspace
-Bind=/opt/shared
+Bind=/home/enck/workspace:/home/enck/go/src/
+Bind=/home/enck/workspace
 
 BindReadOnly=/root/.gnupg
 BindReadOnly=/home/enck/.gnupg
