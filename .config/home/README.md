@@ -5,9 +5,18 @@ Specific installs to my dev environment
 
 # dirs
 
+as enck
+```
+cd ~
+mkdir -p ~/.cache
+mkdir -p ~/.config/epiphyte
+```
+
 as root
 ```
 mkdir -p /mnt/usb
+mkdir -p ~/.vim/swap
+mkdir -p ~/.vim/undo
 ```
 
 copy data to usb from past environment as bootstrap (synced, etc, profiles, store/perm)
@@ -28,3 +37,26 @@ cd ~
 umount /mnt/usb
 ```
 
+as enck setup home dir
+```
+cd ~
+git init
+git remote add origin https://github.com/enckse/home.git
+git fetch
+rm .bash*
+git pull origin master
+ln -s ~/.synced/gnupg .gnupg
+# confirm gnupg dir settings
+# edit ~/.git/config and change url to read/write
+mkdir Downloads
+mkdir .tmp
+mkdir -p .vim/swap
+mkdir -p .vim/undo
+ln -s $HOME/.synced/configs/epiphyte.conf $HOME/.config/epiphyte/env
+```
+
+as root, finalize some dirs
+```
+rm -f /etc/vimrc
+ln -s /home/enck/.vimrc /etc/vimrc
+```
