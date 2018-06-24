@@ -26,20 +26,24 @@ sbh() {
 }
 
 _turnoff() {
+    local virt prefix
+    virt=$(systemd-detect-virt)
+    if [[ "$virt" == "systemd-nspawn" ]]; then
+        prefix="sudo"
+    fi
     for m in $(machinectl | tail -n +2 | head -n -2 | cut -d " " -f 1); do
         echo "stopping $m"
         machinectl poweroff $m
     done
+    $prefix /usr/bin/$1
 }
 
 reboot() {
-    _turnoff
-    /usr/bin/reboot
+    _turnoff "reboot"
 }
 
 poweroff() {
-    _turnoff
-    /usr/bin/poweroff
+    _turnoff "poweroff"
 }
 
 clear-journal() {
