@@ -65,6 +65,11 @@ if [ -e "$EPIPHYTE_CONF" ]; then
 fi
 if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
+    for i in $(echo "$PASS_ALIASES"); do
+        alias pass-$i="PASSWORD_STORE_DIR=${PERM_LOCATION}pass-$i pass"
+        eval '_pc_'$i'() { PASSWORD_STORE_DIR='${PERM_LOCATION}'pass-'$i'/ _pass; }'
+        complete -o filenames -o nospace -F _pc_$i pass-$i
+    done
 fi
 
 function _history-tree()
