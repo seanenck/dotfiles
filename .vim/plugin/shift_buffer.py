@@ -4,12 +4,12 @@ import vim
 
 
 def is_space_chr(strvalue, idx):
-    """Is a space."""
+    """Check if it is a space."""
     return len(strvalue) > idx and strvalue[idx] == ' '
 
-    
+
 def is_tab_chr(strvalue, idx):
-    """Is a tab."""
+    """Check if it is a tab."""
     return len(strvalue) > idx and strvalue[idx] == '\t'
 
 
@@ -25,13 +25,13 @@ def get_layouts(strvalue):
     is_two = is_space_one and is_space_two
     return (is_two, is_four, is_tab)
 
-    
+
 def main():
     """Main entry point."""
     try:
         from os.path import splitext
         use_tab = False
-        file_name,extension = splitext(vim.current.window.buffer.name)
+        file_name, extension = splitext(vim.current.window.buffer.name)
         if extension in ['.go'] or file_name in ['Makefile']:
             use_tab = True
         pos = vim.current.window.cursor
