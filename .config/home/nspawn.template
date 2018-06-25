@@ -1,6 +1,7 @@
 [Files]
 Bind=/home/enck/workspace:/home/enck/go/src/
 Bind=/home/enck/workspace
+Bind=/home/enck/store
 
 BindReadOnly=/root/.gnupg
 BindReadOnly=/home/enck/.gnupg
