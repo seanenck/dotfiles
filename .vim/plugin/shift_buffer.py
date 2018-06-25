@@ -29,9 +29,10 @@ def get_layouts(strvalue):
 def main():
     """Main entry point."""
     try:
-        from os.path import splitext
+        from os.path import splitext, basename
         use_tab = False
-        file_name, extension = splitext(vim.current.window.buffer.name)
+        base_name = basename(vim.current.window.buffer.name)
+        file_name, extension = splitext(base_name)
         if extension in ['.go'] or file_name in ['Makefile']:
             use_tab = True
         pos = vim.current.window.cursor
