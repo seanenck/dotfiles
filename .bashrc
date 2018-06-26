@@ -65,7 +65,7 @@ if [ -e "$EPIPHYTE_CONF" ]; then
 fi
 if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
-    source /usr/share/bash-completion/pass
+    source /usr/share/bash-completion/completions/pass
     for i in $(echo "$PASS_ALIASES"); do
         alias pass-$i="PASSWORD_STORE_DIR=${PERM_LOCATION}pass-$i pass"
         eval '_pc_'$i'() { PASSWORD_STORE_DIR='${PERM_LOCATION}'pass-'$i'/ _pass; }'
