@@ -71,6 +71,9 @@ if [ -e "$PRIV_CONF" ]; then
         eval '_pc_'$i'() { PASSWORD_STORE_DIR='${PERM_LOCATION}'pass-'$i'/ _pass; }'
         complete -o filenames -o nospace -F _pc_$i pass-$i
     done
+    for i in $(echo "$TOTP_ALIASES"); do
+        alias totp-$i="_totp $TOTP_PASS $i"
+    done
 fi
 
 function _history-tree()

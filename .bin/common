@@ -112,3 +112,10 @@ function update-stat()
 {
     touch $1.$(date +%Y-%m-%d)
 }
+
+function _totp()
+{
+    local val
+    val=$(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass show totp/$2 2>&1)
+    oathtool --base32 --totp "$val"
+}
