@@ -6,6 +6,7 @@ alias pacman="sudo pacman"
 alias tree='tree -J | python -c "import sys, json; print(json.dumps(json.loads(sys.stdin.read()), indent=1, sort_keys=True, separators=(\",\", \":\")))"'
 alias vimtext="touch /home/enck/.tmp/textmode && vim"
 alias vi="vim"
+alias diff="diff -u"
 sbh() {
     source $HOME/.bin/common
     local _search _cached
