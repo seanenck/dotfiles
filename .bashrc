@@ -74,6 +74,9 @@ if [ -e "$PRIV_CONF" ]; then
     for i in $(echo "$TOTP_ALIASES"); do
         alias totp-$i="_totp $TOTP_PASS $i"
     done
+    for i in $(echo "$LUKS_REMOTE"); do
+        alias luks-$i="enterkeys luks-$i"
+    done
 fi
 
 function _history-tree()
