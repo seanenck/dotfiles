@@ -119,3 +119,8 @@ function _totp()
     val=$(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass show totp/$2 2>&1)
     oathtool --base32 --totp "$val"
 }
+
+function _enter-linode-config()
+{
+    enter-window-vals "termite" "configfile (hd0,1)/grub/grub.cfg" "Return"
+}
