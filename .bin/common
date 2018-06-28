@@ -21,6 +21,7 @@ HOME_CACHE=$HOME/.cache/
 
 # perm
 CHROOT_LOCATION=${PERM_LOCATION}chroot
+PASS_TOTP_OFFSET="totp/"
 
 # syncing
 SYNCED_CONF=${SYNCED_PATH}/configs/
@@ -116,8 +117,16 @@ function update-stat()
 function _totp()
 {
     local val
-    val=$(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass show totp/$2 2>&1)
+    val=$(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass show "$PASS_TOTP_OFFSET"$2 2>&1)
     oathtool --base32 --totp "$val"
+}
+
+function _totpall()
+{
+    for p in $(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass ls $PASS_TOTP_OFFSET | cut -d " " -f 2 | tail -n +2 ); do
+        echo "$p"
+        echo "    "$(_totp $1 $p)
+    done 
 }
 
 function _enter-linode-config()
