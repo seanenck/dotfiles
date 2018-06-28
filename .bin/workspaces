@@ -8,6 +8,7 @@ from subprocess import check_output
 
 
 def _get_socket():
+    """Get the i3 socket."""
     import socket
     import struct
     socket_path = subprocess.check_output(['i3', '--get-socketpath'],
@@ -20,10 +21,6 @@ def _get_socket():
     sending = "i3-ipc".encode('utf-8') + s + pay
     sock.sendall(sending)
     return sock
-
-
-def workspacing():
-    """Handles workspace naming."""
 
 
 def main():
