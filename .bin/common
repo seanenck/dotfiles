@@ -85,7 +85,7 @@ function test-ssh()
     fi
 }
 
-function get-git-folders()
+function _get-git-folders()
 {
     local res f
     res=""
@@ -100,12 +100,12 @@ function get-git-folders()
 
 function get-workspace-objs()
 {
-    get-git-folders "$HOME/workspace/"
+    _get-git-folders "$HOME/workspace/"
 }
 
 function get-perm-objs()
 {
-    get-git-folders "${PERM_LOCATION} -maxdepth 2"
+    _get-git-folders "${PERM_LOCATION} -maxdepth 2"
 }
 
 function update-stat()
