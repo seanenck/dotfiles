@@ -35,26 +35,6 @@ function auto-clip()
     auto-clipboard $PERM_LOCATION
 }
 
-function enter-keys()
-{
-    if [ -z $1 ]; then
-        echo "must provide input"
-    else
-        using=$1
-        ran=0
-        if [ -e $PRIV_CONF ]; then
-            result=$($PRIV_CONF $using)
-            if [ ! -z "$result" ]; then
-                ran=1
-                enter-window-vals $BROWSER_WINDOW $result
-            fi
-        fi
-        if [ $ran -eq 0 ]; then
-            enter-window-vals $BROWSER_WINDOW $@
-        fi
-    fi
-}
-
 function push-pull-git-fxn()
 {
     is_avail=$(test-ssh $BASE_SERVER)
