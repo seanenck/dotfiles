@@ -121,19 +121,34 @@ function _totp()
     oathtool --base32 --totp "$val"
 }
 
+function _formattotp()
+{
+    echo "$@" | tr ' ' '\n' | sed "s/->/\n    /g;s/;/\n/g"
+}
+
 function _totpall()
 {
-    local data
+    local data first d
     data=()
+    first=1
     while [ 1 -eq 1 ]; do
         count=0
+        d=$(date +%Y-%m-%dT%H:%M:%S)
+        if [ $first -eq 1 ]; then
+            clear
+            echo "$d"
+        fi
         for p in $(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass ls $PASS_TOTP_OFFSET | cut -d " " -f 2 | tail -n +2 ); do
-            data[$count]="$p->$(_totp $1 $p)"
+            data[$count]="$p->$(_totp $1 $p);"
+            if [ $first -eq 1 ]; then
+                _formattotp "${data[$count]}"
+            fi
             count=$((count+1))
         done 
+        first=0
         clear
-        date +%Y-%m-%dT%H:%M:%S
-        echo "${data[*]}" | tr ' ' '\n' | sed "s/->/\n    /g"
+        echo "$d"
+        _formattotp "${data[*]}"
     done
 }
 
