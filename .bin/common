@@ -98,12 +98,12 @@ function _get-git-folders()
     echo $res
 }
 
-function get-workspace-objs()
+function _get-workspace-objs()
 {
     _get-git-folders "$HOME/workspace/"
 }
 
-function get-perm-objs()
+function _get-perm-objs()
 {
     _get-git-folders "${PERM_LOCATION} -maxdepth 2"
 }
@@ -125,7 +125,7 @@ function _enter-linode-config()
     enter-window-vals "termite" "configfile (hd0,1)/grub/grub.cfg" "Return"
 }
 
-function enter-keys()
+function enterkeys()
 {
     if [ -z $1 ]; then
         echo "must provide input"
@@ -149,7 +149,7 @@ function _push-pull-git-fxn()
 {
     is_avail=$(test-ssh $BASE_SERVER)
     cpwd=$PWD
-    for f_name in $(get-perm-objs); do
+    for f_name in $(_get-perm-objs); do
         f=$(basename $f_name)
         cd $f_name
         echo "$1: $f"

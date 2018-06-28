@@ -68,7 +68,7 @@ function get-all-changes()
 function git-changing()
 {
     cwd=$PWD
-    d_paths="/etc $HOME $SYNCED_PATH "$(get-perm-objs)" "$(get-workspace-objs)
+    d_paths="/etc $HOME $SYNCED_PATH "$(_get-perm-objs)" "$(_get-workspace-objs)
     for d in $(echo "$d_paths"); do
         if [ ! -d "$d/.git" ]; then
             continue
