@@ -9,12 +9,6 @@ function _simple_autocomplete()
     fi
 }
 
-_helper_cache()
-{
-    _simple_autocomplete "helper_cache"
-}
-complete -F _helper_cache helper_cache
-
 _locking()
 {
     _simple_autocomplete "locking"

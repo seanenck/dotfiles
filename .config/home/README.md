@@ -85,11 +85,6 @@ as enck, cleaning up/prep
 ```
 systemctl --user enable sync.timer
 systemctl --user enable maintain.timer
-cd ~
-mkdir -p $HOME/.cache/helper_cache
-touch $HOME/.cache/helper_cache/tmp
-cd ~/.bin
-./helper_cache rebuild
 ```
 
 as root, networking and reboot
