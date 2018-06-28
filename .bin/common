@@ -123,10 +123,18 @@ function _totp()
 
 function _totpall()
 {
-    for p in $(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass ls $PASS_TOTP_OFFSET | cut -d " " -f 2 | tail -n +2 ); do
-        echo "$p"
-        echo "    "$(_totp $1 $p)
-    done 
+    local data
+    data=()
+    while [ 1 -eq 1 ]; do
+        count=0
+        for p in $(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass ls $PASS_TOTP_OFFSET | cut -d " " -f 2 | tail -n +2 ); do
+            data[$count]="$p->$(_totp $1 $p)"
+            count=$((count+1))
+        done 
+        clear
+        date +%Y-%m-%dT%H:%M:%S
+        echo "${data[*]}" | tr ' ' '\n' | sed "s/->/\n    /g"
+    done
 }
 
 function _enter-linode-config()
