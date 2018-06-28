@@ -2,7 +2,6 @@
 source $HOME/.bin/common
 PASSWORD_KEY="passwords"
 REBUILD_KEY="rebuild"
-RELEASE_KEY="github-releases"
 DMENU_LOCAL_KEY="dmenu-local"
 AUTO_CLIP_KEY="auto-clip"
 DMENU_APPS="vlc termite pavucontrol $PASSWORD_KEY"
@@ -60,7 +59,6 @@ function print-help()
     $PASSWORD_KEY (password management)
     $REBUILD_KEY (rebuild cache)
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
-    $RELEASE_KEY (check if anything needs releasing)
     $WSW_CYCLE_KEY (cycle wsw profiles)
 " | grep -v -e '^$' | sort
 }
@@ -99,9 +97,6 @@ if [ ! -z $1 ]; then
     case $1 in
         $WSW_CYCLE_KEY)
             cycle-wsw
-            ;;
-        $RELEASE_KEY)
-            github-releases
             ;;
         $PASSWORD_KEY)
             passwords
