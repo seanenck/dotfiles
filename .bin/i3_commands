@@ -2,17 +2,6 @@
 source $HOME/.bin/common
 CUSTOM_STATS=$HOME/.cache/i3stats
 
-# Get i3 workspaces (only name/number by default, more grep outputs available via first param)
-function get-i3-workspaces()
-{
-    JSON_PATTERN="name"
-    if [ ! -z "$1" ]; then
-        JSON_PATTERN="$JSON_PATTERN|$1"
-    fi
-    WORKSPACE_INFO=$(i3-msg -t 'get_workspaces' | sed -e 's/{"num/\n{"num/g' | sed -e 's/,"/\n/g' | grep -E "$JSON_PATTERN" | cut -d\" -f 3)
-    echo "$WORKSPACE_INFO"
-}
-
 function tray_reload()
 {
     _kill_tray
