@@ -127,6 +127,7 @@ function _enter-linode-config()
 
 function enterkeys()
 {
+    BROWSER_WINDOW="Developer"
     if [ -z $1 ]; then
         echo "must provide input"
     else

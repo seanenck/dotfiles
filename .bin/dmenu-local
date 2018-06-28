@@ -1,0 +1,10 @@
+#!/bin/bash
+
+function _dmenu-local()
+{
+    source $HOME/.bin/common
+    DMENU_APPS="vlc termite pavucontrol passwords"
+    $HOME/.bin/dmenu-wrapper --browser "/usr/bin/firefox" --list "$DMENU_APPS" --temp "$USER_TMP" --urls "${SYNCED_CONF}urls.csv" "$@"
+}
+
+_dmenu-local $@

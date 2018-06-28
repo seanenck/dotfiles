@@ -1,0 +1,13 @@
+#!/bin/bash
+function _cycle-wsw()
+{
+    local active new
+    new=3
+    active=$(wsw --command active 2>&1 | cut -d " " -f 2 | cut -d "=" -f 2 | cut -d ")" -f 1)
+    if [ $active -eq 3 ]; then
+        new=2
+    fi
+    wsw --command change --profile $new
+}
+
+_cycle-wsw $@
