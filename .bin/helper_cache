@@ -5,7 +5,6 @@ REBUILD_KEY="rebuild"
 RELEASE_KEY="github-releases"
 PERM_UPDATE_KEY="perm-pull"
 PERM_PUSH_KEY="perm-push"
-ENTER_KEY="enterkeys"
 DMENU_LOCAL_KEY="dmenu-local"
 AUTO_CLIP_KEY="auto-clip"
 DMENU_APPS="vlc termite pavucontrol $PASSWORD_KEY"
@@ -117,7 +116,6 @@ function print-help()
     $REBUILD_KEY (rebuild cache)
     $PERM_UPDATE_KEY (update pass databases)
     $PERM_PUSH_KEY (push pass databases)
-    $ENTER_KEY (enter keys into a non-paste friendly place)
     $AUTO_CLIP_KEY (copy an entry to the clipboard from private aliases)
     $RELEASE_KEY (check if anything needs releasing)
     $WSW_CYCLE_KEY (cycle wsw profiles)
@@ -167,9 +165,6 @@ if [ ! -z $1 ]; then
             ;;
         $REBUILD_KEY)
             rebuild-now
-            ;;
-        $ENTER_KEY)
-            enter-keys ${@:2}
             ;;
         $PERM_UPDATE_KEY)
             perm-pull
