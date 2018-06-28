@@ -144,3 +144,36 @@ function enter-keys()
         fi
     fi
 }
+
+function push-pull-git-fxn()
+{
+    is_avail=$(test-ssh $BASE_SERVER)
+    cpwd=$PWD
+    for f_name in $(get-perm-objs); do
+        f=$(basename $f_name)
+        cd $f_name
+        echo "$1: $f"
+        if [[ $f == *${PERM_PERSONAL}* ]]; then
+            if [ $is_avail -ne $IS_CONNECTED ]; then
+                echo "**not available**"
+                echo
+                continue
+            fi
+        fi
+        git $2
+        echo
+    done
+    cd $cpwd
+}
+
+function perm-pull()
+{
+    push-pull-git-fxn "update" "pull"
+    update-stat $PERM_PULL
+}
+
+function perm-push()
+{
+    push-pull-git-fxn "push" "push"
+    update-stat $PERM_PUSH
+}
