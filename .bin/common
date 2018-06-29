@@ -128,12 +128,16 @@ function _formattotp()
 
 function _totpall()
 {
-    local data first d
+    local data first d left
     data=()
     first=1
     while [ 1 -eq 1 ]; do
         count=0
+        left=0
+        left=$(date +%S)
+        left=$((60-left))
         d=$(date +%Y-%m-%dT%H:%M:%S)
+        d="$d, expires: $left (seconds)"
         if [ $first -eq 1 ]; then
             clear
             echo "$d"
