@@ -15,12 +15,12 @@ function write-log()
 
 function get-i3lock()
 {
-    PID=$(pidof i3lock | cut -d " " -f 1)
-    echo "$PID"
+    pidof i3lock | cut -d " " -f 1
 }
 
 function lock-now()
 {
+    local PID IRC
     if [ ! -z "$1" ] && [[ "$1" == $FORCE_KEYWORD ]]; then
         write-log "force-lock:$1"
         rm -f $DISPLAY_UN
@@ -60,6 +60,7 @@ function lock-now()
 
 function suspend-now()
 {
+    local pass_keyword SLEEP_COUNT PID
     pass_keyword=""
     if [ -z "$1" ]; then
         write-log "forcing"
@@ -105,6 +106,7 @@ function auto-lock-suspend()
 
 function toggle-locking()
 {
+    local no_action
     no_action=0
     if [ -e $DISPLAY_UN ]; then
         rm $DISPLAY_UN
