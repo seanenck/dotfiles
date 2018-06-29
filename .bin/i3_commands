@@ -1,6 +1,5 @@
 #!/bin/bash
 source $HOME/.bin/common
-CUSTOM_STATS=$HOME/.cache/i3stats
 
 function tray_reload()
 {
@@ -27,7 +26,7 @@ function _kill_tray()
 
 function stats()
 {
-    local last
+    local last d
     last=""
     i3status | while :
     do
