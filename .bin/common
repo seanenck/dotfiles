@@ -114,13 +114,6 @@ function update-stat()
     touch $1.$(date +%Y-%m-%d)
 }
 
-function _totp()
-{
-    local val
-    val=$(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass show "$PASS_TOTP_OFFSET"$2 2>&1)
-    oathtool --base32 --totp "$val"
-}
-
 function _formattotp()
 {
     echo "$@" | tr ' ' '\n' | sed "s/->/\n    /g;s/;/\n/g"
@@ -128,7 +121,7 @@ function _formattotp()
 
 function _totpall()
 {
-    local data first d left
+    local data first d left val
     data=()
     first=1
     while [ 1 -eq 1 ]; do
@@ -143,7 +136,9 @@ function _totpall()
             echo "$d"
         fi
         for p in $(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass ls $PASS_TOTP_OFFSET | cut -d " " -f 2 | tail -n +2 ); do
-            data[$count]="$p->$(_totp $1 $p);"
+            val=$(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass show "$PASS_TOTP_OFFSET"$p 2>&1)
+            val=$(oathtool --base32 --totp "$val")
+            data[$count]="$p->$val;"
             if [ $first -eq 1 ]; then
                 _formattotp "${data[$count]}"
             fi
