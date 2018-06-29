@@ -55,7 +55,7 @@ function mute()
 
 function enter-window-vals()
 {
-    local word window active
+    local word window active i
     word=$2
     window=0
     while [ $window -eq 0 ]; do
@@ -121,7 +121,7 @@ function _formattotp()
 
 function _totpall()
 {
-    local data first d left val
+    local data first d left val p
     data=()
     first=1
     while [ 1 -eq 1 ]; do
@@ -156,9 +156,14 @@ function _enter-linode-config()
     enter-window-vals "termite" "configfile (hd0,1)/grub/grub.cfg" "Return"
 }
 
+function _enterbrowserkeys()
+{
+    enter-window-vals "Developer" "$@"
+}
+
 function enterkeys()
 {
-    BROWSER_WINDOW="Developer"
+    local using ran result
     if [ -z $1 ]; then
         echo "must provide input"
     else
@@ -168,17 +173,18 @@ function enterkeys()
             result=$($PRIV_CONF $using)
             if [ ! -z "$result" ]; then
                 ran=1
-                enter-window-vals $BROWSER_WINDOW $result
+                _enterbrowserkeys "$result"
             fi
         fi
         if [ $ran -eq 0 ]; then
-            enter-window-vals $BROWSER_WINDOW $@
+            _enterbrowserkeys "$@"
         fi
     fi
 }
 
 function _push-pull-git-fxn()
 {
+    local is_avail cpwd f f_name
     is_avail=$(test-ssh $BASE_SERVER)
     cpwd=$PWD
     for f_name in $(_get-perm-objs); do
@@ -212,7 +218,7 @@ function perm-push()
 
 function _github-commit()
 {
-    local _hash
+    local _hash commit
     _hash=$(git ls-remote --$1 $2 | tail -n 1)
     if [ ! -z "$_hash" ]; then
         commit=$(echo "$_hash" | cut -d " " -f 1 | cut -d "/" -f 1 | sed "s#refs##g")
@@ -222,7 +228,7 @@ function _github-commit()
 
 function github-releases()
 {
-    local last
+    local last u _file r tag head
     last=$(date -d "1 month ago" +%Y-%m-%d)
     for u in $(echo "enckse epiphyte"); do
         _file=$USER_TMP/repos.$u
