@@ -3,7 +3,12 @@
 function _dmenu-local()
 {
     source $HOME/.bin/common
-    $HOME/.bin/dmenu-wrapper --browser "/usr/bin/firefox" --list "vlc pavucontrol passwords" --temp "$USER_TMP" --urls "${SYNCED_CONF}urls.csv" "$@"
+    $HOME/.bin/dmenu-wrapper \
+        --browser "/usr/bin/firefox" \
+        --list "vlc pavucontrol passwords" \
+        --temp "$USER_TMP" \
+        --urls "${SYNCED_CONF}urls.csv" \
+        "$@"
 }
 
 _dmenu-local $@
