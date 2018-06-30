@@ -56,29 +56,17 @@ for i in ['', 'i']
     execute i . "noremap <C-Left> <home>"
 endfor
 
-let tmode = $HOME . "/.tmp/textmode"
-if findfile(tmode, ".") == tmode
-    set formatoptions+=w
-    set formatoptions+=a
-    set formatoptions+=n
-    setlocal spell spelllang=en_us
-    set wrap nolist linebreak
-    set textwidth=80
-    set list
-    call delete(expand(tmode))
+set number
+let extension = expand('%:e')
+if extension == "go"
+    set tabstop=4
+    set noexpandtab
 else
-    set number
-    let extension = expand('%:e')
-    if extension == "go"
-        set tabstop=4
-        set noexpandtab
-    else
-        match OverLength /\%80v.\+/
-        set tabstop=4
-        set expandtab
-    endif
-    set shiftwidth=4
-    set complete-=i
-    set foldmethod=indent
-    set foldlevelstart=99
+    match OverLength /\%80v.\+/
+    set tabstop=4
+    set expandtab
 endif
+set shiftwidth=4
+set complete-=i
+set foldmethod=indent
+set foldlevelstart=99
