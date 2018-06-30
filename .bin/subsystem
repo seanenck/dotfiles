@@ -313,8 +313,7 @@ else
         *)
             echo "Unknown action $1"
             ;;
-esac
-
+    esac
     if [ ! -z $CMD ]; then
         $CMD "$2" "$3"
     fi
