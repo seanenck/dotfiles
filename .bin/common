@@ -158,7 +158,7 @@ function _enter-linode-config()
 
 function _enterbrowserkeys()
 {
-    enter-window-vals "Developer" "$@"
+    enter-window-vals "Developer" "$@" "Return"
 }
 
 function enterkeys()
