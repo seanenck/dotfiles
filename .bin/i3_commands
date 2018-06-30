@@ -41,4 +41,21 @@ function stats()
     done
 }
 
+function auto-clip()
+{
+    source $PRIV_CONF
+    auto-clipboard $PERM_LOCATION
+}
+
+function wsw-cycle()
+{
+    local active new
+    new=3
+    active=$(wsw --command active 2>&1 | cut -d " " -f 2 | cut -d "=" -f 2 | cut -d ")" -f 1)
+    if [ $active -eq 3 ]; then
+        new=2
+    fi
+    wsw --command change --profile $new
+}
+
 $1 $2 

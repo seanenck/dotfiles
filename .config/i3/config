@@ -4,7 +4,7 @@ floating_modifier $mod
 
 bindsym $mod+Return exec termite
 bindsym $mod+Shift+Return exec termite --exec=/bin/sh
-bindsym $mod+S exec auto-clip
+bindsym $mod+S exec i3_commands auto-clip
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -86,7 +86,7 @@ exec --no-startup-id status init
 exec xautolock -time 5 -locker "/usr/local/bin/locking auto" &
 
 # Network 'Settings'
-bindsym XF86Tools exec wsw-cycle
+bindsym XF86Tools exec i3_commands wsw-cycle
 
 # Change workplaces
 bindsym $mod+Shift+m exec subsystem workspaces force 1

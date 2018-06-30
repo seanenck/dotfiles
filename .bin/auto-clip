@@ -1,9 +1,0 @@
-#!/bin/bash
-function _auto-clip()
-{
-    source $HOME/.bin/common
-    source $PRIV_CONF
-    auto-clipboard $PERM_LOCATION
-}
-
-_auto-clip $@
