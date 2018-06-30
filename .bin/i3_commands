@@ -58,4 +58,4 @@ function wsw-cycle()
     wsw --command change --profile $new
 }
 
-$1 $2 
+$1
