@@ -10,6 +10,7 @@ function update-git()
 
 function _brightness()
 {
+    local b
     b=$(xrandr --current --verbose | grep "Brightness" | \
         cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | \
         tail -n 1 | awk '{printf "%3.0f", $1}' | sed "s/^[ \t]*//g")
@@ -18,6 +19,7 @@ function _brightness()
 
 function _battery()
 {
+    local charging charge val b _path _bat val
     charging=$(cat /sys/class/power_supply/AC/online)
     charge="-"
     if [ $charging -eq 1 ]; then
@@ -37,6 +39,7 @@ function _battery()
 
 function _sound()
 {
+    local icon level
     icon="\xf0\x9f\x94\x8a"
     if [[ $(pamixer --get-mute) == 'true' ]]; then
         icon='\xf0\x9f\x94\x87'
@@ -67,6 +70,7 @@ function get-all-changes()
 
 function git-changing()
 {
+    local cwd d_paths d local_res first
     cwd=$PWD
     d_paths="/etc $HOME $SYNCED_PATH "$(_get-perm-objs)" "$(_get-workspace-objs)
     for d in $(echo "$d_paths"); do
@@ -93,6 +97,7 @@ function git-changing()
 
 function _applets()
 {
+    local pids
     pids=$(pidof wsw-applet)
     if [ -z "$pids" ]; then
         wsw-applet &
@@ -118,6 +123,7 @@ function _partials()
 
 function stats()
 {
+    local _last_git _git_text _last_cnt _partial bright muting bat disp
     _last_git=0
     _git_text=""
     _last_cnt=0
