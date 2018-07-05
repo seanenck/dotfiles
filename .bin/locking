@@ -104,6 +104,7 @@ function suspend-now()
         current_hash=$(hash-monitors)
         if [ -e $LAST_MON ]; then
             if [[ "$current_hash" != "$(cat $LAST_MON)" ]]; then
+                write-log "changing tty/monitor hash"
                 subsystem workspaces force 1
             fi
         fi
