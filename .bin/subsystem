@@ -27,8 +27,8 @@ DOCKED_ID=2
 DISP_HOLDER="DISPLAY_VALUE"
 WORK_COMMON_LEFT="--output $DISP_HOLDER --auto --left-of $MAIN_DISPLAY --rotate right"
 WORK_COMMON_RIGHT="--output $DISP_HOLDER --auto --right-of $MAIN_DISPLAY"
-HOME_COMMON_LEFT="--output $DISP_HOLDER --auto --left-of $MAIN_DISPLAY --rotate left"
-HOME_COMMON_LLEFT="--output $DISP_HOLDER --auto --left-of $HOME_ONE"
+HOME_COMMON_RIGHT="--output $DISP_HOLDER --auto --right-of $MAIN_DISPLAY --rotate right"
+HOME_COMMON_LEFT="--output $DISP_HOLDER --auto --left-of $MAIN_DISPLAY"
 HOME_WORKPLACE_ID=3
 TRACK_LIGHTING=$USER_TMP/.backlight
 AUTO_WORKSPACE="auto"
@@ -166,8 +166,8 @@ function set-workplace()
                     replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
                     ;;
                 $HOME_WORKPLACE_ID)
-                    replace-and-execute "$HOME_COMMON_LEFT" "$HOME_ONE"
-                    replace-and-execute "$HOME_COMMON_LLEFT" "$HOME_TWO"
+                    replace-and-execute "$HOME_COMMON_RIGHT" "$HOME_ONE"
+                    replace-and-execute "$HOME_COMMON_LEFT" "$HOME_TWO"
                     ;;
             esac
             ;;
