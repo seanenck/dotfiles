@@ -4,7 +4,7 @@ alias nano="vim"
 alias notes="vim notes"
 alias pacman="sudo pacman"
 alias tree='tree -J | python -c "import sys, json; print(json.dumps(json.loads(sys.stdin.read()), indent=1, sort_keys=True, separators=(\",\", \":\")))"'
-alias vi="vim"
+alias vi="echo 'nonono -> vim'"
 alias diff="diff -u"
 sbh() {
     source $HOME/.bin/common
