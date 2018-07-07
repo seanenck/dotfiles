@@ -53,12 +53,13 @@ function get-all-displays()
 # Toggle backlighting up/down to a specified level
 function toggle-backlighting()
 {
+    local _action _current _displays setting
     if [ ! -e $TRACK_LIGHTING ]; then
         echo "$MID_BRIGHT" > $TRACK_LIGHTING
     fi
 
-    local _action=$1
-    local _current=$(cat $TRACK_LIGHTING)
+    _action=$1
+    _current=$(cat $TRACK_LIGHTING)
     case $1 in
         $BACKLIGHT_ON)
             if [[ "$_current" == "$LOW_BRIGHT" ]]; then
@@ -81,23 +82,23 @@ function toggle-backlighting()
 
     case $_action in
         $FULL_BRIGHT)
-            SETTING=1.0
+            setting=1.0
             ;;
         $LOW_BRIGHT)
-            SETTING=0.3
+            setting=0.3
             ;;
         $MID_BRIGHT)
-            SETTING=0.9
+            setting=0.9
             ;;
         *)
             echo "Unknown command $1"
             ;;
     esac
     
-    if [ ! -z "$SETTING" ]; then
-        DISPLAYS=$(get-displays)
-        for disp in ${DISPLAYS[@]}; do
-            xrandr --output $disp --brightness $SETTING
+    if [ ! -z "$setting" ]; then
+        _displays=$(get-displays)
+        for disp in ${_displays[@]}; do
+            xrandr --output $disp --brightness $setting
         done
     fi
 }
