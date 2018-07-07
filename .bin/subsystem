@@ -126,17 +126,13 @@ function set-workplace()
     fi
     i3_commands tray_reload 
     case $use_setting in
-        $DOCKED_ID | $HOME_WORKPLACE_ID)
-            case $use_setting in
-                $DOCKED_ID)
-                    replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
-                    replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
-                    ;;
-                $HOME_WORKPLACE_ID)
-                    replace-and-execute "$HOME_COMMON_RIGHT" "$DISP_ONE"
-                    replace-and-execute "$HOME_COMMON_LEFT" "$DISP_TWO"
-                    ;;
-            esac
+        $DOCKED_ID)
+            replace-and-execute "$WORK_COMMON_LEFT" "$DISP_ONE"
+            replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
+            ;;
+        $HOME_WORKPLACE_ID)
+            replace-and-execute "$HOME_COMMON_RIGHT" "$DISP_ONE"
+            replace-and-execute "$HOME_COMMON_LEFT" "$DISP_TWO"
             ;;
     esac
     toggle-backlighting $MID_BRIGHT
