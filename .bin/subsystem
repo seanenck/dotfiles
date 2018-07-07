@@ -5,7 +5,6 @@ DISPLAY_TOGGLE="toggle"
 DISPLAY_CHANGE="change"
 WORKSPACES_KEY="workspaces"
 FORCE_WORKSPACE="force"
-ALL_AVAILABLE="$DISPLAY_KEY $WORKSPACES_KEY"
 HELP="help"
 BACKLIGHT_ON="up"
 BACKLIGHT_OFF="down"
@@ -37,8 +36,7 @@ function get-lighting-help()
     $1 $2 $BACKLIGHT_OFF (toggle backlights OFF)
     $1 $3 $LOW_BRIGHT (low brightness)
     $1 $3 $MID_BRIGHT (medium brightness)
-    $1 $3 $FULL_BRIGHT (full brightness)
-    "
+    $1 $3 $FULL_BRIGHT (full brightness)"
 }
 
 # Get displays, first argument can filter out any displays
@@ -154,7 +152,6 @@ function get-workspace-help()
     $1 $2 $DEFAULT_WORKSPACE_ID (force default workspace)
     $1 $2 $DOCKED_ID (force docked workspace)
     $1 $2 $HOME_WORKPLACE_ID (change to home workspace)
-    $1 $3 $4 (select a workspace automatically)
     "
 }
 
@@ -168,17 +165,8 @@ function get-help()
 {
     echo "commands"
     echo "--------"
-    echo
-    for item in $ALL_AVAILABLE; do
-        case $item in
-            $DISPLAY_KEY)
-                get-lighting-help $item $DISPLAY_TOGGLE $DISPLAY_CHANGE
-                ;;
-            $WORKSPACES_KEY)
-                get-workspace-help $item $FORCE_WORKSPACE
-                ;;
-        esac
-    done
+    get-lighting-help "$DISPLAY_KEY" $DISPLAY_TOGGLE $DISPLAY_CHANGE
+    get-workspace-help $WORKSPACES_KEY $FORCE_WORKSPACE
 }
 
 # Workspace commands
