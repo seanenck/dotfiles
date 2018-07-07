@@ -169,11 +169,10 @@ else
         $WORKSPACES_KEY)
             CMD=workspace-subsystem
             ;;
-        *)
-            echo "Unknown action $1"
-            ;;
     esac
-    if [ ! -z $CMD ]; then
+    if [ -z $CMD ]; then
+        echo "unknown action: $1"
+    else
         $CMD "$2"
     fi
 fi
