@@ -46,7 +46,9 @@ function _battery()
         combined=$((combined+v))
     done
     if [ $combined -lt 20 ]; then
-        _nagbar $combined &
+        if [[ "$charge" == "-" ]]; then
+            _nagbar $combined &
+        fi
     fi
     printf '\xf0\x9f\x94\x8b (%3s)%s' $val $charge
 }
