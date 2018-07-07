@@ -13,11 +13,11 @@ DISP_ONE="DP2-2"
 DISP_TWO="DP2-1"
 DEFAULT_WORKSPACE_ID=1
 DOCKED_ID=2
-WORK_COMMON_LEFT="--output $DISP_ONE --auto --left-of $MAIN_DISPLAY --rotate right"
-WORK_COMMON_RIGHT="--output $DISP_TWO --auto --right-of $MAIN_DISPLAY"
-HOME_COMMON_RIGHT="--output $DISP_ONE --auto --right-of $MAIN_DISPLAY --rotate right"
-HOME_COMMON_LEFT="--output $DISP_TWO --auto --left-of $MAIN_DISPLAY"
 HOME_WORKPLACE_ID=3
+WORK_LEFT="--output $DISP_ONE --auto --left-of $MAIN_DISPLAY --rotate right"
+WORK_RIGHT="--output $DISP_TWO --auto --right-of $MAIN_DISPLAY"
+HOME_RIGHT="--output $DISP_ONE --auto --right-of $MAIN_DISPLAY --rotate right"
+HOME_LEFT="--output $DISP_TWO --auto --left-of $MAIN_DISPLAY"
 TRACK_LIGHTING=$USER_TMP/.backlight
 
 function force-display-on()
@@ -108,12 +108,12 @@ function set-workplace()
     i3_commands tray_reload 
     case $use_setting in
         $DOCKED_ID)
-            xrandr $WORK_COMMON_LEFT
-            xrandr $WORK_COMMON_RIGHT
+            xrandr $WORK_LEFT
+            xrandr $WORK_RIGHT
             ;;
         $HOME_WORKPLACE_ID)
-            xrandr $HOME_COMMON_RIGHT
-            xrandr $HOME_COMMON_LEFT
+            xrandr $HOME_RIGHT
+            xrandr $HOME_LEFT
             ;;
     esac
     toggle-backlighting $MID_BRIGHT
