@@ -211,11 +211,6 @@ function _nagbarmsg()
     fi
 }
 
-function nagbar()
-{
-    _nagbarmsg "$@" &
-}
-
 function perm-pull()
 {
     _push-pull-git-fxn "update" "pull"
