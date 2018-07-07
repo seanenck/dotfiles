@@ -5,14 +5,13 @@ DISPLAY_TOGGLE="toggle"
 DISPLAY_CHANGE="change"
 WORKSPACES_KEY="workspaces"
 FORCE_WORKSPACE="force"
-ALL_AVAILBLE="$DISPLAY_KEY $WORKSPACES_KEY $SYS_STATS_KEY"
+ALL_AVAILABLE="$DISPLAY_KEY $WORKSPACES_KEY"
 HELP="help"
 BACKLIGHT_ON="up"
 BACKLIGHT_OFF="down"
 FULL_BRIGHT="full"
 LOW_BRIGHT="low"
 MID_BRIGHT="mid"
-PROFILE_CYCLE="cycle"
 MAIN_DISPLAY="eDP1"
 DISP_ONE="DP2-2"
 DISP_TWO="DP2-1"
@@ -42,7 +41,6 @@ function get-lighting-help()
     $1 $3 $LOW_BRIGHT (low brightness)
     $1 $3 $MID_BRIGHT (medium brightness)
     $1 $3 $FULL_BRIGHT (full brightness)
-    $1 $4 $PROFILE_CYCLE (profile cycling)
     "
 }
 
@@ -174,7 +172,7 @@ function get-help()
     echo "commands"
     echo "--------"
     echo
-    for item in $ALL_AVAILBLE; do
+    for item in $ALL_AVAILABLE; do
         case $item in
             $DISPLAY_KEY)
                 get-lighting-help $item $DISPLAY_TOGGLE $DISPLAY_CHANGE
