@@ -25,15 +25,6 @@ function force-display-on()
     xset -display $MAIN_DISPLAY dpms force on
 }
 
-function get-lighting-help()
-{
-    echo "$BACKLIGHT_ON (toggle backlights ON)
-$BACKLIGHT_OFF (toggle backlights OFF)
-$LOW_BRIGHT (low brightness)
-$MID_BRIGHT (medium brightness)
-$FULL_BRIGHT (full brightness)"
-}
-
 # Get displays, first argument can filter out any displays
 function get-displays()
 {
@@ -131,14 +122,6 @@ function set-workplace()
     fi
 }
 
-# Workspace help
-function get-workspace-help()
-{
-    echo "$DEFAULT_WORKSPACE_ID (force default workspace)
-$DOCKED_ID (force docked workspace)
-$HOME_WORKPLACE_ID (change to home workspace)"
-}
-
 function force-workplace()
 {
     set-workplace $1
@@ -147,11 +130,16 @@ function force-workplace()
 
 function get-help()
 {
-    echo "commands"
-    echo "--------"
-    get-lighting-help | sed "s/^/    $DISPLAY_KEY /g"
     echo
-    get-workspace-help | sed "s/^/    $WORKSPACES_KEY /g"
+    echo "$BACKLIGHT_ON (toggle backlights ON)
+$BACKLIGHT_OFF (toggle backlights OFF)
+$LOW_BRIGHT (low brightness)
+$MID_BRIGHT (medium brightness)
+$FULL_BRIGHT (full brightness)" | sed "s/^/    $DISPLAY_KEY /g"
+    echo
+    echo "$DEFAULT_WORKSPACE_ID (force default workspace)
+$DOCKED_ID (force docked workspace)
+$HOME_WORKPLACE_ID (change to home workspace)" | sed "s/^/    $WORKSPACES_KEY /g"
     echo
 }
 
