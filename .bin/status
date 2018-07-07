@@ -19,7 +19,7 @@ function _brightness()
 
 function _battery()
 {
-    local charging charge val b _path _bat val
+    local charging charge val b _path _bat val nagging
     charging=$(cat /sys/class/power_supply/AC/online)
     charge="-"
     if [ $charging -eq 1 ]; then
@@ -34,6 +34,10 @@ function _battery()
         fi
     done
     val=$(echo "$val" | sed "s/^,//g")
+    combined=0
+    if [ $combined -lt 10 ]; then
+        i3-nagbar -m "low battery"
+    fi
     printf '\xf0\x9f\x94\x8b (%3s)%s' $val $charge
 }
 
