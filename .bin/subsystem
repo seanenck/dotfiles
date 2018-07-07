@@ -1,10 +1,7 @@
 #!/bin/bash
 source $HOME/.bin/common
-DISPLAY_KEY="display"
-DISPLAY_TOGGLE="toggle"
-DISPLAY_CHANGE="change"
+DISPLAY_KEY="backlight"
 WORKSPACES_KEY="workspaces"
-FORCE_WORKSPACE="force"
 HELP="help"
 BACKLIGHT_ON="up"
 BACKLIGHT_OFF="down"
@@ -164,45 +161,23 @@ function workspace-subsystem()
 {
     local has_main cmd
     has_main=$(get-all-displays | grep "^$MAIN_DISPLAY$")
-    cmd=$1
     if [ -z "$has_main" ]; then
         echo "MISSING MAIN DISPLAY: $MAIN_DISPLAY"
         cmd=""
     fi
-    case $cmd in
-        $FORCE_WORKSPACE)
-            force-workplace "$2"
-            ;;
-        *)
-            echo "Unknown workspaces request: $1"
-            exit -1
-            ;;
-    esac
-}
-
-# Display commands
-function display-subsystem()
-{
-    case $1 in
-        $DISPLAY_TOGGLE | $DISPLAY_CHANGE)
-            toggle-backlighting "$2"
-            ;;
-        *)
-            echo "Unknown display command $1"
-            exit -1
-    esac
+    force-workplace "$1"
 }
 
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     echo > /dev/null
 else
-    if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
+    if [ -z "$1" -o -z "$2" ]; then
         get-help
         exit 1
     fi
     case $1 in
         $DISPLAY_KEY)
-            CMD=display-subsystem
+            CMD=toggle-backlighting
             ;;
         $WORKSPACES_KEY)
             CMD=workspace-subsystem
@@ -212,6 +187,6 @@ else
             ;;
     esac
     if [ ! -z $CMD ]; then
-        $CMD "$2" "$3"
+        $CMD "$2"
     fi
 fi

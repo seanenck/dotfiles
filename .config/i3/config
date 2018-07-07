@@ -79,16 +79,16 @@ bar {
         status_command i3_commands stats
 }
 
-exec --no-startup-id subsystem workspaces force 1
+exec --no-startup-id subsystem workspaces 1
 exec --no-startup-id status init
 
 # Handle auto-locking
 exec xautolock -time 5 -locker "/usr/local/bin/locking auto" &
 
 # Change workplaces
-bindsym $mod+Shift+m exec subsystem workspaces force 1
-bindsym $mod+Shift+o exec subsystem workspaces force 2 
-bindsym $mod+Shift+h exec subsystem workspaces force 3
+bindsym $mod+Shift+m exec subsystem workspaces 1
+bindsym $mod+Shift+o exec subsystem workspaces 2 
+bindsym $mod+Shift+h exec subsystem workspaces 3
 
 # Locking handlers
 bindsym $mod+Shift+x exec locking toggle 
@@ -101,5 +101,5 @@ bindsym XF86AudioRaiseVolume exec pamixer -i 10
 bindsym XF86AudioLowerVolume exec pamixer -d 10
 
 # Backlight
-bindsym XF86MonBrightnessUp exec subsystem display toggle up
-bindsym XF86MonBrightnessDown exec subsystem display toggle down
+bindsym XF86MonBrightnessUp exec subsystem backlight up
+bindsym XF86MonBrightnessDown exec subsystem backlight down
