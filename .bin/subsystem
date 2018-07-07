@@ -17,8 +17,6 @@ PROFILE_CYCLE="cycle"
 MAIN_DISPLAY="eDP1"
 DISP_ONE="DP2-2"
 DISP_TWO="DP2-1"
-HOME_ONE="DP2-2"
-HOME_TWO="DP2-1"
 WORKSPACE_START="startup"
 WORKSPACE_RELOAD="reload"
 WORKSPACE_CHANGE="change"
@@ -143,8 +141,8 @@ function set-workplace()
                     replace-and-execute "$WORK_COMMON_RIGHT" "$DISP_TWO"
                     ;;
                 $HOME_WORKPLACE_ID)
-                    replace-and-execute "$HOME_COMMON_RIGHT" "$HOME_ONE"
-                    replace-and-execute "$HOME_COMMON_LEFT" "$HOME_TWO"
+                    replace-and-execute "$HOME_COMMON_RIGHT" "$DISP_ONE"
+                    replace-and-execute "$HOME_COMMON_LEFT" "$DISP_TWO"
                     ;;
             esac
             ;;
