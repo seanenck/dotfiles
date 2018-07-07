@@ -5,7 +5,6 @@ DISPLAY_TOGGLE="toggle"
 DISPLAY_CHANGE="change"
 WORKSPACES_KEY="workspaces"
 FORCE_WORKSPACE="force"
-PROF_KEY="profiles"
 ALL_AVAILBLE="$DISPLAY_KEY $WORKSPACES_KEY $SYS_STATS_KEY"
 HELP="help"
 BACKLIGHT_ON="up"
@@ -178,7 +177,7 @@ function get-help()
     for item in $ALL_AVAILBLE; do
         case $item in
             $DISPLAY_KEY)
-                get-lighting-help $item $DISPLAY_TOGGLE $DISPLAY_CHANGE $PROF_KEY
+                get-lighting-help $item $DISPLAY_TOGGLE $DISPLAY_CHANGE
                 ;;
             $WORKSPACES_KEY)
                 get-workspace-help $item $FORCE_WORKSPACE
@@ -215,48 +214,10 @@ function display-subsystem()
         $DISPLAY_TOGGLE | $DISPLAY_CHANGE)
             toggle-backlighting "$2"
             ;;
-        $PROF_KEY)
-            cycle-profiles "$2"
-            ;;
         *)
             echo "Unknown display command $1"
             exit -1
     esac
-}
-
-function cycle-profiles()
-{
-    if [[ "$1" == "$PROFILE_CYCLE" ]]; then
-        full_backlight="full"
-        mid_backlight="mid"
-        low_backlight="low"
-        use_profile=$full_backlight
-        if [ -e $PROFILE_DEF ]; then
-            use_profile=$(cat $PROFILE_DEF)
-        fi
-        
-        next_back=""
-        case $use_profile in
-            $full_backlight)
-                subsystem display change full
-                next_back=$mid_backlight
-                ;;
-            $low_backlight)
-                toggle-backlighting $LOW_BRIGHT
-                ;;
-            $mid_backlight)
-                toggle-backlighting $MID_BRIGHT
-                next_back=$low_backlight
-                ;;
-        esac
-
-        rm -f $PROFILE_DEF
-        if [ ! -z $next_back ]; then
-            echo $next_back > $PROFILE_DEF
-        fi
-    else 
-        echo "Unknown profile action $1 $2"
-    fi
 }
 
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
