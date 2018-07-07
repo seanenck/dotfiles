@@ -17,13 +17,6 @@ function _brightness()
     printf '\xf0\x9f\x94\x86 %3i' $b    
 }
 
-function _nagbar()
-{
-    if [ -z "$(pidof i3-nagbar)" ]; then
-        i3-nagbar -m "low battery (combined: $1)" -f "Adobe Courier 20" > /dev/null 2>&1
-    fi
-}
-
 function _battery()
 {
     local charging charge val b _path _bat val combined
@@ -47,7 +40,7 @@ function _battery()
     done
     if [ $combined -lt 20 ]; then
         if [[ "$charge" == "-" ]]; then
-            _nagbar $combined &
+            nagbar "low battery"
         fi
     fi
     printf '\xf0\x9f\x94\x8b (%3s)%s' $val $charge

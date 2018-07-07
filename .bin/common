@@ -204,6 +204,13 @@ function _push-pull-git-fxn()
     cd $cpwd
 }
 
+function _nagbarmsg()
+{
+    if [ -z "$(pidof i3-nagbar)" ]; then
+        i3-nagbar -m "$@" -f "Adobe Courier 20" > /dev/null 2>&1
+    fi
+}
+
 function perm-pull()
 {
     _push-pull-git-fxn "update" "pull"
