@@ -31,9 +31,6 @@ HOME_COMMON_RIGHT="--output $DISP_HOLDER --auto --right-of $MAIN_DISPLAY --rotat
 HOME_COMMON_LEFT="--output $DISP_HOLDER --auto --left-of $MAIN_DISPLAY"
 HOME_WORKPLACE_ID=3
 TRACK_LIGHTING=$USER_TMP/.backlight
-AUTO_WORKSPACE="auto"
-XRANDR="xrandr"
-LAST_AUTO="$USER_TMP/last.display"
 
 function force-display-on()
 {
@@ -121,31 +118,6 @@ function replace-and-execute()
     eval $VAL
 }
 
-function auto-workplace()
-{
-    if [[ "$1" != "$XRANDR" ]]; then
-        echo "unknown auto-switch"
-    else
-        local switch_to
-        cnt=$(xrandr | grep " connected" | wc -l)
-        switch_to=$DEFAULT_WORKSPACE_ID
-        if [ -e $LAST_AUTO ]; then
-            rm -f $LAST_AUTO
-        else
-            case $cnt in
-                "2")
-                    switch_to=$HOME_WORKPLACE_ID
-                    ;;
-                "3")
-                    switch_to=$DOCKED_ID
-                    ;;
-            esac
-            touch $LAST_AUTO
-        fi
-        force-workplace $switch_to
-    fi
-}
-
 function set-workplace()
 {
     ALL_DISPLAYS=$(get-all-displays | grep -v "$MAIN_DISPLAY")
@@ -211,7 +183,7 @@ function get-help()
                 get-lighting-help $item $DISPLAY_TOGGLE $DISPLAY_CHANGE $PROF_KEY
                 ;;
             $WORKSPACES_KEY)
-                get-workspace-help $item $FORCE_WORKSPACE $AUTO_WORKSPACE $XRANDR
+                get-workspace-help $item $FORCE_WORKSPACE
                 ;;
         esac
     done
@@ -228,9 +200,6 @@ function workspace-subsystem()
         cmd=""
     fi
     case $cmd in
-        $AUTO_WORKSPACE)
-            auto-workplace "$2"
-            ;;
         $FORCE_WORKSPACE)
             force-workplace "$2"
             ;;

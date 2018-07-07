@@ -89,7 +89,6 @@ exec xautolock -time 5 -locker "/usr/local/bin/locking auto" &
 bindsym $mod+Shift+m exec subsystem workspaces force 1
 bindsym $mod+Shift+o exec subsystem workspaces force 2 
 bindsym $mod+Shift+h exec subsystem workspaces force 3
-bindsym XF86Display exec subsystem workspaces auto xrandr
 
 # Locking handlers
 bindsym $mod+Shift+x exec locking toggle 
