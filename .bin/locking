@@ -60,7 +60,7 @@ function lock-now()
 
 function suspend-now()
 {
-    local pass_keyword SLEEP_COUNT PID
+    local pass_keyword SLEEP_COUNT PID slept
     pass_keyword=""
     if [ -z "$1" ]; then
         write-log "forcing"
@@ -79,11 +79,13 @@ function suspend-now()
         while [ -z $PID ]; do
             PID=$(get-i3lock)
         done
+        slept=0
         sleep 1
         while [ 1 -eq 1 ]; do
             if [ $SLEEP_COUNT -ge $SLEEP_AFTER ]; then
                 write-log "sleeping..."
                 SLEEP_COUNT=0
+                slept=1
                 systemctl suspend
                 break
             fi
@@ -94,7 +96,10 @@ function suspend-now()
                 break
             fi
         done
-        pkill wsw-applet
+        if [ $slept -gt 0 ]; then
+            force-display-on
+            pkill wsw-applet
+        fi
         write-log "done sleeping"
     fi
 }
