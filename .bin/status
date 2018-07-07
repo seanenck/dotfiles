@@ -17,9 +17,16 @@ function _brightness()
     printf '\xf0\x9f\x94\x86 %3i' $b    
 }
 
+function _nagbar()
+{
+    if [ -z "$(pidof i3-nagbar)" ]; then
+        i3-nagbar -m "low battery (combined: $1)" -f "Adobe Courier 20" > /dev/null 2>&1
+    fi
+}
+
 function _battery()
 {
-    local charging charge val b _path _bat val
+    local charging charge val b _path _bat val combined
     charging=$(cat /sys/class/power_supply/AC/online)
     charge="-"
     if [ $charging -eq 1 ]; then
@@ -34,6 +41,13 @@ function _battery()
         fi
     done
     val=$(echo "$val" | sed "s/^,//g")
+    combined=0
+    for v in $(echo $val | sed "s/,/ /g"); do
+        combined=$((combined+v))
+    done
+    if [ $combined -lt 20 ]; then
+        _nagbar $combined &
+    fi
     printf '\xf0\x9f\x94\x8b (%3s)%s' $val $charge
 }
 
