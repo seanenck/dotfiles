@@ -135,11 +135,11 @@ function get-help()
 $BACKLIGHT_OFF (toggle backlights OFF)
 $LOW_BRIGHT (low brightness)
 $MID_BRIGHT (medium brightness)
-$FULL_BRIGHT (full brightness)" | sed "s/^/    $DISPLAY_KEY /g"
+$FULL_BRIGHT (full brightness)" | sed "s/^/$DISPLAY_KEY /g"
     echo
     echo "$DEFAULT_WORKSPACE_ID (force default workspace)
 $DOCKED_ID (force docked workspace)
-$HOME_WORKPLACE_ID (change to home workspace)" | sed "s/^/    $WORKSPACES_KEY /g"
+$HOME_WORKPLACE_ID (change to home workspace)" | sed "s/^/$WORKSPACES_KEY /g"
     echo
 }
 
@@ -159,7 +159,7 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     echo > /dev/null
 else
     if [ -z "$1" -o -z "$2" ]; then
-        get-help
+        get-help | sed "s/^/    /g" | sed "s/^    $//g"
         exit 1
     fi
     case $1 in
