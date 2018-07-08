@@ -9,7 +9,8 @@ def main():
     value = subprocess.check_output(["i3-msg", "-t", "get_tree"])
     j = json.loads(value)
     workspaces = _get_workspaces(j)
-    _rename_workspaces(workspaces)
+    with open(os.devnull, 'w') as devnull:
+        _rename_workspaces(workspaces, devnull)
 
 
 def uncurl(obj):
@@ -41,7 +42,7 @@ def _get_workspaces(j):
     return matched
 
 
-def _rename_workspaces(workspaces):
+def _rename_workspaces(workspaces, devnull):
     """rename a workspace."""
     for k in workspaces:
         vals = workspaces[k]
@@ -50,12 +51,10 @@ def _rename_workspaces(workspaces):
         else:
             named = ",".join([x[0:20].lower().split(" ")[0] for x in vals[1]])
             named = str(k) + ":" + named
-        with open(os.devnull, 'w') as devnull:
-            rename = "rename workspace \"{}\" to \"{}\"".format(vals[0], named)
-            subprocess.call(["i3-msg",
-                             rename],
-                            stdout=devnull,
-                            stderr=subprocess.STDOUT)
+        rename = "rename workspace \"{}\" to \"{}\"".format(vals[0], named)
+        subprocess.call(["i3-msg", rename],
+                        stdout=devnull,
+                        stderr=subprocess.STDOUT)
 
 
 if __name__ == "__main__":
