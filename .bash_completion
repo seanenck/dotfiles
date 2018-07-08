@@ -1,14 +1,4 @@
 #!/bin/bash
-function _simple_autocomplete()
-{
-    local cur opts 
-    if [ $COMP_CWORD -eq 1 ]; then
-        cur=${COMP_WORDS[COMP_CWORD]}
-        opts=$($1 | grep -v "^$" | cut -d " " -f 5)
-        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-    fi
-}
-
 _machinectl-nspawn()
 {
     local cur opts cmd
@@ -28,6 +18,11 @@ complete -F _machinectl-nspawn machinectl-nspawn
 
 _mounting()
 {
-    _simple_autocomplete "mounting"
+    local cur opts 
+    if [ $COMP_CWORD -eq 1 ]; then
+        cur=${COMP_WORDS[COMP_CWORD]}
+        opts=$(mounting | grep -v "^$" | cut -d " " -f 5)
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    fi
 }
 complete -F _mounting mounting
