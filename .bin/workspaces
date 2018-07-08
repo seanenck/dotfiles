@@ -1,33 +1,12 @@
 #!/usr/bin/python
 import subprocess
 import os
-import datetime
-import time
 import json
-from subprocess import check_output
-
-
-def _get_socket():
-    """Get the i3 socket."""
-    import socket
-    import struct
-    socket_path = subprocess.check_output(['i3', '--get-socketpath'],
-                                          close_fds=True,
-                                          universal_newlines=True).strip()
-    sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    sock.connect(socket_path)
-    pay = '["window"]'.encode("utf-8")
-    s = struct.pack('=II', len(pay), 2)
-    sending = "i3-ipc".encode('utf-8') + s + pay
-    sock.sendall(sending)
-    return sock
 
 
 def main():
     """Entry point."""
-    sock = _get_socket()
-    data = sock.recv(1024).decode("utf-8", 'ignore')
-    value = check_output(["i3-msg", "-t", "get_tree"])
+    value = subprocess.check_output(["i3-msg", "-t", "get_tree"])
     j = json.loads(value)
     workspaces = _get_workspaces(j)
     _rename_workspaces(workspaces)
