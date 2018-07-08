@@ -27,7 +27,10 @@ def main():
     """Entry point."""
     sock = _get_socket()
     data = sock.recv(1024).decode("utf-8", 'ignore')
-    on_change()
+    value = check_output(["i3-msg", "-t", "get_tree"])
+    j = json.loads(value)
+    workspaces = _get_workspaces(j)
+    _rename_workspaces(workspaces)
 
 
 def uncurl(obj):
@@ -38,14 +41,6 @@ def uncurl(obj):
             children.append(opened)
         children.append(node)
     return children
-
-
-def on_change():
-    """on interested changes, call this."""
-    value = check_output(["i3-msg", "-t", "get_tree"])
-    j = json.loads(value)
-    workspaces = _get_workspaces(j)
-    _rename_workspaces(workspaces)
 
 
 def _get_workspaces(j):
