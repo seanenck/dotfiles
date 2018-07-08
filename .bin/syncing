@@ -10,7 +10,11 @@ function backup()
     today=$(date +%Y-%m-%d)
     backup=$PROFILE_TMP$today
     if [ ! -e $backup ]; then
-        zip-now
+        if [ ! -e $ARCHIVE ]; then
+            echo "zipping archive"
+            7z a -t7z -bd $ARCHIVE $HOME/.cache/scratch/ $HOME/.mozilla/ &>/dev/null
+            echo "zip completed: $?"
+        fi
         echo "${SPACING}pushing profile out"
         scp $ARCHIVE $BASE_SERVER:$PROFILE_PATH/mobile.$today.7z
         ssh $BASE_SERVER "find $PROFILE_PATH -type f -mtime +7 -exec rm {} \;"
@@ -19,15 +23,6 @@ function backup()
     fi
 }
     
-function zip-now()
-{
-    if [ ! -e $ARCHIVE ]; then
-        echo "${SPACING}zipping profile(s)"
-        7z a -t7z -bd $ARCHIVE $HOME/.cache/scratch/ $HOME/.mozilla/ &>/dev/null
-        echo "${SPACING}zip done: $?"
-    fi
-}
-
 function sync-now()
 {
     auth=$(cat $SSH_AUTH_TMP)
@@ -36,7 +31,6 @@ function sync-now()
     echo "====================="
     echo "running "$(date +%Y-%m-%dT%H:%M:%S)
     echo "====================="
-    zip-now
     echo "checked for connection...$available"
     if [ $available -eq $IS_CONNECTED ]; then
         if [ -e $SSH_AUTH_TMP ]; then
