@@ -71,5 +71,6 @@ set complete-=i
 set foldmethod=indent
 set foldlevelstart=99
 
-map q <Nop>
-map <F1> <Nop>
+for i in ['q', '<F1>']
+    execute "map " . i . " <Nop>"
+endfor
