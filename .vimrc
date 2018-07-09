@@ -74,3 +74,4 @@ set foldlevelstart=99
 for i in ['q', '<F1>']
     execute "map " . i . " <Nop>"
 endfor
+imap <F1> <Nop>
