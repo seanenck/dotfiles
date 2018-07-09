@@ -72,3 +72,4 @@ set foldmethod=indent
 set foldlevelstart=99
 
 map q <Nop>
+map <F1> <Nop>
