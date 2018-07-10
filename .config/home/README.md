@@ -48,11 +48,7 @@ git pull origin master
 ln -s ~/.synced/gnupg .gnupg
 # confirm gnupg dir settings
 # edit ~/.git/config and change url to read/write
-mkdir Downloads
-mkdir .tmp
-mkdir -p .vim/swap
-mkdir -p .vim/undo
-ln -s $HOME/.synced/configs/epiphyte.conf $HOME/.config/epiphyte/env
+cd .bin && make
 ```
 
 as root, finalize some dirs
