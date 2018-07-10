@@ -7,14 +7,14 @@ import argparse
 import pickle
 
 # Call to make to dmenu
-_DMENU_CALL = """#!//bin/bash
+_DMENU_CALL = r"""#!//bin/bash
 _call() {
-    local _results=$(echo {CACHE} | tr ' ' '\\n' | dmenu {ARGS} && echo $?)
-    if [ ! -z \"$_results\" ]; then
-        echo \"$_results\" | \
+    local _results=$(echo {CACHE} | tr ' ' '\n' | dmenu {ARGS} && echo $?)
+    if [ ! -z "$_results" ]; then
+        echo "$_results" | \
                 head -n 1 | \
                 {DMENU_WRAPPER} --intercept | \
-                ${SHELL:-\"/bin/sh\" } &
+                ${SHELL:-"/bin/sh" } &
     fi
 }
 
