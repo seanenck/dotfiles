@@ -18,6 +18,7 @@ dhcpcd
 diffutils
 dmenu
 dosfstools
+dunst
 e2fsprogs
 eltoritopy
 epiphyte-build
