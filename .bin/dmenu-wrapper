@@ -174,7 +174,7 @@ def _producing(args, unknown):
         with open(cache_file, 'rb') as f:
             use_list = pickle.load(f)[_CACHE_LIST]
     replacing = {}
-    replacing["CACHE"] = " ".join(use_list)
+    replacing["CACHE"] = " ".join(sorted(use_list))
     replacing["ARGS"] = " ".join(unknown)
     replacing["DMENU_WRAPPER"] = args.dmenu_wrapper
     cmd = _DMENU_CALL
