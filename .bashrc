@@ -145,7 +145,7 @@ _setup() {
 }
 
 _check_today() {
-    local today_check jrnl yesterday journal today yest since filename
+    local today_check jrnl yesterday journal today yest since filename ifs
     today=$(date +%Y-%m-%d)
     filename=$USER_TMP/last.checked.
     today_check=$filename$today
@@ -167,12 +167,12 @@ _check_today() {
     fi
     if [ -e $journal ]; then
         if [ -s $journal ]; then
-            echo
-            echo "journal errors"
-            echo "=============="
-            echo -e "${RED_TEXT}"
-            cat $journal | sed "s/^/    /g"
-            echo -e "${NORM_TEXT}"
+            ifs=$IFS
+            IFS=$'\n'
+            for l in $(cat $journal | tail -n +2); do
+                notify-send --urgency=normal Journal "$l"
+            done
+            IFS=$ifs
         fi
     fi
     _setup > /dev/null
