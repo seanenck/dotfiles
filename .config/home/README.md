@@ -51,20 +51,6 @@ ln -s ~/.synced/gnupg .gnupg
 cd .bin && make
 ```
 
-as root, finalize some dirs
-```
-rm -f /etc/vimrc
-ln -s /home/enck/.vimrc /etc/vimrc
-ln -s /home/enck/.bin/locking /usr/local/bin/
-mkdir -p /etc/systemd/nspawn
-```
-
-services
-```
-timedatectl set-ntp true
-systemctl enable iptables
-```
-
 package setup
 ```
 # make sure pkgseed is installed

@@ -11,3 +11,5 @@ endif
 	sudo ln -s /home/enck/.vimrc /etc/vimrc
 	sudo ln -sf /home/enck/.bin/locking /usr/local/bin/locking
 	sudo mkdir -p /etc/systemd/nspawn
+	sudo timedatectl set-ntp true
+	sudo systemctl enable iptables
