@@ -166,7 +166,7 @@ def _producing(args, unknown):
         urls = _read_csv(args.urls)
         obj = {}
         obj[_CACHE_URLS] = urls
-        use_list = list(urls.keys()) + args.list
+        use_list = sorted(list(urls.keys()) + args.list)
         obj[_CACHE_LIST] = use_list
         with open(cache_file, 'wb') as f:
             pickle.dump(obj, f)
@@ -174,7 +174,7 @@ def _producing(args, unknown):
         with open(cache_file, 'rb') as f:
             use_list = pickle.load(f)[_CACHE_LIST]
     replacing = {}
-    replacing["CACHE"] = " ".join(sorted(use_list))
+    replacing["CACHE"] = " ".join(use_list)
     replacing["ARGS"] = " ".join(unknown)
     replacing["DMENU_WRAPPER"] = args.dmenu_wrapper
     cmd = _DMENU_CALL
