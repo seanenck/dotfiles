@@ -170,7 +170,7 @@ _check_today() {
             ifs=$IFS
             IFS=$'\n'
             for l in $(cat $journal | tail -n +2); do
-                notify-send --urgency=normal Journal "$l"
+                notify-send --urgency=critical Journal "$l"
             done
             IFS=$ifs
         fi
