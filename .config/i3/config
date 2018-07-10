@@ -81,6 +81,7 @@ bar {
 
 exec --no-startup-id subsystem workspaces 1
 exec --no-startup-id status init
+exec --no-startup-id dunst -conf /home/enck/.config/dunst
 
 # Handle auto-locking
 exec xautolock -time 5 -locker "/usr/local/bin/locking auto" &
