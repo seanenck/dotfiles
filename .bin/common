@@ -207,7 +207,7 @@ function _push-pull-git-fxn()
 function _nagbarmsg()
 {
     if [ -z "$(pidof i3-nagbar)" ]; then
-        i3-nagbar -m "$@" -f "Adobe Courier 20" > /dev/null 2>&1
+        notify-send --urgency=critical Warn "$@"
     fi
 }
 
