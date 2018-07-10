@@ -27,7 +27,7 @@ def get_layouts(strvalue):
 
 
 def main():
-    """Main entry point."""
+    """Entry point."""
     try:
         from os.path import splitext, basename
         use_tab = False
