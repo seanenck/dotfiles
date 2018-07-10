@@ -40,7 +40,7 @@ function _battery()
     done
     if [ $combined -lt 20 ]; then
         if [[ "$charge" == "-" ]]; then
-            _nagbarmsg "low battery"
+            notify-send --urgency=critical Battery "low"
         fi
     fi
     printf '\xf0\x9f\x94\x8b (%3s)%s' $val $charge

@@ -204,13 +204,6 @@ function _push-pull-git-fxn()
     cd $cpwd
 }
 
-function _nagbarmsg()
-{
-    if [ -z "$(pidof i3-nagbar)" ]; then
-        notify-send --urgency=critical Warn "$@"
-    fi
-}
-
 function perm-pull()
 {
     _push-pull-git-fxn "update" "pull"
