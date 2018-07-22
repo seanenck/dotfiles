@@ -71,7 +71,7 @@ if [ -e "$PRIV_CONF" ]; then
         eval '_pc_'$i'() { PASSWORD_STORE_DIR='${PERM_LOCATION}'pass-'$i'/ _pass; }'
         complete -o filenames -o nospace -F _pc_$i pass-$i
     done
-    alias totp="_totpall $TOTP_PASS"
+    alias totp="_totpall $TOTP_PASS \$@"
     for i in $(echo "$LUKS_REMOTE"); do
         alias luks-$i="enterkeys luks-$i"
     done
