@@ -25,6 +25,7 @@ function backup()
     
 function sync-now()
 {
+    local dirs
     auth=$(cat $SSH_AUTH_TMP)
     export SSH_AUTH_SOCK=$auth
     available=$(test-ssh $BASE_SERVER)
@@ -34,19 +35,13 @@ function sync-now()
     echo "checked for connection...$available"
     if [ $available -eq $IS_CONNECTED ]; then
         if [ -e $SSH_AUTH_TMP ]; then
-            echo "git push"
-            current=$PWD
-            cd ${SYNCED_PATH}
-            git push 2>&1
-            for personal in $(ls ${PERM_LOCATION} | grep $PERM_PERSONAL); do
-                echo "${SPACING}pushing $personal"
-                cd ${PERM_LOCATION}/$personal
-                git push 2>&1 | sed "s/^/$SPACING/g"
+            echo "syncing..."
+            dirs=$(ls ${PERM_LOCATION} | grep $PERM_PERSONAL | sed "s#^#$PERM_LOCATION#g")
+            dirs="$dirs ${SYNCED_PATH} /etc"
+            for d in $(echo $dirs); do
+                echo "$d"
+                git -C "$d" push 2>&1 | sed "s/^/$SPACING/g"
             done
-            echo "/etc"
-            cd /etc
-            git push 2>&1
-            cd $current
             echo "daily backup"
             backup
             update-stat $USER_SYNC
