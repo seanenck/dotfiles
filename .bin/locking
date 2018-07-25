@@ -54,6 +54,8 @@ function lock-now()
             write-log "unlocking..."
             toggle-backlighting $MID_BRIGHT
         fi
+    else
+        notify-send System "unlocked"
     fi
 }
 
