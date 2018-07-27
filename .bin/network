@@ -1,0 +1,52 @@
+#!/bin/bash
+source $HOME/.bin/common
+NETWORKS=$SYNCED_PATH/network/
+DEFAULT_NETWORK="default"
+CACHED=$HOME/.cache/networking
+LIST_KEY="list"
+RELOAD_KEY="reload"
+
+_wpasupplicant() {
+    sudo pkill wpa_supplicant
+    sudo /usr/bin/wpa_supplicant -c $1 -i $2 -B
+}
+
+_connect() {
+    local conf device
+    echo "connecting: $1"
+    device=$(echo "$1" | cut -d "/" -f 1)
+    conf=$NETWORKS$1.conf
+    if [ -e $conf ]; then
+        echo "running supplicant"
+        echo "$1" > $CACHED
+        _wpasupplicant "$conf" "$device"
+    fi
+}
+
+_reload() {
+    if [ -e "$CACHED" ]; then
+        network $(cat $CACHED)
+    fi
+}
+
+networks=$(find $NETWORKS -type f | sed "s#$NETWORKS##g" | sed "s/\.conf//g" | tr '\n' ' ')" $DEFAULT_NETWORK"
+action=$1
+if [ -z "$1" ]; then
+    action="$LIST_KEY"
+fi
+case $action in
+    "$LIST_KEY")
+        echo "$networks"
+        ;;
+    "$RELOAD_KEY")
+        _reload
+        ;;
+    *)
+        echo "$networks" | tr ' ' '\n' | grep -q "$action"
+        if [ $? -eq 0 ]; then
+            _connect "$1"
+        else
+            echo "unknown network: $action"
+        fi
+        ;;
+esac
