@@ -114,9 +114,22 @@ function _partials()
     _workspaces
 }
 
+function _up()
+{
+    local result
+    curl -s https://voidedtech.network > /dev/null
+    echo "HERE" > /tmp/test
+    if [ $? -eq 0 ]; then
+        result=" up "
+    else
+        result="down"
+    fi
+    echo " conn: $result "
+}
+
 function stats()
 {
-    local _last_git _git_text _last_cnt _partial bright muting bat disp
+    local _last_git _git_text _last_cnt _partial bright muting bat disp up
     _last_git=0
     _git_text=""
     _last_cnt=0
@@ -149,7 +162,8 @@ function stats()
         muting=$(_sound)
         bat=$(_battery)
         disp=$(_locking)
-        echo "$_git_text$bright|$muting|$bat|$disp|" > $MAIN_STATS
+        up=$(_up)
+        echo "$_git_text$bright|$muting|$bat|$disp|$up|" > $MAIN_STATS
         _last_git=$((_last_git+1))
         if [ $_last_git -eq 1 ]; then
             _last_git=0
