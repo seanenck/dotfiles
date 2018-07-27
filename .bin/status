@@ -119,11 +119,11 @@ function _up()
     local result
     curl -s https://voidedtech.network > /dev/null
     if [ $? -eq 0 ]; then
-        result='\u2190'
+        result='\u26a1'
     else
-        result='\u21fa'
+        result='\u26d4'
     fi
-    printf " $result net "
+    printf "$result net "
 }
 
 function stats()
