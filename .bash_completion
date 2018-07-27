@@ -32,8 +32,7 @@ _network()
     local cur opts 
     if [ $COMP_CWORD -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        opts=$(network)" list reload"
-        opts=$(echo "$opts" | sort)
+        opts=$(network help)
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     fi
 }

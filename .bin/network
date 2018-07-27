@@ -5,6 +5,7 @@ DEFAULT_NETWORK="default"
 CACHED=$HOME/.cache/networking
 LIST_KEY="list"
 RELOAD_KEY="reload"
+HELP_KEY="help"
 
 _connect() {
     local conf device
@@ -28,9 +29,12 @@ _reload() {
 networks=$(find $NETWORKS -type f | sed "s#$NETWORKS##g" | sed "s/\.conf//g" | tr '\n' ' ')" $DEFAULT_NETWORK"
 action=$1
 if [ -z "$1" ]; then
-    action="$LIST_KEY"
+    action="$HELP_KEY"
 fi
 case $action in
+    "$HELP_KEY")
+        echo "$networks $HELP_KEY $LIST_KEY $RELOAD_KEY" | sort
+        ;;
     "$LIST_KEY")
         echo "$networks"
         ;;
