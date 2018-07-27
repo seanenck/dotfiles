@@ -122,6 +122,7 @@ function _formattotp()
 function _totpall()
 {
     local data first d left val p filter
+    clear
     data=()
     first=1
     filter=$2
@@ -133,6 +134,9 @@ function _totpall()
         left=0
         left=$(date +%S | sed "s/^0//g")
         left=$((60-left))
+        if [ $left -lt 10 ]; then
+            echo -e "${RED_TEXT}"
+        fi
         d=$(date +%Y-%m-%dT%H:%M:%S)
         d="$d, expires: $left (seconds)"
         if [ $first -eq 1 ]; then
@@ -158,6 +162,7 @@ function _totpall()
         clear
         echo "$d"
         _formattotp "${data[*]}"
+        echo -e "${NORM_TEXT}"
     done
 }
 
