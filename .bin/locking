@@ -99,7 +99,6 @@ function suspend-now()
         done
         if [ $slept -gt 0 ]; then
             force-display-on
-            pkill wsw-applet
         fi
         write-log "done sleeping"
     fi

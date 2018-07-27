@@ -1,29 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 
-function tray_reload()
-{
-    _kill_tray
-}
-
-function reload()
-{
-    _kill_tray "reload"
-}
-
-function restart()
-{
-    _kill_tray "restart"
-}
-
-function _kill_tray()
-{
-    pkill wsw-applet
-    if [ ! -z "$1" ]; then
-        i3-msg $1
-    fi
-}
-
 function stats()
 {
     local last d
@@ -37,7 +14,7 @@ function stats()
         else
             last="$d"
         fi
-        echo "$d$line|" || exit 1
+        echo "$d$line |" || exit 1
     done
 }
 

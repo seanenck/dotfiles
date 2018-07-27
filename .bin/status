@@ -104,21 +104,6 @@ function git-changing()
     cd $cwd
 }
 
-function _applets()
-{
-    local pids
-    pids=$(pidof wsw-applet)
-    if [ -z "$pids" ]; then
-        wsw-applet &
-        pkill udiskie
-        sleep 0.1
-    fi
-    ps aux | grep -v "grep" | grep -q "udiskie"
-    if [ $? -ne 0 ]; then
-        udiskie --no-notify --no-automount --no-config --tray -f "" &
-    fi
-}
-
 function _workspaces()
 {
     python $HOME/.bin/workspaces
@@ -126,7 +111,6 @@ function _workspaces()
 
 function _partials()
 {
-    _applets
     _workspaces
 }
 
@@ -173,11 +157,4 @@ function stats()
     done
 }
 
-if [ ! -z "$1" ]; then
-    if [[ "$1" == "init" ]]; then
-        sleep 1
-        _applets
-        exit 0
-    fi
-fi
 stats

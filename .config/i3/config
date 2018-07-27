@@ -56,13 +56,11 @@ bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
 # reload the configuration file
-bindsym $mod+Shift+c exec i3_commands reload
+bindsym $mod+Shift+c exec i3-msg reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r exec i3_commands restart
+bindsym $mod+Shift+r exec i3-msg restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3? This will end the session.' -b 'Yes, exit i3' 'i3-msg exit'"
-# reload tray
-bindsym $mod+Shift+t exec i3_commands tray_reload
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -80,8 +78,8 @@ bar {
 }
 
 exec --no-startup-id subsystem workspaces 1
-exec --no-startup-id status init
 exec --no-startup-id dunst -conf /home/enck/.config/dunst
+exec --no-startup-id udiskie --no-notify --no-automount --no-config --tray -f ""
 
 # Handle auto-locking
 exec xautolock -time 5 -locker "/usr/local/bin/locking auto" &
