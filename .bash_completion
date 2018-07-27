@@ -26,3 +26,15 @@ _mounting()
     fi
 }
 complete -F _mounting mounting
+
+_network()
+{
+    local cur opts 
+    if [ $COMP_CWORD -eq 1 ]; then
+        cur=${COMP_WORDS[COMP_CWORD]}
+        opts=$(network)" list reload"
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    fi
+}
+
+complete -F _network network

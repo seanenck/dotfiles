@@ -6,20 +6,16 @@ CACHED=$HOME/.cache/networking
 LIST_KEY="list"
 RELOAD_KEY="reload"
 
-_wpasupplicant() {
-    sudo pkill wpa_supplicant
-    sudo /usr/bin/wpa_supplicant -c $1 -i $2 -B
-}
-
 _connect() {
     local conf device
     echo "connecting: $1"
     device=$(echo "$1" | cut -d "/" -f 1)
     conf=$NETWORKS$1.conf
+    sudo pkill wpa_supplicant
     if [ -e $conf ]; then
         echo "running supplicant"
         echo "$1" > $CACHED
-        _wpasupplicant "$conf" "$device"
+        sudo /usr/bin/wpa_supplicant -c $conf -i $device -B
     fi
 }
 
