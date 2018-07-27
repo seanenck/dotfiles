@@ -118,13 +118,12 @@ function _up()
 {
     local result
     curl -s https://voidedtech.network > /dev/null
-    echo "HERE" > /tmp/test
     if [ $? -eq 0 ]; then
-        result=" up "
+        result='\u2190'
     else
-        result="down"
+        result='\u21fa'
     fi
-    echo " conn: $result "
+    printf " $result net "
 }
 
 function stats()
