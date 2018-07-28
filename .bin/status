@@ -116,7 +116,8 @@ function _partials()
 
 function _up()
 {
-    local result last t n
+    local result last t n res
+    res=$USER_TMP/.online.status
     last=$USER_TMP/.online
     if [ -e $last ]; then
         t=$(cat $last)
@@ -126,15 +127,20 @@ function _up()
             rm -f $last
         fi
     fi
-    result='\u26a1'
+    if [ ! -e $res ]; then
+        rm -f $last
+    fi
     if [ ! -e $last ]; then 
         curl -s https://voidedtech.network > /dev/null
         if [ $? -ne 0 ]; then
             result='\u26d4'
+        else
+            result='\u26a1'
         fi
+        echo "$result" > $res
         date +%s > $last
     fi
-
+    result=$(cat $res)
     printf "$result"
 }
 
