@@ -116,13 +116,25 @@ function _partials()
 
 function _up()
 {
-    local result
-    curl -s https://voidedtech.network > /dev/null
-    if [ $? -eq 0 ]; then
-        result='\u26a1'
-    else
-        result='\u26d4'
+    local result last t n
+    last=$USER_TMP/.online
+    if [ -e $last ]; then
+        t=$(cat $last)
+        n=$(date +%s)
+        t=$((n-t))
+        if [ $t -gt 30 ]; then
+            rm -f $last
+        fi
     fi
+    result='\u26a1'
+    if [ ! -e $last ]; then 
+        curl -s https://voidedtech.network > /dev/null
+        if [ $? -ne 0 ]; then
+            result='\u26d4'
+        fi
+        date +%s > $last
+    fi
+
     printf "$result"
 }
 
