@@ -116,31 +116,39 @@ function _partials()
 
 function _up()
 {
-    local result last t n res
+    local result last t n res check
+    check=30
     res=$USER_TMP/.online.status
     last=$USER_TMP/.online
+    if [ -e $res ]; then
+        if [[ $(cat $res) == "offline" ]]; then
+            check=5
+        fi
+    else
+        rm -f $last
+    fi
     if [ -e $last ]; then
         t=$(cat $last)
         n=$(date +%s)
         t=$((n-t))
-        if [ $t -gt 30 ]; then
+        if [ $t -gt $check ]; then
             rm -f $last
         fi
     fi
-    if [ ! -e $res ]; then
-        rm -f $last
-    fi
     if [ ! -e $last ]; then 
         curl -s https://voidedtech.network > /dev/null
-        if [ $? -ne 0 ]; then
-            result='\u26d4'
+        if [ $? -eq 0 ]; then
+            echo "online" > $res
         else
-            result='\u26a1'
+            echo "offline" > $res
         fi
-        echo "$result" > $res
         date +%s > $last
     fi
-    result=$(cat $res)
+    if [[ $(cat $res) == "online" ]]; then
+        result='\u26a1'
+    else
+        result='\u26d4'
+    fi
     printf "$result"
 }
 
