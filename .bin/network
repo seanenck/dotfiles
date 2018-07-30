@@ -8,15 +8,20 @@ RELOAD_KEY="reload"
 HELP_KEY="help"
 
 _connect() {
-    local conf device
+    local conf device flags
+    flags=""
     echo "connecting: $1"
     device=$(echo "$1" | cut -d "/" -f 1)
     conf=$NETWORKS$1.conf
     sudo pkill wpa_supplicant
+    echo "$device" | grep -q "^e"
+    if [ $? -eq 0 ]; then
+        flags="-D wired"
+    fi
     if [ -e $conf ]; then
         echo "running supplicant"
         echo "$1" > $CACHED
-        sudo /usr/bin/wpa_supplicant -c $conf -i $device -B
+        sudo /usr/bin/wpa_supplicant -c $conf -i $device -B $flags
     fi
 }
 
