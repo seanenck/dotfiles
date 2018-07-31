@@ -7,13 +7,18 @@ LIST_KEY="list"
 RELOAD_KEY="reload"
 HELP_KEY="help"
 
+_iplink() {
+    echo "setting $1 -> $2"
+    sudo ip link set $1 $2
+}
+
 _connect() {
     local conf device flags
     flags=""
-    echo "connecting: $1"
     device=$(echo "$1" | cut -d "/" -f 1)
     conf=$NETWORKS$1.conf
     sudo pkill wpa_supplicant
+    _iplink "$device" "up"
     echo "$device" | grep -q "^e"
     if [ $? -eq 0 ]; then
         flags="-D wired"
@@ -23,6 +28,7 @@ _connect() {
         echo "$1" > $CACHED
         sudo /usr/bin/wpa_supplicant -c $conf -i $device -B $flags
     fi
+    echo "connected: $1"
 }
 
 _reload() {
@@ -49,6 +55,9 @@ case $action in
     *)
         echo "$networks" | tr ' ' '\n' | grep -q "$action"
         if [ $? -eq 0 ]; then
+            for a in $(echo "$networks" | tr ' ' '\n' | cut -d "/" -f 1 | grep -v "$DEFAULT_NETWORK" | sort -u); do
+                _iplink "$a" "down"
+            done
             _connect "$1"
         else
             echo "unknown network: $action"
