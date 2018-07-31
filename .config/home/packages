@@ -1,4 +1,3 @@
-appiphyte-utils
 arch-install-scripts
 autoconf
 automake
@@ -87,7 +86,6 @@ psmisc
 pulseaudio
 pwgen
 python-markdown
-radiucal-utils
 reiserfsprogs
 rsync
 s-nail
