@@ -50,7 +50,7 @@ less
 libtool
 licenses
 linux
-linux-rotate
+linux-lts
 logrotate
 lvm2
 m4
@@ -58,6 +58,7 @@ make
 man-db
 man-pages
 mdadm
+metaphyte-admins
 mkinitcpio-validate
 netctl
 noto-fonts
