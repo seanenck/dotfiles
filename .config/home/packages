@@ -60,6 +60,7 @@ mdadm
 metaphyte-admins
 mkinitcpio-validate
 netctl
+nftables
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
