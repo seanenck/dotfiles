@@ -8,8 +8,8 @@ RELOAD_KEY="reload"
 HELP_KEY="help"
 
 _iplink() {
-    echo "setting $1 -> $2"
     sudo ip link set $1 $2
+    echo "setting $1 -> $2"
 }
 
 _connect() {
