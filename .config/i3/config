@@ -68,6 +68,7 @@ bar {
         output DP2-2
         output DP2-1
         tray_output none
+        status_command i3status -c /home/enck/.i3status.secondary
 }
 
 bar {
