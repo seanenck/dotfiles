@@ -68,7 +68,6 @@ bar {
         output DP2-2
         output DP2-1
         tray_output none
-        status_command i3_commands substats
 }
 
 bar {

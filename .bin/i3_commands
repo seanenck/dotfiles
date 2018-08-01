@@ -18,13 +18,6 @@ function stats()
     done
 }
 
-function substats()
-{
-    while [ 1 -eq 1 ]; do
-        date +"%Y.%m.%d %H:%M:%S" || exit 1
-    done
-}
-
 function auto-clip()
 {
     source $PRIV_CONF
