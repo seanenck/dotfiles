@@ -1,7 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 NETWORKS=$SYNCED_PATH/network/
-DEFAULT_NETWORK="default"
 CACHED=$HOME/.cache/networking
 LIST_KEY="list"
 RELOAD_KEY="reload"
@@ -24,9 +23,11 @@ _connect() {
         flags="-D wired"
     fi
     if [ -e $conf ]; then
-        echo "running supplicant"
         echo "$1" > $CACHED
-        sudo /usr/bin/wpa_supplicant -c $conf -i $device -B $flags
+        if [ -s $conf ]; then
+            echo "running supplicant"
+            sudo /usr/bin/wpa_supplicant -c $conf -i $device -B $flags
+        fi
     fi
     echo "connected: $1"
 }
@@ -37,7 +38,7 @@ _reload() {
     fi
 }
 
-networks=$(find $NETWORKS -type f | sed "s#$NETWORKS##g" | sed "s/\.conf//g" | tr '\n' ' ')" $DEFAULT_NETWORK"
+networks=$(find $NETWORKS -type f | sed "s#$NETWORKS##g" | sed "s/\.conf//g" | tr '\n' ' ')
 action=$1
 if [ -z "$1" ]; then
     action="$HELP_KEY"
@@ -55,7 +56,7 @@ case $action in
     *)
         echo "$networks" | tr ' ' '\n' | grep -q "$action"
         if [ $? -eq 0 ]; then
-            for a in $(echo "$networks" | tr ' ' '\n' | cut -d "/" -f 1 | grep -v "$DEFAULT_NETWORK" | sort -u); do
+            for a in $(echo "$networks" | tr ' ' '\n' | cut -d "/" -f 1 | sort -u); do
                 _iplink "$a" "down"
             done
             _connect "$1"
