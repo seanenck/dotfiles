@@ -13,11 +13,8 @@ DISP_ONE="DP2-2"
 DISP_TWO="DP2-1"
 DEFAULT_WORKSPACE_ID=1
 DOCKED_ID=2
-HOME_WORKPLACE_ID=3
 WORK_LEFT="--output $DISP_ONE --auto --left-of $MAIN_DISPLAY --rotate right"
 WORK_RIGHT="--output $DISP_TWO --auto --right-of $MAIN_DISPLAY"
-HOME_RIGHT="--output $DISP_ONE --auto --right-of $MAIN_DISPLAY --rotate right"
-HOME_LEFT="--output $DISP_TWO --auto --left-of $MAIN_DISPLAY"
 TRACK_LIGHTING=$USER_TMP/.backlight
 
 function force-display-on()
@@ -110,10 +107,6 @@ function set-workplace()
             xrandr $WORK_LEFT
             xrandr $WORK_RIGHT
             ;;
-        $HOME_WORKPLACE_ID)
-            xrandr $HOME_RIGHT
-            xrandr $HOME_LEFT
-            ;;
     esac
     toggle-backlighting $MID_BRIGHT
     if [ $1 -eq $use_setting ]; then
@@ -137,8 +130,7 @@ $MID_BRIGHT (medium brightness)
 $FULL_BRIGHT (full brightness)" | sed "s/^/$DISPLAY_KEY /g"
     echo
     echo "$DEFAULT_WORKSPACE_ID (force default workspace)
-$DOCKED_ID (force docked workspace)
-$HOME_WORKPLACE_ID (change to home workspace)" | sed "s/^/$WORKSPACES_KEY /g"
+$DOCKED_ID (force docked workspace)" | sed "s/^/$WORKSPACES_KEY /g"
     echo
 }
 
