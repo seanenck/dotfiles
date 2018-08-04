@@ -16,7 +16,6 @@ CONTAINER_ETC     := $(CONTAINER_PATH)etc/
 
 # package settings
 PACKAGES          := base-devel python git metaphyte-containers termite-terminfo go-pie gtk2 noto-fonts go-tools dep python-pycodestyle python-pydocstyle
-IGNORES           := --ignore linux --ignore nano --ignore linux-firmware --ignore lvm2
 PACMAN_INPUTS     :="n\nn\nn\n\n\nY"
 
 PACMAN            := pacman.conf
@@ -43,7 +42,7 @@ instance: root
 	test ! -d $(CONTAINER_PATH)
 	test ! -e $(CONTAINER_CONF)
 	mkdir -p $(CONTAINER_PATH)
-	printf $(PACMAN_INPUTS) | pacstrap -i -c $(CONTAINER_PATH) $(PACKAGES) $(IGNORES)
+	printf $(PACMAN_INPUTS) | pacstrap -i -c $(CONTAINER_PATH) $(PACKAGES)
 	cat /$(USER_HOME)/.config/home/nspawn.template > $(CONTAINER_CONF)
 	install -Dm644 /$(ETC_PACMAN) $(CONTAINER_PATH)$(ETC_PACMAN)
 
