@@ -23,5 +23,8 @@ if [ ! -z "$current" ]; then
         rm -r $f
     done
 fi
+for f in $(find . -type d -empty); do
+    rmdir $f
+done
 IFS=$oldifs
 cd $cwd
