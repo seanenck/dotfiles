@@ -47,7 +47,7 @@ function sync-now()
             echo "daily backup"
             backup
             update-stat $USER_SYNC
-            rsync -avcn --delete-after -e "ssh" $HOME/.cache/repo/ $BASE_SERVER:$REPO_PATH
+            rsync -avcn --delete-after -e "ssh" /opt/repo/ $BASE_SERVER:$REPO_PATH
         else
             echo "ssh agent unavailable"
         fi
