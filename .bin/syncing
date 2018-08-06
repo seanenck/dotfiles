@@ -47,7 +47,8 @@ function sync-now()
             echo "daily backup"
             backup
             update-stat $USER_SYNC
-            rsync -avcn --delete-after -e "ssh" /opt/repo/ $BASE_SERVER:$REPO_PATH
+            echo "repository"
+            rsync -avc --delete-after -e "ssh" /opt/repo/ $BASE_SERVER:$REPO_PATH | sed "s/^/$SPACING/g"
         else
             echo "ssh agent unavailable"
         fi
