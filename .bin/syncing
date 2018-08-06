@@ -1,6 +1,8 @@
 #!/bin/bash
 source $HOME/.bin/common
-PROFILE_PATH=/mnt/Storage/Active/Rolling/profiles
+COMMON_STORE=/mnt/Storage/Active/
+PROFILE_PATH=${COMMON_STORE}Rolling/profiles
+REPO_PATH=${COMMON_STORE}Packages/
 ARCHIVE=$USER_TMP/profile.7z
 SPACING="    "
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
@@ -45,6 +47,7 @@ function sync-now()
             echo "daily backup"
             backup
             update-stat $USER_SYNC
+            rsync -avcn -e "ssh" $HOME/.cache/repo/ $BASE_SERVER:$REPO_PATH
         else
             echo "ssh agent unavailable"
         fi
