@@ -3,7 +3,6 @@ source $HOME/.bin/common
 NETWORKS=$SYNCED_PATH/network/
 CACHED=$HOME/.cache/networking
 LIST_KEY="list"
-RELOAD_KEY="reload"
 HELP_KEY="help"
 
 _iplink() {
@@ -32,12 +31,6 @@ _connect() {
     echo "connected: $1"
 }
 
-_reload() {
-    if [ -e "$CACHED" ]; then
-        network $(cat $CACHED)
-    fi
-}
-
 networks=$(find $NETWORKS -type f | sed "s#$NETWORKS##g" | sed "s/\.conf//g" | tr '\n' ' ')
 action=$1
 if [ -z "$1" ]; then
@@ -49,9 +42,6 @@ case $action in
         ;;
     "$LIST_KEY")
         echo "$networks"
-        ;;
-    "$RELOAD_KEY")
-        _reload
         ;;
     *)
         echo "$networks" | tr ' ' '\n' | grep -q "$action"
