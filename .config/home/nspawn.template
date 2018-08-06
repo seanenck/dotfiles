@@ -7,7 +7,7 @@ BindReadOnly=/root/.gnupg
 BindReadOnly=/home/enck/.gnupg
 Bind=/var/cache/pacman
 Bind=/etc/makepkg.conf
-Bind=/home/enck/.cache/repo/
+Bind=/opt/repo/
 
 Bind=/home/enck/.gitconfig
 Bind=/home/enck/.gitconfig:/root/.gitconfig
