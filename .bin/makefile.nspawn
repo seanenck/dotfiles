@@ -46,6 +46,7 @@ instance: root
 	printf $(PACMAN_INPUTS) | pacstrap -i -c $(CONTAINER_PATH) $(PACKAGES) $(IGNORES)
 	cat /$(USER_HOME)/.config/home/nspawn.template > $(CONTAINER_CONF)
 	install -Dm644 /$(ETC_PACMAN) $(CONTAINER_PATH)$(ETC_PACMAN)
+	install -Dm644 /$(ETC_PACMAN).include $(CONTAINER_PATH)$(ETC_PACMAN).include
 
 destroy: running
 	rm -rf $(CONTAINER_PATH)
