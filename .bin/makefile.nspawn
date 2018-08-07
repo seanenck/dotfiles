@@ -64,4 +64,5 @@ refresh: running
 	$(call containeretc,locale.conf,644)
 	mkdir -p $(CONTAINER_HOME)/go
 	mkdir -p $(CONTAINER_HOME)/.bin
+	mkdir -p $(CONTAINER_HOME)/.config/go
 	chown -R $(USER_NAME):$(USER_NAME) $(CONTAINER_HOME)
