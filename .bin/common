@@ -204,15 +204,11 @@ function _push-pull-git-fxn()
     cpwd=$PWD
     for f_name in $(_get-perm-objs); do
         f=$(basename $f_name)
+        if [[ $f == *${PERM_PERSONAL}* ]]; then
+            continue
+        fi
         cd $f_name
         echo "$1: $f"
-        if [[ $f == *${PERM_PERSONAL}* ]]; then
-            if [ $is_avail -ne $IS_CONNECTED ]; then
-                echo "**not available**"
-                echo
-                continue
-            fi
-        fi
         git $2
         echo
     done
