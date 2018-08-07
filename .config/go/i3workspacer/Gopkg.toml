@@ -1,0 +1,8 @@
+[[constraint]]
+  name = "github.com/mdirkse/i3ipc"
+  branch = "master"
+
+[prune]
+  go-tests = true
+  unused-packages = true
+  non-go = true
