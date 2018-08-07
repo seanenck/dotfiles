@@ -7,7 +7,7 @@ ARCHIVE=$USER_TMP/profile.7z
 SPACING="    "
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 
-function backup()
+function _backup()
 {
     today=$(date +%Y-%m-%d)
     backup=$PROFILE_TMP$today
@@ -24,7 +24,12 @@ function backup()
         touch $backup
     fi
 }
-    
+
+function _repository()
+{
+    rsync -avc --delete-after -e "ssh" /opt/repo/ $BASE_SERVER:$REPO_PATH | sed "s/^/$SPACING/g"
+}
+
 function sync-now()
 {
     local dirs
@@ -45,10 +50,10 @@ function sync-now()
                 git -C "$d" push 2>&1 | sed "s/^/$SPACING/g"
             done
             echo "daily backup"
-            backup
+            _backup
             update-stat $USER_SYNC
             echo "repository"
-            rsync -avc --delete-after -e "ssh" /opt/repo/ $BASE_SERVER:$REPO_PATH | sed "s/^/$SPACING/g"
+            _repository
         else
             echo "ssh agent unavailable"
         fi
