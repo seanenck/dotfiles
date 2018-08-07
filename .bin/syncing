@@ -11,7 +11,7 @@ BACKUP=$PROFILE_TMP$TODAY
 LOCAL_REPO=/opt/repo/
 GIT_SYNC=$USER_TMP/git.sync
 GIT_PREV=${GIT_SYNC}.prev
-REPO_HASH=$USER_TMP/repo.hash
+REPO_HASH=$USER_TMP/repo.hashed
 REPO_PREV=$REPO_HASH.prev
 
 function _dobackup()
@@ -28,6 +28,7 @@ function _dorepo()
     local hashed prev
     prev=""
     hashed=$(sha256sum ${LOCAL_REPO}* | cut -d " " -f 1 | sort | sha256sum | cut -d " " -f 1)
+    echo "$hashed" > $REPO_HASH
     if [ -e $REPO_PREV ]; then
         prev=$(cat $REPO_PREV)
     fi
