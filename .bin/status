@@ -109,7 +109,8 @@ function _partials()
     local p
     p=$(pidof workspacer)
     if [ -z "$p" ]; then
-        $HOME/.config/go/i3workspacer/workspacer &
+        echo "starting workspacer"
+        $GO_CONF/i3workspacer/workspacer &
     fi
 }
 

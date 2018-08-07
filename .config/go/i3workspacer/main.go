@@ -25,7 +25,7 @@ func main() {
 				text = strings.Join(names, ",")
 			}
 			ids := strings.Split(w.Name, ":")
-			text = fmt.Sprintf("%s:%s\n", ids[0], text)
+			text = fmt.Sprintf("%s:%s", ids[0], text)
 			cmd := fmt.Sprintf("rename workspace \"%s\" to \"%s\"", w.Name, text)
 			ipcsocket.Command(cmd)
 		}

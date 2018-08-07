@@ -18,6 +18,7 @@ USER_TMP=$HOME/.tmp
 SYNCED_PATH=$HOME/.synced/
 HOME_CONF=$HOME/.config/
 HOME_CACHE=$HOME/.cache/
+GO_CONF=${HOME_CONF}go/
 
 # perm
 CHROOT_LOCATION=${PERM_LOCATION}chroot
