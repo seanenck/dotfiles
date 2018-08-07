@@ -97,7 +97,7 @@ function set-user-files()
 
     # user tmp
     mkdir -p $USER_TMP
-    find $USER_TMP* -mtime +1 -type f -exec rm {} \;
+    find $USER_TMP* -mtime 1 -type f -exec rm {} \;
     find $USER_TMP -empty -type d -delete
 
     for f in $(find $USER_TMP -type f -mmin +30 | grep "dmenu"); do
