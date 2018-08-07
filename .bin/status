@@ -104,6 +104,14 @@ function git-changing()
     cd $cwd
 }
 
+function _partials()
+{
+    ps aux | grep python | grep -q workspaces
+    if [ $? -ne 0 ]; then
+        python $HOME/.bin/workspaces &
+    fi
+}
+
 function _up()
 {
     local result last t n res check

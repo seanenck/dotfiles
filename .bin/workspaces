@@ -2,15 +2,18 @@
 import subprocess
 import os
 import json
+import time
 
 
 def main():
     """Entry point."""
-    value = subprocess.check_output(["i3-msg", "-t", "get_tree"])
-    j = json.loads(value)
-    workspaces = _get_workspaces(j)
-    with open(os.devnull, 'w') as devnull:
-        _rename_workspaces(workspaces, devnull)
+    while True:
+        value = subprocess.check_output(["i3-msg", "-t", "get_tree"])
+        j = json.loads(value)
+        workspaces = _get_workspaces(j)
+        with open(os.devnull, 'w') as devnull:
+            _rename_workspaces(workspaces, devnull)
+        time.sleep(1)
 
 
 def uncurl(obj):
