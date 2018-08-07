@@ -104,16 +104,6 @@ function git-changing()
     cd $cwd
 }
 
-function _partials()
-{
-    local p
-    p=$(pidof workspacer)
-    if [ -z "$p" ]; then
-        echo "starting workspacer"
-        $GO_CONF/i3workspacer/workspacer &
-    fi
-}
-
 function _up()
 {
     local result last t n res check
@@ -165,7 +155,6 @@ function stats()
         if [ $_partial -lt 5 ]; then
             continue
         fi
-        _partials > /dev/null 2>&1
         _partial=0
         if [ $_last_git -eq 0 ]; then
             _git_cnt=0

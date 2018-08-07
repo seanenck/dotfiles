@@ -7,6 +7,7 @@ import (
 	"time"
 )
 func main() {
+	time.Sleep(3 * time.Second)
 	ipcsocket, err := i3ipc.GetIPCSocket()
 	if err != nil {
 		panic("unable to open socket")
