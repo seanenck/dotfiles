@@ -4,19 +4,15 @@ import (
 	"fmt"
 	"github.com/mdirkse/i3ipc"
 	"strings"
+	"time"
 )
 func main() {
 	ipcsocket, err := i3ipc.GetIPCSocket()
 	if err != nil {
 		panic("unable to open socket")
 	}
-	i3ipc.StartEventListener()
-	ws_events, err := i3ipc.Subscribe(i3ipc.I3WorkspaceEvent)
-	if err != nil {
-		panic("unable to subscribe")
-	}
 	for {
-	    <-ws_events
+		time.Sleep(1 * time.Second)
 		tree, err := ipcsocket.GetTree()
 		if err != nil {
 			continue
@@ -29,7 +25,9 @@ func main() {
 				text = strings.Join(names, ",")
 			}
 			ids := strings.Split(w.Name, ":")
-			fmt.Printf("%s:%s\n", ids[0], text)
+			text = fmt.Sprintf("%s:%s\n", ids[0], text)
+			cmd := fmt.Sprintf("rename workspace \"%s\" to \"%s\"", w.Name, text)
+			ipcsocket.Command(cmd)
 		}
 	}
 }

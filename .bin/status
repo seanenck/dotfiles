@@ -106,9 +106,10 @@ function git-changing()
 
 function _partials()
 {
-    ps aux | grep python | grep -q workspaces
-    if [ $? -ne 0 ]; then
-        python $HOME/.bin/workspaces &
+    local p
+    p=$(pidof workspacer)
+    if [ -z "$p" ]; then
+        $HOME/.config/go/i3workspacer/workspacer &
     fi
 }
 
