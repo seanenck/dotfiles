@@ -32,8 +32,10 @@ func main() {
 			if strings.HasSuffix(text, ":") {
 				text = text[0 : len(text)-1]
 			}
-			cmd := fmt.Sprintf("rename workspace \"%s\" to \"%s\"", w.Name, text)
-			ipcsocket.Command(cmd)
+			if w.Name != text {
+				cmd := fmt.Sprintf("rename workspace \"%s\" to \"%s\"", w.Name, text)
+				ipcsocket.Command(cmd)
+			}
 		}
 	}
 }
