@@ -6,22 +6,22 @@ REPO_PATH=${COMMON_STORE}Packages/
 ARCHIVE=$USER_TMP/profile.7z
 SPACING="    "
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
+TODAY=$(date +%Y-%m-%d)
+BACKUP=$PROFILE_TMP$TODAY
 
 function _backup()
 {
-    today=$(date +%Y-%m-%d)
-    backup=$PROFILE_TMP$today
-    if [ ! -e $backup ]; then
+    if [ ! -e $BACKUP ]; then
         if [ ! -e $ARCHIVE ]; then
             echo "zipping archive"
             7z a -t7z -bd $ARCHIVE $HOME/.cache/scratch/ $HOME/.mozilla/ &>/dev/null
             echo "zip completed: $?"
         fi
         echo "${SPACING}pushing profile out"
-        scp $ARCHIVE $BASE_SERVER:$PROFILE_PATH/mobile.$today.7z
+        scp $ARCHIVE $BASE_SERVER:$PROFILE_PATH/mobile.$TODAY.7z
         ssh $BASE_SERVER "find $PROFILE_PATH -type f -mtime +7 -exec rm {} \;"
         rm -f $ARCHIVE
-        touch $backup
+        touch $BACKUP
     fi
 }
 
