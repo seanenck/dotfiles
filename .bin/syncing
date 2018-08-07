@@ -9,24 +9,19 @@ SSH_AUTH_TMP=/tmp/ssh-auth.sock
 TODAY=$(date +%Y-%m-%d)
 BACKUP=$PROFILE_TMP$TODAY
 LOCAL_REPO=/opt/repo/
+GIT_SYNC=$USER_TMP/git.sync
+GIT_PREV=${GIT_SYNC}.prev
 
-function _backup()
+function _dobackup()
 {
-    if [ ! -e $BACKUP ]; then
-        if [ ! -e $ARCHIVE ]; then
-            echo "zipping archive"
-            7z a -t7z -bd $ARCHIVE $HOME/.cache/scratch/ $HOME/.mozilla/ &>/dev/null
-            echo "zip completed: $?"
-        fi
-        echo "${SPACING}pushing profile out"
-        scp $ARCHIVE $BASE_SERVER:$PROFILE_PATH/mobile.$TODAY.7z
-        ssh $BASE_SERVER "find $PROFILE_PATH -type f -mtime +7 -exec rm {} \;"
-        rm -f $ARCHIVE
-        touch $BACKUP
+    if [ -e "$BACKUP" ]; then
+        echo 0
+    else
+        echo 1
     fi
 }
 
-function _repository()
+function _dorepo()
 {
     local hashed prev hashfile
     prev=""
@@ -35,15 +30,82 @@ function _repository()
     if [ -e $hashfile ]; then
         prev=$(cat $hashfile)
     fi
-    if [[ "$hashed" != "$prev" ]]; then
-        rsync -avc --delete-after -e "ssh" $LOCAL_REPO $BASE_SERVER:$REPO_PATH | sed "s/^/$SPACING/g"
-        echo "$hashed" > $hashfile
+    if [[ "$hashed" == "$pref" ]]; then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
+function _backup()
+{
+    echo "daily backup"
+    if [ ! -e $ARCHIVE ]; then
+        echo "zipping archive"
+        7z a -t7z -bd $ARCHIVE $HOME/.cache/scratch/ $HOME/.mozilla/ &>/dev/null
+        echo "zip completed: $?"
+    fi
+    echo "${SPACING}pushing profile out"
+    scp $ARCHIVE $BASE_SERVER:$PROFILE_PATH/mobile.$TODAY.7z
+    ssh $BASE_SERVER "find $PROFILE_PATH -type f -mtime +7 -exec rm {} \;"
+    rm -f $ARCHIVE
+    touch $BACKUP
+}
+
+function _repository()
+{
+    echo "repository"
+    rsync -avc --delete-after -e "ssh" $LOCAL_REPO $BASE_SERVER:$REPO_PATH | sed "s/^/$SPACING/g"
+    echo "$hashed" > $hashfile
+}
+
+function _dogit()
+{
+    local d changes
+    echo "git" > $GIT_SYNC
+    for d in $(echo "$@"); do
+        git -C "$d" log --pretty=format:'%h' -n 1 >> $GIT_SYNC
+        echo ": $d" >> $GIT_SYNC
+    done
+    changes=1
+    if [ -e "$GIT_PREV" ]; then
+        diff -u $GIT_PREV $GIT_SYNC > /dev/null
+        if [ $? -eq 0 ]; then
+            changes=0
+        fi
+    fi
+    echo $changes
+}
+
+function _gitpush()
+{
+    echo "syncing..."
+    for d in $(echo "$@"); do
+        echo "$d"
+        git -C "$d" push 2>&1 | sed "s/^/$SPACING/g"
+    done
+    if [ -e $GIT_SYNC ]; then
+        mv $GIT_SYNC $GIT_PREV
     fi
 }
 
 function sync-now()
 {
-    local dirs
+    local dirs pushgit pushrepo pushbackup
+    dirs=$(ls ${PERM_LOCATION} | grep $PERM_PERSONAL | sed "s#^#$PERM_LOCATION#g")
+    dirs="$dirs ${SYNCED_PATH} /etc"
+    pushgit=$(_dogit "$dirs" | tail -n 1)
+    pushrepo=$(_dorepo | tail -n 1)
+    pushbackup=$(_dobackup | tail -n 1)
+    echo "status (git: $pushgit, repo: $pushrepo, zip: $pushbackup)"
+    if [ $pushgit -eq 0 ]; then
+        if [ $pushrepo -eq 0 ]; then
+            if [ $pushbackup -eq 0 ]; then
+                echo "noop"
+                exit 0
+            fi
+        fi
+    fi
     auth=$(cat $SSH_AUTH_TMP)
     export SSH_AUTH_SOCK=$auth
     available=$(test-ssh $BASE_SERVER)
@@ -53,18 +115,16 @@ function sync-now()
     echo "checked for connection...$available"
     if [ $available -eq $IS_CONNECTED ]; then
         if [ -e $SSH_AUTH_TMP ]; then
-            echo "syncing..."
-            dirs=$(ls ${PERM_LOCATION} | grep $PERM_PERSONAL | sed "s#^#$PERM_LOCATION#g")
-            dirs="$dirs ${SYNCED_PATH} /etc"
-            for d in $(echo $dirs); do
-                echo "$d"
-                git -C "$d" push 2>&1 | sed "s/^/$SPACING/g"
-            done
-            echo "daily backup"
-            _backup
+            if [ $pushgit -eq 1 ]; then
+                _gitpush "$dirs"
+            fi
+            if [ $pushbackup -eq 1 ]; then
+                _backup
+            fi
+            if [ $pushrepo -eq 1 ]; then
+                _repository
+            fi
             update-stat $USER_SYNC
-            echo "repository"
-            _repository
         else
             echo "ssh agent unavailable"
         fi
