@@ -27,6 +27,9 @@ func main() {
 			}
 			ids := strings.Split(w.Name, ":")
 			text = fmt.Sprintf("%s:%s", ids[0], text)
+			if strings.HasSuffix(text, ":") {
+				text = text[0:len(text)-1]
+			}
 			cmd := fmt.Sprintf("rename workspace \"%s\" to \"%s\"", w.Name, text)
 			ipcsocket.Command(cmd)
 		}
