@@ -8,6 +8,7 @@ SPACING="    "
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 TODAY=$(date +%Y-%m-%d)
 BACKUP=$PROFILE_TMP$TODAY
+LOCAL_REPO=/opt/repo/
 
 function _backup()
 {
@@ -27,7 +28,17 @@ function _backup()
 
 function _repository()
 {
-    rsync -avc --delete-after -e "ssh" /opt/repo/ $BASE_SERVER:$REPO_PATH | sed "s/^/$SPACING/g"
+    local hashed prev hashfile
+    prev=""
+    hashed=$(sha256sum ${LOCAL_REPO}* | cut -d " " -f 1 | sort | sha256sum | cut -d " " -f 1)
+    hashfile=$USER_TMP/localrepo
+    if [ -e $hashfile ]; then
+        prev=$(cat $hashfile)
+    fi
+    if [[ "$hashed" != "$prev" ]]; then
+        rsync -avc --delete-after -e "ssh" $LOCAL_REPO $BASE_SERVER:$REPO_PATH | sed "s/^/$SPACING/g"
+        echo "$hashed" > $hashfile
+    fi
 }
 
 function sync-now()
