@@ -14,6 +14,7 @@ func main() {
 	if err != nil {
 		panic("unable to open socket")
 	}
+	prev := make(map[string]struct{})
 	for {
 		time.Sleep(1 * time.Second)
 		tree, err := ipcsocket.GetTree()
