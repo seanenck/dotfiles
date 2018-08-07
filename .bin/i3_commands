@@ -14,7 +14,7 @@ function stats()
         else
             last="$d"
         fi
-        echo "$d $line |" || exit 1
+        echo "$d $line" || exit 1
     done
 }
 
