@@ -104,16 +104,6 @@ function git-changing()
     cd $cwd
 }
 
-function _workspaces()
-{
-    python $HOME/.bin/workspaces
-}
-
-function _partials()
-{
-    _workspaces
-}
-
 function _up()
 {
     local result last t n res check
