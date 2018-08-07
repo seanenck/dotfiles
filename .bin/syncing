@@ -11,6 +11,8 @@ BACKUP=$PROFILE_TMP$TODAY
 LOCAL_REPO=/opt/repo/
 GIT_SYNC=$USER_TMP/git.sync
 GIT_PREV=${GIT_SYNC}.prev
+REPO_HASH=$USER_TMP/repo.hash
+REPO_PREV=$REPO_HASH.prev
 
 function _dobackup()
 {
@@ -23,14 +25,13 @@ function _dobackup()
 
 function _dorepo()
 {
-    local hashed prev hashfile
+    local hashed prev
     prev=""
     hashed=$(sha256sum ${LOCAL_REPO}* | cut -d " " -f 1 | sort | sha256sum | cut -d " " -f 1)
-    hashfile=$USER_TMP/localrepo
-    if [ -e $hashfile ]; then
-        prev=$(cat $hashfile)
+    if [ -e $REPO_PREV ]; then
+        prev=$(cat $REPO_PREV)
     fi
-    if [[ "$hashed" == "$pref" ]]; then
+    if [[ "$hashed" == "$prev" ]]; then
         echo 0
     else
         echo 1
@@ -56,7 +57,9 @@ function _repository()
 {
     echo "repository"
     rsync -avc --delete-after -e "ssh" $LOCAL_REPO $BASE_SERVER:$REPO_PATH | sed "s/^/$SPACING/g"
-    echo "$hashed" > $hashfile
+    if [ -e $REPO_HASH ]; then
+        mv $REPO_HASH $REPO_PREV
+    fi
 }
 
 function _dogit()
