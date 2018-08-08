@@ -11,7 +11,7 @@ xorg
 base-devel
 "
 BOOTED=/tmp/user.booted-$(uptime -s | sed "s/ /-/g;s/:/-/g")
-hourly_check=$USER_TMP/maintain.hourly.$(date +%Y-%m-%d-%H)
+hourly_check=$USER_TMP/.maintain.hourly.$(date +%Y-%m-%d-%H)
 if [ ! -e $BOOTED ]; then
     echo "booting up..."
     rm -f $hourly_check
