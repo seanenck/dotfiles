@@ -79,7 +79,7 @@ bar {
 
 exec --no-startup-id subsystem workspaces 1
 exec --no-startup-id dunst -conf /home/enck/.config/dunst
-exec --no-startup-id /home/enck/.config/go/i3workspacer/workspacer
+exec --no-startup-id /home/enck/.bin/workspacer
 
 # Handle auto-locking
 exec xautolock -time 5 -locker "/usr/local/bin/locking auto" &

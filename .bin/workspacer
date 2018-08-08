@@ -1,0 +1,8 @@
+#!/bin/bash
+while [ 1 -eq 1 ]; do
+    sleep 3
+    p=$(pidof workspacer)
+    if [ -z "$p" ]; then
+        $HOME/.config/go/i3workspacer/workspacer &
+    fi
+done
