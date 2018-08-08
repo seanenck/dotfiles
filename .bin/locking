@@ -87,8 +87,9 @@ function suspend-now()
                 write-log "sleeping..."
                 SLEEP_COUNT=0
                 slept=1
-                systemctl suspend
                 pkill vlc
+                pkill workspacer
+                systemctl suspend
                 break
             fi
             sleep 1
