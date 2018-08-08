@@ -197,36 +197,6 @@ function enterkeys()
     fi
 }
 
-function _push-pull-git-fxn()
-{
-    local is_avail cpwd f f_name
-    is_avail=$(test-ssh $BASE_SERVER)
-    cpwd=$PWD
-    for f_name in $(_get-perm-objs); do
-        f=$(basename $f_name)
-        if [[ $f == *${PERM_PERSONAL}* ]]; then
-            continue
-        fi
-        cd $f_name
-        echo "$1: $f"
-        git $2
-        echo
-    done
-    cd $cpwd
-}
-
-function perm-pull()
-{
-    _push-pull-git-fxn "update" "pull"
-    update-stat $PERM_PULL
-}
-
-function perm-push()
-{
-    _push-pull-git-fxn "push" "push"
-    update-stat $PERM_PUSH
-}
-
 function _github-commit()
 {
     local _hash commit
