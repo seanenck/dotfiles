@@ -1,12 +1,11 @@
 #!/bin/bash
-source $HOME/.bin/common
-NETWORKS=$SYNCED_PATH/network/
-CACHED=$HOME/.cache/networking
+NETWORKS=/etc/networks/
+CACHED=/var/cache/network
 LIST_KEY="list"
 HELP_KEY="help"
 
 _iplink() {
-    sudo ip link set $1 $2
+    ip link set $1 $2
     echo "setting $1 -> $2"
 }
 
@@ -15,17 +14,16 @@ _connect() {
     flags=""
     device=$(echo "$1" | cut -d "/" -f 1)
     conf=$NETWORKS$1.conf
-    sudo pkill wpa_supplicant
+    pkill wpa_supplicant
     _iplink "$device" "up"
     echo "$device" | grep -q "^e"
     if [ $? -eq 0 ]; then
         flags="-D wired"
     fi
     if [ -e $conf ]; then
-        echo "$1" > $CACHED
         if [ -s $conf ]; then
             echo "running supplicant"
-            sudo /usr/bin/wpa_supplicant -c $conf -i $device -B $flags
+            /bin/bash -c "/usr/bin/wpa_supplicant -c $conf -i $device $flags"
         fi
     fi
     echo "connected: $1"
@@ -33,9 +31,6 @@ _connect() {
 
 networks=$(find $NETWORKS -type f | sed "s#$NETWORKS##g" | sed "s/\.conf//g" | tr '\n' ' ')
 action=$1
-if [ -z "$1" ]; then
-    action="$HELP_KEY"
-fi
 case $action in
     "$HELP_KEY")
         echo "$networks $HELP_KEY $LIST_KEY $RELOAD_KEY" | sort
@@ -46,12 +41,17 @@ case $action in
     *)
         echo "$networks" | tr ' ' '\n' | grep -q "$action"
         if [ $? -eq 0 ]; then
-            for a in $(echo "$networks" | tr ' ' '\n' | cut -d "/" -f 1 | sort -u); do
-                _iplink "$a" "down"
-            done
-            _connect "$1"
+            if [ ! -z "$action" ]; then
+                echo "$action" > $CACHED
+            fi
         else
-            echo "unknown network: $action"
+            if [ -e $CACHED ]; then
+                for a in $(echo "$networks" | tr ' ' '\n' | cut -d "/" -f 1 | sort -u); do
+                    _iplink "$a" "down"
+                done
+                last=$(cat $CACHED)
+                _connect $last
+            fi
         fi
         ;;
 esac
