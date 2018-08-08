@@ -1,0 +1,9 @@
+[Unit]
+Description=Setup network auth
+
+[Path]
+PathChanged=/var/cache/networkill
+
+[Install]
+WantedBy=default.target
+

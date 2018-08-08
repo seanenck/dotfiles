@@ -1,0 +1,6 @@
+[Unit]
+Description=Perform network auth
+
+[Service]
+Type=oneshot
+ExecStart=/home/enck/.bin/network reload
