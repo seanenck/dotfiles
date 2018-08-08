@@ -44,7 +44,7 @@ function _dmenuwrapper() {
     fi
     available="$APPS "$(ls $CACHE_DIR)
     available=$(echo $available)
-    results=$(echo "$available" | tr ' ' '\n' | sort -u | dmenu "$@")
+    results=$(echo "$available" | tr ' ' '\n' | sort | dmenu "$@")
     file="$CACHE_DIR/$results"
     if [ -e "$file" ]; then
         _dmenucall $(cat $file)
