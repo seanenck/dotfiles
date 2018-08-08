@@ -3,6 +3,4 @@ Description=Perform network auth
 
 [Service]
 Type=oneshot
-ExecStartPre=/usr/bin/pkill wpa_supplicant
-ExecStartPre=/usr/bin/sleep 3
-ExecStart=/usr/bin/touch /var/cache/networkill
+ExecStart=/home/enck/.bin/network exit
