@@ -1,8 +1,51 @@
 #!/bin/bash
 source $HOME/.bin/common
-$HOME/.bin/dmenu-wrapper \
-    --browser "/usr/bin/firefox" \
-    --list "vlc pavucontrol passwords" \
-    --temp "$USER_TMP" \
-    --urls "${SYNCED_CONF}urls.csv" \
-    "$@"
+CACHE_DIR=$HOME/.cache/dmenurls/
+URLS=$SYNCED_PATH/configs/urls.csv
+BROWSER="/usr/bin/firefox"
+HASHED=$USER_TMP/.dmenu_urls
+APPS="vlc pavucontrol passwords"
+
+function _dmenuwrapper() {
+    local available results urls u name url params group file hashed prev
+    hashed=$(sha256sum $URLS | cut -d " " -f 1)
+    prev=""
+    if [ -e $HASHED ]; then
+        prev=$(cat $HASHED)
+    fi
+    echo "$hashed" > $HASHED
+    if [[ "$hashed" != "$prev" ]]; then
+        urls=""
+        for u in $(cat $URLS | sed 's/"//g'); do
+            name=$(echo "$u" | cut -d "," -f 1)
+            file="$CACHE_DIR$name"
+            url=$(echo "$u" | cut -d "," -f 2)
+            params=$(echo "$u" | cut -d "," -f 3)
+            group=$(echo "$u" | cut -d "," -f 4)
+            if [ ! -e $file ]; then
+                echo "$BROWSER $params $url" > $file
+            fi
+            if [ ! -z "$group" ]; then
+                file=$CACHE_DIR$group
+                if [ -e $file ]; then
+                    group=$(cat $file)
+                    group="$group $url"
+                    echo "$group" > $file
+                else
+                    echo "$BROWSER $url" > $file
+                fi
+            fi
+        done
+    fi
+    available="$APPS "$(ls $CACHE_DIR)
+    available=$(echo $available)
+    results=$(echo "$available" | tr ' ' '\n' | sort -u | dmenu "$@")
+    file=$CACHE_DIR/$results
+    if [ -e $file ]; then
+        cat $file | ${SHELL:-"/bin/sh" }
+        exit 0
+    fi
+    echo "$results" | ${SHELL:-"/bin/sh" }
+}
+
+_dmenuwrapper "$@"
