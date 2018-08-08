@@ -88,7 +88,6 @@ function suspend-now()
                 SLEEP_COUNT=0
                 slept=1
                 pkill vlc
-                pkill workspacer
                 systemctl suspend
                 break
             fi

@@ -9,6 +9,13 @@ import (
 )
 
 func main() {
+	for {
+		run()
+		time.Sleep(5 * time.Second)
+	}
+}
+
+func run() {
 	ipcsocket, err := i3ipc.GetIPCSocket()
 	if err != nil {
 		panic("unable to open socket")
