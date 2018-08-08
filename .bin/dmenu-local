@@ -5,6 +5,7 @@ URLS=$SYNCED_PATH/configs/urls.csv
 BROWSER="/usr/bin/firefox"
 HASHED=$USER_TMP/.dmenu_urls
 APPS="vlc pavucontrol passwords"
+AVAILABLE="$USER_TMP/.dmenu_available"
 
 function _dmenucall() {
     echo "$@" | ${SHELL:-"/bin/sh" }
@@ -12,25 +13,31 @@ function _dmenucall() {
 }
 
 function _dmenuwrapper() {
-    local available results urls u name url params group file hashed prev
+    local results urls u name url params group file hashed prev names
     hashed=$(sha256sum $URLS | cut -d " " -f 1)
     prev=""
-    if [ -e $HASHED ]; then
-        prev=$(cat $HASHED)
+    if [ -e "$AVAILABLE" ]; then
+        if [ $(ls $CACHE_DIR | wc -l) -gt 0 ]; then
+            if [ -e $HASHED ]; then
+                prev=$(cat $HASHED)
+            fi
+        fi
     fi
     echo "$hashed" > $HASHED
     if [[ "$hashed" != "$prev" ]]; then
         urls=""
+        names="$APPS"
+        rm -f $CACHE_DIR*
         for u in $(cat $URLS | sed 's/"//g'); do
             name=$(echo "$u" | cut -d "," -f 1)
             file="$CACHE_DIR$name"
             url=$(echo "$u" | cut -d "," -f 2)
             params=$(echo "$u" | cut -d "," -f 3)
             group=$(echo "$u" | cut -d "," -f 4)
-            if [ ! -e $file ]; then
-                echo "$BROWSER $params $url" > $file
-            fi
+            names="$names $name"
+            echo "$BROWSER $params $url" > $file
             if [ ! -z "$group" ]; then
+                names="$names $group"
                 file=$CACHE_DIR$group
                 if [ -e $file ]; then
                     group=$(cat $file)
@@ -41,10 +48,10 @@ function _dmenuwrapper() {
                 fi
             fi
         done
+        names=$(echo $names)
+        echo "$names" | tr ' ' '\n' | sort -u > $AVAILABLE
     fi
-    available="$APPS "$(ls $CACHE_DIR)
-    available=$(echo $available)
-    results=$(echo "$available" | tr ' ' '\n' | sort | dmenu "$@")
+    results=$(cat $AVAILABLE | dmenu "$@")
     file="$CACHE_DIR/$results"
     if [ -e "$file" ]; then
         _dmenucall $(cat $file)
