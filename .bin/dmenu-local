@@ -40,12 +40,20 @@ function _dmenuwrapper() {
     available="$APPS "$(ls $CACHE_DIR)
     available=$(echo $available)
     results=$(echo "$available" | tr ' ' '\n' | sort -u | dmenu "$@")
-    file=$CACHE_DIR/$results
-    if [ -e $file ]; then
+    file="$CACHE_DIR/$results"
+    if [ -e "$file" ]; then
         cat $file | ${SHELL:-"/bin/sh" }
         exit 0
     fi
-    echo "$results" | ${SHELL:-"/bin/sh" }
+    echo "$APPS" | tr ' ' '\n' | grep -q "^$results$"
+    if [ $? -eq 0 ]; then
+        echo "$results" | ${SHELL:-"/bin/sh" }
+        exit 0
+    fi
+    results=$(echo "$results" | sed "s/^search //g")
+    results=$(echo $results)
+    results="$(perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$results")"
+    echo "$BROWSER https://www.duckduckgo.com/?q=$results" | ${SHELL:-"/bin/sh" }
 }
 
 _dmenuwrapper "$@"
