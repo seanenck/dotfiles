@@ -17,7 +17,7 @@ func main() {
 		time.Sleep(1 * time.Second)
 		tree, err := ipcsocket.GetTree()
 		if err != nil {
-			continue
+			return
 		}
 		workspaces := tree.Workspaces()
 		for _, w := range workspaces {
