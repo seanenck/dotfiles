@@ -7,7 +7,6 @@ BindReadOnly=/root/.gnupg
 BindReadOnly=/home/enck/.gnupg
 Bind=/var/cache/pacman
 Bind=/etc/makepkg.conf
-Bind=/opt/repo/
 
 Bind=/home/enck/.gitconfig
 Bind=/home/enck/.gitconfig:/root/.gitconfig
@@ -21,3 +20,4 @@ Bind=/home/enck/.vim:/root/.vim
 Bind=/home/enck/.vimrc:/root/.vimrc
 Bind=/home/enck/.config/home/startup.sh:/etc/profile.d/startup.sh
 Bind=/home/enck/.config/go
+Bind=/home/enck/.cache/repo/
