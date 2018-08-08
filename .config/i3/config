@@ -9,7 +9,7 @@ bindsym $mod+S exec i3_commands auto-clip
 # kill focused window
 bindsym $mod+Shift+q kill
 
-bindsym $mod+d exec dmenu-local -i -fn "-*-terminal-medium-*-*-*-18-*-*-*-*-*-*-*"
+bindsym $mod+d exec dmenu-local -i -l 10 -fn "-*-terminal-medium-*-*-*-18-*-*-*-*-*-*-*"
 
 # Moving and focusing containers
 bindsym $mod+Left focus left
