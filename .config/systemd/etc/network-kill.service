@@ -3,4 +3,4 @@ Description=Perform network auth
 
 [Service]
 Type=oneshot
-ExecStart=/home/enck/.bin/network exit
+ExecStart=/home/enck/.config/systemd/etc/network exit

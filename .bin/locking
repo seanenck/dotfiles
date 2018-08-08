@@ -1,6 +1,7 @@
 #!/bin/bash
 source $HOME/.bin/common
 source $HOME/.bin/subsystem
+source $HOME/.bin/network
 SUSP_KEYWORD="sleep"
 TGL_KEYWORD="toggle"
 AUTO_KEYWORD="auto"
@@ -102,7 +103,7 @@ function suspend-now()
             force-display-on
         fi
         write-log "done sleeping"
-        touch /var/cache/network
+        touch $NETWORK_KILL
     fi
 }
 

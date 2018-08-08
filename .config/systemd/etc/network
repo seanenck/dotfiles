@@ -1,0 +1,47 @@
+#!/bin/bash
+source /home/enck/.bin/network
+CACHED=$NETWORK_CACHE
+
+_iplink() {
+    ip link set $1 $2
+    echo "setting $1 -> $2"
+}
+
+_connect() {
+    local conf device flags
+    flags=""
+    device=$(echo "$1" | cut -d "/" -f 1)
+    conf=$NETWORKS$1.conf
+    pkill wpa_supplicant
+    _iplink "$device" "up"
+    echo "$device" | grep -q "^e"
+    if [ $? -eq 0 ]; then
+        flags="-D wired"
+    fi
+    if [ -e $conf ]; then
+        if [ -s $conf ]; then
+            echo "running supplicant"
+            /bin/bash -c "/usr/bin/wpa_supplicant -c $conf -i $device $flags"
+        fi
+    fi
+    echo "connected: $1"
+}
+
+networks=$(_get-networks)
+action=$1
+case $action in
+    "exit")
+        pkill wpa_supplicant
+        sleep 3
+        touch $NETWORK_KILL
+        ;;
+    "reload")
+        if [ -e $CACHED ]; then
+            for a in $(echo "$networks" | tr ' ' '\n' | cut -d "/" -f 1 | sort -u); do
+                _iplink "$a" "down"
+            done
+            last=$(cat $CACHED)
+            _connect $last
+        fi
+        ;;
+esac

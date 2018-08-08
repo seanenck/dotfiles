@@ -2,7 +2,7 @@
 Description=Setup network auth
 
 [Path]
-PathChanged=/var/cache/network
+PathChanged=/home/enck/.cache/network
 
 [Install]
 WantedBy=default.target
