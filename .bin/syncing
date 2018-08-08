@@ -105,7 +105,6 @@ function sync-now()
     if [ $pushgit -eq 0 ]; then
         if [ $pushrepo -eq 0 ]; then
             if [ $pushbackup -eq 0 ]; then
-                echo "noop"
                 exit 0
             fi
         fi
