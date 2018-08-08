@@ -81,15 +81,6 @@ function last-done()
     fi
 }
 
-function check-timed-events()
-{
-    local f
-    echo "checking timed events"
-    for f in $(echo "$USER_SYNC $PERM_PUSH $PERM_PULL"); do
-        last-done $f | systemd-cat -p err -t "maintain"
-    done
-}
-
 function set-user-files()
 {
     local f v running vim_dir
@@ -167,7 +158,15 @@ function daily()
             rm -f $xsess
         fi
         process-logs
-        check-timed-events
+        check-syncing
+    fi
+}
+
+function check-syncing()
+{
+    journalctl -t sync --since "7 days ago" | grep -q "local sync completed"
+    if [ $? -ne 0 ]; then
+        echo "no reset successful syncs" | systemd-cat -p err -t "maintain"
     fi
 }
 

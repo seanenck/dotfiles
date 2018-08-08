@@ -128,7 +128,7 @@ function sync-now()
             if [ $pushrepo -eq 1 ]; then
                 _repository
             fi
-            update-stat $USER_SYNC
+            echo "local sync completed"
         else
             echo "ssh agent unavailable"
         fi
