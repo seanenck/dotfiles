@@ -25,6 +25,15 @@ sbh() {
     fi
 }
 
+git-update-all() {
+    for f in $(find . -maxdepth 1 -type d); do
+        if [ -d "$f/.git" ]; then
+            echo "updating $f"
+            git -C $f pull
+        fi
+    done
+}
+
 _turnoff() {
     local virt prefix
     virt=$(systemd-detect-virt)
