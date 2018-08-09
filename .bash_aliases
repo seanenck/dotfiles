@@ -25,13 +25,21 @@ sbh() {
     fi
 }
 
-git-update-all() {
+_git-all() {
     for f in $(find . -maxdepth 1 -type d); do
         if [ -d "$f/.git" ]; then
             echo "updating $f"
-            git -C $f pull
+            git -C $f $1
         fi
     done
+}
+
+git-pull-all() {
+    _git-all pull
+}
+
+git-push-all() {
+    _git-all push
 }
 
 _turnoff() {
