@@ -1,9 +1,0 @@
-[Unit]
-Description=Setup network auth
-
-[Path]
-PathChanged=/home/enck/.cache/network.pid
-
-[Install]
-WantedBy=default.target
-

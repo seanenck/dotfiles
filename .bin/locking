@@ -103,7 +103,7 @@ function suspend-now()
             force-display-on
         fi
         write-log "done sleeping"
-        touch $NETWORK_KILL
+        wsw reload
     fi
 }
 
