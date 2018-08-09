@@ -208,7 +208,7 @@ function github-releases()
     for u in $(echo "enckse epiphyte"); do
         _file=$USER_TMP/repos.$u
         curl -s "https://api.github.com/search/repositories?q=user:$u+pushed:%3E=$last&sort=updated" | grep "clone_url" | cut -d ":" -f 2,3 | sed 's/"//g;s/ //g;s/,//g' > $_file
-        for r in $(cat $_file | sort | grep -v -E "https://github.com/(enckse|epiphyte)/(home|batchy).git"); do
+        for r in $(cat $_file | sort | grep -v -E "https://github.com/(enckse|epiphyte)/home.git"); do
             tag=$(_github-commit "tags" $r)
             if [ ! -z "$tag" ]; then
                 head=$(_github-commit "head" $r)
