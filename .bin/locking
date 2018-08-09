@@ -101,9 +101,9 @@ function suspend-now()
         done
         if [ $slept -gt 0 ]; then
             force-display-on
+            wsw reload
         fi
         write-log "done sleeping"
-        wsw reload
     fi
 }
 
