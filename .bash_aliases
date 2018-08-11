@@ -3,6 +3,7 @@ alias clip="xclip -selection 'clip-board'"
 alias nano="vim"
 alias notes="vim notes"
 alias pacman="sudo pacman"
+alias pacman-local="sudo pacman-local"
 alias tree='tree -J | python -c "import sys, json; print(json.dumps(json.loads(sys.stdin.read()), indent=1, sort_keys=True, separators=(\",\", \":\")))"'
 alias vi="echo 'nonono -> vim'"
 alias diff="diff -u"
