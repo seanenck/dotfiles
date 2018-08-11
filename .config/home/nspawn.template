@@ -6,6 +6,7 @@ Bind=/home/enck/store
 BindReadOnly=/root/.gnupg
 BindReadOnly=/home/enck/.gnupg
 Bind=/var/cache/pacman
+Bind=/etc/pacman.d/pacman-local.d/
 Bind=/etc/makepkg.conf
 
 Bind=/home/enck/.gitconfig
