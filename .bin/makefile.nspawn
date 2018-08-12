@@ -17,7 +17,7 @@ CONTAINER_ETC     := $(CONTAINER_PATH)etc/
 # package settings
 PACKAGES          := base-devel python git metaphyte-containers termite-terminfo go-pie gtk2 noto-fonts go-tools dep python-pycodestyle python-pydocstyle
 IGNORES           := --ignore linux --ignore nano --ignore linux-firmware --ignore lvm2
-PACMAN_INPUTS     :="Y"
+PACMAN_INPUTS     :="\nY"
 
 PACMAN            := pacman.conf
 ETC_PACMAN        := etc/$(PACMAN)
