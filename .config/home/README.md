@@ -73,6 +73,5 @@ as root, networking and reboot
 ```
 systemctl enable systemd-networkd
 systemctl enable wsw
-systemctl enable fstrim.timer
 reboot
 ```
