@@ -20,7 +20,7 @@ if [ ! -e $BOOTED ]; then
         fname=${MY_HOME}$f
         files="$files $fname"
     done
-    files="$files "$(echo "$DISPLAY_UN $DISPLAY_EN $SND_MUTE $NET_SLEEP $PKG_QUERY")
+    files="$files "$(echo "$DISPLAY_UN $DISPLAY_EN $NET_SLEEP $PKG_QUERY")
     files="$files "$(find $USER_TMP -type f | grep "${PROFILE_TMP}")
     for f in $(echo "$files"); do
         if [ -e "$f" ]; then
