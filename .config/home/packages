@@ -50,14 +50,12 @@ less
 libtool
 licenses
 linux
-linux-lts
 logrotate
 lvm2
 m4
 make
 man-db
 man-pages
-mdadm
 metaphyte-admins
 mkinitcpio-validate
 nftables
@@ -87,7 +85,6 @@ psmisc
 pulseaudio
 pwgen
 python-markdown
-reiserfsprogs
 rsync
 s-nail
 sed
