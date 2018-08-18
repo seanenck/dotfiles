@@ -31,11 +31,9 @@ firefox-developer-edition
 flex
 gawk
 gcc
-gcc-libs
 gconf
 gettext
 git
-glibc
 grep
 gsfonts
 gzip
