@@ -6,7 +6,6 @@ PKG_QUERY=$USER_TMP/package.query
 PACKAGE_SET=${CONF_HOME}/packages
 WEECHAT_PLUGINS=${USER_TMP}/weechat.plugins
 PACKAGE_GROUPS="
-i3
 xorg
 base-devel
 "
