@@ -77,6 +77,7 @@ if [ -e "$PRIV_CONF" ]; then
     done
 fi
 
+# sbh implementation
 function _history-tree()
 {
     source $HOME/.bin/common
