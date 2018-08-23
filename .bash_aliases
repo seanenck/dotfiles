@@ -15,12 +15,6 @@ sbh() {
         _search=""
         if [ ! -z "$1" ]; then
             _search="$@"
-        fi
-        if [ -z "$_search" ]; then
-            for f in $(ls $_cached -t | tac ); do
-                cat $_cached$f
-            done
-        else
             cat ${_cached}* | grep -E "$_search"
         fi
     fi
