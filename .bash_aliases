@@ -15,8 +15,21 @@ sbh() {
         _search=""
         if [ ! -z "$1" ]; then
             _search="$@"
-            cat ${_cached}* | grep -E "$_search"
+            cat ${_cached}* | grep -E "$_search" | awk '{printf "%s %s\n", i++".", $0}' | tee $SBH_LAST
         fi
+    fi
+}
+
+sbh-last() {
+    local cmd grepping
+    source $HOME/.bin/common
+    if [ -s $SBH_LAST ]; then
+        grepping=""
+        if [ ! -z "$1" ]; then
+            grepping="^$1\."
+        fi
+        cmd=$(cat $SBH_LAST | grep "$grepping" | tail -n 1 | cut -d " " -f 2-)
+        eval $cmd
     fi
 }
 

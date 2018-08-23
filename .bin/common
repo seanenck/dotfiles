@@ -41,6 +41,7 @@ USER_JOURNAL=$USER_TMP/journal.log
 # sbh
 SBH_LOCK=$USER_TMP/.sbhlock
 SBH_STORE=${HOME_CACHE}sbh/
+SBH_LAST=${USER_TMP}/.sbhlast
 
 function mute()
 {
