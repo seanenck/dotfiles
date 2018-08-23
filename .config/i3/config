@@ -90,7 +90,7 @@ bindsym $mod+Shift+o exec subsystem workspaces 2
 
 # Locking handlers
 bindsym $mod+Shift+x exec locking toggle 
-bindsym $mod+Shift+l exec locking auto 
+bindsym $mod+Shift+l exec locking lock 
 bindsym $mod+Shift+s exec locking sleep
 
 # Sound

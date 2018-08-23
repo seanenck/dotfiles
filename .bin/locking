@@ -1,11 +1,10 @@
 #!/bin/bash
 source $HOME/.bin/common
 source $HOME/.bin/subsystem
-source $HOME/.bin/network
 SUSP_KEYWORD="sleep"
 TGL_KEYWORD="toggle"
 AUTO_KEYWORD="auto"
-FORCE_KEYWORD="force"
+LOCK_KEYWORD="lock"
 SLEEP_AFTER=600
 
 function write-log()
@@ -21,10 +20,6 @@ function get-i3lock()
 function lock-now()
 {
     local PID IRC
-    if [ ! -z "$1" ] && [[ "$1" == $FORCE_KEYWORD ]]; then
-        write-log "force-lock:$1"
-        rm -f $DISPLAY_UN
-    fi
     if [ ! -e $DISPLAY_UN ]; then
         write-log "going to lock"
         PID=$(get-i3lock)
@@ -62,13 +57,7 @@ function lock-now()
 
 function suspend-now()
 {
-    local pass_keyword SLEEP_COUNT PID slept
-    pass_keyword=""
-    if [ -z "$1" ]; then
-        write-log "forcing"
-        pass_keyword=$FORCE_KEYWORD
-    fi
-    lock-now "$pass_keyword" &
+    local SLEEP_COUNT PID slept
     if [ ! -e $DISPLAY_UN -a ! -e $DISPLAY_EN ]; then
         mute
         rm -f $PROFILE_DEF
@@ -107,11 +96,6 @@ function suspend-now()
     fi
 }
 
-function auto-lock-suspend()
-{
-    suspend-now "auto"
-}
-
 function toggle-locking()
 {
     local no_action
@@ -144,14 +128,22 @@ function print-help()
 }
 
 case $1 in
-    $SUSP_KEYWORD)
-        suspend-now
-        ;;
     $TGL_KEYWORD)
         toggle-locking
         ;;
-    $AUTO_KEYWORD)
-        auto-lock-suspend
+    $AUTO_KEYWORD | $SUSP_KEYWORD)
+        if [[ "$1" == "$SUSP_KEYWORD" ]]; then
+            if [ -e $DISPLAY_UN ]; then
+                notify-send System "overriding unlock"
+                sleep 5
+                rm -f $DISPLAY_UN
+            fi
+        fi
+        lock-now &
+        suspend-now
+        ;;
+    $LOCK_KEYWORD)
+        lock-now
         ;;
     *)
         print-help
