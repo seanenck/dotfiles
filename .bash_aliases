@@ -7,32 +7,6 @@ alias pacman-local="sudo pacman-local"
 alias tree='tree -J | python -c "import sys, json; print(json.dumps(json.loads(sys.stdin.read()), indent=1, sort_keys=True, separators=(\",\", \":\")))"'
 alias vi="echo 'nonono -> vim'"
 alias diff="diff -u"
-sbh() {
-    source $HOME/.bin/common
-    local _search _cached
-    _cached=$SBH_STORE
-    if [ -d $_cached ]; then
-        _search=""
-        if [ ! -z "$1" ]; then
-            _search="$@"
-            cat ${_cached}* | grep -E "$_search" | awk '{printf "%s %s\n", i++".", $0}' | tee $SBH_LAST
-        fi
-    fi
-}
-
-sbh-last() {
-    local cmd grepping
-    source $HOME/.bin/common
-    if [ -s $SBH_LAST ]; then
-        grepping=""
-        if [ ! -z "$1" ]; then
-            grepping="^$1\."
-        fi
-        cmd=$(cat $SBH_LAST | grep "$grepping" | tail -n 1 | cut -d " " -f 2-)
-        eval $cmd
-    fi
-}
-
 _git-all() {
     for f in $(find . -maxdepth 1 -type d); do
         if [ -d "$f/.git" ]; then
