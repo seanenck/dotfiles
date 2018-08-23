@@ -1,7 +1,41 @@
 #!/bin/bash
 source $HOME/.bin/common
 
-_search() {
+_sbh-write() {
+    local last chr path lck
+    lck=$SBH_LOCK
+    path="$SBH_STORE"
+    if [ ! -d "$path" ]; then
+        mkdir -p $path
+    fi
+    last=$(fc -ln 1 | tail -n 1 | sed "1s/^[[:space:]]*//")
+    if [ ! -z "$last" ]; then
+        chr=${last::1}
+        chr=$(echo "$chr" | tr '[:upper:]' '[:lower:]')
+        if [[ "$chr" =~ [^a-z0-9] ]]; then
+            chr="special"
+        fi
+        path=${path}$chr".history"
+        cnt=0
+        while [ -e $lck ]; do
+            sleep 0.1
+            cnt=$((cnt+1))
+            if [ $cnt -eq 10 ]; then
+                echo "bh was locked..."
+                rm -f $lck
+            fi
+        done
+        touch $lck
+        if [ ! -e "$path" ]; then
+            touch $path
+        fi
+        grep -qF "$last" "$path" || echo "$last" >> "$path"
+        rm -f $lck
+    fi
+
+}
+
+_sbh-search() {
     local _search
     if [ -d $SBH_STORE ]; then
         _search=""
@@ -12,7 +46,7 @@ _search() {
     fi
 }
 
-_last() {
+_sbh-last() {
     local cmd grepping
     if [ -s $SBH_LAST ]; then
         grepping=""
@@ -25,18 +59,16 @@ _last() {
 }
 
 
-if [ -z "$1" ]; then
-    echo "no input given for search or recall"
-    exit 1
-fi
-did=1
-if [ -z "$2" ]; then
-    re='^[0-9]+$'
-    if [[ "$1" =~ $re ]] ; then
-        did=0
-        _last "$1"
+if [ ! -z "$1" ]; then
+    did=1
+    if [ -z "$2" ]; then
+        re='^[0-9]+$'
+        if [[ "$1" =~ $re ]] ; then
+            did=0
+            _sbh-last "$1"
+        fi
     fi
-fi
-if [ $did -eq 1 ]; then
-    _search "$@"
+    if [ $did -eq 1 ]; then
+        _sbh-search "$@"
+    fi
 fi

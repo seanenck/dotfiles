@@ -80,37 +80,8 @@ fi
 # sbh implementation
 function _history-tree()
 {
-    source $HOME/.bin/common
-    local last chr path lck
-    lck=$SBH_LOCK
-    path="$SBH_STORE"
-    if [ ! -d "$path" ]; then
-        mkdir -p $path
-    fi
-    last=$(fc -ln 1 | tail -n 1 | sed "1s/^[[:space:]]*//")
-    if [ ! -z "$last" ]; then
-        chr=${last::1}
-        chr=$(echo "$chr" | tr '[:upper:]' '[:lower:]')
-        if [[ "$chr" =~ [^a-z0-9] ]]; then
-            chr="special"
-        fi
-        path=${path}$chr".history"
-        cnt=0
-        while [ -e $lck ]; do
-            sleep 0.1
-            cnt=$((cnt+1))
-            if [ $cnt -eq 10 ]; then
-                echo "bh was locked..."
-                rm -f $lck
-            fi
-        done
-        touch $lck
-        if [ ! -e "$path" ]; then
-            touch $path
-        fi
-        grep -qF "$last" "$path" || echo "$last" >> "$path"
-        rm -f $lck
-    fi
+    source $HOME/.bin/sbh
+    _sbh-write
 }
 
 PROMPT_COMMAND=_history-tree
