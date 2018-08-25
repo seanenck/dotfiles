@@ -57,7 +57,7 @@ function _backup()
 function _repository()
 {
     echo "repository"
-    rsync -avc --delete-after -e "ssh" $LOCAL_REPO $BASE_SERVER:$REPO_PATH | sed "s/^/$SPACING/g"
+    rsync -avc --delete-after -e "ssh" $LOCAL_REPO $BASE_SERVER:$REPO_PATH | grep -v "^$" | sed "s/^/$SPACING/g"
     if [ -e $REPO_HASH ]; then
         mv $REPO_HASH $REPO_PREV
     fi
