@@ -28,15 +28,7 @@ case "$TERM" in
 xterm*|rxvt*)
     PS1="\u@\h:\W> \[$(tput sgr0)\]"
     ;;
-*)
-    ;;
 esac
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-fi
 
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
   exec startx $HOME/.xinitrc
@@ -45,18 +37,10 @@ fi
 
 . ~/.bash_aliases
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
+if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
 fi
 
-#end-general
 . $HOME/.bin/common
 HISTFILE="$USER_TMP/.bash_history_"$(uptime -s | sed "s/ /-/g;s/:/-/g")
 EPIPHYTE_CONF=${HOME_CONF}epiphyte/env
