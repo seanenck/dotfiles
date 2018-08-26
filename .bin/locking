@@ -21,6 +21,10 @@ function lock-now()
 {
     local PID IRC
     if [ ! -e $DISPLAY_UN ]; then
+        if [ -e "$DISPLAY_EN" ]; then
+            notify-send System "will not sleep"
+            sleep 3
+        fi
         write-log "going to lock"
         PID=$(get-i3lock)
         if [ -z $PID ]; then
