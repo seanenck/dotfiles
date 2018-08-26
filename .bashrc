@@ -101,21 +101,16 @@ _setup() {
 }
 
 _check_today() {
-    local today_check jrnl yesterday journal today yest since filename ifs
+    local today_check jrnl yesterday journal today filename ifs
     today=$(date +%Y-%m-%d)
     filename=$USER_TMP/last.checked.
     today_check=$filename$today
     journal=$USER_JOURNAL
     if [ ! -e $today_check ]; then
-        yesterday=$(date -d "1 days ago" +%Y-%m-%d)
-        yest=$filename$yesterday
-        since="$yesterday 00:00:00"
-        if [ -e $yest ]; then
-            since=$(cat $yest)
-        fi
-        jrnl=$(journalctl -p err -q -b -0 --since "$since" | grep -v -E "kernel:|systemd-coredump|^\s" | cut -d " " -f 6- | sort -u)
+        yesterday=$(date +%Y-%m-%d)
+        jrnl=$(journalctl -p err -q --since "$yesterday" --until "$today" | grep -v -E "kernel:|systemd-coredump|^\s" | cut -d " " -f 6- | sort -u)
         if [ ! -z "$jrnl" ]; then
-            echo "$today (since $since):" >> $journal
+            echo "$today (since $yesterday):" >> $journal
             echo "$jrnl" >> $journal
             echo "" >> $journal
         fi
