@@ -134,9 +134,8 @@ case $1 in
     $AUTO_KEYWORD | $SUSP_KEYWORD)
         if [[ "$1" == "$SUSP_KEYWORD" ]]; then
             if [ -e $DISPLAY_UN ]; then
-                notify-send System "overriding unlock"
-                sleep 5
-                rm -f $DISPLAY_UN
+                notify-send System "cannot override unlock"
+                exit 1
             fi
         fi
         lock-now &
