@@ -134,4 +134,5 @@ function sync-now()
     fi
 }
 
+sleep 15
 sync-now | systemd-cat -t "sync"
