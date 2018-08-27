@@ -1,0 +1,8 @@
+[Unit]
+Description=change on wsw change
+
+[Path]
+PathChanged=/var/cache/wsw/
+
+[Install]
+WantedBy=default.target
