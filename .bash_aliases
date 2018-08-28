@@ -8,6 +8,7 @@ alias tree='tree -J | python -c "import sys, json; print(json.dumps(json.loads(s
 alias vi="echo 'nonono -> vim'"
 alias diff="diff -u"
 alias ls='ls --color=auto'
+alias ossh="/usr/bin/ossh -F /dev/null"
 _git-all() {
     for f in $(find . -maxdepth 1 -type d); do
         if [ -d "$f/.git" ]; then
