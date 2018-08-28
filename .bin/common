@@ -43,6 +43,9 @@ SBH_LOCK=$USER_TMP/.sbhlock
 SBH_STORE=${HOME_CACHE}sbh/
 SBH_LAST=${USER_TMP}/.sbhlast
 
+# exports
+export OPENSC_CONF="$HOME/.config/opensc.conf"
+
 function mute()
 {
     pamixer -m
