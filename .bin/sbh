@@ -54,7 +54,7 @@ _sbh-last() {
             grepping="^$1\."
         fi
         cmd=$(cat $SBH_LAST | grep "$grepping" | tail -n 1 | cut -d " " -f 2-)
-        eval $cmd
+        bash -c "$cmd"
     fi
 }
 
