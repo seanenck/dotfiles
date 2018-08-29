@@ -47,7 +47,7 @@ _sbh-search() {
 }
 
 _sbh-last() {
-    local cmd grepping
+    local cmd grepping did
     if [ -s $SBH_LAST ]; then
         grepping=""
         if [ ! -z "$1" ]; then
@@ -71,7 +71,7 @@ _sbh-last() {
 
 if [ ! -z "$1" ]; then
     did=1
-    if [ -z "$2" ] || [[ "$2" == "-c" ]] || [[ "$2" == "--clipboard" ]]; then
+    if [ -z "$2" ] || [[ "$2" == "-c" ]]; then
         re='^[0-9]+$'
         if [[ "$1" =~ $re ]] ; then
             did=0
