@@ -16,13 +16,12 @@ _machinectl-nspawn()
 }
 complete -F _machinectl-nspawn machinectl-nspawn
 
-_mounting()
-{
+_sbh() {
     local cur opts 
-    if [ $COMP_CWORD -eq 1 ]; then
+    if [ $COMP_CWORD -eq 2 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        opts=$(mounting | grep -v "^$" | cut -d " " -f 5)
-        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+        COMPREPLY=( $(compgen -W "-c" -- $cur) )
     fi
 }
-complete -F _mounting mounting
+
+complete -F _sbh sbh
