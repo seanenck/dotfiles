@@ -4,7 +4,7 @@ CACHE_DIR=$HOME/.cache/dmenurls/
 URLS=$SYNCED_PATH/configs/urls.csv
 BROWSER="/usr/bin/firefox"
 HASHED=$USER_TMP/.dmenu_urls
-APPS="vlc pavucontrol passwords irc claws-mail"
+APPS="vlc pavucontrol passwords irc claws"
 AVAILABLE="$USER_TMP/.dmenu_available"
 
 function _dmenucall() {
