@@ -55,23 +55,15 @@ _sbh-last() {
         fi
         cmd=$(cat $SBH_LAST | grep "$grepping" | tail -n 1 | cut -d " " -f 2-)
         did=0
-        if [ ! -z "$2" ]; then
-            if [[ "$2" == "-c" ]]; then
-                echo "$cmd" | xclip -selection 'clip-board'
-                echo "command copied to clipboard"
-                did=1
-            fi
-        fi
-        if [ $did -eq 0 ]; then
-            bash -c "$cmd"
-        fi
+        echo "$cmd" | xclip -selection 'clip-board'
+        echo "command copied to clipboard"
     fi
 }
 
 
 if [ ! -z "$1" ]; then
     did=1
-    if [ -z "$2" ] || [[ "$2" == "-c" ]]; then
+    if [ -z "$2" ]; then
         re='^[0-9]+$'
         if [[ "$1" =~ $re ]] ; then
             did=0
