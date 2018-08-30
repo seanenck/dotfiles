@@ -14,6 +14,17 @@ GIT_PREV=${GIT_SYNC}.prev
 REPO_HASH=$USER_TMP/repo.hashed
 REPO_PREV=$REPO_HASH.prev
 
+function test-ssh()
+{
+    local running
+    running=$(ssh -o BatchMode=yes -o ConnectTimeout=5 $1 echo $READY 2>&1)
+    if [[ "$running" == "$READY" ]]; then
+        echo $IS_CONNECTED
+    else
+        echo $NOT_CONNECTED
+    fi
+}
+
 function _dobackup()
 {
     if [ -e "$BACKUP" ]; then
