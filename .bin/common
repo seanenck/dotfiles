@@ -1,8 +1,5 @@
 #!/bin/bash
 # constants
-READY="ready"
-IS_CONNECTED=1
-NOT_CONNECTED=0
 RED_TEXT="\033[1;31m"
 NORM_TEXT="\033[0m"
 BASE_SERVER="blip"

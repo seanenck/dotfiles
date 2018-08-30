@@ -13,6 +13,9 @@ GIT_SYNC=$USER_TMP/git.sync
 GIT_PREV=${GIT_SYNC}.prev
 REPO_HASH=$USER_TMP/repo.hashed
 REPO_PREV=$REPO_HASH.prev
+READY="ready"
+IS_CONNECTED=1
+NOT_CONNECTED=0
 
 function test-ssh()
 {
