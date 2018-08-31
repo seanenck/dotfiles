@@ -42,6 +42,10 @@ if [ -f /usr/share/bash-completion/bash_completion ]; then
 fi
 
 . $HOME/.bin/common
+if [ -e "$BASH_BLACKLIST" ]; then
+    . $BASH_BLACKLIST
+fi
+
 HISTFILE="$USER_TMP/.bash_history_"$(uptime -s | sed "s/ /-/g;s/:/-/g")
 EPIPHYTE_CONF=${HOME_CONF}epiphyte/env
 if [ -e "$EPIPHYTE_CONF" ]; then

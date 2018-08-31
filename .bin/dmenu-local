@@ -13,7 +13,7 @@ function _dmenucall() {
 }
 
 function _dmenuwrapper() {
-    local results urls u name url params file hashed prev names
+    local results urls u name url params file hashed prev names blist
     hashed=$(sha256sum $URLS | cut -d " " -f 1)
     prev=""
     if [ -e "$AVAILABLE" ]; then
@@ -28,6 +28,7 @@ function _dmenuwrapper() {
         urls=""
         names="$APPS"
         rm -f $CACHE_DIR*
+        rm -f $BASH_BLACKLIST
         for u in $(cat $URLS | sed 's/"//g'); do
             name=$(echo "$u" | cut -d "," -f 1)
             file="$CACHE_DIR$name"
@@ -38,6 +39,12 @@ function _dmenuwrapper() {
         done
         names=$(echo $names)
         echo "$names" | tr ' ' '\n' | sort -u > $AVAILABLE
+    fi
+    if [ ! -e $BASH_BLACKLIST ]; then
+        blist="$BASH_BLACKLIST_APPS "$(cat $AVAILABLE)
+        for u in $(echo "$blist" | tr ' ' '\n' | sort); do
+            echo 'alias '$u'="echo '$u' is disabled in bash"' >> $BASH_BLACKLIST
+        done
     fi
     results=$(cat $AVAILABLE | dmenu "$@")
     file="$CACHE_DIR/$results"
