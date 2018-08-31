@@ -8,12 +8,12 @@ APPS="vlc pavucontrol passwords irc claws"
 AVAILABLE="$USER_TMP/.dmenu_available"
 
 function _dmenucall() {
-    echo "$@" | ${SHELL:-"/bin/sh" }
+    echo "$@" | ${SHELL:-"/bin/sh"}
     exit 0
 }
 
 function _dmenuwrapper() {
-    local results urls u name url params group file hashed prev names
+    local results urls u name url params file hashed prev names
     hashed=$(sha256sum $URLS | cut -d " " -f 1)
     prev=""
     if [ -e "$AVAILABLE" ]; then
@@ -33,20 +33,8 @@ function _dmenuwrapper() {
             file="$CACHE_DIR$name"
             url=$(echo "$u" | cut -d "," -f 2)
             params=$(echo "$u" | cut -d "," -f 3)
-            group=$(echo "$u" | cut -d "," -f 4)
             names="$names $name"
             echo "$BROWSER $params $url" > $file
-            if [ ! -z "$group" ]; then
-                names="$names $group"
-                file=$CACHE_DIR$group
-                if [ -e $file ]; then
-                    group=$(cat $file)
-                    group="$group $url"
-                    echo "$group" > $file
-                else
-                    echo "$BROWSER $url" > $file
-                fi
-            fi
         done
         names=$(echo $names)
         echo "$names" | tr ' ' '\n' | sort -u > $AVAILABLE
