@@ -1,0 +1,48 @@
+#!/bin/bash
+source $HOME/.bin/common
+tmpfile=/tmp/gitgo
+
+_clone() {
+    for f in $(cat $HOME_PERSONAL/gorepos); do
+        git clone $f
+    done
+}
+
+_find() {
+    for file in $(find . -type f -name "Gopkg.toml"); do
+        cat $file | grep -E "(\s*(name|branch|version)\s*=|constraint)" | sed "s/\s*//g"
+        echo
+    done
+}
+
+_item() {
+    echo " $1 -> $2"
+    echo
+}
+
+_constraints() {
+    current=""
+    verison=""
+    for f in $(cat $tmpfile); do
+        if [[ "$f" == "[[constraint]]" ]]; then
+            if [ ! -z "$current" ]; then
+                _item "$current" "$version"
+            fi
+            current=""
+            version=""
+            continue
+        fi
+        val=$(echo "$f" | cut -d "=" -f 2 | sed 's/"//g')
+        if echo "$f" | grep -q "^name"; then
+            current=$val
+        else
+            version=$val
+        fi
+    done
+    _item "$current" "$version"
+}
+
+_clone
+_find | grep -v "^$" > $tmpfile
+_constraints | sort -u
+echo
