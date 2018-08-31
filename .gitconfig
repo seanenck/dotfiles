@@ -14,4 +14,4 @@
 [commit]
     gpgsign = true
 [include]
-    path = ~/.synced/configs/gitconfig.priv
+    path = ~/.config/personal/gitconfig.priv

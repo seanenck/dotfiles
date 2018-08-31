@@ -1,3 +1,5 @@
+PERSONAL=$(HOME)/.config/personal/
+WEECHAT=$(HOME)/.weechat/
 all:
 ifeq ($(shell whoami), root)
 	$(error must not be run as root)
@@ -7,7 +9,9 @@ endif
 	mkdir -p $(HOME)/.vim/swap
 	mkdir -p $(HOME)/.vim/undo
 	mkdir -p $(HOME)/.cache/dmenurls
-	ln -sf $(HOME)/.synced/configs/epiphyte.conf $(HOME)/.config/epiphyte/env
+	ln -sf $(PERSONAL)epiphyte.conf $(HOME)/.config/epiphyte/env
+	ln -sf $(PERSONAL)buffer_autoset.conf $(WEECHAT)/buffer_autoset.conf
+	ln -sf $(PERSONAL)weechat.irc.conf $(WEECHAT)irc.conf
 	sudo rm -f /etc/vimrc
 	sudo ln -s /home/enck/.vimrc /etc/vimrc
 	sudo ln -sf /home/enck/.bin/locking /usr/local/bin/locking
