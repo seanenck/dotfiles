@@ -57,19 +57,6 @@ function _sound()
     printf "$icon %3i" $level
 }
 
-function _locking()
-{
-    if [ -e $DISPLAY_UN ]; then
-        echo "unlocked"
-    else
-        if [ -e $DISPLAY_EN ]; then
-            echo "no sleep"
-        else
-            echo " normal "
-        fi
-    fi
-}
-
 function get-all-changes()
 {
     git update-index -q --refresh 
@@ -175,7 +162,7 @@ function stats()
         bright=$(_brightness)
         muting=$(_sound)
         bat=$(_battery)
-        disp=$(_locking)
+        disp=$(locking status)
         up=$(_up)
         echo "$_git_text$bright|$muting|$bat|$disp|$up|" > $MAIN_STATS
         _last_git=$((_last_git+1))

@@ -1,6 +1,8 @@
 #!/bin/bash
 source $HOME/.bin/common
 source $HOME/.bin/subsystem
+DISPLAY_UN=$USER_TMP/display.unlocked
+DISPLAY_EN=$USER_TMP/display.nosleep
 IS_TRUE=1
 IS_FALSE=0
 RESULT="RESULT:"
@@ -65,6 +67,7 @@ function _sleeping() {
     pkill vlc
     echo "suspending"
     systemctl suspend
+    sleep 5
     echo "done sleeping"
     wsw reload
 }
@@ -117,6 +120,18 @@ function toggle() {
     fi
 }
 
+function setting() {
+    if [ -e $DISPLAY_UN ]; then
+        echo "unlocked"
+    else
+        if [ -e $DISPLAY_EN ]; then
+            echo "no sleep"
+        else
+            echo "autolock"
+        fi
+    fi
+}
+
 function locking() {
     case $1 in
         "toggle")
@@ -131,4 +146,8 @@ function locking() {
     esac
 }
 
-locking "$1" | systemd-cat -t "locking"
+if [[ "$1" == "status" ]]; then
+    setting
+else
+    locking "$1" | systemd-cat -t "locking"
+fi
