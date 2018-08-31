@@ -2,12 +2,6 @@
 source $HOME/.bin/common
 tmpfile=/tmp/gitgo
 
-_clone() {
-    for f in $(cat $HOME_PERSONAL/gorepos); do
-        git clone $f
-    done
-}
-
 _find() {
     for file in $(find . -type f -name "Gopkg.toml"); do
         cat $file | grep -E "(\s*(name|branch|version)\s*=|constraint)" | sed "s/\s*//g"
@@ -42,7 +36,21 @@ _constraints() {
     _item "$current" "$version"
 }
 
-_clone
+_pkgbuilds() {
+    for f in $(find pkgbuilds/ -type f -name "PKGBUILD"); do
+        if cat $f | grep -q "go"; then
+            d=$(dirname $f)
+            for r in $(echo $d | cut -d "/" -f 2,3 | sed "s#/#:#g"); do
+                if echo $r | grep -q -E "pkgseed|popularch"; then
+                    r=$(echo "$r" | sed "s/epiphyte/enckse/g")
+                fi
+                git clone $r
+            done
+        fi
+    done
+}
+
+_pkgbuilds
 _find | grep -v "^$" > $tmpfile
 _constraints | sort -u
 echo
