@@ -137,8 +137,6 @@ function check-pacman-update()
 
 function pacman-check()
 {
-    pacman -Qm
-    pacman -Qqdt
     check-pacman-update ""
     check-pacman-update "$CHROOT_LOCATION/root"
 }

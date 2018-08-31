@@ -111,8 +111,8 @@ _check_today() {
     today_check=$filename$today
     journal=$USER_JOURNAL
     if [ ! -e $today_check ]; then
-        yesterday=$(date +%Y-%m-%d)
-        jrnl=$(journalctl -p err -q --since "$yesterday" --until "$today" | grep -v -E "kernel:|systemd-coredump|^\s" | cut -d " " -f 6- | sort -u)
+        yesterday=$(date -d "1 day ago" +%Y-%m-%d)
+        jrnl=$(cat /var/log/sysmon.log | grep "^$yesterday")
         if [ ! -z "$jrnl" ]; then
             echo "$today (since $yesterday):" >> $journal
             echo "$jrnl" >> $journal
