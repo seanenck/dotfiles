@@ -10,7 +10,7 @@ for d in $(ls); do
     current="$current
 $d"
 done
-for line in $(cat $SYNCED_CONF/music); do
+for line in $(cat $HOME_PERSONAL/music); do
     echo "getting $line"
     chr=${line::1}
     chr=$(echo "$chr" | tr '[:lower:]' '[:upper:]')

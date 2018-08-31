@@ -15,14 +15,14 @@ USER_TMP=$HOME/.tmp
 SYNCED_PATH=$HOME/.synced/
 HOME_CONF=$HOME/.config/
 HOME_CACHE=$HOME/.cache/
+HOME_PERSONAL=${HOME_CONF}personal/
 
 # perm
 CHROOT_LOCATION=${PERM_LOCATION}chroot
 PASS_TOTP_OFFSET="totp/"
 
 # syncing
-SYNCED_CONF=${SYNCED_PATH}/configs/
-PRIV_CONF=${SYNCED_CONF}priv.aliases
+PRIV_CONF=${HOME_PERSONAL}priv.aliases
 
 # user temp
 PROFILE_DEF=$USER_TMP/profile.next

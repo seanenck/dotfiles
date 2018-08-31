@@ -1,7 +1,7 @@
 #!/bin/bash
 source $HOME/.bin/common
 CACHE_DIR=$HOME/.cache/dmenurls/
-URLS=$SYNCED_PATH/configs/urls.csv
+URLS=$HOME_PERSONAL/urls.csv
 BROWSER="/usr/bin/firefox"
 HASHED=$USER_TMP/.dmenu_urls
 APPS="vlc pavucontrol passwords irc claws"
