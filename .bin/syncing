@@ -2,7 +2,7 @@
 source $HOME/.bin/common
 COMMON_STORE=/mnt/Storage/Active/
 PROFILE_PATH=${COMMON_STORE}Rolling/profiles
-REPO_PATH=${COMMON_STORE}Packages/
+REPO_PATH=${COMMON_STORE}Repository/
 ARCHIVE=$USER_TMP/profile.tar.gz
 SPACING="    "
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
