@@ -1,107 +1,102 @@
 #!/bin/bash
 source $HOME/.bin/common
 source $HOME/.bin/subsystem
-SUSP_KEYWORD="sleep"
-TGL_KEYWORD="toggle"
-AUTO_KEYWORD="auto"
-LOCK_KEYWORD="lock"
-SLEEP_AFTER=600
-
-function write-log()
-{
-    echo "$1" | systemd-cat -t "locking"
-}
-
-function get-i3lock()
-{
+IS_TRUE=1
+IS_FALSE=0
+RESULT="RESULT:"
+function get-i3lock() {
     pidof i3lock | cut -d " " -f 1
 }
 
-function lock-now()
-{
-    local PID IRC
-    if [ ! -e $DISPLAY_UN ]; then
-        if [ -e "$DISPLAY_EN" ]; then
-            notify-send System "will not sleep"
-            sleep 3
-        fi
-        write-log "going to lock"
-        PID=$(get-i3lock)
-        if [ -z $PID ]; then
-            write-log "locking..."
-            IRC=$(pidof weechat)
-            if [ ! -z "$IRC" ]; then
-                write-log "disconnecting $IRC"
-                kill -10 $IRC
-            fi
-            PID=$(get-i3lock)
-            write-log "i3lock pid: $PID"
-            if [ -z "$PID" ]; then
-                write-log "starting i3lock"
-                for p in $(pidof i3lock); do
-                    kill $p
-                done
-                i3lock -c 333333
-            fi
-            write-log "polling mode"
-            PID=$(get-i3lock)
-            toggle-backlighting $BACKLIGHT_OFF
-            while [ ! -z $PID ];
-            do
-                PID=$(get-i3lock)
-                sleep 1
-            done
-            write-log "unlocking..."
-            toggle-backlighting $MID_BRIGHT
-        fi
-    else
-        notify-send System "unlocked"
-    fi
-}
-
-function suspend-now()
-{
-    local SLEEP_COUNT PID slept
-    if [ ! -e $DISPLAY_UN -a ! -e $DISPLAY_EN ]; then
-        mute
-        rm -f $PROFILE_DEF
-        SLEEP_COUNT=0
-        if [ -z "$1" ]; then
-            SLEEP_COUNT=$SLEEP_AFTER
-        fi
-        write-log "sleep setting: $SLEEP_COUNT"
-        PID=""
-        while [ -z $PID ]; do
-            PID=$(get-i3lock)
-        done
-        slept=0
+function _lock() {
+    local p running started slept first
+    echo "locking"
+    i3lock -c 333333
+    for p in $(pidof weechat); do
+        kill -10 $p
+    done
+    toggle-backlighting $BACKLIGHT_OFF
+    running=$IS_TRUE
+    first=$IS_TRUE
+    started=$(date +%s)
+    slept=$1
+    while [ $running -eq $IS_TRUE ]; do
         sleep 1
-        while [ 1 -eq 1 ]; do
-            if [ $SLEEP_COUNT -ge $SLEEP_AFTER ]; then
-                write-log "sleeping..."
-                SLEEP_COUNT=0
-                slept=1
-                pkill vlc
-                systemctl suspend
-                break
+        if [ $first -eq $IS_FALSE ]; then
+            if [ -z $(get-i3lock) ]; then
+                running=$IS_FALSE
+            else
+                delta=$(date +%s)
+                delta=$((delta-started))
+                if [ $slept -eq $IS_TRUE ]; then
+                    delta=1000
+                fi
+                if [ $delta -ge 15 ]; then
+                    echo "sleeping..."
+                    p=$(sleep-now $IS_FALSE | grep "^$RESULT" | sed "s/$RESULT//g")
+                    if [ $p -eq $IS_TRUE ]; then
+                        started=$(date +%s)
+                        slept=$IS_FALSE
+                    fi
+                fi
             fi
-            sleep 1
-            SLEEP_COUNT=$((SLEEP_COUNT+1))
-            PID=$(get-i3lock)
-            if [ -z $PID ]; then
-                break
-            fi
-        done
-        if [ $slept -gt 0 ]; then
-            force-display-on
-            wsw reload
         fi
-        write-log "done sleeping"
+        first=$IS_FALSE
+    done
+    toggle-backlighting $MID_BRIGHT
+}
+
+function _autolock() {
+    local waiting
+    lock-now $IS_TRUE &
+    sleep 1
+    waiting=$IS_TRUE
+    while [ $waiting -eq $IS_TRUE ]; do
+        if [ -z $(get-i3lock) ]; then
+            waiting=$IS_FALSE
+            break
+        fi
+        sleep 1
+    done
+}
+
+function _sleeping() {
+    mute
+    pkill vlc
+    echo "suspending"
+    systemctl suspend
+    echo "done sleeping"
+    wsw reload
+}
+
+function sleep-now() {
+    local auto
+    auto=$1
+    if [ -e $DISPLAY_EN ]; then
+        echo "nosleep"
+        echo "$RESULT$IS_FALSE"
+    else
+        if [ $auto -eq $IS_TRUE ]; then
+            _autolock
+            echo "$RESULT$IS_FALSE"
+        else
+            _sleeping
+            echo "$RESULT$IS_TRUE"
+        fi
     fi
 }
 
-function toggle-locking()
-{
+function lock-now() {
+    if [ -e $DISPLAY_UN ]; then
+        echo "nolock"
+    else
+        if [ -z $(get-i3lock) ]; then
+            _lock $1
+        fi
+    fi
+}
+
+function toggle() {
     local no_action
     no_action=0
     if [ -e $DISPLAY_UN ]; then
@@ -122,33 +117,18 @@ function toggle-locking()
     fi
 }
 
-function print-help()
-{
-    echo "
-    $SUSP_KEYWORD (sleep)
-    $TGL_KEYWORD (toggle lock/sleep availability)
-    $AUTO_KEYWORD (auto lock/sleep)
-"
+function locking() {
+    case $1 in
+        "toggle")
+            toggle
+            ;;
+        "lock")
+            lock-now $IS_FALSE
+            ;;
+        "sleep")
+            sleep-now $IS_TRUE
+            ;;
+    esac
 }
 
-case $1 in
-    $TGL_KEYWORD)
-        toggle-locking
-        ;;
-    $AUTO_KEYWORD | $SUSP_KEYWORD)
-        if [[ "$1" == "$SUSP_KEYWORD" ]]; then
-            if [ -e $DISPLAY_UN ]; then
-                notify-send System "cannot override unlock"
-                exit 1
-            fi
-        fi
-        lock-now &
-        suspend-now
-        ;;
-    $LOCK_KEYWORD)
-        lock-now
-        ;;
-    *)
-        print-help
-        ;;
-esac
+locking "$1"
