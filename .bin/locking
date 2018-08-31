@@ -31,7 +31,7 @@ function _lock() {
                 if [ $slept -eq $IS_TRUE ]; then
                     delta=1000
                 fi
-                if [ $delta -ge 15 ]; then
+                if [ $delta -ge 300 ]; then
                     echo "sleeping..."
                     p=$(sleep-now $IS_FALSE | grep "^$RESULT" | sed "s/$RESULT//g")
                     if [ $p -eq $IS_TRUE ]; then
