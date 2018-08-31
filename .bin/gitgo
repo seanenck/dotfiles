@@ -37,14 +37,21 @@ _constraints() {
 }
 
 _pkgbuilds() {
-    for f in $(find pkgbuilds/ -type f -name "PKGBUILD"); do
+    p=pkgbuilds
+    if [ ! -d "$p" ]; then
+        git clone epiphyte:pkgbuilds
+    fi
+    for f in $(find $p/ -type f -name "PKGBUILD"); do
         if cat $f | grep -q "go"; then
             d=$(dirname $f)
             for r in $(echo $d | cut -d "/" -f 2,3 | sed "s#/#:#g"); do
                 if echo $r | grep -q -E "pkgseed|popularch"; then
                     r=$(echo "$r" | sed "s/epiphyte/enckse/g")
                 fi
-                git clone $r
+                d=$(echo "$r" | cut -d ":" -f 2)
+                if [ ! -d "$d" ]; then
+                    git clone $r
+                fi
             done
         fi
     done
