@@ -82,7 +82,7 @@ exec --no-startup-id dunst -conf /home/enck/.config/dunst
 exec --no-startup-id /home/enck/.bin/i3_commands workspacer
 
 # Handle auto-locking
-exec xautolock -time 5 -locker "/usr/local/bin/locking lock" &
+exec xautolock -time 5 -locker "/home/enck/.bin/locking lock" &
 
 # Change workplaces
 bindsym $mod+Shift+m exec subsystem workspaces 1
