@@ -23,6 +23,7 @@ dunst
 e2fsprogs
 eltoritopy
 epiphyte-build
+epiphyte-server-utils
 exfat-utils
 fakeroot
 file
@@ -89,6 +90,7 @@ shadow
 sudo
 sysfsutils
 syslinux
+sysmon
 systemd-sysvcompat
 tar
 termite
