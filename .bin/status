@@ -122,9 +122,9 @@ function _up()
         date +%s > $last
     fi
     if [[ $(cat $res) == "online" ]]; then
-        result='\u26a1'
+        result='\xf0\x9f\x94\xb5'
     else
-        result='\u26d4'
+        result='\xf0\x9f\x94\xb4'
     fi
     printf "$result"
 }
