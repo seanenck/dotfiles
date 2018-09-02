@@ -65,6 +65,21 @@ if [ -e "$PRIV_CONF" ]; then
     done
 fi
 
+function media() {
+    local cmd
+    if [ -z "$MEDIA_SYSTEM" ] || [ -z "$MEDIA_BIN" ]; then
+        "MEDIA_SYSTEM not set"
+    else
+        if [ ! -z "$1" ]; then
+            cmd="$MEDIA_BIN $@"
+            if [[ "$1" != "ls" ]]; then
+                cmd="screen -dmS media $cmd"
+            fi
+        fi
+        ssh enckm.voidedtech.network "pkill screen; $cmd"
+    fi
+}
+
 # sbh implementation
 function _history-tree()
 {
