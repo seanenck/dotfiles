@@ -112,7 +112,7 @@ _check_today() {
     journal=$USER_JOURNAL
     if [ ! -e $today_check ]; then
         yesterday=$(date -d "1 day ago" +%Y-%m-%d)
-        jrnl=$(cat /var/log/sysmon.log | grep "^$yesterday")
+        jrnl=$(cat /var/log/sysmon.log | grep "^$yesterday" | grep -v "^$yesterday run:")
         if [ ! -z "$jrnl" ]; then
             echo "$today (since $yesterday):" >> $journal
             echo "$jrnl" >> $journal
