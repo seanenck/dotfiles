@@ -1,9 +1,7 @@
-alias checksum='find -type f -exec sha512sum "{}" + | sort -k 2'
 alias clip="xclip -selection 'clip-board'"
 alias notes="vim notes"
 alias pacman="sudo pacman"
 alias pacman-local="sudo pacman-local"
-alias tree='tree -J | python -c "import sys, json; print(json.dumps(json.loads(sys.stdin.read()), indent=1, sort_keys=True, separators=(\",\", \":\")))"'
 alias diff="diff -u"
 alias ls='ls --color=auto'
 alias ossh="/usr/bin/ossh -F /dev/null"
