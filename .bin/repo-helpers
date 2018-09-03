@@ -74,6 +74,24 @@ _versions() {
     done
 }
 
+function _deploy() {
+    local cwd name
+    cwd=$PWD
+    if [ -z "$1" ]; then
+        echo "required file to add is missing"
+    else
+        if [ -e "$1" ]; then
+            cd $HOME_REPO
+            name=$(basename $1)
+            cp $cwd/$1 $name
+            repo-add enckse.db.tar.gz $name
+            cd $cwd
+        else
+            echo "file does not exist"
+        fi
+    fi
+}
+
 if [ -z "$1" ]; then
     echo "command required"
     exit 1
@@ -92,6 +110,9 @@ case "$1" in
         ;;
     "versions")
         _versions
+        ;;
+    "deploy")
+        _deploy $2
         ;;
     *)
         echo "unknown command"

@@ -20,7 +20,7 @@ _repo-helpers() {
     local cur opts 
     if [ $COMP_CWORD -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        COMPREPLY=( $(compgen -W "gitgo versions" -- $cur) )
+        COMPREPLY=( $(compgen -W "deploy gitgo versions" -- $cur) )
     fi
 }
 complete -F _repo-helpers repo-helpers
