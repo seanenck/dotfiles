@@ -57,7 +57,24 @@ _pkgbuilds() {
     done
 }
 
-_pkgbuilds
-_find | grep -v "^$" > $tmpfile
-_constraints | sort -u
-echo
+
+if [ -z "$1" ]; then
+    echo "command required"
+    exit 1
+fi
+case "$1" in
+    "gitgo")
+        read -p "download all go-repos and get deps? (Y/n) " dl
+        if [[ "$dl" == "n" ]]; then
+            echo "cancelled"
+            exit 1
+        fi
+        _pkgbuilds
+        _find | grep -v "^$" > $tmpfile
+        _constraints | sort -u
+        echo
+        ;;
+    *)
+        echo "unknown command"
+        ;;
+esac

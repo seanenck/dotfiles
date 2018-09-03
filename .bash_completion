@@ -16,12 +16,11 @@ _machinectl-nspawn()
 }
 complete -F _machinectl-nspawn machinectl-nspawn
 
-_sbh() {
+_repo-helpers() {
     local cur opts 
-    if [ $COMP_CWORD -eq 2 ]; then
+    if [ $COMP_CWORD -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        COMPREPLY=( $(compgen -W "-c" -- $cur) )
+        COMPREPLY=( $(compgen -W "gitgo" -- $cur) )
     fi
 }
-
-complete -F _sbh sbh
+complete -F _repo-helpers repo-helpers
