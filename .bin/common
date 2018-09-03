@@ -156,21 +156,9 @@ function _enterbrowserkeys() {
 }
 
 function enterkeys() {
-    local using ran result
     if [ -z $1 ]; then
         echo "must provide input"
     else
-        using=$1
-        ran=0
-        if [ -e $PRIV_CONF ]; then
-            result=$($PRIV_CONF $using)
-            if [ ! -z "$result" ]; then
-                ran=1
-                _enterbrowserkeys "$result"
-            fi
-        fi
-        if [ $ran -eq 0 ]; then
-            _enterbrowserkeys "$@"
-        fi
+        _enterbrowserkeys "$@"
     fi
 }

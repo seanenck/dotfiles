@@ -60,8 +60,9 @@ if [ -e "$PRIV_CONF" ]; then
         complete -o filenames -o nospace -F _pc_$i pass-$i
     done
     alias totp="_totpall $TOTP_PASS \$@"
-    for i in $(echo "$LUKS_REMOTE"); do
-        alias luks-$i="enterkeys luks-$i"
+    for i in $(echo "$LUKS_ENTRIES"); do
+        n=$(echo "$i" | cut -d "/" -f 1)
+        alias luks-$n='enterkeys $(PASSWORD_STORE_DIR='${PERM_LOCATION}$LUKS_PASS' '$LUKS_PASS' show '$i'/luks 2>&1)'
     done
 fi
 
