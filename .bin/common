@@ -59,7 +59,7 @@ function update-repo() {
         if [ -e "$1" ]; then
             cd $HOME_REPO
             name=$(basename $1)
-            cp $1 $name
+            cp $cwd/$1 $name
             repo-add enckse.db.tar.gz $name
             cd $cwd
         else
