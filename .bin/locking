@@ -63,13 +63,19 @@ function _autolock() {
 }
 
 function _sleeping() {
+    local start delta
+    start=$(date +%s)
     mute
     pkill vlc
     echo "suspending"
     systemctl suspend
     sleep 5
     echo "done sleeping"
-    wsw reload
+    delta=$(date +%s)
+    delta=$((delta-start))
+    if [ $delta -ge 3600 ]; then
+        wsw reload
+    fi
 }
 
 function sleep-now() {
