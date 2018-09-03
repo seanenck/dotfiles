@@ -67,7 +67,7 @@ _versions() {
     for r in $(cat $repos); do
         refs=$(git ls-remote $r | sed "s/\t/ /g")
         t=$(echo "$refs" | grep "refs/tags/" | grep "\{\}" | sort -t '/' -k 3 -V | tail -n 1 | cut -d " " -f 1)
-        c=$(echo "$refs" | grep "HEAD" | tail -n 1)
+        c=$(echo "$refs" | grep "HEAD" | tail -n 1 | cut -d " " -f 1)
         if [[ "$t" != "$c" ]]; then
             echo "$r release available"
         fi
