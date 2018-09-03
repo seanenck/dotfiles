@@ -64,7 +64,6 @@ oath-toolkit
 opensc-git
 openssh
 pacman
-pacman-local
 pamixer
 pass
 patch

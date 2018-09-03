@@ -57,6 +57,22 @@ _pkgbuilds() {
     done
 }
 
+_versions() {
+    local repos r t c refs
+    repos=${HOME_PERSONAL}repos
+    if [ ! -e "$repos" ]; then
+        echo "missing repo file definitions"
+        exit 1
+    fi
+    for r in $(cat $repos); do
+        refs=$(git ls-remote $r | sed "s/\t/ /g")
+        t=$(echo "$refs" | grep "refs/tags/" | grep "\{\}" | sort -t '/' -k 3 -V | tail -n 1 | cut -d " " -f 1)
+        c=$(echo "$refs" | grep "HEAD" | tail -n 1)
+        if [[ "$t" != "$c" ]]; then
+            echo "$r release available"
+        fi
+    done
+}
 
 if [ -z "$1" ]; then
     echo "command required"
@@ -73,6 +89,9 @@ case "$1" in
         _find | grep -v "^$" > $tmpfile
         _constraints | sort -u
         echo
+        ;;
+    "versions")
+        _versions
         ;;
     *)
         echo "unknown command"
