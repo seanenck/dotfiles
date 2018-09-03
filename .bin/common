@@ -192,30 +192,3 @@ function enterkeys() {
         fi
     fi
 }
-
-function _github-commit() {
-    local _hash commit
-    _hash=$(git ls-remote --$1 $2 | tail -n 1)
-    if [ ! -z "$_hash" ]; then
-        commit=$(echo "$_hash" | cut -d " " -f 1 | cut -d "/" -f 1 | sed "s#refs##g")
-        echo $commit
-    fi
-}
-
-function github-releases() {
-    local last u _file r tag head
-    last=$(date -d "1 month ago" +%Y-%m-%d)
-    for u in $(echo "enckse epiphyte"); do
-        _file=$USER_TMP/repos.$u
-        curl -s "https://api.github.com/search/repositories?q=user:$u+pushed:%3E=$last&sort=updated" | grep "clone_url" | cut -d ":" -f 2,3 | sed 's/"//g;s/ //g;s/,//g' > $_file
-        for r in $(cat $_file | sort | grep -v -E "https://github.com/(enckse|epiphyte)/home.git"); do
-            tag=$(_github-commit "tags" $r)
-            if [ ! -z "$tag" ]; then
-                head=$(_github-commit "head" $r)
-                if [[ "$head" != "$tag" ]]; then
-                    echo "$r" | sed "s/\.git$/\/releases/g"
-                fi
-            fi
-        done
-    done
-}
