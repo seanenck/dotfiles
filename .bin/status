@@ -1,15 +1,13 @@
 #!/bin/bash
 source $HOME/.bin/common
 
-function update-git()
-{
+function update-git() {
     if [ ! -e $GIT_CHANGES ]; then
         git-changing > $GIT_CHANGES
     fi
 }
 
-function _brightness()
-{
+function _brightness() {
     local b
     b=$(xrandr --current --verbose | grep "Brightness" | \
         cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | \
@@ -17,8 +15,7 @@ function _brightness()
     printf '\xf0\x9f\x94\x86 %3i' $b    
 }
 
-function _battery()
-{
+function _battery() {
     local charging charge val b _path _bat val combined
     charging=$(cat /sys/class/power_supply/AC/online)
     charge="-"
@@ -46,8 +43,7 @@ function _battery()
     printf '\xf0\x9f\x94\x8b (%3s)%s' $val $charge
 }
 
-function _sound()
-{
+function _sound() {
     local icon level
     icon="\xf0\x9f\x94\x8a"
     if [[ $(pamixer --get-mute) == 'true' ]]; then
@@ -57,15 +53,13 @@ function _sound()
     printf "$icon %3i" $level
 }
 
-function get-all-changes()
-{
+function get-all-changes() {
     git update-index -q --refresh 
     git diff-index --name-only HEAD --
     git status -sb | grep 'ahead'
 }
 
-function git-changing()
-{
+function git-changing() {
     local cwd d_paths d local_res first
     cwd=$PWD
     d_paths="/etc $HOME $SYNCED_PATH "$(_get-perm-objs)" "$(_get-workspace-objs)
@@ -91,8 +85,7 @@ function git-changing()
     cd $cwd
 }
 
-function _up()
-{
+function _up() {
     local result last t n res check
     check=30
     res=$USER_TMP/.online.status
@@ -129,8 +122,7 @@ function _up()
     printf "$result"
 }
 
-function stats()
-{
+function stats() {
     local _last_git _git_text _last_cnt _partial bright muting bat disp up
     _last_git=0
     _git_text=""

@@ -29,8 +29,7 @@ if [ ! -e $BOOTED ]; then
     touch $BOOTED
 fi
 
-function weechat-logs()
-{
+function weechat-logs() {
     local logs running f fname p tmpfile
     logs=$USER_TMP/weechat/
     mkdir -p $logs
@@ -61,8 +60,7 @@ function weechat-logs()
     fi
 }
 
-function last-done()
-{
+function last-done() {
     local found d f s
     found=0
     for s in $(seq 0 6); do
@@ -79,8 +77,7 @@ function last-done()
     fi
 }
 
-function set-user-files()
-{
+function set-user-files() {
     local f v running vim_dir
     echo "set user files"
 
@@ -111,14 +108,12 @@ function set-user-files()
     fi
 }
 
-function process-logs()
-{
+function process-logs() {
     echo "checking pacman status"
     pacman-check | systemd-cat -p err -t "maintain"
 }
 
-function outdated()
-{
+function outdated() {
     local d weekago
     d=$(date -d "$1" +%s)
     weekago=$(date -d "1 week ago" +%s)
@@ -127,22 +122,19 @@ function outdated()
     fi
 }
 
-function check-pacman-update()
-{
+function check-pacman-update() {
     local d f
     f=$1/var/log/pacman.log
     d=$(cat $f | grep $(date +%Y) | cut -d " " -f 1 | cut -d "[" -f 2 | sort | uniq | tail -n 1)
     outdated "$d" "$f"
 }
 
-function pacman-check()
-{
+function pacman-check() {
     check-pacman-update ""
     check-pacman-update "$CHROOT_LOCATION/root"
 }
 
-function daily()
-{
+function daily() {
     local f xsess
     f=$USER_TMP/maintain.$(date +%Y-%m-%d)
     if [ ! -e $f ]; then
@@ -158,8 +150,7 @@ function daily()
     fi
 }
 
-function check-syncing()
-{
+function check-syncing() {
     journalctl -t sync --since "7 days ago" | grep -q "local sync completed"
     if [ $? -ne 0 ]; then
         echo "no reset successful syncs" | systemd-cat -p err -t "maintain"

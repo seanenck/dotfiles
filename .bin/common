@@ -45,13 +45,11 @@ export OPENSC_CONF="$HOME/.config/opensc.conf"
 BASH_BLACKLIST="$USER_TMP/.bash_blacklist"
 BASH_BLACKLIST_APPS="nano vi"
 
-function mute()
-{
+function mute() {
     pamixer -m
 }
 
-function enter-window-vals()
-{
+function enter-window-vals() {
     local word window active i
     word=$2
     window=0
@@ -72,8 +70,7 @@ function enter-window-vals()
     done
 }
 
-function _get-git-folders()
-{
+function _get-git-folders() {
     local res f
     res=""
     for f in $(find $1 -type d | sort); do
@@ -85,23 +82,19 @@ function _get-git-folders()
     echo $res
 }
 
-function _get-workspace-objs()
-{
+function _get-workspace-objs() {
     _get-git-folders "$HOME/workspace/"
 }
 
-function _get-perm-objs()
-{
+function _get-perm-objs() {
     _get-git-folders "${PERM_LOCATION} -maxdepth 2"
 }
 
-function _formattotp()
-{
+function _formattotp() {
     echo "$@" | tr ' ' '\n' | sed "s/->/\n    /g;s/;/\n/g"
 }
 
-function _totpall()
-{
+function _totpall() {
     local data first d left val p filter has
     clear
     data=()
@@ -153,18 +146,15 @@ function _totpall()
     done
 }
 
-function _enter-linode-config()
-{
+function _enter-linode-config() {
     enter-window-vals "termite" "configfile (hd0,1)/grub/grub.cfg" "Return"
 }
 
-function _enterbrowserkeys()
-{
+function _enterbrowserkeys() {
     enter-window-vals "Developer" "$@" "Return"
 }
 
-function enterkeys()
-{
+function enterkeys() {
     local using ran result
     if [ -z $1 ]; then
         echo "must provide input"
@@ -184,8 +174,7 @@ function enterkeys()
     fi
 }
 
-function _github-commit()
-{
+function _github-commit() {
     local _hash commit
     _hash=$(git ls-remote --$1 $2 | tail -n 1)
     if [ ! -z "$_hash" ]; then
@@ -194,8 +183,7 @@ function _github-commit()
     fi
 }
 
-function github-releases()
-{
+function github-releases() {
     local last u _file r tag head
     last=$(date -d "1 month ago" +%Y-%m-%d)
     for u in $(echo "enckse epiphyte"); do

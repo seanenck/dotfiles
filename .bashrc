@@ -81,8 +81,7 @@ function media() {
 }
 
 # sbh implementation
-function _history-tree()
-{
+function _history-tree() {
     source $HOME/.bin/sbh
     _sbh-write
 }

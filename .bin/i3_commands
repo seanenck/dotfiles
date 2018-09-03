@@ -1,8 +1,7 @@
 #!/bin/bash
 source $HOME/.bin/common
 
-function stats()
-{
+function stats() {
     local last d
     last=""
     i3status | while :
@@ -18,8 +17,7 @@ function stats()
     done
 }
 
-function auto-clip()
-{
+function auto-clip() {
     source $PRIV_CONF
     auto-clipboard $PERM_LOCATION
 }
