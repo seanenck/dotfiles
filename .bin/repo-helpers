@@ -39,10 +39,15 @@ _constraints() {
 _pkgbuilds() {
     p=pkgbuilds
     if [ ! -d "$p" ]; then
-        git clone epiphyte:pkgbuilds
+        git clone epiphyte:pkgbuilds 2>/dev/null
     fi
     for f in $(find $p/ -type f -name "PKGBUILD"); do
-        if cat $f | grep -q "go"; then
+        if cat $f | grep -q "$1"; then
+            if [ $2 -eq 0 ]; then
+                short=$(echo "$f" | cut -d "/" -f 2- | rev | cut -d "/" -f 2- | rev)
+                cat $f | grep "$1" | sed "s#^\s*#$short:#g"
+                continue
+            fi
             d=$(dirname $f)
             for r in $(echo $d | cut -d "/" -f 2,3 | sed "s#/#:#g"); do
                 if echo $r | grep -q -E "pkgseed|popularch"; then
@@ -50,7 +55,7 @@ _pkgbuilds() {
                 fi
                 d=$(echo "$r" | cut -d ":" -f 2)
                 if [ ! -d "$d" ]; then
-                    git clone $r
+                    git clone $r 2>/dev/null
                 fi
             done
         fi
@@ -85,13 +90,21 @@ case "$1" in
             echo "cancelled"
             exit 1
         fi
-        _pkgbuilds
+        _pkgbuilds "go" 1
         _find | grep -v "^$" > $tmpfile
         _constraints | sort -u
         echo
         ;;
     "versions")
         _versions
+        ;;
+    "search")
+        if [ -z "$2" ]; then
+            echo "search term needed..."
+            exit 1
+        fi
+        _pkgbuilds "$2" 0
+        echo
         ;;
     *)
         echo "unknown command"
