@@ -3,28 +3,22 @@ ifeq ($(TARGET),)
     $(error TARGET is required)
 endif
 
+# directories/files
 USER_NAME         := enck
 USER_HOME         := home/$(USER_NAME)/
-VAR_LIB           := /var/lib/machines/
-ETC_NSPAWN        := /etc/systemd/nspawn/
-
-# container dirs/filepaths
-CONTAINER_PATH    := $(VAR_LIB)$(TARGET)/
+CONTAINER_PATH    := /var/lib/machines/$(TARGET)/
 CONTAINER_HOME    := $(CONTAINER_PATH)$(USER_HOME)
-CONTAINER_CONF    := $(ETC_NSPAWN)$(TARGET).nspawn
-CONTAINER_ETC     := $(CONTAINER_PATH)etc/
+CONTAINER_CONF    := /etc/systemd/nspawn/$(TARGET).nspawn
+ETC644 			  := passwd group locale.gen locale.conf pacman.conf pacman.conf.include
 
 # package settings
 PACKAGES          := base-devel python git metaphyte-containers termite-terminfo go-pie gtk2 noto-fonts go-tools dep python-pycodestyle python-pydocstyle
 IGNORES           := --ignore linux --ignore nano --ignore linux-firmware --ignore lvm2
 PACMAN_INPUTS     :="\nY"
 
-PACMAN            := pacman.conf
-ETC_PACMAN        := etc/$(PACMAN)
-
 .PHONY:
 
-containeretc = install -Dm$2 /etc/$1 $(CONTAINER_ETC)$1
+containeretc = install -Dm$2 /etc/$1 $(CONTAINER_PATH)etc/$1
 
 empty:
 	$(error no command given)
@@ -37,7 +31,7 @@ endif
 running: root
 	! machinectl status $(TARGET) &> /dev/null
 
-create: instance refresh
+create: instance running files $(ETC644)
 
 instance: root
 	test ! -d $(CONTAINER_PATH)
@@ -45,24 +39,17 @@ instance: root
 	mkdir -p $(CONTAINER_PATH)
 	printf $(PACMAN_INPUTS) | pacstrap -i -c $(CONTAINER_PATH) $(PACKAGES) $(IGNORES)
 	cat /$(USER_HOME)/.config/home/nspawn.template > $(CONTAINER_CONF)
-	install -Dm644 /$(ETC_PACMAN) $(CONTAINER_PATH)$(ETC_PACMAN)
-	install -Dm644 /$(ETC_PACMAN).include $(CONTAINER_PATH)$(ETC_PACMAN).include
 
 destroy: running
 	rm -rf $(CONTAINER_PATH)
 	rm -f $(CONTAINER_CONF)
 
-refresh: running
-	test -d $(CONTAINER_PATH)
-	mkdir -p $(CONTAINER_HOME)
-	$(call containeretc,passwd,644)
-	$(call containeretc,group,644)
+files:
+	mkdir -p $(CONTAINER_HOME)/{go,.bin,.cache}
 	$(call containeretc,shadow,600)
 	$(call containeretc,gshadow,600)
 	$(call containeretc,sudoers,440)
-	$(call containeretc,locale.gen,644)
-	$(call containeretc,locale.conf,644)
-	mkdir -p $(CONTAINER_HOME)/go
-	mkdir -p $(CONTAINER_HOME)/.bin
-	mkdir -p $(CONTAINER_HOME)/.cache
 	chown -R $(USER_NAME):$(USER_NAME) $(CONTAINER_HOME)
+
+$(ETC644):
+	$(call containeretc,$@,644)
