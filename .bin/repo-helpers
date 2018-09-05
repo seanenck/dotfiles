@@ -75,7 +75,8 @@ _versions() {
 }
 
 function _deploy() {
-    local cwd name
+    local cwd name reponame n f names
+    reponame=enckse.db.tar.gz
     cwd=$PWD
     if [ -z "$1" ]; then
         echo "required file to add is missing"
@@ -84,7 +85,19 @@ function _deploy() {
             cd $HOME_REPO
             name=$(basename $1)
             cp $cwd/$1 $name
-            repo-add enckse.db.tar.gz $name
+            repo-add $reponame $name
+            tar --exclude="*/*" -tf $reponame
+            for n in $(tar --exclude="*/*" -tf $reponame | sed "s#/##g"); do
+                n="$n-"
+                names="$n|$names"
+            done
+            names=$(echo "$names" | sed "s/|$//g")
+            for f in $(ls *.pkg.tar.xz); do
+                echo "$f" | grep -q -E "^($names)"
+                if [ $? -ne 0 ]; then
+                    rm -f $f
+                fi
+            done
             cd $cwd
         else
             echo "file does not exist"
