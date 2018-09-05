@@ -18,9 +18,14 @@ complete -F _machinectl-nspawn machinectl-nspawn
 
 _repo-helpers() {
     local cur opts 
-    if [ $COMP_CWORD -eq 1 ]; then
+    if [ $COMP_CWORD -gt 0 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        COMPREPLY=( $(compgen -W "deploy gitgo versions" -- $cur) )
+        if [ $COMP_CWORD -eq 1 ]; then
+            COMPREPLY=( $(compgen -W "deploy gitgo versions" -- $cur) )
+        else
+            opts=$(ls $PWD)
+            COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+        fi
     fi
 }
 complete -F _repo-helpers repo-helpers
