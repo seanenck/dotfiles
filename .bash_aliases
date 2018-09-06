@@ -5,6 +5,7 @@ alias pacman-local="sudo pacman-local"
 alias diff="diff -u"
 alias ls='ls --color=auto'
 alias ossh="/usr/bin/ossh -F /dev/null"
+alias dd="sudo dd status=progress"
 _git-all() {
     for f in $(find . -maxdepth 1 -type d); do
         if [ -d "$f/.git" ]; then
