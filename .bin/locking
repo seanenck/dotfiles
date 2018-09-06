@@ -65,8 +65,7 @@ function _autolock() {
 function _sleeping() {
     local start delta
     start=$(date +%s)
-    mute
-    pkill vlc
+    _systemstop
     echo "suspending"
     systemctl suspend
     sleep 5

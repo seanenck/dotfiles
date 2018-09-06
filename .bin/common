@@ -162,3 +162,8 @@ function enterkeys() {
         _enterbrowserkeys "$@"
     fi
 }
+
+function _systemstop() {
+    mute
+    pkill vlc
+}

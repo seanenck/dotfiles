@@ -24,6 +24,8 @@ git-push-all() {
 }
 
 _turnoff() {
+    source $HOME/.bin/common
+    _systemstop
     local virt prefix
     virt=$(systemd-detect-virt)
     if [[ "$virt" == "systemd-nspawn" ]]; then
