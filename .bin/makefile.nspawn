@@ -30,7 +30,7 @@ running: root
 	! machinectl status $(TARGET) &> /dev/null
 
 create: instance running files $(ETCFILES)
-	printf $(PACMAN_INPUTS) | pacstrap -i -c $(CONTAINER_PATH) metaphyte-containers
+	arch-chroot $(CONTAINER_PATH) /usr/bin/locale-gen
 
 instance: root
 	test ! -d $(CONTAINER_PATH)
