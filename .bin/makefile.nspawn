@@ -9,7 +9,7 @@ USER_HOME         := home/$(USER_NAME)/
 CONTAINER_PATH    := /var/lib/machines/$(TARGET)/
 CONTAINER_HOME    := $(CONTAINER_PATH)$(USER_HOME)
 CONTAINER_CONF    := /etc/systemd/nspawn/$(TARGET).nspawn
-ETCFILES		  := gshadow shadow sudoers passwd group locale.gen locale.conf pacman.conf pacman.conf.include
+ETCFILES		  := makepkg.conf environment gshadow shadow sudoers passwd group locale.gen locale.conf pacman.conf pacman.conf.include
 
 # package settings
 PACKAGES          := base-devel python git metaphyte-containers termite-terminfo go-pie gtk2 noto-fonts go-tools dep python-pycodestyle python-pydocstyle
