@@ -9,7 +9,7 @@ USER_HOME         := home/$(USER_NAME)/
 CONTAINER_PATH    := /var/lib/machines/$(TARGET)/
 CONTAINER_HOME    := $(CONTAINER_PATH)$(USER_HOME)
 CONTAINER_CONF    := /etc/systemd/nspawn/$(TARGET).nspawn
-ETC644 			  := passwd group locale.gen locale.conf pacman.conf pacman.conf.include
+ETCFILES		  := gshadow shadow sudoers passwd group locale.gen locale.conf pacman.conf pacman.conf.include
 
 # package settings
 PACKAGES          := base-devel python git metaphyte-containers termite-terminfo go-pie gtk2 noto-fonts go-tools dep python-pycodestyle python-pydocstyle
@@ -17,8 +17,6 @@ IGNORES           := --ignore linux --ignore nano --ignore linux-firmware --igno
 PACMAN_INPUTS     :="\nY"
 
 .PHONY:
-
-containeretc = install -Dm$2 /etc/$1 $(CONTAINER_PATH)etc/$1
 
 empty:
 	$(error no command given)
@@ -31,7 +29,7 @@ endif
 running: root
 	! machinectl status $(TARGET) &> /dev/null
 
-create: instance running files $(ETC644)
+create: instance running files $(ETCFILES)
 
 instance: root
 	test ! -d $(CONTAINER_PATH)
@@ -46,10 +44,7 @@ destroy: running
 
 files:
 	mkdir -p $(CONTAINER_HOME)/{go,.bin,.cache}
-	$(call containeretc,shadow,600)
-	$(call containeretc,gshadow,600)
-	$(call containeretc,sudoers,440)
 	chown -R $(USER_NAME):$(USER_NAME) $(CONTAINER_HOME)
 
-$(ETC644):
-	$(call containeretc,$@,644)
+$(ETCFILES):
+	cp /etc/$@ $(CONTAINER_PATH)etc/$@
