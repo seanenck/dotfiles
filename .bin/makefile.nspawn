@@ -18,9 +18,6 @@ PACMAN_INPUTS     :="\nY"
 
 .PHONY:
 
-empty:
-	$(error no command given)
-
 root:
 ifneq ($(shell whoami), root)
 	$(error must be run as root)
