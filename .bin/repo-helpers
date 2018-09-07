@@ -38,7 +38,7 @@ _constraints() {
 
 _pkgbuilds() {
     p=pkgbuilds
-    git clone epiphyte:pkgbuilds 2>/dev/null
+    git clone --depth=1 epiphyte:pkgbuilds 2>/dev/null
     for f in $(find $p/ -type f -name "PKGBUILD"); do
         if cat $f | grep -q "$1"; then
             if [ $2 -eq 0 ]; then
@@ -55,7 +55,7 @@ _pkgbuilds() {
                 fi
                 d=$(echo "$r" | cut -d ":" -f 2)
                 if [ ! -d "$d" ]; then
-                    git clone $r 2>/dev/null
+                    git clone --depth=1 $r 2>/dev/null
                 fi
             done
         fi
