@@ -38,9 +38,7 @@ _constraints() {
 
 _pkgbuilds() {
     p=pkgbuilds
-    if [ ! -d "$p" ]; then
-        git clone epiphyte:pkgbuilds 2>/dev/null
-    fi
+    git clone epiphyte:pkgbuilds 2>/dev/null
     for f in $(find $p/ -type f -name "PKGBUILD"); do
         if cat $f | grep -q "$1"; then
             if [ $2 -eq 0 ]; then
@@ -90,9 +88,13 @@ case "$1" in
             echo "cancelled"
             exit 1
         fi
+        cwd=$PWD
+        tmpdir=$(mktemp -d)
+        cd $tmpdir
         _pkgbuilds "go" 1
         _find | grep -v "^$" > $tmpfile
         _constraints | sort -u
+        cd $cwd
         echo
         ;;
     "versions")
