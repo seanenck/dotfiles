@@ -47,7 +47,9 @@ _pkgbuilds() {
                 continue
             fi
             d=$(dirname $f)
+            echo -n "fetching repos..."
             for r in $(echo $d | cut -d "/" -f 2,3 | sed "s#/#:#g"); do
+                echo -en "\e[1A"; echo -e "\e[0K\r cloning $r..." 
                 if echo $r | grep -q -E "pkgseed|popularch"; then
                     r=$(echo "$r" | sed "s/epiphyte/enckse/g")
                 fi
@@ -92,6 +94,7 @@ case "$1" in
         tmpdir=$(mktemp -d)
         cd $tmpdir
         _pkgbuilds "go" 1
+        echo
         _find | grep -v "^$" > $tmpfile
         _constraints | sort -u
         cd $cwd
