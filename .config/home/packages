@@ -5,7 +5,6 @@ bash
 bash-completion
 binutils
 bison
-bootctl-update
 btrfs-progs
 bzip2
 ccid-git
