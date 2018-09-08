@@ -57,7 +57,7 @@ function get-all-changes() {
     git update-index -q --refresh 
     git diff-index --name-only HEAD --
     git status -sb | grep 'ahead'
-    git ls-files --other --directory --exclude-standard
+    git ls-files --other --exclude-standard
 }
 
 function git-changing() {
