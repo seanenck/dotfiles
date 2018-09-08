@@ -57,6 +57,7 @@ function get-all-changes() {
     git update-index -q --refresh 
     git diff-index --name-only HEAD --
     git status -sb | grep 'ahead'
+    git ls-files --other --directory --exclude-standard
 }
 
 function git-changing() {
@@ -68,7 +69,7 @@ function git-changing() {
             continue
         fi
         cd $d
-        local_res=$(get-all-changes "$d")
+        local_res=$(get-all-changes)
         if [ -e "$GIT_PARTIAL_TMP" ]; then
             local_res=$(echo "$local_res" | grep -E -v "$GIT_PARTIAL_PATTERN")
         fi
