@@ -55,6 +55,10 @@ function _dmenuwrapper() {
     if [ $? -eq 0 ]; then
         _dmenucall "$results"
     fi
+    echo "$results"| grep "\." | grep -q -v " "
+    if [ $? -eq 0 ]; then
+        _dmenucall "$BROWSER $results"
+    fi
     results=$(echo "$results" | sed "s/^search //g")
     results=$(echo $results)
     results="$(perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$results")"
