@@ -5,26 +5,20 @@ cwd=$PWD
 cd $MUSIC
 oldifs=$IFS
 IFS=$'\n'
-current=""
-for d in $(ls); do
-    current="$current
-$d"
-done
-for line in $(cat $HOME_PERSONAL/music); do
-    echo "getting $line"
-    chr=${line::1}
-    chr=$(echo "$chr" | tr '[:lower:]' '[:upper:]')
-    rsync --protect-args --include="*/" --include="*.mp3" --exclude="*" -avc -e "ssh" "$BASE_SERVER:store/Home/Media/Music/$chr/$line" . --delete-after
-    current=$(echo "$current" | grep -v "$line")
-done
-if [ ! -z "$current" ]; then
-    for f in $(echo "$current"); do
-        echo "purging $f"
-        rm -r $f
+function create-list() {
+    has=""
+    for l in $(cat $HOME_PERSONAL/music); do
+        c=$(echo "$l" | cut -c1 | tr '[:lower:]' '[:upper:]')
+        echo "$has" | tr ' ' '\n' | grep -q "$c"
+        if [ $? -ne 0 ]; then
+            echo "$c/"
+        fi
+        echo "$c/$l/***"
+        has="$c $has"
     done
-fi
-for f in $(find . -type d -empty); do
-    rmdir $f
-done
+}
+tmpfile=$(mktemp)
+create-list > $tmpfile
 IFS=$oldifs
+rsync -av --include-from $tmpfile --exclude="*" -e "ssh" "$BASE_SERVER:store/Home/Media/Music/" . --delete-after
 cd $cwd
