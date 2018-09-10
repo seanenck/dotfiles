@@ -1,8 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 MUSIC=$HOME/.cache/music
-cwd=$PWD
-cd $MUSIC
 oldifs=$IFS
 IFS=$'\n'
 function create-list() {
@@ -20,5 +18,4 @@ function create-list() {
 tmpfile=$USER_TMP/music.$(date +%s)
 create-list > $tmpfile
 IFS=$oldifs
-rsync -av --include-from $tmpfile --exclude="*" -e "ssh" "$BASE_SERVER:store/Home/Media/Music/" . --delete-after --delete-excluded
-cd $cwd
+rsync -av --include-from $tmpfile --exclude="*" -e "ssh" "$BASE_SERVER:store/Home/Media/Music/" $MUSIC --delete-after --delete-excluded
