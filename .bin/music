@@ -17,8 +17,8 @@ function create-list() {
         has="$c $has"
     done
 }
-tmpfile=$(mktemp)
+tmpfile=$USER_TMP/music.$(date +%s)
 create-list > $tmpfile
 IFS=$oldifs
-rsync -av --include-from $tmpfile --exclude="*" -e "ssh" "$BASE_SERVER:store/Home/Media/Music/" . --delete-after
+rsync -av --include-from $tmpfile --exclude="*" -e "ssh" "$BASE_SERVER:store/Home/Media/Music/" . --delete-after --delete-excluded
 cd $cwd
