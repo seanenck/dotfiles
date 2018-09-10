@@ -164,32 +164,32 @@ function pkgbuilds() {
             name=$(echo "$f" | cut -d "," -f 1)
             fname="${USER_TMP}/.pkgbuild.$name"
             touch $fname
-    if [ ! -e "$PKGBUILD_CHECKS" ]; then
-            repo=$(echo "$f" | cut -d "," -f 2)
-            case $repo in
-                "extra")
-                    repo="https://git.archlinux.org/svntogit/packages.git/plain/trunk/PKGBUILD?h=packages/$name"
-                    ;;
-                "community")
-                    repo="https://git.archlinux.org/svntogit/community.git/plain/trunk/PKGBUILD?h=packages/$name"
-                    ;;
-                *)
-                    echo "unknown repo: $repo"
-                    ;;
-            esac
-            tmpname="$fname.tmp"
-            curl -s "$repo" > $tmpname
-            if [ $? -eq 0 ]; then
-                if [ -e "$fname" ]; then
-                    diff -u $fname $tmpname
-                    if [ $? -ne 0 ]; then
-                        echo "$f has been updated, rebuild?" | systemd-cat -p err -t "pkgbuilds"
+            if [ ! -e "$PKGBUILD_CHECKS" ]; then
+                repo=$(echo "$f" | cut -d "," -f 2)
+                case $repo in
+                    "extra")
+                        repo="https://git.archlinux.org/svntogit/packages.git/plain/trunk/PKGBUILD?h=packages/$name"
+                        ;;
+                    "community")
+                        repo="https://git.archlinux.org/svntogit/community.git/plain/trunk/PKGBUILD?h=packages/$name"
+                        ;;
+                    *)
+                        echo "unknown repo: $repo"
+                        ;;
+                esac
+                tmpname="$fname.tmp"
+                curl -s "$repo" > $tmpname
+                if [ $? -eq 0 ]; then
+                    if [ -e "$fname" ]; then
+                        diff -u $fname $tmpname
+                        if [ $? -ne 0 ]; then
+                            echo "$f has been updated, rebuild?" | systemd-cat -p err -t "pkgbuilds"
+                        fi
                     fi
+                    mv $tmpname $fname
+                    touch $PKGBUILD_CHECKS
                 fi
             fi
-            mv $tmpname $fname
-        touch $PKGBUILD_CHECKS
-    fi
         done
 }
 
