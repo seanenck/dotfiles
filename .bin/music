@@ -1,21 +1,19 @@
 #!/bin/bash
 source $HOME/.bin/common
 MUSIC=$HOME/.cache/music
-oldifs=$IFS
-IFS=$'\n'
+MUSIC_FILE="$HOME_PERSONAL/music"
 function create-list() {
-    has=""
-    for l in $(cat $HOME_PERSONAL/music); do
-        c=$(echo "$l" | cut -c1 | tr '[:lower:]' '[:upper:]')
-        echo "$has" | tr ' ' '\n' | grep -q "$c"
-        if [ $? -ne 0 ]; then
-            echo "$c/"
-        fi
-        echo "$c/$l/***"
-        has="$c $has"
+    local idx chr cnt line
+    idx=1
+    cnt=$(cat $MUSIC_FILE | wc -l)
+    while [ $idx -le $cnt ]; do
+        line=$(cat $MUSIC_FILE | head -n $idx | tail -n 1)
+        chr=$(echo "$line" | cut -c1 | tr '[:lower:]' '[:upper:]')"/"
+        echo "$chr"
+        echo "$chr$line/***"
+        idx=$((idx+1))
     done
 }
 tmpfile=$USER_TMP/music.$(date +%s)
-create-list > $tmpfile
-IFS=$oldifs
+create-list | sort -u > $tmpfile
 rsync -av --include-from $tmpfile --exclude="*" -e "ssh" "$BASE_SERVER:store/Home/Media/Music/" $MUSIC --delete-after --delete-excluded
