@@ -11,7 +11,7 @@ function get-i3lock() {
 }
 
 function _lock() {
-    local p running started slept first
+    local p running started slept first delta
     echo "locking"
     i3lock -c 333333
     for p in $(pidof weechat); do
