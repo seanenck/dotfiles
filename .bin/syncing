@@ -89,6 +89,7 @@ function _dogit() {
 }
 
 function _gitpush() {
+    local d
     echo "syncing..."
     for d in $(echo "$@"); do
         echo "$d"
