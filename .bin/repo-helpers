@@ -1,8 +1,8 @@
 #!/bin/bash
 source $HOME/.bin/common
-tmpfile=/tmp/gitgo
 
 _find() {
+    local file
     for file in $(find . -type f -name "Gopkg.toml"); do
         cat $file | grep -E "(\s*(name|branch|version)\s*=|constraint)" | sed "s/\s*//g"
         echo
@@ -15,9 +15,10 @@ _item() {
 }
 
 _constraints() {
+    local f current version val
     current=""
     verison=""
-    for f in $(cat $tmpfile); do
+    for f in $(cat $1); do
         if [[ "$f" == "[[constraint]]" ]]; then
             if [ ! -z "$current" ]; then
                 _item "$current" "$version"
@@ -37,6 +38,7 @@ _constraints() {
 }
 
 _pkgbuilds() {
+    local p f short d r
     p=pkgbuilds
     git clone --depth=1 epiphyte:pkgbuilds 2>/dev/null
     for f in $(find $p/ -type f -name "PKGBUILD"); do
@@ -91,12 +93,13 @@ case "$1" in
             exit 1
         fi
         cwd=$PWD
+        tmpfile=/tmp/gitgo
         tmpdir=$(mktemp -d)
         cd $tmpdir
         _pkgbuilds "go" 1
         echo
         _find | grep -v "^$" > $tmpfile
-        _constraints | sort -u
+        _constraints "$tmpfile" | sort -u
         cd $cwd
         echo
         ;;
