@@ -56,19 +56,17 @@ _sbh-search() {
 }
 
 _sbh-last() {
-    local cmd grepping did
+    local cmd grepping
     if [ -s $SBH_LAST ]; then
         grepping=""
         if [ ! -z "$1" ]; then
             grepping="^$1\."
         fi
         cmd=$(cat $SBH_LAST | grep "$grepping" | tail -n 1 | cut -d " " -f 2-)
-        did=0
         echo "$cmd" | xclip -selection 'clip-board'
         echo "command copied to clipboard"
     fi
 }
-
 
 if [ ! -z "$1" ]; then
     did=1
