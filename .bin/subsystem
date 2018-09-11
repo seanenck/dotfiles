@@ -83,9 +83,10 @@ function toggle-backlighting() {
 }
 
 function set-workplace() {
-    ALL_DISPLAYS=$(get-all-displays | grep -v "$MAIN_DISPLAY")
+    local alldisp has_side use_setting
+    alldisp=$(get-all-displays | grep -v "$MAIN_DISPLAY")
     has_side=0
-    for disp in $ALL_DISPLAYS; do
+    for disp in $alldisp; do
         xrandr --output $disp --off
         xrandr | grep -q "^$disp connected"
         if [ $? -eq 0 ]; then
