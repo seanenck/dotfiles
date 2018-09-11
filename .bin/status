@@ -16,7 +16,7 @@ function _brightness() {
 }
 
 function _battery() {
-    local charging charge val b _path _bat val combined
+    local charging charge val b _path _bat val combined v
     charging=$(cat /sys/class/power_supply/AC/online)
     charge="-"
     if [ $charging -eq 1 ]; then
