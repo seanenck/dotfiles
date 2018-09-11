@@ -81,6 +81,20 @@ _versions() {
     done
 }
 
+_gitgo() {
+    local cwd tmpfile tmpdir
+    cwd=$PWD
+    tmpfile=/tmp/gitgo
+    tmpdir=$(mktemp -d)
+    cd $tmpdir
+    _pkgbuilds "go" 1
+    echo
+    _find | grep -v "^$" > $tmpfile
+    _constraints "$tmpfile" | sort -u
+    cd $cwd
+    echo
+}
+
 if [ -z "$1" ]; then
     echo "command required"
     exit 1
@@ -92,16 +106,7 @@ case "$1" in
             echo "cancelled"
             exit 1
         fi
-        cwd=$PWD
-        tmpfile=/tmp/gitgo
-        tmpdir=$(mktemp -d)
-        cd $tmpdir
-        _pkgbuilds "go" 1
-        echo
-        _find | grep -v "^$" > $tmpfile
-        _constraints "$tmpfile" | sort -u
-        cd $cwd
-        echo
+        _gitgo
         ;;
     "versions")
         _versions
