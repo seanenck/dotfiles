@@ -47,7 +47,10 @@ BASH_BLACKLIST="$USER_TMP/.bash_blacklist"
 BASH_BLACKLIST_APPS="nano vi"
 
 function mute() {
-    pamixer -m
+    which pamixer > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        pamixer -m
+    fi
 }
 
 function enter-window-vals() {
