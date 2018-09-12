@@ -1,6 +1,5 @@
 #!/bin/bash
-_machinectl-nspawn()
-{
+_machinectl-nspawn() {
     local cur opts cmd
     cmd=""
     if [ $COMP_CWORD -eq 1 ]; then
