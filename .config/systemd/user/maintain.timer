@@ -3,7 +3,7 @@ Description=Maintain user data (timer)
 
 [Timer]
 Unit=maintain.service
-OnCalendar=*:0/15
+OnCalendar=hourly
 OnBootSec=60
 
 [Install]
