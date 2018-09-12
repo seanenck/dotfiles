@@ -6,7 +6,6 @@ BASE_SERVER="blip"
 
 # standalone files/dirs
 PERM_LOCATION=$HOME/store/
-PERM_PERSONAL=personal
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 
 # home
@@ -15,11 +14,9 @@ SYNCED_PATH=$HOME/.synced/
 HOME_CONF=$HOME/.config/
 HOME_CACHE=$HOME/.cache/
 HOME_PERSONAL=${HOME_CONF}personal/
-HOME_REPO=${HOME_CACHE}repo/
 
 # perm
 CHROOT_LOCATION=${PERM_LOCATION}chroot
-PASS_TOTP_OFFSET="totp/"
 
 # syncing
 PRIV_CONF=${HOME_PERSONAL}priv.aliases
@@ -36,13 +33,6 @@ export OPENSC_CONF="$HOME/.config/opensc.conf"
 # blacklist of apps to stop in bash
 BASH_BLACKLIST="$USER_TMP/.bash_blacklist"
 BASH_BLACKLIST_APPS="nano vi"
-
-function mute() {
-    which pamixer > /dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        pamixer -m
-    fi
-}
 
 function enter-window-vals() {
     local word window active i
@@ -85,62 +75,6 @@ function _get-perm-objs() {
     _get-git-folders "${PERM_LOCATION} -maxdepth 2"
 }
 
-function _formattotp() {
-    echo "$@" | tr ' ' '\n' | sed "s/->/\n    /g;s/;/\n/g"
-}
-
-function _totpall() {
-    local data first d left val p filter has
-    clear
-    data=()
-    first=1
-    filter=$2
-    if [ -z "$filter" ]; then
-        filter=""
-    fi
-    has=0
-    while [ 1 -eq 1 ]; do
-        count=0
-        left=0
-        left=$(date +%S | sed "s/^0//g")
-        left=$((60-left))
-        if [ $left -lt 10 ]; then
-            echo -e "${RED_TEXT}"
-        fi
-        d=$(date +%Y-%m-%dT%H:%M:%S)
-        d="$d, expires: $left (seconds)"
-        if [ $first -eq 1 ]; then
-            clear
-            echo "$d"
-        fi
-        for p in $(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass ls $PASS_TOTP_OFFSET | cut -d " " -f 2 | tail -n +2 ); do
-            if [ ! -z "$filter" ]; then
-                echo "$p" | grep -q "$filter"
-                if [ $? -ne 0 ]; then
-                    continue
-                fi
-            fi
-            val=$(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass show "$PASS_TOTP_OFFSET"$p 2>&1)
-            val=$(oathtool --base32 --totp "$val")
-            data[$count]="$p->$val;"
-            if [ $first -eq 1 ]; then
-                _formattotp "${data[$count]}"
-            fi
-            count=$((count+1))
-            has=1
-        done
-        first=0
-        clear
-        echo "$d"
-        _formattotp "${data[*]}"
-        echo -e "${NORM_TEXT}"
-        if [ $has -eq 0 ]; then
-            echo "no totp tokens match"
-            break
-        fi
-    done
-}
-
 function _enter-linode-config() {
     enter-window-vals "termite" "configfile (hd0,1)/grub/grub.cfg" "Return"
 }
@@ -158,6 +92,9 @@ function enterkeys() {
 }
 
 function _systemstop() {
-    mute
+    which pamixer > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        pamixer -m
+    fi
     pkill vlc
 }

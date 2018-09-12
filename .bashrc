@@ -59,7 +59,7 @@ if [ -e "$PRIV_CONF" ]; then
         eval '_pc_'$i'() { PASSWORD_STORE_DIR='${PERM_LOCATION}'pass-'$i'/ _pass; }'
         complete -o filenames -o nospace -F _pc_$i pass-$i
     done
-    alias totp="_totpall $TOTP_PASS \$@"
+    alias totp="$HOME/.bin/totp $TOTP_PASS \$@"
     for i in $(echo "$LUKS_ENTRIES"); do
         n=$(echo "$i" | cut -d "/" -f 1)
         alias luks-$n='enterkeys $(PASSWORD_STORE_DIR='${PERM_LOCATION}$LUKS_PASS' '$LUKS_PASS' show '$i'/luks 2>&1)'
@@ -121,6 +121,6 @@ _check_today() {
             IFS=$ifs
         fi
     fi
-    xhost +local:
+    xhost +local: >/dev/null
 }
 _check_today

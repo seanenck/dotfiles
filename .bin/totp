@@ -1,0 +1,60 @@
+#!/bin/bash
+source $HOME/.bin/common
+PASS_TOTP_OFFSET="totp/"
+function _formattotp() {
+    echo "$@" | tr ' ' '\n' | sed "s/->/\n    /g;s/;/\n/g"
+}
+
+function _totpall() {
+    local data first d left val p filter has
+    clear
+    data=()
+    first=1
+    filter=$2
+    if [ -z "$filter" ]; then
+        filter=""
+    fi
+    has=0
+    while [ 1 -eq 1 ]; do
+        count=0
+        left=0
+        left=$(date +%S | sed "s/^0//g")
+        left=$((60-left))
+        if [ $left -lt 10 ]; then
+            echo -e "${RED_TEXT}"
+        fi
+        d=$(date +%Y-%m-%dT%H:%M:%S)
+        d="$d, expires: $left (seconds)"
+        if [ $first -eq 1 ]; then
+            clear
+            echo "$d"
+        fi
+        for p in $(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass ls $PASS_TOTP_OFFSET | cut -d " " -f 2 | tail -n +2 ); do
+            if [ ! -z "$filter" ]; then
+                echo "$p" | grep -q "$filter"
+                if [ $? -ne 0 ]; then
+                    continue
+                fi
+            fi
+            val=$(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass show "$PASS_TOTP_OFFSET"$p 2>&1)
+            val=$(oathtool --base32 --totp "$val")
+            data[$count]="$p->$val;"
+            if [ $first -eq 1 ]; then
+                _formattotp "${data[$count]}"
+            fi
+            count=$((count+1))
+            has=1
+        done
+        first=0
+        clear
+        echo "$d"
+        _formattotp "${data[*]}"
+        echo -e "${NORM_TEXT}"
+        if [ $has -eq 0 ]; then
+            echo "no totp tokens match"
+            break
+        fi
+    done
+}
+
+_totpall $@

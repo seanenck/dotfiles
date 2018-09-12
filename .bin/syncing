@@ -15,6 +15,7 @@ REPO_PREV=$REPO_HASH.prev
 READY="ready"
 IS_CONNECTED=1
 NOT_CONNECTED=0
+HOME_REPO=${HOME_CACHE}repo/
 
 function test-ssh() {
     local running
@@ -102,7 +103,7 @@ function _gitpush() {
 
 function sync-now() {
     local dirs pushgit pushrepo pushbackup
-    dirs=$(ls ${PERM_LOCATION} | grep $PERM_PERSONAL | sed "s#^#$PERM_LOCATION#g")
+    dirs=$(ls ${PERM_LOCATION} | grep personal | sed "s#^#$PERM_LOCATION#g")
     dirs="$dirs ${SYNCED_PATH} /etc"
     pushgit=$(_dogit "$dirs" | tail -n 1)
     pushrepo=$(_dorepo | tail -n 1)
