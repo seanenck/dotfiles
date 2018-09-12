@@ -38,7 +38,12 @@ _constraints() {
 }
 
 _pkgbuilds() {
-    local p f short d r
+    local p f short d r cwd tmp
+    if [ $3 -eq 0 ]; then
+        cwd=$PWD
+        tmp=$(mktemp -d)
+        cd $tmp
+    fi
     p=pkgbuilds
     git clone --depth=1 epiphyte:pkgbuilds 2>/dev/null
     for f in $(find $p/ -type f -name "PKGBUILD"); do
@@ -62,6 +67,9 @@ _pkgbuilds() {
             done
         fi
     done
+    if [ $3 -eq 0 ]; then
+        cd $cwd
+    fi
 }
 
 _versions() {
@@ -87,7 +95,7 @@ _gitgo() {
     tmpfile=/tmp/gitgo
     tmpdir=$(mktemp -d)
     cd $tmpdir
-    _pkgbuilds "go" 1
+    _pkgbuilds "go" 1 1
     echo
     _find | grep -v "^$" > $tmpfile
     _constraints "$tmpfile" | sort -u
@@ -116,7 +124,7 @@ case "$1" in
             echo "search term needed..."
             exit 1
         fi
-        _pkgbuilds "$2" 0
+        _pkgbuilds "$2" 0 0
         echo
         ;;
     *)
