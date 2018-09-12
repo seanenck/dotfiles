@@ -17,7 +17,7 @@ IS_CONNECTED=1
 NOT_CONNECTED=0
 HOME_REPO=${HOME_CACHE}repo/
 
-function test-ssh() {
+test-ssh() {
     local running
     running=$(ssh -o BatchMode=yes -o ConnectTimeout=5 $1 echo $READY 2>&1)
     if [[ "$running" == "$READY" ]]; then
@@ -27,7 +27,7 @@ function test-ssh() {
     fi
 }
 
-function _dobackup() {
+_dobackup() {
     if [ -e "$BACKUP" ]; then
         echo 0
     else
@@ -35,7 +35,7 @@ function _dobackup() {
     fi
 }
 
-function _dorepo() {
+_dorepo() {
     local hashed prev
     prev=""
     hashed=$(sha256sum ${HOME_REPO}* | cut -d " " -f 1 | sort | sha256sum | cut -d " " -f 1)
@@ -50,7 +50,7 @@ function _dorepo() {
     fi
 }
 
-function _backup() {
+_backup() {
     echo "daily backup"
     if [ ! -e $ARCHIVE ]; then
         echo "archiving"
@@ -64,7 +64,7 @@ function _backup() {
     touch $BACKUP
 }
 
-function _repository() {
+_repository() {
     echo "repository"
     rsync -avc --delete-after -e "ssh" $HOME_REPO $BASE_SERVER:$REPO_PATH | grep -v "^$" | sed "s/^/$SPACING/g"
     if [ -e $REPO_HASH ]; then
@@ -72,7 +72,7 @@ function _repository() {
     fi
 }
 
-function _dogit() {
+_dogit() {
     local d changes
     echo "git" > $GIT_SYNC
     for d in $(echo "$@"); do
@@ -89,7 +89,7 @@ function _dogit() {
     echo $changes
 }
 
-function _gitpush() {
+_gitpush() {
     local d
     echo "syncing..."
     for d in $(echo "$@"); do
@@ -101,7 +101,7 @@ function _gitpush() {
     fi
 }
 
-function sync-now() {
+sync-now() {
     local dirs pushgit pushrepo pushbackup
     dirs=$(ls ${PERM_LOCATION} | grep personal | sed "s#^#$PERM_LOCATION#g")
     dirs="$dirs ${SYNCED_PATH} /etc"

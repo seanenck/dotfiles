@@ -1,5 +1,5 @@
 #!/bin/bash
-function enter-window-vals() {
+enter-window-vals() {
     local word window active i
     word=$2
     window=0
@@ -20,15 +20,15 @@ function enter-window-vals() {
     done
 }
 
-function _enter-linode-config() {
+_enter-linode-config() {
     enter-window-vals "termite" "configfile (hd0,1)/grub/grub.cfg" "Return"
 }
 
-function _enterbrowserkeys() {
+_enterbrowserkeys() {
     enter-window-vals "Developer" "$@" "Return"
 }
 
-function enterkeys() {
+enterkeys() {
     if [ ! -z $1 ]; then
         _enterbrowserkeys "$@"
     fi

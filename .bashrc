@@ -67,7 +67,7 @@ if [ -e "$PRIV_CONF" ]; then
 fi
 
 # sbh implementation
-function _history-tree() {
+_history-tree() {
     source ${HOME_BIN}sbh
     _sbh-write
 }

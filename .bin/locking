@@ -6,11 +6,11 @@ DISPLAY_EN=$USER_TMP/display.nosleep
 IS_TRUE=1
 IS_FALSE=0
 RESULT="RESULT:"
-function get-i3lock() {
+get-i3lock() {
     pidof i3lock | cut -d " " -f 1
 }
 
-function _lock() {
+_lock() {
     local p running started slept first delta
     echo "locking"
     i3lock -c 333333
@@ -48,7 +48,7 @@ function _lock() {
     toggle-backlighting $MID_BRIGHT
 }
 
-function _autolock() {
+_autolock() {
     local waiting
     lock-now $IS_TRUE &
     sleep 1
@@ -62,7 +62,7 @@ function _autolock() {
     done
 }
 
-function _sleeping() {
+_sleeping() {
     local start delta
     start=$(date +%s)
     _systemstop
@@ -77,7 +77,7 @@ function _sleeping() {
     fi
 }
 
-function sleep-now() {
+sleep-now() {
     local auto
     auto=$1
     if [ -e $DISPLAY_EN ]; then
@@ -94,7 +94,7 @@ function sleep-now() {
     fi
 }
 
-function lock-now() {
+lock-now() {
     if [ -e $DISPLAY_UN ]; then
         echo "nolock"
     else
@@ -104,7 +104,7 @@ function lock-now() {
     fi
 }
 
-function toggle() {
+toggle() {
     local no_action
     no_action=0
     if [ -e $DISPLAY_UN ]; then
@@ -125,7 +125,7 @@ function toggle() {
     fi
 }
 
-function setting() {
+setting() {
     if [ -e $DISPLAY_UN ]; then
         echo "unlocked"
     else
@@ -137,7 +137,7 @@ function setting() {
     fi
 }
 
-function locking() {
+locking() {
     case $1 in
         "toggle")
             toggle

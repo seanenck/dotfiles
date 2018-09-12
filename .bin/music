@@ -1,6 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
-function create-list() {
+create-list() {
     local idx chr cnt line musicfile
     musicfile="$HOME_PERSONAL/music"
     idx=1
@@ -14,7 +14,7 @@ function create-list() {
     done
 }
 
-function _music() { 
+_music() { 
     tmpfile=$USER_TMP/music.$(date +%s)
     create-list | sort -u > $tmpfile
     rsync -av --include-from $tmpfile --exclude="*" -e "ssh" "$BASE_SERVER:store/Home/Media/Music/" $HOME_CACHE/music --delete-after --delete-excluded

@@ -1,11 +1,11 @@
 #!/bin/bash
 source $HOME/.bin/common
 PASS_TOTP_OFFSET="totp/"
-function _formattotp() {
+_formattotp() {
     echo "$@" | tr ' ' '\n' | sed "s/->/\n    /g;s/;/\n/g"
 }
 
-function _totpall() {
+_totpall() {
     local data first d left val p filter has
     clear
     data=()

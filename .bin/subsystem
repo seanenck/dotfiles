@@ -17,21 +17,21 @@ WORK_LEFT="--output $DISP_ONE --auto --left-of $MAIN_DISPLAY --rotate right"
 WORK_RIGHT="--output $DISP_TWO --auto --right-of $MAIN_DISPLAY"
 TRACK_LIGHTING=$USER_TMP/.backlight
 
-function force-display-on() {
+force-display-on() {
     xset -display $MAIN_DISPLAY dpms force on
 }
 
 # Get displays, first argument can filter out any displays
-function get-displays() {
+get-displays() {
     get-all-displays " "
 }
 
-function get-all-displays() {
+get-all-displays() {
     xrandr | grep "${1}connected" | cut -d " " -f 1
 }
 
 # Toggle backlighting up/down to a specified level
-function toggle-backlighting() {
+toggle-backlighting() {
     local _action _current _displays setting
     if [ ! -e $TRACK_LIGHTING ]; then
         echo "$MID_BRIGHT" > $TRACK_LIGHTING
@@ -82,7 +82,7 @@ function toggle-backlighting() {
     fi
 }
 
-function set-workplace() {
+set-workplace() {
     local alldisp has_side use_setting
     alldisp=$(get-all-displays | grep -v "$MAIN_DISPLAY")
     has_side=0
@@ -110,12 +110,12 @@ function set-workplace() {
     fi
 }
 
-function force-workplace() {
+force-workplace() {
     set-workplace $1
     xsetroot -solid "#333333"
 }
 
-function get-help() {
+get-help() {
     echo
     echo "$BACKLIGHT_ON (toggle backlights ON)
 $BACKLIGHT_OFF (toggle backlights OFF)
@@ -129,7 +129,7 @@ $DOCKED_ID (force docked workspace)" | sed "s/^/$WORKSPACES_KEY /g"
 }
 
 # Workspace commands
-function workspace-subsystem() {
+workspace-subsystem() {
     local has_main cmd
     has_main=$(get-all-displays | grep "^$MAIN_DISPLAY$")
     if [ -z "$has_main" ]; then

@@ -28,7 +28,7 @@ export OPENSC_CONF="$HOME/.config/opensc.conf"
 BASH_BLACKLIST="$USER_TMP/.bash_blacklist"
 BASH_BLACKLIST_APPS="nano vi"
 
-function _systemstop() {
+_systemstop() {
     which pamixer > /dev/null 2>&1
     if [ $? -eq 0 ]; then
         pamixer -m

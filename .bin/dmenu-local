@@ -7,12 +7,12 @@ HASHED=$USER_TMP/.dmenu_urls
 APPS="vlc pavucontrol passwords irc claws"
 AVAILABLE="$USER_TMP/.dmenu_available"
 
-function _dmenucall() {
+_dmenucall() {
     echo "$@" | ${SHELL:-"/bin/sh"}
     exit 0
 }
 
-function _dmenuwrapper() {
+_dmenuwrapper() {
     local results urls u name url params file hashed prev names blist
     hashed=$(sha256sum $URLS | cut -d " " -f 1)
     prev=""
