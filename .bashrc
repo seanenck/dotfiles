@@ -8,6 +8,7 @@ esac
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+export HISTFILE=/dev/null
 HISTSIZE=-1
 HISTFILESIZE=-1
 
@@ -46,7 +47,6 @@ if [ -e "$BASH_BLACKLIST" ]; then
     . $BASH_BLACKLIST
 fi
 
-HISTFILE="$USER_TMP/.bash_history_"$(uptime -s | sed "s/ /-/g;s/:/-/g")
 EPIPHYTE_CONF=${HOME_CONF}epiphyte/env
 if [ -e "$EPIPHYTE_CONF" ]; then
     source $EPIPHYTE_CONF
