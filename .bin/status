@@ -3,6 +3,26 @@ source $HOME/.bin/common
 GIT_PARTIAL_PATTERN="weechat|random_seed"
 GIT_PARTIAL_TMP=$USER_TMP/git-partial
 
+function _get-git-folders() {
+    local res f
+    res=""
+    for f in $(find $1 -type d | sort); do
+        if [ ! -d "$f/.git" ]; then
+            continue
+        fi
+        res=$res" "$f
+    done
+    echo $res
+}
+
+function _get-workspace-objs() {
+    _get-git-folders "$HOME/workspace/"
+}
+
+function _get-perm-objs() {
+    _get-git-folders "${PERM_LOCATION} -maxdepth 2"
+}
+
 function update-git() {
     if [ ! -e $GIT_CHANGES ]; then
         git-changing > $GIT_CHANGES

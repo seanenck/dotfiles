@@ -1,39 +1,4 @@
 #!/bin/bash
-# constants
-RED_TEXT="\033[1;31m"
-NORM_TEXT="\033[0m"
-BASE_SERVER="blip"
-
-# standalone files/dirs
-PERM_LOCATION=$HOME/store/
-SSH_AUTH_TMP=/tmp/ssh-auth.sock
-
-# home
-USER_TMP=$HOME/.tmp
-SYNCED_PATH=$HOME/.synced/
-HOME_CONF=$HOME/.config/
-HOME_CACHE=$HOME/.cache/
-HOME_PERSONAL=${HOME_CONF}personal/
-
-# perm
-CHROOT_LOCATION=${PERM_LOCATION}chroot
-
-# syncing
-PRIV_CONF=${HOME_PERSONAL}priv.aliases
-
-# user temp
-GIT_CHANGES=$USER_TMP/git.changes
-PROFILE_TMP=$USER_TMP/.profile.synced.
-MAIN_STATS=$USER_TMP/stats
-USER_JOURNAL=$USER_TMP/journal.log
-
-# exports
-export OPENSC_CONF="$HOME/.config/opensc.conf"
-
-# blacklist of apps to stop in bash
-BASH_BLACKLIST="$USER_TMP/.bash_blacklist"
-BASH_BLACKLIST_APPS="nano vi"
-
 function enter-window-vals() {
     local word window active i
     word=$2
@@ -55,26 +20,6 @@ function enter-window-vals() {
     done
 }
 
-function _get-git-folders() {
-    local res f
-    res=""
-    for f in $(find $1 -type d | sort); do
-        if [ ! -d "$f/.git" ]; then
-            continue
-        fi
-        res=$res" "$f
-    done
-    echo $res
-}
-
-function _get-workspace-objs() {
-    _get-git-folders "$HOME/workspace/"
-}
-
-function _get-perm-objs() {
-    _get-git-folders "${PERM_LOCATION} -maxdepth 2"
-}
-
 function _enter-linode-config() {
     enter-window-vals "termite" "configfile (hd0,1)/grub/grub.cfg" "Return"
 }
@@ -89,12 +34,4 @@ function enterkeys() {
     else
         _enterbrowserkeys "$@"
     fi
-}
-
-function _systemstop() {
-    which pamixer > /dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        pamixer -m
-    fi
-    pkill vlc
 }
