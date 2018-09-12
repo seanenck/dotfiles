@@ -177,7 +177,7 @@ function stats() {
         bright=$(_brightness)
         muting=$(_sound)
         bat=$(_battery)
-        disp=$($HOME/.bin/locking status)
+        disp=$(${HOME_BIN}locking status)
         up=$(_up)
         echo "$_git_text$bright|$muting|$bat|$disp|$up|" > $MAIN_STATS
         _last_git=$((_last_git+1))

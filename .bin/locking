@@ -1,6 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
-source $HOME/.bin/subsystem
+source ${HOME_BIN}subsystem
 DISPLAY_UN=$USER_TMP/display.unlocked
 DISPLAY_EN=$USER_TMP/display.nosleep
 IS_TRUE=1

@@ -68,7 +68,7 @@ fi
 
 # sbh implementation
 function _history-tree() {
-    source $HOME/.bin/sbh
+    source ${HOME_BIN}sbh
     _sbh-write
 }
 
