@@ -4,6 +4,7 @@ source ${MY_HOME}.bin/common
 CONF_HOME=${HOME_CONF}home
 PKG_QUERY=$USER_TMP/package.query
 PACKAGE_SET=${CONF_HOME}/packages
+RESOURCES="${USER_TMP}/resources"
 PACKAGE_GROUPS="
 xorg
 base-devel
@@ -27,6 +28,27 @@ if [ ! -e $BOOTED ]; then
     done
     touch $BOOTED
 fi
+
+_resources() {
+    local u name prev raw
+    if [ ! -e "$RESOURCES" ]; then
+        touch $RESOURCES
+        for u in $(cat $HOME_PERSONAL/tracked); do
+            raw=$(echo "$u" | rev | cut -d "/" -f 1 | rev)
+            name=${USER_TMP}/$raw.rsc
+            prev=$name.prev
+            touch $prev
+            curl -s $u > $name
+            if [ $? -eq 0 ]; then
+                diff -u $prev $name
+                if [ $? -ne 0 ]; then
+                    echo "$raw has updated" | systemd-cat -p err -t "maintain"
+                fi
+                mv $name $prev
+            fi
+        done
+    fi
+}
 
 weechat-logs() {
     local logs running f fname p tmpfile
@@ -141,5 +163,6 @@ if [ ! -e $hourly_check ]; then
     weechat-logs
     set-user-files
     daily
+    _resources
     touch $hourly_check
 fi
