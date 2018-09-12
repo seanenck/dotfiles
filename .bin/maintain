@@ -66,6 +66,7 @@ _dlresources() {
 }
 
 _resources() {
+    echo "checking resources"
      _dlresources | systemd-cat -p err -t "maintain"
 }
 
