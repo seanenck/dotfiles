@@ -30,17 +30,32 @@ if [ ! -e $BOOTED ]; then
 fi
 
 _resources() {
-    local u name prev raw
+    local u name prev raw url
     if [ ! -e "$RESOURCES" ]; then
         touch $RESOURCES
-        for u in $(cat $HOME_PERSONAL/tracked); do
-            raw=$(echo "$u" | rev | cut -d "/" -f 1 | rev)
+        for u in $(cat $HOME_PERSONAL/tracked.csv); do
+            url=$(echo "$u" | cut -d "," -f 1)
+            raw=$(echo "$u" | cut -d "," -f 2)
+            case "$url" in
+                "community")
+                    url="https://git.archlinux.org/svntogit/community.git/plain/trunk/PKGBUILD?h=packages/$raw"
+                    ;;
+                "extra")
+                    url="https://git.archlinux.org/svntogit/packages.git/plain/trunk/PKGBUILD?h=packages/$raw"
+                    ;;
+                "weechat")
+                    url="https://www.weechat.org/files/scripts/$raw.py"
+                    ;;
+                *)
+                    echo "unknown resource $url"
+                    ;;
+            esac
             name=${USER_TMP}/$raw.rsc
             prev=$name.prev
             touch $prev
-            curl -s $u > $name
+            curl -s $url > $name
             if [ $? -eq 0 ]; then
-                diff -u $prev $name
+                diff -u $prev $name > /dev/null
                 if [ $? -ne 0 ]; then
                     echo "$raw has updated" | systemd-cat -p err -t "maintain"
                 fi
