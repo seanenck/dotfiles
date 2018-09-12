@@ -3,7 +3,6 @@
 RED_TEXT="\033[1;31m"
 NORM_TEXT="\033[0m"
 BASE_SERVER="blip"
-GIT_PARTIAL_PATTERN="weechat|random_seed"
 
 # standalone files/dirs
 PERM_LOCATION=$HOME/store/
@@ -26,18 +25,10 @@ PASS_TOTP_OFFSET="totp/"
 PRIV_CONF=${HOME_PERSONAL}priv.aliases
 
 # user temp
-PROFILE_DEF=$USER_TMP/profile.next
-GIT_PARTIAL_TMP=$USER_TMP/git-partial
 GIT_CHANGES=$USER_TMP/git.changes
-SND_MUTE=$USER_TMP/.mute
 PROFILE_TMP=$USER_TMP/.profile.synced.
 MAIN_STATS=$USER_TMP/stats
 USER_JOURNAL=$USER_TMP/journal.log
-
-# sbh
-SBH_LOCK=$USER_TMP/.sbhlock
-SBH_STORE=${HOME_CACHE}sbh/
-SBH_LAST=${USER_TMP}/.sbhlast
 
 # exports
 export OPENSC_CONF="$HOME/.config/opensc.conf"

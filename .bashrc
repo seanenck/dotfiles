@@ -95,15 +95,6 @@ if [ -e $GIT_CHANGES ]; then
     rm -f $GIT_CHANGES
 fi
 
-_setup() {
-    if [ ! -e $SND_MUTE ]; then
-        mute
-        touch $SND_MUTE
-    fi
-
-    xhost +local:
-}
-
 _check_today() {
     local today_check jrnl yesterday journal today filename ifs
     today=$(date +%Y-%m-%d)
@@ -130,6 +121,6 @@ _check_today() {
             IFS=$ifs
         fi
     fi
-    _setup > /dev/null
+    xhost +local:
 }
 _check_today

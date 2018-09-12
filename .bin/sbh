@@ -1,5 +1,8 @@
 #!/bin/bash
 source $HOME/.bin/common
+SBH_LOCK=$USER_TMP/.sbhlock
+SBH_STORE=${HOME_CACHE}sbh/
+SBH_LAST=${USER_TMP}/.sbhlast
 
 _sbh-write() {
     local last chr path lck

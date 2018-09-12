@@ -1,5 +1,7 @@
 #!/bin/bash
 source $HOME/.bin/common
+GIT_PARTIAL_PATTERN="weechat|random_seed"
+GIT_PARTIAL_TMP=$USER_TMP/git-partial
 
 function update-git() {
     if [ ! -e $GIT_CHANGES ]; then
