@@ -87,10 +87,6 @@ function set-user-files() {
     find $USER_TMP* -mtime 1 -type f -exec rm {} \;
     find $USER_TMP -empty -type d -delete
 
-    for f in $(find $USER_TMP -type f -mmin +30 | grep "dmenu"); do
-        rm -f $f
-    done
-
     # vim
     for v in $(echo "undo swap"); do
         vim_dir=$HOME/.vim/$v
