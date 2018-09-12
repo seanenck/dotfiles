@@ -34,6 +34,27 @@ export OPENSC_CONF="$HOME/.config/opensc.conf"
 BASH_BLACKLIST="$USER_TMP/.bash_blacklist"
 BASH_BLACKLIST_APPS="nano vi"
 
+function enter-window-vals() {
+    local word window active i
+    word=$2
+    window=0
+    while [ $window -eq 0 ]; do
+        echo "please activate the $1 window to enter the text into"
+        sleep 3
+        active=$(xdotool getactivewindow)
+        xdotool search --class $1 | grep -q $active
+        if [ $? -eq 0 ]; then
+            window=1
+        else
+            echo "please select a $1 window"
+        fi
+    done
+    xdotool type "$word"
+    for i in ${@:3}; do
+        xdotool key $i
+    done
+}
+
 function _get-git-folders() {
     local res f
     res=""
@@ -52,6 +73,22 @@ function _get-workspace-objs() {
 
 function _get-perm-objs() {
     _get-git-folders "${PERM_LOCATION} -maxdepth 2"
+}
+
+function _enter-linode-config() {
+    enter-window-vals "termite" "configfile (hd0,1)/grub/grub.cfg" "Return"
+}
+
+function _enterbrowserkeys() {
+    enter-window-vals "Developer" "$@" "Return"
+}
+
+function enterkeys() {
+    if [ -z $1 ]; then
+        echo "must provide input"
+    else
+        _enterbrowserkeys "$@"
+    fi
 }
 
 function _systemstop() {
