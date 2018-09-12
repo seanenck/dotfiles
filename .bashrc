@@ -54,16 +54,15 @@ fi
 if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
     source /usr/share/bash-completion/completions/pass
-    source $HOME/.bin/xwindows
     for i in $(echo "$PASS_ALIASES"); do
         alias pass-$i="PASSWORD_STORE_DIR=${PERM_LOCATION}pass-$i pass"
         eval '_pc_'$i'() { PASSWORD_STORE_DIR='${PERM_LOCATION}'pass-'$i'/ _pass; }'
         complete -o filenames -o nospace -F _pc_$i pass-$i
     done
-    alias totp="$HOME/.bin/totp $TOTP_PASS \$@"
+    alias totp="totp $TOTP_PASS \$@"
     for i in $(echo "$LUKS_ENTRIES"); do
         n=$(echo "$i" | cut -d "/" -f 1)
-        alias luks-$n='enterkeys $(PASSWORD_STORE_DIR='${PERM_LOCATION}$LUKS_PASS' '$LUKS_PASS' show '$i'/luks 2>&1)'
+        alias luks-$n='xwindows $(PASSWORD_STORE_DIR='${PERM_LOCATION}$LUKS_PASS' '$LUKS_PASS' show '$i'/luks 2>&1)'
     done
 fi
 

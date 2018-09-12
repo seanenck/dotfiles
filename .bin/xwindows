@@ -29,9 +29,9 @@ function _enterbrowserkeys() {
 }
 
 function enterkeys() {
-    if [ -z $1 ]; then
-        echo "must provide input"
-    else
+    if [ ! -z $1 ]; then
         _enterbrowserkeys "$@"
     fi
 }
+
+enterkeys "$@"
