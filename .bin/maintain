@@ -29,7 +29,7 @@ if [ ! -e $BOOTED ]; then
     touch $BOOTED
 fi
 
-_resources() {
+_dlresources() {
     local u name prev raw url
     if [ ! -e "$RESOURCES" ]; then
         touch $RESOURCES
@@ -57,12 +57,16 @@ _resources() {
             if [ $? -eq 0 ]; then
                 diff -u $prev $name > /dev/null
                 if [ $? -ne 0 ]; then
-                    echo "$raw has updated" | systemd-cat -p err -t "maintain"
+                    echo "$raw has updated"
                 fi
                 mv $name $prev
             fi
         done
     fi
+}
+
+_resources() {
+     _dlresources | systemd-cat -p err -t "maintain"
 }
 
 weechat-logs() {
