@@ -4,8 +4,6 @@ source ${MY_HOME}.bin/common
 CONF_HOME=${HOME_CONF}home
 PKG_QUERY=$USER_TMP/package.query
 PACKAGE_SET=${CONF_HOME}/packages
-WEECHAT_PLUGINS=${USER_TMP}/weechat.plugins
-PKGBUILD_CHECKS=${USER_TMP}/pkgbuild.checks
 PACKAGE_GROUPS="
 xorg
 base-devel
@@ -43,21 +41,6 @@ weechat-logs() {
             cp $f $fname.$(date +%s)
             mv $fname $f
         done
-        if [ ! -e $WEECHAT_PLUGINS ]; then
-            touch $WEECHAT_PLUGINS
-            echo "downloading latest scripts"
-            for p in $(echo "buffer_autoset autosort"); do
-                tmpfile=$USER_TMP/$p.py
-                curl -s https://www.weechat.org/files/scripts/$p.py > $tmpfile
-                if [ ! -s "$tmpfile" ]; then
-                    continue
-                fi
-                diff -u $MY_HOME/.weechat/python/$p.py $tmpfile > /dev/null
-                if [ $? -ne 0 ]; then
-                    echo "$p weechat plugin updated ($tmpfile)" | systemd-cat -p err -t maintain
-                fi
-            done
-        fi
     fi
 }
 
@@ -154,45 +137,9 @@ check-syncing() {
     fi
 }
 
-pkgbuilds() {
-    local f name repo fname tmpname
-    for f in $(cat ${HOME_PERSONAL}pkgbuilds.csv); do
-        name=$(echo "$f" | cut -d "," -f 1)
-        fname="${USER_TMP}/.pkgbuild.$name"
-        touch $fname
-        if [ ! -e "$PKGBUILD_CHECKS" ]; then
-            repo=$(echo "$f" | cut -d "," -f 2)
-            case $repo in
-                "extra")
-                    repo="https://git.archlinux.org/svntogit/packages.git/plain/trunk/PKGBUILD?h=packages/$name"
-                    ;;
-                "community")
-                    repo="https://git.archlinux.org/svntogit/community.git/plain/trunk/PKGBUILD?h=packages/$name"
-                    ;;
-                *)
-                    echo "unknown repo: $repo"
-                    ;;
-            esac
-            tmpname="$fname.tmp"
-            curl -s "$repo" > $tmpname
-            if [ $? -eq 0 ]; then
-                if [ -e "$fname" ]; then
-                    diff -u $fname $tmpname
-                    if [ $? -ne 0 ]; then
-                        echo "$f has been updated, rebuild?" | systemd-cat -p err -t "pkgbuilds"
-                    fi
-                fi
-                mv $tmpname $fname
-                touch $PKGBUILD_CHECKS
-            fi
-        fi
-    done
-}
-
 if [ ! -e $hourly_check ]; then
     weechat-logs
     set-user-files
     daily
-    pkgbuilds
     touch $hourly_check
 fi
