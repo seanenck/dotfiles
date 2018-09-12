@@ -4,12 +4,34 @@ CACHE_DIR=$HOME/.cache/dmenuurls/
 URLS=$HOME_PERSONAL/urls.csv
 BROWSER="/usr/bin/firefox"
 HASHED=$USER_TMP/.dmenu_urls
-APPS="vlc pavucontrol passwords irc claws"
+LOCAL_APPS="claws passwords irc"
+APPS="vlc pavucontrol $LOCAL_APPS"
 AVAILABLE="$USER_TMP/.dmenu_available"
 
 _dmenucall() {
     echo "$@" | ${SHELL:-"/bin/sh"}
     exit 0
+}
+
+_localapp() {
+    local cmd
+    case "$1" in
+        "claws")
+            cmd="claws-mail"
+            ;;
+        "irc")
+            cmd="termite --exec=weechat"
+            ;;
+        "passwords")
+            cmd="keepassx2 ${SYNCED_PATH}passwords"
+            ;;
+    esac
+    _dmenucall "$cmd"
+}
+
+_matches() {
+    echo "$1" | tr ' ' '\n' | grep -q "^$results$"
+    echo $?
 }
 
 _dmenuwrapper() {
@@ -51,8 +73,10 @@ _dmenuwrapper() {
     if [ -e "$file" ]; then
         _dmenucall $(cat $file)
     fi
-    echo "$APPS" | tr ' ' '\n' | grep -q "^$results$"
-    if [ $? -eq 0 ]; then
+    if [ $(_matches "$LOCAL_APPS" "$results") -eq 0 ]; then
+        _localapp "$results"
+    fi
+    if [ $(_matches "$APPS" "$results") -eq 0 ]; then
         _dmenucall "$results"
     fi
     echo "$results"| grep "\." | grep -q -v " "
