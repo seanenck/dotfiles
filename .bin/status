@@ -168,14 +168,24 @@ _surf() {
 }
 
 _unread() {
-    local d cnt chr
+    local d cnt chr curmail msgs hadmsgs
+    curmail=${USER_TMP}/.mailstatus
+    msgs=0
     source $PRIV_CONF
     for d in $SCAN_MAIL; do
         chr=$(echo "$d" | cut -c1 | tr '[:lower:]' '[:upper:]')
         cnt=$(find $HOME/.mail/imap/$d -type f | wc -l)
         chr="$cnt$chr"
         printf "%5s" $chr
+        msgs=$((msgs+cnt))
     done
+    if [ -e $curmail ]; then
+        hadmsgs=$(cat $curmail)
+        if [ $msgs -gt $hadmsgs ]; then
+            notify-send Mail "new mail ($msgs)"
+        fi
+    fi
+    echo "$msgs" > $curmail
 }
 
 stats() {
