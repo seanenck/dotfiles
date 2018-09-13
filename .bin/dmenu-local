@@ -4,9 +4,10 @@ CACHE_DIR=$HOME/.cache/dmenuurls/
 URLS=$HOME_PERSONAL/urls.csv
 BROWSER="/usr/bin/firefox"
 HASHED=$USER_TMP/.dmenu_urls
-LOCAL_APPS="claws passwords irc"
+LOCAL_APPS="mail passwords irc"
 APPS="vlc pavucontrol $LOCAL_APPS"
 AVAILABLE="$USER_TMP/.dmenu_available"
+TERMITE="termite --exec="
 
 _dmenucall() {
     echo "$@" | ${SHELL:-"/bin/sh"}
@@ -16,11 +17,11 @@ _dmenucall() {
 _localapp() {
     local cmd
     case "$1" in
-        "claws")
-            cmd="claws-mail"
+        "mail")
+            cmd=$TERMITE"mutt"
             ;;
         "irc")
-            cmd="termite --exec=weechat"
+            cmd=$TERMITE"weechat"
             ;;
         "passwords")
             cmd="keepassx2 ${SYNCED_PATH}passwords"
