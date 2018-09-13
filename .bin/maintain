@@ -64,8 +64,10 @@ _dlresources() {
 }
 
 _resources() {
-    echo "checking resources"
-     _dlresources | systemd-cat -p err -t "maintain"
+    if [ -e $SYS_ONLINE ]; then
+        echo "checking resources"
+         _dlresources | systemd-cat -p err -t "maintain"
+    fi
 }
 
 weechat-logs() {

@@ -102,7 +102,9 @@ _gitpush() {
 }
 
 _imap() {
-    _offlineimap 2>&1 | systemd-cat -t "offlineimap"
+    if [ -e $SYS_ONLINE ]; then
+        _offlineimap 2>&1 | systemd-cat -t "offlineimap"
+    fi
 }
 
 sync-now() {

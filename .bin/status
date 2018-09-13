@@ -132,8 +132,10 @@ _up() {
         curl -s https://voidedtech.network > /dev/null
         if [ $? -eq 0 ]; then
             echo "online" > $res
+            touch $SYS_ONLINE
         else
             echo "offline" > $res
+            rm -f $SYS_ONLINE
         fi
         date +%s > $last
     fi

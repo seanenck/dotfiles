@@ -13,6 +13,7 @@ MAIN_STATS=$USER_TMP/stats
 USER_JOURNAL=$USER_TMP/journal.log
 SURF_TMP=$USER_TMP/surf/
 SURF_RAW=".raw"
+SYS_ONLINE=$USER_TMP/.isonline
 
 # offsets from home
 PERM_LOCATION=$HOME/store/
