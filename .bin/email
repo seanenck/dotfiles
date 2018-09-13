@@ -37,6 +37,7 @@ else
     if [[ "$1" == "client" ]]; then
         _offlineimap 2>/dev/null &
         sleep 0.5
+        cd $HOME/Downloads
         mutt
     else
         echo "unknown command: $1"
