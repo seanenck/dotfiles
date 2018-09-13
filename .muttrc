@@ -12,6 +12,7 @@ set from        = "enckse@gmail.com"
 set sort_aux    = reverse-last-date-received
 set sort        = threads
 set sort_re
+set quit        = ask-yes
 
 mailboxes +INBOX
 
