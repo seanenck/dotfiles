@@ -170,28 +170,23 @@ _surf() {
 }
 
 _unread() {
-    local d cnt chr curmail msgs hadmsgs
-    curmail=${USER_TMP}/.mailstatus
-    msgs=0
-    source $PRIV_CONF
-    for d in $SCAN_MAIL; do
-        chr=$(echo "$d" | cut -c1 | tr '[:lower:]' '[:upper:]')
-        cnt=$(find $HOME/.mutt/imap/$d -type f | wc -l)
-        chr="$cnt$chr"
-        printf "%5s" $chr
-        msgs=$((msgs+cnt))
-    done
-    if [ -e $curmail ]; then
-        hadmsgs=$(cat $curmail)
-        if [ $msgs -gt $hadmsgs ]; then
-            notify-send Mail "new mail ($msgs)"
-        fi
+    local messages curr prev now
+    now=$(date +"%Y-%m-%dT%H:%M:%S")
+    prev="${USER_TMP}/.mailtime"
+    if [ -e "$prev" ]; then
+        curr=$(cat $prev)
+    else
+        curr=$now
     fi
-    echo "$msgs" > $curmail
+    messages=$(find $HOME/.mutt/imap/ -type f -newerat "$curr" | wc -l)
+    if [ $messages -gt 0 ]; then
+        notify-send Mail "new mail ($messages)"
+    fi
+    echo "$now" > $prev
 }
 
 stats() {
-    local _last_git _git_text _last_cnt _partial bright muting bat disp up emails
+    local _last_git _git_text _last_cnt _partial bright muting bat disp up
     _last_git=0
     _git_text=""
     _last_cnt=0
@@ -225,8 +220,8 @@ stats() {
         bat=$(_battery)
         disp=$(${HOME_BIN}locking status)
         up=$(_up)
-        emails=$(_unread)
-        echo "$_git_text$bright|$emails|$muting|$bat|$disp|$up|" > $MAIN_STATS
+        _unread
+        echo "$_git_text$bright|$muting|$bat|$disp|$up|" > $MAIN_STATS
         _last_git=$((_last_git+1))
         if [ $_last_git -eq 1 ]; then
             _last_git=0
