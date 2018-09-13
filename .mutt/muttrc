@@ -47,16 +47,16 @@ macro index,pager d "<save-message>=[Gmail].Trash<enter><enter>" "Trash"
 color hdrdefault blue black
 color quoted blue black
 color signature blue black
-color attachment yellow black
+color attachment green black
 color prompt brightmagenta black
 color message white  black
 color error white black
-color indicator black yellow
+color indicator black green
 color status brightgreen blue
 color tree white black
 color normal white black
-color markers yellow black
+color markers green black
 color search white black
 color tilde brightmagenta black
 color index blue black ~F
-color index yellow black "~N|~O"
+color index green black "~N|~O"
