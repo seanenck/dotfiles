@@ -8,7 +8,7 @@ SPACING="    "
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 TODAY=$(date +%Y-%m-%d)
 BACKUP=$PROFILE_TMP$TODAY
-GIT_SYNC=$USER_TMP/git.sync
+GIT_SYNC=$USER_TMP/.git.sync
 GIT_PREV=${GIT_SYNC}.prev
 REPO_HASH=$USER_TMP/repo.hashed
 REPO_PREV=$REPO_HASH.prev
@@ -103,7 +103,7 @@ _gitpush() {
 
 _imap() {
     if [ -e $SYS_ONLINE ]; then
-        $HOME_BIN/email | systemd-cat -t "offlineimap"
+        $HOME_BIN/email 2>&1 | systemd-cat -t "offlineimap"
     fi
 }
 
