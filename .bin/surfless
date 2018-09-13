@@ -1,3 +1,4 @@
 #!/bin/bash
 source $HOME/.bin/common
+mkdir -p $SURF_TMP
 cp "$1" $SURF_TMP$(uuidgen).$(date +%s)$SURF_RAW

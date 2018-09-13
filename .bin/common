@@ -11,8 +11,7 @@ GIT_CHANGES=$USER_TMP/git.changes
 PROFILE_TMP=$USER_TMP/.profile.synced.
 MAIN_STATS=$USER_TMP/stats
 USER_JOURNAL=$USER_TMP/journal.log
-SURF_FILE="surfing."
-SURF_TMP=$USER_TMP/$SURF_FILE
+SURF_TMP=$USER_TMP/surf/
 SURF_RAW=".raw"
 
 # offsets from home

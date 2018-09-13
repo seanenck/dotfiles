@@ -147,7 +147,7 @@ _up() {
 
 _surf() {
     local f h
-    for f in $(find $USER_TMP -type f -name "*$SURF_RAW" | grep "$SURF_FILE"); do
+    for f in $(find $SURF_TMP -type f -name "*$SURF_RAW"); do
         h=$f.html
         mv $f $h
         surf $h &
