@@ -74,7 +74,7 @@ _muttfolders() {
     local muttfile newfile
     muttfile=$USER_TMP/.muttrc
     newfile=$muttfile.working
-    for f in $(ls $IMAP_FOLDER | tr ' ' '\n' | grep -v "^INBOX$"); do
+    for f in $(ls $IMAP_FOLDER | tr ' ' '\n' | grep -v -E "^(INBOX|Mail|Drafts|Queue|Sent|Trash|\[Gmail\]\.Trash|\[Gmail\]\.Sent|\[Gmail\]\.Drafts)$"); do
         echo "mailboxes +$f" >> $newfile
     done
     mv $newfile $muttfile
