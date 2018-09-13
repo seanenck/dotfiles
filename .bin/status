@@ -167,8 +167,19 @@ _surf() {
     done
 }
 
+_unread() {
+    local d cnt chr
+    source $PRIV_CONF
+    for d in $SCAN_MAIL; do
+        chr=$(echo "$d" | cut -c1 | tr '[:lower:]' '[:upper:]')
+        cnt=$(find $HOME/.mail/imap/$d -type f | wc -l)
+        chr="$cnt$chr"
+        printf "%5s" $chr
+    done
+}
+
 stats() {
-    local _last_git _git_text _last_cnt _partial bright muting bat disp up
+    local _last_git _git_text _last_cnt _partial bright muting bat disp up emails
     _last_git=0
     _git_text=""
     _last_cnt=0
@@ -202,7 +213,8 @@ stats() {
         bat=$(_battery)
         disp=$(${HOME_BIN}locking status)
         up=$(_up)
-        echo "$_git_text$bright|$muting|$bat|$disp|$up|" > $MAIN_STATS
+        emails=$(_unread)
+        echo "$_git_text$bright|$emails|$muting|$bat|$disp|$up|" > $MAIN_STATS
         _last_git=$((_last_git+1))
         if [ $_last_git -eq 1 ]; then
             _last_git=0
