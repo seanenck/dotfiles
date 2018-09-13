@@ -15,6 +15,9 @@ set sort_re
 set quit        = ask-yes
 
 mailboxes +INBOX
+source ~/.synced/mail/muttrc
+
+set sidebar_visible
 
 set mailcap_path 	= ~/.mutt/mailcap
 auto_view text/html
