@@ -18,6 +18,7 @@ mailboxes +INBOX
 source ~/.synced/mail/muttrc
 
 set sidebar_visible
+set timeout = 30
 
 set mailcap_path 	= ~/.mutt/mailcap
 auto_view text/html
