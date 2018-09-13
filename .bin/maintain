@@ -1,6 +1,5 @@
 #!/bin/bash
-MY_HOME=/home/enck/
-source ${MY_HOME}.bin/common
+source /home/enck/.bin/common
 CONF_HOME=${HOME_CONF}home
 PKG_QUERY=$USER_TMP/package.query
 PACKAGE_SET=${CONF_HOME}/packages
@@ -12,23 +11,18 @@ base-devel
 BOOTED=/tmp/user.booted-$(uptime -s | sed "s/ /-/g;s/:/-/g")
 if [ ! -e $BOOTED ]; then
     echo "booting up..."
-    files=""
-    for f in $(echo "wget-hsts python_history esd_auth lesshst"); do
-        fname=${MY_HOME}$f
-        files="$files $fname"
-    done
-    files="$files "$(find $USER_TMP -type f | grep "${PROFILE_TMP}")
-    for f in $(echo "$files"); do
-        if [ -e "$f" ]; then
-            echo "deleting temp file: $f"
-            rm -f "$f"
-        fi
-    done
+    rm -f $HOME/.python_history*
+    rm -f $HOME/.wget-hsts*
+    rm -f $HOME/.esd_auth*
+    rm -f $HOME/.lesshst*
+    rm -f $PROFILE_TMP*
     touch $BOOTED
 fi
 
 _dlresources() {
-    local u name prev raw url
+    local u name prev raw url rsrcd
+    rsrcd=$USER_TMP/rsc/
+    mkdir -p $rsrcd
     if [ ! -e "$RESOURCES" ]; then
         touch $RESOURCES
         for u in $(cat $HOME_PERSONAL/tracked.csv); do
@@ -48,7 +42,7 @@ _dlresources() {
                     echo "unknown resource $url"
                     ;;
             esac
-            name=${USER_TMP}/$raw.rsc
+            name=$rsrcd/$raw.rsc
             prev=$name.prev
             touch $prev
             curl -s $url > $name
@@ -67,22 +61,6 @@ _resources() {
     if [ -e $SYS_ONLINE ]; then
         echo "checking resources"
          _dlresources | systemd-cat -p err -t "maintain"
-    fi
-}
-
-weechat-logs() {
-    local logs running f fname p tmpfile
-    logs=$USER_TMP/weechat/
-    mkdir -p $logs
-    running=$(pidof weechat)
-    if [ -z "$running" ]; then
-        echo "cleaning up weechat logs"
-        for f in $(find $HOME/.weechat/logs/ -type f); do
-            fname=${logs}$(basename $f)
-            cat $f | grep -v -E "^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9][[:space:]]+(<|-)-" > $fname
-            cp $f $fname.$(date +%s)
-            mv $fname $f
-        done
     fi
 }
 
@@ -179,7 +157,6 @@ check-syncing() {
     fi
 }
 
-weechat-logs
 set-user-files
 daily
 _resources
