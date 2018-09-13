@@ -12,6 +12,7 @@ _mailsync() {
     if [ -e $now ]; then
         last=$(cat $now)
         if [ $process -gt $last ]; then
+            notmuch new
             notify-send Mail "unread messages ($process)"
         fi
     fi
@@ -25,7 +26,6 @@ _offlineimap() {
     if [ -z "$pids" ]; then
         offlineimap -c ${SYNCED_PATH}mail/imap.conf
         _mailsync
-        notmuch new
     else
         echo "offlineimap already running ($pids)"
     fi
