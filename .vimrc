@@ -75,5 +75,3 @@ for i in ['q', '<F1>']
     execute "map " . i . " <Nop>"
 endfor
 imap <F1> <Nop>
-
-au BufRead /tmp/mutt-* set tw=72
