@@ -174,7 +174,7 @@ _unread() {
     process=0
     source $PRIV_CONF
     for f in $SCAN_MAIL; do
-        cnt=$(find $IMAP_FOLDER$f -type f | wc -l)
+        cnt=$(find $IMAP_FOLDER$f/new -type f | wc -l)
         process=$((process+cnt))
     done
     printf "%3s \xf0\x9f\x93\xa7" "$process"
