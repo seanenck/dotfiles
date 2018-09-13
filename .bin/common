@@ -41,5 +41,11 @@ _systemstop() {
 }
 
 _offlineimap() {
-    offlineimap -c ${SYNCED_PATH}mail/imap.conf
+    local pids
+    pids=$(pidof -x offlineimap)
+    if [ -z "$pids" ]; then
+        offlineimap -c ${SYNCED_PATH}mail/imap.conf
+    else
+        echo "offlineimap already running ($pids)"
+    fi
 }
