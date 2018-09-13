@@ -21,7 +21,7 @@ set date_format = "%Y-%m-%d"
 set index_format = "%4C %Z | %D | %-15.15n | %s (%4c)"
 
 set sidebar_visible
-set sidebar_width = 27
+set sidebar_width = 23
 set timeout = 30
 
 set mailcap_path 	= ~/.mutt/mailcap
