@@ -13,5 +13,8 @@
     insteadOf = aur:
 [commit]
     gpgsign = true
+[sendemail]
+    smtpserver = "/usr/bin/msmtp"
+    smtpencryption = tls
 [include]
     path = ~/.synced/ssh/gitconfig
