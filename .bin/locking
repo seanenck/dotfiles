@@ -127,12 +127,12 @@ toggle() {
 
 setting() {
     if [ -e $DISPLAY_UN ]; then
-        echo "unlocked"
+        echo "ulock"
     else
         if [ -e $DISPLAY_EN ]; then
-            echo "no sleep"
+            echo "nozzz"
         else
-            echo "autolock"
+            echo "xauto"
         fi
     fi
 }
