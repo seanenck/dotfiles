@@ -102,7 +102,7 @@ _gitpush() {
 }
 
 _imap() {
-    offlineimap -c ${SYNCED_PATH}imap.conf 2>&1 | systemd-cat -t "offlineimap"
+    _offlineimap 2>&1 | systemd-cat -t "offlineimap"
 }
 
 sync-now() {

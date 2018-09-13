@@ -37,3 +37,7 @@ _systemstop() {
     fi
     pkill vlc
 }
+
+_offlineimap() {
+    offlineimap -c ${SYNCED_PATH}mail/imap.conf
+}

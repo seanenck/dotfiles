@@ -6,7 +6,6 @@ alias diff="diff -u"
 alias ls='ls --color=auto'
 alias ossh="/usr/bin/ossh -F /dev/null"
 alias dd="sudo dd status=progress"
-alias email="offlineimap -c ~/.synced/imap.conf"
 _git-all() {
     for f in $(find . -maxdepth 1 -type d); do
         if [ -d "$f/.git" ]; then
@@ -14,6 +13,11 @@ _git-all() {
             git -C $f $1
         fi
     done
+}
+
+email() {
+    source $HOME/.bin/common
+    _offlineimap
 }
 
 git-pull-all() {
