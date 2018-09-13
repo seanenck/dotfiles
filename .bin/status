@@ -178,7 +178,7 @@ _unread() {
         cnt=$(find ${imapfolder}$f -type f | wc -l)
         process=$((process+cnt))
     done
-    printf "%10s" "$process emails"
+    printf "%3s \xf0\x9f\x93\xa7" "$process"
 }
 
 stats() {
