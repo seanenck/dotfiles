@@ -102,10 +102,7 @@ _gitpush() {
 }
 
 _imap() {
-    local logfile
-    logfile=${USER_TMP}/imap.$(date +%Y-%m-%d)
-    date +%Y-%m-%dT%H-%M-%S >> $logfile
-    offlineimap -c ${SYNCED_PATH}imap.conf >> $logfile
+    offlineimap -c ${SYNCED_PATH}imap.conf 2>&1 | systemd-cat -t "offlineimap"
 }
 
 sync-now() {
