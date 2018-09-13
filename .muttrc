@@ -1,0 +1,19 @@
+set mbox_type   = Maildir
+#set sendmail    = /usr/bin/msmtp
+
+set folder      = ~/.mail/imap
+set spoolfile   = "+INBOX"
+set mbox        = "+[Gmail]/All Mail"
+set postponed   = "+[Gmail]/Drafts"
+unset record
+
+set realname    = "Sean Enck"
+set from        = "enckse@gmail.com"
+
+mailboxes +INBOX
+
+set mailcap_path 	= ~/.mutt/mailcap
+auto_view text/html                                      # view html automatically
+alternative_order text/plain text/enriched text/html     # save html for last
+
+macro index,pager d "<save-message>=[Gmail].Trash<enter><enter>" "Trash"

@@ -145,6 +145,15 @@ _up() {
     printf "$result"
 }
 
+_surf() {
+    local f h
+    for f in $(find $USER_TMP -type f -name "*$SURF_RAW" | grep "$SURF_FILE"); do
+        h=$f.html
+        mv $f $h
+        surf $h &
+    done 
+}
+
 stats() {
     local _last_git _git_text _last_cnt _partial bright muting bat disp up
     _last_git=0
@@ -157,6 +166,7 @@ stats() {
         if [ $_partial -lt 5 ]; then
             continue
         fi
+        _surf &
         _partial=0
         if [ $_last_git -eq 0 ]; then
             _git_cnt=0
