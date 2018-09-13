@@ -17,13 +17,6 @@ if [ ! -e $BOOTED ]; then
     rm -f $HOME/.lesshst*
     rm -f $PROFILE_TMP*
     
-    # vim
-    for v in $(echo "undo swap"); do
-        vim_dir=$HOME/.vim/$v
-        mkdir -p $vim_dir
-        find $vim_dir -mmin +1440 -type f -exec rm {} \;
-    done
-    
     # packages
     /usr/bin/pacman -Qqe > $PACKAGE_SET
     echo "$PACKAGE_GROUPS" >> $PACKAGE_SET
@@ -83,33 +76,13 @@ set-user-files() {
     mkdir -p $USER_TMP
     find $USER_TMP* -mtime 1 -type f -exec rm {} \;
     find $USER_TMP -empty -type d -delete
-
-}
-
-process-logs() {
-    echo "checking pacman status"
-    pacman-check | systemd-cat -p err -t "maintain"
-}
-
-outdated() {
-    local d weekago
-    d=$(date -d "$1" +%s)
-    weekago=$(date -d "1 week ago" +%s)
-    if [ $d -lt $weekago ]; then
-        echo "outdated? $2 ($1)"
-    fi
-}
-
-check-pacman-update() {
-    local d f
-    f=$1/var/log/pacman.log
-    d=$(cat $f | grep $(date +%Y) | cut -d " " -f 1 | cut -d "[" -f 2 | sort | uniq | tail -n 1)
-    outdated "$d" "$f"
-}
-
-pacman-check() {
-    check-pacman-update ""
-    check-pacman-update "$CHROOT_LOCATION/root"
+    
+    # vim
+    for v in $(echo "undo swap"); do
+        vim_dir=$HOME/.vim/$v
+        mkdir -p $vim_dir
+        find $vim_dir -mmin +1440 -type f -exec rm {} \;
+    done
 }
 
 daily() {
@@ -123,7 +96,6 @@ daily() {
             cat $xsess >> $USER_TMP/xsession.$(date +%Y-%m-%d)
             rm -f $xsess
         fi
-        process-logs
         check-syncing
     fi
 }
