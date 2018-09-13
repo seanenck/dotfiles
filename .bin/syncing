@@ -103,7 +103,7 @@ _gitpush() {
 
 _imap() {
     if [ -e $SYS_ONLINE ]; then
-        _offlineimap 2>&1 | systemd-cat -t "offlineimap"
+        $HOME_BIN/email | systemd-cat -t "offlineimap"
     fi
 }
 

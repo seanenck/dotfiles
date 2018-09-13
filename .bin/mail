@@ -1,5 +1,0 @@
-#!/bin/bash
-source $HOME/.bin/common
-_offlineimap 2>/dev/null &
-sleep 0.5
-mutt

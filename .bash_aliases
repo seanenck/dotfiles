@@ -15,11 +15,6 @@ _git-all() {
     done
 }
 
-email() {
-    source $HOME/.bin/common
-    _offlineimap
-}
-
 git-pull-all() {
     _git-all pull
 }

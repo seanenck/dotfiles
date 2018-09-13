@@ -18,7 +18,7 @@ _localapp() {
     local cmd
     case "$1" in
         "mail")
-            cmd=$TERMITE"${HOME_BIN}mail"
+            cmd=$TERMITE"'""${HOME_BIN}email client'"
             ;;
         "irc")
             cmd=$TERMITE"weechat"

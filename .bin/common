@@ -39,34 +39,3 @@ _systemstop() {
     fi
     pkill vlc
 }
-
-_mailsync() {
-    local process cnt last now
-    now=$USER_TMP/mailstatus.current
-    process=0
-    source $PRIV_CONF
-    for f in $(cat ${HOME_PERSONAL}.muttrc | sed "s/^mailboxes //g" | sed "s/+//g"); do
-        cnt=$(find $HOME/.mutt/imap/$f/new -type f | wc -l)
-        process=$((process+cnt))
-    done
-    printf "%3s \xf0\x9f\x93\xa7" "$process"
-    if [ -e $now ]; then
-        last=$(cat $now)
-        if [ $process -gt $last ]; then
-            notify-send Mail "unread messages ($process)"
-        fi
-    fi
-    echo "$process" > $now
-    cp $now $MAIL_COUNT
-}
-
-_offlineimap() {
-    local pids
-    pids=$(pidof -x offlineimap)
-    if [ -z "$pids" ]; then
-        offlineimap -c ${SYNCED_PATH}mail/imap.conf
-        _mailsync
-    else
-        echo "offlineimap already running ($pids)"
-    fi
-}
