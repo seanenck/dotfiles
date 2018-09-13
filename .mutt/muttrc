@@ -15,10 +15,10 @@ set sort_re
 set quit        = ask-yes
 
 mailboxes +INBOX
-source ~/.synced/mail/muttrc
+source ~/.tmp/.muttrc
 
 set sidebar_visible
-set sidebar_width = 15
+set sidebar_width = 30
 set timeout = 30
 
 set mailcap_path 	= ~/.mutt/mailcap

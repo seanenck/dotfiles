@@ -14,6 +14,7 @@ USER_JOURNAL=$USER_TMP/journal.log
 SURF_TMP=$USER_TMP/surf/
 SURF_RAW=".raw"
 SYS_ONLINE=$USER_TMP/.isonline
+IMAP_FOLDER=$HOME/.mutt/imap/
 
 # offsets from home
 PERM_LOCATION=$HOME/store/
