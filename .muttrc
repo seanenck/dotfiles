@@ -9,6 +9,9 @@ unset record
 
 set realname    = "Sean Enck"
 set from        = "enckse@gmail.com"
+set sort_aux    = reverse-last-date-received
+set sort        = threads
+set sort_re
 
 mailboxes +INBOX
 
