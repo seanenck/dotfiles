@@ -7,21 +7,24 @@ HASHED=$USER_TMP/.dmenu_urls
 LOCAL_APPS="mail passwords irc"
 APPS="vlc pavucontrol $LOCAL_APPS"
 AVAILABLE="$USER_TMP/.dmenu_available"
-TERMITE="termite --exec="
 
 _dmenucall() {
     echo "$@" | ${SHELL:-"/bin/sh"}
     exit 0
 }
 
+_termite() {
+    echo "termite --title=$1 --exec='$2'"
+}
+
 _localapp() {
     local cmd
     case "$1" in
         "mail")
-            cmd=$TERMITE"'""${HOME_BIN}email client'"
+            cmd=$(_termite $1 "${HOME_BIN}email client")
             ;;
         "irc")
-            cmd=$TERMITE"weechat"
+            cmd=$(_termite $1 "weechat")
             ;;
         "passwords")
             cmd="keepassx2 ${SYNCED_PATH}passwords"

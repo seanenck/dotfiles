@@ -3,8 +3,8 @@ set sendmail    = /usr/bin/msmtp
 
 set folder      = ~/.mutt/imap
 set spoolfile   = "+INBOX"
-set mbox        = "+[Gmail]/All Mail"
-set postponed   = "+[Gmail]/Drafts"
+set mbox        = "+[Gmail].All Mail"
+set postponed   = "+[Gmail].Drafts"
 unset record
 
 set realname    = "Sean Enck"
@@ -13,6 +13,7 @@ set sort_aux    = reverse-last-date-received
 set sort        = threads
 set sort_re
 set quit        = ask-yes
+set history_file = "~/.mutt/mutthistory"
 
 mailboxes +INBOX
 source ~/.config/personal/.muttrc
