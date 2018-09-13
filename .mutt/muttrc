@@ -17,6 +17,9 @@ set quit        = ask-yes
 mailboxes +INBOX
 source ~/.config/personal/.muttrc
 
+set date_format = "%Y-%m-%d"
+set index_format = "%4C %Z | %D | %-15.15n | %s (%4c)"
+
 set sidebar_visible
 set sidebar_width = 27
 set timeout = 30
@@ -38,6 +41,3 @@ bind index,pager \Cn sidebar-next
 bind index,pager \Co sidebar-open
 
 macro index,pager d "<save-message>=[Gmail].Trash<enter><enter>" "Trash"
-macro index A \
-    "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" \
-    "mark all read"
