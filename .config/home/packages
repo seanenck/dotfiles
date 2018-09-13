@@ -53,6 +53,7 @@ man-db
 man-pages
 metaphyte-admins
 mkinitcpio-validate
+msmtp
 mutt
 nftables
 noto-fonts
@@ -86,10 +87,12 @@ s-nail
 sed
 shadow
 sudo
+surf
 sysfsutils
 syslinux
 sysmon
 systemd-sysvcompat
+tabbed
 tar
 termite
 texinfo
