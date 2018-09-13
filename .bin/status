@@ -175,7 +175,7 @@ _unread() {
     process=0
     source $PRIV_CONF
     for f in $(cat ${HOME_PERSONAL}.muttrc | sed "s/^mailboxes //g" | sed "s/+//g"); do
-        cnt=$(find $IMAP_FOLDER$f/new -type f | wc -l)
+        cnt=$(find $HOME/.mutt/imap/$f/new -type f | wc -l)
         process=$((process+cnt))
     done
     printf "%3s \xf0\x9f\x93\xa7" "$process"
