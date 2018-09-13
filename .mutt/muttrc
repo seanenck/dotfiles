@@ -18,7 +18,7 @@ mailboxes +INBOX
 source ~/.tmp/.muttrc
 
 set sidebar_visible
-set sidebar_width = 30
+set sidebar_width = 27
 set timeout = 30
 
 set mailcap_path 	= ~/.mutt/mailcap
