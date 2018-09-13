@@ -15,7 +15,7 @@ set sort_re
 set quit        = ask-yes
 
 mailboxes +INBOX
-source ~/.tmp/.muttrc
+source ~/.config/personal/.muttrc
 
 set sidebar_visible
 set sidebar_width = 27

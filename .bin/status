@@ -173,7 +173,7 @@ _unread() {
     local process cnt
     process=0
     source $PRIV_CONF
-    for f in $SCAN_MAIL; do
+    for f in $(cat ${HOME_PERSONAL}.muttrc | sed "s/^mailboxes //g" | sed "s/+//g"); do
         cnt=$(find $IMAP_FOLDER$f/new -type f | wc -l)
         process=$((process+cnt))
     done

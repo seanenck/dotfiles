@@ -70,16 +70,6 @@ _resources() {
     fi
 }
 
-_muttfolders() {
-    local muttfile newfile
-    muttfile=$USER_TMP/.muttrc
-    newfile=$muttfile.working
-    for f in $(ls $IMAP_FOLDER | tr ' ' '\n' | grep -v -E "^(INBOX|Mail|Drafts|Queue|Sent|Trash|\[Gmail\]\.Trash|\[Gmail\]\.Sent|\[Gmail\]\.Drafts)$"); do
-        echo "mailboxes +$f" >> $newfile
-    done
-    mv $newfile $muttfile
-}
-
 weechat-logs() {
     local logs running f fname p tmpfile
     logs=$USER_TMP/weechat/
@@ -193,4 +183,3 @@ weechat-logs
 set-user-files
 daily
 _resources
-_muttfolders
