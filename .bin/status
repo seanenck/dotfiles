@@ -170,7 +170,8 @@ _surf() {
 }
 
 _unread() {
-    local process cnt
+    local process cnt last now
+    now=$USER_TMP/mailstatus.current
     process=0
     source $PRIV_CONF
     for f in $(cat ${HOME_PERSONAL}.muttrc | sed "s/^mailboxes //g" | sed "s/+//g"); do
@@ -178,6 +179,13 @@ _unread() {
         process=$((process+cnt))
     done
     printf "%3s \xf0\x9f\x93\xa7" "$process"
+    if [ -e $now ]; then
+        last=$(cat $now)
+        if [ $process -gt $last ]; then
+            notify-send Mail "unread messages ($process)"
+        fi
+    fi
+    echo "$process" > $now
 }
 
 stats() {
