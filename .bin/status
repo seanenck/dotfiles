@@ -174,7 +174,7 @@ _unread() {
     source $PRIV_CONF
     for d in $SCAN_MAIL; do
         chr=$(echo "$d" | cut -c1 | tr '[:lower:]' '[:upper:]')
-        cnt=$(find $HOME/.mail/imap/$d -type f | wc -l)
+        cnt=$(find $HOME/.mutt/imap/$d -type f | wc -l)
         chr="$cnt$chr"
         printf "%5s" $chr
         msgs=$((msgs+cnt))
