@@ -1,2 +1,2 @@
-setl tw=76
-setl fo+=aw
+setl textwidth=0
+setl wrapmargin=0
