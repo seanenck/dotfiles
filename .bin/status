@@ -145,13 +145,26 @@ _up() {
     printf "$result"
 }
 
+_tabbed() {
+    tabbed -c -s > $1 &
+}
+
 _surf() {
-    local f h
-    for f in $(find $SURF_TMP -type f -name "*$SURF_RAW"); do
-        h=$f.html
-        mv $f $h
-        surf $h &
-    done 
+    local f h p file
+    file=${USER_TMP}/.xidtab
+    while [ 1 -eq 1 ]; do
+        for f in $(find $SURF_TMP -type f -name "*$SURF_RAW"); do
+            h=$f.html
+            mv $f $h
+            p=$(pidof tabbed)
+            if [ -z "$p" ]; then
+                _tabbed $file
+                sleep 0.1
+            fi
+            surf -e $(cat $file) $h &
+        done 
+        sleep 0.5
+    done
 }
 
 stats() {
@@ -160,13 +173,13 @@ stats() {
     _git_text=""
     _last_cnt=0
     _partial=0
+    _surf &
     while [ 1 -eq 1 ]; do
         sleep 0.1
         _partial=$((_partial+1))
         if [ $_partial -lt 5 ]; then
             continue
         fi
-        _surf &
         _partial=0
         if [ $_last_git -eq 0 ]; then
             _git_cnt=0
