@@ -20,6 +20,8 @@ set mailcap_path 	= ~/.mutt/mailcap
 auto_view text/html
 alternative_order text/plain text/enriched text/html
 
+set send_charset="us-ascii:utf-8"
+
 macro index,pager d "<save-message>=[Gmail].Trash<enter><enter>" "Trash"
 macro index A \
     "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" \
