@@ -4,15 +4,21 @@ MAIL_DIR=$HOME/.mutt/imap/
 INDEX_DIR=$MAIL_DIR/Indexed/
 INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
-_mailsync() {
-    local process cnt last now f
-    now=$USER_TMP/mailstatus.current
-    process=0
+
+_mailcount() {
+    local process cnt
     source $PRIV_CONF
     for f in $(cat ${HOME_PERSONAL}.muttrc | sed "s/^mailboxes //g" | sed "s/+//g"); do
         cnt=$(find $MAIL_DIR$f/new -type f | wc -l)
         process=$((process+cnt))
     done
+    echo "$process"
+}
+
+_mailsync() {
+    local process last now f
+    now=$USER_TMP/mailstatus.current
+    process=$(_mailcount)
     if [ -e $now ]; then
         last=$(cat $now)
         if [ $process -gt $last ]; then
@@ -71,6 +77,9 @@ else
             ;;
         "search")
             _search ${@:2}
+            ;;
+        "count")
+            _mailcount
             ;;
         *)
             echo "unknown command: $1"
