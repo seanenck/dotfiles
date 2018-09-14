@@ -48,6 +48,12 @@ _offlineimap() {
     fi
 }
 
+_imapjournal() {
+    if [ -e $SYS_ONLINE ]; then
+        _offlineimap 2>&1 | systemd-cat -t "offlineimap"
+    fi
+}
+
 _search() {
     date +%s > $INDEX_FILE
     rm -f ${INDEXED}*
@@ -55,11 +61,11 @@ _search() {
 }
 
 if [ -z "$1" ]; then
-    _offlineimap
+    _imapjournal
 else
     case "$1" in
         "client")
-            _offlineimap 2>/dev/null &
+            _imapjournal &
             sleep 0.5
             cd $HOME/Downloads
             mutt -e "push '<change-folder-readonly>'$INDEX_DIR'<enter>'"

@@ -101,15 +101,9 @@ _gitpush() {
     fi
 }
 
-_imap() {
-    if [ -e $SYS_ONLINE ]; then
-        $HOME_BIN/email 2>&1 | systemd-cat -t "offlineimap"
-    fi
-}
-
 sync-now() {
     local dirs pushgit pushrepo pushbackup
-    _imap &
+    $HOME_BIN/email &
     dirs=$(ls ${PERM_LOCATION} | grep personal | sed "s#^#$PERM_LOCATION#g")
     dirs="$dirs ${SYNCED_PATH} /etc"
     pushgit=$(_dogit "$dirs" | tail -n 1)
