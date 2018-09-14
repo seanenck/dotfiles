@@ -21,7 +21,6 @@ _mailsync() {
         fi
     fi
     echo "$process" > $now
-    cp $now $MAIL_COUNT
 }
 
 _offlineimap() {

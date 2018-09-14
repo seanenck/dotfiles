@@ -147,17 +147,8 @@ _up() {
     printf "$result"
 }
 
-_unread() {
-    local cnt
-    cnt=0
-    if [ -e $MAIL_COUNT ]; then
-        cnt=$(cat $MAIL_COUNT)
-    fi
-    printf "%3s \xf0\x9f\x93\xa7" "$cnt"
-}
-
 stats() {
-    local _last_git _git_text _last_cnt _partial bright muting bat disp up emails
+    local _last_git _git_text _last_cnt _partial bright muting bat disp up
     _last_git=0
     _git_text=""
     _last_cnt=0
@@ -185,8 +176,7 @@ stats() {
         bat=$(_battery)
         disp=$(${HOME_BIN}locking status)
         up=$(_up)
-        emails=$(_unread)
-        echo "$_git_text|$emails|$bright|$muting|$bat|$disp|$up|" > $MAIN_STATS
+        echo "$_git_text|$bright|$muting|$bat|$disp|$up|" > $MAIN_STATS
         _last_git=$((_last_git+1))
         if [ $_last_git -eq 1 ]; then
             _last_git=0
