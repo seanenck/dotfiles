@@ -5,7 +5,7 @@ INDEX_DIR=$MAIL_DIR/Indexed/
 INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
 _mailsync() {
-    local process cnt last now
+    local process cnt last now f
     now=$USER_TMP/mailstatus.current
     process=0
     source $PRIV_CONF
