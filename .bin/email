@@ -35,14 +35,14 @@ _offlineimap() {
                 purge=0
             fi
         fi
-        echo "purging index: $purge"
+        >&2 echo "purging index: $purge"
         if [ $purge -eq 1 ]; then
             rm -f ${INDEXED}*
         fi
         offlineimap -c ${SYNCED_PATH}mail/imap.conf
         _mailsync
     else
-        echo "offlineimap already running ($pids)"
+        >&2 echo "offlineimap already running ($pids)"
     fi
 }
 
@@ -55,16 +55,18 @@ _search() {
 if [ -z "$1" ]; then
     _offlineimap
 else
-    if [[ "$1" == "client" ]]; then
-        _offlineimap 2>/dev/null &
-        sleep 0.5
-        cd $HOME/Downloads
-        mutt
-    else
-        if [[ "$1" == "search" ]]; then
+    case "$1" in
+        "client")
+            _offlineimap 2>/dev/null &
+            sleep 0.5
+            cd $HOME/Downloads
+            mutt
+            ;;
+        "search")
             _search ${@:2}
-        else
+            ;;
+        *)
             echo "unknown command: $1"
-        fi
-    fi
+            ;;
+    esac
 fi
