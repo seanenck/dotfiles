@@ -1,5 +1,6 @@
 [Unit]
 Description=Open html pages
+StartLimitInterval=0
 
 [Service]
 Environment=DISPLAY=:0
