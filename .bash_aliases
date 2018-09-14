@@ -16,6 +16,11 @@ _git-all() {
     done
 }
 
+grubluks() {
+    echo "configfile (hd0,1)/grub/grub.cfg" | clip
+    echo "command in clipboard"
+}
+
 git-pull-all() {
     _git-all pull
 }

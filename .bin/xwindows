@@ -20,10 +20,6 @@ enter-window-vals() {
     done
 }
 
-_enter-linode-config() {
-    enter-window-vals "termite" "configfile (hd0,1)/grub/grub.cfg" "Return"
-}
-
 _enterbrowserkeys() {
     enter-window-vals "Developer" "$@" "Return"
 }
