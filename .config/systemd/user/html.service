@@ -1,9 +1,0 @@
-[Unit]
-Description=Open html pages
-StartLimitInterval=0
-
-[Service]
-Environment=DISPLAY=:0
-KillMode=process
-Type=oneshot
-ExecStart=/home/enck/.bin/email webview

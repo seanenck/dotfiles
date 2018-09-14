@@ -1,8 +1,0 @@
-[Unit]
-Description=open firefox on html generation
-
-[Path]
-PathChanged=/home/enck/.tmp/html/
-
-[Install]
-WantedBy=default.target

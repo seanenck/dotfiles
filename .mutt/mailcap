@@ -1,1 +1,1 @@
-text/html; cp %s /home/enck/.tmp/html/$(uuidgen).html; copiousoutput;
+text/html; surf %s >/dev/null 2>&1; copiousoutput;
