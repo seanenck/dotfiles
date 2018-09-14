@@ -11,8 +11,6 @@ GIT_CHANGES=$USER_TMP/git.changes
 PROFILE_TMP=$USER_TMP/.profile.synced.
 MAIN_STATS=$USER_TMP/stats
 USER_JOURNAL=$USER_TMP/journal.log
-SURF_TMP=$USER_TMP/surf/
-SURF_RAW=".raw"
 SYS_ONLINE=$USER_TMP/.isonline
 MAIL_COUNT=$USER_TMP/.mailcount
 

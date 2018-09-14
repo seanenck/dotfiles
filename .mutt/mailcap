@@ -1,1 +1,1 @@
-text/html; /home/enck/.bin/surfless %s; copiousoutput;
+text/html; cp %s /home/enck/.tmp/html/$(uuidgen).html; copiousoutput;

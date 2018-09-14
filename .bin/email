@@ -31,6 +31,16 @@ _offlineimap() {
     fi
 }
 
+_webview() {
+    local htmls f ready
+    for f in $(find $USER_TMP/html/ -type f); do
+        ready=$USER_TMP/.webview.$(basename $f).done
+        mv $f $ready
+        htmls="$htmls $ready"
+    done
+    firefox $htmls &
+}
+
 if [ -z "$1" ]; then
     _offlineimap
 else
@@ -40,6 +50,10 @@ else
         cd $HOME/Downloads
         mutt
     else
-        echo "unknown command: $1"
+        if [[ "$1" == "webview" ]]; then
+            _webview
+        else
+            echo "unknown command: $1"
+        fi
     fi
 fi
