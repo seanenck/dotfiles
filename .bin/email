@@ -1,6 +1,8 @@
 #!/bin/bash
 source $HOME/.bin/common
 MAIL_DIR=$HOME/.mutt/imap/
+INDEXED=$MAIL_DIR/Indexed/cur/
+INDEX_FILE=$USER_TMP/mail.index
 _mailsync() {
     local process cnt last now
     now=$USER_TMP/mailstatus.current
@@ -22,9 +24,21 @@ _mailsync() {
 }
 
 _offlineimap() {
-    local pids
+    local pids purge last now
     pids=$(pidof -x offlineimap)
     if [ -z "$pids" ]; then
+        purge=1
+        if [ -e $INDEX_FILE ]; then
+            last=$(cat $INDEX_FILE)
+            now=$(date -d "15 minutes ago" +%s)
+            if [ $last -gt $now ]; then
+                purge=0
+            fi
+        fi
+        echo "purging index: $purge"
+        if [ $purge -eq 1 ]; then
+            rm -f ${INDEXED}*
+        fi
         offlineimap -c ${SYNCED_PATH}mail/imap.conf
         _mailsync
     else
@@ -33,10 +47,9 @@ _offlineimap() {
 }
 
 _search() {
-    local c
-    c=$MAIL_DIR/Indexed/cur/
-    rm -f ${c}*
-    notmuch search --output=files $@ | sed -e 's: :\\\\ :g' | xargs -r -I searchoutput ln -s searchoutput $c
+    date +%s > $INDEX_FILE
+    rm -f ${INDEXED}*
+    notmuch search --output=files $@ | sed -e 's: :\\\\ :g' | xargs -r -I searchoutput ln -s searchoutput $INDEXED
 }
 
 if [ -z "$1" ]; then
