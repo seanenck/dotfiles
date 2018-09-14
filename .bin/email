@@ -1,12 +1,13 @@
 #!/bin/bash
 source $HOME/.bin/common
+MAIL_DIR=$HOME/.mutt/imap/
 _mailsync() {
     local process cnt last now
     now=$USER_TMP/mailstatus.current
     process=0
     source $PRIV_CONF
     for f in $(cat ${HOME_PERSONAL}.muttrc | sed "s/^mailboxes //g" | sed "s/+//g"); do
-        cnt=$(find $HOME/.mutt/imap/$f/new -type f | wc -l)
+        cnt=$(find $MAIL_DIR$f/new -type f | wc -l)
         process=$((process+cnt))
     done
     if [ -e $now ]; then
@@ -31,14 +32,11 @@ _offlineimap() {
     fi
 }
 
-_webview() {
-    local htmls f ready
-    for f in $(find $USER_TMP/html/ -type f); do
-        ready=$USER_TMP/.webview.$(basename $f).done
-        mv $f $ready
-        htmls="$htmls $ready"
-    done
-    firefox $htmls &
+_search() {
+    local c
+    c=$MAIL_DIR/Indexed/cur/
+    rm -f ${c}*
+    notmuch search --output=files $@ | sed -e 's: :\\\\ :g' | xargs -r -I searchoutput ln -s searchoutput $c
 }
 
 if [ -z "$1" ]; then
@@ -50,8 +48,8 @@ else
         cd $HOME/Downloads
         mutt
     else
-        if [[ "$1" == "webview" ]]; then
-            _webview
+        if [[ "$1" == "search" ]]; then
+            _search ${@:2}
         else
             echo "unknown command: $1"
         fi
