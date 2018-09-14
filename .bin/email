@@ -1,7 +1,8 @@
 #!/bin/bash
 source $HOME/.bin/common
 MAIL_DIR=$HOME/.mutt/imap/
-INDEXED=$MAIL_DIR/Indexed/cur/
+INDEX_DIR=$MAIL_DIR/Indexed/
+INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
 _mailsync() {
     local process cnt last now
@@ -61,7 +62,7 @@ else
             _offlineimap 2>/dev/null &
             sleep 0.5
             cd $HOME/Downloads
-            mutt
+            mutt -e "push '<change-folder-readonly>'$INDEX_DIR'<enter>'"
             ;;
         "search")
             _search ${@:2}
