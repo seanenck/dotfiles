@@ -35,6 +35,10 @@ set sleep_time = 0
 bind index,pager \Cp sidebar-prev
 bind index,pager \Cn sidebar-next
 bind index,pager \Co sidebar-open
+bind index,pager \CB noop
+bind index,pager \CD noop
+bind index,pager \CF noop
+bind index,pager O noop
 
 macro index,pager d "<save-message>=[Gmail].Trash<enter><enter>" "Trash"
 
