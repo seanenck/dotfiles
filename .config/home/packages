@@ -88,12 +88,10 @@ s-nail
 sed
 shadow
 sudo
-surf
 sysfsutils
 syslinux
 sysmon
 systemd-sysvcompat
-tabbed
 tar
 termite
 texinfo
