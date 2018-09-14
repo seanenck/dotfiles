@@ -27,6 +27,7 @@ _offlineimap() {
     local pids purge last now
     pids=$(pidof -x offlineimap)
     if [ -z "$pids" ]; then
+        mkdir -p $INDEXED
         purge=1
         if [ -e $INDEX_FILE ]; then
             last=$(cat $INDEX_FILE)
