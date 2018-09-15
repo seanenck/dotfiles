@@ -101,9 +101,17 @@ _gitpush() {
     fi
 }
 
+_emails() {
+    local p
+    p=$(pidof mutt)
+    if [ -z "$p" ]; then
+        $HOME_BIN/email
+    fi
+}
+
 sync-now() {
     local dirs pushgit pushrepo pushbackup
-    $HOME_BIN/email &
+    _emails &
     dirs=$(ls ${PERM_LOCATION} | grep personal | sed "s#^#$PERM_LOCATION#g")
     dirs="$dirs ${SYNCED_PATH} /etc"
     pushgit=$(_dogit "$dirs" | tail -n 1)
