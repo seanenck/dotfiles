@@ -5,8 +5,8 @@ GIT_PARTIAL_PATTERN="weechat|random_seed"
 _get-git-folders() {
     local res f d
     res=""
-    for d in "$HOME/workspace" "${PERM_LOCATION} -maxdepth 2"; do
-        for f in $(find $1 -type d | sort); do
+    for d in "$HOME/workspace" "${PERM_LOCATION}"; do
+        for f in $(find $1 -maxdepth 2 -type d | sort); do
             if [ ! -d "$f/.git" ]; then
                 continue
             fi
