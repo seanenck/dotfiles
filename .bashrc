@@ -32,8 +32,9 @@ xterm*|rxvt*)
 esac
 
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-  exec startx $HOME/.xinitrc
-  return
+    $HOME/.bin/maintain boot &
+    exec startx $HOME/.xinitrc
+    return
 fi
 
 . ~/.bash_aliases

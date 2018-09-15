@@ -4,7 +4,6 @@ Description=Maintain user data (timer)
 [Timer]
 Unit=maintain.service
 OnCalendar=hourly
-OnBootSec=60
 
 [Install]
 WantedBy=timers.target
