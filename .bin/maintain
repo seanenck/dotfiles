@@ -28,6 +28,7 @@ _dlresources() {
     rsrcd=$USER_TMP/rsc/
     mkdir -p $rsrcd
     if [ ! -e "$RESOURCES" ]; then
+        echo "checking resources"
         touch $RESOURCES
         for u in $(cat $HOME_PERSONAL/tracked.csv); do
             cmd=$(echo "$u" | cut -d "," -f 1)
@@ -60,7 +61,6 @@ _dlresources() {
 
 _resources() {
     if [ -e $SYS_ONLINE ]; then
-        echo "checking resources"
          _dlresources | systemd-cat -p err -t "maintain"
     fi
 }
