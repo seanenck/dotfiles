@@ -1,7 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 GIT_PARTIAL_PATTERN="weechat|random_seed"
-GIT_PARTIAL_TMP=$USER_TMP/.git-partial
 
 _get-git-folders() {
     local res f d
@@ -75,10 +74,7 @@ git-changing() {
             continue
         fi
         cd $d
-        local_res=$(get-all-changes)
-        if [ -e "$GIT_PARTIAL_TMP" ]; then
-            local_res=$(echo "$local_res" | grep -E -v "$GIT_PARTIAL_PATTERN")
-        fi
+        local_res=$(get-all-changes | grep -E -v "$GIT_PARTIAL_PATTERN")
         if [ ! -z "$local_res" ]; then
             if [ -z $first ]; then
                 echo "uncommitted changes"
@@ -88,7 +84,6 @@ git-changing() {
             first="false"
         fi
     done
-    touch $GIT_PARTIAL_TMP
     cd $cwd
 }
 
