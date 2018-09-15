@@ -7,7 +7,7 @@ PACKAGE_GROUPS="
 xorg
 base-devel
 "
-BOOTED=/tmp/user.booted-$(uptime -s | sed "s/ /-/g;s/:/-/g")
+BOOTED=/tmp/.user.booted
 if [ ! -e $BOOTED ]; then
     echo "booting up..."
     # cleanup file
@@ -92,3 +92,4 @@ check-syncing() {
 set-user-files
 daily
 _resources
+touch $BOOTED
