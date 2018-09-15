@@ -4,23 +4,17 @@ GIT_PARTIAL_PATTERN="weechat|random_seed"
 GIT_PARTIAL_TMP=$USER_TMP/.git-partial
 
 _get-git-folders() {
-    local res f
+    local res f d
     res=""
-    for f in $(find $1 -type d | sort); do
-        if [ ! -d "$f/.git" ]; then
-            continue
-        fi
-        res=$res" "$f
+    for d in "$HOME/workspace" "${PERM_LOCATION} -maxdepth 2"; do
+        for f in $(find $1 -type d | sort); do
+            if [ ! -d "$f/.git" ]; then
+                continue
+            fi
+            res=$res" "$f
+        done
     done
     echo $res
-}
-
-_get-workspace-objs() {
-    _get-git-folders "$HOME/workspace/"
-}
-
-_get-perm-objs() {
-    _get-git-folders "${PERM_LOCATION} -maxdepth 2"
 }
 
 update-git() {
@@ -75,7 +69,7 @@ get-all-changes() {
 git-changing() {
     local cwd d_paths d local_res first
     cwd=$PWD
-    d_paths="/etc $HOME $SYNCED_PATH $HOME_PERSONAL "$(_get-perm-objs)" "$(_get-workspace-objs)
+    d_paths="/etc $HOME $SYNCED_PATH $HOME_PERSONAL "$(_get-git-folders)
     for d in $(echo "$d_paths"); do
         if [ ! -d "$d/.git" ]; then
             continue
@@ -143,6 +137,7 @@ stats() {
     _git_text=""
     _last_cnt=0
     while [ 1 -eq 1 ]; do
+        _up &
         sleep 0.75
         _git_cnt=0
         if [ -e $GIT_CHANGES ]; then
