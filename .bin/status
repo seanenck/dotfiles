@@ -149,7 +149,7 @@ _up() {
 
 _unread() {
     local cnt
-    cnt=$($HOME_BIN/email count)
+    cnt=$($HOME_BIN/email count | cut -d " " -f 1)
     echo "TEST" > /tmp/testtest
     printf "%3s \xf0\x9f\x93\xa7" "$cnt"
 }

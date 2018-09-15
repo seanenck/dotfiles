@@ -6,27 +6,32 @@ INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
 
 _mailcount() {
-    local process cnt
+    local process cnt folders
     source $PRIV_CONF
+    folders=""
     for f in $(cat ${HOME_PERSONAL}.muttrc | sed "s/^mailboxes //g" | sed "s/+//g"); do
         cnt=$(find $MAIL_DIR$f/new -type f | wc -l)
         process=$((process+cnt))
+        if [ $cnt -gt 0 ]; then
+            folders="$folders $f"
+        fi
     done
-    echo "$process"
+    echo "$process$folders"
 }
 
 _mailsync() {
-    local process last now f
+    local process last now f cnt
     now=$USER_TMP/mailstatus.current
     process=$(_mailcount)
+    cnt=$(echo "$process" | cut -d " " -f 1)
     if [ -e $now ]; then
         last=$(cat $now)
-        if [ $process -gt $last ]; then
+        if [ $cnt -gt $last ]; then
             notmuch new
             notify-send Mail "unread messages ($process)"
         fi
     fi
-    echo "$process" > $now
+    echo "$cnt" > $now
 }
 
 _offlineimap() {
