@@ -96,7 +96,7 @@ if [ -e $GIT_CHANGES ]; then
 fi
 
 _check_today() {
-    local today_check jrnl yesterday journal today filename ifs
+    local today_check jrnl yesterday journal today filename cnt
     today=$(date +%Y-%m-%d)
     filename=$USER_TMP/last.checked.
     today_check=$filename$today
@@ -113,12 +113,8 @@ _check_today() {
     fi
     if [ -e $journal ]; then
         if [ -s $journal ]; then
-            ifs=$IFS
-            IFS=$'\n'
-            for l in $(cat $journal | tail -n +2); do
-                notify-send --urgency=critical Journal "$l"
-            done
-            IFS=$ifs
+            cnt=$(cat $journal | tail -n +2 | wc -l)
+            notify-send --urgency=critical Journal "errors reported ($cnt)"
         fi
     fi
     xhost +local: >/dev/null

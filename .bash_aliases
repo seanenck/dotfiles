@@ -52,6 +52,13 @@ poweroff() {
     _turnoff "poweroff"
 }
 
+view-journal() {
+    source $HOME/.bin/common
+    if [ -e "$USER_JOURNAL" ]; then
+        cat $USER_JOURNAL
+    fi
+}
+
 clear-journal() {
     source $HOME/.bin/common
     rm -f $USER_JOURNAL
