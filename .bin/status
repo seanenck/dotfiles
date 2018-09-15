@@ -139,32 +139,25 @@ _unread() {
 }
 
 stats() {
-    local _last_git _git_text _last_cnt bright bat disp emails
-    _last_git=0
+    local _git_text _last_cnt bright bat disp emails
     _git_text=""
     _last_cnt=0
     while [ 1 -eq 1 ]; do
         sleep 0.75
-        if [ $_last_git -eq 0 ]; then
-            _git_cnt=0
-            if [ -e $GIT_CHANGES ]; then
-                _git_cnt=$(cat $GIT_CHANGES | grep "    " | wc -l)
-            else
-                _git_cnt=$_last_cnt
-            fi
-            _last_cnt=$_git_cnt
-            _git_text=$(printf "$_last_cnt \xe2\xb8\x99")
-            update-git &
+        _git_cnt=0
+        if [ -e $GIT_CHANGES ]; then
+            _git_cnt=$(cat $GIT_CHANGES | grep "    " | wc -l)
+        else
+            _git_cnt=$_last_cnt
         fi
+        _last_cnt=$_git_cnt
+        _git_text=$(printf "$_last_cnt HEAD^")
+        update-git &
         bright=$(_brightness)
         bat=$(_battery)
         disp=$(${HOME_BIN}locking status)
         emails=$(_unread)
         echo "$_git_text|$emails|$disp|$bright|$bat|" > $MAIN_STATS
-        _last_git=$((_last_git+1))
-        if [ $_last_git -eq 1 ]; then
-            _last_git=0
-        fi
     done
 }
 
