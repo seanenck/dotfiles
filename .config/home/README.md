@@ -66,6 +66,7 @@ mkinitcpio -p linux
 as enck, cleaning up/prep
 ```
 systemctl --user enable sync.timer
+systemctl --user enable sync.path
 systemctl --user enable maintain.timer
 ```
 
