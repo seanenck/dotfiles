@@ -166,7 +166,7 @@ stats() {
         bat=$(_battery)
         disp=$(${HOME_BIN}locking status)
         emails=$(_unread)
-        echo "$_git_text|$emails|$bright|$bat|$disp|" > $MAIN_STATS
+        echo "$_git_text|$emails|$disp|$bright|$bat|" > $MAIN_STATS
         _last_git=$((_last_git+1))
         if [ $_last_git -eq 1 ]; then
             _last_git=0
