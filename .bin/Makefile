@@ -1,9 +1,15 @@
-PERSONAL=$(HOME)/.config/personal/
-WEECHAT=$(HOME)/.weechat/
-all:
+PERSONAL := $(HOME)/.config/personal/
+WEECHAT  := $(HOME)/.weechat/
+PLUGINS  := autosort buffer_autoset
+
+_check:
 ifeq ($(shell whoami), root)
 	$(error must not be run as root)
 endif
+
+all: _check update _setup
+
+_setup:
 	mkdir -p $(HOME)/Downloads
 	mkdir -p $(HOME)/.tmp
 	mkdir -p $(HOME)/.vim/swap
@@ -18,3 +24,8 @@ endif
 	sudo mkdir -p /etc/systemd/nspawn
 	sudo timedatectl set-ntp true
 	sudo systemctl enable nftables
+
+update: _check $(PLUGINS)
+
+$(PLUGINS):
+	curl -s https://www.weechat.org/files/scripts/$@.py > $(WEECHAT)python/$@.py
