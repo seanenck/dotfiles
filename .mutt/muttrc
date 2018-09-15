@@ -16,6 +16,7 @@ set quit        = ask-yes
 set history_file = "~/.mutt/mutthistory"
 
 mailboxes +INBOX
+save-hook . '=INBOX'
 source ~/.config/personal/.muttrc
 
 set date_format = "%Y-%m-%d"
