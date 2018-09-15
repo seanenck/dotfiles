@@ -24,34 +24,21 @@ if [ ! -e $BOOTED ]; then
 fi
 
 _dlresources() {
-    local u name prev raw cmd rsrcd
+    local u name prev rsrcd
     rsrcd=$USER_TMP/rsc/
     mkdir -p $rsrcd
     if [ ! -e "$RESOURCES" ]; then
         echo "checking resources"
         touch $RESOURCES
-        for u in $(cat $HOME_PERSONAL/tracked.csv); do
-            cmd=$(echo "$u" | cut -d "," -f 1)
-            raw=$(echo "$u" | cut -d "," -f 2)
-            case "$cmd" in
-                "pacman")
-                    cmd="/usr/bin/pacman -Ss '^"$raw"$' | head -n +1"
-                    ;;
-                "weechat")
-                    cmd="curl -s https://www.weechat.org/files/scripts/$raw.py"
-                    ;;
-                *)
-                    echo "unknown resource $cmd"
-                    ;;
-            esac
-            name=$rsrcd/$raw.rsc
+        for u in $(cat $HOME_PERSONAL/track); do
+            name=$rsrcd/$u.rsc
             prev=$name.prev
             touch $prev
-            eval $cmd > $name
+            /usr/bin/pacman -Ss "^$u$" | head -n +1 > $name
             if [ $? -eq 0 ]; then
                 diff -u $prev $name > /dev/null
                 if [ $? -ne 0 ]; then
-                    echo "$raw has updated"
+                    echo "$u has updated"
                 fi
             fi
             mv $name $prev
@@ -60,9 +47,7 @@ _dlresources() {
 }
 
 _resources() {
-    if [ -e $SYS_ONLINE ]; then
-         _dlresources | systemd-cat -p err -t "maintain"
-    fi
+     _dlresources | systemd-cat -p err -t "maintain"
 }
 
 set-user-files() {
