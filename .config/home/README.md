@@ -63,16 +63,7 @@ mkinitcpio -p linux
 # install from ~/.config/home/packages (groups first)
 ```
 
-as enck, cleaning up/prep
+now
 ```
-systemctl --user enable sync.timer
-systemctl --user enable sync.path
-systemctl --user enable maintain.timer
-```
-
-as root, networking and reboot
-```
-systemctl enable systemd-networkd
-systemctl enable wsw
 reboot
 ```

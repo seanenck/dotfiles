@@ -1,13 +1,15 @@
 PERSONAL := $(HOME)/.config/personal/
 WEECHAT  := $(HOME)/.weechat/
 PLUGINS  := autosort buffer_autoset
+SERVICES := sync.timer sync.path maintain.timer
+SYS_SERV := nftables systemd-networkd wsw
 
 _check:
 ifeq ($(shell whoami), root)
 	$(error must not be run as root)
 endif
 
-all: _check update _setup
+all: _check update _setup services
 
 _setup:
 	mkdir -p $(HOME)/Downloads
@@ -23,7 +25,14 @@ _setup:
 	sudo ln -s /home/enck/.vimrc /etc/vimrc
 	sudo mkdir -p /etc/systemd/nspawn
 	sudo timedatectl set-ntp true
-	sudo systemctl enable nftables
+
+services: $(SERVICES) $(SYS_SERV)
+
+$(SYS_SERV):
+	sudo systemctl enable $@
+
+$(SERVICES):
+	systemctl --user enable $@
 
 update: _check $(PLUGINS)
 
