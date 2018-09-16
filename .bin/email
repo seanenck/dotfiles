@@ -34,11 +34,12 @@ _mailsync() {
     echo "$cnt" > $now
 }
 
-_offlineimap() {
+_mbsync() {
     local pids purge last now
-    pids=$(pidof -x offlineimap)
+    pids=$(pidof mbsync)
     if [ -z "$pids" ]; then
         mkdir -p $INDEXED
+        mkdir -p ${INDEX_DIR}new
         purge=1
         if [ -e $INDEX_FILE ]; then
             last=$(cat $INDEX_FILE)
@@ -51,16 +52,16 @@ _offlineimap() {
         if [ $purge -eq 1 ]; then
             rm -f ${INDEXED}*
         fi
-        offlineimap -c ${SYNCED_PATH}mail/imap.conf
+        mbsync -aV --config ${SYNCED_PATH}mail/mbsync.conf
         _mailsync
     else
-        >&2 echo "offlineimap already running ($pids)"
+        >&2 echo "mbsync already running ($pids)"
     fi
 }
 
 _imapjournal() {
     if [ -e $SYS_ONLINE ]; then
-        _offlineimap 2>&1 | systemd-cat -t "offlineimap"
+        _mbsync 2>&1 | systemd-cat -t "mailsync"
     fi
 }
 
