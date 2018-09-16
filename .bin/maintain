@@ -2,7 +2,6 @@
 source /home/enck/.bin/common
 CONF_HOME=${HOME_CONF}home
 PACKAGE_SET=${CONF_HOME}/packages
-RESOURCES="${USER_TMP}/resources"
 PACKAGE_GROUPS="
 xorg
 base-devel
@@ -27,27 +26,28 @@ _dlresources() {
     local u name prev rsrcd
     rsrcd=$USER_TMP/rsc/
     mkdir -p $rsrcd
-    if [ ! -e "$RESOURCES" ]; then
-        echo "checking resources"
-        touch $RESOURCES
-        for u in $(cat $HOME_PERSONAL/track); do
-            name=$rsrcd/$u.rsc
-            prev=$name.prev
-            touch $prev
-            /usr/bin/pacman -Ss "^$u$" | head -n +1 > $name
-            if [ $? -eq 0 ]; then
-                diff -u $prev $name > /dev/null
-                if [ $? -ne 0 ]; then
-                    echo "$u has updated"
-                fi
+    for u in $(cat $HOME_PERSONAL/track); do
+        name=$rsrcd/$u.rsc
+        prev=$name.prev
+        touch $prev
+        /usr/bin/pacman -Ss "^$u$" | head -n +1 > $name
+        if [ $? -eq 0 ]; then
+            diff -u $prev $name > /dev/null
+            if [ $? -ne 0 ]; then
+                echo "$u has updated"
             fi
-            mv $name $prev
-        done
-    fi
+        fi
+        mv $name $prev
+    done
 }
 
 _resources() {
-     _dlresources | systemd-cat -p err -t "maintain"
+    local p
+    p=$(pidof pacman)
+    if [ -z "$p" ]; then
+        echo "checking resources"
+        _dlresources | systemd-cat -p err -t "maintain"
+    fi
 }
 
 set-user-files() {
