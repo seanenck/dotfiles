@@ -141,12 +141,16 @@ stats() {
             _git_cnt=$_last_cnt
         fi
         _last_cnt=$_git_cnt
-        _git_text=$(printf "$_last_cnt HEAD^")
+        if [ $_last_cnt -gt 0 ]; then
+            _git_text=$(printf "$_last_cnt HEAD^|")
+        else
+            _git_text=""
+        fi
         update-git &
         bright=$(_brightness)
         bat=$(_battery)
         emails=$(_unread)
-        echo "$_git_text|$emails|$bright|$bat|" > $MAIN_STATS
+        echo "$_git_text$emails|$bright|$bat|" > $MAIN_STATS
     done
 }
 
