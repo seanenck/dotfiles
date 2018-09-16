@@ -151,7 +151,7 @@ stats() {
         bright=$(_brightness)
         bat=$(_battery)
         emails=$(_unread)
-        echo "$_git_text$emails$bright|$bat|" > $MAIN_STATS
+        echo "$_git_text$emails$bat|$bright|" > $MAIN_STATS
     done
 }
 
