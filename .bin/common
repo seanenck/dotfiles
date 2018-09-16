@@ -12,6 +12,7 @@ PROFILE_TMP=$USER_TMP/.profile.synced.
 MAIN_STATS=$USER_TMP/stats
 USER_JOURNAL=$USER_TMP/journal.log
 SYS_ONLINE=$USER_TMP/.isonline
+CHECK_MAIL=$USER_TMP/checkmail
 
 # offsets from home
 PERM_LOCATION=$HOME/store/
