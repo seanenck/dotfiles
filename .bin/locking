@@ -151,8 +151,4 @@ locking() {
     esac
 }
 
-if [[ "$1" == "status" ]]; then
-    setting
-else
-    locking "$1" | systemd-cat -t "locking"
-fi
+locking "$1" | systemd-cat -t "locking"

@@ -128,7 +128,7 @@ _unread() {
 }
 
 stats() {
-    local _git_text _last_cnt bright bat disp emails
+    local _git_text _last_cnt bright bat emails
     _git_text=""
     _last_cnt=0
     while [ 1 -eq 1 ]; do
@@ -145,9 +145,8 @@ stats() {
         update-git &
         bright=$(_brightness)
         bat=$(_battery)
-        disp=$(${HOME_BIN}locking status)
         emails=$(_unread)
-        echo "$_git_text|$emails|$disp|$bright|$bat|" > $MAIN_STATS
+        echo "$_git_text|$emails|$bright|$bat|" > $MAIN_STATS
     done
 }
 
