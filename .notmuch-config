@@ -48,7 +48,7 @@ primary_email=enckse@gmail.com
 #
 [new]
 tags=unread;inbox;
-ignore=[Gmail]/Trash;Indexed;.uidvalidity;.mbsyncstate
+ignore=Indexed;.uidvalidity;.mbsyncstate
 
 # Search configuration
 #
