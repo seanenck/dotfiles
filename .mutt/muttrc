@@ -3,8 +3,8 @@ set sendmail    = /usr/bin/msmtp
 
 set folder      = ~/.mutt/imap
 set spoolfile   = "+INBOX"
-set mbox        = "+[Gmail].All Mail"
-set postponed   = "+[Gmail].Drafts"
+set mbox        = "+[Gmail]/All Mail"
+set postponed   = "+[Gmail]/Drafts"
 unset record
 
 set realname    = "Sean Enck"
@@ -43,7 +43,7 @@ bind index,pager O noop
 bind index <Up> previous-entry
 bind index <Down> next-entry
 
-macro index,pager d "<save-message>=[Gmail].Trash<enter><enter>" "Trash"
+macro index,pager d "<save-message>=[Gmail]/Trash<enter><enter>" "Trash"
 macro index,pager <f5> "<enter-command>unset wait\_key<enter><shell-escape>/home/enck/.bin/email &<enter><enter-command>set wait\_key<enter>" "Refresh"
 
 color hdrdefault blue black
