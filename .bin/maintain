@@ -20,6 +20,10 @@ _booting() {
     /usr/bin/pacman -Qqe > $PACKAGE_SET
     echo "$PACKAGE_GROUPS" >> $PACKAGE_SET
     touch $BOOTED
+
+    # mail validation
+    find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch\/" | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)" | systemd-cat -t "mailsync" -p err
+    touch $f
 }
 
 _checkresources() {
@@ -70,9 +74,6 @@ daily() {
         if [ $? -ne 0 ]; then
             echo "no reset successful syncs" | systemd-cat -p err -t "maintain"
         fi
-        echo "validating mail"
-        find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch\/" | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)" | systemd-cat -t "mailsync" -p err
-        touch $f
     fi
 }
 
