@@ -6,7 +6,7 @@ _get-git-folders() {
     local res f d
     res=""
     for d in "$HOME/workspace" "${PERM_LOCATION}"; do
-        for f in $(find $1 -maxdepth 2 -type d | sort); do
+        for f in $(find $d -maxdepth 2 -type d | sort); do
             if [ ! -d "$f/.git" ]; then
                 continue
             fi
