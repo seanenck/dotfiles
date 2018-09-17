@@ -74,6 +74,10 @@ _search() {
     notmuch search --output=files $@ | sed -e 's: :\\\\ :g' | xargs -r -I searchoutput ln -s searchoutput $INDEXED
 }
 
+_validate() {
+    find $MAIL_DIR -type f -exec file {} \; | grep -v "\.\/\." | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)"
+}
+
 if [ -z "$1" ]; then
     _imapjournal
 else
@@ -90,6 +94,9 @@ else
             ;;
         "count")
             _mailcount
+            ;;
+        "validate")
+            _validate
             ;;
         *)
             echo "unknown command: $1"
