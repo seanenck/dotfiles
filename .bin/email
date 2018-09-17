@@ -75,7 +75,7 @@ _search() {
 }
 
 _validate() {
-    find $MAIL_DIR -type f -exec file {} \; | grep -v "\.\/\." | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)"
+    find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch\/" | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)"
 }
 
 if [ -z "$1" ]; then
