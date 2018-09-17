@@ -1,6 +1,5 @@
 #!/bin/bash
 source $HOME/.bin/common
-MAIL_DIR=$HOME/.mutt/imap/
 INDEX_DIR=$MAIL_DIR/Indexed/
 INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
@@ -74,10 +73,6 @@ _search() {
     notmuch search --output=files $@ | sed -e 's: :\\\\ :g' | xargs -r -I searchoutput ln -s searchoutput $INDEXED
 }
 
-_validate() {
-    find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch\/" | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)"
-}
-
 if [ -z "$1" ]; then
     _imapjournal
 else
@@ -94,9 +89,6 @@ else
             ;;
         "count")
             _mailcount
-            ;;
-        "validate")
-            _validate
             ;;
         *)
             echo "unknown command: $1"

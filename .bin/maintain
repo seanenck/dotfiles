@@ -55,22 +55,24 @@ daily() {
     local f xsess
     f=$USER_TMP/maintain.$(date +%Y-%m-%d)
     if [ ! -e $f ]; then
-        touch $f
         echo "running daily checks..."
         xsess=$HOME/.xsession-errors
         if [ -e $xsess ]; then
             cat $xsess >> $USER_TMP/xsession.$(date +%Y-%m-%d)
             rm -f $xsess
         fi
-        # user tmp
+        echo "clearing user tmp..."
         mkdir -p $USER_TMP
         find $USER_TMP* -mtime 1 -type f -exec rm {} \;
         find $USER_TMP -empty -type d -delete
-        # local syncing check
+        echo "validate syncing"
         journalctl -t sync --since "7 days ago" | grep -q "local sync completed"
         if [ $? -ne 0 ]; then
             echo "no reset successful syncs" | systemd-cat -p err -t "maintain"
         fi
+        echo "validating mail"
+        find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch\/" | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)" | systemd-cat -t "mailsync" -p err
+        touch $f
     fi
 }
 
