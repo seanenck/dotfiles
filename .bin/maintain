@@ -53,11 +53,6 @@ _resources() {
 set-user-files() {
     local f v running vim_dir
     echo "set user files"
-
-    # user tmp
-    mkdir -p $USER_TMP
-    find $USER_TMP* -mtime 1 -type f -exec rm {} \;
-    find $USER_TMP -empty -type d -delete
     
     # vim
     for v in $(echo "undo swap"); do
@@ -78,6 +73,10 @@ daily() {
             cat $xsess >> $USER_TMP/xsession.$(date +%Y-%m-%d)
             rm -f $xsess
         fi
+        # user tmp
+        mkdir -p $USER_TMP
+        find $USER_TMP* -mtime 1 -type f -exec rm {} \;
+        find $USER_TMP -empty -type d -delete
         check-syncing
     fi
 }
