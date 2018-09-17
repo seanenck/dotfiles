@@ -41,25 +41,14 @@ _checkresources() {
     done
 }
 
-_resources() {
+hourly() {
     local p
+    find $HOME/.vim/{swap,undo} -mmin +1440 -type f -exec rm {} \;
     p=$(pidof pacman)
     if [ -z "$p" ]; then
         echo "checking resources"
         _checkresources | systemd-cat -p err -t "maintain"
     fi
-}
-
-set-user-files() {
-    local f v running vim_dir
-    echo "set user files"
-    
-    # vim
-    for v in $(echo "undo swap"); do
-        vim_dir=$HOME/.vim/$v
-        mkdir -p $vim_dir
-        find $vim_dir -mmin +1440 -type f -exec rm {} \;
-    done
 }
 
 daily() {
@@ -77,21 +66,17 @@ daily() {
         mkdir -p $USER_TMP
         find $USER_TMP* -mtime 1 -type f -exec rm {} \;
         find $USER_TMP -empty -type d -delete
-        check-syncing
-    fi
-}
-
-check-syncing() {
-    journalctl -t sync --since "7 days ago" | grep -q "local sync completed"
-    if [ $? -ne 0 ]; then
-        echo "no reset successful syncs" | systemd-cat -p err -t "maintain"
+        # local syncing check
+        journalctl -t sync --since "7 days ago" | grep -q "local sync completed"
+        if [ $? -ne 0 ]; then
+            echo "no reset successful syncs" | systemd-cat -p err -t "maintain"
+        fi
     fi
 }
 
 if [ -z "$1" ]; then
-    set-user-files
+    hourly
     daily
-    _resources
 else
     if [[ "$1" == "boot" ]]; then
         sleep 60
