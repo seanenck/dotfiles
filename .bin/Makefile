@@ -3,6 +3,7 @@ WEECHAT  := $(HOME)/.weechat/
 PLUGINS  := autosort buffer_autoset
 SERVICES := sync.timer sync.path maintain.timer
 SYS_SERV := nftables systemd-networkd wsw
+VIM_DIRS := "/.vim/{swap,undo}"
 
 _check:
 ifeq ($(shell whoami), root)
@@ -14,8 +15,7 @@ all: _check update _setup services
 _setup:
 	mkdir -p $(HOME)/Downloads
 	mkdir -p $(HOME)/.tmp
-	mkdir -p $(HOME)/.vim/swap
-	mkdir -p $(HOME)/.vim/undo
+	mkdir -p $(HOME)$(VIM_DIRS)
 	mkdir -p $(HOME)/.cache/dmenurls
 	ln -sf $(PERSONAL)epiphyte.conf $(HOME)/.config/epiphyte/env
 	ln -sf $(PERSONAL)buffer_autoset.conf $(WEECHAT)/buffer_autoset.conf
@@ -25,6 +25,7 @@ _setup:
 	sudo ln -s /home/enck/.vimrc /etc/vimrc
 	sudo mkdir -p /etc/systemd/nspawn
 	sudo timedatectl set-ntp true
+	sudo mkdir -p /root$(VIM_DIRS)
 
 services: $(SERVICES) $(SYS_SERV)
 
