@@ -53,6 +53,9 @@ _mbsync() {
             rm -f ${INDEXED}*
         fi
         mbsync -aV --config ${SYNCED_PATH}mail/mbsync.conf
+        if [ $? -ne 0 ]; then
+            echo "mbsync failure" | systemd-cat -p err "mbsync"
+        fi
         _mailsync
     else
         >&2 echo "mbsync already running ($pids)"
