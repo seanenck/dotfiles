@@ -22,7 +22,7 @@ _booting() {
     touch $BOOTED
 }
 
-_dlresources() {
+_checkresources() {
     local u name prev rsrcd
     rsrcd=$USER_TMP/rsc/
     mkdir -p $rsrcd
@@ -46,7 +46,7 @@ _resources() {
     p=$(pidof pacman)
     if [ -z "$p" ]; then
         echo "checking resources"
-        _dlresources | systemd-cat -p err -t "maintain"
+        _checkresources | systemd-cat -p err -t "maintain"
     fi
 }
 
