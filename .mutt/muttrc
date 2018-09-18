@@ -25,6 +25,7 @@ set index_format = "%4C %Z | %D | %-15.15n | %s (%4c)"
 set sidebar_visible
 set sidebar_width = 27
 set timeout = 30
+unset markers
 
 set mailcap_path 	= ~/.mutt/mailcap
 auto_view text/html
