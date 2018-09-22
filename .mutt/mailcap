@@ -1,1 +1,1 @@
-text/html; surf %s >/dev/null 2>&1; copiousoutput;
+text/html; firefox --private-window %s >/dev/null 2>&1; copiousoutput;
