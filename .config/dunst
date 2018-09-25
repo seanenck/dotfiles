@@ -65,3 +65,13 @@
     foreground = "#ffffff"
     frame_color = "#ff0000"
     timeout = 0
+
+[pinverify]
+    summary = "PIN verified"
+    format = ""
+[scready]
+    summary = "Smart card is ready to use"
+    format = ""
+[scremoved]
+    summary = "Smart card removed"
+    format = ""
