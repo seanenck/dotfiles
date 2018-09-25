@@ -58,6 +58,7 @@ sudo pacman -Syyu
 sudo pacman -Sc
 sudo pacman-key --refresh-key
 mkinitcpio -p linux
+pacman -S xorg base-devel
 # make sure gpg keys for epiphyte are in place
 # make sure configs are in place
 # install from ~/.config/home/packages (groups first)

@@ -2,10 +2,6 @@
 source /home/enck/.bin/common
 CONF_HOME=${HOME_CONF}home
 PACKAGE_SET=${CONF_HOME}/packages
-PACKAGE_GROUPS="
-xorg
-base-devel
-"
 
 _booting() {
     echo "booting up..."
@@ -18,7 +14,6 @@ _booting() {
     
     # packages
     /usr/bin/pacman -Qqe > $PACKAGE_SET
-    echo "$PACKAGE_GROUPS" >> $PACKAGE_SET
     touch $BOOTED
 
     # mail validation
