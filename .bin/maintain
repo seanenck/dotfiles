@@ -11,6 +11,7 @@ _booting() {
     rm -f $HOME/.esd_auth*
     rm -f $HOME/.lesshst*
     rm -f $PROFILE_TMP*
+    rm -f $SYS_ONLINE
     
     # packages
     /usr/bin/pacman -Qqe > $PACKAGE_SET
