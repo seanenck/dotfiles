@@ -10,6 +10,7 @@ set sort_re
 set quit        = ask-yes
 
 mailboxes +INBOX
+mailboxes +Indexed
 save-hook . '=INBOX'
 
 set date_format = "%Y-%m-%d"
