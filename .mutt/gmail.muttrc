@@ -1,4 +1,4 @@
-set sendmail    = "~/.bin/email send gmail"
+set sendmail    = "/usr/bin/msmtp -a gmail"
 set folder      = ~/.mutt/imap/gmail
 set mbox        = "+[Gmail]/All Mail"
 set postponed   = "+[Gmail]/Drafts"

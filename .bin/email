@@ -76,10 +76,6 @@ _search() {
     notmuch search --output=files $@ | sed -e 's: :\\\\ :g' | xargs -r -I searchoutput ln -s searchoutput $INDEXED
 }
 
-_send() {
-    /usr/bin/msmtp -C ${MAIL_CONF}$1 ${@:2}
-}
-
 if [ -z "$1" ]; then
     _imapjournal
 else
@@ -100,13 +96,6 @@ else
             ;;
         "count")
             _mailcount
-            ;;
-        "send")
-            if [ -z "$2" ]; then
-                echo "account required"
-                exit 1
-            fi
-            _send $2 ${@:2}
             ;;
         *)
             echo "unknown command: $1"
