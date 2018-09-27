@@ -1,3 +1,4 @@
+set from        = "enckse@voidedtech.com"
 set sendmail    = "/usr/bin/msmtp -a fastmail"
 set folder      = ~/.mutt/imap/fastmail
 set postponed   = "=Drafts"

@@ -1,5 +1,4 @@
 set mbox_type   = Maildir
-set from        = "enckse@gmail.com"
 
 set spoolfile   = "+INBOX"
 unset record

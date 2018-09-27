@@ -1,3 +1,4 @@
+set from        = "enckse@gmail.com"
 set sendmail    = "/usr/bin/msmtp -a gmail"
 set folder      = ~/.mutt/imap/gmail
 set mbox        = "+[Gmail]/All Mail"
