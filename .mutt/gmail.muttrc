@@ -1,5 +1,5 @@
 set sendmail    = /usr/bin/msmtp
-set folder      = ~/.mutt/imap/google
+set folder      = ~/.mutt/imap/gmail
 set mbox        = "+[Gmail]/All Mail"
 set postponed   = "+[Gmail]/Drafts"
 set history_file = "~/.mutt/gmail.mutthistory"

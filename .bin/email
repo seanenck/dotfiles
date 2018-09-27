@@ -5,15 +5,17 @@ INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
 
 _mailcount() {
-    local process cnt folders
+    local process cnt folders f d
     source $PRIV_CONF
     folders=""
-    for f in $(cat ${HOME_PERSONAL}gmail.muttrc | sed "s/^mailboxes //g" | sed "s/+//g" | sort); do
-        cnt=$(find $MAIL_DIR$f/new -type f | wc -l)
-        process=$((process+cnt))
-        if [ $cnt -gt 0 ]; then
-            folders="$folders $f"
-        fi
+    for d in fastmail gmail; do
+        for f in $(cat ${HOME_PERSONAL}$d.muttrc | sed "s/^mailboxes //g" | sed "s/+//g" | sort); do
+            cnt=$(find $MAIL_DIR/$d/$f/new -type f | wc -l)
+            process=$((process+cnt))
+            if [ $cnt -gt 0 ]; then
+                folders="$folders $f"
+            fi
+        done
     done
     echo "$process$folders"
 }
