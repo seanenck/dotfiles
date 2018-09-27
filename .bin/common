@@ -13,7 +13,7 @@ MAIN_STATS=$USER_TMP/stats
 USER_JOURNAL=$USER_TMP/journal.log
 SYS_ONLINE=$USER_TMP/.isonline
 CHECK_MAIL=$USER_TMP/checkmail
-MAIL_DIR=$HOME/.mutt/imap/
+MAIL_DIR=$HOME/.mutt/imap/google/
 
 # offsets from home
 PERM_LOCATION=$HOME/store/

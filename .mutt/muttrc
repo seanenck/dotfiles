@@ -1,7 +1,7 @@
 set mbox_type   = Maildir
 set sendmail    = /usr/bin/msmtp
 
-set folder      = ~/.mutt/imap
+set folder      = ~/.mutt/imap/google
 set spoolfile   = "+INBOX"
 set mbox        = "+[Gmail]/All Mail"
 set postponed   = "+[Gmail]/Drafts"
