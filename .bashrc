@@ -43,6 +43,9 @@ if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
 fi
 
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
 . $HOME/.bin/common
 if [ -e "$BASH_BLACKLIST" ]; then
     . $BASH_BLACKLIST
