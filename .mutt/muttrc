@@ -1,23 +1,17 @@
 set mbox_type   = Maildir
-set sendmail    = /usr/bin/msmtp
+set from        = "enckse@gmail.com"
 
-set folder      = ~/.mutt/imap/google
 set spoolfile   = "+INBOX"
-set mbox        = "+[Gmail]/All Mail"
-set postponed   = "+[Gmail]/Drafts"
 unset record
 
 set realname    = "Sean Enck"
-set from        = "enckse@gmail.com"
 set sort_aux    = reverse-last-date-received
 set sort        = threads
 set sort_re
 set quit        = ask-yes
-set history_file = "~/.mutt/mutthistory"
 
 mailboxes +INBOX
 save-hook . '=INBOX'
-source ~/.config/personal/.muttrc
 
 set date_format = "%Y-%m-%d"
 set index_format = "%4C %Z | %D | %-15.15n | %s (%4c)"
@@ -43,7 +37,6 @@ bind index <Down> next-entry
 
 macro index,pager \Cp "<sidebar-prev><sidebar-open>"
 macro index,pager \Cn "<sidebar-next><sidebar-open>"
-macro index,pager d "<save-message>=[Gmail]/Trash<enter><enter>" "Trash"
 macro index,pager <f5> "<enter-command>unset wait\_key<enter><shell-escape>/home/enck/.bin/email &<enter><enter-command>set wait\_key<enter>" "Refresh"
 macro attach 'V' "<pipe-entry>cat >~/.tmp/mutt.mail.html && firefox ~/.tmp/mutt.mail.html && rm ~/.tmp/mutt.mail.html<enter>"
 

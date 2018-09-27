@@ -8,7 +8,7 @@ _mailcount() {
     local process cnt folders
     source $PRIV_CONF
     folders=""
-    for f in $(cat ${HOME_PERSONAL}.muttrc | sed "s/^mailboxes //g" | sed "s/+//g" | sort); do
+    for f in $(cat ${HOME_PERSONAL}gmail.muttrc | sed "s/^mailboxes //g" | sed "s/+//g" | sort); do
         cnt=$(find $MAIL_DIR$f/new -type f | wc -l)
         process=$((process+cnt))
         if [ $cnt -gt 0 ]; then
@@ -81,7 +81,7 @@ else
             _imapjournal &
             sleep 0.5
             cd $HOME/Downloads
-            mutt
+            mutt -F $HOME/.mutt/gmail.muttrc
             touch $CHECK_MAIL
             ;;
         "search")
