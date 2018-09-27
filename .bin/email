@@ -9,12 +9,13 @@ _mailcount() {
     local process cnt folders f d
     source $PRIV_CONF
     folders=""
+    process=0
     for d in fastmail gmail; do
         for f in $(cat ${HOME_PERSONAL}$d.muttrc | sed "s/^mailboxes //g" | sed "s/+//g" | sort); do
             cnt=$(find $MAIL_DIR/$d/$f/new -type f | wc -l)
             process=$((process+cnt))
             if [ $cnt -gt 0 ]; then
-                folders="$folders $d.$f"
+                folders="$folders $d:$f"
             fi
         done
     done

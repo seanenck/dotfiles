@@ -121,10 +121,13 @@ _up() {
 }
 
 _unread() {
-    local cnt
-    cnt=$($HOME_BIN/email count | cut -d " " -f 1)
+    local cnt raw res
+    raw=$($HOME_BIN/email count)
+    cnt=$(echo "$raw" | cut -d " " -f 1)
     if [ $cnt -gt 0 ]; then
-        printf " %3s UNREAD |" "$cnt"
+        res=$(echo "$raw" | cut -d " " -f 2- | sed "s/ /\n/g" | cut -d ":" -f 1 | tr '[:lower:]' '[:upper:]' | tr '\n' ',' | sed "s/,$//g")
+        echo "$res" > /tmp/test
+        printf " %3s $res |" "$cnt"
     fi
 }
 

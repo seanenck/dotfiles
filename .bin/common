@@ -29,7 +29,7 @@ export OPENSC_CONF="$HOME/.config/opensc.conf"
 
 # blacklist of apps to stop in bash
 BASH_BLACKLIST="$USER_TMP/.bash_blacklist"
-BASH_BLACKLIST_APPS="nano vi"
+BASH_BLACKLIST_APPS="nano vi mutt"
 
 _systemstop() {
     which pamixer > /dev/null 2>&1
