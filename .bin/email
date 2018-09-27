@@ -3,6 +3,7 @@ source $HOME/.bin/common
 INDEX_DIR=$MAIL_DIR/Indexed/
 INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
+MAIL_CONF=$SYNCED_PATH/mail/
 
 _mailcount() {
     local process cnt folders f d
@@ -53,7 +54,7 @@ _mbsync() {
         if [ $purge -eq 1 ]; then
             rm -f ${INDEXED}*
         fi
-        mbsync -aV --config ${SYNCED_PATH}mail/mbsync.conf
+        mbsync -aV --config ${MAIL_CONF}mbsync.conf
         if [ $? -ne 0 ]; then
             echo "mbsync failure" | systemd-cat -p err "mbsync"
         fi
@@ -73,6 +74,10 @@ _search() {
     date +%s > $INDEX_FILE
     rm -f ${INDEXED}*
     notmuch search --output=files $@ | sed -e 's: :\\\\ :g' | xargs -r -I searchoutput ln -s searchoutput $INDEXED
+}
+
+_send() {
+    /usr/bin/msmtp -C ${MAIL_CONF}$1 ${@:2}
 }
 
 if [ -z "$1" ]; then
@@ -95,6 +100,13 @@ else
             ;;
         "count")
             _mailcount
+            ;;
+        "send")
+            if [ -z "$2" ]; then
+                echo "account required"
+                exit 1
+            fi
+            _send $2 ${@:2}
             ;;
         *)
             echo "unknown command: $1"

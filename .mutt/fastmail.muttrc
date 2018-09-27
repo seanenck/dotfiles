@@ -1,4 +1,4 @@
-set sendmail    = /usr/bin/msmtp
+set sendmail    = "~/.bin/email send fastmail"
 set folder      = ~/.mutt/imap/fastmail
 set postponed   = "=Drafts"
 set history_file = "~/.mutt/fastmail.mutthistory"
