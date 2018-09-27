@@ -1,0 +1,8 @@
+set sendmail    = /usr/bin/msmtp
+set folder      = ~/.mutt/imap/google
+set mbox        = "+[Gmail]/All Mail"
+set postponed   = "+[Gmail]/Drafts"
+set history_file = "~/.mutt/gmail.mutthistory"
+macro index,pager d "<save-message>=[Gmail]/Trash<enter><enter>" "Trash"
+source ~/.config/personal/gmail.muttrc
+source ~/.mutt/muttrc
