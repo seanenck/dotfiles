@@ -4,7 +4,7 @@ CACHE_DIR=$HOME/.cache/dmenuurls/
 URLS=$HOME_PERSONAL/urls.csv
 BROWSER="/usr/bin/firefox"
 HASHED=$USER_TMP/.dmenu_urls
-LOCAL_APPS="mail passwords irc"
+LOCAL_APPS="gmail-client fastmail-client passwords irc"
 APPS="vlc pavucontrol $LOCAL_APPS"
 AVAILABLE="$USER_TMP/.dmenu_available"
 
@@ -20,8 +20,11 @@ _termite() {
 _localapp() {
     local cmd
     case "$1" in
-        "mail")
-            cmd=$(_termite $1 "${HOME_BIN}email client")
+        "gmail-client")
+            cmd=$(_termite $1 "${HOME_BIN}email client gmail")
+            ;;
+        "fastmail-client")
+            cmd=$(_termite $1 "${HOME_BIN}email client fastmail")
             ;;
         "irc")
             cmd=$(_termite $1 "weechat")
