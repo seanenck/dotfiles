@@ -1,0 +1,9 @@
+set sendmail    = /usr/bin/msmtp
+set folder      = ~/.mutt/imap/fastmail
+set postponed   = "=Drafts"
+set history_file = "~/.mutt/fastmail.mutthistory"
+macro index,pager d "<save-message>=Trash<enter><enter>" "Trash"
+source ~/.config/personal/fastmail.muttrc
+source ~/.mutt/muttrc
+set record = "=Sent Items"
+set trash = "=Trash"

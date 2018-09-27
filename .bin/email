@@ -80,10 +80,14 @@ if [ -z "$1" ]; then
 else
     case "$1" in
         "client")
+            if [ -z "$2" ]; then
+                echo "account required"
+                exit 1
+            fi
             _imapjournal &
             sleep 0.5
             cd $HOME/Downloads
-            mutt -F $HOME/.mutt/gmail.muttrc
+            mutt -F $HOME/.mutt/$2.muttrc
             touch $CHECK_MAIL
             ;;
         "search")

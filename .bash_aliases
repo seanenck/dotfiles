@@ -6,7 +6,8 @@ alias diff="diff -u"
 alias ls='ls --color=auto'
 alias ossh="/usr/bin/ossh -F /dev/null"
 alias dd="sudo dd status=progress"
-alias mutt="/home/enck/.bin/email client"
+alias gmail="/home/enck/.bin/email client gmail"
+alias fastmail="/home/enck/.bin/email client fastmail"
 _git-all() {
     for f in $(find . -maxdepth 1 -type d); do
         if [ -d "$f/.git" ]; then
