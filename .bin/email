@@ -3,6 +3,7 @@ source $HOME/.bin/common
 INDEX_DIR=$MAIL_DIR/Indexed/
 INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
+MAIL_CONFIG=${HOME_PERSONAL}mail/
 
 _mailcount() {
     local process cnt folders f d
@@ -10,7 +11,7 @@ _mailcount() {
     folders=""
     process=0
     for d in fastmail gmail; do
-        for f in $(cat ${HOME_PERSONAL}$d.muttrc | sed "s/^mailboxes //g" | sed "s/+//g" | sort); do
+        for f in $(cat ${MAIL_CONFIG}$d.muttrc | sed "s/^mailboxes //g" | sed "s/+//g" | sort); do
             cnt=$(find $MAIL_DIR/$d/$f/new -type f | wc -l)
             process=$((process+cnt))
             if [ $cnt -gt 0 ]; then
