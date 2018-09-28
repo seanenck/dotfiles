@@ -59,7 +59,7 @@ _backup() {
     fi
     echo "${SPACING}pushing profile out"
     scp $ARCHIVE $BASE_SERVER:$PROFILE_PATH/mobile.$TODAY.tar.gz
-    ssh $BASE_SERVER "find $PROFILE_PATH -type f -mtime +30 -exec rm {} \;"
+    ssh $BASE_SERVER "find $PROFILE_PATH -type f -mtime +7 -exec rm {} \;"
     rm -f $ARCHIVE
     touch $BACKUP
 }
