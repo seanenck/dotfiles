@@ -55,7 +55,7 @@ _mbsync() {
         if [ $purge -eq 1 ]; then
             rm -f ${INDEXED}*
         fi
-        mbsync -aV --config ${HOME_PERSONAL}mbsync.conf
+        mbsync -aV --config ${MAIL_CONFIG}mbsync.conf
         if [ $? -ne 0 ]; then
             echo "mbsync failure" | systemd-cat -p err "mbsync"
         fi
