@@ -5,5 +5,5 @@ set mbox        = "+[Gmail]/All Mail"
 set postponed   = "+[Gmail]/Drafts"
 set history_file = "~/.mutt/gmail.mutthistory"
 macro index,pager d "<save-message>=[Gmail]/Trash<enter><enter>" "Trash"
-source ~/.config/personal/mail/gmail.muttrc
+source ~/store/documents/configs/mail/gmail.muttrc
 source ~/.mutt/muttrc

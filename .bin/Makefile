@@ -1,4 +1,4 @@
-PERSONAL := $(HOME)/.config/personal/
+PERSONAL := $(HOME)/store/documents/configs/
 WEECHAT  := $(HOME)/.weechat/
 SRCWEE   := $(PERSONAL/weechat/
 PLUGINS  := autosort buffer_autoset

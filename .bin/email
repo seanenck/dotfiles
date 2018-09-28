@@ -3,7 +3,7 @@ source $HOME/.bin/common
 INDEX_DIR=$MAIL_DIR/Indexed/
 INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
-MAIL_CONFIG=${HOME_PERSONAL}mail/
+MAIL_CONFIG=${PERM_CONFIGS}mail/
 
 _mailcount() {
     local process cnt folders f d
