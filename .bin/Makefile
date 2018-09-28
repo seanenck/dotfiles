@@ -20,7 +20,7 @@ _setup:
 	mkdir -p $(HOME)/.cache/dmenurls
 	ln -sf $(PERSONAL)epiphyte.conf $(HOME)/.config/epiphyte/env
 	ln -sf $(SRCWEE)buffer_autoset.conf $(WEECHAT)/buffer_autoset.conf
-	ln -sf $(SRCWEE)weechat.irc.conf $(WEECHAT)irc.conf
+	ln -sf $(SRCWEE)irc.conf $(WEECHAT)irc.conf
 	ln -sf $(PERSONAL)mail/msmtp $(HOME)/.msmtprc
 	sudo rm -f /etc/vimrc
 	sudo ln -s /home/enck/.vimrc /etc/vimrc

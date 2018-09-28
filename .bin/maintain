@@ -26,7 +26,7 @@ _checkresources() {
     local u name prev rsrcd
     rsrcd=$USER_TMP/rsc/
     mkdir -p $rsrcd
-    for u in $(cat $HOME_PERSONAL/track); do
+    for u in $(cat $PERM_MISC/track); do
         name=$rsrcd/$u.rsc
         prev=$name.prev
         touch $prev

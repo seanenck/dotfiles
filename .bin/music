@@ -2,7 +2,7 @@
 source $HOME/.bin/common
 create-list() {
     local idx chr cnt line musicfile
-    musicfile="$HOME_PERSONAL/music"
+    musicfile="$PERM_MISC/music"
     idx=1
     cnt=$(cat $musicfile | wc -l)
     while [ $idx -le $cnt ]; do

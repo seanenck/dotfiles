@@ -74,7 +74,7 @@ _pkgbuilds() {
 
 _versions() {
     local repos r t c refs
-    repos=${HOME_PERSONAL}repos
+    repos=${PERM_MISC}repos
     if [ ! -e "$repos" ]; then
         echo "missing repo file definitions"
         exit 1
