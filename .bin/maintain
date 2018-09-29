@@ -78,6 +78,7 @@ if [ -z "$1" ]; then
     daily
 else
     if [[ "$1" == "boot" ]]; then
+        wsw reload
         sleep 5
         _booting
     fi
