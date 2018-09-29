@@ -126,7 +126,6 @@ _unread() {
     cnt=$(echo "$raw" | cut -d " " -f 1)
     if [ $cnt -gt 0 ]; then
         res=$(echo "$raw" | cut -d " " -f 2- | sed "s/ /\n/g" | cut -d ":" -f 1 | tr '[:lower:]' '[:upper:]' | tr '\n' ',' | sed "s/,$//g")
-        echo "$res" > /tmp/test
         printf " %3s $res |" "$cnt"
     fi
 }

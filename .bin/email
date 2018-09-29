@@ -56,11 +56,9 @@ _mbsync() {
         if [ $purge -eq 1 ]; then
             rm -f ${INDEXED}*
         fi
-        for a in $(echo "$ACCOUNTS"); do
-            mbsync -aV $a 
-        done
+        mbsync -aV 
         if [ $? -ne 0 ]; then
-            echo "mbsync failure" | systemd-cat -p err "mbsync"
+            echo "mbsync failure" | systemd-cat -p err -t "mbsync"
         fi
         _mailsync
     else
