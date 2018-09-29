@@ -4,13 +4,14 @@ INDEX_DIR=$MAIL_DIR/Indexed/
 INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
 MAIL_CONFIG=${PERM_CONFIGS}mail/
+ACCOUNTS="fastmail gmail"
 
 _mailcount() {
     local process cnt folders f d
     source $PRIV_CONF
     folders=""
     process=0
-    for d in fastmail gmail; do
+    for d in $(echo "$ACCOUNTS"); do
         for f in $(cat ${MAIL_CONFIG}$d.muttrc | sed "s/^mailboxes //g" | sed "s/+//g" | sort); do
             cnt=$(find $MAIL_DIR/$d/$f/new -type f | wc -l)
             process=$((process+cnt))
@@ -38,7 +39,7 @@ _mailsync() {
 }
 
 _mbsync() {
-    local pids purge last now
+    local pids purge last now a
     pids=$(pidof mbsync)
     if [ -z "$pids" ]; then
         mkdir -p $INDEXED
@@ -55,7 +56,9 @@ _mbsync() {
         if [ $purge -eq 1 ]; then
             rm -f ${INDEXED}*
         fi
-        mbsync -aV 
+        for a in $(echo "$ACCOUNTS"); do
+            mbsync -aV $a 
+        done
         if [ $? -ne 0 ]; then
             echo "mbsync failure" | systemd-cat -p err "mbsync"
         fi
