@@ -82,10 +82,6 @@ if [ -z "$1" ]; then
     _imapjournal
 else
     case "$1" in
-        "delay")
-            sleep 60
-            _imapjournal
-            ;;
         "client")
             if [ -z "$2" ]; then
                 echo "account required"
