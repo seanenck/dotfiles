@@ -125,7 +125,7 @@ _unread() {
     raw=$($HOME_BIN/email count)
     cnt=$(echo "$raw" | cut -d " " -f 1)
     if [ $cnt -gt 0 ]; then
-        res=$(echo "$raw" | cut -d " " -f 2- | sed "s/ /\n/g" | cut -d ":" -f 1 | tr '[:lower:]' '[:upper:]' | tr '\n' ',' | sed "s/,$//g")
+        res=$(echo "$raw" | cut -d " " -f 2- | sed "s/ /\n/g" | cut -d ":" -f 1 | tr '[:lower:]' '[:upper:]' | sort -u | tr '\n' ',' | sed "s/,$//g")
         printf " %3s $res |" "$cnt"
     fi
 }
