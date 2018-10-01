@@ -58,7 +58,7 @@ _pkgbuilds() {
             echo -n "fetching repos..."
             for r in $(echo $d | cut -d "/" -f 2,3 | sed "s#/#:#g"); do
                 echo -en "\e[1A"; echo -e "\e[0K\r cloning $r..." 
-                if echo $r | grep -q -E "pkgseed|popularch"; then
+                if echo $r | grep -q -E "pkgseed"; then
                     r=$(echo "$r" | sed "s/epiphyte/enckse/g")
                 fi
                 d=$(echo "$r" | cut -d ":" -f 2)
