@@ -4,6 +4,7 @@ source $HOME/.bin/common
 _find() {
     local file
     for file in $(find . -type f -name "Gopkg.toml"); do
+        echo "$file" >> $1
         cat $file | grep -E "(\s*(name|branch|version)\s*=|constraint)" | sed "s/\s*//g"
         echo
     done
@@ -90,15 +91,20 @@ _versions() {
 }
 
 _gitgo() {
-    local cwd tmpfile tmpdir
+    local cwd tmpfile tmpdir filestmp
     cwd=$PWD
     tmpfile=/tmp/gitgo
+    filestmp=/tmp/gitgofiles
     tmpdir=$(mktemp -d)
     cd $tmpdir
     _pkgbuilds "go" 1 1
     echo
-    _find | grep -v "^$" > $tmpfile
+    rm -f $filestmp
+    _find "$filestmp" | grep -v "^$" > $tmpfile
     _constraints "$tmpfile" | sort -u
+    echo
+    echo "in files:"
+    cat $filestmp | sed "s/^/    /g" | sed "s#\./##g" | sed "s#/Gopkg.toml##" | sort -u
     cd $cwd
     echo
 }
