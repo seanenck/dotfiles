@@ -57,7 +57,6 @@ _dmenuwrapper() {
         urls=""
         names="$APPS"
         rm -f $CACHE_DIR*
-        rm -f $BASH_BLACKLIST
         for u in $(cat $URLS | sed 's/"//g'); do
             name=$(echo "$u" | cut -d "," -f 1)
             file="$CACHE_DIR$name"
@@ -68,12 +67,6 @@ _dmenuwrapper() {
         done
         names=$(echo $names)
         echo "$names" | tr ' ' '\n' | sort -u > $AVAILABLE
-    fi
-    if [ ! -e $BASH_BLACKLIST ]; then
-        blist="$BASH_BLACKLIST_APPS "$(cat $AVAILABLE)
-        for u in $(echo "$blist" | tr ' ' '\n' | sort); do
-            echo 'alias '$u'="echo '$u' is disabled in bash"' >> $BASH_BLACKLIST
-        done
     fi
     results=$(cat $AVAILABLE | dmenu "$@")
     file="$CACHE_DIR/$results"

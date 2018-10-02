@@ -47,9 +47,6 @@ export VISUAL=vim
 export EDITOR="$VISUAL"
 
 . $HOME/.bin/common
-if [ -e "$BASH_BLACKLIST" ]; then
-    . $BASH_BLACKLIST
-fi
 
 EPIPHYTE_CONF=${HOME_CONF}epiphyte/env
 if [ -e "$EPIPHYTE_CONF" ]; then

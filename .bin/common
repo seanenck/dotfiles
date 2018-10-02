@@ -28,10 +28,6 @@ PRIV_CONF=${PERM_CONFIGS}priv.aliases
 
 export OPENSC_CONF="$HOME/.config/opensc.conf"
 
-# blacklist of apps to stop in bash
-BASH_BLACKLIST="$USER_TMP/.bash_blacklist"
-BASH_BLACKLIST_APPS="nano vi mutt"
-
 _systemstop() {
     which pamixer > /dev/null 2>&1
     if [ $? -eq 0 ]; then
