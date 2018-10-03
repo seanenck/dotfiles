@@ -16,7 +16,7 @@ READY="ready"
 IS_CONNECTED=1
 NOT_CONNECTED=0
 HOME_REPO=${HOME_CACHE}repo/
-DL=${HOME_CACHE}wget/$TODAY/
+DL=${HOME_CACHE}wget/
 
 test-ssh() {
     local running
@@ -142,6 +142,7 @@ sync-now() {
             fi
             dl=$USER_TMP/.downloads.$TODAY
             if [ ! -e $dl ]; then
+                rm -rf $DL
                 mkdir -p $DL
                 echo "downloading server resources"
                 wget --quiet -r --no-parent --directory-prefix=$DL http://$BASE_SERVER 
