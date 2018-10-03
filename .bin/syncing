@@ -102,11 +102,7 @@ _gitpush() {
 }
 
 _emails() {
-    local p
-    p=$(pidof mutt)
-    if [ -z "$p" ]; then
-        $HOME_BIN/email
-    fi
+    $HOME_BIN/email
 }
 
 sync-now() {

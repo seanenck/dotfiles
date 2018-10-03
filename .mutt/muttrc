@@ -38,7 +38,7 @@ bind index <Down> next-entry
 macro index,pager \Cp "<sidebar-prev><sidebar-open>"
 macro index,pager \Cn "<sidebar-next><sidebar-open>"
 macro index,pager <f5> "<enter-command>unset wait\_key<enter><shell-escape>/home/enck/.bin/email &<enter><enter-command>set wait\_key<enter>" "Refresh"
-macro attach 'V' "<pipe-entry>cat >~/.tmp/$(uuidgen).mutt.html && ~/.bin/email view<enter>"
+macro attach 'V' "<pipe-entry>cat >~/.tmp/.mutt.mail.html && surf ~/.tmp/.mutt.mail.html<enter>"
 
 color hdrdefault blue black
 color quoted blue black
