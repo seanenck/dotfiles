@@ -5,6 +5,7 @@ INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
 MAIL_CONFIG=${PERM_CONFIGS}mail/
 ACCOUNTS="fastmail gmail"
+MUTTHTML="$USER_TMP/*.mutt.html"
 
 _mailcount() {
     local process cnt folders f d
@@ -78,6 +79,25 @@ _search() {
     notmuch search --output=files $@ | sed -e 's: :\\\\ :g' | xargs -r -I searchoutput ln -s searchoutput $INDEXED
 }
 
+_viewhtml() {
+    local p has
+    firefox $MUTTHTML
+    while [ 1 -eq 1 ]; do
+        has=0
+        for p in $(pidof firefox); do
+            cat /proc/$p/cmdline | grep -q "\.mutt\.html"
+            if [ $? -eq 0 ]; then
+                has=1
+            fi
+        done
+        if [ $has -eq 0 ]; then
+            break
+        fi
+        sleep 1
+    done
+    rm -f $MUTTHTML
+}
+
 if [ -z "$1" ]; then
     _imapjournal
 else
@@ -98,6 +118,9 @@ else
             ;;
         "count")
             _mailcount
+            ;;
+        "view")
+            _viewhtml
             ;;
         *)
             echo "unknown command: $1"
