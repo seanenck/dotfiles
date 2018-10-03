@@ -16,6 +16,7 @@ READY="ready"
 IS_CONNECTED=1
 NOT_CONNECTED=0
 HOME_REPO=${HOME_CACHE}repo/
+DL=${HOME_CACHE}wget/$TODAY/
 
 test-ssh() {
     local running
@@ -106,7 +107,7 @@ _emails() {
 }
 
 sync-now() {
-    local dirs pushgit pushrepo pushbackup
+    local dirs pushgit pushrepo pushbackup dl
     _emails &
     dirs=$(ls ${PERM_LOCATION} | grep personal | sed "s#^#$PERM_LOCATION#g")
     dirs="$dirs ${SYNCED_PATH} ${PERM_LOCATION}documents"
@@ -139,6 +140,13 @@ sync-now() {
             if [ $pushrepo -eq 1 ]; then
                 _repository
             fi
+            dl=$USER_TMP/.downloads.$TODAY
+            if [ ! -e $dl ]; then
+                mkdir -p $DL
+                echo "downloading server resources"
+                wget --quiet -r --no-parent --directory-prefix=$DL http://$BASE_SERVER 
+            fi
+            touch $dl
             echo "local sync completed"
         else
             echo "ssh agent unavailable"
