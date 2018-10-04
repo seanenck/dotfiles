@@ -145,9 +145,11 @@ sync-now() {
                 rm -rf $DL
                 mkdir -p $DL
                 echo "downloading server resources"
-                wget --quiet -r --no-parent --directory-prefix=$DL http://$BASE_SERVER 
+                wget --quiet -r --no-parent --directory-prefix=$DL http://$BASE_SERVER
+                if [ $? -eq 0 ]; then
+                    touch $dl
+                fi
             fi
-            touch $dl
             echo "local sync completed"
         else
             echo "ssh agent unavailable"
