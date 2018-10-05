@@ -37,7 +37,7 @@ instance: root
 	cat /$(USER_HOME)/.config/home/nspawn.template > $(CONTAINER_CONF)
 
 destroy:
-	machinectl poweroff $(TARGET)
+	! machinectl status $(TARGET) || machinectl poweroff $(TARGET)
 	rm -rf $(CONTAINER_PATH)
 	rm -f $(CONTAINER_CONF)
 
