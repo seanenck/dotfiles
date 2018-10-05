@@ -107,18 +107,21 @@ _emails() {
 }
 
 sync-now() {
-    local dirs pushgit pushrepo pushbackup dl
+    local dirs pushgit pushrepo pushbackup pulldl
     _emails &
     dirs=$(ls ${PERM_LOCATION} | grep personal | sed "s#^#$PERM_LOCATION#g")
     dirs="$dirs ${SYNCED_PATH} ${PERM_LOCATION}documents"
     pushgit=$(_dogit "$dirs" | tail -n 1)
     pushrepo=$(_dorepo | tail -n 1)
     pushbackup=$(_dobackup | tail -n 1)
-    echo "status (git: $pushgit, repo: $pushrepo, zip: $pushbackup)"
+    pulldl=$USER_TMP/.downloads.$TODAY-$(date +%p)
+    echo "status (git: $pushgit, repo: $pushrepo, zip: $pushbackup, dl: $pulldl)"
     if [ $pushgit -eq 0 ]; then
         if [ $pushrepo -eq 0 ]; then
             if [ $pushbackup -eq 0 ]; then
-                exit 0
+                if [ -e "$pulldl" ]; then
+                    exit 0
+                fi
             fi
         fi
     fi
@@ -140,14 +143,13 @@ sync-now() {
             if [ $pushrepo -eq 1 ]; then
                 _repository
             fi
-            dl=$USER_TMP/.downloads.$TODAY
-            if [ ! -e $dl ]; then
+            if [ ! -e $pulldl ]; then
                 rm -rf $DL
                 mkdir -p $DL
                 echo "downloading server resources"
                 wget --quiet -r --no-parent --directory-prefix=$DL http://$BASE_SERVER
                 if [ $? -eq 0 ]; then
-                    touch $dl
+                    touch $pulldl
                 fi
             fi
             echo "local sync completed"
