@@ -1,0 +1,28 @@
+# ----------------------------------------------------------------------------------------------------------------------------------
+# Podget configuration file created by version 0.8.5
+# [ NOTE:  Do not delete version line as it will be used by future versions to
+#          to test if configuration files have been updated with any required changes.
+# ----------------------------------------------------------------------------------------------------------------------------------
+CONFIG_SERVERLIST=serverlist
+DIR_LIBRARY=/home/enck/.cache/home/podcasts
+LOG_FAIL=errors
+LOG_COMPLETE=done
+WGET_BASEOPTS="-c -nH"
+MOST_RECENT=0
+FORCE=0
+CLEANUP=0
+CLEANUP_DAYS=7
+MIN_SPACE=614400
+NO_PLAYLIST=1
+FILENAME_BADCHARS="\`~!#$^&=+{}*[]:;\"'<>?|\\"
+FILENAME_REPLACECHAR=_
+FILENAME_FORMATFIX=1
+FILENAME_FORMATFIX2=1
+FILENAME_FORMATFIX3=0
+FILENAME_FORMATFIX4=0
+FILENAME_FORMATFIX5=1
+FILENAME_FORMATFIX6=1
+FILENAME_FORMATFIX7=1
+FILENAME_FORMATFIX8=1
+FILENAME_FORMATFIX9=1
+FILENAME_FORMATFIX10=1
