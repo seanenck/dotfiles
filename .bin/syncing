@@ -106,6 +106,17 @@ _emails() {
     $HOME_BIN/email
 }
 
+_downloads() {
+    rm -rf $DL
+    mkdir -p $DL
+    echo "downloading server resources"
+    wget --quiet -r --no-parent --directory-prefix=$DL http://$BASE_SERVER
+    if [ $? -eq 0 ]; then
+        touch $1
+    fi
+    podget | systemd-cat -t "podget"
+}
+
 sync-now() {
     local dirs pushgit pushrepo pushbackup pulldl
     _emails &
@@ -144,13 +155,7 @@ sync-now() {
                 _repository
             fi
             if [ ! -e $pulldl ]; then
-                rm -rf $DL
-                mkdir -p $DL
-                echo "downloading server resources"
-                wget --quiet -r --no-parent --directory-prefix=$DL http://$BASE_SERVER
-                if [ $? -eq 0 ]; then
-                    touch $pulldl
-                fi
+                _downloads "$pulldl"
             fi
             echo "local sync completed"
         else
