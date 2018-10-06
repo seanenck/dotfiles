@@ -3,7 +3,7 @@ source $HOME/.bin/common
 INDEX_DIR=$MAIL_DIR/Indexed/
 INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
-MAIL_CONFIG=${PERM_CONFIGS}mail/
+MAIL_CONFIG=${PERM_DOCS}mail/
 ACCOUNTS="fastmail gmail"
 MUTTHTML="$USER_TMP/*.mutt.html"
 

@@ -110,7 +110,7 @@ sync-now() {
     local dirs pushgit pushrepo pushbackup pulldl
     _emails &
     dirs=$(ls ${PERM_LOCATION} | grep personal | sed "s#^#$PERM_LOCATION#g")
-    dirs="$dirs ${SYNCED_PATH} ${PERM_LOCATION}documents"
+    dirs="$dirs ${SYNCED_PATH} ${PERM_DOCS}"
     pushgit=$(_dogit "$dirs" | tail -n 1)
     pushrepo=$(_dorepo | tail -n 1)
     pushbackup=$(_dobackup | tail -n 1)
