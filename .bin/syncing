@@ -16,7 +16,7 @@ READY="ready"
 IS_CONNECTED=1
 NOT_CONNECTED=0
 HOME_REPO=${HOME_CACHE}repo/
-DL=${HOME_CACHE}wget/
+DL=${HOME_CACHE}server/
 
 test-ssh() {
     local running
@@ -65,9 +65,13 @@ _backup() {
     touch $BACKUP
 }
 
+_rsync() {
+    rsync -avc --delete-after -e "$ssh" $1 $2 | grep -v "^$" | sed "s/^$SPACING/g"
+}
+
 _repository() {
     echo "repository"
-    rsync -avc --delete-after -e "ssh" $HOME_REPO $BASE_SERVER:$REPO_PATH | grep -v "^$" | sed "s/^/$SPACING/g"
+    _rsync "$HOME_REPO" "$BASE_SERVER:$REPO_PATH"
     if [ -e $REPO_HASH ]; then
         mv $REPO_HASH $REPO_PREV
     fi
@@ -107,14 +111,10 @@ _emails() {
 }
 
 _downloads() {
-    rm -rf $DL
     mkdir -p $DL
     echo "downloading server resources"
-    wget --quiet -r --no-parent --directory-prefix=$DL http://$BASE_SERVER
-    if [ $? -eq 0 ]; then
-        touch $1
-    fi
-    podget | systemd-cat -t "podget"
+    _rsync "$BASE_SERVER:/var/lib/hefurd/*" "$DL"
+    podget 2>&1 | systemd-cat -t "podget"
 }
 
 sync-now() {
@@ -155,7 +155,8 @@ sync-now() {
                 _repository
             fi
             if [ ! -e $pulldl ]; then
-                _downloads "$pulldl"
+                _downloads
+                touch $pulldl
             fi
             echo "local sync completed"
         else
