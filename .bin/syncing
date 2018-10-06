@@ -6,7 +6,7 @@ REPO_PATH=${COMMON_STORE}Repository/
 ARCHIVE=$USER_TMP/profile.tar.gz
 SPACING="    "
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
-TODAY=$(date +%Y-%m-%d)
+TODAY=$(date +%Y-%m-%d-%p)
 BACKUP=$PROFILE_TMP$TODAY
 GIT_SYNC=$USER_TMP/.git.sync
 GIT_PREV=${GIT_SYNC}.prev
@@ -114,7 +114,7 @@ sync-now() {
     pushgit=$(_dogit "$dirs" | tail -n 1)
     pushrepo=$(_dorepo | tail -n 1)
     pushbackup=$(_dobackup | tail -n 1)
-    pulldl=$USER_TMP/.downloads.$TODAY-$(date +%p)
+    pulldl=$USER_TMP/.downloads.$TODAY
     echo "status (git: $pushgit, repo: $pushrepo, zip: $pushbackup, dl: $pulldl)"
     if [ $pushgit -eq 0 ]; then
         if [ $pushrepo -eq 0 ]; then
