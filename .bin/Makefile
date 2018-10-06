@@ -18,7 +18,7 @@ _setup:
 	mkdir -p $(HOME)/Downloads
 	mkdir -p $(HOME)/.tmp
 	mkdir -p $(HOME)$(VIM_DIRS)
-	mkdir -p $(HOME)/.cache/dmenurls
+	mkdir -p $(HOME)/.cache/home/dmenurls
 	ln -sf $(PERSONAL)configs/epiphyte.conf $(HOME)/.config/epiphyte/env
 	ln -sf $(SRCWEE)buffer_autoset.conf $(WEECHAT)/buffer_autoset.conf
 	ln -sf $(SRCWEE)irc.conf $(WEECHAT)irc.conf
