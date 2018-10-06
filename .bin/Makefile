@@ -1,4 +1,4 @@
-PERSONAL := $(HOME)/store/documents/configs/
+PERSONAL := $(HOME)/store/documents/
 WEECHAT  := $(HOME)/.weechat/
 SRCWEE   := $(PERSONAL/weechat/
 PLUGINS  := autosort buffer_autoset
@@ -19,7 +19,7 @@ _setup:
 	mkdir -p $(HOME)/.tmp
 	mkdir -p $(HOME)$(VIM_DIRS)
 	mkdir -p $(HOME)/.cache/dmenurls
-	ln -sf $(PERSONAL)epiphyte.conf $(HOME)/.config/epiphyte/env
+	ln -sf $(PERSONAL)configs/epiphyte.conf $(HOME)/.config/epiphyte/env
 	ln -sf $(SRCWEE)buffer_autoset.conf $(WEECHAT)/buffer_autoset.conf
 	ln -sf $(SRCWEE)irc.conf $(WEECHAT)irc.conf
 	ln -sf $(SRCMAIL)/msmtp $(HOME)/.msmtprc
