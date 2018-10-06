@@ -17,7 +17,7 @@ MAIL_DIR=$HOME/.mutt/imap/
 
 # offsets from home
 PERM_LOCATION=$HOME/store/
-PERM_DOCS=$PERM_LOCATION/documents
+PERM_DOCS=${PERM_LOCATION}documents
 PERM_CONFIGS=$PERM_DOCS/configs/
 SYNCED_PATH=$HOME/.synced/
 HOME_CONF=$HOME/.config/
