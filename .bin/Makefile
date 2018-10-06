@@ -1,6 +1,7 @@
 PERSONAL := $(HOME)/store/documents/
+CONFS    := $(PERSONAL)configs/
 WEECHAT  := $(HOME)/.weechat/
-SRCWEE   := $(PERSONAL/weechat/
+SRCWEE   := $(PERSONAL)/weechat/
 PLUGINS  := autosort buffer_autoset
 SERVICES := sync.timer sync.path maintain.timer
 SYS_SERV := nftables systemd-networkd wsw
@@ -19,11 +20,12 @@ _setup:
 	mkdir -p $(HOME)/.tmp
 	mkdir -p $(HOME)$(VIM_DIRS)
 	mkdir -p $(HOME)/.cache/home/dmenurls
-	ln -sf $(PERSONAL)configs/epiphyte.conf $(HOME)/.config/epiphyte/env
+	ln -sf $(CONFS)epiphyte.conf $(HOME)/.config/epiphyte/env
 	ln -sf $(SRCWEE)buffer_autoset.conf $(WEECHAT)/buffer_autoset.conf
 	ln -sf $(SRCWEE)irc.conf $(WEECHAT)irc.conf
 	ln -sf $(SRCMAIL)/msmtp $(HOME)/.msmtprc
 	ln -sf $(SRCMAIL)mail/msmtp $(HOME)/.mbsyncrc
+	ln -sf $(CONFS)serverlist $(HOME)/.podget/serverlist
 	sudo rm -f /etc/vimrc
 	sudo ln -s /home/enck/.vimrc /etc/vimrc
 	sudo mkdir -p /etc/systemd/nspawn
