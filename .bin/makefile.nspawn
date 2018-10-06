@@ -36,8 +36,7 @@ instance: root
 	printf $(PACMAN_INPUTS) | pacstrap -i -c $(CONTAINER_PATH) $(PACKAGES) $(IGNORES)
 	cat /$(USER_HOME)/.config/home/nspawn.template > $(CONTAINER_CONF)
 
-destroy:
-	! machinectl status $(TARGET) || machinectl poweroff $(TARGET)
+destroy: running
 	rm -rf $(CONTAINER_PATH)
 	rm -f $(CONTAINER_CONF)
 
