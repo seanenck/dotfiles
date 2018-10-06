@@ -22,33 +22,9 @@ _booting() {
     touch $f
 }
 
-_checkresources() {
-    local u name prev rsrcd
-    rsrcd=$USER_TMP/rsc/
-    mkdir -p $rsrcd
-    for u in $(cat $PERM_MISC/track); do
-        name=$rsrcd/$u.rsc
-        prev=$name.prev
-        touch $prev
-        /usr/bin/pacman -Ss "^$u$" | head -n +1 > $name
-        if [ $? -eq 0 ]; then
-            diff -u $prev $name > /dev/null
-            if [ $? -ne 0 ]; then
-                echo "$u has updated"
-            fi
-        fi
-        mv $name $prev
-    done
-}
-
 hourly() {
     local p
     find $HOME/.vim/{swap,undo} -mmin +1440 -type f -exec rm {} \;
-    p=$(pidof pacman)
-    if [ -z "$p" ]; then
-        echo "checking resources"
-        _checkresources | systemd-cat -p err -t "maintain"
-    fi
 }
 
 daily() {
