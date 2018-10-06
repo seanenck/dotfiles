@@ -17,4 +17,4 @@
     smtpserver = "/usr/bin/msmtp"
     smtpencryption = tls
 [include]
-    path = ~/store/documents/configs/ssh/gitconfig
+    path = ~/store/documents/ssh/gitconfig
