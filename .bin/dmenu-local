@@ -1,6 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
-CACHE_DIR=$HOME/.cache/dmenuurls/
+CACHE_DIR=${HOME_CACHE}dmenuurls/
 URLS=$PERM_CONFIGS/urls.csv
 BROWSER="/usr/bin/firefox"
 HASHED=$USER_TMP/.dmenu_urls

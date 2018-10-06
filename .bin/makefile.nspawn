@@ -41,7 +41,8 @@ destroy: running
 	rm -f $(CONTAINER_CONF)
 
 files:
-	mkdir -p $(CONTAINER_HOME)/{go,.bin,.cache}
+	mkdir -p $(CONTAINER_HOME)/{go,.bin}
+	mkdir -p $(CONTAINER_HOME)/.cache/home/
 	chown -R $(USER_NAME):$(USER_NAME) $(CONTAINER_HOME)
 
 $(ETCFILES):
