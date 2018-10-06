@@ -9,6 +9,7 @@ BindReadOnly=/root/.gnupg
 BindReadOnly=/home/enck/.gnupg
 Bind=/var/cache/pacman
 Bind=/home/enck/.cache/home/
+Bind=/home/enck/.config/home/
 
 # configs/system
 Bind=/home/enck/.gitconfig
