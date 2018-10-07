@@ -66,12 +66,12 @@ _backup() {
 }
 
 _rsync() {
-    rsync -avc --delete-after -e "$ssh" $1 $2 | grep -v "^$" | sed "s/^$SPACING/g"
+    rsync -avc --delete-after -e "ssh" $1 $2 | grep -v "^$" | sed "s/^/$SPACING/g"
 }
 
 _repository() {
     echo "repository"
-    _rsync "$HOME_REPO" "$BASE_SERVER:$REPO_PATH"
+    _rsync $HOME_REPO $BASE_SERVER:$REPO_PATH
     if [ -e $REPO_HASH ]; then
         mv $REPO_HASH $REPO_PREV
     fi
@@ -113,7 +113,7 @@ _emails() {
 _downloads() {
     mkdir -p $DL
     echo "downloading server resources"
-    _rsync "$BASE_SERVER:/var/lib/hefurd/*" "$DL"
+    _rsync $BASE_SERVER:/var/lib/hefurd/ $DL
     podget -s 2>&1 | systemd-cat -t "podget"
 }
 
