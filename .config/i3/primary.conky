@@ -18,15 +18,62 @@ conky.config = {
 
 conky.text = [[
 [
-    { "full_text": 
-"${if_existing /home/enck/.tmp/display.unlocked}\
-UNLOCKED\
+    { "full_text": " \
+${if_pa_sink_muted}\
+🔇\
 ${else}\
-${if_existing /home/enck/.tmp/display.nosleep}\
-NO ZZZ\
+🔊\
 ${endif}\
-${endif} "},
-    { "full_text": " ${if_up wlp58s0}W: ${addr wlp58s0} ${if_up enp0s31f6}E: ${addr enp0s31f6} ${endif}${if_existing /home/enck/.tmp/.isonline}${else}OFFLINE ${endif}", "color": ""},
+ ${pa_sink_volume}% "},
+
+${if_match ${exec cat /sys/class/power_supply/AC/online} != 1}
+${if_match ${battery_percent BAT0} < 10}
+${if_match ${battery_percent BAT1} < 10}
+    { "full_text": " BATTERY ", "color": "\#FF0000" },
+${endif}
+${endif}
+${endif}
+
+    { "full_text": " (\
+${if_match ${battery_percent BAT0} <= 90}\
+ ${battery_percent BAT0}\
+${else}\
+${if_match ${battery_percent BAT0} <= 9}\
+  ${battery_percent BAT0}\
+${else}\
+${battery_percent BAT0}\
+${endif}\
+${endif}\
+,\
+${if_match ${battery_percent BAT1} <= 90}\
+ ${battery_percent BAT1}\
+${else}\
+${if_match ${battery_percent BAT1} <= 9}\
+  ${battery_percent BAT1}\
+${else}\
+${battery_percent BAT1}\
+${endif}\
+${endif}\
+)% " },
+
+${if_existing /home/enck/.tmp/display.unlocked}
+    { "full_text": " UNLOCKED ", "color": "\#FF0000" },
+${endif}
+${if_existing /home/enck/.tmp/display.nosleep}
+    { "full_text": " NO ZZZ ", "color": "\#FFFF00" },
+${endif}
+
+${if_existing /home/enck/.tmp/.isonline}
+${else}
+    { "full_text": " OFFLINE ", "color": "\#FF0000" },
+${endif}
+
+${if_up wlp58s0}\
+    { "full_text": " W: ${addr wlp58s0} " },
+${endif}
+${if_up enp0s31f6}
+    { "full_text": " E: ${addr enp0s31f6}" },
+${endif}
 
     { "full_text": " ${time %Y.%m.%d %H:%M:%S}\t"}
 ],
