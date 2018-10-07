@@ -9,6 +9,7 @@ btrfs-progs
 bzip2
 ccid-git
 cifs-utils
+conky
 coreutils
 cryptsetup
 device-mapper
@@ -38,7 +39,6 @@ gsfonts
 gzip
 i3-wm
 i3lock
-i3status
 inetutils
 iproute2
 iputils
@@ -55,6 +55,7 @@ man-db
 man-pages
 metaphyte-admins
 mkinitcpio-validate
+moreutils
 msmtp
 mutt
 nftables
@@ -79,6 +80,7 @@ perl-net-smtp-ssl
 pinentry-ng
 pkgconf
 pkgseed
+podget
 procps-ng
 psmisc
 pulseaudio
