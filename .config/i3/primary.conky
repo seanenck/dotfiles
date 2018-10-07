@@ -21,7 +21,11 @@ ${if_pa_sink_muted}\
 ${else}\
 🔊\
 ${endif}\
- ${pa_sink_volume}% "},
+${if_match ${pa_sink_volume} < 100}\
+ ${endif}\
+${if_match ${pa_sink_volume} < 10}\
+ ${endif}\
+${pa_sink_volume}% "},
 
     { "full_text": " ${exec /home/enck/.bin/status brightness} "},
 
