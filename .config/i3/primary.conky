@@ -19,7 +19,7 @@ conky.config = {
 conky.text = [[
 [
     { "full_text": 
-${if_existing /home/enck/.tmp/display.unlocked}
+"${if_existing /home/enck/.tmp/display.unlocked}\
 UNLOCKED\
 ${else}\
 ${if_existing /home/enck/.tmp/display.nosleep}\
