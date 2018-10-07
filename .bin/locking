@@ -150,7 +150,7 @@ _status() {
         fi
     fi
     if [ ! -z "$text" ]; then
-        echo '{ "full_text": " '$text' ", "color": "#FF'$color'00" },'
+        echo '" '$text' ", "color": "#FF'$color'00"'
     fi
 }
 

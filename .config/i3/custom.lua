@@ -10,8 +10,17 @@ function conky_ac()
     return call("cat /sys/class/power_supply/AC/online")
 end
 
+function json_text(data)
+    return '{ "full_text": ' .. data .. '}'
+end
+
 function conky_locking()
-    return call(bin .. "locking status")
+    local res = call(bin .. "locking status")
+    if res == '' or res == nil then
+        return ""
+    else
+        return json_text(res) .. ','
+    end
 end
 
 function conky_online()
@@ -52,7 +61,7 @@ function conky_status()
             else
                 output = output .. ','
             end
-            output = output .. '{ "full_text": ' .. v .. '}'
+            output = output .. json_text(v)
         end
     end
     if not first then
