@@ -80,7 +80,7 @@ git() {
     /usr/bin/git "$@" || return
     echo "$@" | grep -E -q "(push|commit|reset|checkout|branch|stash|status)"
     if [ $? -eq 0 ]; then
-        rm -f $GIT_CHANGES
+        touch $UPDATE_STATS
     fi
 }
 

@@ -90,9 +90,8 @@ export CHROOT
 # gpg setup
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
-if [ -e $GIT_CHANGES ]; then
+if [ -s $GIT_CHANGES ]; then
     cat $GIT_CHANGES 2>/dev/null
-    rm -f $GIT_CHANGES
 fi
 
 _check_today() {
