@@ -1,8 +1,9 @@
 #!/bin/bash
 source $HOME/.bin/common
-STAT_BRIGHT=$USER_TMP/.stats.brightness
-STAT_EMAIL=$USER_TMP/.stats.email
-STAT_GIT=$USER_TMP/.stats.git
+STAT_FILE=$USER_TMP/.stats.
+STAT_BRIGHT=${STAT_FILE}brightness
+STAT_EMAIL=${STAT_FILE}email
+STAT_GIT=${STAT_FILE}git
 GIT_PARTIAL_PATTERN="weechat|random_seed"
 
 _get-git-folders() {
@@ -143,4 +144,8 @@ stats() {
     done
 }
 
-stats
+if [ -z "$1" ]; then
+    stats
+else
+    cat ${STAT_FILE}$1 | tail -n 2 | head -n 1
+fi
