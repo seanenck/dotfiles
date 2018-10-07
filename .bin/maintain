@@ -15,11 +15,11 @@ _booting() {
     
     # packages
     /usr/bin/pacman -Qqe > $PACKAGE_SET
-    touch $BOOTED
 
     # mail validation
     find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch\/" | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)" | systemd-cat -t "mailsync" -p err
-    touch $f
+
+    wsw reload
 }
 
 hourly() {
@@ -54,8 +54,6 @@ if [ -z "$1" ]; then
     daily
 else
     if [[ "$1" == "boot" ]]; then
-        wsw reload
-        sleep 5
         _booting
     fi
 fi
