@@ -40,20 +40,20 @@ ${else}\
 -\
 ${endif}\
 (\
-${if_match ${battery_percent BAT0} <= 90}\
+${if_match ${battery_percent BAT0} < 100}\
  ${battery_percent BAT0}\
 ${else}\
-${if_match ${battery_percent BAT0} <= 9}\
+${if_match ${battery_percent BAT0} < 10}\
   ${battery_percent BAT0}\
 ${else}\
 ${battery_percent BAT0}\
 ${endif}\
 ${endif}\
 ,\
-${if_match ${battery_percent BAT1} <= 90}\
+${if_match ${battery_percent BAT1} < 100}\
  ${battery_percent BAT1}\
 ${else}\
-${if_match ${battery_percent BAT1} <= 9}\
+${if_match ${battery_percent BAT1} < 10}\
   ${battery_percent BAT1}\
 ${else}\
 ${battery_percent BAT1}\
