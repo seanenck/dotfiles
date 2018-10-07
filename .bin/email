@@ -17,7 +17,7 @@ _mailcount() {
             cnt=$(find $MAIL_DIR/$d/$f/new -type f | wc -l)
             process=$((process+cnt))
             if [ $cnt -gt 0 ]; then
-                folders="$folders $d:$f"
+                folders="$folders $d"
             fi
         done
     done
@@ -25,15 +25,13 @@ _mailcount() {
 }
 
 _mailsync() {
-    local process last now f cnt
+    local last now cnt
     now=$USER_TMP/mailstatus.current
-    process=$(_mailcount)
-    cnt=$(echo "$process" | cut -d " " -f 1)
+    cnt=$(_mailcount | cut -d " " -f 1)
     if [ -e $now ]; then
         last=$(cat $now)
         if [ $cnt -gt $last ]; then
             notmuch new
-            notify-send Mail "unread messages ($process)"
         fi
     fi
     echo "$cnt" > $now
