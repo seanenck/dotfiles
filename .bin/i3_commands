@@ -1,22 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 
-stats() {
-    local last d
-    last=""
-    i3status | while :
-    do
-        read line
-        d=$(cat $MAIN_STATS)
-        if [ -z "$d" ]; then
-            d="$last"
-        else
-            last="$d"
-        fi
-        echo "$d $line" || exit 1
-    done
-}
-
 auto-clip() {
     source $PRIV_CONF
     auto-clipboard $PERM_LOCATION

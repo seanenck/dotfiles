@@ -9,7 +9,6 @@ SSH_AUTH_TMP=/tmp/ssh-auth.sock
 USER_TMP=$HOME/.tmp
 GIT_CHANGES=$USER_TMP/git.changes
 PROFILE_TMP=$USER_TMP/.profile.synced.
-MAIN_STATS=$USER_TMP/stats
 USER_JOURNAL=$USER_TMP/journal.log
 SYS_ONLINE=$USER_TMP/.isonline
 CHECK_MAIL=$USER_TMP/checkmail

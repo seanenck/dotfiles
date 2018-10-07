@@ -1,4 +1,0 @@
-order += "tztime home"
-tztime home {
-    format = "%Y.%m.%d %H:%M:%S"
-}
