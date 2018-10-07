@@ -14,8 +14,6 @@ conky.config = {
 
 conky.text = [[
 [
-    ${lua status}
-    { "full_text": " ${if_pa_sink_muted}🔇${else}🔊${endif} ${lua percent ${pa_sink_volume}}% "},
 
 ${if_match ${lua ac} != 1}
 ${if_match ${battery_percent BAT0} < 10}
@@ -24,13 +22,14 @@ ${if_match ${battery_percent BAT1} < 10}
 ${endif}
 ${endif}
 ${endif}
-
-    { "full_text": " 🔋${if_match ${lua ac} == 1}+${else}-${endif}(${lua percent ${battery_percent BAT0}},${lua percent ${battery_percent BAT1}})% " },
-    ${lua locking}
 ${if_match ${lua online} == 1}
     { "full_text": " OFFLINE ", "color": "\#FF0000" },
 ${endif}
+    ${lua locking}
 
+    ${lua status}
+    { "full_text": " ${if_pa_sink_muted}🔇${else}🔊${endif} ${lua percent ${pa_sink_volume}}% "},
+    { "full_text": " 🔋${if_match ${lua ac} == 1}+${else}-${endif}(${lua percent ${battery_percent BAT0}},${lua percent ${battery_percent BAT1}})% " },
 ${if_up wlp58s0}{ "full_text": " W: ${addr wlp58s0} " },${endif}
 ${if_up enp0s31f6}{ "full_text": " E: ${addr enp0s31f6}" },${endif}
 
