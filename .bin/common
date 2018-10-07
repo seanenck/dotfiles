@@ -7,7 +7,7 @@ BASE_SERVER="blip"
 # tmpfiles
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 USER_TMP=$HOME/.tmp
-GIT_CHANGES=$USER_TMP/git.changes
+GIT_CHANGES=$USER_TMP/.git.changes
 PROFILE_TMP=$USER_TMP/.profile.synced.
 USER_JOURNAL=$USER_TMP/journal.log
 SYS_ONLINE=$USER_TMP/.isonline
