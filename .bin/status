@@ -132,7 +132,7 @@ stats() {
         echo "$_git_text" >> $STAT_GIT
         bright=$(_brightness)
         emails=$(_unread)
-        sleep 5
+        sleep 2.5
         if [ $idx -gt 10 ]; then
             for f in $STAT_BRIGHT $STAT_EMAIL $STAT_GIT; do
                 cat $f | tail -n 5 | sponge $f
