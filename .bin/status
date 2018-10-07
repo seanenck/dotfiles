@@ -109,7 +109,7 @@ _checkgit() {
     if [ $_git_cnt -gt 0 ]; then
         printf "$_git_cnt HEAD^\n"
     else
-        echo 'up-to-date, "color": "#D3D3D3"'
+        echo 'up-to-date", "color": "#D3D3D3"'
     fi
 }
 
