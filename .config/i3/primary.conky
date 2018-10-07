@@ -18,8 +18,8 @@ conky.config = {
 
 conky.text = [[
 [
-    { "full_text": " ${exec /home/enck/.bin/status git} " },
-    { "full_text": " ${exec /home/enck/.bin/status email} " },
+    ${exec /home/enck/.bin/status git}
+    ${exec /home/enck/.bin/status email}
     { "full_text": " \
 ${if_pa_sink_muted}\
 🔇\
@@ -28,7 +28,7 @@ ${else}\
 ${endif}\
  ${pa_sink_volume}% "},
 
-    { "full_text": " ${exec /home/enck/.bin/status brightness} " },
+    ${exec /home/enck/.bin/status brightness}
 
 ${if_match ${exec cat /sys/class/power_supply/AC/online} != 1}
 ${if_match ${battery_percent BAT0} < 10}
@@ -66,12 +66,7 @@ ${endif}\
 ${endif}\
 )% " },
 
-${if_existing /home/enck/.tmp/display.unlocked}
-    { "full_text": " UNLOCKED ", "color": "\#FF0000" },
-${endif}
-${if_existing /home/enck/.tmp/display.nosleep}
-    { "full_text": " NO ZZZ ", "color": "\#FFFF00" },
-${endif}
+    ${exec /home/enck/.bin/locking status}
 
 ${if_existing /home/enck/.tmp/.isonline}
 ${else}

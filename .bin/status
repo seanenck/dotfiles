@@ -147,5 +147,5 @@ stats() {
 if [ -z "$1" ]; then
     stats
 else
-    cat ${STAT_FILE}$1 | tail -n 2 | head -n 1
+    echo '{ "full_text": " '$(cat ${STAT_FILE}$1 | tail -n 2 | head -n 1)' "},'
 fi

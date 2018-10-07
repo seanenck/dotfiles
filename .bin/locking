@@ -137,6 +137,23 @@ setting() {
     fi
 }
 
+_status() {
+    local color text
+    color=""
+    if [ -e $DISPLAY_UN ]; then
+        text="UNLOCKED"
+        color="00"
+    else
+        if [ -e $DISPLAY_EN ]; then
+            text="NO ZZZ"
+            color="FF"
+        fi
+    fi
+    if [ ! -z "$text" ]; then
+        echo '{ "full_text": " '$text' ", "color": "#FF'$color'00" },'
+    fi
+}
+
 locking() {
     case $1 in
         "toggle")
@@ -150,5 +167,12 @@ locking() {
             ;;
     esac
 }
+
+if [ ! -z "$1" ]; then
+    if [[ "$1" == "status" ]]; then
+        _status
+        exit 0
+    fi
+fi
 
 locking "$1" | systemd-cat -t "locking"
