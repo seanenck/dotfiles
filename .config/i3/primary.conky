@@ -18,6 +18,8 @@ conky.config = {
 
 conky.text = [[
 [
+    { "full_text": " ${exec cat /home/enck/.tmp/.stats.git} " },
+    { "full_text": " ${exec cat /home/enck/.tmp/.stats.email} " },
     { "full_text": " \
 ${if_pa_sink_muted}\
 🔇\
