@@ -22,11 +22,6 @@ _booting() {
     wsw reload
 }
 
-hourly() {
-    local p
-    find $HOME/.vim/{swap,undo} -mmin +1440 -type f -exec rm {} \;
-}
-
 daily() {
     local f xsess
     f=$USER_TMP/maintain.$(date +%Y-%m-%d)
@@ -41,6 +36,7 @@ daily() {
         mkdir -p $USER_TMP
         find $USER_TMP* -mtime 1 -type f -exec rm {} \;
         find $USER_TMP -empty -type d -delete
+        find $HOME/.vim/{swap,undo} -mmin +1440 -type f -exec rm {} \;
         echo "validate syncing"
         journalctl -t sync --since "7 days ago" | grep -q "local sync completed"
         if [ $? -ne 0 ]; then
@@ -50,7 +46,6 @@ daily() {
 }
 
 if [ -z "$1" ]; then
-    hourly
     daily
 else
     if [[ "$1" == "boot" ]]; then
