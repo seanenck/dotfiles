@@ -13,6 +13,7 @@ conky.config = {
 
 conky.text = [[
 [
+    ${exec /home/enck/.bin/status errors}
     ${exec /home/enck/.bin/status git}
     ${exec /home/enck/.bin/status email}
     { "full_text": " \

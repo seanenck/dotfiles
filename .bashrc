@@ -112,12 +112,6 @@ _check_today() {
         fi
         date +"%Y-%m-%d %H:%M:%S" > $today_check
     fi
-    if [ -e $journal ]; then
-        if [ -s $journal ]; then
-            cnt=$(cat $journal | tail -n +2 | wc -l)
-            notify-send --urgency=critical Journal "errors reported ($cnt)"
-        fi
-    fi
     xhost +local: >/dev/null
 }
 _check_today

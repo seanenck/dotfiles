@@ -138,6 +138,11 @@ else
             "brightness")
                 _brightness
                 ;;
+            "errors")
+                if [ -s $USER_JOURNAL ]; then
+                    echo '{ "full_text": "JOURNAL: '$(cat $USER_JOURNAL | tail -n +2 | wc -l)' ", "color": "#FF0000" },'
+                fi
+                ;;
             *)
                 echo "unknown command: $1"
                 ;;
