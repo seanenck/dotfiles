@@ -62,6 +62,7 @@ _mbsync() {
             echo "mbsync failure" | systemd-cat -p err -t "mbsync"
         fi
         _mailsync
+        touch $UPDATE_STATS
     else
         >&2 echo "mbsync already running ($pids)"
     fi

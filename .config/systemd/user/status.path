@@ -1,0 +1,8 @@
+[Unit]
+Description=update stats on request
+
+[Path]
+PathChanged=/home/enck/.tmp/.updatestats
+
+[Install]
+WantedBy=default.target
