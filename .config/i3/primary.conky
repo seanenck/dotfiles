@@ -67,7 +67,7 @@ ${endif}\
 )% " },
 
     ${exec /home/enck/.bin/locking status}
-
+    ${exec /home/enck/.bin/status online}
 ${if_existing /home/enck/.tmp/.isonline}
 ${else}
     { "full_text": " OFFLINE ", "color": "\#FF0000" },
