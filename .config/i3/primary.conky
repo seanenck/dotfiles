@@ -21,6 +21,7 @@ ${if_pa_sink_muted}\
 ${else}\
 🔊\
 ${endif}\
+ \
 ${if_match ${pa_sink_volume} < 100}\
  ${endif}\
 ${if_match ${pa_sink_volume} < 10}\
