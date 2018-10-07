@@ -92,6 +92,8 @@ export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 if [ -s $GIT_CHANGES ]; then
     cat $GIT_CHANGES 2>/dev/null
+    rm -f $GIT_CHANGES
+    touch $UPDATE_STATS
 fi
 
 _check_today() {
