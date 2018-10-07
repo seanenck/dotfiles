@@ -26,6 +26,8 @@ ${else}\
 ${endif}\
  ${pa_sink_volume}% "},
 
+    { "full_text": " ${exec cat /home/enck/.tmp/.stats.brightness} " },
+
 ${if_match ${exec cat /sys/class/power_supply/AC/online} != 1}
 ${if_match ${battery_percent BAT0} < 10}
 ${if_match ${battery_percent BAT1} < 10}
@@ -34,7 +36,13 @@ ${endif}
 ${endif}
 ${endif}
 
-    { "full_text": " (\
+    { "full_text": " \
+${if_match ${exec cat /sys/class/power_supply/AC/online} == 1}\
++\
+${else}\
+-\
+${endif}\
+(\
 ${if_match ${battery_percent BAT0} <= 90}\
  ${battery_percent BAT0}\
 ${else}\
