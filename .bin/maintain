@@ -40,7 +40,7 @@ daily() {
         echo "validate syncing"
         journalctl -t sync --since "7 days ago" | grep -q "local sync completed"
         if [ $? -ne 0 ]; then
-            echo "no reset successful syncs" | systemd-cat -p err -t "maintain"
+            echo "no recent successful syncs" | systemd-cat -p err -t "maintain"
         fi
     fi
 }
