@@ -5,7 +5,6 @@ STAT_EMAIL=${STAT_FILE}email
 STAT_GIT=${STAT_FILE}git
 GIT_PARTIAL_PATTERN="weechat|random_seed"
 STAT_LOCK=${USER_TMP}/.statlock
-LESS_IMPORTANT=' ", "color": "#454545'
 
 _get-git-folders() {
     local res f d
@@ -97,9 +96,9 @@ _unread() {
     cnt=$(echo "$raw" | cut -d " " -f 1)
     if [ $cnt -gt 0 ]; then
         res=$(echo "$raw" | cut -d " " -f 2- | sed "s/ /\n/g" | tr '[:lower:]' '[:upper:]' | sort -u | tr '\n' ',' | sed "s/,$//g")
-        printf " %3s $res\n" "$cnt"
+        printf "\" %3s $res\"" "$cnt"
     else
-        echo 'no mail'$LESS_IMPORTANT
+        echo
     fi
 }
 
@@ -108,9 +107,9 @@ _checkgit() {
     git-changing > $GIT_CHANGES
     _git_cnt=$(cat $GIT_CHANGES | grep "    " | wc -l)
     if [ $_git_cnt -gt 0 ]; then
-        echo "$_git_cnt HEAD^ "
+        echo "\" $_git_cnt HEAD^ \""
     else
-        echo 'up-to-date'$LESS_IMPORTANT
+        echo
     fi
 }
 
@@ -130,7 +129,7 @@ else
         while [ -e $STAT_LOCK ]; do
             sleep 0.1
         done
-        echo '" '$(cat ${STAT_FILE}$1 | tail -n 1)'"'
+        cat ${STAT_FILE}$1 | tail -n 1
     else
         case "$1" in
             "online")
