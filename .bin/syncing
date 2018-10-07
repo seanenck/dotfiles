@@ -114,7 +114,9 @@ _downloads() {
     mkdir -p $DL
     echo "downloading server resources"
     _rsync $BASE_SERVER:/var/lib/hefurd/ $DL
-    podget -s 2>&1 | systemd-cat -t "podget"
+    if [ -e $SYS_ONLINE ]; then
+        podget -s 2>&1 | systemd-cat -t "podget"
+    fi
 }
 
 sync-now() {
