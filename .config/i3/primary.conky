@@ -38,7 +38,7 @@ ${endif}
 ${endif}
 ${endif}
 
-    { "full_text": " \
+    { "full_text": " 🔋\
 ${if_match ${exec cat /sys/class/power_supply/AC/online} == 1}\
 +\
 ${else}\
