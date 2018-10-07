@@ -1,7 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 STAT_FILE=$USER_TMP/.stats.
-STAT_BRIGHT=${STAT_FILE}brightness
 STAT_EMAIL=${STAT_FILE}email
 STAT_GIT=${STAT_FILE}git
 GIT_PARTIAL_PATTERN="weechat|random_seed"
@@ -118,7 +117,6 @@ stats() {
     rm -f $STAT_LOCK
     touch $STAT_LOCK
     _checkgit > $STAT_GIT
-    _brightness > $STAT_BRIGHT
     _unread > $STAT_EMAIL
     rm -f $STAT_LOCK
 }
@@ -136,6 +134,9 @@ else
         case "$1" in
             "online")
                 _up > /dev/null 2>&1 &
+                ;;
+            "brightness")
+                _brightness
                 ;;
             *)
                 echo "unknown command: $1"
