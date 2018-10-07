@@ -25,7 +25,7 @@ _brightness() {
     b=$(xrandr --current --verbose | grep "Brightness" | \
         cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | \
         tail -n 1 | awk '{printf "%3.0f", $1}' | sed "s/^[ \t]*//g")
-    printf '\xf0\x9f\x94\x86 %3i\n' $b
+    printf '" \xf0\x9f\x94\x86 %3i%s "' $b "%"
 }
 
 get-all-changes() {
@@ -129,7 +129,7 @@ else
         while [ -e $STAT_LOCK ]; do
             sleep 0.1
         done
-        echo '{ "full_text": " '$(cat ${STAT_FILE}$1 | tail -n 1)' "},'
+        echo '" '$(cat ${STAT_FILE}$1 | tail -n 1)' "'
     else
         case "$1" in
             "online")
@@ -140,7 +140,7 @@ else
                 ;;
             "errors")
                 if [ -s $USER_JOURNAL ]; then
-                    echo '{ "full_text": "JOURNAL: '$(cat $USER_JOURNAL | tail -n +2 | wc -l)' ", "color": "#FF0000" },'
+                    echo '"JOURNAL: '$(cat $USER_JOURNAL | tail -n +2 | wc -l)' ", "color": "#FF0000"'
                 fi
                 ;;
             *)
