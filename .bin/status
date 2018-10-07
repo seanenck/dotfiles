@@ -30,7 +30,7 @@ _brightness() {
     b=$(xrandr --current --verbose | grep "Brightness" | \
         cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | \
         tail -n 1 | awk '{printf "%3.0f", $1}' | sed "s/^[ \t]*//g")
-    printf '\xf0\x9f\x94\x86 %3i' $b    
+    printf '\xf0\x9f\x94\x86 %3i\n' $b
 }
 
 get-all-changes() {
@@ -108,9 +108,10 @@ _unread() {
 }
 
 stats() {
-    local _git_text _last_cnt bright emails
+    local _git_text _last_cnt bright emails f idx
     _git_text=""
     _last_cnt=0
+    idx=0
     while [ 1 -eq 1 ]; do
         _up &
         _git_cnt=0
@@ -126,12 +127,19 @@ stats() {
             _git_text="up-to-date"
         fi
         update-git &
-        _brightness > $STAT_BRIGHT
-        _unread > $STAT_EMAIL
-        echo "$_git_text" > $STAT_GIT
+        _brightness >> $STAT_BRIGHT
+        _unread >> $STAT_EMAIL
+        echo "$_git_text" >> $STAT_GIT
         bright=$(_brightness)
         emails=$(_unread)
         sleep 5
+        if [ $idx -gt 10 ]; then
+            for f in $STAT_BRIGHT $STAT_EMAIL $STAT_GIT; do
+                cat $f | tail -n 5 | sponge $f
+            done
+            idx=0
+        fi
+        idx=$((idx+1))
     done
 }
 
