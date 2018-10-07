@@ -68,13 +68,13 @@ bar {
         output DP2-2
         output DP2-1
         tray_output none
-        status_command i3status -c /home/enck/.i3status.secondary
+        status_command ~/.config/i3/conky secondary
 }
 
 bar {
         output eDP1
         tray_output primary
-        status_command i3_commands stats
+        status_command ~/.config/i3/conky primary
 }
 
 exec --no-startup-id subsystem workspaces 1
