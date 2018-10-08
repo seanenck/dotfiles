@@ -80,7 +80,7 @@ function json_pad(text)
     return json_text('" ' .. text .. ' "')
 end
 
-function primary()
+function primary(cache)
     local outputs = {}
     local battery = 0
     local power = "("
@@ -123,8 +123,22 @@ function primary()
     sound = sound .. string.format(" %3d%%", vol)
     table.insert(outputs, json_pad(sound))
     table.insert(outputs, json_pad('🔋' .. power))
-    table.insert(outputs, ipv4("W", "wlp58s0"))
-    table.insert(outputs, ipv4("E", "enp0s31f6"))
+    local wireless = cache.wireless
+    local wired = cache.wired
+    if not avail then
+        cache.wireless = nil
+        cache.wired = nil
+    end
+    if cache.wireless == nil then
+        wireless = ipv4("W", "wlp58s0")
+        cache.wireless = wireless
+    end
+    if cache.wired == nil then
+        wired = ipv4("E", "enp0s31f6")
+        cache.wired = wired
+    end
+    table.insert(outputs, wireless)
+    table.insert(outputs, wired)
     table.insert(outputs, datetime())
     return outputs
 end
@@ -144,10 +158,11 @@ end
 
 function main(prim)
     local running = true
+    local cache = {}
     while running do
         local values = {}
         if prim then
-            values = primary()
+            values = primary(cache)
         else
             values = {datetime()}
         end
