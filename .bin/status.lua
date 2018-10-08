@@ -85,13 +85,20 @@ function primary(cache)
     local battery = 0
     local power = "("
     local k, v
-    for k, v in pairs({"0", "1"}) do
-        local perc = tonumber(call("cat /sys/class/power_supply/BAT" .. v .. "/capacity"))
-        battery = battery + perc
-        power = power .. string.format("%3d", perc)
-        if k == 1 then
-            power = power .. ","
+    if cache.power ~= nil and cache.battery ~= nil then
+        power = cache.power
+        battery = cache.battery
+    else
+        for k, v in pairs({"0", "1"}) do
+            local perc = tonumber(call("cat /sys/class/power_supply/BAT" .. v .. "/capacity"))
+            battery = battery + perc
+            power = power .. string.format("%3d", perc)
+            if k == 1 then
+                power = power .. ","
+            end
         end
+        cache.power = power
+        cache.battery = battery
     end
     power = power .. ")%"
     local drain = ac() == 0
@@ -99,6 +106,8 @@ function primary(cache)
         power = "-" .. power
         if battery < 20 then
             table.insert(outputs, bad("BATTERY"))
+            cache.battery = nil
+            cache.power = nil
         end
     else
         power = "+" .. power
@@ -159,6 +168,7 @@ end
 function main(prim)
     local running = true
     local cache = {}
+    local idx = 0
     while running do
         local values = {}
         if prim then
@@ -176,6 +186,12 @@ function main(prim)
         end
         print("],")
         call("sleep 1")
+        idx = idx + 1
+        if idx > 30 then
+            idx = 0
+            cache.battery = nil
+            cache.power = nil
+        end
     end
 end
 
