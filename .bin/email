@@ -24,19 +24,6 @@ _mailcount() {
     echo "$process$folders"
 }
 
-_mailsync() {
-    local last now cnt
-    now=$USER_TMP/mailstatus.current
-    cnt=$(_mailcount | cut -d " " -f 1)
-    if [ -e $now ]; then
-        last=$(cat $now)
-        if [ $cnt -gt $last ]; then
-            notmuch new
-        fi
-    fi
-    echo "$cnt" > $now
-}
-
 _mbsync() {
     local pids purge last now a
     pids=$(pidof mbsync)
@@ -59,8 +46,7 @@ _mbsync() {
         if [ $? -ne 0 ]; then
             echo "mbsync failure" | systemd-cat -p err -t "mbsync"
         fi
-        _mailsync
-        touch $UPDATE_STATS
+        notmuch new
     else
         >&2 echo "mbsync already running ($pids)"
     fi
