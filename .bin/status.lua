@@ -1,6 +1,8 @@
 local home = "/home/enck/"
 local bin  = home .. ".bin/"
 local status = bin .. "status "
+local tmp = home .. ".tmp/"
+local i3files = tmp .. ".workspace."
 
 function call(script)
     local f = io.popen(script, 'r')
@@ -33,7 +35,7 @@ function brightness()
 end
 
 function online(last)
-    local avail = file_exists(home .. ".tmp/.isonline")
+    local avail = file_exists(tmp .. ".isonline")
     if not avail or last >= 30 then
         call(status .. "online")
     end
@@ -215,4 +217,66 @@ function main(prim)
     end
 end
 
-main(arg[1] == "primary")
+function i3msg(command, pipe, file)
+    return call("i3-msg -t " .. command .. " | tr '{' '\n' | tr '}' '\n' | tr ',' '\n' | sed 's/\"//g' | tr '[:upper:]' '[:lower:]'" .. pipe .. " > " .. file)
+end
+
+function lines_from(file)
+    lines = {}
+    for line in io.lines(file) do
+        lines[#lines + 1] = line
+    end
+    return lines
+end
+
+function update_workspace(new, num, workspaces)
+    local k
+    local v
+    local line
+    if num < 0 then
+        return
+    end
+    for k, v in pairs(workspaces) do
+        if v:find(num .. ":") ~= nil or tonumber(v) == num then
+            line = num .. ":" .. new
+            call('i3-msg rename workspace "' .. v .. '" to "' .. line .. '" > /dev/null')
+        end
+    end
+end
+
+function workspace()
+    local k
+    local v
+    local treefile = i3files .. "tree"
+    local workfile = i3files .. "workspaces"
+    local current = ""
+    local lastworkspace = -1
+    i3msg("get_tree", '| grep -E "^(class|num):" | grep -v "num:\\-" | cut -d " " -f 1 | grep -v "class:i3bar" | cut -d ":" -f 2', treefile)
+    i3msg("get_workspaces", ' | grep -E "^name:" | cut -d ":" -f 2-', workfile)
+    local workspaces  = lines_from(workfile)
+    for k, v in pairs(lines_from(treefile)) do
+        local num = tonumber(v)
+        if num ~= nil then
+            if lastworkspace >= 0 then
+                update_workspace(current, lastworkspace, workspaces)
+                current = ""
+            end
+            lastworkspace = num
+        else
+            if string.len(current) > 0 then
+                current = current .. "|"
+            end
+            current = current .. v
+        end
+    end
+    update_workspace(current, lastworkspace, workspaces)
+end
+
+if arg[1] == nil then
+    while true do
+        workspace()
+        call("sleep 1")
+    end
+else
+    main(arg[1] == "primary")
+end

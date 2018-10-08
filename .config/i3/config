@@ -77,7 +77,7 @@ bar {
 
 exec --no-startup-id subsystem workspaces 1
 exec --no-startup-id dunst -conf /home/enck/.config/dunst
-exec --no-startup-id /home/enck/.bin/i3_commands workspacer
+exec --no-startup-id lua /home/enck/.bin/status.lua
 
 # Handle auto-locking
 exec xautolock -time 5 -locker "/home/enck/.bin/locking lock" &
