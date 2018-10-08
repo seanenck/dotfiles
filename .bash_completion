@@ -15,14 +15,14 @@ _machinectl-nspawn() {
 }
 complete -F _machinectl-nspawn machinectl-nspawn
 
-_repo-helpers() {
+_local-helpers() {
     local cur opts 
     if [ $COMP_CWORD -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        COMPREPLY=( $(compgen -W "gitgo search versions" -- $cur) )
+        COMPREPLY=( $(compgen -W "gitgo search versions music" -- $cur) )
     fi
 }
-complete -F _repo-helpers repo-helpers
+complete -F _local-helpers local-helpers
 
 _email() {
     local cur opts
