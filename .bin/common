@@ -13,7 +13,6 @@ USER_JOURNAL=$USER_TMP/journal.log
 SYS_ONLINE=$USER_TMP/.isonline
 CHECK_MAIL=$USER_TMP/checkmail
 MAIL_DIR=$HOME/.mutt/imap/
-UPDATE_STATS=$USER_TMP/.updatestats
 
 # offsets from home
 PERM_LOCATION=$HOME/store/

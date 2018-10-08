@@ -32,9 +32,12 @@ function brightness()
     return json_pad("🔆 " .. val .. "%")
 end
 
-function online()
-    call(status .. "online")
-    return file_exists(home .. ".tmp/.isonline")
+function online(last)
+    local avail = file_exists(home .. ".tmp/.isonline")
+    if not avail or last >= 30 then
+        call(status .. "online")
+    end
+    return avail
 end
 
 function percent(val)
@@ -112,8 +115,14 @@ function primary(cache)
     else
         power = "+" .. power
     end
-    local avail = online()
-    if not avail then
+    local avail = online(cache.last_online)
+    if avail then
+        cache.last_online = cache.last_online + 1
+        if cache.last_online > 30 then
+            cache.last_online = 0
+        end
+    else
+        cache.last_online = 0
         table.insert(outputs, bad("OFFLINE"))
     end
     table.insert(outputs, locking())
@@ -168,6 +177,7 @@ end
 function main(prim)
     local running = true
     local cache = {}
+    cache.last_online = 0
     local idx = 0
     while running do
         local values = {}

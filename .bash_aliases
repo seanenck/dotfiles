@@ -75,15 +75,6 @@ proxy() {
     fi
 }
 
-git() {
-    source $HOME/.bin/common
-    /usr/bin/git "$@" || return
-    echo "$@" | grep -E -q "(push|commit|reset|checkout|branch|stash|status)"
-    if [ $? -eq 0 ]; then
-        touch $UPDATE_STATS
-    fi
-}
-
 machinectl-nspawn() {
     if [ -z "$1" ]; then
         echo "operation required"

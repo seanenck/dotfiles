@@ -1,7 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
-STAT_FILE=$USER_TMP/.stats.
-STAT_GIT=${STAT_FILE}git
+STAT_GIT=${USER_TMP}/.stats.git
 GIT_PARTIAL_PATTERN="weechat|random_seed"
 STAT_LOCK=${USER_TMP}/.statlock
 
@@ -49,35 +48,11 @@ git-changing() {
 }
 
 _up() {
-    local last t n res check
-    check=30
-    res=$USER_TMP/.online.status
-    last=$USER_TMP/.online
-    if [ -e $res ]; then
-        if [[ $(cat $res) == "offline" ]]; then
-            check=5
-        fi
+    curl -s https://voidedtech.network > /dev/null
+    if [ $? -eq 0 ]; then
+        touch $SYS_ONLINE
     else
-        rm -f $last
-    fi
-    if [ -e $last ]; then
-        t=$(cat $last)
-        n=$(date +%s)
-        t=$((n-t))
-        if [ $t -gt $check ]; then
-            rm -f $last
-        fi
-    fi
-    if [ ! -e $last ]; then 
-        curl -s https://voidedtech.network > /dev/null
-        if [ $? -eq 0 ]; then
-            echo "online" > $res
-            touch $SYS_ONLINE
-        else
-            echo "offline" > $res
-            rm -f $SYS_ONLINE
-        fi
-        date +%s > $last
+        rm -f $SYS_ONLINE
     fi
 }
 
@@ -111,30 +86,28 @@ stats() {
 }
 
 if [ -z "$1" ]; then
-    stats
+    stats &
 else
-    s=${STAT_FILE}$1
-    if [ -e $s ]; then
-        while [ -e $STAT_LOCK ]; do
-            sleep 0.1
-        done
-        cat ${STAT_FILE}$1 | tail -n 1
-    else
-        case "$1" in
-            "online")
-                _up > /dev/null 2>&1 &
-                ;;
-            "errors")
-                if [ -s $USER_JOURNAL ]; then
-                    echo 'JOURNAL: '$(cat $USER_JOURNAL | wc -l)' ", "color": "#FF0000'
-                fi
-                ;;
-            "email")
-                _unread
-                ;;
-            *)
-                echo "unknown command: $1"
-                ;;
-        esac
-    fi
+    case "$1" in
+        "git")
+            while [ -e $STAT_LOCK ]; do
+                sleep 0.1
+            done
+            cat ${STAT_GIT} | tail -n 1
+            ;;
+        "online")
+            _up > /dev/null 2>&1 &
+            ;;
+        "errors")
+            if [ -s $USER_JOURNAL ]; then
+                echo 'JOURNAL: '$(cat $USER_JOURNAL | wc -l)' ", "color": "#FF0000'
+            fi
+            ;;
+        "email")
+            _unread
+            ;;
+        *)
+            echo "unknown command: $1"
+            ;;
+    esac
 fi
