@@ -9,7 +9,6 @@ btrfs-progs
 bzip2
 ccid-git
 cifs-utils
-conky
 coreutils
 cryptsetup
 device-mapper
@@ -54,7 +53,6 @@ man-db
 man-pages
 metaphyte-admins
 mkinitcpio-validate
-moreutils
 msmtp
 mutt
 nftables
