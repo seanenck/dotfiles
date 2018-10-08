@@ -4,7 +4,7 @@ floating_modifier $mod
 
 bindsym $mod+Return exec termite
 bindsym $mod+Shift+Return exec termite --exec=/bin/sh
-bindsym $mod+S exec i3_commands auto-clip
+bindsym $mod+S exec subsystem autoclip now
 
 # kill focused window
 bindsym $mod+Shift+q kill

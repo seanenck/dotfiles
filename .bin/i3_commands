@@ -1,11 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 
-auto-clip() {
-    source $PRIV_CONF
-    auto-clipboard $PERM_LOCATION
-}
-
 _update-workspace() {
     local name
     name="$1:"$(echo "${@:3}" | tr '[:upper:]' '[:lower:]' | tr ' ' '|' | sed "s/^|//g")

@@ -139,6 +139,11 @@ workspace-subsystem() {
     force-workplace "$1"
 }
 
+_autoclip() {
+    source $PRIV_CONF
+    auto-clipboard $PERM_LOCATION
+}
+
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     echo > /dev/null
 else
@@ -152,6 +157,12 @@ else
             ;;
         $WORKSPACES_KEY)
             CMD=workspace-subsystem
+            ;;
+        "autoclip")
+            if [[ "$2" == "now" ]]; then
+                _autoclip
+                exit 0
+            fi
             ;;
     esac
     if [ -z $CMD ]; then
