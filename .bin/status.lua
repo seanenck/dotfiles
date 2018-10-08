@@ -63,6 +63,10 @@ function file_exists(name)
    end
 end
 
+function updates()
+    call(status)
+end
+
 function stats()
     local results = {}
     local k, v
@@ -114,6 +118,11 @@ function primary(cache)
         end
     else
         power = "+" .. power
+    end
+    cache.update_interval = cache.update_interval + 1
+    if cache.update_interval > 2 then
+        cache.update_interval = 0
+        updates()
     end
     local avail = online(cache.last_online)
     if avail then
@@ -178,6 +187,7 @@ function main(prim)
     local running = true
     local cache = {}
     cache.last_online = 0
+    cache.update_interval = 5
     local idx = 0
     while running do
         local values = {}
