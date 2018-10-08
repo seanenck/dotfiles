@@ -3,25 +3,24 @@ source $HOME/.bin/common
 INDEX_DIR=$MAIL_DIR/Indexed/
 INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
-MAIL_CONFIG=${PERM_DOCS}/mail/
 ACCOUNTS="fastmail gmail"
 MUTTHTML="$USER_TMP/*.mutt.html"
 
 _mailcount() {
-    local process cnt folders f d
-    source $PRIV_CONF
-    folders=""
-    process=0
+    local cnt d results first
+    first=1
     for d in $(echo "$ACCOUNTS"); do
-        for f in $(cat ${MAIL_CONFIG}$d.muttrc | sed "s/^mailboxes //g" | sed "s/+//g" | sort); do
-            cnt=$(find $MAIL_DIR/$d/$f/new -type f | wc -l)
-            process=$((process+cnt))
-            if [ $cnt -gt 0 ]; then
-                folders="$folders $d"
+        cnt=$(find $MAIL_DIR/$d -type f | grep "/new/" | grep -v "/Trash/" | wc -l)
+        if [ $cnt -gt 0 ]; then
+            if [ $first -eq 1 ]; then
+                first=0
+            else
+                results="$results "
             fi
-        done
+            results="$results$cnt $d"
+        fi
     done
-    echo "$process$folders"
+    echo "$results"
 }
 
 _mbsync() {

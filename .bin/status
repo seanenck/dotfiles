@@ -1,7 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
 STAT_FILE=$USER_TMP/.stats.
-STAT_EMAIL=${STAT_FILE}email
 STAT_GIT=${STAT_FILE}git
 GIT_PARTIAL_PATTERN="weechat|random_seed"
 STAT_LOCK=${USER_TMP}/.statlock
@@ -86,11 +85,10 @@ _unread() {
     local cnt raw res
     raw=$($HOME_BIN/email count)
     cnt=$(echo "$raw" | cut -d " " -f 1)
-    if [ $cnt -gt 0 ]; then
-        res=$(echo "$raw" | cut -d " " -f 2- | sed "s/ /\n/g" | tr '[:lower:]' '[:upper:]' | sort -u | tr '\n' ',' | sed "s/,$//g")
-        printf "%3s $res" "$cnt"
-    else
+    if [ -z "$raw" ]; then
         echo
+    else
+        echo "$raw"
     fi
 }
 
@@ -109,7 +107,6 @@ stats() {
     rm -f $STAT_LOCK
     touch $STAT_LOCK
     _checkgit > $STAT_GIT
-    _unread > $STAT_EMAIL
     rm -f $STAT_LOCK
 }
 
@@ -131,6 +128,9 @@ else
                 if [ -s $USER_JOURNAL ]; then
                     echo 'JOURNAL: '$(cat $USER_JOURNAL | wc -l)' ", "color": "#FF0000'
                 fi
+                ;;
+            "email")
+                _unread
                 ;;
             *)
                 echo "unknown command: $1"
