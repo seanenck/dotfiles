@@ -91,6 +91,7 @@ else
             sleep 0.5
             cd $HOME/Downloads
             mutt -F $HOME/.mutt/$2.muttrc
+            touch $UPDATE_STATS
             touch $CHECK_MAIL
             ;;
         "search")

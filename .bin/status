@@ -20,14 +20,6 @@ _get-git-folders() {
     echo $res
 }
 
-_brightness() {
-    local b
-    b=$(xrandr --current --verbose | grep "Brightness" | \
-        cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | \
-        tail -n 1 | awk '{printf "%3.0f", $1}' | sed "s/^[ \t]*//g")
-    printf '" \xf0\x9f\x94\x86 %3i%s "' $b "%"
-}
-
 get-all-changes() {
     git update-index -q --refresh 
     git diff-index --name-only HEAD --
@@ -96,7 +88,7 @@ _unread() {
     cnt=$(echo "$raw" | cut -d " " -f 1)
     if [ $cnt -gt 0 ]; then
         res=$(echo "$raw" | cut -d " " -f 2- | sed "s/ /\n/g" | tr '[:lower:]' '[:upper:]' | sort -u | tr '\n' ',' | sed "s/,$//g")
-        printf "\" %3s $res\"" "$cnt"
+        printf "%3s $res" "$cnt"
     else
         echo
     fi
@@ -107,7 +99,7 @@ _checkgit() {
     git-changing > $GIT_CHANGES
     _git_cnt=$(cat $GIT_CHANGES | grep "    " | wc -l)
     if [ $_git_cnt -gt 0 ]; then
-        echo "\" $_git_cnt HEAD^ \""
+        echo "$_git_cnt HEAD^"
     else
         echo
     fi
@@ -135,12 +127,9 @@ else
             "online")
                 _up > /dev/null 2>&1 &
                 ;;
-            "brightness")
-                _brightness
-                ;;
             "errors")
                 if [ -s $USER_JOURNAL ]; then
-                    echo '"JOURNAL: '$(cat $USER_JOURNAL | wc -l)' ", "color": "#FF0000"'
+                    echo 'JOURNAL: '$(cat $USER_JOURNAL | wc -l)' ", "color": "#FF0000'
                 fi
                 ;;
             *)
