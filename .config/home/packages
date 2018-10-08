@@ -12,7 +12,7 @@ cifs-utils
 coreutils
 cryptsetup
 device-mapper
-devtools
+devtools-min
 dhcpcd
 diffutils
 dmenu
