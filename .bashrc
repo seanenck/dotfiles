@@ -32,7 +32,7 @@ xterm*|rxvt*)
 esac
 
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-    $HOME/.bin/maintain boot &
+    $HOME/.bin/status boot &
     exec startx $HOME/.xinitrc
     return
 fi

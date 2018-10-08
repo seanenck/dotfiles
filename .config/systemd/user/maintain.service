@@ -3,4 +3,4 @@ Description=Maintaining user data
 
 [Service]
 Type=oneshot
-ExecStart=/home/enck/.bin/maintain
+ExecStart=/home/enck/.bin/status daily
