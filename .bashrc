@@ -97,20 +97,12 @@ if [ -s $GIT_CHANGES ]; then
 fi
 
 _check_today() {
-    local today_check jrnl yesterday journal today filename cnt
-    today=$(date +%Y-%m-%d)
-    filename=$USER_TMP/last.checked.
-    today_check=$filename$today
-    journal=$USER_JOURNAL
-    if [ ! -e $today_check ]; then
-        yesterday=$(date -d "1 day ago" +%Y-%m-%d)
-        jrnl=$(cat /var/log/sysmon.log | grep "^$yesterday" | grep -v "^$yesterday run:")
-        if [ ! -z "$jrnl" ]; then
-            echo "$today (since $yesterday):" >> $journal
-            echo "$jrnl" >> $journal
-            echo "" >> $journal
-        fi
-        date +"%Y-%m-%d %H:%M:%S" > $today_check
+    local f yesterday
+    yesterday=$(date -d "1 day ago" +%Y-%m-%d)
+    f=$USER_TMP/.journal.$yesterday
+    if [ ! -e $f ]; then
+        cat /var/log/sysmon.log | grep "^$yesterday" | grep -v "^$yesterday run:" >> $USER_JOURNAL
+        touch $f
     fi
     xhost +local: >/dev/null
 }
