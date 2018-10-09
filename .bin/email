@@ -41,7 +41,7 @@ _mbsync() {
         if [ $purge -eq 1 ]; then
             rm -f ${INDEXED}*
         fi
-        mbsync -aV 
+        mbsync -aV >> $USER_TMP/.mbsync.$(date +%Y-%m-%d).log 
         if [ $? -ne 0 ]; then
             echo "mbsync failure" | systemd-cat -p err -t "mbsync"
         fi
