@@ -154,7 +154,14 @@ function primary(cache)
     table.insert(outputs, json_pad('🔋' .. power))
     local wireless = cache.wireless
     local wired = cache.wired
+    local reset = false
     if not avail then
+        reset = true
+    end
+    if cache.wireless ~= nil and cache.wired ~= nil then
+        reset = true
+    end
+    if reset then
         cache.wireless = nil
         cache.wired = nil
     end
