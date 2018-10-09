@@ -3,6 +3,10 @@ set mbox_type   = Maildir
 set spoolfile   = "+INBOX"
 unset record
 
+set alias_file  = ~/store/documents/configs/mutt.aliases
+set sort_alias  = alias
+source $alias_file
+
 set realname    = "Sean Enck"
 set sort_aux    = reverse-last-date-received
 set sort        = threads
