@@ -1,6 +1,0 @@
-[Unit]
-Description=network changing
-
-[Service]
-Type=oneshot
-ExecStart=/home/enck/.bin/local-helpers network
