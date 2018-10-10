@@ -205,6 +205,11 @@ function main(prim)
         else
             values = {datetime()}
         end
+        local netReset = tmp .. ".wswreset"
+        if file_exists(netReset) then
+            cache.last_online = 0
+            call("rm -f " .. netReset)
+        end
         print("[")
         for k, v in pairs(values) do
             local out = v

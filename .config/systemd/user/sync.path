@@ -3,7 +3,6 @@ Description=change on wsw change
 
 [Path]
 PathChanged=/var/cache/wsw/
-PathChanged=/home/enck/.tmp/checkmail
 
 [Install]
 WantedBy=default.target

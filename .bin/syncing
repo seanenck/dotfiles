@@ -167,5 +167,6 @@ sync-now() {
     fi
 }
 
+touch $USER_TMP/.wswreset
 sleep 15
 sync-now | systemd-cat -t "sync"
