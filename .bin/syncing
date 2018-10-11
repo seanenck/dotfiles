@@ -1,5 +1,6 @@
 #!/bin/bash
 source $HOME/.bin/common
+source $PRIV_CONF
 COMMON_STORE=/mnt/Storage/Active/
 PROFILE_PATH=${COMMON_STORE}Rolling/profiles
 REPO_PATH=${COMMON_STORE}Repository/
@@ -166,6 +167,12 @@ sync-now() {
         fi
     fi
 }
+
+network=$(wsw current)
+echo $network | grep -q -E "$NET_NO_SYNC"
+if [ $? -eq 0 ]; then
+    exit 0
+fi
 
 touch $USER_TMP/.wswreset
 sleep 15
