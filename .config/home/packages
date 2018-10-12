@@ -52,7 +52,6 @@ make
 man-db
 man-pages
 metaphyte-admins
-mkinitcpio-validate
 msmtp
 mutt
 nftables
