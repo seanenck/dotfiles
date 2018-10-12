@@ -11,6 +11,10 @@ function call(script)
     return s:match("^%s*(.-)%s*$") 
 end
 
+function sleeping()
+    call("sleep 1")
+end
+
 function ac()
     return tonumber(call("cat /sys/class/power_supply/AC/online"))
 end
@@ -199,16 +203,16 @@ function main(prim)
     cache.update_interval = 5
     local idx = 0
     while running do
+        local statReset = tmp .. ".status.reset"
+        if file_exists(statReset) then
+            call("rm -f " .. statReset)
+            return
+        end
         local values = {}
         if prim then
             values = primary(cache)
         else
             values = {datetime()}
-        end
-        local netReset = tmp .. ".wswreset"
-        if file_exists(netReset) then
-            cache.last_online = 0
-            call("rm -f " .. netReset)
         end
         print("[")
         for k, v in pairs(values) do
@@ -219,7 +223,7 @@ function main(prim)
             print(out)
         end
         print("],")
-        call("sleep 1")
+        sleeping()
         idx = idx + 1
         if idx > 30 then
             idx = 0
@@ -287,8 +291,11 @@ end
 if arg[1] == nil then
     while true do
         workspace()
-        call("sleep 1")
+        sleeping()
     end
 else
-    main(arg[1] == "primary")
+    while true do
+        main(arg[1] == "primary")
+        sleeping()
+    end
 end
