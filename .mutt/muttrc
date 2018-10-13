@@ -38,6 +38,7 @@ bind index,pager \CF noop
 bind index,pager O noop
 bind index <Up> previous-entry
 bind index <Down> next-entry
+bind index,pager B sidebar-toggle-visible
 
 macro index,pager \Cp "<sidebar-prev><sidebar-open>"
 macro index,pager \Cn "<sidebar-next><sidebar-open>"
