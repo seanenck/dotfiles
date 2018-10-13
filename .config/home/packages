@@ -6,7 +6,7 @@ bison
 btrfs-progs
 ccid-git
 cifs-utils
-devtools-min
+devtools
 dhcpcd
 dmenu
 dosfstools
