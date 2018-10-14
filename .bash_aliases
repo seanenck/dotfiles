@@ -21,7 +21,7 @@ _git-all() {
 
 tasks() {
     source $HOME/.bin/common
-    vim ${HOME_CACHE}tasks
+    vim ${HOME_SCRATCH}tasks
 }
 
 grubluks() {
