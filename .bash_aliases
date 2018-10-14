@@ -19,6 +19,11 @@ _git-all() {
     done
 }
 
+tasks() {
+    source $HOME/.bin/common
+    vim ${HOME_CACHE}tasks
+}
+
 grubluks() {
     echo "configfile (hd0,1)/grub/grub.cfg" | clip
     echo "command in clipboard"
