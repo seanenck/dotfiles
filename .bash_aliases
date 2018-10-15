@@ -21,7 +21,15 @@ _git-all() {
 
 tasks() {
     source $HOME/.bin/common
-    vim ${HOME_SCRATCH}tasks
+    if [ -z "$1" ]; then
+        echo "no files given"
+    else
+        local files
+        for f in $(echo "$@"); do
+            files="$files ${HOME_SCRATCH}$f$TASK_FILE"
+        done
+        vim $files
+    fi
 }
 
 grubluks() {

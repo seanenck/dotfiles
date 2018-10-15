@@ -24,6 +24,7 @@ HOME_SCRATCH=${HOME_CACHE}scratch/
 HOME_BIN=$HOME/.bin/
 CHROOT_LOCATION=${PERM_LOCATION}chroot
 PRIV_CONF=${PERM_CONFIGS}priv.aliases
+TASK_FILE=".tsk"
 
 export OPENSC_CONF="$HOME/.config/opensc.conf"
 
