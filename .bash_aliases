@@ -9,8 +9,10 @@ alias gmail="/home/enck/.bin/email client gmail"
 alias fastmail="/home/enck/.bin/email client fastmail"
 alias mutt="echo 'disabled in bash'"
 alias vlc="echo 'disable in bash'"
+alias sha256all='test $(find . -type f | wc -l) -gt 0 && sha256sum $(find . -type f | sort) | sha256sum | cut -d " " -f 1'
 _git-all() {
     local f pid cnt
+
     for f in $(find . -maxdepth 1 -type d | sort); do
         if [ -d "$f/.git" ]; then
             echo "updating $f"
