@@ -10,11 +10,24 @@ alias fastmail="/home/enck/.bin/email client fastmail"
 alias mutt="echo 'disabled in bash'"
 alias vlc="echo 'disable in bash'"
 _git-all() {
+    local f pid cnt
     for f in $(find . -maxdepth 1 -type d | sort); do
         if [ -d "$f/.git" ]; then
             echo "updating $f"
-            git -C $f $1
+            (git -C $f $1 | sed "s#^#$f -> #g" &)
         fi
+    done
+    pid=$(pidof git)
+    cnt=0
+    while [ ! -z "$pid" ]; do
+        echo "waiting..."
+        sleep 1
+        cnt=$((cnt+1))
+        if [ $cnt -ge 15 ]; then
+            echo "stopping"
+            pkill git
+            break
+        fi 
     done
 }
 
