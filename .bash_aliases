@@ -1,5 +1,4 @@
 alias clip="xclip -selection 'clip-board'"
-alias notes="vim notes"
 alias pacman="sudo pacman"
 alias pacman-local="sudo pacman-local"
 alias diff="diff -u"
@@ -19,7 +18,7 @@ _git-all() {
     done
 }
 
-tasks() {
+notes() {
     source $HOME/.bin/common
     if [ -z "$1" ]; then
         echo "no files given"

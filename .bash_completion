@@ -34,7 +34,7 @@ _email() {
 
 complete -F _email email
 
-_tasks() {
+_notes() {
     local opts cur
     source $HOME/.bin/common
     opts=$(find $HOME_SCRATCH -type f -name "*$TASK_FILE" | cut -d "/" -f 7- | tr '\n' ' ' | sed "s/$TASK_FILE//g")
@@ -42,4 +42,4 @@ _tasks() {
     COMPREPLY=( $(compgen -W "$opts" -- $cur) )
 }
 
-complete -F _tasks tasks
+complete -F _notes notes
