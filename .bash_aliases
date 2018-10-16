@@ -10,7 +10,7 @@ alias fastmail="/home/enck/.bin/email client fastmail"
 alias mutt="echo 'disabled in bash'"
 alias vlc="echo 'disable in bash'"
 _git-all() {
-    for f in $(find . -maxdepth 1 -type d); do
+    for f in $(find . -maxdepth 1 -type d | sort); do
         if [ -d "$f/.git" ]; then
             echo "updating $f"
             git -C $f $1
