@@ -165,6 +165,11 @@ function primary(cache)
     if cache.wireless ~= nil and cache.wired ~= nil then
         reset = true
     end
+    cache.netcount = cache.netcount + 1
+    if cache.netcount > 600 then
+        cache.netcount = 0
+        reset = true
+    end
     if reset then
         cache.wireless = nil
         cache.wired = nil
@@ -201,6 +206,7 @@ function main(prim)
     local cache = {}
     cache.last_online = 0
     cache.update_interval = 5
+    cache.netcount = 0
     local idx = 0
     while running do
         local statReset = tmp .. ".status.reset"
