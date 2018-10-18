@@ -1,0 +1,8 @@
+[Unit]
+Description=trigger email on file request
+
+[Path]
+PathChanged=/home/enck/.tmp/trigger.email
+
+[Install]
+WantedBy=default.target
