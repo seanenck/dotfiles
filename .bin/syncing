@@ -107,10 +107,6 @@ _gitpush() {
     fi
 }
 
-_emails() {
-    $HOME_BIN/email
-}
-
 _downloads() {
     mkdir -p $DL
     echo "downloading server resources"
@@ -122,7 +118,7 @@ _downloads() {
 
 sync-now() {
     local dirs pushgit pushrepo pushbackup pulldl
-    _emails &
+    touch $TRIGGER_EMAIL
     dirs=$(ls ${PERM_LOCATION} | grep personal | sed "s#^#$PERM_LOCATION#g")
     dirs="$dirs ${SYNCED_PATH} ${PERM_DOCS}"
     pushgit=$(_dogit "$dirs" | tail -n 1)

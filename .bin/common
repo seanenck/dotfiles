@@ -12,6 +12,7 @@ PROFILE_TMP=$USER_TMP/.profile.synced.
 USER_JOURNAL=$USER_TMP/journal.log
 SYS_ONLINE=$USER_TMP/.isonline
 MAIL_DIR=$HOME/.mutt/imap/
+TRIGGER_EMAIL=$USER_TMP/trigger.email
 
 # offsets from home
 PERM_LOCATION=$HOME/store/

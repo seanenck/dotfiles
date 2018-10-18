@@ -74,10 +74,11 @@ else
                 echo "account required"
                 exit 1
             fi
-            _imapjournal &
+            touch $TRIGGER_EMAIL
             sleep 0.5
             cd $HOME/Downloads
             mutt -F $HOME/.mutt/$2.muttrc
+            sleep 0.25
             ;;
         "search")
             _search ${@:2}
