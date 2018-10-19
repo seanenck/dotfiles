@@ -1,8 +1,13 @@
 #!/bin/bash
 source $HOME/.bin/common
+source $PRIV_CONF
 PASS_TOTP_OFFSET="totp/"
 _formattotp() {
     echo "$@" | tr ' ' '\n' | sed "s/->/\n    /g;s/;/\n/g"
+}
+
+_totplist() {
+    PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass ls $PASS_TOTP_OFFSET | cut -d " " -f 2 | tail -n +2 
 }
 
 _totpall() {
@@ -29,7 +34,7 @@ _totpall() {
             clear
             echo "$d"
         fi
-        for p in $(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass ls $PASS_TOTP_OFFSET | cut -d " " -f 2 | tail -n +2 ); do
+        for p in $(_totplist $1); do
             if [ ! -z "$filter" ]; then
                 echo "$p" | grep -q "$filter"
                 if [ $? -ne 0 ]; then
@@ -57,4 +62,14 @@ _totpall() {
     done
 }
 
-_totpall $@
+listing=0
+if [ ! -z "$1" ]; then
+    if [[ "$1" == "_list" ]]; then
+        listing=1
+    fi
+fi
+if [ $listing -eq 0 ]; then
+    _totpall $TOTP_PASS $1
+else
+    _totplist $TOTP_PASS
+fi

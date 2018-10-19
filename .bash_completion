@@ -43,3 +43,13 @@ _notes() {
 }
 
 complete -F _notes notes
+
+_totp() {
+    local opts cur
+    source $HOME/.bin/common
+    opts=$($HOME/.bin/totp _list)
+    cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+}
+
+complete -F _totp totp
