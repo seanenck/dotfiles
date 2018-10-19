@@ -65,38 +65,42 @@ _search() {
     notmuch search --output=files $@ | sed -e 's: :\\\\ :g' | xargs -r -I searchoutput ln -s searchoutput $INDEXED
 }
 
-if [ -z "$1" ]; then
-    _imapjournal
-else
-    case "$1" in
-        "client")
-            if [ -z "$2" ]; then
-                echo "account required"
-                exit 1
-            fi
-            touch $TRIGGER_EMAIL
-            sleep 0.5
-            cd $HOME/Downloads
-            mutt -F $HOME/.mutt/$2.muttrc
-            sleep 0.25
-            ;;
-        "search")
-            _search ${@:2}
-            ;;
-        "connected")
-            _imapjournal
-            p=$(pidof mutt)
-            while [ ! -z "$p" ]; do
-                sleep 30
-                p=$(pidof mutt)
-            done
-            _imapjournal
-            ;;
-        "count")
-            _mailcount
-            ;;
-        *)
-            echo "unknown command: $1"
-            ;;
-    esac
+subcmd="$1"
+RUN="run"
+if [ -z "$subcmd" ]; then
+    subcmd="$RUN"
 fi
+case "$subcmd" in
+    "client")
+        if [ -z "$2" ]; then
+            echo "account required"
+            exit 1
+        fi
+        touch $TRIGGER_EMAIL
+        sleep 0.5
+        cd $HOME/Downloads
+        mutt -F $HOME/.mutt/$2.muttrc
+        sleep 0.25
+        ;;
+    "search")
+        _search ${@:2}
+        ;;
+    "connected")
+        _imapjournal
+        p=$(pidof mutt)
+        while [ ! -z "$p" ]; do
+            sleep 30
+            p=$(pidof mutt)
+        done
+        _imapjournal
+        ;;
+    "count")
+        _mailcount
+        ;;
+    "$RUN")
+        _imapjournal
+        ;;
+    *)
+        echo "unknown command: $1"
+        ;;
+esac
