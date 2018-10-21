@@ -78,7 +78,7 @@ case "$subcmd" in
         fi
         touch $TRIGGER_EMAIL
         sleep 0.5
-        cd $HOME/Downloads
+        cd $HOME/downloads
         mutt -F $HOME/.mutt/$2.muttrc
         sleep 0.25
         ;;

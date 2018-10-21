@@ -16,7 +16,7 @@ endif
 all: _check update _setup services
 
 _setup:
-	mkdir -p $(HOME)/Downloads
+	mkdir -p $(HOME)/downloads
 	mkdir -p $(HOME)/.tmp
 	mkdir -p $(HOME)$(VIM_DIRS)
 	mkdir -p $(HOME)/.cache/home/dmenurls
