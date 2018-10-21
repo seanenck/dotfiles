@@ -35,15 +35,15 @@ _git-all() {
 
 notes() {
     source $HOME/.bin/common
-    if [ -z "$1" ]; then
-        echo "no files given"
-    else
-        local files
-        for f in $(echo "$@"); do
-            files="$files ${HOME_SCRATCH}$f$TASK_FILE"
-        done
-        vim $files
+    local file files f
+    file="$@"
+    if [ -z "$file" ]; then
+        file=scratch
     fi
+    for f in $(echo "$file"); do
+        files="$files ${HOME_SCRATCH}$f$TASK_FILE"
+    done
+    vim $files
 }
 
 grubluks() {
