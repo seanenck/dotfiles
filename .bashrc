@@ -47,6 +47,7 @@ export VISUAL=vim
 export EDITOR="$VISUAL"
 
 . $HOME/.bin/common
+source $XDG_USER_CONFIG
 
 EPIPHYTE_CONF=${HOME_CONF}epiphyte/env
 if [ -e "$EPIPHYTE_CONF" ]; then
