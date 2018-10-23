@@ -30,14 +30,14 @@ _setup:
 	ln -sf $(SRCMAIL)/msmtp $(HOME)/.msmtprc
 	ln -sf $(SRCMAIL)mail/msmtp $(HOME)/.mbsyncrc
 	ln -sf $(CONFS)serverlist $(HOME)/.podget/serverlist
-	sudo ln -f -s /home/enck/.vimrc /etc/vimrc
+	sudo ln -sf /home/enck/.vimrc /etc/vimrc
 	sudo mkdir -p /etc/systemd/nspawn
 	sudo timedatectl set-ntp true
 	sudo mkdir -p /root$(VIM_DIRS)
-	sudo ln -f -s $(SYSD)wsw.service /etc/systemd/system/
-	sudo ln -f -s $(SYSD)wsw-monitor.service /etc/systemd/system/
+	sudo ln -sf $(SYSD)wsw.service /etc/systemd/system/
+	sudo ln -sf $(SYSD)wsw-monitor.service /etc/systemd/system/
 
-services: $(SERVICES) $(SYS_SERV)
+services: $(SERVICES) $(SYS_SERV) $(WSW_FILE)
 
 $(WSW_FILE):
 	sudo install -Dm755 -d $(WSW)
