@@ -1,0 +1,6 @@
+[Unit]
+Description=wsw monitoring
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/wsw disconnect

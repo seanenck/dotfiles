@@ -1,0 +1,6 @@
+[Unit]
+Description=wsw connections
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/wsw connect

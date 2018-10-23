@@ -1,0 +1,8 @@
+[Unit]
+Description=wsw connections
+
+[Path]
+PathChanged=/var/cache/wsw/mon.pid
+
+[Install]
+WantedBy=default.target

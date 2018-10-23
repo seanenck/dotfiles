@@ -1,10 +1,11 @@
 PERSONAL := $(HOME)/store/documents/
 CONFS    := $(PERSONAL)configs/
+SYSD     := $(CONFS)systemd/etc/
 WEECHAT  := $(HOME)/.weechat/
 SRCWEE   := $(PERSONAL)/weechat/
 PLUGINS  := autosort buffer_autoset
 SERVICES := sync.timer sync.path maintain.timer
-SYS_SERV := nftables systemd-networkd wsw
+SYS_SERV := nftables systemd-networkd $(SYSD)wsw.path $(SYSD)wsw-monitor.path
 VIM_DIRS := "/.vim/{swap,undo}"
 SRCMAIL  := $(PERSONAL)mail/
 
@@ -31,6 +32,8 @@ _setup:
 	sudo mkdir -p /etc/systemd/nspawn
 	sudo timedatectl set-ntp true
 	sudo mkdir -p /root$(VIM_DIRS)
+	sudo ln -s $(SYSD)wsw.service /etc/systemd/system/
+	sudo ln -s $(SYSD)wsw-monitor.service /etc/systemd/system/
 
 services: $(SERVICES) $(SYS_SERV)
 
