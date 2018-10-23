@@ -73,7 +73,7 @@ _sleeping() {
     delta=$(date +%s)
     delta=$((delta-start))
     if [ $delta -ge 3600 ]; then
-        wsw reload
+        ${HOME_BIN}wsw reload
         touch $USER_TMP/.status.reset
     fi
 }

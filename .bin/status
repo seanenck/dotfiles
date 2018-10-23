@@ -103,7 +103,7 @@ _booting() {
     # mail validation
     find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch\/" | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)" | systemd-cat -t "mailsync" -p err
 
-    wsw reload
+    ${HOME_BIN}wsw reload
 }
 
 _daily() {

@@ -1,6 +1,6 @@
 PERSONAL := $(HOME)/store/documents/
 CONFS    := $(PERSONAL)configs/
-SYSD     := $(CONFS)systemd/etc/
+SYSD     := $(HOME)/.config/systemd/etc/
 WEECHAT  := $(HOME)/.weechat/
 SRCWEE   := $(PERSONAL)/weechat/
 PLUGINS  := autosort buffer_autoset
@@ -11,12 +11,13 @@ SRCMAIL  := $(PERSONAL)mail/
 WSW      := /var/cache/wsw/
 WSW_FILE := network mon.pid
 
+all: _check _setup services update
+
 _check:
 ifeq ($(shell whoami), root)
 	$(error must not be run as root)
 endif
-
-all: _check update _setup services
+	echo "ready..."
 
 _setup:
 	mkdir -p $(HOME)/downloads
@@ -29,13 +30,12 @@ _setup:
 	ln -sf $(SRCMAIL)/msmtp $(HOME)/.msmtprc
 	ln -sf $(SRCMAIL)mail/msmtp $(HOME)/.mbsyncrc
 	ln -sf $(CONFS)serverlist $(HOME)/.podget/serverlist
-	sudo rm -f /etc/vimrc
-	sudo ln -s /home/enck/.vimrc /etc/vimrc
+	sudo ln -f -s /home/enck/.vimrc /etc/vimrc
 	sudo mkdir -p /etc/systemd/nspawn
 	sudo timedatectl set-ntp true
 	sudo mkdir -p /root$(VIM_DIRS)
-	sudo ln -s $(SYSD)wsw.service /etc/systemd/system/
-	sudo ln -s $(SYSD)wsw-monitor.service /etc/systemd/system/
+	sudo ln -f -s $(SYSD)wsw.service /etc/systemd/system/
+	sudo ln -f -s $(SYSD)wsw-monitor.service /etc/systemd/system/
 
 services: $(SERVICES) $(SYS_SERV)
 
