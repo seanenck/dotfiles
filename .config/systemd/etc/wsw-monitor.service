@@ -3,4 +3,4 @@ Description=wsw monitoring
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/wsw disconnect
+ExecStart=/home/enck/.bin/wsw disconnect

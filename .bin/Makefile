@@ -8,6 +8,8 @@ SERVICES := sync.timer sync.path maintain.timer
 SYS_SERV := nftables systemd-networkd $(SYSD)wsw.path $(SYSD)wsw-monitor.path
 VIM_DIRS := "/.vim/{swap,undo}"
 SRCMAIL  := $(PERSONAL)mail/
+WSW      := /var/cache/wsw/
+WSW_FILE := network mon.pid
 
 _check:
 ifeq ($(shell whoami), root)
@@ -36,6 +38,11 @@ _setup:
 	sudo ln -s $(SYSD)wsw-monitor.service /etc/systemd/system/
 
 services: $(SERVICES) $(SYS_SERV)
+
+$(WSW_FILE):
+	sudo install -Dm755 -d $(WSW)
+	sudo touch $(WSW)$@
+	sudo chmod 666 $(WSW)$@
 
 $(SYS_SERV):
 	sudo systemctl enable $@
