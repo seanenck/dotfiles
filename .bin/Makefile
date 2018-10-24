@@ -1,8 +1,8 @@
 PERSONAL := $(HOME)/store/documents/
 CONFS    := $(PERSONAL)configs/
+SRCWEE   := $(PERSONAL)/weechat/
 SYSD     := $(HOME)/.config/systemd/etc/
 WEECHAT  := $(HOME)/.weechat/
-SRCWEE   := $(PERSONAL)/weechat/
 PLUGINS  := autosort buffer_autoset
 SERVICES := sync.timer sync.path maintain.timer
 SYS_SERV := nftables systemd-networkd $(SYSD)wsw.path $(SYSD)wsw-monitor.path
