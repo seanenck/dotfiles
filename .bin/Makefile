@@ -23,7 +23,7 @@ _setup:
 	mkdir -p $(HOME)/downloads
 	mkdir -p $(HOME)/.tmp
 	mkdir -p $(HOME)$(VIM_DIRS)
-	mkdir -p $(HOME)/.cache/home/dmenurls
+	mkdir -p $(HOME)/.cache/home/dmenuurls
 	ln -sf $(CONFS)epiphyte.conf $(HOME)/.config/epiphyte/env
 	ln -sf $(SRCWEE)buffer_autoset.conf $(WEECHAT)/buffer_autoset.conf
 	ln -sf $(SRCWEE)irc.conf $(WEECHAT)irc.conf
