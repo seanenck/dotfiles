@@ -28,7 +28,7 @@ _setup:
 	ln -sf $(SRCWEE)buffer_autoset.conf $(WEECHAT)/buffer_autoset.conf
 	ln -sf $(SRCWEE)irc.conf $(WEECHAT)irc.conf
 	ln -sf $(SRCMAIL)/msmtp $(HOME)/.msmtprc
-	ln -sf $(SRCMAIL)mail/msmtp $(HOME)/.mbsyncrc
+	ln -sf $(SRCMAIL)/mbsync.conf $(HOME)/.mbsyncrc
 	ln -sf $(CONFS)serverlist $(HOME)/.podget/serverlist
 	sudo ln -sf /home/enck/.vimrc /etc/vimrc
 	sudo mkdir -p /etc/systemd/nspawn
