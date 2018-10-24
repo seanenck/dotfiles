@@ -45,6 +45,7 @@ _dmenuwrapper() {
     local results urls u name url params file hashed prev names blist
     hashed=$(sha256sum $URLS | cut -d " " -f 1)
     prev=""
+    mkdir -p $CACHE_DIR
     if [ -e "$AVAILABLE" ]; then
         if [ $(ls $CACHE_DIR | wc -l) -gt 0 ]; then
             if [ -e $HASHED ]; then
