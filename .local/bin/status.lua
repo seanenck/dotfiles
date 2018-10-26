@@ -166,7 +166,7 @@ function primary(cache)
         reset = true
     end
     cache.netcount = cache.netcount + 1
-    if cache.netcount > 600 then
+    if cache.netcount > 60 then
         cache.netcount = 0
         reset = true
     end
