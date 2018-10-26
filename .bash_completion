@@ -34,7 +34,7 @@ _wsw() {
     source $HOME/.config/home/common
     opts=$($HOME_BIN/wsw list)
     cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    COMPREPLY=( $(compgen -W "reload $opts" -- $cur) )
 }
 
 complete -F _wsw wsw

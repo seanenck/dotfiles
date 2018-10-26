@@ -43,14 +43,23 @@ _change() {
 }
 
 cmd=$1
-if [ ! -z "$cmd" ]; then
-    if [[ "$cmd" == "$LIST" ]]; then
-        _networks
-        exit 0
-    fi
+if [ -z "$cmd" ]; then
+    echo "no command given"
+    exit 1
 else
-    if [ -e "$CACHED" ]; then
-        cmd=$(cat $CACHED)
-    fi
+    case "$cmd" in
+        "$LIST")
+            _networks
+            exit 0
+            ;;
+        "reload")
+            if [ -e "$CACHED" ]; then
+                cmd=$(cat $CACHED)
+            else
+                echo "no cached profile"
+                exit 1
+            fi
+            ;;
+    esac
+    _change $cmd
 fi
-_change $cmd
