@@ -21,7 +21,7 @@ enter-window-vals() {
 }
 
 _enterbrowserkeys() {
-    enter-window-vals "Developer" "$@" "Return"
+    enter-window-vals "Firefox" "$@" "Return"
 }
 
 enterkeys() {
