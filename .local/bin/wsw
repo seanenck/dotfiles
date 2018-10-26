@@ -1,9 +1,8 @@
 #!/bin/bash
-source $HOME/.config/home/common
-NETWORKS=${HOME_STORE}networks/
+NETWORKS=/etc/wsw/
 LIST="list"
 ADAPTERS="wlp58s0 enp0s31f6"
-NETWORK_FILE=/tmp/network
+CACHED=/tmp/network
 
 _networks() {
     for f in $(find $NETWORKS -type f); do
@@ -12,28 +11,34 @@ _networks() {
 }
 
 _iplink() {
-    ip link set $1 $2
+    sudo ip link set $1 $2
     echo "settings $1 -> $2"
 }
 
 _change() {
     local filename
-    filename="$NETWORKS/$1"
+    filename="$NETWORKS$1"
     if [ ! -e "$filename" ]; then
         echo "$1 is not valid"
         exit 1
-    fi    
+    fi
+    if [ -z "$1" ]; then
+        echo "no file given"
+        exit 1
+    fi
+    echo "$1" > $CACHED
     for a in $(echo "$ADAPTER"); do
         ip link set $a "down"
     done
-    pkill wpa_supplicant
-    devices=$(echo "$1" | cut -d "." -f 2)
+    sudo pkill wpa_supplicant
+    device=$(echo "$1" | cut -d "." -f 2)
     flags=""
     echo "$1" | grep -q "^wired."
     if [ $? -eq 0 ]; then
         flags="-D wired"
     fi
-    /bin/bash -c "/usr/bin/wpa_supplicant -c $filename -i $device $flags"
+    _iplink $device up
+    sudo /bin/bash -c "/sbin/wpa_supplicant -B -c $filename -i $device $flags"
 }
 
 cmd=$1
@@ -42,9 +47,9 @@ if [ ! -z "$cmd" ]; then
         _networks
         exit 0
     fi
+else
+    if [ -e "$CACHED" ]; then
+        cmd=$(cat $CACHED)
+    fi
 fi
-if [ ! -e "$NETWORK_FILE" ]; then
-    echo "no network file"
-    exit 1
-fi
-_change $(cat $NETWORK_FILE)
+_change $cmd

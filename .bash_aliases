@@ -8,14 +8,6 @@ alias fastmail="/home/enck/.local/bin/email client fastmail"
 alias mutt="echo 'disabled in bash'"
 alias vlc="echo 'disable in bash'"
 
-wsw() {
-    if [ -z "$1" ]; then
-        echo "no network given..."
-    else
-        echo "$@" > /tmp/network
-    fi
-}
-
 notes() {
     source $HOME/.config/home/common
     local file files f
