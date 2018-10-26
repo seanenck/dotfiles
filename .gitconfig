@@ -16,3 +16,5 @@
     smtpencryption = tls
 [include]
     path = ~/store/documents/ssh/gitconfig
+[gpg]
+	program = gpg2

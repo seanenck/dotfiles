@@ -10,4 +10,4 @@ echo '['
 echo '[],'
 
 # Now send blocks with information forever:
-exec lua $HOME/.bin/status.lua $1
+exec lua5.3 $HOME/.local/bin/status.lua $1
