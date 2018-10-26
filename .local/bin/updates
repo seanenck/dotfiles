@@ -1,0 +1,5 @@
+#!/bin/bash
+WEECHAT=$HOME/.weechat/python/
+for a in autosort buffer_autoset; do
+    curl -s https://www.weechat.org/files/scripts/$a.py > ${WEECHAT}$a.py
+done

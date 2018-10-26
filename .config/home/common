@@ -20,10 +20,17 @@ TRIGGER_MAIL=${USER_TMP}mail.trigger
 # files
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 GIT_CHANGES=${USER_TMP}git.log
-TASK_FILE=".tsk"
 PRIV_CONF=${PERM_CONFIGS}priv.aliases
 XDG_USER_CONFIG=$HOME/.config/user-dirs.dirs
 SYS_ONLINE=${USER_TMP}sys.online
+
+# string vars
+BASE_SERVER="blip"
+RED_TEXT="\033[1;31m"
+NORM_TEXT="\033[0m"
+TASK_FILE=".tsk"
+
+export OPENSC_CONF="$HOME/.config/opensc.conf"
 
 _init() {
     mkdir -p $DMENU_URLS
