@@ -1,0 +1,159 @@
+#!/bin/bash
+source $HOME/.config/home/common
+STAT_GIT=${USER_TMP}/stats.git
+GIT_PARTIAL_PATTERN="weechat|random_seed"
+STAT_LOCK=${USER_TMP}/stat.lock
+
+_get-git-folders() {
+    local res f d
+    res=""
+    for d in "$HOME/workspace" "${PERM_LOCATION}"; do
+        for f in $(find $d -maxdepth 2 -type d | sort); do
+            if [ ! -d "$f/.git" ]; then
+                continue
+            fi
+            res=$res" "$f
+        done
+    done
+    echo $res
+}
+
+get-all-changes() {
+    git update-index -q --refresh 
+    git diff-index --name-only HEAD --
+    git status -sb | grep 'ahead'
+    git ls-files --other --exclude-standard
+}
+
+git-changing() {
+    local cwd d_paths d local_res first
+    cwd=$PWD
+    d_paths="/etc $HOME $PRIV_PATH "$(_get-git-folders)
+    for d in $(echo "$d_paths"); do
+        if [ ! -d "$d/.git" ]; then
+            continue
+        fi
+        cd $d
+        local_res=$(get-all-changes | grep -E -v "$GIT_PARTIAL_PATTERN")
+        if [ ! -z "$local_res" ]; then
+            if [ -z $first ]; then
+                echo "uncommitted changes"
+            fi
+            echo -e "$d${RED_TEXT}"
+            echo -e "$local_res${NORM_TEXT}" | sed "s/^/    /g"
+            first="false"
+        fi
+    done
+    cd $cwd
+}
+
+_up() {
+    curl -s https://voidedtech.network > /dev/null
+    if [ $? -eq 0 ]; then
+        touch $SYS_ONLINE
+    else
+        rm -f $SYS_ONLINE
+    fi
+}
+
+_unread() {
+    local cnt raw res
+    raw=$($HOME_BIN/email count)
+    cnt=$(echo "$raw" | cut -d " " -f 1)
+    if [ -z "$raw" ]; then
+        echo
+    else
+        echo "$raw"
+    fi
+}
+
+_checkgit() {
+    local _git_cnt
+    git-changing > $GIT_CHANGES
+    _git_cnt=$(cat $GIT_CHANGES | grep "    " | wc -l)
+    if [ $_git_cnt -gt 0 ]; then
+        echo "$_git_cnt HEAD^"
+    else
+        echo
+    fi
+}
+
+stats() {
+    rm -f $STAT_LOCK
+    touch $STAT_LOCK
+    _checkgit > $STAT_GIT
+    rm -f $STAT_LOCK
+}
+
+_booting() {
+    echo "booting up..."
+    # cleanup file
+    rm -f $HOME/.python_history*
+    rm -f $HOME/.wget-hsts*
+    rm -f $HOME/.esd_auth*
+    rm -f $HOME/.lesshst*
+    rm -f $PROFILE_TMP*
+    rm -f $SYS_ONLINE
+    
+    # mail validation
+    find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch\/" | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)" | systemd-cat -t "mailsync" -p err
+
+    ${HOME_BIN}wsw reload
+}
+
+_daily() {
+    local f xsess
+    f=$USER_TMP/maintain.$(date +%Y-%m-%d)
+    if [ ! -e $f ]; then
+        echo "running daily checks..."
+        xsess=$HOME/.xsession-errors
+        if [ -e $xsess ]; then
+            cat $xsess >> $USER_TMP/xsession.$(date +%Y-%m-%d)
+            rm -f $xsess
+        fi
+        echo "clearing user tmp..."
+        mkdir -p $USER_TMP
+        find $USER_TMP* -mtime 1 -type f -exec rm {} \;
+        find $USER_TMP -empty -type d -delete
+        find $HOME/.vim/{swap,undo} -mmin +1440 -type f -exec rm {} \;
+        echo "validate syncing"
+        journalctl -t sync --since "7 days ago" | grep -q "local sync completed"
+        if [ $? -ne 0 ]; then
+            echo "no recent successful syncs" | systemd-cat -p err -t "maintain"
+        fi
+    fi
+}
+
+
+if [ -z "$1" ]; then
+    stats &
+else
+    case "$1" in
+        "git")
+            while [ -e $STAT_LOCK ]; do
+                sleep 0.1
+            done
+            cat ${STAT_GIT} | tail -n 1
+            ;;
+        "online")
+            _up > /dev/null 2>&1 &
+            ;;
+        "errors")
+            if [ -s $USER_JOURNAL ]; then
+                echo 'JOURNAL: '$(cat $USER_JOURNAL | wc -l)' ", "color": "#FF0000'
+            fi
+            ;;
+        "email")
+            _unread
+            ;;
+        "daily")
+            _daily
+            ;;
+        "boot")
+            _booting
+            ;;
+        *)
+            echo "unknown command: $1"
+            ;;
+    esac
+fi

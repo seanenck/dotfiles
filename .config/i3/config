@@ -62,14 +62,14 @@ bindsym $mod+Shift+r exec i3-msg restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3? This will end the session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 bar {
-        output DP2-2
-        output DP2-1
+        output DP-2
+        output DP-1
         tray_output none
         status_command ~/.config/i3/bar secondary
 }
 
 bar {
-        output eDP1
+        output eDP-1
         tray_output primary
         status_command ~/.config/i3/bar primary
 }

@@ -76,7 +76,7 @@ end
 function stats()
     local results = {}
     local k, v
-    for k, v in pairs({"errors", "git", "email"}) do
+    for k, v in pairs({"git", "email"}) do
         local stat = call(status .. v)
         if stat ~= '' and stat ~= nil then
             table.insert(results, json_pad(stat))
@@ -153,7 +153,7 @@ function primary(cache)
     else
         sound = "🔊"
     end
-    sound = sound .. string.format(" %3d%%", vol)
+    --    sound = sound .. string.format(" %3d%%", vol)
     table.insert(outputs, json_pad(sound))
     table.insert(outputs, json_pad('🔋' .. power))
     local wireless = cache.wireless
@@ -209,11 +209,6 @@ function main(prim)
     cache.netcount = 0
     local idx = 0
     while running do
-        local statReset = tmp .. "status.reset"
-        if file_exists(statReset) then
-            call("rm -f " .. statReset)
-            return
-        end
         local values = {}
         if prim then
             values = primary(cache)
