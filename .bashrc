@@ -81,7 +81,7 @@ if ! shopt -oq posix; then
 fi
 source $HOME/.config/home/common
 if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
-    _init
+    _init &
 	exec startx $HOME/.xinitrc
 	return
 fi

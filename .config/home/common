@@ -1,4 +1,5 @@
-# various points
+#!/bin/bash
+## various points
 HOME_BIN=$HOME/.local/bin
 
 # cache files
@@ -33,7 +34,26 @@ TASK_FILE=".tsk"
 export OPENSC_CONF="$HOME/.config/opensc.conf"
 
 _init() {
+    local xsess
+    # cleanup xsession errors
+    xsess=$HOME/.xsession-errors
+    cat $xsess >> ${USER_TMP}xsession.$(date +%Y-%m-%d)
+    echo > $xsess
+    
+    # make sure I can operate
     mkdir -p $DMENU_URLS
     mkdir -p $HOME_SCRATCH
     mkdir -p $USER_TMP
+
+    # check mail for valid files
+    find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch\/" | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)" | systemd-cat -t "mailsync" -p err
+
+    # cleanup temp dirs
+    find ${USER_TMP}* -mtime 1 -type f -exec rm {} \;
+    find $USER_TMP -empty -type d -delete
+    find $HOME/.vim/{swap,undo} -mmin +1440 -type f -exec rm {} \;
+    journalctl -t sync --since "7 days ago" | grep -q "local sync completed"
+    if [ $? -ne 0 ]; then
+        echo "no recent successful syncs" | systemd-cat -p err -t "maintain"
+    fi
 }
