@@ -1,6 +1,5 @@
 #!/bin/bash
-source $HOME/.config/home/common
-NETWORKS=${HOME_STORE}networks/
+NETWORKS=/home/enck/store/documents/networks/
 LIST="list"
 ADAPTERS="wlp58s0 enp0s31f6"
 CACHED=/tmp/network
@@ -12,7 +11,7 @@ _networks() {
 }
 
 _iplink() {
-    sudo ip link set $1 $2
+    ip link set $1 $2
     echo "settings $1 -> $2"
 }
 
@@ -31,7 +30,7 @@ _change() {
     for a in $(echo "$ADAPTER"); do
         ip link set $a "down"
     done
-    sudo pkill wpa_supplicant
+    pkill wpa_supplicant
     device=$(echo "$1" | cut -d "." -f 2)
     flags=""
     echo "$1" | grep -q "^wired."
@@ -39,13 +38,16 @@ _change() {
         flags="-D wired"
     fi
     _iplink $device up
-    sudo /bin/bash -c "/sbin/wpa_supplicant -B -c $filename -i $device $flags"
+    /bin/bash -c "/sbin/wpa_supplicant -B -c $filename -i $device $flags"
 }
 
 cmd=$1
 if [ -z "$cmd" ]; then
-    echo "no command given"
-    exit 1
+    if [ ! -e $CACHED ]; then
+        echo "no network file to read"
+        exit 0
+    fi
+    _change $(cat $CACHED)
 else
     case "$cmd" in
         "$LIST")
@@ -53,13 +55,15 @@ else
             exit 0
             ;;
         "reload")
-            if [ -e "$CACHED" ]; then
-                cmd=$(cat $CACHED)
+            if [ -e $CACHED ]; then
+                touch $CACHED
             else
-                echo "no cached profile"
-                exit 1
+                echo "nothing to reload"
+                exit
             fi
             ;;
+         *)
+             echo "$cmd" > $CACHED
+             ;;
     esac
-    _change $cmd
 fi
