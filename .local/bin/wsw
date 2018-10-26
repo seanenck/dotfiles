@@ -17,6 +17,7 @@ _iplink() {
 
 _change() {
     local filename
+    echo "changing to $1"
     filename="$NETWORKS$1"
     if [ ! -e "$filename" ]; then
         echo "$1 is not valid"
@@ -27,10 +28,11 @@ _change() {
         exit 1
     fi
     echo "$1" > $CACHED
-    for a in $(echo "$ADAPTER"); do
+    for a in $(echo "$ADAPTERS"); do
         ip link set $a "down"
     done
     pkill wpa_supplicant
+    sleep 3
     device=$(echo "$1" | cut -d "." -f 2)
     flags=""
     echo "$1" | grep -q "^wired."
@@ -38,7 +40,11 @@ _change() {
         flags="-D wired"
     fi
     _iplink $device up
-    /bin/bash -c "/sbin/wpa_supplicant -B -c $filename -i $device $flags"
+    sleep 3
+    if [ -s $filename ]; then
+        echo "starting supplicant"
+        /bin/bash -c "/sbin/wpa_supplicant -c $filename -i $device $flags"
+    fi
 }
 
 cmd=$1
