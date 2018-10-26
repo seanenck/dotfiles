@@ -13,24 +13,24 @@ _dmenucall() {
     exit 0
 }
 
-_termite() {
-    echo "termite --title=$1 --exec='$2'"
+_term() {
+    echo "kitty --title=$1 $2"
 }
 
 _localapp() {
     local cmd
     case "$1" in
         "gmutt")
-            cmd=$(_termite $1 "${HOME_BIN}email client gmail")
+            cmd=$(_term $1 "${HOME_BIN}/email client gmail")
             ;;
         "fastmutt")
-            cmd=$(_termite $1 "${HOME_BIN}email client fastmail")
+            cmd=$(_term $1 "${HOME_BIN}/email client fastmail")
             ;;
         "irc")
-            cmd=$(_termite $1 "weechat")
+            cmd=$(_term $1 "weechat")
             ;;
         "passwords")
-            cmd="keepassx2 ${SYNCED_PATH}passwords"
+            cmd="keepassx ${PRIV_PATH}passwords"
             ;;
     esac
     _dmenucall "$cmd"
