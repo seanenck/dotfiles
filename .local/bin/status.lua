@@ -11,6 +11,10 @@ function call(script)
     return s:match("^%s*(.-)%s*$") 
 end
 
+function volume(cmd)
+    return call(bin .. "volume " .. cmd)
+end
+
 function sleeping()
     call("sleep 1")
 end
@@ -35,7 +39,7 @@ end
 function brightness()
     local res = tonumber(call('xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\\.//g" | sed "s/1\\.0/100/g" | tail -n 1 | awk \'{printf "%3.0f", $1}\' | sed "s/^[ \\t]*//g"'))
     local val = string.format("%3d", res)
-    return json_pad("🔆 " .. val .. "%")
+    return json_pad("* " .. val .. "%")
 end
 
 function online(last)
@@ -114,16 +118,16 @@ function primary(cache)
         cache.battery = battery
     end
     power = power .. ")%"
+    local bind = "-"
     local drain = ac() == 0
     if drain then
-        power = "-" .. power
         if battery < 20 then
             table.insert(outputs, bad("BATTERY"))
             cache.battery = nil
             cache.power = nil
         end
     else
-        power = "+" .. power
+        bind = "+"
     end
     cache.update_interval = cache.update_interval + 1
     if cache.update_interval > 2 then
@@ -145,17 +149,17 @@ function primary(cache)
         table.insert(outputs, v)
     end
     table.insert(outputs, brightness())
-    local mute = call("pamixer --get-mute") == "true"
-    local vol = tonumber(call("pamixer --get-volume"))
+    local mute = volume("ismute") == "true"
+    local vol = tonumber(volume("volume"))
     local sound = ""
     if mute then
-        sound = "🔇"
+        sound = "|>"
     else
-        sound = "🔊"
+        sound = "=>"
     end
-    --    sound = sound .. string.format(" %3d%%", vol)
+    sound = sound .. string.format(" %3d%%", vol)
     table.insert(outputs, json_pad(sound))
-    table.insert(outputs, json_pad('🔋' .. power))
+    table.insert(outputs, json_pad("[" .. bind .. "]" .. power))
     local wireless = cache.wireless
     local wired = cache.wired
     local reset = false

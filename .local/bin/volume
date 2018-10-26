@@ -1,0 +1,72 @@
+#!/bin/bash
+MAX_VOLUME=65535
+
+_pactl() {
+    pactl list sinks
+}
+
+_volume() {
+    local vols v cnt
+    vols=0
+    cnt=0
+    for v in $(_pactl | grep "Volume" | grep -v "Base" | tr '/' '\n' | sed "s/\s*//g" | grep "%" | cut -d "%" -f 1); do
+        vols=$((vols+v))
+        cnt=$((cnt+1))
+    done
+    vols=$((vols/cnt))
+    echo $vols
+}
+
+_ismute() {
+    _pactl | grep -q "Mute: yes"
+    if [ $? -eq 0 ]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
+_vol() {
+    local vol 
+    vol=$(_volume)
+    vol=$(echo "$vol" | awk '{percent=$0 * 0.01 * '$MAX_VOLUME' + '$MAX_VOLUME' * 0.10 * '$1'; print percent}')
+    vol=$(echo "$vol" | cut -d "." -f 1)
+    if [ $vol -gt $MAX_VOLUME ]; then
+        vol=$MAX_VOLUME
+    else
+        if [ $vol -lt 0 ]; then
+            vol=0
+        fi
+    fi
+    pactl set-sink-volume 0 $vol
+}
+
+_mute() {
+    local mute
+    mute=1
+    if [[ $(_ismute) == "true" ]]; then
+        mute=0
+    fi
+    pactl set-sink-mute 0 $mute
+}
+
+case "$1" in
+    "mute")
+        _mute
+        ;;
+    "inc")
+        _vol 1
+        ;;
+    "dec")
+        _vol -1
+        ;;
+    "ismute")
+        _ismute
+        ;;
+    "volume")
+        _volume
+        ;;
+    *)
+        echo "unknown command"
+        ;;
+esac
