@@ -1,8 +1,8 @@
 local home = "/home/enck/"
-local bin  = home .. ".bin/"
+local bin  = home .. ".local/bin/"
 local status = bin .. "status "
-local tmp = home .. ".tmp/"
-local i3files = tmp .. ".workspace."
+local tmp = home .. ".cache/home/tmp/"
+local i3files = tmp .. "i3."
 
 function call(script)
     local f = io.popen(script, 'r')
@@ -39,7 +39,7 @@ function brightness()
 end
 
 function online(last)
-    local avail = file_exists(tmp .. ".isonline")
+    local avail = file_exists(tmp .. "sys.online")
     if not avail or last >= 30 then
         call(status .. "online")
     end
@@ -209,7 +209,7 @@ function main(prim)
     cache.netcount = 0
     local idx = 0
     while running do
-        local statReset = tmp .. ".status.reset"
+        local statReset = tmp .. "status.reset"
         if file_exists(statReset) then
             call("rm -f " .. statReset)
             return
