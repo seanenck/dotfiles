@@ -1,22 +1,17 @@
 #!/bin/bash
-source $HOME/.bin/common
+source $HOME/.config/home/common
 source $PRIV_CONF
 COMMON_STORE=/mnt/Storage/Active/
 PROFILE_PATH=${COMMON_STORE}Rolling/profiles
-REPO_PATH=${COMMON_STORE}Repository/
 SPACING="    "
-SSH_AUTH_TMP=/tmp/ssh-auth.sock
 TODAY=$(date +%Y-%m-%d-%p)
-ARCHIVE=$USER_TMP/profile.$TODAY.tar.gz
+ARCHIVE=${USER_TMP}profile.$TODAY.tar.gz
 BACKUP=$PROFILE_TMP$TODAY
-GIT_SYNC=$USER_TMP/.git.sync
+GIT_SYNC=${USER_TMP}git.sync
 GIT_PREV=${GIT_SYNC}.prev
-REPO_HASH=$USER_TMP/repo.hashed
-REPO_PREV=$REPO_HASH.prev
 READY="ready"
 IS_CONNECTED=1
 NOT_CONNECTED=0
-HOME_REPO=${HOME_CACHE}repo/
 DL=${HOME_CACHE}server/
 
 test-ssh() {
@@ -31,21 +26,6 @@ test-ssh() {
 
 _dobackup() {
     if [ -e "$BACKUP" ]; then
-        echo 0
-    else
-        echo 1
-    fi
-}
-
-_dorepo() {
-    local hashed prev
-    prev=""
-    hashed=$(sha256sum ${HOME_REPO}* | cut -d " " -f 1 | sort | sha256sum | cut -d " " -f 1)
-    echo "$hashed" > $REPO_HASH
-    if [ -e $REPO_PREV ]; then
-        prev=$(cat $REPO_PREV)
-    fi
-    if [[ "$hashed" == "$prev" ]]; then
         echo 0
     else
         echo 1
@@ -68,14 +48,6 @@ _backup() {
 
 _rsync() {
     rsync -avc --delete-after -e "ssh" $1 $2 | grep -v "^$" | sed "s/^/$SPACING/g"
-}
-
-_repository() {
-    echo "repository"
-    _rsync $HOME_REPO $BASE_SERVER:$REPO_PATH
-    if [ -e $REPO_HASH ]; then
-        mv $REPO_HASH $REPO_PREV
-    fi
 }
 
 _dogit() {
@@ -111,27 +83,21 @@ _downloads() {
     mkdir -p $DL
     echo "downloading server resources"
     _rsync $BASE_SERVER:/var/lib/hefurd/ $DL
-    if [ -e $SYS_ONLINE ]; then
-        podget -s 2>&1 | systemd-cat -t "podget"
-    fi
 }
 
 sync-now() {
-    local dirs pushgit pushrepo pushbackup pulldl
-    touch $TRIGGER_EMAIL
+    local dirs pushgit pushbackup pulldl
+    touch $TRIGGER_MAIL
     dirs=$(ls ${PERM_LOCATION} | grep personal | sed "s#^#$PERM_LOCATION#g")
-    dirs="$dirs ${SYNCED_PATH} ${PERM_DOCS}"
+    dirs="$dirs ${PRIV_PATH} ${HOME_STORE}"
     pushgit=$(_dogit "$dirs" | tail -n 1)
-    pushrepo=$(_dorepo | tail -n 1)
     pushbackup=$(_dobackup | tail -n 1)
-    pulldl=$USER_TMP/.downloads.$TODAY
-    echo "status (git: $pushgit, repo: $pushrepo, archive: $pushbackup, dl: $pulldl)"
+    pulldl=${USER_TMP}downloads.$TODAY
+    echo "status (git: $pushgit, archive: $pushbackup, dl: $pulldl)"
     if [ $pushgit -eq 0 ]; then
-        if [ $pushrepo -eq 0 ]; then
-            if [ $pushbackup -eq 0 ]; then
-                if [ -e "$pulldl" ]; then
-                    exit 0
-                fi
+        if [ $pushbackup -eq 0 ]; then
+            if [ -e "$pulldl" ]; then
+                exit 0
             fi
         fi
     fi
@@ -150,9 +116,6 @@ sync-now() {
             if [ $pushbackup -eq 1 ]; then
                 _backup
             fi
-            if [ $pushrepo -eq 1 ]; then
-                _repository
-            fi
             if [ ! -e $pulldl ]; then
                 _downloads
                 touch $pulldl
@@ -164,11 +127,10 @@ sync-now() {
     fi
 }
 
-network=$(${HOME_BIN}wsw current)
+network=$(${HOME_BIN}/wsw current)
 echo $network | grep -q -E "$NET_SYNC"
 if [ $? -ne 0 ]; then
     exit 0
 fi
 
-sleep 15
-sync-now | systemd-cat -t "sync"
+sync-now

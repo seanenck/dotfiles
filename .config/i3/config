@@ -74,7 +74,7 @@ bar {
         status_command ~/.config/i3/bar primary
 }
 
-exec --no-startup-id subsystem workspaces 1
+#exec --no-startup-id subsystem workspaces 1
 exec --no-startup-id lua /home/enck/.bin/status.lua
 
 # Handle auto-locking

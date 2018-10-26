@@ -60,6 +60,11 @@ else
             _networks
             exit 0
             ;;
+        "current")
+            if [ -e $CACHED ]; then
+                cat $CACHED
+            fi
+            ;;
         "reload")
             if [ -e $CACHED ]; then
                 touch $CACHED
