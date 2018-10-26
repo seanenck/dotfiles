@@ -120,3 +120,13 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 if [ -s $GIT_CHANGES ]; then
     cat $GIT_CHANGES 2>/dev/null
 fi
+
+if [ ! -e $VIEW_JOURNAL ]; then
+    _yesterday=$(date -d "1 day ago" +%Y-%m-%d)
+    _today=$(date +%Y-%m-%d)
+    echo
+    echo -e "journal:$RED_TEXT"
+    journalctl -p err --since "$_yesterday 00:00:00" --until "$_today 00:00:00" | cut -d " " -f 5- | tail -n +2 | sed 's/^/    /g'
+    echo -e "${NORM_TEXT}clear-journal to suppress"
+    echo
+fi

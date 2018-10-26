@@ -24,6 +24,7 @@ GIT_CHANGES=${USER_TMP}git.log
 PRIV_CONF=${PERM_CONFIGS}priv.aliases
 XDG_USER_CONFIG=$HOME/.config/user-dirs.dirs
 SYS_ONLINE=${USER_TMP}sys.online
+VIEW_JOURNAL=${USER_TMP}journal.$(date +%Y-%m-%d)
 
 # string vars
 BASE_SERVER="blip"

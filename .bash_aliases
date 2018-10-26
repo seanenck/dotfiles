@@ -37,3 +37,8 @@ proxy() {
 ssh() {
     TERM=xterm /usr/bin/ssh "$@" || return
 }
+
+clear-journal() {
+    source $HOME/.config/home/common
+    touch $VIEW_JOURNAL
+}
