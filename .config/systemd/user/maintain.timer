@@ -1,9 +1,0 @@
-[Unit]
-Description=Maintain user data (timer)
-
-[Timer]
-Unit=maintain.service
-OnCalendar=hourly
-
-[Install]
-WantedBy=timers.target

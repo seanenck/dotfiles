@@ -1,6 +1,0 @@
-[Unit]
-Description=Maintaining user data
-
-[Service]
-Type=oneshot
-ExecStart=/home/enck/.bin/status daily
