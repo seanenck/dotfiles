@@ -1,5 +1,5 @@
 set $mod Mod1
-font pango:Adobe Courier 12
+font -*-*-medium-*-*-*-18-*-*-*-*-*-*-*
 floating_modifier $mod
 
 bindsym $mod+Return exec kitty
@@ -7,6 +7,7 @@ bindsym $mod+S exec subsystem autoclip now
 
 # kill focused window
 bindsym $mod+Shift+q kill
+
 
 bindsym $mod+d exec dmenu-local -i -l 10 -fn "-*-terminal-medium-*-*-*-18-*-*-*-*-*-*-*"
 
@@ -74,11 +75,11 @@ bar {
         status_command ~/.config/i3/bar primary
 }
 
-#exec --no-startup-id subsystem workspaces 1
-exec --no-startup-id lua /home/enck/.bin/status.lua
+exec --no-startup-id subsystem workspaces 1
+exec --no-startup-id lua5.3 /home/enck/.local/bin/status.lua
 
 # Handle auto-locking
-exec xautolock -time 5 -locker "/home/enck/.bin/locking lock" &
+exec xautolock -time 5 -locker "/home/enck/.local/bin/locking lock" &
 
 # Change workplaces
 bindsym $mod+Shift+m exec subsystem workspaces 1
