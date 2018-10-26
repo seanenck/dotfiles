@@ -1,29 +1,4 @@
 #!/bin/bash
-_machinectl-nspawn() {
-    local cur opts cmd
-    cmd=""
-    if [ $COMP_CWORD -eq 1 ]; then
-        cmd='echo create destroy'
-    else
-        cmd='/usr/bin/machinectl list-images | grep -v "NAME" | grep -v "^$" | cut -d " " -f 1 | head -n -1'
-    fi
-    if [ ! -z "$cmd" ]; then
-        cur=${COMP_WORDS[COMP_CWORD]}
-        opts=$(eval $cmd)
-        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-    fi
-}
-complete -F _machinectl-nspawn machinectl-nspawn
-
-_local-helpers() {
-    local cur opts 
-    if [ $COMP_CWORD -eq 1 ]; then
-        cur=${COMP_WORDS[COMP_CWORD]}
-        COMPREPLY=( $(compgen -W "gitgo search versions music" -- $cur) )
-    fi
-}
-complete -F _local-helpers local-helpers
-
 _email() {
     local cur opts
     if [ $COMP_CWORD -eq 1 ]; then
@@ -36,7 +11,7 @@ complete -F _email email
 
 _notes() {
     local opts cur
-    source $HOME/.bin/common
+    source $HOME/.config/home/common
     opts=$(find $HOME_SCRATCH -type f -name "*$TASK_FILE" | cut -d "/" -f 7- | tr '\n' ' ' | sed "s/$TASK_FILE//g")
     cur=${COMP_WORDS[COMP_CWORD]}
     COMPREPLY=( $(compgen -W "$opts" -- $cur) )
@@ -46,22 +21,10 @@ complete -F _notes notes
 
 _totp() {
     local opts cur
-    source $HOME/.bin/common
-    opts=$($HOME/.bin/totp _list)
+    source $HOME/.config/home/common
+    opts=$($HOME_BIN/totp _list)
     cur=${COMP_WORDS[COMP_CWORD]}
     COMPREPLY=( $(compgen -W "$opts" -- $cur) )
 }
 
 complete -F _totp totp
-
-_wsw()
-{
-    local cur opts 
-    if [ $COMP_CWORD -eq 1 ]; then
-        cur=${COMP_WORDS[COMP_CWORD]}
-        opts=$(wsw list)
-        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-    fi
-}
-
-complete -F _wsw wsw

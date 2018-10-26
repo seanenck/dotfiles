@@ -1,6 +1,0 @@
-[Unit]
-Description=wsw monitoring
-
-[Service]
-Type=oneshot
-ExecStart=/home/enck/.bin/wsw disconnect

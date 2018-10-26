@@ -1,8 +1,0 @@
-[Unit]
-Description=wsw monitoring
-
-[Path]
-PathChanged=/var/cache/wsw/network
-
-[Install]
-WantedBy=default.target
