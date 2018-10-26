@@ -79,8 +79,8 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+source $HOME/.config/home/common
 if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
-    source $HOME/.config/home/common
     _init
 	exec startx $HOME/.xinitrc
 	return
@@ -89,7 +89,7 @@ fi
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
-source .config/user-dirs.dirs
+source $XDG_USER_CONFIG
 
 if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
@@ -111,8 +111,12 @@ unset SSH_AGENT_PID
 if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
     export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
 fi
-echo $SSH_AUTH_SOCK > /tmp/ssh-auth.sock
+echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
 
 # gpg setup
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
+
+if [ -s $GIT_CHANGES ]; then
+    cat $GIT_CHANGES 2>/dev/null
+fi

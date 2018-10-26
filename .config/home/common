@@ -12,11 +12,17 @@ PERM_LOCATION=${HOME}/store/
 HOME_STORE=${PERM_LOCATION}documents/
 PERM_CONFIGS=${HOME_STORE}configs/
 
+# mail
+MAIL_DIR=$HOME/.mutt/imap/
+TRIGGER_MAIL=${USER_TMP}mail.trigger
+
 # files
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 GIT_CHANGES=${USER_TMP}git.log
 TASK_FILE=".tsk"
 PRIV_CONF=${PERM_CONFIGS}priv.aliases
+XDG_USER_CONFIG=$HOME/.config/user-dirs.dirs
+SYS_ONLINE=${USER_TMP}sys.online
 
 _init() {
     mkdir -p $DMENU_URLS

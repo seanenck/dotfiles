@@ -1,5 +1,5 @@
 #!/bin/bash
-source $HOME/.bin/common
+source $HOME/.config/home/common
 source $XDG_USER_CONFIG
 INDEX_DIR=$MAIL_DIR/Indexed/
 INDEXED=${INDEX_DIR}cur/
@@ -42,7 +42,7 @@ _mbsync() {
         if [ $purge -eq 1 ]; then
             rm -f ${INDEXED}*
         fi
-        logfile=$USER_TMP/.mbsync.$(date +%Y-%m-%d).log 
+        logfile=$USER_TMP/mbsync.$(date +%Y-%m-%d).log 
         ts=$(date +%Y-%m-%dT%H:%M:%S)
         mbsync -aV | sed "s/^/$ts -> /g" >> $logfile
         if [ $? -ne 0 ]; then
@@ -77,7 +77,7 @@ case "$subcmd" in
             echo "account required"
             exit 1
         fi
-        touch $TRIGGER_EMAIL
+        touch $TRIGGER_MAIL
         sleep 0.5
         cd $XDG_DOWNLOAD_DIR
         mutt -F $HOME/.mutt/$2.muttrc
