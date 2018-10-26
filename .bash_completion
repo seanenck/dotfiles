@@ -28,3 +28,13 @@ _totp() {
 }
 
 complete -F _totp totp
+
+_wsw() {
+    local opts cur
+    source $HOME/.config/home/common
+    opts=$($HOME_BIN/wsw list)
+    cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+}
+
+complete -F _wsw wsw
