@@ -33,3 +33,7 @@ proxy() {
         ssh -D 1234 -N $1
     fi
 }
+
+ssh() {
+    TERM=xterm /usr/bin/ssh "$@" || return
+}
