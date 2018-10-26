@@ -2,8 +2,7 @@ set $mod Mod1
 font pango:Adobe Courier 12
 floating_modifier $mod
 
-bindsym $mod+Return exec termite
-bindsym $mod+Shift+Return exec termite --exec=/bin/sh
+bindsym $mod+Return exec kitty
 bindsym $mod+S exec subsystem autoclip now
 
 # kill focused window
@@ -76,7 +75,6 @@ bar {
 }
 
 exec --no-startup-id subsystem workspaces 1
-exec --no-startup-id dunst -conf /home/enck/.config/dunst
 exec --no-startup-id lua /home/enck/.bin/status.lua
 
 # Handle auto-locking
