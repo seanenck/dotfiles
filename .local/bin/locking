@@ -1,6 +1,6 @@
 #!/bin/bash
-source $HOME/.bin/common
-source ${HOME_BIN}subsystem
+source $HOME/.config/home/common
+source ${HOME_BIN}/subsystem
 DISPLAY_UN=$USER_TMP/display.unlocked
 DISPLAY_EN=$USER_TMP/display.nosleep
 IS_TRUE=1
@@ -65,17 +65,10 @@ _autolock() {
 _sleeping() {
     local start delta
     start=$(date +%s)
-    _systemstop
     echo "suspending"
     systemctl suspend
     sleep 5
     echo "done sleeping"
-    delta=$(date +%s)
-    delta=$((delta-start))
-    if [ $delta -ge 3600 ]; then
-        ${HOME_BIN}wsw reload
-        touch $USER_TMP/.status.reset
-    fi
 }
 
 sleep-now() {
@@ -176,4 +169,4 @@ if [ ! -z "$1" ]; then
     fi
 fi
 
-locking "$1" | systemd-cat -t "locking"
+locking "$1" # | systemd-cat -t "locking"

@@ -1,5 +1,5 @@
 #!/bin/bash
-source $HOME/.bin/common
+source $HOME/.config/home/common
 DISPLAY_KEY="backlight"
 WORKSPACES_KEY="workspaces"
 HELP="help"
@@ -8,14 +8,14 @@ BACKLIGHT_OFF="down"
 FULL_BRIGHT="full"
 LOW_BRIGHT="low"
 MID_BRIGHT="mid"
-MAIN_DISPLAY="eDP1"
-DISP_ONE="DP2-2"
-DISP_TWO="DP2-1"
+MAIN_DISPLAY="eDP-1"
+DISP_ONE="DP-2"
+DISP_TWO="DP-1"
 DEFAULT_WORKSPACE_ID=1
 DOCKED_ID=2
 WORK_LEFT="--output $DISP_ONE --auto --left-of $MAIN_DISPLAY --rotate right"
 WORK_RIGHT="--output $DISP_TWO --auto --right-of $MAIN_DISPLAY"
-TRACK_LIGHTING=$USER_TMP/.backlight
+TRACK_LIGHTING=$USER_TMP/backlight
 
 force-display-on() {
     xset -display $MAIN_DISPLAY dpms force on
