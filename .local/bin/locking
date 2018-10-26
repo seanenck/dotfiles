@@ -169,4 +169,4 @@ if [ ! -z "$1" ]; then
     fi
 fi
 
-locking "$1" # | systemd-cat -t "locking"
+locking "$1" 

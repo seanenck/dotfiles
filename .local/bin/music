@@ -3,7 +3,7 @@ source $HOME/.config/home/common
 
 _create-list() {
     local idx chr cnt line musicfile
-    musicfile="$PERM_CONFIGS/music"
+    musicfile="${PERM_CONFIGS}music"
     idx=1
     cnt=$(cat $musicfile | wc -l)
     while [ $idx -le $cnt ]; do
