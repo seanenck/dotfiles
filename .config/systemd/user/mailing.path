@@ -2,7 +2,7 @@
 Description=trigger email on file request
 
 [Path]
-PathChanged=/home/enck/.tmp/trigger.email
+PathChanged=/home/enck/.cache/home/tmp/mail.trigger
 
 [Install]
 WantedBy=default.target
