@@ -66,5 +66,5 @@ _setup() {
 }
 
 _init() {
-    _setup | systemd-cat -t userinit
+    _setup >> ${USER_TMP}userinit.$(date +%Y-%m-%d)
 }

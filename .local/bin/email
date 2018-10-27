@@ -25,7 +25,7 @@ _mailcount() {
 }
 
 _mbsync() {
-    local pids purge last now a logfile ts
+    local pids purge last now a ts
     pids=$(pidof mbsync)
     if [ -z "$pids" ]; then
         mkdir -p $INDEXED
@@ -38,25 +38,24 @@ _mbsync() {
                 purge=0
             fi
         fi
-        >&2 echo "purging index: $purge"
+        echo "purging index: $purge"
         if [ $purge -eq 1 ]; then
             rm -f ${INDEXED}*
         fi
-        logfile=$USER_TMP/mbsync.$(date +%Y-%m-%d).log 
         ts=$(date +%Y-%m-%dT%H:%M:%S)
-        mbsync -aV | sed "s/^/$ts -> /g" >> $logfile
+        mbsync -aV | sed "s/^/$ts -> /g"
         if [ $? -ne 0 ]; then
             echo "mbsync failure" >> $VIEW_JOURNAL
         fi
         notmuch new
     else
-        >&2 echo "mbsync already running ($pids)"
+        echo "mbsync already running ($pids)"
     fi
 }
 
 _imapjournal() {
     if [ -e $SYS_ONLINE ]; then
-        _mbsync 2>&1 | systemd-cat -t "mailsync"
+        _mbsync 2>&1 >> ${USER_TMP}mbsync.$(date +%Y-%m-%d).log 
     fi
 }
 
