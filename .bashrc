@@ -88,6 +88,9 @@ export EDITOR="$VISUAL"
 
 source $XDG_USER_CONFIG
 export TERM=xterm
+DEBEMAIL="enckse@voidedtech.com"
+DEBFULLNAME="Sean Enck"
+export DEBEMAIL DEBFULLNAME
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
     return
 fi
