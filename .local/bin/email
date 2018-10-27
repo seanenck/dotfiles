@@ -46,7 +46,7 @@ _mbsync() {
         ts=$(date +%Y-%m-%dT%H:%M:%S)
         mbsync -aV | sed "s/^/$ts -> /g" >> $logfile
         if [ $? -ne 0 ]; then
-            echo "mbsync failure" | systemd-cat -p err -t "mbsync"
+            echo "mbsync failure" >> $VIEW_JOURNAL
         fi
         notmuch new
     else
