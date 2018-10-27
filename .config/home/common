@@ -63,6 +63,7 @@ _setup() {
     if [ ! -e $LAST_SYNC ]; then
         echo "no recent syncs" >> $VIEW_JOURNAL
     fi
+    ${HOME_BIN}/volume mute
     echo "init completed"
 }
 

@@ -17,6 +17,7 @@ _lock() {
     for p in $(pidof weechat); do
         kill -10 $p
     done
+    ${HOME_BIN}/volume mute
     toggle-backlighting $BACKLIGHT_OFF
     running=$IS_TRUE
     first=$IS_TRUE
