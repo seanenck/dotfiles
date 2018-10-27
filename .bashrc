@@ -87,6 +87,7 @@ export VISUAL=vim
 export EDITOR="$VISUAL"
 
 source $XDG_USER_CONFIG
+export GOPATH=$HOME/.go
 export TERM=xterm
 DEBEMAIL="enckse@voidedtech.com"
 DEBFULLNAME="Sean Enck"
