@@ -79,8 +79,9 @@ fi
 source $HOME/.config/home/common
 if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
     _init &
-	exec startx $HOME/.xinitrc
-	return
+    mkdir -p /dev/shm/schroot/overlay
+    exec startx $HOME/.xinitrc
+    return
 fi
 
 export VISUAL=vim
