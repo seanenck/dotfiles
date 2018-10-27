@@ -28,7 +28,7 @@ get-all-changes() {
 git-changing() {
     local cwd d_paths d local_res first
     cwd=$PWD
-    d_paths="/etc $HOME $PRIV_PATH "$(_get-git-folders)
+    d_paths="/etc $HOME "$(_get-git-folders)
     for d in $(echo "$d_paths"); do
         if [ ! -d "$d/.git" ]; then
             continue
