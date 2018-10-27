@@ -121,6 +121,7 @@ sync-now() {
                 touch $pulldl
             fi
             echo "local sync completed"
+            touch $LAST_SYNC
         else
             echo "ssh agent unavailable"
         fi
