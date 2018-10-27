@@ -4,6 +4,7 @@ LIST="list"
 ADAPTERS="wlp58s0 enp0s31f6"
 CACHED=/tmp/network
 DO_STOP=/tmp/network.cmd
+HOME_CACHE=$HOME/.cache/home/tmp/wsw
 
 _networks() {
     for f in $(find $NETWORKS -type f); do
@@ -77,13 +78,18 @@ else
             if [ -e $CACHED ]; then
                 touch $CACHED
             else
-                echo "nothing to reload"
-                exit
+                if [ -e $HOME_CACHE ]; then
+                    cp $HOME_CACHE $CACHED
+                else
+                    echo "nothing to reload"
+                    exit
+                fi
             fi
             ;;
          *)
              touch $DO_STOP
              echo "$cmd" > $CACHED
+             echo "$cmd" > $HOME_CACHE
              ;;
     esac
 fi
