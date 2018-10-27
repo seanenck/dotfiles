@@ -40,5 +40,5 @@ ssh() {
 
 clear-journal() {
     source $HOME/.config/home/common
-    touch $VIEW_JOURNAL
+    rm -f $JOURNALS*
 }
