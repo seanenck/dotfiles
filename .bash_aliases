@@ -21,11 +21,6 @@ notes() {
     vim $files
 }
 
-grubluks() {
-    echo "configfile (hd0,1)/grub/grub.cfg" | clip
-    echo "command in clipboard"
-}
-
 proxy() {
     if [ -z "$1" ]; then
         echo "host required"
