@@ -1,5 +1,5 @@
 #!/bin/bash
-NETWORKS=/home/enck/store/documents/networks/
+NETWORKS=/etc/wsw/
 LIST="list"
 ADAPTERS="wlp58s0 enp0s31f6"
 CACHED=/tmp/network
