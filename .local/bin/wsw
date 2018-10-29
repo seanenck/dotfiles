@@ -56,6 +56,11 @@ _change() {
     echo "done"
 }
 
+_reset() {
+	touch $DO_STOP
+	sleep 5
+}
+
 cmd=$1
 if [ -z "$cmd" ]; then
     if [ ! -e $CACHED ]; then
@@ -75,6 +80,7 @@ else
             fi
             ;;
         "reload")
+            _reset
             if [ -e $CACHED ]; then
                 touch $CACHED
             else
@@ -87,9 +93,9 @@ else
             fi
             ;;
          *)
-             touch $DO_STOP
-             echo "$cmd" > $CACHED
-             echo "$cmd" > $HOME_CACHE
-             ;;
+            _reset
+            echo "$cmd" > $CACHED
+            echo "$cmd" > $HOME_CACHE
+            ;;
     esac
 fi
