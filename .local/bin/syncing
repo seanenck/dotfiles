@@ -108,7 +108,7 @@ _mailzips() {
     done
     if [ ! -z "$zips" ]; then
         echo "sending: $zips"
-        mutt -s "zips $TODAY" -F $HOME/.mutt/fastmail.muttrc -a $zips -- $ZIP_MAIL < /dev/null
+        mutt -s "automated: zips $TODAY" -F $HOME/.mutt/fastmail.muttrc -a $zips -- $ZIP_MAIL < /dev/null
         if [ $? -eq 0 ]; then
             rm -f $zips
         fi
