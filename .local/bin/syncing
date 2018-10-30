@@ -78,6 +78,43 @@ _gitpush() {
     fi
 }
 
+_sendzips() {
+    local f hashed prev last bname
+    echo "sending zips..."
+    for f in $(echo "$@" | tr ' ' '\n' | grep -v "$HOME_STORE"); do
+        bname=$(basename $f)
+        prev=$USER_TMP$bname.ziphash
+        hashed=$(git -C $f rev-parse HEAD)
+        echo "checking zip status: $f"
+        zip=1
+        if [ -e $prev ]; then
+            last=$(cat $prev)
+            if [[ "$last" == "$hashed" ]]; then
+                zip=0
+            fi
+        fi
+        if [ $zip -eq 1 ]; then
+            echo "zipping..."
+            7z a -p$ZIP_PASS ${USER_TMP}$bname.$TODAY-$(date +%s).7z $f/ > /dev/null
+        fi
+        echo "$hashed" > $prev
+    done
+}
+
+_mailzips() {
+    local zips
+    for f in $(find $USER_TMP -type f -name "*.7z"); do
+        zips="$f $zips"
+    done
+    if [ ! -z "$zips" ]; then
+        echo "sending: $zips"
+        mutt -s "zips $TODAY" -F $HOME/.mutt/fastmail.muttrc -a $zips -- $ZIP_MAIL < /dev/null
+        if [ $? -eq 0 ]; then
+            rm -f $zips
+        fi
+    fi
+}
+
 sync-now() {
     local dirs pushgit pushbackup
     touch $TRIGGER_MAIL
@@ -85,11 +122,15 @@ sync-now() {
     dirs="$dirs ${PRIV_PATH} ${HOME_STORE}"
     pushgit=$(_dogit "$dirs" | tail -n 1)
     pushbackup=$(_dobackup | tail -n 1)
-    echo "status (git: $pushgit, archive: $pushbackup"
+    echo "status (git: $pushgit, archive: $pushbackup)"
+    _mailzips
     if [ $pushgit -eq 0 ]; then
         if [ $pushbackup -eq 0 ]; then
             exit 0
         fi
+    fi
+    if [ $pushgit -eq 1 ]; then
+        _sendzips "$dirs"
     fi
     auth=$(cat $SSH_AUTH_TMP)
     export SSH_AUTH_SOCK=$auth
