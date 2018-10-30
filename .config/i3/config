@@ -91,7 +91,7 @@ bindsym $mod+Shift+l exec locking lock
 bindsym $mod+Shift+s exec locking sleep
 
 # Sound
-bindsym XF86AudioMute exec volume mute
+bindsym XF86AudioMute exec volume togglemute
 bindsym XF86AudioRaiseVolume exec volume inc
 bindsym XF86AudioLowerVolume exec volume dec
 

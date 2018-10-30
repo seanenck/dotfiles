@@ -43,16 +43,23 @@ _vol() {
 
 _mute() {
     local mute
-    mute=1
-    if [[ $(_ismute) == "true" ]]; then
-        mute=0
+    mute=$1
+    if [ -z "$mute" ]; then
+        mute=1
+        if [[ $(_ismute) == "true" ]]; then
+            mute=0
+        fi
     fi
     pactl set-sink-mute 0 $mute
+    #$mute
 }
 
 case "$1" in
-    "mute")
+    "togglemute")
         _mute
+        ;;
+    "mute")
+        _mute 1
         ;;
     "inc")
         _vol 1
