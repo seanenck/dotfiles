@@ -133,6 +133,7 @@ if [ -s $VIEW_JOURNAL ]; then
     echo
     echo -e "journal:$RED_TEXT"
     cat $VIEW_JOURNAL | sed "s/^/    /g"
+    echo
     echo -e "${NORM_TEXT}clear-journal to suppress"
     echo
 fi
