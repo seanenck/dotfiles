@@ -43,7 +43,7 @@ _updates() {
     local cur opts
     if [ $COMP_CWORD -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        COMPREPLY=( $(compgen -W "music weechat" -- $cur) )
+        COMPREPLY=( $(compgen -W "music weechat maintain" -- $cur) )
     fi
 }
 
