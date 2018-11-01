@@ -135,6 +135,7 @@ sync-now() {
     fi
     if [ $pushgit -eq 1 ]; then
         _sendzips "$dirs"
+        _mailzips
     fi
     auth=$(cat $SSH_AUTH_TMP)
     export SSH_AUTH_SOCK=$auth
