@@ -103,19 +103,15 @@ _sendzips() {
 
 _mailzips() {
     if [ -e $SYS_ONLINE ]; then
-        local zips names
+        local name f
         for f in $(find $USER_TMP -type f -name "*.7z"); do
-            zips="$f $zips"
-            names="$names "$(basename $f | cut -d "." -f 1)
-        done
-        names=$(echo "$names" | sed "s/^\s*//g")
-        if [ ! -z "$zips" ]; then
+            name=$(basename $f | cut -d "." -f 1)
             echo "sending: $zips"
-            mutt -s "automated: zips ($names) $TODAY" -F $HOME/.mutt/fastmail.muttrc -a $zips -- $ZIP_MAIL < /dev/null
+            mutt -s "automated: zips ($name) $TODAY" -F $HOME/.mutt/fastmail.muttrc -a $zips -- $ZIP_MAIL < /dev/null
             if [ $? -eq 0 ]; then
                 rm -f $zips
             fi
-        fi
+        done
     fi
 }
 
