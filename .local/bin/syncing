@@ -123,15 +123,14 @@ sync-now() {
     pushgit=$(_dogit "$dirs" | tail -n 1)
     pushbackup=$(_dobackup | tail -n 1)
     echo "status (git: $pushgit, archive: $pushbackup)"
+    if [ $pushgit -eq 1 ]; then
+        _sendzips "$dirs"
+    fi
     _mailzips
     if [ $pushgit -eq 0 ]; then
         if [ $pushbackup -eq 0 ]; then
             exit 0
         fi
-    fi
-    if [ $pushgit -eq 1 ]; then
-        _sendzips "$dirs"
-        _mailzips
     fi
     auth=$(cat $SSH_AUTH_TMP)
     export SSH_AUTH_SOCK=$auth
