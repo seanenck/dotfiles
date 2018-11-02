@@ -3,6 +3,7 @@ local bin  = home .. ".local/bin/"
 local status = bin .. "status "
 local tmp = home .. ".cache/home/tmp/"
 local i3files = tmp .. "i3."
+local reset_status = tmp .. "status.reset"
 
 function call(script)
     local f = io.popen(script, 'r')
@@ -234,6 +235,10 @@ function main(prim)
             idx = 0
             cache.battery = nil
             cache.power = nil
+        end
+        if file_exists(reset_status) then
+            call("rm -f " .. reset_status)
+            return
         end
     end
 end

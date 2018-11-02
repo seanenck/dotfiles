@@ -69,6 +69,7 @@ _sleeping() {
     echo "suspending"
     systemctl suspend
     sleep 5
+    touch ${USER_TMP}/status.reset
     echo "done sleeping"
 }
 
