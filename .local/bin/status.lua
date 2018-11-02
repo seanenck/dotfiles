@@ -4,6 +4,7 @@ local status
 local tmp
 local i3files
 local reset_status
+local sysonline
 
 function read_env()
     home = os.getenv("HOME") .. "/"
@@ -12,6 +13,7 @@ function read_env()
     tmp = os.getenv("USER_TMP")
     i3files = tmp .. "i3."
     reset_status = os.getenv("STATUS_RESET")
+    sysonline = os.getenv("SYS_ONLINE")
 end
 
 function call(script)
@@ -53,7 +55,7 @@ function brightness()
 end
 
 function online(last)
-    local avail = file_exists(tmp .. "sys.online")
+    local avail = file_exists(sysonline)
     if not avail or last >= 30 then
         call(status .. "online")
     end

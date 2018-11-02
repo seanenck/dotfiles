@@ -15,4 +15,5 @@ export USER_TMP
 export HOME
 export HOME_BIN
 export STATUS_RESET
+export SYS_ONLINE
 exec lua5.3 $HOME/.local/bin/status.lua $1
