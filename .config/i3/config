@@ -76,7 +76,7 @@ bar {
 }
 
 exec --no-startup-id subsystem workspaces 1
-exec --no-startup-id lua5.3 /home/enck/.local/bin/status.lua
+exec --no-startup-id ~/.config/i3/bar
 
 # Handle auto-locking
 exec xautolock -time 5 -locker "/home/enck/.local/bin/locking lock" &

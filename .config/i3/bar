@@ -1,13 +1,16 @@
 #!/bin/bash
 
-# Send the header so that i3bar knows we want to use JSON:
-echo '{"version":1}'
+# args == status bar
+if [ ! -z "$1" ]; then
+    # Send the header so that i3bar knows we want to use JSON:
+    echo '{"version":1}'
 
-# Begin the endless array.
-echo '['
+    # Begin the endless array.
+    echo '['
 
-# We send an empty first array of blocks to make the loop simpler:
-echo '[],'
+    # We send an empty first array of blocks to make the loop simpler:
+    echo '[],'
+fi
 
 # Now send blocks with information forever:
 source $HOME/.config/home/common
