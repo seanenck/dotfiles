@@ -91,11 +91,13 @@ else
                     exit
                 fi
             fi
+            touch $STATUS_RESET
             ;;
          *)
             _reset
             echo "$cmd" > $CACHED
             echo "$cmd" > $HOME_CACHE
+            touch $STATUS_RESET
             ;;
     esac
 fi
