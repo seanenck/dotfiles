@@ -9,7 +9,7 @@ local sysonline
 function read_env()
     home = os.getenv("HOME") .. "/"
     bin = os.getenv("HOME_BIN") .. "/"
-    status = home .. "status"
+    status = bin .. "status "
     tmp = os.getenv("USER_TMP")
     i3files = tmp .. "i3."
     reset_status = os.getenv("STATUS_RESET")
