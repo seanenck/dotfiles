@@ -15,7 +15,6 @@ fi
 # Now send blocks with information forever:
 source $HOME/.config/home/common
 export USER_TMP
-export HOME
 export HOME_BIN
 export STATUS_RESET
 export SYS_ONLINE
