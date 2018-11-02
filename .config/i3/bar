@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Send the header so that i3bar knows we want to use JSON:
 echo '{"version":1}'
@@ -10,4 +10,9 @@ echo '['
 echo '[],'
 
 # Now send blocks with information forever:
+source $HOME/.config/home/common
+export USER_TMP
+export HOME
+export HOME_BIN
+export STATUS_RESET
 exec lua5.3 $HOME/.local/bin/status.lua $1

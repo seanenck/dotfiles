@@ -1,9 +1,18 @@
-local home = "/home/enck/"
-local bin  = home .. ".local/bin/"
-local status = bin .. "status "
-local tmp = home .. ".cache/home/tmp/"
-local i3files = tmp .. "i3."
-local reset_status = tmp .. "status.reset"
+local home
+local bin
+local status
+local tmp
+local i3files
+local reset_status
+
+function read_env()
+    home = os.getenv("HOME") .. "/"
+    bin = os.getenv("HOME_BIN") .. "/"
+    status = home .. "status"
+    tmp = os.getenv("USER_TMP")
+    i3files = tmp .. "i3."
+    reset_status = os.getenv("STATUS_RESET")
+end
 
 function call(script)
     local f = io.popen(script, 'r')
@@ -298,6 +307,7 @@ function workspace()
     update_workspace(current, lastworkspace, workspaces)
 end
 
+read_env()
 if arg[1] == nil then
     while true do
         workspace()

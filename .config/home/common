@@ -27,6 +27,7 @@ SYS_ONLINE=${USER_TMP}sys.online
 JOURNALS=${USER_TMP}journal.
 VIEW_JOURNAL=${JOURNALS}$(date +%Y-%m-%d)
 LAST_SYNC=${USER_TMP}last.sync
+STATUS_RESET=${USER_TMP}stats.reset
 
 # string vars
 BASE_SERVER="fact"
