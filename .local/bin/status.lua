@@ -1,4 +1,3 @@
-local home
 local bin
 local status
 local tmp
@@ -7,7 +6,6 @@ local reset_status
 local sysonline
 
 function read_env()
-    home = os.getenv("HOME") .. "/"
     bin = os.getenv("HOME_BIN") .. "/"
     status = bin .. "status "
     tmp = os.getenv("USER_TMP")
