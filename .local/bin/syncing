@@ -107,9 +107,9 @@ _mailzips() {
         for f in $(find $USER_TMP -type f -name "*.7z"); do
             name=$(basename $f | cut -d "." -f 1)
             echo "sending: $zips"
-            mutt -s "automated: zips ($name) $TODAY" -F $HOME/.mutt/fastmail.muttrc -a $zips -- $ZIP_MAIL < /dev/null
+            mutt -s "automated: zips ($name) $TODAY" -F $HOME/.mutt/fastmail.muttrc -a $f -- $ZIP_MAIL < /dev/null
             if [ $? -eq 0 ]; then
-                rm -f $zips
+                rm -f $f
             fi
         done
     fi
