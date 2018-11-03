@@ -1,4 +1,5 @@
 set mbox_type   = Maildir
+set editor = "vim"
 
 set spoolfile   = "+INBOX"
 unset record
