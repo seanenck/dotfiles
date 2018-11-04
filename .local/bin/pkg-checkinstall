@@ -90,11 +90,20 @@ if [ -z "$PKGVER" ]; then
     echo "unable to detect version"
     exit 1
 fi
+
+_step() {
+    if [ -z "$1" ]; then
+        echo $2
+    else
+        echo $1
+    fi
+}
+
 echo "found version: $PKGVER"
 _required "$URL" "URL"
 _required "$DEB_SIGN_KEY" "DEB_SIGN_KEY"
 gitdirname=$DEB_BUILD_DIR$NAME-$PKGVER
-if [ $CLEAN -eq 1 ]; then
+if [ $(_step $DO_CLEAN $CLEAN) -eq 1 ]; then
     echo "cleaning up directory"
     rm -rf $gitdirname
 fi
@@ -107,14 +116,6 @@ _exit() {
     echo "${@:2}"
     cd $cwd
     exit $1
-}
-
-_step() {
-    if [ -z "$1" ]; then
-        echo $2
-    else
-        echo $1
-    fi
 }
 
 cd $gitdirname
