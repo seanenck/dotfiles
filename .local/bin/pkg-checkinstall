@@ -32,8 +32,12 @@ CAN_RESET=1
 CAN_CHECKOUT=1
 CAN_PULL=1
 CLEAN=0
+NO_VERS=0
 for i in "$@"; do
     case $i in
+    --no-version)
+        NO_VERS=1
+        ;;
     --clean)
         CLEAN=1
         ;;
@@ -148,6 +152,18 @@ rm -rf $DEBIAN
 cp -vr $cwd/$DEBIAN .
 cleanname="../${NAME}_*"
 rm -f $cleanname
+if [ $(_step $MAKE_VERS $NO_VERS) -eq 0 ]; then
+    echo "adjusting VERSION in Makefile(s)"
+    for f in $(find . -type f -name "Makefile"); do
+        echo "checking: $f"
+        cat $f | grep "^VERSION" | grep -q "DEVELOP"
+        if [ $? -eq 0 ]; then
+            echo "adjusting $f"
+            sed -i '/^VERSION/ d' $f
+            sed -i "1s/^/VERSION := $PKGVER\n/" $f
+        fi
+    done
+fi
 if [ ! -e $origname ]; then
     dh_make -s -y --createorig
 fi
