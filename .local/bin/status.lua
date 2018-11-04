@@ -168,7 +168,12 @@ function primary(cache)
         sound = "<="
     end
     sound = sound .. string.format(" %3d%%", vol)
-    table.insert(outputs, json_pad(sound))
+    if mute then
+        sound = json_pad(sound)
+    else
+        sound = bad(sound)
+    end
+    table.insert(outputs, sound)
     table.insert(outputs, json_pad("[" .. bind .. "]" .. power))
     local wireless = cache.wireless
     local wired = cache.wired
