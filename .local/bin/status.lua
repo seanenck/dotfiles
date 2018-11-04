@@ -163,9 +163,9 @@ function primary(cache)
     local vol = tonumber(volume("volume"))
     local sound = ""
     if mute then
-        sound = "|>"
+        sound = "<|"
     else
-        sound = "=>"
+        sound = "<="
     end
     sound = sound .. string.format(" %3d%%", vol)
     table.insert(outputs, json_pad(sound))
