@@ -48,3 +48,5 @@ _updates() {
 }
 
 complete -F _updates updates
+
+source ~/local/devtools/packaging/completions.*
