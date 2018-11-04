@@ -1,0 +1,109 @@
+#!/bin/bash
+HOME_CONFIG=$HOME/.config/epiphyte/env
+if [ -e $HOME_CONFIG ]; then
+    source $HOME_CONFIG
+fi
+
+LOCAL_REPOS=$1
+if [ -z "$1" ]; then
+    echo "repo path required..."
+    exit 1
+fi
+
+if [ ! -d "$LOCAL_REPOS" ]; then
+    echo "$LOCAL_REPOS does not exist/is not a directory"
+    exit 1
+fi
+
+cwd=$PWD
+cd $LOCAL_REPOS
+DISTS=dists/
+if [ ! -d $DISTS ]; then
+    echo "missing $DISTS folder, wrong dir?"
+    exit 1
+fi
+rm -f $LOCAL_REPOS/*.tar.gz
+reponame=$(basename $1)
+dated=$(date +%Y-%m-%d-%H-%M-%S)
+for d in $(ls $DISTS | sort); do
+    root=$DISTS$d/
+    path=$root$reponame/binary-amd64/
+    for f in $(ls $path*.deb | sort -r); do
+        bname=$(basename $f)
+        n=$(echo "$bname" | cut -d "_" -f 1)
+        if [ -z "$last" ]; then
+            last=$n
+            continue
+        fi
+        if [[ "$n" == "$last" ]]; then
+            echo "removing: $f"
+            rm -f $f
+        else
+            last=$n
+        fi
+    done
+    for f in $(find $root -type f | grep -E "(InRelease|Release.gpg|Packages.gz)"); do
+        echo "$f"
+        rm -f $f
+    done
+    packages=${path}Packages
+    prev=$(mktemp)
+    if [ -e "$packages" ]; then
+        mv $packages $prev
+    else
+        read -p "missing previous packages list...continue (enter to continue)" cont
+    fi
+    apt-ftparchive packages $DISTS$d > ${packages}
+    if [ -e $prev ]; then
+        diff -u $prev $packages
+        if [ $? -ne 0 ]; then
+            echo
+            read -p "please review changes to $d before proceeding (enter to continue)" cont
+            echo
+        fi
+    fi
+    echo "$packages"
+    gzip -c --keep --force -9 ${packages} > ${packages}.gz
+    echo "$dated" > ${root}Date
+    config=${root}Config
+    if [ ! -e $config ]; then
+        echo "no config: $config"
+        exit 1
+    fi
+    release=${root}Release
+    cat $config > $release
+    echo "Suite: $d" >> $release
+    echo "Components: $reponame" >> $release
+    apt-ftparchive release $root >> $release
+    gpg --clearsign --digest-algo SHA512 --local-user $DEB_SIGN_KEY -o ${root}InRelease $release
+    if [ $? -ne 0 ]; then
+        echo "unable to sign release"
+        exit 1
+    fi
+    gpg --yes -abs --local-user $DEB_SIGN_KEY -o ${root}Release.gpg $release
+    if [ $? -ne 0 ]; then
+        echo "unable to sign release"
+        exit 1
+    fi
+    bundle=$LOCAL_REPOS/$d.$dated.tar.gz
+    tar cvzf $bundle $root
+    echo
+    echo "created $bundle"
+    echo
+    rm -f $prev
+done
+server=$MIRROR_EPIPHYTE
+SERVER_FILE="server"
+if [ -e "$SERVER_FILE" ]; then
+    server=$(cat $SERVER_FILE)
+fi
+if [ ! -e "local" ]; then
+    if [ -z "$server" ]; then
+        echo "no server configured"
+    else
+        read -p "upload ($server)? (Y/n) " yn
+        if [[ "$yn" != "n" ]]; then
+            scp *.tar.gz $server:~/
+        fi
+    fi
+fi

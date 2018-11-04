@@ -1,0 +1,36 @@
+#!/bin/bash
+if [ -z "$1" ]; then
+    echo "no input file given"
+    exit 1
+fi
+if [ ! -e "$1" ]; then
+    echo "$1 does not exist"
+    exit 1
+fi
+echo "$1" | grep -q "\.deb$"
+if [ $? -ne 0 ]; then
+    echo "unknown file type"
+    exit 1
+fi
+if [ -z "$2" ]; then
+    echo "target repo required"
+    exit 1
+fi
+if [ ! -d "$2" ]; then
+    echo "$2 is not a valid target"
+    exit 1
+fi
+if [ $(ls $2 | grep "\.deb$" | wc -l) -eq 0 ]; then
+    echo "$2 is not a repository"
+    exit 1
+fi
+bname=$(basename $1)
+name=$(echo $bname | cut -d "_" -f 1)
+for f in $(ls $2); do
+    cname=$(basename $f)
+    if [[ "$cname" == "$bname" ]]; then
+        echo "$bname is already deployed to $2"
+        exit 1
+    fi
+done
+cp $1 $2/

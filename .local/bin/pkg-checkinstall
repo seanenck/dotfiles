@@ -1,0 +1,172 @@
+#!/bin/bash
+BIN="bin/"
+DEBIAN="debian/"
+HOME_CONFIG="$HOME/.config/epiphyte/env"
+PACKAGE_FILE="PKG"
+LINT_FILE="LINT"
+LINT_LOG="lint.log"
+
+BUILDDEPS=("make"
+           "git"
+           "debhelper"
+           "bash-completion"
+           "quilt"
+           "dh-make")
+for f in "${BUILDDEPS[@]}"; do
+    PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $f|grep "install ok installed")
+    if [ "" == "$PKG_OK" ]; then
+        deps="$deps $f"
+    fi
+done
+if [[ ! -z "$deps" ]]; then
+    sudo apt-get install $deps
+    if [ $? -ne 0 ]; then
+        echo "unable to install deps, aborting"
+         exit 1
+    fi
+    echo "installed dependencies, please rerun"
+    exit 0
+fi
+
+CAN_RESET=1
+CAN_CHECKOUT=1
+CAN_PULL=1
+CLEAN=0
+for i in "$@"; do
+    case $i in
+    --clean)
+        CLEAN=1
+        ;;
+    --no-checkout)
+        CAN_CHECKOUT=0
+        ;;
+    --no-reset)
+        CAN_RESET=0
+        ;;
+    --no-pull)
+        CAN_PULL=0
+        ;;
+    *)
+        echo "unknown option: $i"
+        exit 1
+        ;;
+    esac
+done
+
+if [ ! -e "$PACKAGE_FILE" ]; then
+    echo "$PACKAGE_FILE is missing"
+    exit 1
+fi
+
+source $PACKAGE_FILE
+if [ -e "$HOME_CONFIG" ]; then
+    source $HOME_CONFIG
+fi
+
+if [ ! -d "$DEB_BUILD_DIR" ]; then
+    echo "invalid build dir (not set?): $DEB_BUILD_DIR"
+    exit 1
+fi
+if [ ! -d "$DEB_BUILD_GO" ]; then
+    echo "no build dir set for go"
+    exit 1
+fi
+export GOPATH="${DEB_BUILD_GO}"
+
+if [ ! -e "$LINT_FILE" ]; then
+    echo "missing $LINT_FILE output file"
+    exit 1
+fi
+
+_required() {
+    if [ -z "$1" ]; then
+        echo "$2 missing value"
+        exit 1
+    fi    
+}
+
+PKGVER=$(cat debian/changelog | head -n 1 | cut -d "(" -f 2 | cut -d "-" -f 1)
+if [ -z "$PKGVER" ]; then
+    echo "unable to detect version"
+    exit 1
+fi
+echo "found version: $PKGVER"
+_required "$URL" "URL"
+_required "$DEB_SIGN_KEY" "DEB_SIGN_KEY"
+gitdirname=$DEB_BUILD_DIR$NAME-$PKGVER
+if [ $CLEAN -eq 1 ]; then
+    echo "cleaning up directory"
+    rm -rf $gitdirname
+fi
+if [ ! -d $gitdirname ]; then
+    git clone $URL $gitdirname
+fi
+
+cwd=$PWD
+_exit() {
+    echo "${@:2}"
+    cd $cwd
+    exit $1
+}
+
+_step() {
+    if [ -z "$1" ]; then
+        echo $2
+    else
+        echo $1
+    fi
+}
+
+cd $gitdirname
+if [ ! -d .git/ ]; then
+    _exit 1 "not a git directory, aborting"
+fi
+if [ $(_step $GIT_RESET $CAN_RESET) -eq 1 ]; then
+    git reset --hard
+    if [ $? -ne 0 ]; then
+        _exit 1 "unable to reset"
+    fi
+fi
+if [ $(_step $GIT_CHECKOUT $CAN_CHECKOUT) -eq 1 ]; then
+    gitver="$PKGVER"
+    if [ ! -z "$GIT_VER" ]; then
+        gitver=$(echo "$GIT_VER" | sed "s/PKGVER/$PKGVER/g")
+    fi
+    git checkout $gitver
+    if [ $? -ne 0 ]; then
+        _exit 1 "unable to checkout $gitver"
+    fi
+fi
+origname="../${NAME}_$PKGVER.orig.tar.xz"
+if [ $(_step $GIT_PULL $CAN_PULL) -eq 0 ]; then
+    git pull
+    rm -f $origname
+fi
+
+rm -rf $DEBIAN
+cp -vr $cwd/$DEBIAN .
+cleanname="../${NAME}_*"
+rm -f $cleanname
+if [ ! -e $origname ]; then
+    dh_make -s -y --createorig
+fi
+dpkg-buildpackage -us -uc
+if [ $? -ne 0 ]; then
+    _exit 1 "package generation failed..."
+fi
+localbin=$cwd/$BIN/
+rm -rf $localbin
+mkdir -p $localbin
+mv ../*.deb $localbin
+mv $cleanname $localbin/
+lintian $localbin/*.deb | sort > $localbin$LINT_LOG
+diff -u $localbin$LINT_LOG $cwd/$LINT_FILE
+if [ $? -ne 0 ]; then
+    _exit 1 "lint change detected..."
+fi
+debsigs --sign=origin -k $DEB_SIGN_KEY $localbin*.deb
+if [ $? -ne 0 ]; then
+    _exit 1 "unable to sign..."
+fi
+echo
+_exit 0 "done"

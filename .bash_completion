@@ -49,4 +49,10 @@ _updates() {
 
 complete -F _updates updates
 
-source ~/local/devtools/packaging/completions.*
+_pkg-checkinstall() {
+    local cur
+    cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "--no-checkout --no-reset --clean --no-pull" -- $cur) )
+}
+
+complete -F _pkg-checkinstall pkg-checkinstall
