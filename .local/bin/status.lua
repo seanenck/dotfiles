@@ -130,9 +130,10 @@ function primary(cache)
     power = power .. ")%"
     local bind = "-"
     local drain = ac() == 0
+    local lowBat = false
     if drain then
         if battery < 20 then
-            table.insert(outputs, bad("BATTERY"))
+            lowBat = true
             cache.battery = nil
             cache.power = nil
         end
@@ -152,7 +153,6 @@ function primary(cache)
         end
     else
         cache.last_online = 0
-        table.insert(outputs, bad("OFFLINE"))
     end
     table.insert(outputs, locking())
     for k, v in pairs(stats()) do
@@ -174,7 +174,13 @@ function primary(cache)
         sound = bad(sound)
     end
     table.insert(outputs, sound)
-    table.insert(outputs, json_pad("[" .. bind .. "]" .. power))
+    local dispBat = "[" .. bind .. "]" .. power
+    if lowBat then
+        dispBat = bad(dispBat)
+    else
+        dispBat = json_pad(dispBat)
+    end
+    table.insert(outputs, dispBat)
     local wireless = cache.wireless
     local wired = cache.wired
     local reset = false
@@ -194,25 +200,32 @@ function primary(cache)
         cache.wired = nil
     end
     if cache.wireless == nil then
-        wireless = ipv4("W", "wlp58s0")
+        wireless = ipv4("W", "wlp58s0", avail)
         cache.wireless = wireless
     end
     if cache.wired == nil then
-        wired = ipv4("E", "enp0s31f6")
+        wired = ipv4("E", "enp0s31f6", avail)
         cache.wired = wired
     end
     table.insert(outputs, wireless)
     table.insert(outputs, wired)
+    if cache.wired == nil and cache.wireless == nil then
+        table.insert(outputs, bad("OFFLINE"))
+    end
     table.insert(outputs, datetime())
     return outputs
 end
 
-function ipv4(prefix, iface)
+function ipv4(prefix, iface, online)
     local addr = call("ip addr | grep " .. iface .. " | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d'/' | grep '[0-9][0-9]*\\.[0-9][0-9]*\\.[0-9][0-9]*\\.[0-9][0-9]*$' | sed 's/^/" .. prefix .. ": /g'")
     if addr == '' or addr == nil then
         return nil 
     else
-        return json_pad(addr)
+        if online then
+            return json_pad(addr)
+        else
+            return bad(addr)
+        end
     end
 end
 
