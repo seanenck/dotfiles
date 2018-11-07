@@ -7,7 +7,7 @@ _formattotp() {
 }
 
 _totplist() {
-    for f in $(find $PERM_LOCATION$1/$PASS_TOTP_OFFSET -type f -name "*.gpg" | sed "s/\.gpg//g"); do
+    for f in $(find $PERM_LOCATION$1/$PASS_TOTP_OFFSET -type f -name "*.gpg" | sed "s/\.gpg//g" | sort); do
         basename $f
     done
 }
