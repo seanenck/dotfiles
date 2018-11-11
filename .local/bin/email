@@ -7,11 +7,11 @@ INDEX_FILE=$USER_TMP/mail.index
 ACCOUNTS="fastmail gmail"
 MUTTHTML="$USER_TMP/*.mutt.html"
 
-_mailcount() {
+_maildir() {
     local cnt d results first
     first=1
     for d in $(echo "$ACCOUNTS"); do
-        cnt=$(find $MAIL_DIR/$d -type f | grep "/new/" | grep -v "/Trash/" | wc -l)
+        cnt=$(find $MAIL_DIR/$d -type f | grep "/$1/" | grep -v "/$2/" | grep "/$3/" | wc -l)
         if [ $cnt -gt 0 ]; then
             if [ $first -eq 1 ]; then
                 first=0
@@ -22,6 +22,11 @@ _mailcount() {
         fi
     done
     echo "$results"
+}
+
+_mailcount() {
+    _maildir "new" "Trash" ""
+    _maildir "cur" "Filtered/Automated" "Filtered"
 }
 
 _mbsync() {
