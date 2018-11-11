@@ -46,9 +46,8 @@ _lock() {
         fi
         first=$IS_FALSE
     done
-    xset -dpms
+    force-display-on
     toggle-backlighting $MID_BRIGHT
-    xset +dpms
 }
 
 _autolock() {
