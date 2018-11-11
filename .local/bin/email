@@ -18,6 +18,9 @@ _maildir() {
             else
                 results="$results "
             fi
+            if [ ! -z "$4" ]; then
+                d="$4"
+            fi
             results="$results$cnt $d"
         fi
     done
@@ -25,8 +28,10 @@ _maildir() {
 }
 
 _mailcount() {
-    _maildir "new" "Trash" ""
-    _maildir "cur" "Filtered/Automated" "Filtered"
+    local results
+    results=$(_maildir "new" "Trash" "")
+    results="$results "$(_maildir "cur" "Filtered/Automated" "Filtered" "unsorted")
+    echo "$results"
 }
 
 _mbsync() {
