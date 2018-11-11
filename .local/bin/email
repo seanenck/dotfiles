@@ -11,7 +11,7 @@ _maildir() {
     local cnt d results first
     first=1
     for d in $(echo "$ACCOUNTS"); do
-        cnt=$(find $MAIL_DIR/$d -type f | grep "/$1/" | grep -v "/$2/" | grep "/$3/" | wc -l)
+        cnt=$(find $MAIL_DIR/$d -type f | grep "/$1/" | grep -v "/$2/" | grep -E "/$3/" | wc -l)
         if [ $cnt -gt 0 ]; then
             if [ $first -eq 1 ]; then
                 first=0
@@ -30,7 +30,7 @@ _maildir() {
 _mailcount() {
     local results
     results=$(_maildir "new" "Trash" "")
-    results="$results "$(_maildir "cur" "Filtered/Automated" "Filtered" "unsorted")
+    results="$results "$(_maildir "cur" "Filtered/Automated" "(Filtered|Spam)" "unsorted")
     echo "$results"
 }
 
