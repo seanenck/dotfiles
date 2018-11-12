@@ -33,7 +33,7 @@ _maildir() {
 _mailcount() {
     local results
     results=$(_maildir "new" "Trash" "")
-    results="$results "$(_maildir "cur" "Filtered/Automated" "(Filtered|Spam)" "unsorted")
+    results="$results "$(_maildir "cur" "Filtered/Automated" "(Filtered|Spam)" "unread")
     echo "$results"
 }
 
