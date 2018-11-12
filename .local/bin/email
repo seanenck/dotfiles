@@ -22,6 +22,9 @@ _maildir() {
                 d="$4"
             fi
             results="$results$cnt $d"
+            if [ ! -z "$4" ]; then
+                break
+            fi
         fi
     done
     echo "$results"
