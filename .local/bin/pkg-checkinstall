@@ -165,6 +165,7 @@ if [ $(_step $MAKE_VERS $NO_VERS) -eq 0 ]; then
     done
 fi
 if [ ! -e $origname ]; then
+    echo "creating $origname"
     dh_make -s -y --createorig
 fi
 dpkg-buildpackage -us -uc
