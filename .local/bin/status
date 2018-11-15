@@ -8,11 +8,11 @@ _get-git-folders() {
     local res f d
     res=""
     for d in "$HOME/workspace" "${PERM_LOCATION}" "$HOME/local"; do
-        for f in $(find $d -maxdepth 2 -type d | sort); do
+        for f in $(find $d -maxdepth 1 -type d | sort); do
             if [ ! -d "$f/.git" ]; then
                 continue
             fi
-            res=$res" "$f
+            res=$res" "$f/
         done
     done
     echo $res
