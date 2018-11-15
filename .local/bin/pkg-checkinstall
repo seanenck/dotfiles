@@ -116,11 +116,6 @@ if [ ! -d $gitdirname ]; then
 fi
 
 cwd=$PWD
-if [ $(_step $DO_GOTEMP 0) -eq 1 ]; then
-    d=$(mktemp -d)
-    export GOPATH="$d/go"
-    echo "using GOPATH temp: $GOPATH"
-fi
 _exit() {
     echo "${@:2}"
     cd $cwd
