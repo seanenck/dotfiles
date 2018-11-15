@@ -75,8 +75,8 @@ if [ ! -d "$DEB_BUILD_GO" ]; then
     echo "no build dir set for go"
     exit 1
 fi
-export GOPATH="${DEB_BUILD_GO}"
 
+export GOPATH="${DEB_BUILD_GO}"
 if [ ! -e "$LINT_FILE" ]; then
     echo "missing $LINT_FILE output file"
     exit 1
@@ -116,6 +116,11 @@ if [ ! -d $gitdirname ]; then
 fi
 
 cwd=$PWD
+if [ $(_step $DO_GOTEMP 0) -eq 1 ]; then
+    d=$(mktemp -d)
+    export GOPATH="$d/go"
+    echo "using GOPATH temp: $GOPATH"
+fi
 _exit() {
     echo "${@:2}"
     cd $cwd
