@@ -33,6 +33,7 @@ CAN_CHECKOUT=1
 CAN_PULL=1
 CLEAN=0
 NO_VERS=0
+SHALLOW_CLONE=1
 for i in "$@"; do
     case $i in
     --no-version)
@@ -49,6 +50,9 @@ for i in "$@"; do
         ;;
     --no-pull)
         CAN_PULL=0
+        ;;
+    --full-clone)
+        SHALLOW_CLONE=0
         ;;
     *)
         echo "unknown option: $i"
@@ -119,8 +123,11 @@ if [ $(_step $GIT_CHECKOUT $CAN_CHECKOUT) -eq 1 ]; then
     fi
     gitargs="--branch $gitver"
 fi
+if [ $(_step $GIT_SHALLOW $SHALLOW_CLONE) -eq 1 ]; then
+    gitargs="$gitargs --depth 1"
+fi
 if [ ! -d $gitdirname ]; then
-    git clone --depth 1 $gitargs $URL $gitdirname
+    git clone $gitargs $URL $gitdirname
 fi
 
 cwd=$PWD
