@@ -103,7 +103,24 @@ if [ ! -e "local" ]; then
     else
         read -p "upload ($server)? (Y/n) " yn
         if [[ "$yn" != "n" ]]; then
-            scp *.tar.gz $server:~/
+            tmpd=$(mktemp -d)
+            echo "preparing index files ($tmpd)"
+            _dl() {
+                curl -s "https://git.epiphyte.network/cgit/cgit.cgi/debs/plain/$1" >> $tmpd/$(basename $1)
+                if [ $? -ne 0 ]; then
+                    echo "unable to retrieve $1"
+                    exit 1
+                fi
+            }
+            for f in .index/header.html README.md .index/footer.html .index/package.css; do
+                _dl $f
+            done
+            html=$tmpd/index.html
+            cat $tmpd/header.html > $html
+            epiphyte-markdown --file $tmpd/README.md >> $html
+            cat $tmpd/footer.html >> $html
+            rm -f $tmpmd
+            scp *.tar.gz $html $tmpd/package* $server:~/
         fi
     fi
 fi
