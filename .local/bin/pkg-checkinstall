@@ -111,8 +111,16 @@ if [ $(_step $DO_CLEAN $CLEAN) -eq 1 ]; then
     echo "cleaning up directory"
     rm -rf $gitdirname
 fi
+gitargs=""
+if [ $(_step $GIT_CHECKOUT $CAN_CHECKOUT) -eq 1 ]; then
+    gitver="$PKGVER"
+    if [ ! -z "$GIT_VER" ]; then
+        gitver=$(echo "$GIT_VER" | sed "s/PKGVER/$PKGVER/g")
+    fi
+    gitargs="--branch $gitver"
+fi
 if [ ! -d $gitdirname ]; then
-    git clone $URL $gitdirname
+    git clone --depth 1 $gitargs $URL $gitdirname
 fi
 
 cwd=$PWD
@@ -130,16 +138,6 @@ if [ $(_step $GIT_RESET $CAN_RESET) -eq 1 ]; then
     git reset --hard
     if [ $? -ne 0 ]; then
         _exit 1 "unable to reset"
-    fi
-fi
-if [ $(_step $GIT_CHECKOUT $CAN_CHECKOUT) -eq 1 ]; then
-    gitver="$PKGVER"
-    if [ ! -z "$GIT_VER" ]; then
-        gitver=$(echo "$GIT_VER" | sed "s/PKGVER/$PKGVER/g")
-    fi
-    git checkout $gitver
-    if [ $? -ne 0 ]; then
-        _exit 1 "unable to checkout $gitver"
     fi
 fi
 origname="../${NAME}_$PKGVER.orig.tar.xz"
