@@ -120,7 +120,25 @@ if [ ! -e "local" ]; then
             epiphyte-markdown --file $tmpd/README.md >> $html
             cat $tmpd/footer.html >> $html
             rm -f $tmpmd
-            scp *.tar.gz $html $tmpd/package* $server:~/
+            tmpdir=$(mktemp -d)/
+            cp $html $tmpdir
+            cp $tmpd/package* $tmpdir
+            cp *.tar.gz $tmpdir
+            pack=pack.tar.gz
+            echo "#!/bin/bash
+if [ -d 'dists' ]; then
+    echo 'missing dists folder, right dir?'
+    exit 1
+fi
+tar xf *.tar.gz
+rm $pack
+" > $tmpdir/configure
+            chmod u+x $tmpdir/configure
+            cwd=$PWD
+            cd $tmpdir
+            tar cvzf $pack *
+            cd $cwd
+            scp $pack $server:~/
         fi
     fi
 fi
