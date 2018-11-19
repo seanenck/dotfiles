@@ -131,7 +131,7 @@ if [ -d 'dists' ]; then
     exit 1
 fi
 tar xf *.tar.gz
-rm $pack
+rm *.tar.gz
 " > $tmpdir/configure
             chmod u+x $tmpdir/configure
             cwd=$PWD
