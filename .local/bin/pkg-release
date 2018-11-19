@@ -103,8 +103,7 @@ if [ ! -e "local" ]; then
     else
         read -p "upload ($server)? (Y/n) " yn
         if [[ "$yn" != "n" ]]; then
-            tmpd=$(mktemp -d)
-            echo "preparing index files ($tmpd)"
+            echo "preparing index files"
             _dl() {
                 curl -s "https://git.epiphyte.network/cgit/cgit.cgi/debs/plain/$1" >> $tmpd/$(basename $1)
                 if [ $? -ne 0 ]; then
@@ -124,21 +123,28 @@ if [ ! -e "local" ]; then
             cp $html $tmpdir
             cp $tmpd/package* $tmpdir
             cp *.tar.gz $tmpdir
+            echo "packing..."
             pack=pack.tar.gz
             echo "#!/bin/bash
-if [ -d 'dists' ]; then
+if [ ! -d 'dists' ]; then
     echo 'missing dists folder, right dir?'
     exit 1
 fi
-tar xf *.tar.gz
-rm *.tar.gz
+rm $pack
+for f in \$(ls *.tar.gz); do
+    tar xf \$f
+    rm \$f
+done
+rm configure
 " > $tmpdir/configure
             chmod u+x $tmpdir/configure
             cwd=$PWD
             cd $tmpdir
             tar cvzf $pack *
             cd $cwd
-            scp $pack $server:~/
+            scp $tmpdir$pack $server:~/
+            rm -rf $tmpd
+            rm -rf $tmpdir
         fi
     fi
 fi
