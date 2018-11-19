@@ -154,6 +154,7 @@ if [ $(_step $GIT_PULL $CAN_PULL) -eq 0 ]; then
 fi
 
 rm -rf $DEBIAN
+rm -rf .pc/
 cp -vr $cwd/$DEBIAN .
 cleanname="../${NAME}_*"
 rm -f $cleanname
