@@ -31,7 +31,7 @@ fi
 CAN_RESET=1
 CAN_CHECKOUT=1
 CAN_PULL=1
-CLEAN=0
+CLEAN=1
 NO_VERS=0
 SHALLOW_CLONE=1
 for i in "$@"; do
@@ -39,8 +39,8 @@ for i in "$@"; do
     --no-version)
         NO_VERS=1
         ;;
-    --clean)
-        CLEAN=1
+    --no-clean)
+        CLEAN=0
         ;;
     --no-checkout)
         CAN_CHECKOUT=0
@@ -151,6 +151,10 @@ origname="../${NAME}_$PKGVER.orig.tar.xz"
 if [ $(_step $GIT_PULL $CAN_PULL) -eq 0 ]; then
     git pull
     rm -f $origname
+fi
+
+if [ -d ".git/" ]; then
+    rm -rf .git/
 fi
 
 rm -rf $DEBIAN
