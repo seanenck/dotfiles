@@ -7,3 +7,4 @@ set history_file = "~/.mutt/gmail.mutthistory"
 macro index,pager d "<save-message>=[Gmail]/Trash<enter><enter>" "Trash"
 source ~/store/documents/mail/gmail.muttrc
 source ~/.mutt/muttrc
+set pgp_default_key="0xA7D812B7A501CEBB2AA30289F08D2E576641A175"
