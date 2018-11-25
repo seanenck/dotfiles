@@ -7,6 +7,7 @@ unset record
 set alias_file  = ~/store/documents/configs/mutt.aliases
 set sort_alias  = alias
 source $alias_file
+source ~/.mutt/gpg.rc
 
 set realname    = "Sean Enck"
 set sort_aux    = reverse-last-date-received
