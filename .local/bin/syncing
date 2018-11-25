@@ -58,6 +58,7 @@ _dogit() {
     done
     changes=1
     if [ -e "$GIT_PREV" ]; then
+        touch $GIT_PREV
         diff -u $GIT_PREV $GIT_SYNC > /dev/null
         if [ $? -eq 0 ]; then
             changes=0
