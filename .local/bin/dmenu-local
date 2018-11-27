@@ -4,7 +4,7 @@ CACHE_DIR=$DMENU_URLS
 URLS=${PERM_CONFIGS}urls.csv
 BROWSER="/usr/bin/firefox"
 HASHED=${USER_TMP}dmenu_urls
-LOCAL_APPS="gmutt fastmutt passwords irc signal"
+LOCAL_APPS="gmutt fastmutt passwords irc"
 APPS="vlc pavucontrol $LOCAL_APPS"
 AVAILABLE="$USER_TMP/dmenu_available"
 
@@ -32,8 +32,6 @@ _localapp() {
         "passwords")
             cmd="keepassx ${PRIV_PATH}passwords"
             ;;
-        "signal")
-            cmd="signal-desktop"
     esac
     _dmenucall "$cmd"
 }
