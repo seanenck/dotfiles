@@ -230,7 +230,7 @@ function ipv4(prefix, iface, online)
 end
 
 function datetime()
-    return json_pad(call('date +"%Y.%m.%d %H:%M:%S"'))
+    return json_pad(call('date +"%a %Y.%m.%d %H:%M:%S"'))
 end
 
 function main(prim)
