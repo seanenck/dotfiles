@@ -103,6 +103,7 @@ if [ ! -e "local" ]; then
     else
         read -p "upload ($server)? (Y/n) " yn
         if [[ "$yn" != "n" ]]; then
+            tmpd=$(mktemp -d)
             echo "preparing index files"
             _dl() {
                 curl -s "https://git.epiphyte.network/cgit/cgit.cgi/debs/plain/$1" >> $tmpd/$(basename $1)
