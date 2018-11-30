@@ -65,7 +65,13 @@ _autolock() {
 }
 
 _sleeping() {
-    local start delta
+    local start delta gpgagent p
+    gpgagent=$(pidof gpg-agent)
+    if [ ! -z "$gpgagent" ]; then
+        for p in $gpgagent; do
+            kill -1 $p
+        done
+    fi
     start=$(date +%s)
     echo "suspending"
     systemctl suspend
