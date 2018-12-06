@@ -197,4 +197,10 @@ if [ $? -ne 0 ]; then
     _exit 1 "unable to sign..."
 fi
 echo
+files=$cwd/install.manifest
+echo "files:" > $files
+for d in $(ls $localbin*.deb); do
+    name=$(basename $d | cut -d "_" -f 1)
+    dpkg -c $d | awk '{print $6}' | sed "s#^./##g" | grep -v "^$" | sed "s/^/$name: /g" >> $files
+done
 _exit 0 "done"
