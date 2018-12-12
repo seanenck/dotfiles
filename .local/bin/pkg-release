@@ -131,6 +131,14 @@ if [ ! -d 'dists' ]; then
     echo 'missing dists folder, right dir?'
     exit 1
 fi
+mkdir -p archive
+for f in \$(find dists/ -type f -name \"*.deb\"); do
+    mv \$f archive/\$(basename \$f)
+done
+for f in \$(find archive/ -type f -mtime +90); do
+    echo \"removing \$f\"
+    rm -f \$f
+done
 rm $pack
 for f in \$(ls *.tar.gz); do
     tar xf \$f
