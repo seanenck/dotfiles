@@ -1,0 +1,72 @@
+#!/bin/bash
+if [ -z "$1" ]; then
+    echo "requires one or more input files"
+    exit 1
+fi
+if [ -z "$2" ]; then
+    echo "requires an output file"
+    exit 1
+fi
+idx=1
+output="${@: -1}"
+echo "output: $output.pdf"
+tmpdir=$(mktemp -d)/
+for f in "$@"; do
+    if [[ "$f" == "$output" ]]; then
+        continue
+    fi
+    if echo $f | grep -q "\.md"; then
+        echo "converting: $f"
+        file=$tmpdir$idx.html
+        echo "<html><head>
+<style>
+body { 
+    padding-left: 0.5in;
+    padding-right: 0.5in;
+    padding-top: 0.5in;
+    padding-bottom: 0.5in;
+    font-size: 32px;
+    line-height: 1.5;
+    font-family: Arial, Helvetica, sans-serif;
+}
+h1 { 
+    text-align: center;
+    font-size: 48px;
+}
+</style>
+</head>
+<body>
+" > $file
+        epiphyte-markdown -file $f >> $file
+        if [ $? -ne 0 ]; then
+            echo "failed!"
+            exit 1
+        fi
+        echo "</body></html>" >> $file
+    else
+        echo "$f is not a markdown file"
+        exit 1
+    fi
+    idx=$((idx+1))
+done
+echo 'creating pdfs...'
+idx=1
+for f in $(find $tmpdir -type f -name "*.html"); do
+    file=$tmpdir$idx.pdf
+    echo "pdf'ing: $file"
+    cat $f | wkhtmltopdf -O landscape - $file > /dev/null
+    if [ $? -ne 0 ]; then
+        echo "failed!"
+        exit 1
+    fi
+    idx=$((idx+1))
+done
+
+echo "merging pdfs..."
+pdfs=$(find $tmpdir -type f -name "*.pdf")
+pdfunite $pdfs $output.pdf
+if [ $? -ne 0 ]; then
+    echo "failed!"
+    exit 1
+fi
+rm -rf $tmpdir
