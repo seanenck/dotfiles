@@ -11,16 +11,10 @@ idx=1
 output="${@: -1}"
 echo "output: $output.pdf"
 tmpdir=$(mktemp -d)/
-for f in "$@"; do
-    if [[ "$f" == "$output" ]]; then
-        continue
-    fi
-    if echo $f | grep -q "\.md"; then
-        echo "converting: $f"
-        file=$tmpdir$idx.html
-        echo "<html><head>
-<style>
-body { 
+defaultcss=slides.css
+if [ ! -e "$defaultcss" ]; then
+    echo "creating default css"
+    echo "body { 
     padding-left: 0.5in;
     padding-right: 0.5in;
     padding-top: 0.5in;
@@ -32,11 +26,18 @@ body {
 h1 { 
     text-align: center;
     font-size: 48px;
-}
-</style>
-</head>
-<body>
-" > $file
+}" > $defaultcss
+fi
+for f in "$@"; do
+    if [[ "$f" == "$output" ]]; then
+        continue
+    fi
+    if echo $f | grep -q "\.md"; then
+        echo "converting: $f"
+        file=$tmpdir$idx.html
+        echo "<html><head><style>" > $file
+        cat $defaultcss >> $file
+        echo "</style></head><body>" >> $file
         epiphyte-markdown -file $f >> $file
         if [ $? -ne 0 ]; then
             echo "failed!"
