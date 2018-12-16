@@ -1,9 +1,0 @@
-#!/bin/bash
-pids=$(pidof firefox)
-if [ -z "$pids" ]; then
-    echo "===================="
-    echo "please start firefox"
-    echo "===================="
-    exit 1
-fi
-firefox $@
