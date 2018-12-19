@@ -106,7 +106,7 @@ if [ ! -e "local" ]; then
             tmpd=$(mktemp -d)
             echo "preparing index files"
             _dl() {
-                curl -s "https://git.epiphyte.network/cgit/cgit.cgi/debs/plain/$1" >> $tmpd/$(basename $1)
+                curl -s "https://raw.githubusercontent.com/epiphyte/debs/master/$1" >> $tmpd/$(basename $1)
                 if [ $? -ne 0 ]; then
                     echo "unable to retrieve $1"
                     exit 1
@@ -125,7 +125,7 @@ if [ ! -e "local" ]; then
             cp $tmpd/package* $tmpdir
             cp *.tar.gz $tmpdir
             echo "packing..."
-            pack=pack.tar.gz
+            pack=upload.tar.gz
             echo "#!/bin/bash
 if [ ! -d 'dists' ]; then
     echo 'missing dists folder, right dir?'
