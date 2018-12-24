@@ -36,7 +36,7 @@ for f in $(ls *.md | sort); do
     cat $defaultcss >> $file
     echo "</style></head><body>" >> $file
     echo "<div id='slide-$idx'>" >> $file
-    epiphyte-markdown -file $f >> $file
+    cat $f | markdown >> $file
     if [ $? -ne 0 ]; then
         _exit
     fi

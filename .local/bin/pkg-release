@@ -117,7 +117,7 @@ if [ ! -e "local" ]; then
             done
             html=$tmpd/index.html
             cat $tmpd/header.html > $html
-            epiphyte-markdown --file $tmpd/README.md >> $html
+            cat $tmpd/README.dm | markdown >> $html
             cat $tmpd/footer.html >> $html
             rm -f $tmpmd
             tmpdir=$(mktemp -d)/
