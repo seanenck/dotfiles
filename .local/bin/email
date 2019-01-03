@@ -105,7 +105,10 @@ case "$subcmd" in
         p=$(pidof mutt)
         while [ ! -z "$p" ]; do
             sleep 1
-            find .mutt/imap/ | grep -v "\.notmuch" | sort > $LAST_MAILS
+            p=$(pidof mutt)
+            for d in $(echo "$ACCOUNTS"); do
+                find ${MAIL_DIR}$d -type f | sort >> $LAST_MAILS
+            done
             if [ -e $PREV_MAILS ]; then
                 diff -u $PREV_MAILS $LAST_MAILS > /dev/null
                 if [ $? -ne 0 ]; then
@@ -114,7 +117,6 @@ case "$subcmd" in
                 fi
             fi
             mv $LAST_MAILS $PREV_MAILS
-            p=$(pidof mutt)
         done
         ;;
     "count")
