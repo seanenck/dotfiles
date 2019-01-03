@@ -6,6 +6,8 @@ INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
 ACCOUNTS="fastmail gmail"
 MUTTHTML="$USER_TMP/*.mutt.html"
+LAST_MAILS=$USER_TMP/mail.last
+PREV_MAILS=${LAST_MAILS}.prev
 
 _maildir() {
     local cnt d results first
@@ -102,10 +104,18 @@ case "$subcmd" in
         _imapjournal
         p=$(pidof mutt)
         while [ ! -z "$p" ]; do
-            sleep 30
+            sleep 1
+            find .mutt/imap/ | grep -v "\.notmuch" | sort > $LAST_MAILS
+            if [ -e $PREV_MAILS ]; then
+                diff -u $PREV_MAILS $LAST_MAILS > /dev/null
+                if [ $? -ne 0 ]; then
+                    echo "mailbox changed"
+                    _imapjournal
+                fi
+            fi
+            mv $LAST_MAILS $PREV_MAILS
             p=$(pidof mutt)
         done
-        _imapjournal
         ;;
     "count")
         _mailcount

@@ -118,7 +118,7 @@ _mailzips() {
 
 sync-now() {
     local dirs pushgit pushbackup
-    touch $TRIGGER_MAIL
+    ${HOME_BIN}/email
     dirs=$(ls ${PERM_LOCATION} | grep personal | sed "s#^#$PERM_LOCATION#g")
     dirs="$dirs ${PRIV_PATH} ${HOME_STORE}"
     pushgit=$(_dogit "$dirs" | tail -n 1)
