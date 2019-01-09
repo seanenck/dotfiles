@@ -3,7 +3,7 @@ path=/home/enck/.mutt/imap
 
 [user]
 name=Sean Enck
-primary_email=enckse@gmail.com
+primary_email=enckse@voidedtech.com
 
 [new]
 tags=unread;inbox;
