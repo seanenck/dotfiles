@@ -87,6 +87,10 @@ for d in $(ls $DISTS | sort); do
     fi
     bundle=$LOCAL_REPOS/$d.$dated.tar.gz
     tar cvzf $bundle $root
+    if [ $? -ne 0 ]; then
+        echo "error bundling..."
+        exit 1
+    fi
     echo
     echo "created $bundle"
     echo
