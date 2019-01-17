@@ -121,7 +121,7 @@ if [ ! -e "local" ]; then
             done
             html=$tmpd/index.html
             cat $tmpd/header.html > $html
-            cat $tmpd/README.dm | markdown >> $html
+            cat $tmpd/README.md | markdown >> $html
             cat $tmpd/footer.html >> $html
             rm -f $tmpmd
             tmpdir=$(mktemp -d)/
