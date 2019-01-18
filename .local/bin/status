@@ -86,8 +86,17 @@ stats() {
 }
 
 if [ -z "$1" ]; then
+    pidfile="/tmp/status.pid"
+    if [ -e "$pidfile" ]; then
+        p=$(cat $pidfile)
+        kill -0 $p
+        if [ $? -eq 0 ]; then
+            exit 0
+        fi
+    fi
     while [ 1 -eq 1 ]; do
         stats
+        echo $$ > $pidfile
         sleep 2
     done
 else
