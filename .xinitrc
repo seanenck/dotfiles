@@ -33,4 +33,4 @@ fi
 . /etc/profile
 . $HOME/.profile
 xinput set-prop $(xinput | grep "SynPS/2" | sed -n -e 's/^.*id=//p' | sed -e "s/\s/ /g" | cut -d " " -f 1) "Device Enabled" 0
-exec i3
+exec awesome

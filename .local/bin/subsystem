@@ -112,7 +112,6 @@ set-workplace() {
 
 force-workplace() {
     set-workplace $1
-    xsetroot -solid "#333333"
 }
 
 get-help() {
