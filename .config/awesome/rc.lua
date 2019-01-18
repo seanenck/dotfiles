@@ -191,20 +191,22 @@ local volume_widget = wibox.widget{
 }
 
 local function setup_timers()
-    local thirty = timer({timeout = 30})
-    thirty:connect_signal("timeout", function()
-        battery_widget:set_markup(battery())
-        net_widget:set_markup(network())
+    local t = timer({timeout = 1})
+    local cnt = 0
+    t:connect_signal("timeout", function()
+        if cnt > 10 then
+            battery_widget:set_markup(battery())
+            net_widget:set_markup(network())
+            volume_widget:set_markup(volume())
+            brightness_widget:set_markup(brightness())
+            stats_widget:set_markup(stats())
+            lock_widget:set_markup(locking())
+            cnt = 0
+        else
+            cnt = cnt + 1
+        end
     end)
-    thirty:start()
-    local ten = timer({timeout = 10})
-    ten:connect_signal("timeout", function()
-        volume_widget:set_markup(volume())
-        brightness_widget:set_markup(brightness())
-        stats_widget:set_markup(stats())
-        lock_widget:set_markup(locking())
-    end)
-    ten:start()
+    t:start()
 end
 
 -- {{{ Error handling
