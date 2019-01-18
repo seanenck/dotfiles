@@ -21,16 +21,8 @@ function call(script)
     return s:match("^%s*(.-)%s*$") 
 end
 
-function volume(cmd)
-    return call(bin .. "volume " .. cmd)
-end
-
 function sleeping()
     call("sleep 1")
-end
-
-function ac()
-    return tonumber(call("cat /sys/class/power_supply/AC/online"))
 end
 
 function locking()
@@ -40,12 +32,6 @@ function locking()
     else
         return res
     end
-end
-
-function brightness()
-    local res = tonumber(call('xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\\.//g" | sed "s/1\\.0/100/g" | tail -n 1 | awk \'{printf "%3.0f", $1}\' | sed "s/^[ \\t]*//g"'))
-    local val = string.format("%3d", res)
-    return "* " .. val .. "%"
 end
 
 function online(last)
@@ -97,37 +83,7 @@ end
 
 function primary(cache)
     local outputs = {}
-    local battery = 0
-    local power = "("
     local k, v
-    if cache.power ~= nil and cache.battery ~= nil then
-        power = cache.power
-        battery = cache.battery
-    else
-        for k, v in pairs({"0", "1"}) do
-            local perc = tonumber(call("cat /sys/class/power_supply/BAT" .. v .. "/capacity"))
-            battery = battery + perc
-            power = power .. string.format("%3d", perc)
-            if k == 1 then
-                power = power .. ","
-            end
-        end
-        cache.power = power
-        cache.battery = battery
-    end
-    power = power .. ")%"
-    local bind = "-"
-    local drain = ac() == 0
-    local lowBat = false
-    if drain then
-        if battery < 20 then
-            lowBat = true
-            cache.battery = nil
-            cache.power = nil
-        end
-    else
-        bind = "+"
-    end
     cache.update_interval = cache.update_interval + 1
     if cache.update_interval > 2 then
         cache.update_interval = 0
@@ -146,19 +102,6 @@ function primary(cache)
     for k, v in pairs(stats()) do
         table.insert(outputs, v)
     end
-    table.insert(outputs, brightness())
-    local mute = volume("ismute") == "true"
-    local vol = tonumber(volume("volume"))
-    local sound = ""
-    if mute then
-        sound = "<|"
-    else
-        sound = "<="
-    end
-    sound = sound .. string.format(" %3d%%", vol)
-    table.insert(outputs, sound)
-    local dispBat = "[" .. bind .. "]" .. power
-    table.insert(outputs, dispBat)
     local wireless = cache.wireless
     local wired = cache.wired
     local reset = false

@@ -17,7 +17,107 @@ require("awful.hotkeys_popup.keys")
 local debian = require("debian.menu")
 local has_fdo, freedesktop = pcall(require, "freedesktop")
 
-mytextclock = wibox.widget.textclock("%a %Y-%m-%d %X", 1)
+local use_font = "DejaVu Sans 12"
+
+local sysclock = wibox.widget.textclock("%a %Y-%m-%d %X ", 1)
+sysclock.font = use_font
+
+local HOME_BIN = "/home/enck/.local/bin/"
+
+local function call(script)
+    local f = io.popen(script, 'r')
+    local s = f:read('*a')
+    f:close()
+    return s:match("^%s*(.-)%s*$")
+end
+
+
+local function format_output(output)
+    return "    " .. output
+end
+
+local function brightness()
+    local res = tonumber(call('xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\\.//g" | sed "s/1\\.0/100/g" | tail -n 1 | awk \'{printf "%3.0f", $1}\' | sed "s/^[ \\t]*//g"'))
+    local val = string.format("%3d", res)
+    return format_output("* " .. val .. "%")
+end
+
+local function battery()
+    local battery = 0
+    local power = "("
+    local drain = tonumber(call("cat /sys/class/power_supply/AC/online")) == 0
+    for k, v in pairs({"0", "1"}) do
+        local perc = tonumber(call("cat /sys/class/power_supply/BAT" .. v .. "/capacity"))
+        battery = battery + perc
+        power = power .. string.format("%3d", perc)
+        if k == 1 then
+            power = power .. ","
+        end
+    end
+    power = power .. ")%"
+    local bind = "+"
+    if drain then
+        bind = "-"
+        if battery < 20 then
+            naughty.notify({ title = "WARNING", text = "BATTERY LOW", bg = "#ff0000", timeout = 30 })
+        end
+    end
+    return format_output("[" .. bind .. "]" .. power)
+end
+
+local battery_widget = wibox.widget{
+    markup = battery(),
+    align  = 'center',
+    valign = 'center',
+    font = use_font,
+    widget = wibox.widget.textbox
+}
+
+local function volume_cmd(cmd)
+    return call(HOME_BIN .. "volume " .. cmd)
+end
+
+local function volume()
+    local muted = volume_cmd("ismute") == "true"
+    local sound = ""
+    if muted then
+        sound = "|"
+    else
+        sound = "="
+    end
+    sound = "&lt;" .. sound .. string.format(" %3d%%", tonumber(volume_cmd("volume")))
+    return format_output(sound)
+end
+
+local brightness_widget = wibox.widget{
+    markup = brightness(),
+    align  = 'center',
+    valign = 'center',
+    font = use_font,
+    widget = wibox.widget.textbox
+}
+
+local volume_widget = wibox.widget{
+    markup = volume(),
+    align  = 'center',
+    valign = 'center',
+    font = use_font,
+    widget = wibox.widget.textbox
+}
+
+local function setup_timers()
+    local thirty = timer({timeout = 30})
+    thirty:connect_signal("timeout", function()
+        battery_widget:set_markup(battery())
+    end)
+    thirty:start()
+    local ten = timer({timeout = 10})
+    ten:connect_signal("timeout", function()
+        volume_widget:set_markup(volume())
+        brightness_widget:set_markup(brightness())
+    end)
+    ten:start()
+end
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -47,6 +147,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+beautiful.font = use_font
 
 -- This is used later as the default terminal and editor to run.
 terminal = "kitty"
@@ -166,7 +267,10 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mytextclock,
+            sysclock,
+            battery_widget,
+            brightness_widget,
+            volume_widget,
             wibox.widget.systray(),
             s.mylayoutbox,
         },
@@ -436,3 +540,4 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 awful.spawn.with_shell("subsystem workspaces 1")
 awful.spawn.with_shell("xautolock -time 5 -locker '/home/enck/.local/bin/locking lock'")
 
+setup_timers()
