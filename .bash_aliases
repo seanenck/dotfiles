@@ -6,6 +6,7 @@ alias dd="sudo dd status=progress"
 alias gmail="/home/enck/.local/bin/email client gmail"
 alias fastmail="/home/enck/.local/bin/email client fastmail"
 alias mutt="echo 'disabled in bash'"
+alias code="echo 'disabled in bash'"
 alias vlc="echo 'disabled in bash'"
 alias dquilt="quilt --quiltrc=${HOME}/.config/quiltrc-dpkg"
 
