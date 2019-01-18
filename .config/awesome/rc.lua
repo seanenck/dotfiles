@@ -276,7 +276,6 @@ awful.screen.connect_for_each_screen(function(s)
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
-    s.mypromptbox = awful.widget.prompt()
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(
@@ -337,6 +336,8 @@ globalkeys = gears.table.join(
         {description = "focus next by index", group = "client"}),
     awful.key({ modkey,           }, "Right", function () awful.client.focus.byidx(-1) end,
         {description = "focus previous by index", group = "client"}),
+    awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
+        {description = "jump to urgent client", group = "client"}),
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "Left", function () awful.client.swap.byidx(  1)    end,
               {description = "swap with next client by index", group = "client"}),
