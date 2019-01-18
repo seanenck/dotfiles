@@ -69,7 +69,6 @@ _sleeping() {
     echo "suspending"
     systemctl suspend
     sleep 5
-    touch $STATUS_RESET
     echo "done sleeping"
 }
 

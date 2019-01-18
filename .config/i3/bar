@@ -1,7 +1,0 @@
-#!/bin/bash
-source $HOME/.config/home/common
-export USER_TMP
-export HOME_BIN
-export STATUS_RESET
-export SYS_ONLINE
-exec lua5.3 $HOME/.local/bin/status.lua

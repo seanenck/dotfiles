@@ -86,7 +86,10 @@ stats() {
 }
 
 if [ -z "$1" ]; then
-    stats &
+    while [ 1 -eq 1 ]; do
+        stats
+        sleep 2
+    done
 else
     case "$1" in
         "git")
