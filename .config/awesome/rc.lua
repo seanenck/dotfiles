@@ -366,6 +366,13 @@ root.buttons(gears.table.join(
 ))
 -- }}}
 
+local function move_focus(s, dir)
+    local screen = s.focused():get_next_in_direction(dir)
+    if screen ~= nil then
+        s.focus(screen.index)
+    end
+end
+
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key({ modkey,           }, "h",      hotkeys_popup.show_help,
@@ -381,8 +388,10 @@ globalkeys = gears.table.join(
               {description = "swap with next client by index", group = "client"}),
     awful.key({ modkey, "Shift"   }, "Right", function () awful.client.swap.byidx( -1)    end,
               {description = "swap with previous client by index", group = "client"}),
-    awful.key({ modkey, }, "Tab", function () awful.screen.focus_relative( 1) end,
-              {description = "focus the next screen", group = "screen"}),
+    awful.key({ modkey, }, "Tab", function () move_focus(awful.screen, "right") end,
+              {description = "focus the right screen", group = "screen"}),
+    awful.key({ modkey, "Shift" }, "Tab", function () move_focus(awful.screen, "left") end,
+              {description = "focus the left screen", group = "screen"}),
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
