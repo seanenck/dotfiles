@@ -242,8 +242,10 @@ modkey = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    awful.layout.suit.tile.bottom,
     awful.layout.suit.tile.top,
+    awful.layout.suit.tile,
+    awful.layout.suit.tile.bottom,
+    awful.layout.suit.tile.left
 }
 -- }}}
 
@@ -273,6 +275,17 @@ awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
 
+    s.mytaglist = awful.widget.taglist(
+        s,
+        awful.widget.taglist.filter.all,
+        nil,
+        {
+            spacing = 50,
+            layout  = wibox.layout.fixed.horizontal,
+            bg_occupied = "#464646"
+        }
+    )
+
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5" }, s, awful.layout.layouts[1])
 
@@ -284,7 +297,7 @@ awful.screen.connect_for_each_screen(function(s)
                            awful.button({ }, 4, function () awful.layout.inc( 1) end),
                            awful.button({ }, 5, function () awful.layout.inc(-1) end)))
     -- Create widgets
-    s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all)
+--    s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all)
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags)
 
     -- Create the wibox
