@@ -96,24 +96,22 @@ _sendzips() {
         fi
         if [ $zip -eq 1 ]; then
             echo "zipping..."
-            7z a -p$ZIP_PASS ${USER_TMP}$bname.$TODAY-$(date +%s).7z $f/ > /dev/null
+            local stime
+            stime=$(date +%s)
+            local fname
+            fname=${USER_TMP}$bname.$TODAY-$stime.mail
+            local zname
+            zname="$fname.7z"
+            7z a -p$ZIP_PASS $zname $f/ > /dev/null
+            local subj
+            subj="automated: zips ($bname) $TODAY"
+            mpack -s "$subj" -o $fname $zname
+            cat $fname | python3 $HOME_BIN/mail.py --subject "$subj" --address $ZIP_MAIL --maildir ${MAIL_DIR}fastmail/Filtered/Automated/
+            rm -f $zname
+            rm -f $fname
         fi
         echo "$hashed" > $prev
     done
-}
-
-_mailzips() {
-    if [ -e $SYS_ONLINE ]; then
-        local name f
-        for f in $(find $USER_TMP -type f -name "*.7z"); do
-            name=$(basename $f | cut -d "." -f 1)
-            echo "sending: $zips"
-            mutt -s "automated: zips ($name) $TODAY" -F $HOME/.mutt/fastmail.muttrc -a $f -- $ZIP_MAIL < /dev/null
-            if [ $? -eq 0 ]; then
-                rm -f $f
-            fi
-        done
-    fi
 }
 
 sync-now() {
@@ -125,7 +123,6 @@ sync-now() {
     pushbackup=$(_dobackup | tail -n 1)
     echo "status (git: $pushgit, archive: $pushbackup)"
     _sendzips "$dirs"
-    _mailzips
     if [ $pushgit -eq 0 ]; then
         if [ $pushbackup -eq 0 ]; then
             exit 0
