@@ -208,10 +208,8 @@ globalkeys = gears.table.join(
               {description = "swap with next client by index", group = "client"}),
     awful.key({ modkey, "Shift"   }, "Right", function () awful.client.swap.byidx( -1)    end,
               {description = "swap with previous client by index", group = "client"}),
-    awful.key({ modkey, "Control" }, "Left", function () awful.screen.focus_relative( 1) end,
+    awful.key({ modkey, }, "Tab", function () awful.screen.focus_relative( 1) end,
               {description = "focus the next screen", group = "screen"}),
-    awful.key({ modkey, "Control" }, "Right", function () awful.screen.focus_relative(-1) end,
-              {description = "focus the previous screen", group = "screen"}),
     awful.key({ modkey,           }, "Tab",
         function ()
             awful.client.focus.history.previous()
@@ -232,6 +230,11 @@ globalkeys = gears.table.join(
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "e", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
+    -- Workspaces
+    awful.key({ modkey, "Shift"   }, "m", function () awful.spawn("subsystem workspaces 1") end,
+              {description = "mobile workspace", group = "system"}),
+    awful.key({ modkey, "Shift"   }, "o", function () awful.spawn("subsystem workspaces 2") end,
+              {description = "dock workspace", group = "system"}),
 
     awful.key({ modkey,           }, "Up",     function () awful.tag.incmwfact( 0.05)          end,
               {description = "increase master width factor", group = "layout"}),
@@ -250,11 +253,11 @@ globalkeys = gears.table.join(
 
     -- locking
     awful.key({ modkey, "Shift"    }, "x", function () awful.spawn("locking toggle") end,
-              {description = "toggle locking", group = "launcher"}),
+              {description = "toggle locking", group = "system"}),
     awful.key({ modkey, "Shift"    }, "l", function () awful.spawn("locking lock") end,
-              {description = "lock", group = "launcher"}),
+              {description = "lock", group = "system"}),
     awful.key({ modkey, "Shift"    }, "s", function () awful.spawn("locking sleep") end,
-              {description = "suspend", group = "launcher"}),
+              {description = "suspend", group = "system"}),
    -- Volume Keys
    awful.key({}, "XF86AudioLowerVolume", function ()
      awful.util.spawn("volume dec", false)
@@ -444,4 +447,5 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 -- autoruns
-awful.spawn.with_shell("xautolock -time 5 -lock '/home/enck/.local/bin/locking lock")
+awful.spawn.with_shell("subsystem workspaces 1")
+awful.spawn.with_shell("xautolock -time 5 -locker '/home/enck/.local/bin/locking lock'")
