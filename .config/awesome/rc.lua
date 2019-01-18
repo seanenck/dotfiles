@@ -70,6 +70,9 @@ end
 local function network()
     local avail = online()
     local wired = ipv4("E", "enp0s31f6", avail)
+    if wired == nil then
+        wired = ipv4("E", "enx0050b6abfe1b", avail)
+    end
     local wireless = ipv4("W", "wlp3s0", avail)
     if wired == nil and wireless == nil then
         naughty.notify({ title = "WARNING", text = "OFFLINE", bg = "#ff0000", timeout = 5 })
