@@ -21,7 +21,9 @@ sysclock.font = use_font
 local USER_HOME = "/home/enck/"
 local HOME_BIN = USER_HOME .. ".local/bin/"
 local STATS = HOME_BIN .. "status "
-local SYS_ONLINE = USER_HOME .. ".cache/home/tmp/sys.online"
+local USER_TMP = USER_HOME .. ".cache/home/tmp/"
+local SYS_ONLINE = USER_TMP .. "sys.online"
+local STAT_RESET = USER_TMP .. "stats.reset"
 
 local function format_output(output)
     return "    " .. output
@@ -197,6 +199,10 @@ local function setup_timers()
     local t = timer({timeout = 1})
     local cnt = 0
     t:connect_signal("timeout", function()
+        if file_exists(STAT_RESET) then
+            cnt = 11
+            call("rm -f " .. STAT_RESET)
+        end
         if cnt > 10 then
             battery_widget:set_markup(battery())
             net_widget:set_markup(network())
