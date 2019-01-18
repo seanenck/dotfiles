@@ -8,7 +8,6 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
-local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
@@ -76,10 +75,6 @@ local function client_menu_toggle_fn()
         end
     end
 end
--- }}}
-
--- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
 -- Keyboard map indicator and switcher
@@ -252,8 +247,31 @@ globalkeys = gears.table.join(
               {description = "decrease the number of columns", group = "layout"}),
     awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
               {description = "select next", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
-              {description = "select previous", group = "layout"})
+
+    -- locking
+    awful.key({ modkey, "Shift"    }, "x", function () awful.spawn("locking toggle") end,
+              {description = "toggle locking", group = "launcher"}),
+    awful.key({ modkey, "Shift"    }, "l", function () awful.spawn("locking lock") end,
+              {description = "lock", group = "launcher"}),
+    awful.key({ modkey, "Shift"    }, "s", function () awful.spawn("locking sleep") end,
+              {description = "suspend", group = "launcher"}),
+   -- Volume Keys
+   awful.key({}, "XF86AudioLowerVolume", function ()
+     awful.util.spawn("volume dec", false)
+   end),
+   awful.key({}, "XF86AudioRaiseVolume", function ()
+     awful.util.spawn("volume inc", false)
+   end),
+   awful.key({}, "XF86AudioMute", function ()
+     awful.util.spawn("volume togglemute", false)
+   end),
+   -- Brightness
+   awful.key({}, "XF86MonBrightnessUp", function ()
+     awful.util.spawn("subsystem backlight up", false)
+   end),
+   awful.key({}, "XF86MonBrightnessDown", function ()
+     awful.util.spawn("subsystem backlight down", false)
+   end)
 )
 
 clientkeys = gears.table.join(
@@ -265,7 +283,7 @@ clientkeys = gears.table.join(
         {description = "toggle fullscreen", group = "client"}),
     awful.key({ modkey, "Shift"   }, "q",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
-    awful.key({ modkey, "Shift" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
+    awful.key({ modkey, "Shift" }, "space", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
               {description = "move to screen", group = "client"})
@@ -424,4 +442,6 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
--- }}}
+
+-- autoruns
+awful.spawn.with_shell("xautolock -time 5 -lock '/home/enck/.local/bin/locking lock")
