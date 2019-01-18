@@ -280,9 +280,9 @@ awful.screen.connect_for_each_screen(function(s)
         awful.widget.taglist.filter.all,
         nil,
         {
-            spacing = 200,
+            spacing = 10,
             layout  = wibox.layout.fixed.horizontal,
-            bg_occupied = "#464646",
+            bg_occupied = "#464646"
         }
     )
 
@@ -291,6 +291,9 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
+    -- Create widgets
+    s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags)
+
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "top", screen = s })
 
@@ -301,7 +304,7 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             s.mytaglist,
         },
-        { layout = wibox.layout.align.horizontal },
+        s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             lock_widget,
