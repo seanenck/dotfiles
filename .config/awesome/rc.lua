@@ -274,7 +274,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    awful.tag({ "1", "2", "3", "4", "5" }, s, awful.layout.layouts[1])
 
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
@@ -409,7 +409,7 @@ clientkeys = gears.table.join(
 )
 
 -- Bind all key numbers to tags.
-for i = 1, 9 do
+for i = 1, 5 do
     globalkeys = gears.table.join(globalkeys,
         -- View tag only.
         awful.key({ modkey }, "#" .. i + 9,
@@ -434,6 +434,9 @@ for i = 1, 9 do
                   {description = "move focused client to tag #"..i, group = "tag"})
     )
 end
+
+clientbuttons = gears.table.join(
+    awful.button({ }, 1, function (c) client.focus = c; c:raise() end))
 
 -- Set keys
 root.keys(globalkeys)
