@@ -5,7 +5,7 @@ URLS=${PERM_CONFIGS}urls.csv
 BROWSER="/usr/bin/firefox"
 HASHED=${USER_TMP}dmenu_urls
 LOCAL_APPS="gmutt fastmutt passwords irc"
-APPS="vlc pavucontrol code $LOCAL_APPS"
+APPS="vlc pavucontrol $LOCAL_APPS"
 AVAILABLE="$USER_TMP/dmenu_available"
 
 _dmenucall() {
