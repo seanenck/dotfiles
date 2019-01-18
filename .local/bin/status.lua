@@ -33,23 +33,19 @@ function ac()
     return tonumber(call("cat /sys/class/power_supply/AC/online"))
 end
 
-function json_text(data)
-    return '{ "full_text": ' .. data .. '}'
-end
-
 function locking()
     local res = call(bin .. "locking status")
     if res == '' or res == nil then
         return nil
     else
-        return json_text(res)
+        return res
     end
 end
 
 function brightness()
     local res = tonumber(call('xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\\.//g" | sed "s/1\\.0/100/g" | tail -n 1 | awk \'{printf "%3.0f", $1}\' | sed "s/^[ \\t]*//g"'))
     local val = string.format("%3d", res)
-    return json_pad("* " .. val .. "%")
+    return "* " .. val .. "%"
 end
 
 function online(last)
@@ -93,18 +89,10 @@ function stats()
     for k, v in pairs({"git", "email"}) do
         local stat = call(status .. v)
         if stat ~= '' and stat ~= nil then
-            table.insert(results, json_pad(stat))
+            table.insert(results, stat)
         end
     end
     return results
-end
-
-function bad(text)
-    return json_text('" ' ..text .. ' ", "color": "#FF0000"')
-end
-
-function json_pad(text)
-    return json_text('" ' .. text .. ' "')
 end
 
 function primary(cache)
@@ -168,18 +156,8 @@ function primary(cache)
         sound = "<="
     end
     sound = sound .. string.format(" %3d%%", vol)
-    if mute then
-        sound = json_pad(sound)
-    else
-        sound = bad(sound)
-    end
     table.insert(outputs, sound)
     local dispBat = "[" .. bind .. "]" .. power
-    if lowBat then
-        dispBat = bad(dispBat)
-    else
-        dispBat = json_pad(dispBat)
-    end
     table.insert(outputs, dispBat)
     local wireless = cache.wireless
     local wired = cache.wired
@@ -210,9 +188,8 @@ function primary(cache)
     table.insert(outputs, wireless)
     table.insert(outputs, wired)
     if cache.wired == nil and cache.wireless == nil then
-        table.insert(outputs, bad("OFFLINE"))
+        table.insert(outputs, "OFFLINE")
     end
-    table.insert(outputs, datetime())
     return outputs
 end
 
@@ -221,19 +198,11 @@ function ipv4(prefix, iface, online)
     if addr == '' or addr == nil then
         return nil 
     else
-        if online then
-            return json_pad(addr)
-        else
-            return bad(addr)
-        end
+        return addr
     end
 end
 
-function datetime()
-    return json_pad(call('date +"%a %Y.%m.%d %H:%M:%S"'))
-end
-
-function main(prim)
+function main()
     local running = true
     local cache = {}
     cache.last_online = 0
@@ -242,20 +211,11 @@ function main(prim)
     local idx = 0
     while running do
         local values = {}
-        if prim then
-            values = primary(cache)
-        else
-            values = {datetime()}
-        end
-        print("[")
+        values = primary(cache)
         for k, v in pairs(values) do
             local out = v
-            if k > 1 then
-                out = "," .. out
-            end
             print(out)
         end
-        print("],")
         sleeping()
         idx = idx + 1
         if idx > 30 then
@@ -270,70 +230,8 @@ function main(prim)
     end
 end
 
-function i3msg(command, pipe, file)
-    return call("i3-msg -t " .. command .. " | tr '{' '\n' | tr '}' '\n' | tr ',' '\n' | sed 's/\"//g' | tr '[:upper:]' '[:lower:]'" .. pipe .. " > " .. file)
-end
-
-function lines_from(file)
-    lines = {}
-    for line in io.lines(file) do
-        lines[#lines + 1] = line
-    end
-    return lines
-end
-
-function update_workspace(new, num, workspaces)
-    local k
-    local v
-    local line
-    if num < 0 then
-        return
-    end
-    for k, v in pairs(workspaces) do
-        if v:find(num .. ":") ~= nil or tonumber(v) == num then
-            line = num .. ":" .. new
-            call('i3-msg rename workspace "' .. v .. '" to "' .. line .. '" > /dev/null')
-        end
-    end
-end
-
-function workspace()
-    local k
-    local v
-    local treefile = i3files .. "tree"
-    local workfile = i3files .. "workspaces"
-    local current = ""
-    local lastworkspace = -1
-    i3msg("get_tree", '| grep -E "^(class|num):" | grep -v "num:\\-" | cut -d " " -f 1 | grep -v "class:i3bar" | cut -d ":" -f 2', treefile)
-    i3msg("get_workspaces", ' | grep -E "^name:" | cut -d ":" -f 2-', workfile)
-    local workspaces  = lines_from(workfile)
-    for k, v in pairs(lines_from(treefile)) do
-        local num = tonumber(v)
-        if num ~= nil then
-            if lastworkspace >= 0 then
-                update_workspace(current, lastworkspace, workspaces)
-                current = ""
-            end
-            lastworkspace = num
-        else
-            if string.len(current) > 0 then
-                current = current .. "|"
-            end
-            current = current .. v
-        end
-    end
-    update_workspace(current, lastworkspace, workspaces)
-end
-
 read_env()
-if arg[1] == nil then
-    while true do
-        workspace()
-        sleeping()
-    end
-else
-    while true do
-        main(arg[1] == "primary")
-        sleeping()
-    end
+while true do
+    main()
+    sleeping()
 end

@@ -134,19 +134,16 @@ setting() {
 }
 
 _status() {
-    local color text
-    color=""
+    local text
     if [ -e $DISPLAY_UN ]; then
         text="UNLOCKED"
-        color="00"
     else
         if [ -e $DISPLAY_EN ]; then
             text="NO ZZZ"
-            color="FF"
         fi
     fi
     if [ ! -z "$text" ]; then
-        echo '" '$text' ", "color": "#FF'$color'00"'
+        echo $text
     fi
 }
 
