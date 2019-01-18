@@ -80,10 +80,6 @@ end
 -- Keyboard map indicator and switcher
 mykeyboardlayout = awful.widget.keyboardlayout()
 
--- {{{ Wibar
--- Create a textclock widget
-mytextclock = wibox.widget.textclock()
-
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
                     awful.button({ }, 1, function(t) t:view_only() end),
@@ -172,7 +168,6 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
-            mytextclock,
             s.mylayoutbox,
         },
     }
@@ -210,15 +205,6 @@ globalkeys = gears.table.join(
               {description = "swap with previous client by index", group = "client"}),
     awful.key({ modkey, }, "Tab", function () awful.screen.focus_relative( 1) end,
               {description = "focus the next screen", group = "screen"}),
-    awful.key({ modkey,           }, "Tab",
-        function ()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
-        end,
-        {description = "go back", group = "client"}),
-
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
@@ -449,3 +435,4 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- autoruns
 awful.spawn.with_shell("subsystem workspaces 1")
 awful.spawn.with_shell("xautolock -time 5 -locker '/home/enck/.local/bin/locking lock'")
+
