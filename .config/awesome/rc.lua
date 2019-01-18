@@ -13,18 +13,15 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
--- Load Debian menu entries
-local debian = require("debian.menu")
-local has_fdo, freedesktop = pcall(require, "freedesktop")
-
 local use_font = "DejaVu Sans 12"
 
 local sysclock = wibox.widget.textclock("    %a %Y-%m-%d %X ", 1)
 sysclock.font = use_font
 
-local HOME_BIN = "/home/enck/.local/bin/"
+local USER_HOME = "/home/enck/"
+local HOME_BIN = USER_HOME .. ".local/bin/"
 local STATS = HOME_BIN .. "status "
-local SYS_ONLINE = "/home/enck/.cache/home/tmp/sys.online"
+local SYS_ONLINE = USER_HOME .. ".cache/home/tmp/sys.online"
 
 local function format_output(output)
     return "    " .. output
@@ -240,11 +237,7 @@ end
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 beautiful.font = use_font
 
--- This is used later as the default terminal and editor to run.
 terminal = "kitty"
-editor = "vim"
-editor_cmd = terminal .. " -e " .. editor
-
 modkey = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
@@ -328,9 +321,7 @@ awful.screen.connect_for_each_screen(function(s)
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
-    -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
-    -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(
@@ -338,10 +329,8 @@ awful.screen.connect_for_each_screen(function(s)
                            awful.button({ }, 3, function () awful.layout.inc(-1) end),
                            awful.button({ }, 4, function () awful.layout.inc( 1) end),
                            awful.button({ }, 5, function () awful.layout.inc(-1) end)))
-    -- Create a taglist widget
+    -- Create widgets
     s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
-
-    -- Create a tasklist widget
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
 
     -- Create the wibox
@@ -383,19 +372,10 @@ globalkeys = gears.table.join(
               {description="show help", group="awesome"}),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
-
-    awful.key({ modkey,           }, "Left",
-        function ()
-            awful.client.focus.byidx( 1)
-        end,
-        {description = "focus next by index", group = "client"}
-    ),
-    awful.key({ modkey,           }, "Right",
-        function ()
-            awful.client.focus.byidx(-1)
-        end,
-        {description = "focus previous by index", group = "client"}
-    ),
+    awful.key({ modkey,           }, "Left", function () awful.client.focus.byidx( 1) end,
+        {description = "focus next by index", group = "client"}),
+    awful.key({ modkey,           }, "Right", function () awful.client.focus.byidx(-1) end,
+        {description = "focus previous by index", group = "client"}),
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "Left", function () awful.client.swap.byidx(  1)    end,
               {description = "swap with next client by index", group = "client"}),
@@ -443,22 +423,12 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift"    }, "s", function () awful.spawn("locking sleep") end,
               {description = "suspend", group = "system"}),
    -- Volume Keys
-   awful.key({}, "XF86AudioLowerVolume", function ()
-     awful.util.spawn("volume dec", false)
-   end),
-   awful.key({}, "XF86AudioRaiseVolume", function ()
-     awful.util.spawn("volume inc", false)
-   end),
-   awful.key({}, "XF86AudioMute", function ()
-     awful.util.spawn("volume togglemute", false)
-   end),
+   awful.key({}, "XF86AudioLowerVolume", function ()  awful.util.spawn("volume dec", false)  end),
+   awful.key({}, "XF86AudioRaiseVolume", function ()  awful.util.spawn("volume inc", false)  end),
+   awful.key({}, "XF86AudioMute", function () awful.util.spawn("volume togglemute", false)  end),
    -- Brightness
-   awful.key({}, "XF86MonBrightnessUp", function ()
-     awful.util.spawn("subsystem backlight up", false)
-   end),
-   awful.key({}, "XF86MonBrightnessDown", function ()
-     awful.util.spawn("subsystem backlight down", false)
-   end)
+   awful.key({}, "XF86MonBrightnessUp", function () awful.util.spawn("subsystem backlight up", false) end),
+   awful.key({}, "XF86MonBrightnessDown", function () awful.util.spawn("subsystem backlight down", false) end)
 )
 
 clientkeys = gears.table.join(
@@ -477,8 +447,6 @@ clientkeys = gears.table.join(
 )
 
 -- Bind all key numbers to tags.
--- Be careful: we use keycodes to make it work on any keyboard layout.
--- This should map on the top row of your keyboard, usually 1 to 9.
 for i = 1, 9 do
     globalkeys = gears.table.join(globalkeys,
         -- View tag only.
