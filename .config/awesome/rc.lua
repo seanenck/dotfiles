@@ -350,7 +350,7 @@ globalkeys = gears.table.join(
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
-    awful.key({ modkey,           }, "d", function () awful.spawn("dmenu-local -i -l 10 -fn '-*-terminal-medium-*-*-*-18-*-*-*-*-*-*-*'") end,
+    awful.key({ modkey,           }, "d", function () awful.spawn("dmenu-local -i -l 10 -fn '-*-terminal-medium-*-*-*-18-*-*-*-*-*-*-*' -m " .. mouse.screen.index - 1) end,
               {description = "start dmenu", group = "launcher"}),
     awful.key({ modkey,           }, "s", function () awful.spawn("subsystem autoclip now") end,
               {description = "quick clip", group = "launcher"}),
