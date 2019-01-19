@@ -119,9 +119,9 @@ end
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
-    awful.key({ modkey,           }, "Left", function () awful.client.focus.byidx( 1) end,
+    awful.key({ modkey,           }, "space", function () awful.client.focus.byidx( 1) end,
         {description = "focus next by index", group = "client"}),
-    awful.key({ modkey,           }, "Right", function () awful.client.focus.byidx(-1) end,
+    awful.key({ modkey, "Shift"   }, "space", function () awful.client.focus.byidx(-1) end,
         {description = "focus previous by index", group = "client"}),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
         {description = "jump to urgent client", group = "client"}),
@@ -159,7 +159,7 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "Down",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
+    awful.key({ modkey, "Control"   }, "Return", function () awful.layout.inc( 1)                end,
               {description = "select next", group = "layout"}),
 
     -- locking
@@ -187,7 +187,7 @@ clientkeys = gears.table.join(
         {description = "toggle fullscreen", group = "client"}),
     awful.key({ modkey, "Shift"   }, "q",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
-    awful.key({ modkey, "Shift" }, "space", function (c) c:swap(awful.client.getmaster()) end,
+    awful.key({ modkey, "Shift" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
     awful.key({ modkey,           }, "n",      function (c) c:move_to_screen()               end,
               {description = "move to next screen", group = "client"}),
