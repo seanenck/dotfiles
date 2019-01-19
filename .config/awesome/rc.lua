@@ -71,7 +71,7 @@ local function network()
     end
     local wireless = ipv4("W", "wlp3s0", avail)
     if wired == nil and wireless == nil then
-        naughty.notify({ title = "WARNING", text = "OFFLINE", bg = "#ff0000", timeout = 5 })
+        naughty.notify({ title = "WARNING", text = "OFFLINE", bg = "#ff0000", timeout = 10, position = "bottom_right" })
         return format_output("OFFLINE")
     else
         local out = ""
@@ -119,7 +119,7 @@ local function battery()
     if drain then
         bind = "-"
         if battery < 20 then
-            naughty.notify({ title = "WARNING", text = "BATTERY LOW", bg = "#ff0000", timeout = 30 })
+            naughty.notify({ title = "WARNING", text = "BATTERY LOW", bg = "#ff0000", timeout = 30, position = "bottom_left" })
         end
     end
     return format_output("[" .. bind .. "]" .. power)
@@ -216,6 +216,7 @@ end
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
                      title = "Oops, there were errors during startup!",
+                         position = "bottom_left",
                      text = awesome.startup_errors })
 end
 
@@ -229,6 +230,7 @@ do
 
         naughty.notify({ preset = naughty.config.presets.critical,
                          title = "Oops, an error happened!",
+                         position = "bottom_left",
                          text = tostring(err) })
         in_error = false
     end)
