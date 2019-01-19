@@ -57,6 +57,10 @@ local function ipv4(prefix, iface, online)
     end
 end
 
+local function notification(message)
+    naughty.notify({ title = "WARNING", text = message, bg = "#ff0000", timeout = 5, position = "bottom_right" })
+end
+
 local function network()
     local avail = online()
     local wired = ipv4("E", "enp0s31f6", avail)
@@ -65,7 +69,7 @@ local function network()
     end
     local wireless = ipv4("W", "wlp3s0", avail)
     if wired == nil and wireless == nil then
-        naughty.notify({ title = "WARNING", text = "OFFLINE", bg = "#ff0000", timeout = 10, position = "bottom_right" })
+        notification("offline")
         return format_output("OFFLINE")
     else
         local out = ""
@@ -113,7 +117,7 @@ local function battery()
     if drain then
         bind = "-"
         if battery < 20 then
-            naughty.notify({ title = "WARNING", text = "BATTERY LOW", bg = "#ff0000", timeout = 30, position = "bottom_left" })
+            notification("battery low")
         end
     end
     return format_output("[" .. bind .. "]" .. power)
