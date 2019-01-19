@@ -51,7 +51,6 @@ _mute() {
         fi
     fi
     pactl set-sink-mute 0 $mute
-    #$mute
 }
 
 case "$1" in
