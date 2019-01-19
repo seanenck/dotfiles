@@ -4,8 +4,6 @@ require("awful.autofocus")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
-local hotkeys_popup = require("awful.hotkeys_popup").widget
-require("awful.hotkeys_popup.keys")
 local widgets = require("widgets")
 
 -- {{{ Error handling
@@ -121,8 +119,6 @@ end
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
-    awful.key({ modkey,           }, "h",      hotkeys_popup.show_help,
-              {description="show help", group="awesome"}),
     awful.key({ modkey,           }, "Left", function () awful.client.focus.byidx( 1) end,
         {description = "focus next by index", group = "client"}),
     awful.key({ modkey,           }, "Right", function () awful.client.focus.byidx(-1) end,
