@@ -123,8 +123,6 @@ end
 globalkeys = gears.table.join(
     awful.key({ modkey,           }, "h",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
-    awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
-              {description = "go back", group = "tag"}),
     awful.key({ modkey,           }, "Left", function () awful.client.focus.byidx( 1) end,
         {description = "focus next by index", group = "client"}),
     awful.key({ modkey,           }, "Right", function () awful.client.focus.byidx(-1) end,
@@ -146,7 +144,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "d", function () awful.spawn("dmenu-local -i -l 10 -fn '-*-terminal-medium-*-*-*-18-*-*-*-*-*-*-*' -m " .. mouse.screen.index - 1) end,
               {description = "start dmenu", group = "launcher"}),
     awful.key({ modkey,           }, "s", function () awful.spawn("subsystem autoclip now") end,
-              {description = "quick clip", group = "launcher"}),
+              {description = "quick clipboard", group = "launcher"}),
     awful.key({ modkey, "Shift" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "e", awesome.quit,
