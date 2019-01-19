@@ -1,16 +1,10 @@
--- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
--- Widget and layout library
 local wibox = require("wibox")
--- Theme handling library
 local beautiful = require("beautiful")
--- Notification library
 local naughty = require("naughty")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
--- Enable hotkeys help widget for VIM and other apps
--- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
 local use_font = "DejaVu Sans 12"
@@ -219,8 +213,6 @@ local function setup_timers()
 end
 
 -- {{{ Error handling
--- Check if awesome encountered an error during startup and fell back to
--- another config (This code will only ever execute for the fallback config)
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
                      title = "Oops, there were errors during startup!",
@@ -243,24 +235,19 @@ do
 end
 -- }}}
 
--- {{{ Variable definitions
--- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 beautiful.font = use_font
 
 terminal = "kitty"
 modkey = "Mod1"
 
--- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.tile.top,
     awful.layout.suit.tile,
     awful.layout.suit.tile.bottom,
     awful.layout.suit.tile.left
 }
--- }}}
 
--- {{{ Helper functions
 local function client_menu_toggle_fn()
     local instance = nil
 
@@ -273,17 +260,14 @@ local function client_menu_toggle_fn()
         end
     end
 end
--- }}}
 
 local function set_wallpaper(s)
     gears.wallpaper.set("#333333")
 end
 
--- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
 awful.screen.connect_for_each_screen(function(s)
-    -- Wallpaper
     set_wallpaper(s)
 
     s.mytaglist = awful.widget.taglist(
@@ -297,18 +281,12 @@ awful.screen.connect_for_each_screen(function(s)
         }
     )
 
-    -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5" }, s, awful.layout.layouts[1])
 
-    -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
-    -- Create widgets
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags)
-
-    -- Create the wibox
     s.mywibox = awful.wibar({ position = "bottom", screen = s })
 
-    -- Add widgets to the wibox
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
@@ -330,7 +308,6 @@ awful.screen.connect_for_each_screen(function(s)
         },
     }
 end)
--- }}}
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
@@ -426,10 +403,8 @@ clientkeys = gears.table.join(
               {description = "move to last screen", group = "client"})
 )
 
--- Bind all key numbers to tags.
 for i = 1, 5 do
     globalkeys = gears.table.join(globalkeys,
-        -- View tag only.
         awful.key({ modkey }, "#" .. i + 9,
                   function ()
                         local screen = awful.screen.focused()
@@ -439,7 +414,6 @@ for i = 1, 5 do
                         end
                   end,
                   {description = "view tag #"..i, group = "tag"}),
-        -- Move client to tag.
         awful.key({ modkey, "Shift" }, "#" .. i + 9,
                   function ()
                       if client.focus then
@@ -456,12 +430,8 @@ end
 clientbuttons = gears.table.join(
     awful.button({ }, 1, function (c) client.focus = c; c:raise() end))
 
--- Set keys
 root.keys(globalkeys)
--- }}}
 
--- {{{ Rules
--- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
     -- All clients will match this rule.
     { rule = { },
@@ -502,16 +472,10 @@ awful.rules.rules = {
         }
       }, properties = { floating = true }},
 
-    -- Add titlebars to normal clients and dialogs
     { rule_any = {type = { "normal", "dialog" }
       }, properties = { titlebars_enabled = true }
     },
-
-    -- Set Firefox to always map on the tag named "2" on screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { screen = 1, tag = "2" } },
 }
--- }}}
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
@@ -528,7 +492,6 @@ client.connect_signal("manage", function (c)
     end
 end)
 
--- Add a titlebar if titlebars_enabled is set to true in the rules.
 client.connect_signal("request::titlebars", function(c)
     awful.titlebar(c) : setup {
         { -- Left
