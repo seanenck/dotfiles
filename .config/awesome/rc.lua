@@ -8,11 +8,6 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 require("awful.hotkeys_popup.keys")
 local widgets = require("widgets")
 
-local use_font = widgets.font
-
-local sysclock = wibox.widget.textclock("    %a %Y-%m-%d %X ", 1)
-sysclock.font = use_font
-
 -- {{{ Error handling
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
@@ -39,7 +34,7 @@ end
 -- }}}
 
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-beautiful.font = use_font
+beautiful.font = widgets.font
 
 terminal = "kitty"
 modkey = "Mod1"
@@ -105,7 +100,7 @@ awful.screen.connect_for_each_screen(function(s)
             widgets.brightness_widget,
             widgets.volume_widget,
             widgets.net_widget,
-            sysclock,
+            widgets.sysclock,
             wibox.widget.systray(),
             s.mylayoutbox,
         },

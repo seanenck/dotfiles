@@ -183,6 +183,9 @@ widgets.volume_widget = wibox.widget{
     widget = wibox.widget.textbox
 }
 
+widgets.sysclock = wibox.widget.textclock("    %a %Y-%m-%d %X ", 1)
+widgets.sysclock.font = use_font
+
 function widgets.setup_timers()
     local t = timer({timeout = 1})
     local cnt = 0
