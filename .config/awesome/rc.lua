@@ -267,6 +267,10 @@ awful.rules.rules = {
     { rule_any = {type = { "normal", "dialog" }
       }, properties = { titlebars_enabled = true }
     },
+    -- Set Firefox to always (un)maximize.
+     { rule = { class = "Firefox" },
+       properties = { maximized = false }
+    }
 }
 
 -- {{{ Signals
