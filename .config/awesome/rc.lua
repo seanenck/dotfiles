@@ -192,7 +192,12 @@ clientkeys = gears.table.join(
     awful.key({ modkey,           }, "n",      function (c) c:move_to_screen()               end,
               {description = "move to next screen", group = "client"}),
     awful.key({ modkey, "Shift"   }, "n",      function (c) c:move_to_screen(c.screen.index-1)               end,
-              {description = "move to last screen", group = "client"})
+              {description = "move to last screen", group = "client"}),
+    awful.key({ modkey,           }, "m", function(c)
+        c.maximized = not c.maximized
+        c:raise()
+    end,
+        {description = "toggle maximized", group = "client"})
 )
 
 for i = 1, 5 do
@@ -267,10 +272,6 @@ awful.rules.rules = {
     { rule_any = {type = { "normal", "dialog" }
       }, properties = { titlebars_enabled = true }
     },
-    -- Set Firefox to always (un)maximize.
-     { rule = { class = "Firefox" },
-       properties = { maximized = false }
-    }
 }
 
 -- {{{ Signals
