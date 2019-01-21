@@ -77,7 +77,20 @@ awful.screen.connect_for_each_screen(function(s)
         }
     )
 
-    awful.tag({ "1", "2", "3", "4", "5" }, s, awful.layout.layouts[1])
+    local tags = {}
+    if s.index == 1 then
+        tags = { "1", "2", "3", "4" }
+    else
+        if s.index == 3 then
+            tags = { "5", "6", "7" }
+        else
+            if s.index == 2 then
+                tags = { "8", "9" }
+            end
+        end
+    end
+
+    awful.tag(tags, s, awful.layout.layouts[1])
 
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags)
@@ -110,13 +123,6 @@ root.buttons(gears.table.join(
 ))
 -- }}}
 
-local function move_focus(s, dir)
-    local screen = s.focus_relative(dir)
-    if screen ~= nil then
-        s.focus(screen.index)
-    end
-end
-
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key({ modkey,           }, "space", function () awful.client.focus.byidx( 1) end,
@@ -130,10 +136,6 @@ globalkeys = gears.table.join(
               {description = "swap with next client by index", group = "client"}),
     awful.key({ modkey, "Shift"   }, "Right", function () awful.client.swap.byidx( -1)    end,
               {description = "swap with previous client by index", group = "client"}),
-    awful.key({ modkey, }, "Tab", function () move_focus(awful.screen, 1) end,
-              {description = "focus the right screen", group = "screen"}),
-    awful.key({ modkey, "Shift" }, "Tab", function () move_focus(awful.screen, -1) end,
-              {description = "focus the left screen", group = "screen"}),
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
@@ -189,10 +191,6 @@ clientkeys = gears.table.join(
               {description = "close", group = "client"}),
     awful.key({ modkey, "Shift" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
-    awful.key({ modkey,           }, "n",      function (c) c:move_to_screen()               end,
-              {description = "move to next screen", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "n",      function (c) c:move_to_screen(c.screen.index-1)               end,
-              {description = "move to last screen", group = "client"}),
     awful.key({ modkey,           }, "m", function(c)
         c.maximized = not c.maximized
         c:raise()
@@ -200,23 +198,34 @@ clientkeys = gears.table.join(
         {description = "toggle maximized", group = "client"})
 )
 
-for i = 1, 5 do
+local function find_tag(s, t)
+    for s in screen do
+        for k, v in pairs(s.tags) do
+            if v.name == "" .. t then
+                return s, v
+            end
+        end
+    end
+    return nil, nil
+end
+
+for i = 1, 9 do
     globalkeys = gears.table.join(globalkeys,
         awful.key({ modkey }, "#" .. i + 9,
                   function ()
-                        local screen = awful.screen.focused()
-                        local tag = screen.tags[i]
-                        if tag then
-                           tag:view_only()
-                        end
+                      s, v = find_tag(screen, i)
+                      if s ~= nil and v ~= nil then
+                          awful.screen.focus(s.index)
+                          v:view_only()
+                      end
                   end,
                   {description = "view tag #"..i, group = "tag"}),
         awful.key({ modkey, "Shift" }, "#" .. i + 9,
                   function ()
                       if client.focus then
-                          local tag = client.focus.screen.tags[i]
-                          if tag then
-                              client.focus:move_to_tag(tag)
+                          s, v = find_tag(screen, i)
+                          if s ~= nil and v ~= nil then
+                              client.focus:move_to_tag(v)
                           end
                      end
                   end,
@@ -323,7 +332,6 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 -- autoruns
-awful.spawn.with_shell("subsystem workspaces 1")
 awful.spawn.with_shell("xautolock -time 5 -locker '/home/enck/.local/bin/locking lock'")
 awful.spawn.with_shell("status")
 widgets.setup_timers()
