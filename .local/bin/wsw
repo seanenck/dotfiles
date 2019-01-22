@@ -13,11 +13,6 @@ _networks() {
     done
 }
 
-_iplink() {
-    ip link set $1 $2
-    echo "settings $1 -> $2"
-}
-
 _change() {
     local filename
     echo "changing to $1"
@@ -42,6 +37,7 @@ _change() {
     if [ $? -eq 0 ]; then
         flags="-D wired"
     fi
+    ip link set $device up
     _iplink $device up
     sleep 3
     if [ -s $filename ]; then
