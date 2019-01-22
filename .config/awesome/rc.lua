@@ -334,4 +334,5 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- autoruns
 awful.spawn.with_shell("xautolock -time 5 -locker '/home/enck/.local/bin/locking lock'")
 awful.spawn.with_shell("status")
+awful.spawn.with_shell("compton --config ~/.config/awesome/compton.conf")
 widgets.setup_timers()

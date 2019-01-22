@@ -5,6 +5,7 @@
 !.config/
 .config/*
 !.config/home/
+!.config/awesome/
 !.weechat/
 .weechat/logs/*
 .weechat/*.log
