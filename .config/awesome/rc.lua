@@ -119,6 +119,39 @@ root.buttons(gears.table.join(
 ))
 -- }}}
 
+local timer = gears.timer {
+    timeout   = 30
+}
+
+local function status()
+    local f = io.popen("cat /home/enck/.cache/home/tmp/sys.stat", 'r')
+    local s = f:read('*a')
+    f:close()
+    return s:match("^%s*(.-)%s*$")
+end
+
+local function create_notification()
+    return naughty.notify({ 
+    text = status(), 
+    timeout=45, 
+    screen=1,
+    run=function(n)
+    end
+    })
+end
+
+local status_notify = create_notification()
+
+timer:connect_signal("timeout", function()
+        if status_notify ~= nil then
+            naughty.replace_text(status_notify, nil, status())
+            naughty.reset_timeout(status_notify, 30)
+        end
+    end
+)
+
+timer:start()
+
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key({ modkey,           }, "space", function () awful.client.focus.byidx( 1) end,
@@ -128,11 +161,13 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
         {description = "jump to urgent client", group = "client"}),
     awful.key({ modkey,           }, "h", function ()
-            local f = io.popen("cat /home/enck/.cache/home/tmp/sys.stat", 'r')
-            local s = f:read('*a')
-            f:close()
-            local txt = s:match("^%s*(.-)%s*$")
-            naughty.notify({ title = "Status", text = txt, timeout = 15 })
+        if naughty.is_suspended() then
+            naughty.resume()
+            status_notify = create_notification()
+        else
+            naughty.reset_timeout(status_notify, 1)
+            naughty.suspend()
+        end
         end,
         {description = "show system help/status", group = "client"}),
     -- Layout manipulation
@@ -207,7 +242,7 @@ local function find_tag(s, t)
         for k, v in pairs(s.tags) do
             if v.name == "" .. t then
                 return s, v
-            end
+                end
         end
     end
     return nil, nil
