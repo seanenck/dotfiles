@@ -86,18 +86,15 @@ stats() {
 }
 
 _ipaddr() {
-    echo "-> $1:"
-    echo "    "$(ip addr | grep "$1" | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d'/' | grep '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$')
+    ip addr | grep "$1" | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d'/' | grep '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$'
 }
 
 _output() {
-    echo "files:"
-    echo "-> lock:  "$(locking status)
-    echo "-> mail:  "$(status email)
-    echo "-> git:   "$(status git)
+    echo "git: "$(status git)
+    echo "lock: "$(locking status)
+    echo "mail: "$(status email)
     echo
-    echo "settings:"
-    echo "-> brightness:  "$(xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk '{printf "%3.0f", $1}')
+    echo "brightness: "$(xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk '{printf "%3.0f", $1}')
     local muted
     local vol
     muted=$(volume ismute)
@@ -106,7 +103,7 @@ _output() {
     else
         vol=$(volume volume)
     fi
-    echo "-> volume:        $vol"
+    echo "volume: $vol"
     local bat
     local charge
     charge=$(cat /sys/class/power_supply/AC/online)
@@ -119,11 +116,14 @@ _output() {
         local per=$(cat /sys/class/power_supply/BAT$b/capacity)
         bat="$bat $per%"
     done
-    echo "-> battery:     [$charge]($bat)"
+    echo "battery: [$charge]($bat)"
     echo
-    echo "network:"
-    _ipaddr wlp3s0
-    _ipaddr enp0s31f6
+    for a in $(echo "wlp3s0 enp0s31f6"); do
+        local addr=$(_ipaddr $a)
+        if [ ! -z "$addr" ]; then
+            echo "$addr ($a)"
+        fi
+    done
 }
 
 outputs() {
