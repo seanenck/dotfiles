@@ -69,7 +69,6 @@ local function network()
     end
     local wireless = ipv4("W", "wlp3s0", avail)
     if wired == nil and wireless == nil then
-        notification("offline")
         return format_output("OFFLINE")
     else
         local out = ""
