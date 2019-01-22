@@ -135,6 +135,7 @@ local function create_notification()
     text = status(), 
     timeout=45, 
     screen=1,
+    position="bottom_right",
     run=function(n)
     end
     })
