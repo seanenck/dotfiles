@@ -4,7 +4,6 @@ require("awful.autofocus")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
-local widgets = require("widgets")
 
 -- {{{ Error handling
 if awesome.startup_errors then
@@ -32,7 +31,7 @@ end
 -- }}}
 
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-beautiful.font = widgets.font
+beautiful.font = "DejaVu Sans 12"
 
 terminal = "kitty"
 modkey = "Mod1"
@@ -60,6 +59,9 @@ end
 local function set_wallpaper(s)
     gears.wallpaper.set("#333333")
 end
+
+sysclock = wibox.widget.textclock("    %a %Y-%m-%d %X ", 1)
+sysclock.font = beautiful.font
 
 screen.connect_signal("property::geometry", set_wallpaper)
 
@@ -105,13 +107,7 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            widgets.lock_widget,
-            widgets.stats_widget,
-            widgets.battery_widget,
-            widgets.brightness_widget,
-            widgets.volume_widget,
-            widgets.net_widget,
-            widgets.sysclock,
+            sysclock,
             wibox.widget.systray(),
             s.mylayoutbox,
         },
@@ -334,5 +330,3 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- autoruns
 awful.spawn.with_shell("xautolock -time 5 -locker '/home/enck/.local/bin/locking lock'")
 awful.spawn.with_shell("status")
-awful.spawn.with_shell("compton --config ~/.config/awesome/compton.conf")
-widgets.setup_timers()
