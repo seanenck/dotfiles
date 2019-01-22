@@ -55,7 +55,6 @@ local function client_menu_toggle_fn()
         end
     end
 end
-
 local function set_wallpaper(s)
     gears.wallpaper.set("#333333")
 end
@@ -120,7 +119,7 @@ root.buttons(gears.table.join(
 -- }}}
 
 local timer = gears.timer {
-    timeout   = 30
+    timeout   = 10
 }
 
 local function status()
@@ -133,7 +132,7 @@ end
 local function create_notification()
     return naughty.notify({ 
     text = status(), 
-    timeout=45, 
+    timeout=15, 
     screen=1,
     position="bottom_right",
     run=function(n)
@@ -146,7 +145,7 @@ local status_notify = create_notification()
 timer:connect_signal("timeout", function()
         if status_notify ~= nil then
             naughty.replace_text(status_notify, nil, status())
-            naughty.reset_timeout(status_notify, 30)
+            naughty.reset_timeout(status_notify, 10)
         end
     end
 )
