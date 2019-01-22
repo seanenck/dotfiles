@@ -69,7 +69,6 @@ _sleeping() {
     echo "suspending"
     systemctl suspend
     sleep 5
-    touch $STATUS_RESET
     echo "done sleeping"
 }
 
@@ -119,7 +118,6 @@ toggle() {
     if [ $no_action -eq 0 ]; then
         touch $DISPLAY_UN
     fi
-    touch $STATUS_RESET
 }
 
 setting() {
