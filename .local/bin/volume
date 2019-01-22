@@ -26,6 +26,12 @@ _ismute() {
     fi
 }
 
+_vol_all() {
+    for i in $(seq 0 5); do
+        pactl $1 $i $2
+    done
+}
+
 _vol() {
     local vol 
     vol=$(_volume)
@@ -38,7 +44,7 @@ _vol() {
             vol=0
         fi
     fi
-    pactl set-sink-volume 0 $vol
+    _vol_all "set-sink-volume" $vol
 }
 
 _mute() {
@@ -50,7 +56,7 @@ _mute() {
             mute=0
         fi
     fi
-    pactl set-sink-mute 0 $mute
+    _vol_all "set-sink-mute" $mute
 }
 
 case "$1" in
