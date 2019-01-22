@@ -85,6 +85,56 @@ stats() {
     rm -f $STAT_LOCK
 }
 
+_ipaddr() {
+    echo "-> $1:"
+    echo "    "$(ip addr | grep "$1" | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d'/' | grep '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$')
+}
+
+_output() {
+    date +"%Y-%m-%dT%H:%M:%S"
+    echo
+    echo "files:"
+    echo "-> lock:  "$(locking status)
+    echo "-> mail:  "$(status email)
+    echo "-> git:   "$(status git)
+    echo
+    echo "settings:"
+    echo "-> brightness:  "$(xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk '{printf "%3.0f", $1}')
+    local muted
+    local vol
+    muted=$(volume ismute)
+    if [[ "$muted" == "true" ]]; then
+        vol="0"
+    else
+        vol=$(volume volume)
+    fi
+    echo "-> volume:        $vol"
+    local bat
+    local charge
+    charge=$(cat /sys/class/power_supply/AC/online)
+    if [[ "$charge" == "0" ]]; then
+        charge="-"
+    else
+        charge="+"
+    fi
+    for b in $(echo 0 1); do
+        local per=$(cat /sys/class/power_supply/BAT$b/capacity)
+        bat="$bat $per%"
+    done
+    echo "-> battery:     [$charge]($bat)"
+    echo
+    echo "network:"
+    _ipaddr wlp3s0
+    _ipaddr enp0s31f6
+}
+
+outputs() {
+    local revtmp
+    revtmp=${SYS_STAT}.next
+    _output > $revtmp
+    mv $revtmp $SYS_STAT
+}
+
 if [ -z "$1" ]; then
     pidfile="/tmp/status.pid"
     if [ -e "$pidfile" ]; then
@@ -94,10 +144,17 @@ if [ -z "$1" ]; then
             exit 0
         fi
     fi
+    cnt=0
     while [ 1 -eq 1 ]; do
         stats
+        outputs
         echo $$ > $pidfile
         sleep 2
+        cnt=$((cnt+1))
+        if [ $cnt -gt 15 ]; then
+            cnt=0
+            _up > /dev/null 2>&1 &
+        fi
     done
 else
     case "$1" in
@@ -106,9 +163,6 @@ else
                 sleep 0.1
             done
             cat ${STAT_GIT} | tail -n 1
-            ;;
-        "online")
-            _up > /dev/null 2>&1 &
             ;;
         "email")
             _unread

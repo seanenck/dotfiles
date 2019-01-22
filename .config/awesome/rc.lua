@@ -127,6 +127,14 @@ globalkeys = gears.table.join(
         {description = "focus previous by index", group = "client"}),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
         {description = "jump to urgent client", group = "client"}),
+    awful.key({ modkey,           }, "h", function ()
+            local f = io.popen("cat /home/enck/.cache/home/tmp/sys.stat", 'r')
+            local s = f:read('*a')
+            f:close()
+            local txt = s:match("^%s*(.-)%s*$")
+            naughty.notify({ title = "Status", text = txt, timeout = 15 })
+        end,
+        {description = "show system help/status", group = "client"}),
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "Left", function () awful.client.swap.byidx(  1)    end,
               {description = "swap with next client by index", group = "client"}),
