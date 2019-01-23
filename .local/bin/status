@@ -116,7 +116,7 @@ _output() {
         local per=$(cat /sys/class/power_supply/BAT$b/capacity)
         bat="$bat $per%"
     done
-    echo "battery: [$charge]($bat)"
+    echo "battery: $charge($bat)"
     echo
     for a in $(echo "wlp3s0 enp0s31f6"); do
         local addr=$(_ipaddr $a)
