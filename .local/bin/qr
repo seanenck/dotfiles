@@ -1,5 +1,5 @@
 #!/bin/bash
 python -c "from qrtools import QR
 import sys
-code = QR(data = sys.stdin.read())
+code = QR(data = sys.stdin.read(), pixel_size=20)
 code.encode(filename='output.png')"
