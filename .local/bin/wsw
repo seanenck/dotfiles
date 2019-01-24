@@ -27,7 +27,9 @@ _change() {
     fi
     echo "$1" > $CACHED
     for a in $(echo "$ADAPTERS"); do
-        ip link set $a "down"
+        if ip addr | grep -v "$a"; then
+            ip link set $a "down"
+        fi
     done
     pkill wpa_supplicant
     sleep 3
