@@ -2,7 +2,7 @@
 source /home/enck/.config/home/common
 NETWORKS=/etc/wsw/
 LIST="list"
-ADAPTERS="wlp3s0 enp0s31f6"
+ADAPTERS="wlp3s0 enp0s31f6 enx0050b6abfe11"
 CACHED=/tmp/network
 DO_STOP=/tmp/network.cmd
 HOME_CACHE=$HOME/.cache/home/tmp/wsw
