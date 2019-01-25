@@ -112,10 +112,15 @@ _output() {
     else
         charge="+"
     fi
+    local cntcharge=0
     for b in $(echo 0 1); do
         local per=$(cat /sys/class/power_supply/BAT$b/capacity)
         bat="$bat $per%"
+        cntcharge=$((cntcharge+per))
     done
+    if [ $cntcharge -lt 20 ]; then
+        charge="WARN$charge"
+    fi
     echo "battery: $charge($bat)"
     echo
     for a in $(echo "wlp3s0 enp0s31f6"); do

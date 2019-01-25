@@ -126,7 +126,12 @@ local function status()
     local f = io.popen("cat /home/enck/.cache/home/tmp/sys.stat", 'r')
     local s = f:read('*a')
     f:close()
-    return s:match("^%s*(.-)%s*$")
+    local txt = s:match("^%s*(.-)%s*$")
+    if string.match(txt, "WARN") then
+        txt = string.gsub(txt, "WARN", "")
+        naughty.notify({title="WARNING", timeout=5, position="bottom_right"})
+    end
+    return txt
 end
 
 local function create_notification()
