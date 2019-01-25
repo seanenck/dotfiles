@@ -119,7 +119,9 @@ _output() {
         cntcharge=$((cntcharge+per))
     done
     if [ $cntcharge -lt 20 ]; then
-        charge="WARN$charge"
+        if [[ "$charge" == "-" ]]; then
+            charge="WARN$charge"
+        fi
     fi
     echo "battery: $charge($bat)"
     echo
