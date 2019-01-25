@@ -128,6 +128,10 @@ if [ $(_step $GIT_SHALLOW $SHALLOW_CLONE) -eq 1 ]; then
 fi
 if [ ! -d $gitdirname ]; then
     git clone $gitargs $URL $gitdirname
+    if [ $? -ne 0 ]; then
+        echo "unable to clone"
+        exit 1
+    fi
 fi
 
 cwd=$PWD
