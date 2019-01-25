@@ -234,12 +234,7 @@ clientkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "q",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
     awful.key({ modkey, "Shift" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
-              {description = "move to master", group = "client"}),
-    awful.key({ modkey,           }, "m", function(c)
-        c.maximized = not c.maximized
-        c:raise()
-    end,
-        {description = "toggle maximized", group = "client"})
+              {description = "move to master", group = "client"})
 )
 
 local function find_tag(s, t)
@@ -374,6 +369,13 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+client.connect_signal("property::maximized", function(c)
+    if c.maximized then
+        c.maximized = false
+        c:raise()
+    end
+end)
 
 -- autoruns
 awful.spawn.with_shell("xautolock -time 5 -locker '/home/enck/.local/bin/locking lock'")
