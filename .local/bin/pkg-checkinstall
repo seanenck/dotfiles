@@ -34,6 +34,7 @@ CAN_PULL=1
 CLEAN=1
 NO_VERS=0
 SHALLOW_CLONE=1
+ALLOW_GOPATH=1
 for i in "$@"; do
     case $i in
     --no-version)
@@ -53,6 +54,9 @@ for i in "$@"; do
         ;;
     --full-clone)
         SHALLOW_CLONE=0
+        ;;
+    --no-gopath)
+        ALLOW_GOPATH=0
         ;;
     *)
         echo "unknown option: $i"
@@ -80,7 +84,17 @@ if [ ! -d "$DEB_BUILD_GO" ]; then
     exit 1
 fi
 
-export GOPATH="${DEB_BUILD_GO}"
+_step() {
+    if [ -z "$1" ]; then
+        echo $2
+    else
+        echo $1
+    fi
+}
+
+if [ $(_step $DISABLE_GOPATH $ALLOW_GOPATH) -eq 1 ]; then
+    export GOPATH="${DEB_BUILD_GO}"
+fi
 if [ ! -e "$LINT_FILE" ]; then
     echo "missing $LINT_FILE output file"
     exit 1
@@ -98,14 +112,6 @@ if [ -z "$PKGVER" ]; then
     echo "unable to detect version"
     exit 1
 fi
-
-_step() {
-    if [ -z "$1" ]; then
-        echo $2
-    else
-        echo $1
-    fi
-}
 
 echo "found version: $PKGVER"
 _required "$URL" "URL"
