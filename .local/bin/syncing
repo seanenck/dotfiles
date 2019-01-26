@@ -45,10 +45,6 @@ _backup() {
     touch $BACKUP
 }
 
-_rsync() {
-    rsync -avc --delete-after -e "ssh" $1 $2 | grep -v "^$" | sed "s/^/$SPACING/g"
-}
-
 _dogit() {
     local d changes
     echo "git" > $GIT_SYNC
