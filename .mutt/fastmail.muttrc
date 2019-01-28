@@ -4,7 +4,7 @@ set folder      = ~/.mutt/imap/fastmail
 set postponed   = "=Drafts"
 set history_file = "~/.mutt/fastmail.mutthistory"
 macro index,pager d "<save-message>=Trash<enter><enter>" "Trash"
-source ~/store/documents/mail/fastmail.muttrc
+source ~/store/personal/documents/mail/fastmail.muttrc
 source ~/.mutt/muttrc
 set record = =Sent
 set trash = "=Trash"
