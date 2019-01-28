@@ -26,7 +26,7 @@ _change() {
         exit 1
     fi
     echo "$1" > $CACHED
-    for a in $(echo "$ADAPTERS"); do
+    for a in $(ip addr | cut -d " " -f 2 | grep ":$" | cut -d ":" -f1 | grep -v "lo"); do
         if ip addr | grep -v "$a"; then
             ip link set $a "down"
         fi
