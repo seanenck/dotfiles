@@ -5,9 +5,13 @@ GIT_PARTIAL_PATTERN="weechat|random_seed"
 STAT_LOCK=${USER_TMP}/stat.lock
 
 _get-git-folders() {
-    local res f d
+    local res f d search
     res=""
-    for d in "$HOME/workspace" "${PERM_LOCATION}" "$HOME/local"; do
+    search=""
+    for d in $(find $HOME/local -maxdepth 1 -type d); do
+        search="$search $d"
+    done
+    for d in "$HOME/workspace" "${PERM_LOCATION}" $search; do
         for f in $(find $d -maxdepth 1 -type d | sort); do
             if [ ! -d "$f/.git" ]; then
                 continue
