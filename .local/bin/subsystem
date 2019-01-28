@@ -123,7 +123,7 @@ workspace-subsystem() {
 
 _autoclip() {
     source $PRIV_CONF
-    auto-clipboard $PERM_LOCATION
+    auto-clipboard $PERM_PASS
 }
 
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then

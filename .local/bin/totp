@@ -7,7 +7,7 @@ _formattotp() {
 }
 
 _totplist() {
-    for f in $(find $PERM_LOCATION$1/$PASS_TOTP_OFFSET -type f -name "*.gpg" | sed "s/\.gpg//g" | sort); do
+    for f in $(find $PERSONAL_LOC$1/$PASS_TOTP_OFFSET -type f -name "*.gpg" | sed "s/\.gpg//g" | sort); do
         basename $f
     done
 }
@@ -43,7 +43,7 @@ _totpall() {
                     continue
                 fi
             fi
-            val=$(PASSWORD_STORE_DIR=${PERM_LOCATION}$1 pass show "$PASS_TOTP_OFFSET$p" 2>&1)
+            val=$(PASSWORD_STORE_DIR=${PERSONAL_LOC}$1 pass show "$PASS_TOTP_OFFSET$p" 2>&1)
             val=$(oathtool --base32 --totp "$val")
             data[$count]="$p->$val;"
             if [ $first -eq 1 ]; then
