@@ -8,9 +8,10 @@ _get-git-folders() {
     local res f d search
     res=""
     search=""
-    for d in $(find $PERM_LOCATION -maxdepth 2 -type d); do
+    for d in $(find $PERM_LOCATION -maxdepth 1 -type d); do
         search="$search $d"
     done
+    search=$(echo "$search" | sort -u)
     for d in "$HOME/workspace" $search; do
         for f in $(find $d -maxdepth 1 -type d | sort); do
             if [ ! -d "$f/.git" ]; then
