@@ -113,7 +113,7 @@ _sendzips() {
 sync-now() {
     local dirs pushgit pushbackup
     ${HOME_BIN}/email
-    dirs="${PRIV_PATH} ${HOME_STORE} ${PERM_PASS}/pass-personal"
+    dirs="${PRIV_PATH} ${HOME_STORE} ${PERM_PASS}/personal"
     pushgit=$(_dogit "$dirs" | tail -n 1)
     pushbackup=$(_dobackup | tail -n 1)
     echo "status (git: $pushgit, archive: $pushbackup)"
