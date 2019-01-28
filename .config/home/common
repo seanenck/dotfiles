@@ -10,9 +10,10 @@ USER_TMP=${HOME_CACHE}tmp/
 
 # perm/store
 PERM_LOCATION=${HOME}/store/
-HOME_STORE=${PERM_LOCATION}documents/
+PERSONAL_LOC=${PERM_LOCATION}personal/
+HOME_STORE=${PERSONAL_LOC}documents/
 PERM_CONFIGS=${HOME_STORE}configs/
-PRIV_PATH=${PERM_LOCATION}private/
+PRIV_PATH=${PERSONAL_LOC}private/
 
 # mail
 MAIL_DIR=$HOME/.mutt/imap/
