@@ -32,6 +32,7 @@ end
 
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 beautiful.font = "DejaVu Sans 12"
+naughty.config.defaults.position = "bottom_right"
 
 terminal = "kitty"
 modkey = "Mod1"
