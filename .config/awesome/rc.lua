@@ -130,7 +130,7 @@ local function status()
     local txt = s:match("^%s*(.-)%s*$")
     if string.match(txt, "WARN") then
         txt = string.gsub(txt, "WARN", "")
-        naughty.notify({title="WARNING", timeout=5, position="bottom_right"})
+        naughty.notify({title="WARNING", timeout=5})
     end
     return txt
 end
@@ -140,7 +140,6 @@ local function create_notification()
     text = status(), 
     timeout=15, 
     screen=1,
-    position="bottom_right",
     run=function(n)
     end
     })
