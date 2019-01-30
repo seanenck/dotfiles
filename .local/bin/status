@@ -95,9 +95,19 @@ _ipaddr() {
 }
 
 _output() {
-    echo "git: "$(status git)
-    echo "lock: "$(locking status)
-    echo "mail: "$(status email)
+    local v
+    v=$(status git)
+    if [ ! -z "$v" ]; then
+        echo "git: $v"
+    fi
+    v=$(locking status)
+    if [ ! -z "$v" ]; then
+        echo "lock: $v"
+    fi
+    v=$(status email | sed "s/^\s*//g;s/\s*$//g")
+    if [ ! -z "$v" ]; then
+        echo "mail: $v"
+    fi
     echo
     echo "brightness: "$(xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk '{printf "%3.0f", $1}')
     local muted
