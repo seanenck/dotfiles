@@ -110,7 +110,7 @@ if [ -e "$PRIV_CONF" ]; then
     done
     for i in $(echo "$LUKS_ENTRIES"); do
         n=$(echo "$i" | cut -d "/" -f 1)
-        alias luks-$n='xwindows $(PASSWORD_STORE_DIR='${PERM_LOCATION}$LUKS_PASS' '$LUKS_PASS' show '$i'/luks 2>&1)'
+        alias luks-$n='xwindows $(PASSWORD_STORE_DIR='${PERM_PASS}$LUKS_PASS' pass show '$LUKS_OFF$i'/luks 2>&1)'
     done
 fi
 
