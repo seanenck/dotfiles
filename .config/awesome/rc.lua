@@ -175,11 +175,6 @@ globalkeys = gears.table.join(
         end
         end,
         {description = "show system help/status", group = "client"}),
-    -- Layout manipulation
-    awful.key({ modkey, "Shift"   }, "Left", function () awful.client.swap.byidx(  1)    end,
-              {description = "swap with next client by index", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "Right", function () awful.client.swap.byidx( -1)    end,
-              {description = "swap with previous client by index", group = "client"}),
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
@@ -205,6 +200,8 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "Down",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
+    awful.key({ modkey  }, "Left", function () awful.layout.inc( -1)                end,
+              {description = "select next", group = "layout"}),
     awful.key({ modkey  }, "Right", function () awful.layout.inc( 1)                end,
               {description = "select next", group = "layout"}),
 
