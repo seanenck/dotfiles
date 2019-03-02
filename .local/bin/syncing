@@ -44,7 +44,7 @@ _backup() {
     rm -f $ARCHIVE
     for f in $(ls $PERSONAL_LOC | grep "@"); do
         echo "backing up $f"
-        rsync -vacr $PERSONAL_LOC/$f/ $BASE_SERVER:${COMMON_STORE}Mail/$f/
+        rsync -vacr --delete-after $PERSONAL_LOC/$f/ $BASE_SERVER:${COMMON_STORE}Mail/$f/
     done
     touch $BACKUP
 }
