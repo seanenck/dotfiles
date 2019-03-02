@@ -42,6 +42,10 @@ _backup() {
     scp $ARCHIVE $BASE_SERVER:$PROFILE_PATH/
     ssh $BASE_SERVER "find $PROFILE_PATH -type f -mtime +7 -exec rm {} \;"
     rm -f $ARCHIVE
+    for f in $(ls $PERSONAL_LOC | grep "@"); do
+        echo "backing up $f"
+        rsync -vacr $PERSONAL_LOC/$f/ $BASE_SERVER:${COMMON_STORE}Mail/$f/
+    done
     touch $BACKUP
 }
 
