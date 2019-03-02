@@ -12,6 +12,7 @@ GIT_PREV=${GIT_SYNC}.prev
 READY="ready"
 IS_CONNECTED=1
 NOT_CONNECTED=0
+RSYNC_MAIL=${USER_TMP}rsync.mail.
 
 test-ssh() {
     local running
@@ -43,8 +44,24 @@ _backup() {
     ssh $BASE_SERVER "find $PROFILE_PATH -type f -mtime +7 -exec rm {} \;"
     rm -f $ARCHIVE
     for f in $(ls $PERSONAL_LOC | grep "@"); do
+        local h p d
+        h=${RSYNC_MAIL}$f
+        p=${h}.prev
+        d=0
+        find ${PERSONAL_LOC}/$f -type d | sort > $h
         echo "backing up $f"
-        rsync -vacr --delete-after $PERSONAL_LOC/$f/ $BASE_SERVER:${COMMON_STORE}Mail/$f/
+        if [ -e "$p" ]; then
+            diff -u $h $p > /dev/null
+            if [ $? -eq 0 ]; then
+                echo "no change to $f"
+                d=1
+            fi
+        fi
+        mv $h $p
+        if [ $d -eq 0 ]; then
+            echo "syncing $f"
+            rsync -vacr --delete-after $PERSONAL_LOC/$f/ $BASE_SERVER:${COMMON_STORE}Mail/$f/
+        fi
     done
     touch $BACKUP
 }
