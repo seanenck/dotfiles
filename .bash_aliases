@@ -9,19 +9,6 @@ alias mutt="echo 'disabled in bash'"
 alias vlc="echo 'disabled in bash'"
 alias dquilt="quilt --quiltrc=${HOME}/.config/quiltrc-dpkg"
 
-notes() {
-    source $HOME/.config/home/common
-    local file files f
-    file="$@"
-    if [ -z "$file" ]; then
-        file=scratch
-    fi
-    for f in $(echo "$file"); do
-        files="$files ${HOME_SCRATCH}$f$TASK_FILE"
-    done
-    vim $files
-}
-
 proxy() {
     if [ -z "$1" ]; then
         echo "host required"

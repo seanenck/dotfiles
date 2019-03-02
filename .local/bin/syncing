@@ -35,7 +35,7 @@ _backup() {
     echo "daily backup"
     if [ ! -e $ARCHIVE ]; then
         echo "archiving"
-        tar zcf $ARCHIVE $HOME/.mozilla/ ${HOME_SCRATCH} &>/dev/null
+        tar zcf $ARCHIVE $HOME/.mozilla/ &>/dev/null
         echo "archive completed: $?"
     fi
     echo "${SPACING}pushing profile out"
