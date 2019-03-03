@@ -25,7 +25,6 @@ if [ $(ls $2 | grep "\.deb$" | wc -l) -eq 0 ]; then
     exit 1
 fi
 bname=$(basename $1)
-name=$(echo $bname | cut -d "_" -f 1)
 for f in $(ls $2); do
     cname=$(basename $f)
     if [[ "$cname" == "$bname" ]]; then
@@ -33,4 +32,13 @@ for f in $(ls $2); do
         exit 1
     fi
 done
+
+name=$(echo $bname | cut -d "_" -f 1)
+prevs=$(ls $2 | grep "$name\_")
+if [ $(echo $prevs | wc -l) -gt 0 ]; then
+    echo "previous versions exist"
+    echo "$prevs" | sed "s/^/  -> /g"
+    read
+fi
+
 cp $1 $2/
