@@ -45,7 +45,7 @@ for c in $(cat $MANIFEST | cut -d ":" -f 1 | sort -u); do
         echo "bundling $c -> $comp"
         root=$rel$comp/binary-amd64
         mkdir -p $root
-        for f in $(cat $MANIFEST | grep "^$c:" | cut -d ":" -f 2); do
+        for f in $(cat $MANIFEST | grep "^$c:" | grep -E ":(all|$comp):" | cut -d ":" -f 3); do
             cp $LOCAL_REPOS/$f $root/$f
         done
         newpackages=$root/Packages

@@ -35,14 +35,15 @@ done
 
 name=$(echo $bname | cut -d "_" -f 1)
 prevs=$(ls $2 | grep "$name\_")
-if [ $(echo $prevs | wc -l) -gt 0 ]; then
+if [ -z "$prevs" ]; then
     echo "previous versions exist"
     echo "$prevs" | sed "s/^/  -> /g"
     read
 fi
 
 for f in $(ls $2*.deb); do
-    if cat $2/manifest | grep -q ":$f"; then
+    bname=$(basename $f)
+    if cat $2/manifest | grep -q ":$bname"; then
         continue
     fi
     echo "$f is not in a manifest"
