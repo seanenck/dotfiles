@@ -5,9 +5,11 @@ alias ossh="/usr/bin/ossh -F /dev/null"
 alias dd="sudo dd status=progress"
 alias gmail="/home/enck/.local/bin/email client gmail"
 alias fastmail="/home/enck/.local/bin/email client fastmail"
-alias mutt="echo 'disabled in bash'"
-alias vlc="echo 'disabled in bash'"
 alias dquilt="quilt --quiltrc=${HOME}/.config/quiltrc-dpkg"
+
+for f in zim vlc mutt; do
+    alias $f="echo 'disabled in bash'"
+done
 
 proxy() {
     if [ -z "$1" ]; then
