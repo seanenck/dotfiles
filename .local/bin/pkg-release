@@ -96,7 +96,7 @@ for d in $(ls $DISTS | sort); do
     echo
     rm -f $prev
 done
-server=$MIRROR_EPIPHYTE
+server=$MIRROR_SERVER
 SERVER_FILE="server"
 if [ -e "$SERVER_FILE" ]; then
     server=$(cat $SERVER_FILE)
