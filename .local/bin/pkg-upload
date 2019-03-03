@@ -21,9 +21,9 @@ if [ ! -e "$MANIFEST" ]; then
     exit 1
 fi
 
-cwd=$PWD
 tmpdir=$(mktemp -d)
 cd $tmpdir
+PACKED=packages.tar.gz
 echo "$tmpdir"
 dated=$(date +%Y-%m-%d-%H-%M-%S)
 for c in $(cat $MANIFEST | cut -d ":" -f 1 | sort -u); do
@@ -42,6 +42,7 @@ for c in $(cat $MANIFEST | cut -d ":" -f 1 | sort -u); do
     esac
     rel=dists/$c/
     for comp in $(echo "$MIRROR_COMPONENTS"); do
+        echo "bundling $c -> $comp"
         root=$rel$comp/binary-amd64
         mkdir -p $root
         for f in $(cat $MANIFEST | grep "^$c:" | cut -d ":" -f 2); do
@@ -78,4 +79,53 @@ for c in $(cat $MANIFEST | cut -d ":" -f 1 | sort -u); do
         exit 1
     fi
 done
+
+tar cvzf $PACKED dists/
+
+server=$MIRROR_SERVER
+read -p "upload ($server)? (Y/n) " yn
+if [[ "$yn" != "n" ]]; then
+    echo "preparing index files"
+    _dl() {
+        curl -s "https://voidedtech.com/cgit/debs/plain/$1" >> $(basename $1)
+        if [ $? -ne 0 ]; then
+            echo "unable to retrieve $1"
+            exit 1
+        fi
+    }
+    for f in .index/header.html README.md .index/footer.html .index/package.css; do
+        _dl $f
+    done
+    html=index.html
+    cat header.html > $html
+    cat README.md | markdown >> $html
+    cat footer.html >> $html
+    echo "packing..."
+    pack=upload.tar.gz
+    conf=configure
+    echo "#!/bin/bash
+if [ ! -d 'dists' ]; then
+    echo 'missing dists folder, right dir?'
+    exit 1
+fi
+mkdir -p archive
+for f in \$(find dists/ -type f -name \"*.deb\"); do
+    mv \$f archive/\$(basename \$f)
+done
+for f in \$(find archive/ -type f -mtime +90); do
+    echo \"removing \$f\"
+    rm -f \$f
+done
+rm $pack
+tar xf $PACKED
+rm $PACKED
+rm configure
+" > $conf
+    chmod u+x $conf
+    tmpf=$(mktemp).tar.gz
+    tar cvzf $tmpf $conf $html package.css $PACKED
+    mv $tmpf $pack
+    scp $pack $server:~/
+fi
+
 rm -rf $tmpdir

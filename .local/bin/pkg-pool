@@ -41,4 +41,11 @@ if [ $(echo $prevs | wc -l) -gt 0 ]; then
     read
 fi
 
+for f in $(ls $2*.deb); do
+    if cat $2/manifest | grep -q ":$f"; then
+        continue
+    fi
+    echo "$f is not in a manifest"
+done
+
 cp $1 $2/
