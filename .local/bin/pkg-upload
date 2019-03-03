@@ -1,0 +1,81 @@
+#!/bin/bash
+HOME_CONFIG=$HOME/.config/epiphyte/env
+if [ -e $HOME_CONFIG ]; then
+    source $HOME_CONFIG
+fi
+
+LOCAL_REPOS=$1
+if [ -z "$1" ]; then
+    echo "repo path required..."
+    exit 1
+fi
+
+if [ ! -d "$LOCAL_REPOS" ]; then
+    echo "$LOCAL_REPOS does not exist/is not a directory"
+    exit 1
+fi
+
+MANIFEST=$LOCAL_REPOS/manifest
+if [ ! -e "$MANIFEST" ]; then
+    echo "no manifest file found..."
+    exit 1
+fi
+
+cwd=$PWD
+tmpdir=$(mktemp -d)
+cd $tmpdir
+echo "$tmpdir"
+dated=$(date +%Y-%m-%d-%H-%M-%S)
+for c in $(cat $MANIFEST | cut -d ":" -f 1 | sort -u); do
+    codename=""
+    case $c in
+        "stable")
+            codename="stretch"
+            ;;
+        "unstable")
+            codename="sid"
+            ;;
+        *)
+            echo "unknown: $c"
+            exit 1
+            ;;
+    esac
+    rel=dists/$c/
+    for comp in $(echo "$MIRROR_COMPONENTS"); do
+        root=$rel$comp/binary-amd64
+        mkdir -p $root
+        for f in $(cat $MANIFEST | grep "^$c:" | cut -d ":" -f 2); do
+            cp $LOCAL_REPOS/$f $root/$f
+        done
+        newpackages=$root/Packages
+        apt-ftparchive packages $root > $newpackages
+        oldpackages=$LOCAL_REPOS/$c.$comp.packages
+        if [ -e $oldpackages ]; then
+            diff -u $oldpackages $newpackages
+            if [ $? -ne 0 ]; then
+                echo
+                read -p "please review changes to $c:$comp (enter to continue)"
+                echo
+            fi
+        fi
+        cp $newpackages $oldpackages
+        gzip -c --keep --force -9 $newpackages > $newpackages.gz
+    done
+    release=${rel}Release
+    echo "Suite: $c" > $release
+    echo "Codename: $codename" >> $release
+    echo "$dated" > ${rel}Date
+    echo "Components: $MIRROR_COMPONENTS" >> $release
+    apt-ftparchive release $rel >> $release
+    gpg --clearsign --digest-algo SHA512 --local-user $DEB_SIGN_KEY -o ${rel}InRelease $release
+    if [ $? -ne 0 ]; then
+        echo "unable to sign release"
+        exit 1
+    fi
+    gpg --yes -abs --local-user $DEB_SIGN_KEY -o ${rel}Release.gpg $release
+    if [ $? -ne 0 ]; then
+        echo "unable to sign release"
+        exit 1
+    fi
+done
+rm -rf $tmpdir
