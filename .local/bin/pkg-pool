@@ -46,7 +46,9 @@ for f in $(ls $2*.deb); do
     if cat $2/manifest | grep -q ":$bname"; then
         continue
     fi
-    echo "$f is not in a manifest"
+    echo "$f is not in a manifest (will be deleted next time)"
+    mv $f $2/$f.prev
 done
 
+rm -f $2/*.prev
 cp $1 $2/
