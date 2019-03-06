@@ -36,7 +36,7 @@ _backup() {
     echo "daily backup"
     if [ ! -e $ARCHIVE ]; then
         echo "archiving"
-        tar zcf $ARCHIVE $HOME/.mozilla/ ${PERSONAL_LOC}/notebook/ &>/dev/null
+        tar zcf $ARCHIVE $HOME/.mozilla/ &>/dev/null
         echo "archive completed: $?"
     fi
     echo "${SPACING}pushing profile out"
@@ -48,7 +48,7 @@ _backup() {
         h=${RSYNC_MAIL}$f
         p=${h}.prev
         d=0
-        find ${PERSONAL_LOC}/$f -type d | sort > $h
+        find ${PERSONAL_LOC}/$f -type f | sort > $h
         echo "backing up $f"
         if [ -e "$p" ]; then
             diff -u $h $p > /dev/null
