@@ -49,16 +49,18 @@ _backup() {
         h=${RSYNC_MAIL}$f
         p=${h}.prev
         d=0
-        find ${PERSONAL_LOC}/$f -type f | sort > $h
-        echo "backing up $f"
-        if [ -e "$p" ]; then
-            diff -u $h $p > /dev/null
-            if [ $? -eq 0 ]; then
-                echo "no change to $f"
-                d=1
+        if echo $f | grep -v -q localhost; then
+            find ${PERSONAL_LOC}/$f -type f | sort > $h
+            if [ -e "$p" ]; then
+                diff -u $h $p > /dev/null
+                if [ $? -eq 0 ]; then
+                    echo "no change to $f"
+                    d=1
+                fi
             fi
+            mv $h $p
         fi
-        mv $h $p
+        echo "backing up $f ($d)"
         if [ $d -eq 0 ]; then
             echo "syncing $f"
             rsync -vacr --delete-after $PERSONAL_LOC/$f/ $BASE_SERVER:${INBOX_PATH}/$f/ | sed "s/^/    /g"
