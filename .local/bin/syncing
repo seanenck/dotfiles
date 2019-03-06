@@ -3,7 +3,7 @@ source $HOME/.config/home/common
 source $PRIV_CONF
 COMMON_STORE=/mnt/Storage/Active/
 INBOX_PATH=${COMMON_STORE}Inbox/
-PROFILE_PATH=${INBOX_PATH}profiles
+PROFILE_PATH=${COMMON_STORE}Drop/Profiles
 SPACING="    "
 TODAY=$(date +%Y-%m-%d-%p)
 ARCHIVE=${USER_TMP}profile.$TODAY.tar.gz
