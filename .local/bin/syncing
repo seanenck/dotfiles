@@ -2,7 +2,8 @@
 source $HOME/.config/home/common
 source $PRIV_CONF
 COMMON_STORE=/mnt/Storage/Active/
-PROFILE_PATH=${COMMON_STORE}Rolling/profiles
+INBOX_PATH=${COMMON_STORE}Inbox/
+PROFILE_PATH=${INBOX_PATH}profiles
 SPACING="    "
 TODAY=$(date +%Y-%m-%d-%p)
 ARCHIVE=${USER_TMP}profile.$TODAY.tar.gz
@@ -60,7 +61,7 @@ _backup() {
         mv $h $p
         if [ $d -eq 0 ]; then
             echo "syncing $f"
-            rsync -vacr --delete-after $PERSONAL_LOC/$f/ $BASE_SERVER:${COMMON_STORE}Inbox/$f/ | sed "s/^/    /g"
+            rsync -vacr --delete-after $PERSONAL_LOC/$f/ $BASE_SERVER:${INBOX_PATH}/$f/ | sed "s/^/    /g"
         fi
     done
     touch $BACKUP
