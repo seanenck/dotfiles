@@ -60,7 +60,7 @@ _backup() {
         mv $h $p
         if [ $d -eq 0 ]; then
             echo "syncing $f"
-            rsync -vacr --delete-after $PERSONAL_LOC/$f/ $BASE_SERVER:${COMMON_STORE}Mail/$f/ | sed "s/^/    /g"
+            rsync -vacr --delete-after $PERSONAL_LOC/$f/ $BASE_SERVER:${COMMON_STORE}Inbox/$f/ | sed "s/^/    /g"
         fi
     done
     touch $BACKUP
