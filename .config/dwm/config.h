@@ -123,6 +123,6 @@ static Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
-	{ ClkTagBar,            0,              Button1,        view,           {0} },
+	{ 0,            0,              Button1,        view,           {0} },
 };
 
