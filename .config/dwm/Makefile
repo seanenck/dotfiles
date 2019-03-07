@@ -18,7 +18,7 @@ clean:
 
 build:
 	cp config.h $(DWM)
-	cd $(DWM) && make
+	cd $(DWM) && make VERSION=$(shell git -C $(DWM) log --format=%h)
 
 install:
 	sudo install -Dm755 $(DWM)dwm /usr/bin/dwm
