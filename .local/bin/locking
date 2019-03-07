@@ -138,7 +138,7 @@ _status() {
         text="UNLOCKED"
     else
         if [ -e $DISPLAY_EN ]; then
-            text="NO ZZZ"
+            text="NO_ZZZ"
         fi
     fi
     if [ ! -z "$text" ]; then

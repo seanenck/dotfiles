@@ -3,6 +3,9 @@ source $HOME/.config/home/common
 STAT_GIT=${USER_TMP}/stats.git
 GIT_PARTIAL_PATTERN="weechat|random_seed"
 STAT_LOCK=${USER_TMP}/stat.lock
+STATUS_CMD=$HOME_BIN/status
+VOLUME_CMD=$HOME_BIN/volume
+LOCK_CMD=$HOME_BIN/locking
 
 _get-git-folders() {
     local res f d search
@@ -96,29 +99,29 @@ _ipaddr() {
 
 _output() {
     local v
-    v=$(status git)
+    date +%Y-%m-%dT%H:%M:%S
+    v=$($STATUS_CMD git)
     if [ ! -z "$v" ]; then
-        echo "git: $v"
+        echo "$v" | sed "s/ /->/g"
     fi
-    v=$(locking status)
+    v=$($LOCK_CMD status)
     if [ ! -z "$v" ]; then
-        echo "lock: $v"
+        echo "$v"
     fi
-    v=$(status email | sed "s/^\s*//g;s/\s*$//g")
+    v=$($STATUS_CMD email | sed "s/^\s*//g;s/\s*$//g")
     if [ ! -z "$v" ]; then
-        echo "mail: $v"
+        echo "$v" | sed "s/ /->/g"
     fi
-    echo
-    echo "brightness: "$(xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk '{printf "%3.0f", $1}')
+    echo "brightness:"$(xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk '{printf "%3.0f", $1}') | sed "s/ //g"
     local muted
     local vol
-    muted=$(volume ismute)
+    muted=$($VOLUME_CMD ismute)
     if [[ "$muted" == "true" ]]; then
         vol="0"
     else
-        vol=$(volume volume)
+        vol=$($VOLUME_CMD volume)
     fi
-    echo "volume: $vol"
+    echo "volume:$vol"
     local bat
     local charge
     charge=$(cat /sys/class/power_supply/AC/online)
@@ -128,31 +131,31 @@ _output() {
         charge="+"
     fi
     local cntcharge=0
+    local spacer=""
     for b in $(echo 0 1); do
         local per=$(cat /sys/class/power_supply/BAT$b/capacity)
-        bat="$bat $per%"
+        bat="$bat$spacer$per%"
         cntcharge=$((cntcharge+per))
+        if [ $b -eq 0 ]; then
+            spacer=","
+        fi
     done
     if [ $cntcharge -lt 20 ]; then
         if [[ "$charge" == "-" ]]; then
             charge="WARN$charge"
         fi
     fi
-    echo "battery: $charge($bat)"
-    echo
+    echo "battery:$charge($bat)"
     for a in $(echo "wlp3s0 enp0s31f6"); do
         local addr=$(_ipaddr $a)
         if [ ! -z "$addr" ]; then
-            echo "$addr ($a)"
+            echo "$a:$addr"
         fi
     done
 }
 
 outputs() {
-    local revtmp
-    revtmp=${SYS_STAT}.next
-    _output > $revtmp
-    mv $revtmp $SYS_STAT
+    xsetroot -name $(_output | sed "s/ /|/g" | tr '\n' '|')
 }
 
 if [ -z "$1" ]; then
@@ -169,7 +172,7 @@ if [ -z "$1" ]; then
         stats
         outputs
         echo $$ > $pidfile
-        sleep 2
+        sleep 1
         cnt=$((cnt+1))
         if [ $cnt -gt 15 ]; then
             cnt=0
