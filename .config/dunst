@@ -1,7 +1,6 @@
 [global]
-    monitor = 0
-    follow = none
-    geometry = "1000x1000-30-30"
+    follow = mouse
+    geometry = "250x0-30+30"
     indicate_hidden = yes
     shrink = no
     transparency = 0
@@ -16,7 +15,7 @@
     idle_threshold = 120
 
     ### Text ###
-    font = Monospace 16
+    font = Monospace 10
     line_height = 0
     markup = no
     alignment = left

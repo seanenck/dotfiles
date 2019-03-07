@@ -42,7 +42,7 @@ if [ ! -z "$1" ]; then
                 xautolock -time 5 -locker '/home/enck/.local/bin/locking lock' &
             fi
             if [ $(_isrunning dunst) -ne 0 ]; then
-                dunst --config /home/enck/.config/dunst &
+                dunst -config /home/enck/.config/dunst &
             fi
             if [ $(_isrunning status) -ne 0 ]; then
                 /home/enck/.local/bin/status &

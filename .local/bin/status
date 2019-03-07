@@ -7,8 +7,7 @@ STATUS_CMD=$HOME_BIN/status
 VOLUME_CMD=$HOME_BIN/volume
 LOCK_CMD=$HOME_BIN/locking
 HIDE=${USER_TMP}/nostatus
-NOTIFY=1
-NOTIFY_DUR=55000
+NOTIFY_DUR=5000
 
 _get-git-folders() {
     local res f d search
@@ -105,7 +104,7 @@ _output() {
     date +%Y-%m-%dT%H:%M
     v=$($STATUS_CMD git)
     if [ ! -z "$v" ]; then
-        if [ $1 -eq $NOTIFY ]; then
+        if [ ! -e $HIDE ]; then
             notify-send -t $NOTIFY_DUR "$v"
         fi
     fi
@@ -115,7 +114,7 @@ _output() {
     fi
     v=$($STATUS_CMD email | sed "s/^\s*//g;s/\s*$//g")
     if [ ! -z "$v" ]; then
-        if [ $1 -eq $NOTIFY ]; then
+        if [ ! -e $HIDE ]; then
             notify-send -t $NOTIFY_DUR "$v"
         fi
     fi
@@ -149,9 +148,7 @@ _output() {
     done
     if [ $cntcharge -lt 20 ]; then
         if [[ "$charge" == "-" ]]; then
-            if [ $1 -eq $NOTIFY ]; then
-                notify-send -t $NOTIFY_DUR "WARNING: BATTERY"
-            fi
+            notify-send -t $NOTIFY_DUR "WARNING: BATTERY"
         fi
     fi
     echo "battery:$charge($bat)"
@@ -177,19 +174,12 @@ if [ -z "$1" ]; then
         fi
     fi
     cnt=0
-    l=61
     while [ 1 -eq 1 ]; do
         stats
-        n=$(date +%S)
-        d=0
-        if [ $l -gt $n ]; then
-            if [ ! -e $HIDE ]; then
-                d=$NOTIFY
-                notify-send -t $NOTIFY_DUR "ACTIVE"
-            fi
+        if [ ! -e $HIDE ]; then
+            notify-send -t $NOTIFY_DUR "ACTIVE"
         fi
-        outputs $d
-        l=$n
+        outputs
         echo $$ > $pidfile
         sleep 1
         cnt=$((cnt+1))
