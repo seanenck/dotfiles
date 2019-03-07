@@ -1,6 +1,6 @@
 DWM   := dwm/
 SRC   := git://git.suckless.org/dwm
-PATCH := warnings bottomstack warp
+PATCH := warnings bottomstack warp statusmon
 VERS  := $(shell git -C $(DWM) log --format=%h)_$(shell date +%Y-%m-%d-%H-%M)
 USR   := /usr/bin/dwm
 
