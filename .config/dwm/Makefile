@@ -1,5 +1,5 @@
 DWM := dwm/
-SRC := https://git.suckless.org/dwm
+SRC := git://git.suckless.org/dwm
 
 all: clean build
 
@@ -8,7 +8,8 @@ deps:
 
 clean:
 	rm -rf $(DWM)
-	git clone $(SRC)
+	git clone --depth 1 $(SRC)
+	cd $(DWM) && patch -p1 < ../dwm.patch
 
 build:
 	cp config.h $(DWM)
