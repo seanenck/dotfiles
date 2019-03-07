@@ -1,6 +1,6 @@
 DWM   := dwm/
 SRC   := git://git.suckless.org/dwm
-PATCH := warnings bottomstack warp unused
+PATCH := warnings bottomstack warp
 
 all: clean patch build
 
