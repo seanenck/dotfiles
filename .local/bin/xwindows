@@ -30,12 +30,23 @@ enterkeys() {
     fi
 }
 
+_isrunning() {
+    ps aux | grep -v grep | grep -q "$1"
+    echo $?
+}
+
 if [ ! -z "$1" ]; then
     if [[ "$1" == "system" ]]; then
-        xautolock -time 5 -locker '/home/enck/.local/bin/locking lock' &
-        /home/enck/.local/bin/status &
-        dunst --config /home/enck/.config/dunst &
         while [ 1 -eq 1 ]; do
+            if [ $(_isrunning xautolock) -ne 0 ]; then
+                xautolock -time 5 -locker '/home/enck/.local/bin/locking lock' &
+            fi
+            if [ $(_isrunning dunst) -ne 0 ]; then
+                dunst --config /home/enck/.config/dunst &
+            fi
+            if [ $(_isrunning status) -ne 0 ]; then
+                /home/enck/.local/bin/status &
+            fi
             sleep 10
         done
     fi
