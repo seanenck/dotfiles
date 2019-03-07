@@ -110,7 +110,7 @@ _output() {
     fi
     v=$($STATUS_CMD email | sed "s/^\s*//g;s/\s*$//g")
     if [ ! -z "$v" ]; then
-        echo "UNREAD"
+        echo "$v" | cut -d ":" -f 1 | tr '[:lower:]' '[:upper:]'
     fi
     echo "brightness:"$(xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk '{printf "%3.0f", $1}') | sed "s/ //g"
     local muted
