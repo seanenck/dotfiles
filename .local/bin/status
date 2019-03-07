@@ -118,7 +118,7 @@ _output() {
             notify-send -t $NOTIFY_DUR "$v"
         fi
     fi
-    echo "brightness:"$(xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk '{printf "%3.0f", $1}') | sed "s/ //g"
+    echo "disp:"$(xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk '{printf "%3.0f", $1}') | sed "s/ //g"
     local muted
     local vol
     muted=$($VOLUME_CMD ismute)
@@ -127,7 +127,7 @@ _output() {
     else
         vol=$($VOLUME_CMD volume)
     fi
-    echo "volume:$vol"
+    echo "vol:$vol"
     local bat
     local charge
     charge=$(cat /sys/class/power_supply/AC/online)
@@ -151,7 +151,7 @@ _output() {
             notify-send -t $NOTIFY_DUR "WARNING: BATTERY"
         fi
     fi
-    echo "battery:$charge($bat)"
+    echo "bat:$charge($bat)"
     for a in $(echo "wlp3s0 enp0s31f6"); do
         local addr=$(_ipaddr $a)
         if [ ! -z "$addr" ]; then
