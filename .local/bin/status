@@ -142,7 +142,7 @@ _output() {
     done
     if [ $cntcharge -lt 20 ]; then
         if [[ "$charge" == "-" ]]; then
-            charge="WARN$charge"
+            notify-send -t 1000 "WARNING: BATTERY"
         fi
     fi
     echo "battery:$charge($bat)"
