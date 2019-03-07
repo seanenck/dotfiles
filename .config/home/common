@@ -28,6 +28,7 @@ SYS_ONLINE=${USER_TMP}sys.online
 JOURNALS=${USER_TMP}journal.
 VIEW_JOURNAL=${JOURNALS}$(date +%Y-%m-%d)
 LAST_SYNC=${USER_TMP}last.sync
+HIDE=${USER_TMP}nostatus
 
 # string vars
 BASE_SERVER="fact"
@@ -41,6 +42,7 @@ _setup() {
     local xsess
     echo "user init"
     rm -f $SYS_ONLINE
+    rm -f $HIDE
 
     # cleanup xsession errors
     xsess=$HOME/.xsession-errors

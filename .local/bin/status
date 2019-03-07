@@ -6,7 +6,6 @@ STAT_LOCK=${USER_TMP}/stat.lock
 STATUS_CMD=$HOME_BIN/status
 VOLUME_CMD=$HOME_BIN/volume
 LOCK_CMD=$HOME_BIN/locking
-HIDE=${USER_TMP}/nostatus
 NOTIFY_DUR=5000
 
 _get-git-folders() {
