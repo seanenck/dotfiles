@@ -115,7 +115,6 @@ _output() {
     fi
     v=$($STATUS_CMD email | sed "s/^\s*//g;s/\s*$//g")
     if [ ! -z "$v" ]; then
-        echo "$v" | cut -d ":" -f 1 | tr '[:lower:]' '[:upper:]'
         if [ $1 -eq $NOTIFY ]; then
             notify-send -t $NOTIFY_DUR "$v"
         fi
