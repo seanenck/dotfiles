@@ -58,6 +58,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu-local", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "kitty", NULL };
 static const char *autoclip[] = { "subsystem", "autoclip", "now", NULL };
+static const char *restart[] = { "pkill", "xinit", NULL };
 // volume commands
 static const char *volumeup[] = { "volume", "inc", NULL };
 static const char *volumedown[] = { "volume", "dec", NULL };
@@ -114,7 +115,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
+	{ MODKEY|ShiftMask,             XK_r,      quit,           {0} },
+	{ MODKEY|ShiftMask,             XK_e,      spawn,          {.v = restart } },
 };
 
 /* button definitions */
