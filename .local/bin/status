@@ -184,6 +184,7 @@ if [ -z "$1" ]; then
         d=0
         if [ $l -gt $n ]; then
             d=$NOTIFY
+            notify-send -t $NOTIFY_DUR "ACTIVE"
         fi
         outputs $d
         l=$n
