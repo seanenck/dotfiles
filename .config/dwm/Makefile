@@ -1,6 +1,7 @@
 DWM   := dwm/
 SRC   := git://git.suckless.org/dwm
 PATCH := warnings bottomstack warp
+VERS  := $(shell git -C $(DWM) log --format=%h)_$(shell date +%Y-%m-%d-%H-%M)
 
 all: clean patch build
 
@@ -18,7 +19,7 @@ clean:
 
 build:
 	cp config.h $(DWM)
-	cd $(DWM) && make VERSION=$(shell git -C $(DWM) log --format=%h)
+	cd $(DWM) && make VERSION=$(VERS)
 
 install:
 	sudo install -Dm755 $(DWM)dwm /usr/bin/dwm
