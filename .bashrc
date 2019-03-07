@@ -85,7 +85,7 @@ if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
 fi
 
 if [ ! -z "$DISPLAY" ]; then
-    systemctl --user start xsystem
+    systemctl --user start xsystem 2>/dev/null
 fi
 
 export VISUAL=vim
