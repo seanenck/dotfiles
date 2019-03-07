@@ -1,15 +1,20 @@
-DWM := dwm/
-SRC := git://git.suckless.org/dwm
+DWM   := dwm/
+SRC   := git://git.suckless.org/dwm
+PATCH := warnings bottomstack
 
-all: clean build
+all: clean patch build
 
 deps:
 	sudo apt-get install libxinerama-dev libxft-dev libx11-dev
 
+patch: $(PATCH)
+
+$(PATCH):
+	cd $(DWM) && patch -p1 < ../$@.patch
+
 clean:
 	rm -rf $(DWM)
 	git clone --depth 1 $(SRC)
-	cd $(DWM) && patch -p1 < ../dwm.patch
 
 build:
 	cp config.h $(DWM)

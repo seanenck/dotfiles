@@ -1,16 +1,18 @@
 diff --git a/dwm.c b/dwm.c
-index 4465af1..db65cf6 100644
+index 4465af1..f250a0c 100644
 --- a/dwm.c
 +++ b/dwm.c
-@@ -182,7 +182,6 @@ static void mappingnotify(XEvent *e);
+@@ -180,9 +180,7 @@ static void killclient(const Arg *arg);
+ static void manage(Window w, XWindowAttributes *wa);
+ static void mappingnotify(XEvent *e);
  static void maprequest(XEvent *e);
- static void monocle(Monitor *m);
+-static void monocle(Monitor *m);
  static void motionnotify(XEvent *e);
 -static void movemouse(const Arg *arg);
  static Client *nexttiled(Client *c);
  static void pop(Client *);
  static void propertynotify(XEvent *e);
-@@ -190,7 +189,6 @@ static void quit(const Arg *arg);
+@@ -190,7 +188,6 @@ static void quit(const Arg *arg);
  static Monitor *recttomon(int x, int y, int w, int h);
  static void resize(Client *c, int x, int y, int w, int h, int interact);
  static void resizeclient(Client *c, int x, int y, int w, int h);
@@ -18,23 +20,38 @@ index 4465af1..db65cf6 100644
  static void restack(Monitor *m);
  static void run(void);
  static void scan(void);
-@@ -199,7 +197,6 @@ static void sendmon(Client *c, Monitor *m);
- static void setclientstate(Client *c, long state);
- static void setfocus(Client *c);
- static void setfullscreen(Client *c, int fullscreen);
--static void setlayout(const Arg *arg);
- static void setmfact(const Arg *arg);
- static void setup(void);
- static void seturgent(Client *c, int urg);
-@@ -209,7 +206,6 @@ static void spawn(const Arg *arg);
+@@ -209,8 +206,6 @@ static void spawn(const Arg *arg);
  static void tag(const Arg *arg);
  static void tagmon(const Arg *arg);
  static void tile(Monitor *);
 -static void togglebar(const Arg *arg);
- static void togglefloating(const Arg *arg);
+-static void togglefloating(const Arg *arg);
  static void toggletag(const Arg *arg);
  static void toggleview(const Arg *arg);
-@@ -1132,66 +1128,6 @@ motionnotify(XEvent *e)
+ static void unfocus(Client *c, int setfocus);
+@@ -1100,21 +1095,6 @@ maprequest(XEvent *e)
+ 		manage(ev->window, &wa);
+ }
+ 
+-void
+-monocle(Monitor *m)
+-{
+-	unsigned int n = 0;
+-	Client *c;
+-
+-	for (c = m->clients; c; c = c->next)
+-		if (ISVISIBLE(c))
+-			n++;
+-	if (n > 0) /* override layout symbol */
+-		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n);
+-	for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
+-		resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
+-}
+-
+ void
+ motionnotify(XEvent *e)
+ {
+@@ -1132,66 +1112,6 @@ motionnotify(XEvent *e)
  	mon = m;
  }
  
@@ -101,7 +118,7 @@ index 4465af1..db65cf6 100644
  Client *
  nexttiled(Client *c)
  {
-@@ -1287,63 +1223,6 @@ resizeclient(Client *c, int x, int y, int w, int h)
+@@ -1287,63 +1207,6 @@ resizeclient(Client *c, int x, int y, int w, int h)
  	XSync(dpy, False);
  }
  
@@ -165,28 +182,7 @@ index 4465af1..db65cf6 100644
  void
  restack(Monitor *m)
  {
-@@ -1497,20 +1376,6 @@ setfullscreen(Client *c, int fullscreen)
- 	}
- }
- 
--void
--setlayout(const Arg *arg)
--{
--	if (!arg || !arg->v || arg->v != selmon->lt[selmon->sellt])
--		selmon->sellt ^= 1;
--	if (arg && arg->v)
--		selmon->lt[selmon->sellt] = (Layout *)arg->v;
--	strncpy(selmon->ltsymbol, selmon->lt[selmon->sellt]->symbol, sizeof selmon->ltsymbol);
--	if (selmon->sel)
--		arrange(selmon);
--	else
--		drawbar(selmon);
--}
--
- /* arg > 1.0 will set mfact absolutely */
- void
- setmfact(const Arg *arg)
-@@ -1696,15 +1561,6 @@ tile(Monitor *m)
+@@ -1696,29 +1559,6 @@ tile(Monitor *m)
  		}
  }
  
@@ -199,6 +195,20 @@ index 4465af1..db65cf6 100644
 -	arrange(selmon);
 -}
 -
+-void
+-togglefloating(const Arg *arg)
+-{
+-	if (!selmon->sel)
+-		return;
+-	if (selmon->sel->isfullscreen) /* no support for fullscreen windows */
+-		return;
+-	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
+-	if (selmon->sel->isfloating)
+-		resize(selmon->sel, selmon->sel->x, selmon->sel->y,
+-			selmon->sel->w, selmon->sel->h, 0);
+-	arrange(selmon);
+-}
+-
  void
- togglefloating(const Arg *arg)
+ toggletag(const Arg *arg)
  {
