@@ -6,6 +6,8 @@ STAT_LOCK=${USER_TMP}/stat.lock
 STATUS_CMD=$HOME_BIN/status
 VOLUME_CMD=$HOME_BIN/volume
 LOCK_CMD=$HOME_BIN/locking
+NOTIFY=1
+NOTIFY_DUR=55000
 
 _get-git-folders() {
     local res f d search
@@ -102,7 +104,9 @@ _output() {
     date +%Y-%m-%dT%H:%M
     v=$($STATUS_CMD git)
     if [ ! -z "$v" ]; then
-        echo "$v" | sed "s/ /->/g"
+        if [ $1 -eq $NOTIFY ]; then
+            notify-send -t $NOTIFY_DUR "$v"
+        fi
     fi
     v=$($LOCK_CMD status)
     if [ ! -z "$v" ]; then
@@ -111,7 +115,9 @@ _output() {
     v=$($STATUS_CMD email | sed "s/^\s*//g;s/\s*$//g")
     if [ ! -z "$v" ]; then
         echo "$v" | cut -d ":" -f 1 | tr '[:lower:]' '[:upper:]'
-        notify-send -t 1000 "$v"
+        if [ $1 -eq $NOTIFY ]; then
+            notify-send -t $NOTIFY_DUR "$v"
+        fi
     fi
     echo "brightness:"$(xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk '{printf "%3.0f", $1}') | sed "s/ //g"
     local muted
@@ -143,7 +149,9 @@ _output() {
     done
     if [ $cntcharge -lt 20 ]; then
         if [[ "$charge" == "-" ]]; then
-            notify-send -t 1000 "WARNING: BATTERY"
+            if [ $1 -eq $NOTIFY ]; then
+                notify-send -t $NOTIFY_DUR "WARNING: BATTERY"
+            fi
         fi
     fi
     echo "battery:$charge($bat)"
@@ -156,7 +164,7 @@ _output() {
 }
 
 outputs() {
-    xsetroot -name $(_output | sed "s/ /|/g" | tr '\n' '|')
+    xsetroot -name $(_output $1 | sed "s/ /|/g" | tr '\n' '|')
 }
 
 if [ -z "$1" ]; then
@@ -169,9 +177,16 @@ if [ -z "$1" ]; then
         fi
     fi
     cnt=0
+    l=61
     while [ 1 -eq 1 ]; do
         stats
-        outputs
+        n=$(date +%S)
+        d=0
+        if [ $l -gt $n ]; then
+            d=$NOTIFY
+        fi
+        outputs $d
+        l=$n
         echo $$ > $pidfile
         sleep 1
         cnt=$((cnt+1))
