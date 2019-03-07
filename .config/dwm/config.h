@@ -59,6 +59,7 @@ static const char *dmenucmd[] = { "dmenu-local", "-m", dmenumon, "-fn", dmenufon
 static const char *termcmd[]  = { "kitty", NULL };
 static const char *autoclip[] = { "subsystem", "autoclip", "now", NULL };
 static const char *restart[] = { "pkill", "xinit", NULL };
+static const char *status[] = { "status", "toggle", NULL };
 // volume commands
 static const char *volumeup[] = { "volume", "inc", NULL };
 static const char *volumedown[] = { "volume", "dec", NULL };
@@ -89,6 +90,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Left,   incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_Right,  incnmaster,     {.i = -1 } },
     { MODKEY,                       XK_s,      spawn,          {.v = autoclip } },
+    { MODKEY|ShiftMask,             XK_h,      spawn,          {.v = status } },
 	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_space,  setlayout,      {0} },
 	{ MODKEY,                       XK_Tab,    focusmon,       {.i = -1 } },

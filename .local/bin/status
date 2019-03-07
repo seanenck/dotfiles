@@ -6,6 +6,7 @@ STAT_LOCK=${USER_TMP}/stat.lock
 STATUS_CMD=$HOME_BIN/status
 VOLUME_CMD=$HOME_BIN/volume
 LOCK_CMD=$HOME_BIN/locking
+HIDE=${USER_TMP}/nostatus
 NOTIFY=1
 NOTIFY_DUR=55000
 
@@ -183,8 +184,10 @@ if [ -z "$1" ]; then
         n=$(date +%S)
         d=0
         if [ $l -gt $n ]; then
-            d=$NOTIFY
-            notify-send -t $NOTIFY_DUR "ACTIVE"
+            if [ ! -e $HIDE ]; then
+                d=$NOTIFY
+                notify-send -t $NOTIFY_DUR "ACTIVE"
+            fi
         fi
         outputs $d
         l=$n
@@ -206,6 +209,13 @@ else
             ;;
         "email")
             _unread
+            ;;
+        "toggle")
+            if [ -e $HIDE ]; then
+                rm -f $HIDE
+            else
+                touch $HIDE
+            fi
             ;;
         *)
             echo "unknown command: $1"
