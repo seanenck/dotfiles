@@ -1,54 +1,89 @@
-#!/bin/bash
-if [ -z "$1" ]; then
-    echo "no input file given"
-    exit 1
-fi
-if [ ! -e "$1" ]; then
-    echo "$1 does not exist"
-    exit 1
-fi
-echo "$1" | grep -q "\.deb$"
-if [ $? -ne 0 ]; then
-    echo "unknown file type"
-    exit 1
-fi
-if [ -z "$2" ]; then
-    echo "target repo required"
-    exit 1
-fi
-if [ ! -d "$2" ]; then
-    echo "$2 is not a valid target"
-    exit 1
-fi
-if [ $(ls $2 | grep "\.deb$" | wc -l) -eq 0 ]; then
-    echo "$2 is not a repository"
-    exit 1
-fi
-bname=$(basename $1)
-for f in $(ls $2); do
-    cname=$(basename $f)
-    if [[ "$cname" == "$bname" ]]; then
-        echo "$bname is already deployed to $2"
-        exit 1
-    fi
-done
+#!/usr/bin/python
+import argparse
+import os
+import subprocess
 
-name=$(echo $bname | cut -d "_" -f 1)
-prevs=$(ls $2 | grep "$name\_")
-if [ ! -z "$prevs" ]; then
-    echo "previous versions exist"
-    echo "$prevs" | sed "s/^/  -> /g"
-    echo
-fi
 
-for f in $(ls $2*.deb); do
-    bname=$(basename $f)
-    if cat $2/manifest | grep -q ":$bname"; then
-        continue
-    fi
-    echo "$f is not in a manifest (will be deleted next time)"
-    mv $f $f.prev
-done
+_MANIFEST = "manifest"
+_DEB = ".deb"
+_PREV = ".prev"
 
-rm -f $2/*.prev
-cp $1 $2/
+
+def _move(src, dest, manifest):
+    """Pool a package."""
+    bname = os.path.basename(src)
+    to = os.path.join(dest, bname)
+    if os.path.exists(to):
+        print(bname + " is already deployed")
+        return
+    name = bname.split("_")[0]
+    prevs = False
+    checks = []
+    operations = []
+    for f in os.listdir(dest):
+        if f.endswith(_PREV):
+            print("removing " + f)
+            os.remove(os.path.join(dest, f))
+        if not f.endswith(_DEB):
+            continue
+        fname = f.split("_")[0]
+        if fname == name:
+            if not prevs:
+                print("previous version(s) exist")
+                prevs = True
+            print("  -> " + f)
+        else:
+            checks.append(f)
+    if len(checks) > 0:
+        currents = []
+        with open(manifest, 'r') as m:
+            for l in m.readlines():
+                currents.append(l.split(":")[2].strip())
+        for c in checks:
+            if c in currents:
+                print(c + " is not in a manifest (will be deleted)")
+                fpath = os.path.join(dest, c)
+                operations.append(["mv", fpath, fpath + _PREV])
+    operations.append(["cp", src, dest])
+    for o in operations:
+        subprocess.call(o)
+
+
+def _pool(src, dest):
+    """Add a package to the pool."""
+    valid = True
+    if os.path.exists(src):
+        if not os.path.isfile(src) or not src.endswith(_DEB):
+            print("file is not a " + _DEB)
+            valid = False
+    else:
+        valid = False
+        print("source does not exist")
+    manifest = os.path.join(dest, _MANIFEST)
+    if os.path.exists(dest):
+        if os.path.isdir(dest):
+            if not os.path.exists(manifest):
+                print("invalid directory, not a pool")
+                valid = False
+        else:
+            print("dest is not a directory")
+            valid = False
+    else:
+        valid = False
+        print("pool does not exist")
+    if not valid:
+        return
+    _move(src, dest, manifest)
+
+
+def main():
+    """Program entry."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("deb")
+    parser.add_argument("destination")
+    args = parser.parse_args()
+    _pool(args.deb, args.destination)
+
+
+if __name__ == "__main__":
+    main()
