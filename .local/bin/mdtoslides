@@ -61,7 +61,8 @@ def _mdtoslides(args):
                              "landscape",
                              "-",
                              pdf_file], stdin=h)
-    cmd = ["pdfunite"] + sorted(pdf_files) + [os.path.join(args.output, "output.pdf")]
+    out_file = os.path.join(args.output, "output.pdf")
+    cmd = ["pdfunite"] + sorted(pdf_files) + [out_file]
     subprocess.call(cmd)
     print("completed")
 
@@ -79,7 +80,6 @@ def main():
     for f in os.listdir(args.output):
         os.remove(os.path.join(args.output, f))
     _mdtoslides(args)
-
 
 
 if __name__ == "__main__":

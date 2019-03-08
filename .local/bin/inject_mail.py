@@ -1,3 +1,5 @@
+#!/usr/bin/python
+"""Inject email directly into maildir."""
 import sys
 import mailbox
 import email
@@ -6,7 +8,9 @@ import os
 from email.mime.message import MIMEMessage
 import email.utils
 
+
 def main():
+    """Program entry."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--address", type=str)
     parser.add_argument("--maildir", type=str)
@@ -27,6 +31,7 @@ def main():
     msg.add_header("Subject", args.subject)
     msg.add_header("Date", email.utils.formatdate(localtime=True))
     maildir.add(msg)
+
 
 if __name__ == "__main__":
     main()
