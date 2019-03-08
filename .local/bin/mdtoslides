@@ -1,0 +1,86 @@
+#!/usr/bin/python
+import os
+import argparse
+import subprocess
+
+
+_CSS = """
+body {
+    padding-left: 0.5in;
+    padding-right: 0.5in;
+    padding-top: 0.5in;
+    padding-bottom: 0.5in;
+    font-size: 32px;
+    line-height: 1.5;
+    font-family: Arial, Helvetica, sans-serif;
+}
+h1 {
+    text-align: center;
+    font-size: 48px;
+}
+"""
+
+
+def _mdtoslides(args):
+    """Convert markdown to pdf slides."""
+    files = []
+    for f in os.listdir("."):
+        if f.endswith(".md"):
+            files.append(f)
+    if len(files) == 0:
+        print("no markdown files found in directory")
+        return
+    css = _CSS
+    if os.path.exists(args.css):
+        print("using custom css")
+        with open(args.css, 'r') as f:
+            css = f.read()
+    idx = 0
+    html_files = []
+    for f in sorted(files):
+        print("converting " + f)
+        str_id = str(idx)
+        file_name = os.path.join(args.output, str_id + ".html")
+        html_files.append(file_name)
+        with open(file_name, 'w') as w:
+            w.write("<html><head><style>\n")
+            w.write(css)
+            w.write("</style></head><body>\n")
+            w.write("<div id='slide-" + str_id + "'>\n")
+            w.flush()
+            subprocess.call(["markdown", f], stdout=w)
+            w.write("</div></body></html>")
+        idx += 1
+    pdf_files = []
+    for f in sorted(html_files):
+        pdf_file = f + ".pdf"
+        pdf_files.append(pdf_file)
+        with open(f, 'r') as h:
+            subprocess.call(["wkhtmltopdf",
+                             "-O",
+                             "landscape",
+                             "-",
+                             pdf_file], stdin=h)
+    cmd = ["pdfunite"] + sorted(pdf_files) + [os.path.join(args.output, "output.pdf")]
+    subprocess.call(cmd)
+    print("completed")
+
+
+def main():
+    """Program entry."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", default="bin/")
+    parser.add_argument("--css", default="slides.css")
+    args = parser.parse_args()
+    if not os.path.exists(args.output):
+        print("making output directory")
+        os.mkdir(args.output)
+    print("preparing...")
+    for f in os.listdir(args.output):
+        os.remove(os.path.join(args.output, f))
+    _mdtoslides(args)
+
+
+
+if __name__ == "__main__":
+    main()
