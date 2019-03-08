@@ -94,10 +94,6 @@ stats() {
     rm -f $STAT_LOCK
 }
 
-_ipaddr() {
-    ip addr | grep "$1" | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d'/' | grep '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$'
-}
-
 _output() {
     local v
     date +%Y-%m-%dT%H:%M
@@ -151,12 +147,7 @@ _output() {
         fi
     fi
     echo "bat:$charge($bat)"
-    for a in $(echo "wlp3s0 enp0s31f6"); do
-        local addr=$(_ipaddr $a)
-        if [ ! -z "$addr" ]; then
-            echo "$a:$addr"
-        fi
-    done
+    wsw --mode addr
 }
 
 outputs() {

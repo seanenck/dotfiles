@@ -170,7 +170,7 @@ sync-now() {
     fi
 }
 
-network=$(${HOME_BIN}/wsw current)
+network=$(wsw --mode current)
 echo $network | grep -q -E "$NET_SYNC"
 if [ $? -ne 0 ]; then
     exit 0

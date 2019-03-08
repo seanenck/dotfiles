@@ -47,7 +47,7 @@ for f in $(ls $2*.deb); do
         continue
     fi
     echo "$f is not in a manifest (will be deleted next time)"
-    mv $f $2/$f.prev
+    mv $f $f.prev
 done
 
 rm -f $2/*.prev

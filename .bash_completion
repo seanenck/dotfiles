@@ -22,7 +22,7 @@ complete -F _totp totp
 _wsw() {
     local opts cur
     source $HOME/.config/home/common
-    opts=$($HOME_BIN/wsw list)
+    opts=$(wsw --mode list)
     cur=${COMP_WORDS[COMP_CWORD]}
     COMPREPLY=( $(compgen -W "reload $opts" -- $cur) )
 }
