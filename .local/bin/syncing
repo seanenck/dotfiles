@@ -126,7 +126,7 @@ _sendzips() {
             local subj
             subj="automated: zips ($bname) $TODAY"
             mpack -s "$subj" -o $fname $zname
-            cat $fname | python3 $HOME_BIN/mail.py --subject "$subj" --address $ZIP_MAIL --maildir ${MAIL_DIR}fastmail/Filtered/Automated/
+            cat $fname | python3 $HOME_BIN/inject_mail.py --subject "$subj" --address $ZIP_MAIL --maildir ${MAIL_DIR}fastmail/Filtered/Automated/
             rm -f $zname
             rm -f $fname
         fi
