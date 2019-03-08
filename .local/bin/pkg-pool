@@ -38,7 +38,7 @@ prevs=$(ls $2 | grep "$name\_")
 if [ ! -z "$prevs" ]; then
     echo "previous versions exist"
     echo "$prevs" | sed "s/^/  -> /g"
-    read
+    echo
 fi
 
 for f in $(ls $2*.deb); do
