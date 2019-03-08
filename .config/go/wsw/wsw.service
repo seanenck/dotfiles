@@ -1,0 +1,9 @@
+[Unit]
+Description=wpa_supplicant wrapper
+
+[Service]
+ExecStart=/usr/bin/wsw --mode daemon
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
