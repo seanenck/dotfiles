@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import subprocess
 import os
 import common
@@ -151,10 +151,12 @@ def _build(env, settings):
             output.write("files:\n")
             with open(m, 'r') as f:
                 lines = []
-                for l in f:
-                    while "  " in l:
-                        l = l.replace("  ", " ")
-                    lines.append(l.split(" ")[5].strip().replace("./", "").strip())
+                for line in f:
+                    while "  " in line:
+                        line = line.replace("  ", " ")
+                    line = line.split(" ")[5].strip()
+                    line = line.replace("./", "").strip()
+                    lines.append(line)
                 lines = sorted([bname + ": " + x for x in lines if x])
                 for l in lines:
                     output.write(l + "\n")
