@@ -98,8 +98,6 @@ source $XDG_USER_CONFIG
 export GOPATH=$HOME/.go
 export TERM=xterm
 source ~/.config/home/debian
-DEB_BUILD_GO="/build/go/"
-DEB_BUILD_DIR="${DEB_BUILD_GO}src/packages/"
 DEBEMAIL="enckse@voidedtech.com"
 DEBFULLNAME="Sean Enck"
 export DEBEMAIL DEBFULLNAME DEB_SIGN_KEY DEB_BUILD_DIR DEB_BUILD_GO

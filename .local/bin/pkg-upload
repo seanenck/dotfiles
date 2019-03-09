@@ -2,7 +2,6 @@
 """Debian package uploading."""
 import argparse
 import os
-import common
 import tempfile
 import debian
 import shutil
@@ -147,7 +146,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("pool")
     args = parser.parse_args()
-    deb_env = common.read_env("home/debian")
+    deb_env = debian.read_env()
     if not os.path.exists(args.pool):
         print("invalid input path")
         return

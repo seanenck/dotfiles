@@ -7,6 +7,11 @@ MANIFEST = "manifest"
 DEB = ".deb"
 
 
+def read_env():
+    """Read debian env variables."""
+    return common.read_env(file_name="home/debian")
+
+
 def parse_manifest(manifest_file):
     """Parse the pool manifest."""
     if not os.path.exists(manifest_file):
