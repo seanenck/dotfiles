@@ -29,12 +29,6 @@ _music() {
     rsync -av --include-from $tmpfile --exclude="*" -e "ssh" "$BASE_SERVER:store/Home/Media/Music/" $HOME_CACHE/music --delete-after --delete-excluded
 }
 
-_maintain() {
-    sudo btrfs balance start --full-balance /
-    sudo btrfs filesystem defragment -r /
-    deborphan
-}
-
 if [ -z "$1" ]; then
     echo "no command given"
     exit 1
@@ -45,9 +39,6 @@ case "$1" in
         ;;
     "music")
         _music
-        ;;
-    "maintain")
-        _maintain
         ;;
     *)
         echo "unknown command: $1"

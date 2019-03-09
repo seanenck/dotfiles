@@ -33,16 +33,8 @@ _updates() {
     local cur opts
     if [ $COMP_CWORD -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        COMPREPLY=( $(compgen -W "music weechat maintain" -- $cur) )
+        COMPREPLY=( $(compgen -W "music weechat" -- $cur) )
     fi
 }
 
 complete -F _updates updates
-
-_pkg-checkinstall() {
-    local cur
-    cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "--no-checkout --no-reset --clean --no-pull" -- $cur) )
-}
-
-complete -F _pkg-checkinstall pkg-checkinstall
