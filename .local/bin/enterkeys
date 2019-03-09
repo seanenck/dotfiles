@@ -1,0 +1,33 @@
+#!/bin/bash
+enter-window-vals() {
+    local word window active i
+    word=$2
+    window=0
+    while [ $window -eq 0 ]; do
+        echo "please activate the $1 window to enter the text into"
+        sleep 3
+        active=$(xdotool getactivewindow)
+        xdotool search --class $1 | grep -q $active
+        if [ $? -eq 0 ]; then
+            window=1
+        else
+            echo "please select a $1 window"
+        fi
+    done
+    xdotool type "$word"
+    for i in ${@:3}; do
+        xdotool key $i
+    done
+}
+
+_enterbrowserkeys() {
+    enter-window-vals "Firefox" "$@" "Return"
+}
+
+enterkeys() {
+    if [ ! -z $1 ]; then
+        _enterbrowserkeys "$@"
+    fi
+}
+
+enterkeys "$@"

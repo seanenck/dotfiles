@@ -58,13 +58,13 @@ def _sleep(env):
         return
     _i3lock(env, now=True)
 
+
 def _lock(env):
     """Lock the screen."""
     if os.path.exists(env.unlocked):
         return
     if not _is_locked():
         _i3lock(env)
-
 
 
 def _toggle(env):

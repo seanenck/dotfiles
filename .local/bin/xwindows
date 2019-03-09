@@ -1,56 +1,48 @@
-#!/bin/bash
-enter-window-vals() {
-    local word window active i
-    word=$2
-    window=0
-    while [ $window -eq 0 ]; do
-        echo "please activate the $1 window to enter the text into"
-        sleep 3
-        active=$(xdotool getactivewindow)
-        xdotool search --class $1 | grep -q $active
-        if [ $? -eq 0 ]; then
-            window=1
-        else
-            echo "please select a $1 window"
-        fi
-    done
-    xdotool type "$word"
-    for i in ${@:3}; do
-        xdotool key $i
-    done
-}
+#!/usr/bin/python3
+"""X Utilities."""
+import argparse
+import common
+import subprocess
+import os
 
-_enterbrowserkeys() {
-    enter-window-vals "Firefox" "$@" "Return"
-}
 
-enterkeys() {
-    if [ ! -z $1 ]; then
-        _enterbrowserkeys "$@"
-    fi
-}
+def _is_running(obj, command="pidof"):
+    """Check if a process is running."""
+    return subprocess.call([command, obj]) == 0
 
-_isrunning() {
-    ps aux | grep -v grep | grep -q "$1"
-    echo $?
-}
 
-if [ ! -z "$1" ]; then
-    if [[ "$1" == "system" ]]; then
-        while [ 1 -eq 1 ]; do
-            if [ $(_isrunning xautolock) -ne 0 ]; then
-                xautolock -time 5 -locker '/home/enck/.local/bin/locking lock' &
-            fi
-            if [ $(_isrunning dunst) -ne 0 ]; then
-                dunst -config /home/enck/.config/dunst &
-            fi
-            if [ $(_isrunning status) -ne 0 ]; then
-                /home/enck/.local/bin/status &
-            fi
-            sleep 10
-        done
-    fi
-    exit 0
-fi
+def _daemon(env):
+    """Daemon mode."""
+    import time
+    locking = os.path.join(env.HOME_BIN, "locking")
+    dunst_conf = os.path.join(env.HOME, ".config/dunst")
+    status = "status"
+    status_bin = os.path.join(env.HOME_BIN, "status")
+    while True:
+        if not _is_running("xautolock"):
+            subprocess.Popen(["xautolock",
+                              "-time",
+                              "5",
+                              "-locker",
+                              "'" + locking + " lock'"])
+        if not _is_running("dunst"):
+            subprocess.Popen(["dunst",
+                              "-config",
+                              dunst_conf])
+        if not _is_running(status, command="pgrep"):
+            subprocess.Popen([status_bin])
+        time.sleep(10)
 
-enterkeys "$@"
+
+def main():
+    """Program entry."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("command")
+    args = parser.parse_args()
+    env = common.read_env()
+    if args.command == "system":
+        _daemon(env)
+
+
+if __name__ == "__main__":
+    main()
