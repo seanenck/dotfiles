@@ -145,10 +145,10 @@ def _build(env, settings):
                                  bin_deb])
                 subprocess.call(["dpkg", "-c", bin_deb], stdout=manifest)
                 manifests.append(deb_mani)
-    for m in manifests:
-        bname = m.split(".")[-1]
-        with open("install.manifest", 'w') as output:
-            output.write("files:\n")
+    with open("install.manifest", 'w') as output:
+        output.write("files:\n")
+        for m in sorted(manifests):
+            bname = m.split(".")[-1]
             with open(m, 'r') as f:
                 lines = []
                 for line in f:
