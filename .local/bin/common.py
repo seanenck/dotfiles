@@ -1,7 +1,6 @@
 #!/usr/bin/python
 """Common environment processing."""
 import os
-import io
 from subprocess import Popen, PIPE
 
 
@@ -11,10 +10,10 @@ class Object(object):
     pass
 
 
-def read_env():
+def read_env(file_name="home/common"):
     """Read the environment for my user."""
     home_env = os.environ["HOME"]
-    home = os.path.join(home_env, ".config/home/common")
+    home = os.path.join(home_env, ".config", file_name)
     p = Popen(["bash",
                "-c",
                "source " + home + "; _exports"],

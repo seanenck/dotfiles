@@ -1,131 +1,162 @@
-#!/bin/bash
-HOME_CONFIG=$HOME/.config/epiphyte/env
-if [ -e $HOME_CONFIG ]; then
-    source $HOME_CONFIG
-fi
+#!/usr/bin/python3
+"""Debian package uploading."""
+import argparse
+import os
+import common
+import tempfile
+import debian
+import shutil
+import subprocess
+import urllib.request
 
-LOCAL_REPOS=$1
-if [ -z "$1" ]; then
-    echo "repo path required..."
-    exit 1
-fi
 
-if [ ! -d "$LOCAL_REPOS" ]; then
-    echo "$LOCAL_REPOS does not exist/is not a directory"
-    exit 1
-fi
-
-MANIFEST=$LOCAL_REPOS/manifest
-if [ ! -e "$MANIFEST" ]; then
-    echo "no manifest file found..."
-    exit 1
-fi
-
-tmpdir=$(mktemp -d)
-cd $tmpdir
-PACKED=packages.tar.gz
-echo "$tmpdir"
-dated=$(date +%Y-%m-%d-%H-%M-%S)
-for c in $(cat $MANIFEST | cut -d ":" -f 1 | sort -u); do
-    codename=""
-    case $c in
-        "stable")
-            codename="stretch"
-            ;;
-        "unstable")
-            codename="sid"
-            ;;
-        *)
-            echo "unknown: $c"
-            exit 1
-            ;;
-    esac
-    rel=dists/$c/
-    for comp in $(echo "$MIRROR_COMPONENTS"); do
-        echo "bundling $c -> $comp"
-        root=$rel$comp/binary-amd64
-        mkdir -p $root
-        for f in $(cat $MANIFEST | grep "^$c:" | grep -E ":(all|$comp):" | cut -d ":" -f 3); do
-            cp $LOCAL_REPOS/$f $root/$f
-        done
-        newpackages=$root/Packages
-        apt-ftparchive packages $root > $newpackages
-        oldpackages=$LOCAL_REPOS/$c.$comp.packages
-        if [ -e $oldpackages ]; then
-            diff -u $oldpackages $newpackages
-            if [ $? -ne 0 ]; then
-                echo
-                read -p "please review changes to $c:$comp (enter to continue)"
-                echo
-            fi
-        fi
-        cp $newpackages $oldpackages
-        gzip -c --keep --force -9 $newpackages > $newpackages.gz
-    done
-    release=${rel}Release
-    echo "Suite: $c" > $release
-    echo "Codename: $codename" >> $release
-    echo "$dated" > ${rel}Date
-    echo "Components: $MIRROR_COMPONENTS" >> $release
-    apt-ftparchive release $rel >> $release
-    gpg --clearsign --digest-algo SHA512 --local-user $DEB_SIGN_KEY -o ${rel}InRelease $release
-    if [ $? -ne 0 ]; then
-        echo "unable to sign release"
-        exit 1
-    fi
-    gpg --yes -abs --local-user $DEB_SIGN_KEY -o ${rel}Release.gpg $release
-    if [ $? -ne 0 ]; then
-        echo "unable to sign release"
-        exit 1
-    fi
-done
-
-tar cvzf $PACKED dists/
-
-server=$MIRROR_SERVER
-read -p "upload ($server)? (Y/n) " yn
-if [[ "$yn" != "n" ]]; then
-    echo "preparing index files"
-    _dl() {
-        curl -s "https://voidedtech.com/cgit/debs/plain/$1" >> $(basename $1)
-        if [ $? -ne 0 ]; then
-            echo "unable to retrieve $1"
-            exit 1
-        fi
-    }
-    for f in .index/header.html README.md .index/footer.html .index/package.css; do
-        _dl $f
-    done
-    html=index.html
-    cat header.html > $html
-    cat README.md | markdown >> $html
-    cat footer.html >> $html
-    echo "packing..."
-    pack=upload.tar.gz
-    conf=configure
-    echo "#!/bin/bash
-if [ ! -d 'dists' ]; then
+_REPOS = {"stable": "stretch", "unstable": "sid"}
+_DISTS= "dists"
+_PACKED = "packages.tar.gz"
+_INDEX = "index.html"
+_CSS = "package.css"
+_URL = "https://voidedtech.com/cgit/debs/plain/"
+_UPLOAD = "upload.tar.gz"
+_ARCHIVE = "archive"
+_SHELL = "configure"
+_CONFIGURE = """#!/bin/bash
+if [ ! -d """ + _DISTS + """ ]; then
     echo 'missing dists folder, right dir?'
     exit 1
 fi
-mkdir -p archive
-for f in \$(find dists/ -type f -name \"*.deb\"); do
-    mv \$f archive/\$(basename \$f)
+mkdir -p """ + _ARCHIVE + """
+for f in $(find """ + _DISTS + """/ -type f -name "*.deb"); do
+    mv $f """ + _ARCHIVE + """/$(basename $f)
 done
-for f in \$(find archive/ -type f -mtime +90); do
-    echo \"removing \$f\"
-    rm -f \$f
+for f in $(find """ + _ARCHIVE + """/ -type f -mtime +90); do
+    echo "removing $f"
+    rm -f $f
 done
-rm $pack
-tar xf $PACKED
-rm $PACKED
+rm """ + _UPLOAD + """
+tar xf """ + _PACKED + """
+rm """ + _PACKED + """
 rm configure
-" > $conf
-    chmod u+x $conf
-    tmpf=$(mktemp).tar.gz
-    tar cvzf $tmpf $conf $html package.css $PACKED
-    mv $tmpf $pack
-    scp $pack $server:~/
-fi
+"""
 
-rm -rf $tmpdir
+
+def _download(resource, index=".index/", stdout=None, markdown=False):
+    """Download a file."""
+    file_name = "{}{}".format(index, resource)
+    output = resource + ".tmp"
+    urllib.request.urlretrieve(_URL + file_name, output)
+    if markdown:
+        md = output + ".md"
+        with open(md, 'w') as m:
+            subprocess.call(["markdown", output], stdout=m)
+        os.remove(output)
+        output = md
+    if stdout is None:
+        os.rename(output, resource)
+    else:
+        with open(output, 'r') as r:
+            for l in r:
+                stdout.write(l)
+        os.remove(output)
+
+def _upload(env):
+    """Upload the package."""
+    print("uploading...")
+    with open(_INDEX, 'w') as f:
+        _download("header.html", stdout=f)
+        _download("README.md", index="", stdout=f, markdown=True)
+        _download("footer.html", stdout=f)
+    _download(_CSS)
+    with open(_SHELL, 'w') as f:
+        f.write(_CONFIGURE)
+    subprocess.call(["chmod", "u+x", _SHELL])
+    subprocess.call(["tar", "cvzf", _UPLOAD, _INDEX, _CSS, _SHELL, _PACKED])
+    subprocess.call(["scp", _UPLOAD, env.MIRROR_SERVER + ":~/"])
+
+
+
+def _pack(env, pool, objects):
+    print("packaging...")
+    repos = sorted(set([x.repo for x in objects]))
+    for r in repos:
+        if r not in _REPOS:
+            raise Exception("unknown repo")
+        codename = _REPOS[r]
+        dist = os.path.join("dists", r)
+        for comp in env.MIRROR_COMPONENTS.split(" "):
+            root = os.path.join(dist, comp, "binary-amd64")
+            os.makedirs(root)
+            debs = [x.deb for x in objects if x.repo == r and x.filter in ["all", comp]]
+            for d in debs:
+                shutil.copyfile(os.path.join(pool, d),
+                                os.path.join(root, d))
+            packages = os.path.join(root, "Packages")
+            with open(packages, 'w') as f:
+                subprocess.call(["apt-ftparchive", "packages", root], stdout=f)
+            old_packages = os.path.join(pool, "{}.{}.packages".format(r, comp))
+            if os.path.exists(old_packages):
+                res = subprocess.call(["diff", "-u", old_packages, packages])
+                if res != 0:
+                    print("please review changes to {}:{}".format(r, comp))
+                    input()
+                    shutil.copyfile(packages, old_packages)
+            package_gz = packages + ".gz"
+            with open(package_gz, 'w') as f:
+                subprocess.call(["gzip", "-c", "--keep", "--force", "-9", packages],
+                                stdout=f)
+        with open(os.path.join(dist, "Date"), 'w') as f:
+            subprocess.call(["date", "+%Y-%m-%d-%H-%M-%S"], stdout=f)
+        release_file = os.path.join(dist, "Release")
+        with open(release_file, 'w') as f:
+            obj =  {"Suite": r, "Codename": codename, "Components": env.MIRROR_COMPONENTS}
+            for o in obj:
+                f.write("{}: {}\n".format(o, obj[o]))
+        with open(release_file, 'a') as f:
+            subprocess.call(["apt-ftparchive", "release", dist], stdout=f)
+        subprocess.call(["gpg", 
+                         "--clearsign",
+                         "--digest-algo",
+                         "SHA512",
+                         "--local-user",
+                         env.DEB_SIGN_KEY,
+                         "-o",
+                         os.path.join(dist, "InRelease"),
+                         release_file])
+        subprocess.call(["gpg",
+                         "--yes",
+                         "-abs",
+                         "--local-user",
+                         env.DEB_SIGN_KEY,
+                         "-o",
+                         release_file + ".gpg",
+                         release_file])
+        subprocess.call(["tar", "cvzf", _PACKED, _DISTS + "/"])
+        return True
+
+def main():
+    """Program entry."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("pool")
+    args = parser.parse_args()
+    deb_env = common.read_env("home/debian")
+    if not os.path.exists(args.pool):
+        print("invalid input path")
+        return
+    mani = os.path.join(args.pool, debian.MANIFEST)
+    m = debian.parse_manifest(mani)
+    tmpd = "/home/enck/downloads/test/"
+    tmpd = tempfile.mkdtemp()
+    try:
+        os.chdir(tmpd)
+        if _pack(deb_env, args.pool, m):
+            print("upload to {} (Y/n)?".format(deb_env.MIRROR_SERVER))
+            y = input()
+            if y != "n":
+                _upload(deb_env)
+        shutil.rmtree(tmpd)
+    except Exception as e:
+        shutil.rmtree(tmpd)
+        raise
+
+
+if __name__ == "__main__":
+    main()

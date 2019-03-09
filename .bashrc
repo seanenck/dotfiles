@@ -97,7 +97,7 @@ export EDITOR="$VISUAL"
 source $XDG_USER_CONFIG
 export GOPATH=$HOME/.go
 export TERM=xterm
-DEB_SIGN_KEY=031E9E4B09CFD8D3F0ED35025109CDF607B5BB04
+source ~/.config/home/debian
 DEB_BUILD_GO="/build/go/"
 DEB_BUILD_DIR="${DEB_BUILD_GO}src/packages/"
 DEBEMAIL="enckse@voidedtech.com"

@@ -2,10 +2,8 @@
 import argparse
 import os
 import subprocess
+import debian
 
-
-_MANIFEST = "manifest"
-_DEB = ".deb"
 _PREV = ".prev"
 
 
@@ -24,7 +22,7 @@ def _move(src, dest, manifest):
         if f.endswith(_PREV):
             print("removing " + f)
             os.remove(os.path.join(dest, f))
-        if not f.endswith(_DEB):
+        if not f.endswith(debian.DEB):
             continue
         fname = f.split("_")[0]
         if fname == name:
@@ -36,9 +34,8 @@ def _move(src, dest, manifest):
             checks.append(f)
     if len(checks) > 0:
         currents = []
-        with open(manifest, 'r') as m:
-            for l in m.readlines():
-                currents.append(l.split(":")[2].strip())
+        for l in debian.parse_manifest(manifest)
+            currents.append(l.deb)
         for c in checks:
             if c in currents:
                 print(c + " is not in a manifest (will be deleted)")
@@ -53,13 +50,13 @@ def _pool(src, dest):
     """Add a package to the pool."""
     valid = True
     if os.path.exists(src):
-        if not os.path.isfile(src) or not src.endswith(_DEB):
-            print("file is not a " + _DEB)
+        if not os.path.isfile(src) or not src.endswith(debian.DEB):
+            print("file is not a " + debian.DEB)
             valid = False
     else:
         valid = False
         print("source does not exist")
-    manifest = os.path.join(dest, _MANIFEST)
+    manifest = os.path.join(dest, debian.MANIFEST)
     if os.path.exists(dest):
         if os.path.isdir(dest):
             if not os.path.exists(manifest):
