@@ -34,7 +34,7 @@ def _move(src, dest, manifest):
             checks.append(f)
     if len(checks) > 0:
         currents = []
-        for l in debian.parse_manifest(manifest)
+        for l in debian.parse_manifest(manifest):
             currents.append(l.deb)
         for c in checks:
             if c in currents:

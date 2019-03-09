@@ -8,6 +8,7 @@ DEB = ".deb"
 
 
 def parse_manifest(manifest_file):
+    """Parse the pool manifest."""
     if not os.path.exists(manifest_file):
         raise Exception("invalid manifest")
     results = []

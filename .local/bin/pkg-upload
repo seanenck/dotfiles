@@ -11,7 +11,7 @@ import urllib.request
 
 
 _REPOS = {"stable": "stretch", "unstable": "sid"}
-_DISTS= "dists"
+_DISTS = "dists"
 _PACKED = "packages.tar.gz"
 _INDEX = "index.html"
 _CSS = "package.css"
@@ -58,6 +58,7 @@ def _download(resource, index=".index/", stdout=None, markdown=False):
                 stdout.write(l)
         os.remove(output)
 
+
 def _upload(env):
     """Upload the package."""
     print("uploading...")
@@ -73,8 +74,8 @@ def _upload(env):
     subprocess.call(["scp", _UPLOAD, env.MIRROR_SERVER + ":~/"])
 
 
-
 def _pack(env, pool, objects):
+    """Package pools."""
     print("packaging...")
     repos = sorted(set([x.repo for x in objects]))
     for r in repos:
@@ -85,7 +86,8 @@ def _pack(env, pool, objects):
         for comp in env.MIRROR_COMPONENTS.split(" "):
             root = os.path.join(dist, comp, "binary-amd64")
             os.makedirs(root)
-            debs = [x.deb for x in objects if x.repo == r and x.filter in ["all", comp]]
+            flt = ["all", comp]
+            debs = [x.deb for x in objects if x.repo == r and x.filter in flt]
             for d in debs:
                 shutil.copyfile(os.path.join(pool, d),
                                 os.path.join(root, d))
@@ -101,18 +103,25 @@ def _pack(env, pool, objects):
                     shutil.copyfile(packages, old_packages)
             package_gz = packages + ".gz"
             with open(package_gz, 'w') as f:
-                subprocess.call(["gzip", "-c", "--keep", "--force", "-9", packages],
+                subprocess.call(["gzip",
+                                 "-c",
+                                 "--keep",
+                                 "--force",
+                                 "-9",
+                                 packages],
                                 stdout=f)
         with open(os.path.join(dist, "Date"), 'w') as f:
             subprocess.call(["date", "+%Y-%m-%d-%H-%M-%S"], stdout=f)
         release_file = os.path.join(dist, "Release")
         with open(release_file, 'w') as f:
-            obj =  {"Suite": r, "Codename": codename, "Components": env.MIRROR_COMPONENTS}
+            obj = {"Suite": r,
+                   "Codename": codename,
+                   "Components": env.MIRROR_COMPONENTS}
             for o in obj:
                 f.write("{}: {}\n".format(o, obj[o]))
         with open(release_file, 'a') as f:
             subprocess.call(["apt-ftparchive", "release", dist], stdout=f)
-        subprocess.call(["gpg", 
+        subprocess.call(["gpg",
                          "--clearsign",
                          "--digest-algo",
                          "SHA512",
@@ -131,6 +140,7 @@ def _pack(env, pool, objects):
                          release_file])
         subprocess.call(["tar", "cvzf", _PACKED, _DISTS + "/"])
         return True
+
 
 def main():
     """Program entry."""
