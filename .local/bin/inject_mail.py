@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """Inject email directly into maildir."""
 import sys
 import mailbox

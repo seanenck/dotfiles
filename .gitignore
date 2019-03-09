@@ -9,3 +9,5 @@
 !.weechat/
 .weechat/logs/*
 .weechat/*.log
+*.pyc
+__pycache__

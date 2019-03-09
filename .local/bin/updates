@@ -1,46 +1,65 @@
-#!/bin/bash
-source $HOME/.config/home/common
+#!/usr/bin/python3
+import common
+import argparse
+import os
+import tempfile
 
-_weechat() {
-    WEECHAT=$HOME/.weechat/python/
-    for a in autosort buffer_autoset; do
-        echo "pulling $a"
-        curl -s https://www.weechat.org/files/scripts/$a.py > ${WEECHAT}$a.py
-    done
-}
+_SCRIPTS = "https://www.weechat.org/files/scripts/"
 
-_create-list() {
-    local idx chr cnt line musicfile
-    musicfile="${PERM_CONFIGS}music"
-    idx=1
-    cnt=$(cat $musicfile | wc -l)
-    while [ $idx -le $cnt ]; do
-        line=$(cat $musicfile | head -n $idx | tail -n 1)
-        chr=$(echo "$line" | cut -c1 | tr '[:lower:]' '[:upper:]')"/"
-        echo "$chr"
-        echo "$chr$line/***"
-        idx=$((idx+1))
-    done
-}
 
-_music() { 
-    tmpfile=$USER_TMP/music.$(date +%s)
-    _create-list | sort -u > $tmpfile
-    rsync -av --include-from $tmpfile --exclude="*" -e "ssh" "$BASE_SERVER:store/Home/Media/Music/" $HOME_CACHE/music --delete-after --delete-excluded
-}
+def _weechat(env):
+    """Synchronize weechat."""
+    import urllib.request
+    for a in ["autosort", "buffer_autoset"]:
+        print("pulling: " + a)
+        p = a + ".py"
+        output = os.path.join(env.HOME, ".weechat/python/" + p)
+        urllib.request.urlretrieve(_SCRIPTS + p, output)
 
-if [ -z "$1" ]; then
-    echo "no command given"
-    exit 1
-fi
-case "$1" in
-    "weechat")
-        _weechat
-        ;;
-    "music")
-        _music
-        ;;
-    *)
-        echo "unknown command: $1"
-        ;;
-esac
+
+def _music(env):
+    """Synchronize music."""
+    import subprocess
+    music_file = os.path.join(env.PERM_CONFIGS, "music")
+    includes = []
+    chars = []
+    with open(music_file, 'r') as f:
+        for l in f:
+            strip = l.strip()
+            c = strip[0] + "/"
+            if c not in chars:
+                includes.append(c)
+                chars.append(c)
+            includes.append(c + strip + "/***")
+    with tempfile.NamedTemporaryFile() as tmp:
+        for l in includes:
+            tmp.write((l + "\n").encode("UTF-8"))
+        tmp.flush()
+        subprocess.call(["rsync",
+                         "-av",
+                         "--include-from",
+                         tmp.name,
+                         '--exclude',
+                         '*',
+                         env.BASE_SERVER + ":store/Home/Media/Music/",
+                         os.path.join(env.HOME_CACHE, "music"),
+                         "--delete-after",
+                         "--delete-excluded"])
+
+
+def main():
+    """Program entry."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("command")
+    args = parser.parse_args()
+    env = common.read_env()
+    if args.command == "weechat":
+        _weechat(env)
+    elif args.command == "music":
+        _music(env)
+    else:
+        print("unknown command")
+
+
+if __name__ == "__main__":
+    main()

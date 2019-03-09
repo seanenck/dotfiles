@@ -38,6 +38,12 @@ TASK_FILE=".tsk"
 
 export OPENSC_CONF="$HOME/.config/opensc.conf"
 
+_exports() {
+    for f in HOME_BIN USER_TMP PERM_CONFIGS BASE_SERVER HOME_CACHE; do
+        echo "$f=${!f}"
+    done
+}
+
 _setup() {
     local xsess
     echo "user init"
