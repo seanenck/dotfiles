@@ -12,7 +12,7 @@ _BUILDDEPS = ["make",
               "bash-completion",
               "quilt",
               "dh-make"]
-_LINT = "LINT"
+_LINT = "lint.log"
 _DEBIAN = "debian"
 _BIN = "bin"
 
@@ -187,7 +187,7 @@ def main():
     if not _precheck():
         return
     config = configparser.ConfigParser()
-    config.read("PKG")
+    config.read("pkg.cfg")
     p = _required(config, "package")
     if not p:
         return
