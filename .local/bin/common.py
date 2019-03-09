@@ -1,20 +1,24 @@
 #!/usr/bin/python
+"""Common environment processing."""
 import os
 import io
 from subprocess import Popen, PIPE
 
 
 class Object(object):
+    """Environment object."""
+
     pass
 
 
 def read_env():
+    """Read the environment for my user."""
     home_env = os.environ["HOME"]
     home = os.path.join(home_env, ".config/home/common")
     p = Popen(["bash",
                "-c",
                "source " + home + "; _exports"],
-               stdout=PIPE)
+              stdout=PIPE)
     output, err = p.communicate()
     if err:
         raise err
