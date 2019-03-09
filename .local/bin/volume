@@ -1,84 +1,101 @@
-#!/bin/bash
-MAX_VOLUME=65535
+#!/usr/bin/python3
+import argparse
+import subprocess
 
-_pactl() {
-    pactl list sinks
-}
 
-_volume() {
-    local vols v cnt
-    vols=0
-    cnt=0
-    for v in $(_pactl | grep "Volume" | grep -v "Base" | tr '/' '\n' | sed "s/\s*//g" | grep "%" | cut -d "%" -f 1); do
-        vols=$((vols+v))
-        cnt=$((cnt+1))
-    done
-    vols=$((vols/cnt))
-    echo $vols
-}
+_MAX_VOLUME = 65535
 
-_ismute() {
-    _pactl | grep -q "Mute: yes"
-    if [ $? -eq 0 ]; then
-        echo "true"
-    else
-        echo "false"
-    fi
-}
+def _status():
+    totals = []
+    for l in _pactl():
+        if "Volume" not in l:
+            continue
+        if "Base" in l:
+            continue
+        percents = l.split("/")
+        for p in percents:
+            if "%" not in p:
+                continue
+            totals.append(p.replace("%", "").strip())
+    avg = 0
+    if len(totals) > 0:
+        avg = int(sum([int(x) for x in totals]) / len(totals))
+    print(avg)
+    return avg
 
-_vol_all() {
-    for i in $(seq 0 5); do
-        pactl $1 $i $2
-    done
-}
 
-_vol() {
-    local vol 
-    vol=$(_volume)
-    vol=$(echo "$vol" | awk '{percent=$0 * 0.01 * '$MAX_VOLUME' + '$MAX_VOLUME' * 0.10 * '$1'; print percent}')
-    vol=$(echo "$vol" | cut -d "." -f 1)
-    if [ $vol -gt $MAX_VOLUME ]; then
-        vol=$MAX_VOLUME
-    else
-        if [ $vol -lt 0 ]; then
-            vol=0
-        fi
-    fi
-    _vol_all "set-sink-volume" $vol
-}
+def _pactl():
+    p = subprocess.Popen(["pactl",
+                          "list",
+                          "sinks"],
+                          stdout=subprocess.PIPE)
+    output, err = p.communicate()
+    if err:
+        raise err
+    rc = p.returncode
+    if rc != 0:
+        raise Exception("unable to read pactl")
+    return output.decode("utf-8").split("\n")
 
-_mute() {
-    local mute
-    mute=$1
-    if [ -z "$mute" ]; then
-        mute=1
-        if [[ $(_ismute) == "true" ]]; then
-            mute=0
-        fi
-    fi
-    _vol_all "set-sink-mute" $mute
-}
+def _change_volume_settings(command, value):
+    for i in range(0, 5):
+        subprocess.call(["pactl",
+                         command,
+                         str(i),
+                         str(value)])
 
-case "$1" in
-    "togglemute")
-        _mute
-        ;;
-    "mute")
-        _mute 1
-        ;;
-    "inc")
-        _vol 1
-        ;;
-    "dec")
-        _vol -1
-        ;;
-    "ismute")
-        _ismute
-        ;;
-    "volume")
-        _volume
-        ;;
-    *)
-        echo "unknown command"
-        ;;
-esac
+def _ismute():
+    result = False
+    for l in _pactl():
+        if "Mute: yes" in l:
+            result = True
+            break
+    print(str(result).lower())
+    return result
+
+
+def _volume(change):
+    vol = _status()
+    actual = (0.01 * vol) * _MAX_VOLUME
+    change = _MAX_VOLUME * change * 0.1
+    actual = actual + change
+    if actual > _MAX_VOLUME:
+        actual = _MAX_VOLUME
+    if actual < 0:
+        actual = 0
+    actual = int(actual)
+    _change_volume_settings("set-sink-volume", actual)
+
+
+def _mute(force=False):
+    mute = 1
+    if not force:
+        if _ismute():
+            mute = 0
+    _change_volume_settings("set-sink-mute", mute)
+
+
+
+def main():
+    """Program entry."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('command')
+    args = parser.parse_args()
+    if args.command == "togglemute":
+        _mute()
+    elif args.command == "mute":
+        _mute(force=True)
+    elif args.command == "inc":
+        _volume(1)
+    elif args.command == "dec":
+        _volume(-1)
+    elif args.command == "ismute":
+        _ismute()
+    elif args.command == "volume":
+        _status()
+    else:
+        print("unknown command")
+
+
+if __name__ == "__main__":
+    main()
