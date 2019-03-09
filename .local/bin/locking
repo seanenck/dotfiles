@@ -1,170 +1,103 @@
-#!/bin/bash
-source $HOME/.config/home/common
-source ${HOME_BIN}/subsystem
-DISPLAY_UN=$USER_TMP/display.unlocked
-DISPLAY_EN=$USER_TMP/display.nosleep
-IS_TRUE=1
-IS_FALSE=0
-RESULT="RESULT:"
-get-i3lock() {
-    pidof i3lock | cut -d " " -f 1
-}
+#!/usr/bin/python
+"""Handles locking."""
+import argparse
+import common
+import os
+import subprocess
+import time
 
-_lock() {
-    local p running started slept first delta
-    echo "locking"
-    i3lock -c 333333
-    for p in $(pidof weechat); do
-        kill -10 $p
-    done
-    ${HOME_BIN}/volume mute
-    toggle-backlighting $BACKLIGHT_OFF
-    running=$IS_TRUE
-    first=$IS_TRUE
-    started=$(date +%s)
-    slept=$1
-    while [ $running -eq $IS_TRUE ]; do
-        sleep 1
-        if [ $first -eq $IS_FALSE ]; then
-            if [ -z $(get-i3lock) ]; then
-                running=$IS_FALSE
-            else
-                delta=$(date +%s)
-                delta=$((delta-started))
-                if [ $slept -eq $IS_TRUE ]; then
-                    delta=1000
-                fi
-                if [ $delta -ge 300 ]; then
-                    echo "sleeping..."
-                    p=$(sleep-now $IS_FALSE | grep "^$RESULT" | sed "s/$RESULT//g")
-                    if [ $p -eq $IS_TRUE ]; then
-                        started=$(date +%s)
-                        slept=$IS_FALSE
-                    fi
-                fi
-            fi
-        fi
-        first=$IS_FALSE
-    done
-    force-display-on
-    toggle-backlighting $MID_BRIGHT
-}
 
-_autolock() {
-    local waiting
-    lock-now $IS_TRUE &
-    sleep 1
-    waiting=$IS_TRUE
-    while [ $waiting -eq $IS_TRUE ]; do
-        if [ -z $(get-i3lock) ]; then
-            waiting=$IS_FALSE
-            break
-        fi
-        sleep 1
-    done
-}
+def _status(env):
+    """Get locking status."""
+    if os.path.exists(env.unlocked):
+        print("UNLOCKED")
+    elif os.path.exists(env.nosleep):
+        print("NO_ZZZ")
 
-_sleeping() {
-    pkill vlc
-    echo "suspending"
-    systemctl suspend
-    sleep 5
-    echo "done sleeping"
-}
 
-sleep-now() {
-    local auto
-    auto=$1
-    if [ -e $DISPLAY_EN ]; then
-        echo "nosleep"
-        echo "$RESULT$IS_FALSE"
-    else
-        if [ $auto -eq $IS_TRUE ]; then
-            _autolock
-            echo "$RESULT$IS_FALSE"
-        else
-            _sleeping
-            echo "$RESULT$IS_TRUE"
-        fi
-    fi
-}
+def _is_locked():
+    res = subprocess.call(["pidof", "i3lock"])
+    return res == 0
 
-lock-now() {
-    if [ -e $DISPLAY_UN ]; then
-        echo "nolock"
-    else
-        if [ -z $(get-i3lock) ]; then
-            _lock $1
-        fi
-    fi
-}
 
-toggle() {
-    local no_action
-    no_action=0
-    if [ -e $DISPLAY_UN ]; then
-        rm $DISPLAY_UN
-        touch $DISPLAY_EN
-        no_action=1
-    fi
+def _suspend(env):
+    """Suspend."""
+    if os.path.exists(env.nosleep):
+        return
+    subprocess.call(["pkill", "vlc"])
+    subprocess.call(["systemctl", "suspend"])
+    time.sleep(5)
 
-    if [ $no_action -eq 0 ]; then
-        if [ -e $DISPLAY_EN ]; then
-            rm $DISPLAY_EN
-            no_action=1
-        fi
-    fi
 
-    if [ $no_action -eq 0 ]; then
-        touch $DISPLAY_UN
-    fi
-}
+def _i3lock(env, now=False):
+    """unable i3lock."""
+    subprocess.call(["i3lock", "-c", "333333"])
+    subprocess.call(["volume", "mute"])
+    subprocess.call(["subsystem", "backlight", "down"])
+    running = True
+    start = time.time()
+    lock_now = now
+    while running:
+        if not lock_now:
+            time.sleep(1)
+        if lock_now or _is_locked():
+            current = time.time()
+            elapsed = current - start
+            if lock_now or elapsed > 300:
+                _suspend(env)
+                lock_now = False
+                start = time.time()
+            continue
+        running = False
+    subprocess.call(["subsystem", "force"])
+    subprocess.call(["subsystem", "backlight", "up"])
 
-setting() {
-    if [ -e $DISPLAY_UN ]; then
-        echo "ulock"
-    else
-        if [ -e $DISPLAY_EN ]; then
-            echo "nozzz"
-        else
-            echo "xauto"
-        fi
-    fi
-}
 
-_status() {
-    local text
-    if [ -e $DISPLAY_UN ]; then
-        text="UNLOCKED"
-    else
-        if [ -e $DISPLAY_EN ]; then
-            text="NO_ZZZ"
-        fi
-    fi
-    if [ ! -z "$text" ]; then
-        echo $text
-    fi
-}
+def _sleep(env):
+    if os.path.exists(env.unlocked):
+        return
+    _i3lock(env, now=True)
 
-locking() {
-    case $1 in
-        "toggle")
-            toggle
-            ;;
-        "lock")
-            lock-now $IS_FALSE
-            ;;
-        "sleep")
-            sleep-now $IS_TRUE
-            ;;
-    esac
-}
+def _lock(env):
+    """Lock the screen."""
+    if os.path.exists(env.unlocked):
+        return
+    if not _is_locked():
+        _i3lock(env)
 
-if [ ! -z "$1" ]; then
-    if [[ "$1" == "status" ]]; then
-        _status
-        exit 0
-    fi
-fi
 
-locking "$1" 
+
+def _toggle(env):
+    """Toggle locking settings."""
+    locking = os.path.exists(env.unlocked)
+    nosleep = os.path.exists(env.nosleep)
+    if locking:
+        os.remove(env.unlocked)
+        common.touch(env.nosleep)
+        return
+    if nosleep:
+        os.remove(env.nosleep)
+        return
+    common.touch(env.unlocked)
+
+
+def main():
+    """Program entry."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("command")
+    args = parser.parse_args()
+    env = common.read_env()
+    env.unlocked = env.USER_TMP + "/display.unlocked"
+    env.nosleep = env.USER_TMP + "/display.nosleep"
+    if args.command == "toggle":
+        _toggle(env)
+    elif args.command == "lock":
+        _lock(env)
+    elif args.command == "sleep":
+        _sleep(env)
+    else:
+        _status(env)
+
+
+if __name__ == "__main__":
+    main()

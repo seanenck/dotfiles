@@ -10,6 +10,11 @@ class Object(object):
     pass
 
 
+def touch(file_name):
+    """Create an empty file."""
+    open(file_name, 'a').close()
+
+
 def read_env(file_name="home/common"):
     """Read the environment for my user."""
     home_env = os.environ["HOME"]
