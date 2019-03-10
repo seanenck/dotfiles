@@ -5,9 +5,3 @@ MIRROR_COMPONENTS="enckse epiphyte"
 DEB_BUILD_GO="/build/go/"
 DEB_BUILD_ROOT="${DEB_BUILD_GO}src/"
 DEB_BUILD_DIR="${DEB_BUILD_ROOT}packages/"
-
-_exports() {
-    for f in MIRROR_SERVER MIRROR_COMPONENTS DEB_SIGN_KEY DEB_BUILD_GO DEB_BUILD_DIR DEB_BUILD_ROOT; do
-        echo "$f=${!f}"
-    done
-}

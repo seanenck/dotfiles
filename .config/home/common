@@ -1,6 +1,7 @@
 #!/bin/bash
 ## various points
 HOME_BIN=$HOME/.local/bin
+HOME_CONF=$HOME/.config/home/
 
 # cache files
 HOME_CACHE=$HOME/.cache/home/
@@ -39,7 +40,19 @@ TASK_FILE=".tsk"
 export OPENSC_CONF="$HOME/.config/opensc.conf"
 
 _exports() {
-    for f in HOME_BIN USER_TMP PERM_CONFIGS BASE_SERVER HOME_CACHE; do
+    source $PRIV_CONF
+    source ${HOME_CONF}debian
+    for f in HOME_BIN \
+             USER_TMP \
+             PERM_CONFIGS \
+             BASE_SERVER \
+             HOME_CACHE \
+             MIRROR_SERVER \
+             MIRROR_COMPONENTS \
+             DEB_SIGN_KEY \
+             DEB_BUILD_GO \
+             DEB_BUILD_DIR \
+             DEB_BUILD_ROOT; do
         echo "$f=${!f}"
     done
 }

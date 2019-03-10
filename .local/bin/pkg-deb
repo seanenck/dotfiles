@@ -220,7 +220,7 @@ def main():
     settings = _settings(config, p)
     settings.name = _required(p, "name")
     settings.url = _required(p, "url")
-    env = debian.read_env()
+    env = common.read_env()
     if not os.path.exists(_LINT):
         print("missing lint file")
         return

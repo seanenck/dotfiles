@@ -4,6 +4,7 @@ import argparse
 import os
 import tempfile
 import debian
+import common
 import shutil
 import subprocess
 import urllib.request
@@ -146,7 +147,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("pool")
     args = parser.parse_args()
-    deb_env = debian.read_env()
+    deb_env = common.read_env()
     if not os.path.exists(args.pool):
         print("invalid input path")
         return
