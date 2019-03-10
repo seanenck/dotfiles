@@ -37,7 +37,7 @@ def _move(src, dest, manifest):
         for l in debian.parse_manifest(manifest):
             currents.append(l.deb)
         for c in checks:
-            if c in currents:
+            if c not in currents:
                 print(c + " is not in a manifest (will be deleted)")
                 fpath = os.path.join(dest, c)
                 operations.append(["mv", fpath, fpath + _PREV])

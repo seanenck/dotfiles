@@ -66,6 +66,9 @@ def _read_version():
 
 
 def _git_clone(env, settings, pkgver):
+    if not os.path.exists(env.DEB_BUILD_DIR):
+        print("no build dir")
+        return
     clone_dir = os.path.join(env.DEB_BUILD_DIR, settings.name + "-" + pkgver)
     print("clone dir: " + clone_dir)
     if os.path.exists(clone_dir):
@@ -92,6 +95,8 @@ def _build(env, settings):
     else:
         settings.git_version = settings.git_version.replace("PKGVER", pkgver)
     source = _git_clone(env, settings, pkgver)
+    if source is None:
+        return
     origname = "../{}_{}.orig.tar.xz".format(settings.name, pkgver)
     if os.path.exists(origname):
         os.remove(origname)
