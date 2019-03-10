@@ -138,7 +138,7 @@ def _pack(env, pool, objects):
                          release_file + ".gpg",
                          release_file])
         subprocess.call(["tar", "cvzf", _PACKED, _DISTS + "/"])
-        return True
+    return True
 
 
 def main():
