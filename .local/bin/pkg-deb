@@ -173,11 +173,11 @@ def _build(env, settings):
         print("lint change detected ^")
 
 
-def _settings(config):
+def _settings(config, package):
     """Load settings."""
     o = common.Object()
-    o.gopath = _setting_bool(config, "gopath", True)
-    o.make_version = _setting_bool(config, "makever", True)
+    o.gopath = _setting_bool(package, "gopath", True)
+    o.make_version = _setting_bool(package, "makever", True)
     o.git_checkout = True
     o.git_version = None
     if "git" in config:
@@ -198,7 +198,7 @@ def main():
     p = _required(config, "package")
     if not p:
         return
-    settings = _settings(config)
+    settings = _settings(config, p)
     settings.name = _required(p, "name")
     settings.url = _required(p, "url")
     env = debian.read_env()
