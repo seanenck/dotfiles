@@ -84,10 +84,6 @@ if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
     return
 fi
 
-if [ ! -z "$DISPLAY" ]; then
-    systemctl --user start xsystem
-fi
-
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
