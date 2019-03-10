@@ -17,6 +17,91 @@ def _weechat(env):
         urllib.request.urlretrieve(_SCRIPTS + p, output)
 
 
+_PURGE = ["mv",
+          "cp",
+          "rm",
+          "clear",
+          "exit",
+          "mkdir",
+          "vim",
+          "manage",
+          "pkg-deb",
+          "pkg-pool",
+          "pkg-upload",
+          "less",
+          "wsw",
+          "pkill",
+          "i3",
+          "volume",
+          "locking"]
+
+
+_NAME_IGNORES = [".bash_history", "pacman", "reboot", "poweroff"]
+_BY_SIZE = {
+        "ssh": 3,
+        "scp": 3,
+        "git": 2,
+        "cat": 2,
+        "apt-get": 3,
+        "apt-cache": 3,
+        "aptitude": 2,
+        "dpkg": 2,
+        "find": 2,
+        "apt": 2,
+        "sudo": 2,
+        "python": 2,
+        "python3": 2,
+        "schroot": 3,
+        "python2": 2}
+
+
+def _history_dryrun(message, line):
+    """Report history dryrun purges."""
+    print("{}: {}".format(message, line))
+    return 1
+
+
+def _history(env, purge):
+    """Manage bash history."""
+    hist = os.path.join(env.HOME, ".bash_history")
+    tmp = hist + ".tmp"
+    lines = []
+    cnt = 0
+    with open(hist, 'r') as f:
+        for line in f:
+            ls = line.strip()
+            adding = True
+            if len(ls) < 11:
+                cnt += _history_dryrun("less than 10 chars", ls)
+            for p in _PURGE:
+                if ls.startswith("{} ".format(p)):
+                    adding = False
+                    cnt += _history_dryrun(p + " blacklisted", ls)
+                    break
+            for i in _NAME_IGNORES:
+                if i in ls:
+                    adding = False
+                    cnt += _history_dryrun("ignored " + i, ls)
+            for b in _BY_SIZE:
+                parts = ls.split(" ")
+                sized = _BY_SIZE[b]
+                if len(parts) <= sized:
+                    if parts[0] == b:
+                        adding = False
+                        msg = "short command {} ({})".format(b, str(sized))
+                        cnt += _history_dryrun(msg, ls)
+                        break
+            if adding:
+                lines.append(line)
+    if purge:
+        with open(tmp, 'w') as f:
+            for l in lines:
+                f.write(l)
+        os.remove(hist)
+        os.rename(tmp, hist)
+    print("purging: " + str(cnt))
+
+
 def _music(env):
     """Synchronize music."""
     import subprocess
@@ -57,6 +142,10 @@ def main():
         _weechat(env)
     elif args.command == "music":
         _music(env)
+    elif args.command == "history-dryrun":
+        _history(env, False)
+    elif args.command == "history-purge":
+        _history(env, True)
     else:
         print("unknown command")
 
