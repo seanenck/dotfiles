@@ -1,12 +1,12 @@
 #!/usr/bin/python
 """Common environment processing."""
 import os
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, call
 
 
-def get_output_or_error(command):
+def get_output_or_error(command, env=None):
     """Get output or error from command."""
-    p = Popen(command, stdout=PIPE)
+    p = Popen(command, stdout=PIPE, env=env)
     output, err = p.communicate()
     if err:
         return (None, err)
@@ -19,6 +19,21 @@ class Object(object):
     """Environment object."""
 
     pass
+
+
+def _text_color(color):
+    """Output terminal text in a color."""
+    call(["echo", "-e", "\\033[{}m".format(color)])
+
+
+def red_text():
+    """Make red text in terminal."""
+    _text_color("1;31")
+
+
+def normal_text():
+    """Reset text in terminal."""
+    _text_color("0")
 
 
 def touch(file_name):

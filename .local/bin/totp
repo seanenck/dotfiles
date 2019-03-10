@@ -1,78 +1,93 @@
-#!/bin/bash
-source $HOME/.config/home/common
-source $PRIV_CONF
-PASS_TOTP_OFFSET="totp/"
-PASS_LOC=${PERM_LOCATION}pass/
-_formattotp() {
-    echo "$@" | tr ' ' '\n' | sed "s/->/\n    /g;s/;/\n/g"
-}
+#!/usr/bin/python3
+"""TOTP generation."""
+import common
+import sys
+import os
+import datetime
+import subprocess
 
-_totplist() {
-    for f in $(find ${PASS_LOC}$1/$PASS_TOTP_OFFSET -type f -name "*.gpg" | sed "s/\.gpg//g" | sort); do
-        basename $f
-    done
-}
 
-_totpall() {
-    local data first d left val p filter has
-    clear
-    data=()
-    first=1
-    filter=$2
-    if [ -z "$filter" ]; then
-        filter=""
-    fi
-    has=0
-    while [ 1 -eq 1 ]; do
-        count=0
-        left=0
-        left=$(date +%S | sed "s/^0//g")
-        left=$((60-left))
-        if [ $left -lt 10 ]; then
-            echo -e "${RED_TEXT}"
-        fi
-        d=$(date +%Y-%m-%dT%H:%M:%S)
-        d="$d, expires: $left (seconds)"
-        if [ $first -eq 1 ]; then
-            clear
-            echo "$d"
-        fi
-        for p in $(_totplist $1); do
-            if [ ! -z "$filter" ]; then
-                echo "$p" | grep -q "$filter"
-                if [ $? -ne 0 ]; then
-                    continue
-                fi
-            fi
-            val=$(PASSWORD_STORE_DIR=${PASS_LOC}$1 pass show "$PASS_TOTP_OFFSET$p" 2>&1)
-            val=$(oathtool --base32 --totp "$val")
-            data[$count]="$p->$val;"
-            if [ $first -eq 1 ]; then
-                _formattotp "${data[$count]}"
-            fi
-            count=$((count+1))
-            has=1
-        done
-        first=0
-        clear
-        echo "$d"
-        _formattotp "${data[*]}"
-        echo -e "${NORM_TEXT}"
-        if [ $has -eq 0 ]; then
-            echo "no totp tokens match"
-            break
-        fi
-    done
-}
+_PASS_TOTP = "totp/"
 
-listing=0
-if [ ! -z "$1" ]; then
-    if [[ "$1" == "_list" ]]; then
-        listing=1
-    fi
-fi
-if [ $listing -eq 0 ]; then
-    _totpall $TOTP_PASS $1
-else
-    _totplist $TOTP_PASS
-fi
+
+def _list(env):
+    """List totp options."""
+    d = os.path.join(env.PASS_LOC, _PASS_TOTP)
+    for f in sorted(os.listdir(d)):
+        yield f.replace(".gpg", "")
+
+
+def _display(env, args):
+    """Display totp tokens."""
+    listed = list(_list(env))
+    args_len = len(args)
+    if args_len > 0:
+        listed = [x for x in listed if x in args]
+        if len(listed) == 0:
+            print("no totp names match input")
+            return
+        if len(listed) != args_len:
+            print("input mismatch (tokens != retrieved)")
+            return
+    last_second = -1
+    while True:
+        output = []
+        n = datetime.datetime.now()
+        if n.second == last_second:
+            continue
+        last_second = n.second
+        left = 60 - n.second
+        expiring = "{}, expires: {} (seconds)".format(n.strftime("%H:%M:%S"),
+                                                      left)
+        output.append(expiring)
+        for l in listed:
+            e = {}
+            e["PASSWORD_STORE_DIR"] = env.PASS_LOC
+            totp = os.path.join(_PASS_TOTP, l)
+            val, err = common.get_output_or_error(["pass", "show", totp],
+                                                  env=e)
+            if err is not None:
+                print("error accessing: " + l)
+                print(err)
+                continue
+            token = val.decode("utf-8").strip()
+            val, err = common.get_output_or_error(["oathtool",
+                                                   "--base32",
+                                                   "--totp",
+                                                   token])
+            if err is not None:
+                print("unable to get token: " + l)
+                print(err)
+                continue
+            oath = val.decode("utf-8").strip()
+            msg = "\n{}\n    {}".format(l, oath)
+            output.append(msg)
+        subprocess.call(["clear"])
+        if left < 10:
+            common.red_text()
+        else:
+            common.normal_text()
+        output.append("\n-> CTRL+C to exit")
+        line = "\n".join(output).strip()
+        print(line)
+        common.normal_text()
+
+
+def main():
+    """Program entry."""
+    args = []
+    listing = False
+    if len(sys.argv) > 1:
+        args = sys.argv[1:]
+        listing = len(args) == 1 and args[0] == "_list_"
+    env = common.read_env()
+    env.PASS_LOC = os.path.join(env.PERM_LOCATION, "pass", env.TOTP_PASS)
+    if listing:
+        for l in _list(env):
+            print(l)
+    else:
+        _display(env, args)
+
+
+if __name__ == "__main__":
+    main()
