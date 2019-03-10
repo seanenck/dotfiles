@@ -94,11 +94,20 @@ def _build(env, settings):
         settings.git_version = pkgver
     else:
         settings.git_version = settings.git_version.replace("PKGVER", pkgver)
-    for f in os.listdir(env.DEB_BUILD_ROOT):
-        p = os.path.join(env.DEB_BUILD_ROOT, f)
-        if not os.path.islink(p) and os.path.isdir(p):
-                continue
-        os.remove(p)
+    for d in [env.DEB_BUILD_ROOT, env.DEB_BUILD_DIR]:
+        print("cleaning: " + d)
+        for f in os.listdir(d):
+            p = os.path.join(d, f)
+            if d == env.DEB_BUILD_ROOT:
+                if not os.path.islink(p) and os.path.isdir(p):
+                    continue
+            else:
+                if os.path.isdir(p):
+                    print("rmdir'ing: " + p)
+                    shutil.rmtree(p)
+                    continue
+            print("removing: " + p)
+            os.remove(p)
     source = _git_clone(env, settings, pkgver)
     if source is None:
         return
