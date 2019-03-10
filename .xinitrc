@@ -34,5 +34,19 @@ fi
 . $HOME/.profile
 xinput set-prop $(xinput | grep "SynPS/2" | sed -n -e 's/^.*id=//p' | sed -e "s/\s/ /g" | cut -d " " -f 1) "Device Enabled" 0
 while true; do
-    dwm 2> ~/.cache/dwm.log
+    pidof dwm > /dev/null
+    if [ $? -ne 0 ]; then
+        dwm &
+        sleep 1
+        xsetroot -solid "#333333"
+    fi
+    pidof dunst > /dev/null
+    if [ $? -ne 0 ]; then
+        dunst -config $HOME/.config/dunst &
+    fi
+    pidof xautolock > /dev/null
+    if [ $? -ne 0 ]; then
+        xautolock -time 5 -locker "$HOME/.local/bin/locking lock" &
+    fi
+    sleep 1
 done

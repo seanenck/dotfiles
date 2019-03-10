@@ -85,10 +85,7 @@ if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
 fi
 
 if [ ! -z "$DISPLAY" ]; then
-    if [ -e /usr/bin/xsetroot ]; then
-        xsetroot -solid "#333333"
-    fi
-    systemctl --user start xsystem 2>/dev/null
+    systemctl --user start xsystem
 fi
 
 export VISUAL=vim

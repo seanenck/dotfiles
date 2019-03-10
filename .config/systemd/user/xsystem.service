@@ -2,8 +2,7 @@
 Description=xsystem
 
 [Service]
-Environment=DISPLAY=:0
-ExecStart=/home/enck/.local/bin/xwindows system
+ExecStart=/home/enck/.local/bin/status
 
 [Install]
 WantedBy=multi-user.target
