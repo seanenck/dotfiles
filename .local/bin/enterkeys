@@ -1,33 +1,49 @@
-#!/bin/bash
-enter-window-vals() {
-    local word window active i
-    word=$2
-    window=0
-    while [ $window -eq 0 ]; do
-        echo "please activate the $1 window to enter the text into"
-        sleep 3
-        active=$(xdotool getactivewindow)
-        xdotool search --class $1 | grep -q $active
-        if [ $? -eq 0 ]; then
-            window=1
-        else
-            echo "please select a $1 window"
-        fi
-    done
-    xdotool type "$word"
-    for i in ${@:3}; do
-        xdotool key $i
-    done
-}
+#!/usr/bin/python3
+import sys
+import time
+import subprocess
+import common
 
-_enterbrowserkeys() {
-    enter-window-vals "Firefox" "$@" "Return"
-}
 
-enterkeys() {
-    if [ ! -z $1 ]; then
-        _enterbrowserkeys "$@"
-    fi
-}
+def _enterkeys(keys):
+    """Enter keys."""
+    subprocess.call(["xdotool", "type", keys[0]])
+    for k in keys[1:]:
+        subprocess.call(["xdotool", "key", k])
 
-enterkeys "$@"
+
+def _browser(keys):
+    """Enter keys into a browser."""
+    waiting = True
+    while waiting:
+        print("please active the browser window")
+        time.sleep(3)
+        active, err = common.get_output_or_error(["xdotool",
+                                                  "getactivewindow"])
+        if err is not None:
+            continue
+        window, err = common.get_output_or_error(["xdotool",
+                                                  "search",
+                                                  "--class",
+                                                  "Firefox"])
+        if err is not None:
+            continue
+        act = active.decode("utf-8").strip()
+        for l in [x.strip() for x in window.decode("utf-8").split("\n")]:
+            print(l)
+            print(act)
+            if act == l:
+                waiting = False
+                _enterkeys(keys + ["Return"])
+
+
+
+def main():
+    """Program entry."""
+    if len(sys.argv) < 2:
+        return
+    commands = sys.argv[1:]
+    _browser(commands)
+
+if __name__ == "__main__":
+    main()
