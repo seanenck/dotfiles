@@ -94,6 +94,11 @@ def _build(env, settings):
         settings.git_version = pkgver
     else:
         settings.git_version = settings.git_version.replace("PKGVER", pkgver)
+    for f in os.listdir(env.DEB_BUILD_ROOT):
+        p = os.path.join(env.DEB_BUILD_ROOT, f)
+        if not os.path.islink(p) and os.path.isdir(p):
+                continue
+        os.remove(p)
     source = _git_clone(env, settings, pkgver)
     if source is None:
         return
