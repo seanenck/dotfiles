@@ -31,7 +31,7 @@ def read_env(file_name="home/common"):
     home_env = os.environ["HOME"]
     home = os.path.join(home_env, ".config", file_name)
     output, err = get_output_or_error(["bash",
-                                       "-c", 
+                                       "-c",
                                        "source " + home + "; _exports"])
     if err is not None:
         raise err
