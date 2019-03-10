@@ -24,6 +24,7 @@ _PURGE = ["mv",
           "exit",
           "mkdir",
           "vim",
+          "ls"
           "manage",
           "pkg-deb",
           "pkg-pool",
@@ -74,7 +75,7 @@ def _history(env, purge):
             if len(ls) < 11:
                 cnt += _history_dryrun("less than 10 chars", ls)
             for p in _PURGE:
-                if ls.startswith("{} ".format(p)):
+                if ls.startswith("{} ".format(p)) or ls == p:
                     adding = False
                     cnt += _history_dryrun(p + " blacklisted", ls)
                     break
@@ -91,6 +92,9 @@ def _history(env, purge):
                         msg = "short command {} ({})".format(b, str(sized))
                         cnt += _history_dryrun(msg, ls)
                         break
+            if line in lines:
+                cnt += _history_dryrun("line not unique", ls)
+                adding = False
             if adding:
                 lines.append(line)
     if purge:
@@ -100,6 +104,8 @@ def _history(env, purge):
         os.remove(hist)
         os.rename(tmp, hist)
     print("purging: " + str(cnt))
+    if not purge:
+        print("^^^ DRYRUN ^^^")
 
 
 def _music(env):
