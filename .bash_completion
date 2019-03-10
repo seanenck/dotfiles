@@ -29,7 +29,7 @@ _wsw() {
 
 complete -F _wsw wsw
 
-_updates() {
+_manage() {
     local cur opts
     if [ $COMP_CWORD -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
@@ -37,4 +37,4 @@ _updates() {
     fi
 }
 
-complete -F _updates updates
+complete -F _manage manage
