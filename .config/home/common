@@ -47,6 +47,8 @@ _exports() {
              PERM_CONFIGS \
              BASE_SERVER \
              HOME_CACHE \
+             PERM_LOCATION \
+             TOTP_PASS \
              MIRROR_SERVER \
              MIRROR_COMPONENTS \
              DEB_SIGN_KEY \

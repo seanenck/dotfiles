@@ -96,7 +96,8 @@ stats() {
 
 _output() {
     local v
-    date +%Y-%m-%dT%H:%M
+    date +%Y-%m-%d
+    date +%H:%M
     v=$($STATUS_CMD git)
     if [ ! -z "$v" ]; then
         if [ ! -e $HIDE ]; then
