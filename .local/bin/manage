@@ -58,7 +58,7 @@ _BY_SIZE = {
 
 def _history_dryrun(message, line):
     """Report history dryrun purges."""
-    print("{}: {}".format(message, line))
+    print("{} -> ({})".format(line, message))
     return 1
 
 
