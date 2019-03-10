@@ -116,7 +116,14 @@ def _build(env, settings):
     os.mkdir(bindir)
     os.chdir(source)
     subprocess.call(["dh_make", "-s", "-y", "--createorig"])
-    subprocess.call(["dpkg-buildpackage", "-us", "-uc"])
+    environ = os.environ
+    if settings.gopath:
+        environ["GOPATH"] = env.DEB_BUILD_GO
+    environ["DEB_SRC_DIR"] = source
+    print('building package...')
+    subprocess.call(["dpkg-buildpackage", "-us", "-uc"],
+                    env=environ,
+                    cwd=source)
     os.chdir("..")
     debs = []
     for f in os.listdir("."):
