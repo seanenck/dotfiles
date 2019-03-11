@@ -84,13 +84,6 @@ if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
     return
 fi
 
-if [ ! -z "$DISPLAY" ]; then
-    pgrep status > /dev/null
-    if [ $? -ne 0 ]; then
-        systemctl --user start xsystem
-    fi
-fi
-
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
@@ -131,9 +124,7 @@ echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
-if [ -s $GIT_CHANGES ]; then
-    cat $GIT_CHANGES 2>/dev/null
-fi
+status git 2> /dev/null
 
 if [ -s $VIEW_JOURNAL ]; then
     _yesterday=$(date -d "1 day ago" +%Y-%m-%d)

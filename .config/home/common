@@ -22,10 +22,8 @@ TRIGGER_MAIL=${USER_TMP}mail.trigger
 
 # files
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
-GIT_CHANGES=${USER_TMP}git.log
 PRIV_CONF=${PERM_CONFIGS}priv.aliases
 XDG_USER_CONFIG=$HOME/.config/user-dirs.dirs
-SYS_ONLINE=${USER_TMP}sys.online
 JOURNALS=${USER_TMP}journal.
 VIEW_JOURNAL=${JOURNALS}$(date +%Y-%m-%d)
 LAST_SYNC=${USER_TMP}last.sync

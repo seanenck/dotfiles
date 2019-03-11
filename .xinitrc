@@ -3,6 +3,7 @@ userresources=$HOME/.Xresources
 usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
+localbin=$HOME/.local/bin/
 
 # merge in defaults and keymaps
 if [ -f $sysresources ]; then
@@ -46,7 +47,11 @@ while true; do
     fi
     pidof xautolock > /dev/null
     if [ $? -ne 0 ]; then
-        xautolock -time 5 -locker "$HOME/.local/bin/locking lock" &
+        xautolock -time 5 -locker "$localbin/locking lock" &
+    fi
+    pgrep status > /dev/null
+    if [ $? -ne 0 ]; then
+        $localbin/status daemon &
     fi
     sleep 1
 done

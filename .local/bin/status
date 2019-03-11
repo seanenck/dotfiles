@@ -1,201 +1,133 @@
-#!/bin/bash
-source $HOME/.config/home/common
-STAT_GIT=${USER_TMP}/stats.git
-GIT_PARTIAL_PATTERN="weechat|random_seed"
-STAT_LOCK=${USER_TMP}/stat.lock
-STATUS_CMD=$HOME_BIN/status
-VOLUME_CMD=$HOME_BIN/volume
-LOCK_CMD=$HOME_BIN/locking
-NOTIFY_DUR=5000
+#!/usr/bin/python3
+"""Perform status operations."""
+import argparse
+import sys
+import common
+import datetime
+import time
+import git
+import subprocess
+import os
 
-_get-git-folders() {
-    local res f d search
-    res=""
-    search=""
-    for d in $(find $PERM_LOCATION -maxdepth 1 -type d); do
-        search="$search $d"
-    done
-    search=$(echo "$search" | sort -u)
-    for d in "$HOME/workspace" $search; do
-        for f in $(find $d -maxdepth 1 -type d | sort); do
-            if [ ! -d "$f/.git" ]; then
-                continue
-            fi
-            res=$res" "$f/
-        done
-    done
-    echo $res
-}
 
-get-all-changes() {
-    git update-index -q --refresh 
-    git diff-index --name-only HEAD --
-    git status -sb | grep 'ahead'
-    git ls-files --other --exclude-standard
-}
+_DELIMITER = "|"
+_NOTIFICATIONS = 10
+_NOTIFY_LEN = str((_NOTIFICATIONS + 5) * 1000)
 
-git-changing() {
-    local cwd d_paths d local_res first
-    cwd=$PWD
-    d_paths="/etc $HOME "$(_get-git-folders)
-    for d in $(echo "$d_paths"); do
-        if [ ! -d "$d/.git" ]; then
-            continue
-        fi
-        cd $d
-        local_res=$(get-all-changes | grep -E -v "$GIT_PARTIAL_PATTERN")
-        if [ ! -z "$local_res" ]; then
-            if [ -z $first ]; then
-                echo "uncommitted changes"
-            fi
-            echo -e "$d${RED_TEXT}"
-            echo -e "$local_res${NORM_TEXT}" | sed "s/^/    /g"
-            first="false"
-        fi
-    done
-    cd $cwd
-}
 
-_up() {
-    curl --retry 3 --retry-delay 3 --connect-timeout 3 -s https://voidedtech.com > /dev/null
-    if [ $? -eq 0 ]; then
-        touch $SYS_ONLINE
-    else
-        rm -f $SYS_ONLINE
-    fi
-}
+def _notify(message):
+    subprocess.call(["notify-send", "-t", _NOTIFY_LEN, message])
 
-_unread() {
-    local cnt raw res
-    raw=$($HOME_BIN/email count)
-    cnt=$(echo "$raw" | cut -d " " -f 1)
-    if [ -z "$raw" ]; then
-        echo
-    else
-        echo "$raw"
-    fi
-}
 
-_checkgit() {
-    local _git_cnt
-    git-changing > $GIT_CHANGES
-    _git_cnt=$(cat $GIT_CHANGES | grep "    " | wc -l)
-    if [ $_git_cnt -gt 0 ]; then
-        echo "$_git_cnt HEAD^"
-    else
-        echo
-    fi
-}
+def _notifications(env):
+    """Notification outputs."""
+    if os.path.exists(env.HIDE):
+        return
+    git_tmp = env.GIT_STATUS + ".tmp"
+    with open(git_tmp, 'w') as f:
+        g = git.status(env, f)
+    os.rename(git_tmp, env.GIT_STATUS)
+    if g > 0:
+        _notify("{} ^AHEAD^".format(g))
+    out, err = common.get_output_or_error(["email", "count"])
+    if err is None:
+        emails = out.decode("utf-8").strip()
+        if emails:
+            _notify(emails)
 
-stats() {
-    rm -f $STAT_LOCK
-    touch $STAT_LOCK
-    _checkgit > $STAT_GIT
-    rm -f $STAT_LOCK
-}
 
-_output() {
-    local v
-    date +%Y-%m-%d
-    date +%H:%M
-    v=$($STATUS_CMD git)
-    if [ ! -z "$v" ]; then
-        if [ ! -e $HIDE ]; then
-            notify-send -t $NOTIFY_DUR "$v"
-        fi
-    fi
-    v=$($LOCK_CMD status)
-    if [ ! -z "$v" ]; then
-        echo "$v"
-    fi
-    v=$($STATUS_CMD email | sed "s/^\s*//g;s/\s*$//g")
-    if [ ! -z "$v" ]; then
-        if [ ! -e $HIDE ]; then
-            notify-send -t $NOTIFY_DUR "$v"
-        fi
-    fi
-    echo "disp:"$(xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g" | sed "s/1\.0/100/g" | tail -n 1 | awk '{printf "%3.0f", $1}') | sed "s/ //g"
-    local muted
-    local vol
-    muted=$($VOLUME_CMD ismute)
-    if [[ "$muted" == "true" ]]; then
-        vol="0"
-    else
-        vol=$($VOLUME_CMD volume)
-    fi
-    echo "vol:$vol"
-    local bat
-    local charge
-    charge=$(cat /sys/class/power_supply/AC/online)
-    if [[ "$charge" == "0" ]]; then
-        charge="-"
-    else
-        charge="+"
-    fi
-    local cntcharge=0
-    local spacer=""
-    for b in $(echo 0 1); do
-        local per=$(cat /sys/class/power_supply/BAT$b/capacity)
-        bat="$bat$spacer$per%"
-        cntcharge=$((cntcharge+per))
-        if [ $b -eq 0 ]; then
-            spacer=","
-        fi
-    done
-    if [ $cntcharge -lt 20 ]; then
-        if [[ "$charge" == "-" ]]; then
-            notify-send -t $NOTIFY_DUR "WARNING: BATTERY"
-        fi
-    fi
-    echo "bat:$charge($bat)"
-    wsw --mode addr
-}
+def _run_command(cmd, append):
+    out, err = common.get_output_or_error(cmd)
+    if err is None:
+        o = out.decode("utf-8").strip()
+        if o:
+            append.append(o)
 
-outputs() {
-    xsetroot -name $(_output $1 | sed "s/ /|/g" | tr '\n' '|')
-}
 
-if [ -z "$1" ]; then
-    pidfile="/tmp/status.pid"
-    if [ -e "$pidfile" ]; then
-        p=$(cat $pidfile)
-        kill -0 $p
-        if [ $? -eq 0 ]; then
-            exit 0
-        fi
-    fi
-    cnt=0
-    while [ 1 -eq 1 ]; do
-        stats
-        outputs
-        echo $$ > $pidfile
-        sleep 1
-        cnt=$((cnt+1))
-        if [ $cnt -gt 15 ]; then
-            cnt=0
-            _up > /dev/null 2>&1 &
-        fi
-    done
-else
-    case "$1" in
-        "git")
-            while [ -e $STAT_LOCK ]; do
-                sleep 0.1
-            done
-            cat ${STAT_GIT} | tail -n 1
-            ;;
-        "email")
-            _unread
-            ;;
-        "toggle")
-            if [ -e $HIDE ]; then
-                rm -f $HIDE
-            else
-                touch $HIDE
-            fi
-            ;;
-        *)
-            echo "unknown command: $1"
-            ;;
-    esac
-fi
+def _daemon(env):
+    """Daemon runner."""
+    state = _NOTIFICATIONS
+    while True:
+        t = datetime.datetime.now()
+        time_format = t.strftime("%Y-%m-%d{}%H:%M".format(_DELIMITER))
+        outputs = [time_format]
+        out, err = common.get_output_or_error(["xrandr", "--current", "--verbose"])
+        bright = "?"
+        if err is None:
+            lines = [float(x.strip().split(":")[1].strip()) \
+                     for x in out.decode("utf-8").split("\n") \
+                     if "Brightness" in x]
+            len_l = len(lines)
+            if len_l > 0:
+                bright = str(int(sum(lines) / len_l * 100))
+        outputs.append("disp:{}".format(bright))
+        _run_command(["locking", "status"], outputs)
+        volume = []
+        _run_command(["volume", "ismute"], volume)
+        _run_command(["volume", "volume"], volume)
+        muted = False
+        vol = "?"
+        if len(volume) == 2:
+            muted = volume[0] == "true"
+            if muted:
+                vol = "0"
+            else:
+                vol = volume[1]
+        outputs.append("vol:{}".format(vol))
+        charge = "?"
+        with open("/sys/class/power_supply/AC/online", 'r') as f:
+            if f.read().strip() == "0":
+                charge = "-"
+            else:
+                charge = "+"
+        total_bat = 0
+        batteries = []
+        for b in range(0, 2):
+            bat = "/sys/class/power_supply/BAT{}/capacity".format(b)
+            with open(bat, 'r') as f:
+                per = f.read().strip()
+                total_bat += float(per)
+                batteries.append(per)
+        if total_bat < 20:
+            _notify("WARNING: BATTERY")
+        b = ",".join(batteries)
+        b = "bat:{}({})".format(charge, b)
+        outputs.append(b)        
+        if subprocess.call(["wsw", "--mode", "online"]) == 0:
+            outputs.append("UP")
+        else:
+            outputs.append("DOWN")
+        _run_command(["wsw", "--mode", "addr"], outputs)
+        subprocess.call(["xsetroot", "-name", _DELIMITER.join(outputs)])
+        if state >= _NOTIFICATIONS:
+            _notifications(env)
+            state = -1
+        state += 1
+        time.sleep(1)
+
+
+def main():
+    """Program entry."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("command")
+    args = parser.parse_args()
+    env = common.read_env()
+    env.HIDE = os.path.join(env.USER_TMP, "hidden.status")
+    env.GIT_STATUS = os.path.join(env.USER_TMP, "git.status")
+    if args.command == "git":
+        common.red_text()
+        subprocess.call(["cat", env.GIT_STATUS])
+        common.normal_text()
+    elif args.command == "daemon":
+        _daemon(env)
+    elif args.command == "toggle":
+        if os.path.exists(env.HIDE):
+            os.remove(env.HIDE)
+        else:
+            open(env.HIDE, 'w').close()
+    else:
+        print("unknown command")
+
+
+if __name__ == "__main__":
+    main()

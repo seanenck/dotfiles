@@ -67,17 +67,15 @@ def _get_all_changes(env):
     return (results, total)
 
 
-def status(env, stdout):
+def status(env, out):
     """Get git status."""
     r = _get_all_changes(env)
     total = r[1]
-    if total > 0 and stdout is not None:
-        stdout.write("uncommitted changes:\n")
-        common.red_text()
+    if total > 0 and out is not None:
+        out.write("uncommitted changes:\n")
         results = r[0]
         for k in sorted(results.keys()):
-            stdout.write(k + "\n")
+            out.write(k + "\n")
             for o in results[k]:
-                stdout.write("    ->  {}\n".format(o))
-        common.normal_text()
+                out.write("    ->  {}\n".format(o))
     return total

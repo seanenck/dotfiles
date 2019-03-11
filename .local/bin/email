@@ -69,7 +69,8 @@ _mbsync() {
 }
 
 _imapjournal() {
-    if [ -e $SYS_ONLINE ]; then
+    wsw --mode online
+    if [ $? -eq 0 ]; then
         _mbsync 2>&1 >> ${USER_TMP}mbsync.$(date +%Y-%m-%d).log 
     fi
 }
