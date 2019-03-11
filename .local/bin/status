@@ -144,13 +144,17 @@ def main():
             open(env.HIDE, 'w').close()
     elif args.command == "journal":
         if os.path.exists(env.JOURNALS):
-            print("journal:")
+            first = True
             with open(env.JOURNALS, 'r') as f:
-                common.red_text()
                 for l in f.readlines():
+                    if first:
+                        print("journal:")
+                        common.red_text()
+                        first = False
                     print("    -> {}".format(l))
+            if not first:
                 common.normal_text()
-            print("clear-journal to suppress")
+                print("clear-journal to suppress")
     else:
         print("unknown command")
 
