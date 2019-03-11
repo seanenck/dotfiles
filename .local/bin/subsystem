@@ -128,32 +128,28 @@ _autoclip() {
     auto-clipboard $PERM_PASS
 }
 
-if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
-    echo > /dev/null
+if [ -z "$1" -o -z "$2" ]; then
+    exit 1
+fi
+case $1 in
+    $DISPLAY_KEY)
+        CMD=toggle-backlighting
+        ;;
+    $WORKSPACES_KEY)
+        CMD=workspace-subsystem
+        ;;
+    "force")
+        CMD=force-display-on
+        ;;
+    "autoclip")
+        if [[ "$2" == "now" ]]; then
+            _autoclip
+            exit 0
+        fi
+        ;;
+esac
+if [ -z $CMD ]; then
+    echo "unknown action: $1"
 else
-    if [ -z "$1" -o -z "$2" ]; then
-        exit 1
-    fi
-    case $1 in
-        $DISPLAY_KEY)
-            CMD=toggle-backlighting
-            ;;
-        $WORKSPACES_KEY)
-            CMD=workspace-subsystem
-            ;;
-        "force")
-            CMD=force-display-on
-            ;;
-        "autoclip")
-            if [[ "$2" == "now" ]]; then
-                _autoclip
-                exit 0
-            fi
-            ;;
-    esac
-    if [ -z $CMD ]; then
-        echo "unknown action: $1"
-    else
-        $CMD "$2"
-    fi
+    $CMD "$2"
 fi
