@@ -115,9 +115,22 @@ def main():
     env.HIDE = os.path.join(env.USER_TMP, "hidden.status")
     env.GIT_STATUS = os.path.join(env.USER_TMP, "git.status")
     if args.command == "git":
-        common.red_text()
-        subprocess.call(["cat", env.GIT_STATUS])
-        common.normal_text()
+        text = None
+        try:
+            with open(env.GIT_STATUS, 'r') as f:
+                text = [x.rstrip() for x in f.readlines()]
+        except Exception as e:
+            pass
+        if text:
+            first = True
+            for l in text:
+                if first:
+                    print(l)
+                    common.red_text()
+                    first = False
+                    continue
+                print(l)
+            common.normal_text()
     elif args.command == "daemon":
         _daemon(env)
     elif args.command == "toggle":
