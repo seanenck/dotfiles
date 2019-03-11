@@ -104,6 +104,8 @@ set-workplace() {
             ;;
     esac
     toggle-backlighting $MID_BRIGHT
+    sleep 1
+    pkill dwm
 }
 
 force-workplace() {
