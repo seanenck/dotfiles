@@ -21,10 +21,6 @@ force-display-on() {
 }
 
 # Get displays, first argument can filter out any displays
-get-displays() {
-    get-all-displays " "
-}
-
 get-all-displays() {
     xrandr | grep "${1}connected" | cut -d " " -f 1
 }
@@ -74,7 +70,7 @@ toggle-backlighting() {
     esac
     
     if [ ! -z "$setting" ]; then
-        _displays=$(get-displays)
+        _displays=$(get-all-displays " ")
         for disp in ${_displays[@]}; do
             xrandr --output $disp --brightness $setting
         done
@@ -108,10 +104,6 @@ set-workplace() {
     pkill dwm
 }
 
-force-workplace() {
-    set-workplace $1
-}
-
 # Workspace commands
 workspace-subsystem() {
     local has_main cmd
@@ -120,7 +112,7 @@ workspace-subsystem() {
         echo "MISSING MAIN DISPLAY: $MAIN_DISPLAY"
         cmd=""
     fi
-    force-workplace "$1"
+    set-workplace $1
 }
 
 _autoclip() {
