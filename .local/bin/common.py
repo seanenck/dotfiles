@@ -41,10 +41,10 @@ def touch(file_name):
     open(file_name, 'a').close()
 
 
-def read_env(file_name="home/common"):
+def read_env():
     """Read the environment for my user."""
     home_env = os.environ["HOME"]
-    home = os.path.join(home_env, ".config", file_name)
+    home = os.path.join(home_env, ".config", "home", "common")
     output, err = get_output_or_error(["bash",
                                        "-c",
                                        "source " + home + "; _exports"])
