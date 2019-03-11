@@ -5,7 +5,6 @@ HOME_CONF=$HOME/.config/home/
 
 # cache files
 HOME_CACHE=$HOME/.cache/home/
-DMENU_URLS=${HOME_CACHE}dmenuurls/
 USER_TMP=${HOME_CACHE}tmp/
 
 # perm/store
@@ -24,16 +23,11 @@ TRIGGER_MAIL=${USER_TMP}mail.trigger
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 PRIV_CONF=${PERM_CONFIGS}priv.aliases
 XDG_USER_CONFIG=$HOME/.config/user-dirs.dirs
-JOURNALS=${USER_TMP}journal.
-VIEW_JOURNAL=${JOURNALS}$(date +%Y-%m-%d)
+JOURNALS=${USER_TMP}journal
 LAST_SYNC=${USER_TMP}last.sync
-HIDE=${USER_TMP}nostatus
 
 # string vars
 BASE_SERVER="fact"
-RED_TEXT="\033[1;31m"
-NORM_TEXT="\033[0m"
-TASK_FILE=".tsk"
 
 export OPENSC_CONF="$HOME/.config/opensc.conf"
 
@@ -52,6 +46,7 @@ _exports() {
              MIRROR_COMPONENTS \
              DEB_SIGN_KEY \
              DEB_BUILD_GO \
+             JOURNALS \
              DEB_BUILD_DIR \
              DEB_BUILD_ROOT; do
         echo "$f=${!f}"
@@ -61,8 +56,6 @@ _exports() {
 _setup() {
     local xsess
     echo "user init"
-    rm -f $SYS_ONLINE
-    rm -f $HIDE
 
     # cleanup xsession errors
     xsess=$HOME/.xsession-errors
@@ -70,12 +63,11 @@ _setup() {
     echo > $xsess
     
     # make sure I can operate
-    mkdir -p $DMENU_URLS
     mkdir -p $USER_TMP
 
     # check mail for valid files
     echo "checking mail files..."
-    find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch\/" | grep -v "Trash\/" | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)" >> $VIEW_JOURNAL
+    find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch\/" | grep -v "Trash\/" | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)" >> $JOURNALS
 
     # cleanup temp dirs
     echo "cleaning up directories..."
@@ -83,7 +75,7 @@ _setup() {
     find $USER_TMP -empty -type d -delete
     find $HOME/.vim/{swap,undo} -mmin +1440 -type f -exec rm {} \;
     if [ ! -e $LAST_SYNC ]; then
-        echo "no recent syncs" >> $VIEW_JOURNAL
+        echo "no recent syncs" >> $JOURNALS
     fi
     ${HOME_BIN}/volume mute
     echo "init completed"

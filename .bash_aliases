@@ -26,5 +26,5 @@ ssh() {
 
 clear-journal() {
     source $HOME/.config/home/common
-    rm -f $JOURNALS*
+    rm -f $JOURNALS
 }

@@ -60,7 +60,7 @@ _mbsync() {
         ts=$(date +%Y-%m-%dT%H:%M:%S)
         mbsync -aV | sed "s/^/$ts -> /g"
         if [ $? -ne 0 ]; then
-            echo "mbsync failure" >> $VIEW_JOURNAL
+            echo "mbsync failure" >> $JOURNALS
         fi
         notmuch new
     else

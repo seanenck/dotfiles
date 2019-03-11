@@ -125,14 +125,4 @@ export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
 status git 2> /dev/null
-
-if [ -s $VIEW_JOURNAL ]; then
-    _yesterday=$(date -d "1 day ago" +%Y-%m-%d)
-    _today=$(date +%Y-%m-%d)
-    echo
-    echo -e "journal:$RED_TEXT"
-    cat $VIEW_JOURNAL | sed "s/^/    /g"
-    echo
-    echo -e "${NORM_TEXT}clear-journal to suppress"
-    echo
-fi
+status journal

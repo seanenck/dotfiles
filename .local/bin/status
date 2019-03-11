@@ -47,6 +47,8 @@ def _run_command(cmd, append):
 def _daemon(env):
     """Daemon runner."""
     state = _NOTIFICATIONS
+    if os.path.exists(env.HIDE):
+        os.remove(env.HIDE)
     while True:
         t = datetime.datetime.now()
         time_format = t.strftime("%Y-%m-%d{}%H:%M".format(_DELIMITER))
@@ -140,6 +142,15 @@ def main():
             os.remove(env.HIDE)
         else:
             open(env.HIDE, 'w').close()
+    elif args.command == "journal":
+        if os.path.exists(env.JOURNALS):
+            print("journal:")
+            with open(env.JOURNALS, 'r') as f:
+                common.red_text()
+                for l in f.readlines():
+                    print("    -> {}".format(l))
+                common.normal_text()
+            print("clear-journal to suppress")
     else:
         print("unknown command")
 
