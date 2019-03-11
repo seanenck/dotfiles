@@ -5,7 +5,6 @@ INDEX_DIR=$MAIL_DIR/Indexed/
 INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
 ACCOUNTS="fastmail gmail"
-MUTTHTML="$USER_TMP/*.mutt.html"
 LAST_MAILS=$USER_TMP/mail.last
 PREV_MAILS=${LAST_MAILS}.prev
 
@@ -82,9 +81,9 @@ _search() {
 }
 
 subcmd="$1"
-RUN="run"
 if [ -z "$subcmd" ]; then
-    subcmd="$RUN"
+    _imapjournal
+    exit
 fi
 case "$subcmd" in
     "client")
@@ -122,9 +121,6 @@ case "$subcmd" in
         ;;
     "count")
         _mailcount
-        ;;
-    "$RUN")
-        _imapjournal
         ;;
     *)
         echo "unknown command: $1"
