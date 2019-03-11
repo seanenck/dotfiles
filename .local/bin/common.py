@@ -23,7 +23,8 @@ class Object(object):
 
 def _text_color(color):
     """Output terminal text in a color."""
-    call(["echo", "-e", "\\033[{}m".format(color)])
+    import sys
+    sys.stdout.write("\033[{}m".format(color))
 
 
 def red_text():
