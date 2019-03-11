@@ -167,11 +167,6 @@ if [ -z "$1" ]; then
     cnt=0
     while [ 1 -eq 1 ]; do
         stats
-        if [ ! -e $HIDE ]; then
-            if [ $(xrandr | grep " connected" | wc -l) -gt 1 ]; then
-                notify-send -t $NOTIFY_DUR "ACTIVE"
-            fi
-        fi
         outputs
         echo $$ > $pidfile
         sleep 1
