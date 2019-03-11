@@ -55,7 +55,7 @@ _exports() {
 
 _setup() {
     local xsess
-    echo "user init"
+    echo "user init "$(date +%Y-%m-%d-%H-%M-%S)
 
     # cleanup xsession errors
     xsess=$HOME/.xsession-errors
