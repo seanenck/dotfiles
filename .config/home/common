@@ -23,7 +23,7 @@ TRIGGER_MAIL=${USER_TMP}mail.trigger
 # files
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 PRIV_CONF=${PERM_CONFIGS}priv.aliases
-XDG_USER_CONFIG=$HOME/.config/user-dirs.dirs
+XDG_USER_CONFIG=${HOME_XDG}user-dirs.dirs
 JOURNALS=${USER_TMP}journal
 LAST_SYNC=${USER_TMP}last.sync
 
@@ -35,7 +35,7 @@ export OPENSC_CONF="$HOME/.config/opensc.conf"
 _exports() {
     source $PRIV_CONF
     source ${HOME_CONF}debian
-    source ${HOME_XDG}user-dirs.dirs
+    source ${XDG_USER_CONFIG}
     for f in HOME_BIN \
              USER_TMP \
              XDG_DOWNLOAD_DIR \
@@ -53,6 +53,7 @@ _exports() {
              DEB_SIGN_KEY \
              DEB_BUILD_GO \
              JOURNALS \
+             LAST_SYNC \
              DEB_BUILD_DIR \
              DEB_BUILD_ROOT; do
         echo "$f=${!f}"
