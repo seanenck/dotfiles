@@ -1,9 +1,0 @@
-[Unit]
-Description=File syncing
-
-[Service]
-ExecStart=/home/enck/.local/bin/syncing
-Restart=always
-
-[Install]
-WantedBy=multi-user.target

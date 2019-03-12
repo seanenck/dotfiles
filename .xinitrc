@@ -53,5 +53,9 @@ while true; do
     if [ $? -ne 0 ]; then
         $localbin/status daemon &
     fi
+    pgrep syncing > /dev/null
+    if [ $? -ne 0 ]; then
+        $localbin/syncing &
+    fi
     sleep 1
 done
