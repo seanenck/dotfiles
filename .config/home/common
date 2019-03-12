@@ -18,7 +18,6 @@ PERM_PASS=${PERM_LOCATION}pass/
 
 # mail
 MAIL_DIR=$HOME/.mutt/imap/
-TRIGGER_MAIL=${USER_TMP}mail.trigger
 
 # files
 SSH_AUTH_TMP=/tmp/ssh-auth.sock

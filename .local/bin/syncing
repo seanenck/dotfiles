@@ -135,6 +135,7 @@ _sendzips() {
 }
 
 sync-now() {
+    echo "syncing"
     local dirs pushgit pushbackup
     ${HOME_BIN}/email
     dirs="${PRIV_PATH} ${HOME_STORE} ${PERM_PASS}/personal"
@@ -144,7 +145,7 @@ sync-now() {
     _sendzips "$dirs"
     if [ $pushgit -eq 0 ]; then
         if [ $pushbackup -eq 0 ]; then
-            exit 0
+            return
         fi
     fi
     auth=$(cat $SSH_AUTH_TMP)
@@ -170,10 +171,33 @@ sync-now() {
     fi
 }
 
-network=$(wsw --mode current)
-echo $network | grep -q -E "$NET_SYNC"
-if [ $? -ne 0 ]; then
-    exit 0
-fi
-
-sync-now >> ${USER_TMP}sync.$TODAY
+last=0
+mutt=0
+while [ 1 -eq 1 ]; do
+    curr=$(date +%s)
+    min=$(date +%M)
+    if [ $min -eq 0 -o $last -eq 0 ]; then
+        last=$curr
+    fi
+    delta=$((curr-last))
+    if [ $delta -gt 1200 ]; then
+        last=$curr
+        network=$(wsw --mode current)
+        echo $network | grep -q -E "$NET_SYNC"
+        if [ $? -eq 0 ]; then
+            sync-now >> ${USER_TMP}sync.$TODAY
+        fi
+    fi
+    pidof mutt > /dev/null
+    if [ $? -eq 0 ]; then
+        if [ $mutt -eq 0 ]; then
+            mutt=1
+        fi
+    else
+        if [ $mutt -eq 1 ]; then
+            mutt=0
+            ${HOME_BIN}/email
+        fi
+    fi
+    sleep 1
+done

@@ -92,8 +92,6 @@ def _client(env, account):
     """Connect an email client."""
     if account not in _ACCOUNTS:
         return
-    trigger = os.path.join(env.USER_TMP, "mail.trigger")
-    open(trigger, 'w').close()
     time.sleep(0.5)
     muttrc = os.path.join(env.HOME, ".mutt", "{}.muttrc".format(account))
     subprocess.call(["mutt", "-F", muttrc], cwd=env.XDG_DOWNLOAD_DIR)
@@ -119,30 +117,6 @@ def _search(env, terms):
         found = True
     if not found:
         print("nothing found...")
-
-
-def _daemon(env):
-    """Run as a daemon."""
-    time.sleep(1)
-    acct_lasts = {}
-    while True:
-        for a in _ACCOUNTS:
-            acct_files = []
-            apath = os.path.join(env.MAIL_DIR, a)
-            for root, _, files in os.walk(apath):
-                for f in files:
-                    fpath = os.path.join(root, f)
-                    acct_files.append(fpath)
-            acct_files = set(sorted(acct_files))
-            if a in acct_lasts:
-                last = acct_lasts[a]
-                if last != acct_files:
-                    print("mailbox changed")
-                    _imap(env)
-            acct_lasts[a] = acct_files
-        if subprocess.call(["pidof", "mutt"], stdout=subprocess.DEVNULL) != 0:
-            return
-        time.sleep(1)
 
 
 def main():
@@ -171,8 +145,6 @@ def main():
             print("search term(s) required")
             return
         _search(env, commands)
-    elif cmd == "daemon":
-        _daemon(env)
     elif cmd == "count":
         _count(env)
     else:

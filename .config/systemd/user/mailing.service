@@ -1,6 +1,0 @@
-[Unit]
-Description=Run mail while connected via mutt
-
-[Service]
-Type=oneshot
-ExecStart=/home/enck/.local/bin/email daemon
