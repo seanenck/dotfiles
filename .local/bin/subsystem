@@ -133,6 +133,11 @@ case $1 in
     "force")
         CMD=force-display-on
         ;;
+    "brightness")
+        val=$(xrandr --current --verbose | grep "Brightness" | cut -d ":" -f 2 | sed "s/0\.//g;s/1\./10/g")
+        echo $val
+        exit 0
+        ;;
     "autoclip")
         if [[ "$2" == "now" ]]; then
             _autoclip

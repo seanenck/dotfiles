@@ -49,7 +49,7 @@ def _i3lock(env, now=False):
                 start = time.time()
             continue
         running = False
-    subprocess.call(["subsystem", "force"])
+    subprocess.call(["subsystem", "force", "on"])
     subprocess.call(["subsystem", "backlight", "up"])
 
 

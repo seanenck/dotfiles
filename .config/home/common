@@ -42,6 +42,8 @@ _exports() {
              PERM_LOCATION \
              TOTP_PASS \
              PRIV_PATH \
+             PERM_PASS \
+             PRIV_CONF \
              MIRROR_SERVER \
              MIRROR_COMPONENTS \
              DEB_SIGN_KEY \

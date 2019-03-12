@@ -53,17 +53,11 @@ def _daemon(env):
         t = datetime.datetime.now()
         time_format = t.strftime("%Y-%m-%d{}%H:%M".format(_DELIMITER))
         outputs = [time_format]
-        out, err = common.get_output_or_error(["xrandr",
-                                               "--current",
-                                               "--verbose"])
+        brightness = []
         bright = "?"
-        if err is None:
-            lines = [float(x.strip().split(":")[1].strip())
-                     for x in out.decode("utf-8").split("\n")
-                     if "Brightness" in x]
-            len_l = len(lines)
-            if len_l > 0:
-                bright = str(int(sum(lines) / len_l * 100))
+        _run_command(["subsystem", "brightness", "status"], brightness)
+        if len(brightness) == 1:
+            bright = brightness[0]
         outputs.append("disp:{}".format(bright))
         _run_command(["locking", "status"], outputs)
         volume = []
