@@ -174,9 +174,9 @@ sync-now() {
 last=0
 mutt=0
 while [ 1 -eq 1 ]; do
+    # TODO: reset our delta state on minute rollover
     curr=$(date +%s)
-    min=$(date +%M)
-    if [ $min -eq 0 -o $last -eq 0 ]; then
+    if [ $last -eq 0 ]; then
         last=$curr
     fi
     delta=$((curr-last))
@@ -188,6 +188,7 @@ while [ 1 -eq 1 ]; do
             sync-now >> ${USER_TMP}sync.$TODAY
         fi
     fi
+    # TODO: this shouldn't trigger email sync, it should trigger diff ? sync
     pidof mutt > /dev/null
     if [ $? -eq 0 ]; then
         if [ $mutt -eq 0 ]; then
@@ -199,5 +200,5 @@ while [ 1 -eq 1 ]; do
             ${HOME_BIN}/email
         fi
     fi
-    sleep 1
+    sleep 15
 done
