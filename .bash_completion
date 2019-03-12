@@ -3,7 +3,7 @@ _email() {
     local cur opts
     if [ $COMP_CWORD -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        COMPREPLY=( $(compgen -W "search run" -- $cur) )
+        COMPREPLY=( $(compgen -W "search" -- $cur) )
     fi
 }
 

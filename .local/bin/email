@@ -1,47 +1,183 @@
-#!/bin/bash
-source $HOME/.config/home/common
-INDEX_DIR=$MAIL_DIR/Indexed/
-INDEXED=${INDEX_DIR}cur/
-INDEX_FILE=$USER_TMP/mail.index
-ACCOUNTS="fastmail gmail"
-LAST_MAILS=$USER_TMP/mail.last
-PREV_MAILS=${LAST_MAILS}.prev
+#!/usr/bin/python3
+"""Email handling."""
+import common
+import sys
+import os
+import time
+import datetime
+import subprocess
 
-subcmd="$1"
-if [ -z "$subcmd" ]; then
-    python3 $HOME_BIN/email.py
-    exit
-fi
-case "$subcmd" in
-    "client")
-        python3 $HOME_BIN/email.py client $2
-        ;;
-    "search")
-        python3 $HOME_BIN/email.py search ${@:2}
-        ;;
-    "connected")
-        python3 $HOME_BIN/email.py
-        p=$(pidof mutt)
-        while [ ! -z "$p" ]; do
-            sleep 1
-            p=$(pidof mutt)
-            for d in $(echo "$ACCOUNTS"); do
-                find ${MAIL_DIR}$d -type f | sort >> $LAST_MAILS
-            done
-            if [ -e $PREV_MAILS ]; then
-                diff -u $PREV_MAILS $LAST_MAILS > /dev/null
-                if [ $? -ne 0 ]; then
-                    echo "mailbox changed"
-                    python3 $HOME_BIN/email.py client $2
-                fi
-            fi
-            mv $LAST_MAILS $PREV_MAILS
-        done
-        ;;
-    "count")
-        python3 $HOME_BIN/email.py count
-        ;;
-    *)
-        echo "unknown command: $1"
-        ;;
-esac
+_ACCOUNTS = [common.GMAIL_ACCOUNT, common.FMAIL_ACCOUNT]
+
+
+def _countdirs(dirs, account, ind):
+    """Count dir emails."""
+    cnt = 0
+    for d in dirs:
+        cnt += len(os.listdir(d))
+    if cnt > 0:
+        print("{} {}({})".format(cnt, account, ind))
+
+
+def _count(env):
+    """Get unread counts."""
+    for a in _ACCOUNTS:
+        unread = []
+        new = []
+        acct = os.path.join(env.MAIL_DIR, a)
+        for root, dirs, _ in os.walk(acct):
+            for d in dirs:
+                rootd = os.path.join(root, d)
+                if "Trash" in rootd:
+                    continue
+                if d == "cur":
+                    if "Filtered" in rootd or "Spam" in rootd:
+                        if "Filtered/Automated" not in rootd:
+                            unread.append(rootd)
+                elif d == "new":
+                    new.append(rootd)
+        _countdirs(new, a, "n")
+        _countdirs(unread, a, "u")
+
+
+def _run_logged(cmd, log_name):
+    """Run a logged command."""
+    mode = 'w'
+    created = True
+    failure = False
+    log = log_name + ".log"
+    if os.path.exists(log):
+        mode = 'a'
+        created = False
+    with open(log, mode) as f:
+        r = subprocess.call(cmd, stdout=f, stderr=subprocess.DEVNULL)
+        failure = r != 0
+    return (failure, created)
+
+
+def _mbsync(env):
+    """Run mbsync."""
+    if subprocess.call(["pidof", "mbsync"]) == 0:
+        print("mbsync already running")
+        return
+    for d in [env.INDEX_DIR, env.INDEX_CUR, env.INDEX_NEW]:
+        if not os.path.exists(d):
+            os.mkdir(d)
+    dt = datetime.datetime.now().strftime("%Y-%m-%d-%H")
+    log_file = os.path.join(env.USER_TMP, "mbsync.{}".format(dt))
+    failed, created = _run_logged(["mbsync", "-aV"], log_file)
+    if failed:
+        common.notify("mbsync failure", 30)
+    if created:
+        _clean_index(env)
+    _run_logged(["notmuch", "new"], log_file + ".index")
+
+
+def _clean_index(env):
+    """Cleanup the index."""
+    for f in os.listdir(env.INDEX_CUR):
+        fpath = os.path.join(env.INDEX_CUR, f)
+        if os.path.islink(fpath):
+            os.unlink(fpath)
+
+
+def _imap(env):
+    """Run imap sync."""
+    if not common.is_online():
+        return
+    _mbsync(env)
+
+
+def _client(env, account):
+    """Connect an email client."""
+    if account not in _ACCOUNTS:
+        return
+    trigger = os.path.join(env.USER_TMP, "mail.trigger")
+    open(trigger, 'w').close()
+    time.sleep(0.5)
+    muttrc = os.path.join(env.HOME, ".mutt", "{}.muttrc".format(account))
+    subprocess.call(["mutt", "-F", muttrc], cwd=env.XDG_DOWNLOAD_DIR)
+    time.sleep(0.25)
+
+
+def _search(env, terms):
+    """Search terms."""
+    out, err = common.get_output_or_error(["notmuch",
+                                           "search",
+                                           "--output=files"] + terms)
+    if err is not None:
+        print('search failed')
+        return
+    _clean_index(env)
+    found = False
+    for f in [x.strip() for x in out.decode("utf-8").split("\n")]:
+        if not f:
+            continue
+        bname = os.path.basename(f)
+        lname = os.path.join(env.INDEX_CUR, bname)
+        os.symlink(f, lname)
+        found = True
+    if not found:
+        print("nothing found...")
+
+
+def _daemon(env):
+    """Run as a daemon."""
+    time.sleep(1)
+    acct_lasts = {}
+    while True:
+        if subprocess.call(["pidof", "mutt"], stdout=subprocess.DEVNULL) != 0:
+            return
+        for a in _ACCOUNTS:
+            acct_files = []
+            apath = os.path.join(env.MAIL_DIR, a)
+            for root, _, files in os.walk(apath):
+                for f in files:
+                    fpath = os.path.join(root, f)
+                    acct_files.append(fpath)
+            acct_files = set(sorted(acct_files))
+            if a in acct_lasts:
+                last = acct_lasts[a]
+                if last != acct_files:
+                    print("mailbox changed")
+                    _client(env, a)
+            acct_lasts[a] = acct_files
+        time.sleep(1)
+
+
+def main():
+    """Program entry."""
+    args = sys.argv
+    env = common.read_env()
+    env.INDEX_DIR = os.path.join(env.MAIL_DIR, "Indexed")
+    env.INDEX_CUR = os.path.join(env.INDEX_DIR, "cur")
+    env.INDEX_NEW = os.path.join(env.INDEX_DIR, "new")
+    if len(args) <= 1:
+        _imap(env)
+        return
+    commands = args[1:]
+    cmd = commands[0]
+    has_sub = False
+    if len(commands) > 1:
+        has_sub = True
+        commands = commands[1:]
+    if cmd == "client":
+        if not has_sub:
+            print("client required")
+            return
+        _client(env, commands[0])
+    elif cmd == "search":
+        if not has_sub:
+            print("search term(s) required")
+            return
+        _search(env, commands)
+    elif cmd == "daemon":
+        _daemon(env)
+    elif cmd == "count":
+        _count(env)
+    else:
+        print("unknown command")
+
+
+if __name__ == "__main__":
+    main()
