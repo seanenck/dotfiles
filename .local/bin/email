@@ -140,7 +140,7 @@ def _daemon(env):
                 last = acct_lasts[a]
                 if last != acct_files:
                     print("mailbox changed")
-                    _client(env, a)
+                    _imap(env)
             acct_lasts[a] = acct_files
         time.sleep(1)
 
