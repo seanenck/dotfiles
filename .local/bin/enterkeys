@@ -37,12 +37,22 @@ def _browser(keys):
                 _enterkeys(keys + ["Return"])
 
 
+def _autoclip():
+    """Auto clipboard copy."""
+    env = common.read_env()
+    cmd = "source " + env.PRIV_CONF + "; auto-clipboard " + env.PERM_PASS
+    subprocess.call(["bash", "-c", cmd])
+
+
 def main():
     """Program entry."""
     if len(sys.argv) < 2:
         return
     commands = sys.argv[1:]
-    _browser(commands)
+    if commands[0] == "autoclip" and len(commands) == 1:
+        _autoclip()
+    else:
+        _browser(commands)
 
 
 if __name__ == "__main__":
