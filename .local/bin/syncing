@@ -193,6 +193,7 @@ while [ 1 -eq 1 ]; do
     if [ $? -eq 0 ]; then
         if [ $mutt -eq 0 ]; then
             mutt=1
+            ${HOME_BIN}/email
         fi
     else
         if [ $mutt -eq 1 ]; then
