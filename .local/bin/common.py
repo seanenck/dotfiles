@@ -3,6 +3,9 @@
 import os
 from subprocess import Popen, PIPE, call
 
+GMAIL_ACCOUNT = "gmail"
+FMAIL_ACCOUNT = "fastmail"
+
 
 def get_output_or_error(command, env=None):
     """Get output or error from command."""
@@ -13,6 +16,11 @@ def get_output_or_error(command, env=None):
     if p.returncode != 0:
         return (None, Exception("unable to read stdout"))
     return (output, None)
+
+
+def is_online():
+    """Report if online (or not)."""
+    return call(["wsw", "--mode", "online"]) == 0
 
 
 class Object(object):

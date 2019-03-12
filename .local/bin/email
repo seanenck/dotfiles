@@ -1,42 +1,11 @@
 #!/bin/bash
 source $HOME/.config/home/common
-source $XDG_USER_CONFIG
 INDEX_DIR=$MAIL_DIR/Indexed/
 INDEXED=${INDEX_DIR}cur/
 INDEX_FILE=$USER_TMP/mail.index
 ACCOUNTS="fastmail gmail"
 LAST_MAILS=$USER_TMP/mail.last
 PREV_MAILS=${LAST_MAILS}.prev
-
-_maildir() {
-    local cnt d results first
-    first=1
-    for d in $(echo "$ACCOUNTS"); do
-        cnt=$(find $MAIL_DIR/$d -type f | grep "/$1/" | grep -v "/$2/" | grep -E "/$3/" | wc -l)
-        if [ $cnt -gt 0 ]; then
-            if [ $first -eq 1 ]; then
-                first=0
-            else
-                results="$results "
-            fi
-            if [ ! -z "$4" ]; then
-                d="$4"
-            fi
-            results="$results$cnt $d"
-            if [ ! -z "$4" ]; then
-                break
-            fi
-        fi
-    done
-    echo "$results"
-}
-
-_mailcount() {
-    local results
-    results=$(_maildir "new" "Trash" "")
-    results="$results "$(_maildir "cur" "Filtered/Automated" "(Filtered|Spam)" "unread")
-    echo "$results"
-}
 
 _mbsync() {
     local pids purge last now a ts
@@ -87,15 +56,7 @@ if [ -z "$subcmd" ]; then
 fi
 case "$subcmd" in
     "client")
-        if [ -z "$2" ]; then
-            echo "account required"
-            exit 1
-        fi
-        touch $TRIGGER_MAIL
-        sleep 0.5
-        cd $XDG_DOWNLOAD_DIR
-        mutt -F $HOME/.mutt/$2.muttrc
-        sleep 0.25
+        python3 $HOME_BIN/email.py client $2
         ;;
     "search")
         _search ${@:2}
@@ -120,7 +81,7 @@ case "$subcmd" in
         done
         ;;
     "count")
-        _mailcount
+        python3 $HOME_BIN/email.py count
         ;;
     *)
         echo "unknown command: $1"

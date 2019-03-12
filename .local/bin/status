@@ -91,7 +91,7 @@ def _daemon(env):
         b = ",".join(batteries)
         b = "bat:{}({})".format(charge, b)
         outputs.append(b)
-        if subprocess.call(["wsw", "--mode", "online"]) == 0:
+        if common.is_online():
             outputs.append("UP")
         else:
             outputs.append("DOWN")

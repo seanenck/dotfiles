@@ -1,7 +1,8 @@
 #!/bin/bash
 ## various points
 HOME_BIN=$HOME/.local/bin
-HOME_CONF=$HOME/.config/home/
+HOME_XDG=$HOME/.config/
+HOME_CONF=${HOME_XDG}home/
 
 # cache files
 HOME_CACHE=$HOME/.cache/home/
@@ -34,8 +35,10 @@ export OPENSC_CONF="$HOME/.config/opensc.conf"
 _exports() {
     source $PRIV_CONF
     source ${HOME_CONF}debian
+    source ${HOME_XDG}user-dirs.dirs
     for f in HOME_BIN \
              USER_TMP \
+             XDG_DOWNLOAD_DIR \
              PERM_CONFIGS \
              BASE_SERVER \
              HOME_CACHE \
@@ -44,6 +47,7 @@ _exports() {
              PRIV_PATH \
              PERM_PASS \
              PRIV_CONF \
+             MAIL_DIR \
              MIRROR_SERVER \
              MIRROR_COMPONENTS \
              DEB_SIGN_KEY \

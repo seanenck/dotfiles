@@ -34,9 +34,9 @@ def _local(env, cmd):
     if cmd == _PASSWORDS:
         command = ["keepassx", os.path.join(env.PRIV_PATH, "passwords")]
     elif cmd == _GMUTT:
-        command += ["gmail"]
+        command += [common.GMAIL_ACCOUNT]
     elif cmd == _FASTMUTT:
-        command += ["fastmail"]
+        command += [common.FMAIL_ACCOUNT]
     subprocess.call(command)
 
 
