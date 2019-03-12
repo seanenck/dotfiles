@@ -12,11 +12,12 @@ import os
 
 _DELIMITER = "|"
 _NOTIFICATIONS = 10
-_NOTIFY_LEN = str((_NOTIFICATIONS + 5) * 1000)
+_NOTIFY_LEN = _NOTIFICATIONS + 5
 
 
 def _notify(message):
-    subprocess.call(["notify-send", "-t", _NOTIFY_LEN, message])
+    """Create a status notification."""
+    common.notify(message, _NOTIFY_LEN)
 
 
 def _notifications(env):

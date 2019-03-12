@@ -18,6 +18,11 @@ def get_output_or_error(command, env=None):
     return (output, None)
 
 
+def notify(message, duration):
+    """Notification creation."""
+    call(["notify-send", "-t", str(duration * 1000), message])
+
+
 def is_online():
     """Report if online (or not)."""
     return call(["wsw", "--mode", "online"]) == 0

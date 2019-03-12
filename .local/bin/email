@@ -7,51 +7,9 @@ ACCOUNTS="fastmail gmail"
 LAST_MAILS=$USER_TMP/mail.last
 PREV_MAILS=${LAST_MAILS}.prev
 
-_mbsync() {
-    local pids purge last now a ts
-    pids=$(pidof mbsync)
-    if [ -z "$pids" ]; then
-        mkdir -p $INDEXED
-        mkdir -p ${INDEX_DIR}new
-        purge=1
-        if [ -e $INDEX_FILE ]; then
-            last=$(cat $INDEX_FILE)
-            now=$(date -d "15 minutes ago" +%s)
-            if [ $last -gt $now ]; then
-                purge=0
-            fi
-        fi
-        echo "purging index: $purge"
-        if [ $purge -eq 1 ]; then
-            rm -f ${INDEXED}*
-        fi
-        ts=$(date +%Y-%m-%dT%H:%M:%S)
-        mbsync -aV | sed "s/^/$ts -> /g"
-        if [ $? -ne 0 ]; then
-            echo "mbsync failure" >> $JOURNALS
-        fi
-        notmuch new
-    else
-        echo "mbsync already running ($pids)"
-    fi
-}
-
-_imapjournal() {
-    wsw --mode online
-    if [ $? -eq 0 ]; then
-        _mbsync 2>&1 >> ${USER_TMP}mbsync.$(date +%Y-%m-%d).log 
-    fi
-}
-
-_search() {
-    date +%s > $INDEX_FILE
-    rm -f ${INDEXED}*
-    notmuch search --output=files $@ | sed -e 's: :\\\\ :g' | xargs -r -I searchoutput ln -s searchoutput $INDEXED
-}
-
 subcmd="$1"
 if [ -z "$subcmd" ]; then
-    _imapjournal
+    python3 $HOME_BIN/email.py
     exit
 fi
 case "$subcmd" in
@@ -59,10 +17,10 @@ case "$subcmd" in
         python3 $HOME_BIN/email.py client $2
         ;;
     "search")
-        _search ${@:2}
+        python3 $HOME_BIN/email.py search ${@:2}
         ;;
     "connected")
-        _imapjournal
+        python3 $HOME_BIN/email.py
         p=$(pidof mutt)
         while [ ! -z "$p" ]; do
             sleep 1
@@ -74,7 +32,7 @@ case "$subcmd" in
                 diff -u $PREV_MAILS $LAST_MAILS > /dev/null
                 if [ $? -ne 0 ]; then
                     echo "mailbox changed"
-                    _imapjournal
+                    python3 $HOME_BIN/email.py client $2
                 fi
             fi
             mv $LAST_MAILS $PREV_MAILS
