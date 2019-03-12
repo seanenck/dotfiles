@@ -126,8 +126,6 @@ def _daemon(env):
     time.sleep(1)
     acct_lasts = {}
     while True:
-        if subprocess.call(["pidof", "mutt"], stdout=subprocess.DEVNULL) != 0:
-            return
         for a in _ACCOUNTS:
             acct_files = []
             apath = os.path.join(env.MAIL_DIR, a)
@@ -142,6 +140,8 @@ def _daemon(env):
                     print("mailbox changed")
                     _imap(env)
             acct_lasts[a] = acct_files
+        if subprocess.call(["pidof", "mutt"], stdout=subprocess.DEVNULL) != 0:
+            return
         time.sleep(1)
 
 
