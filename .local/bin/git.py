@@ -11,6 +11,10 @@ _CMDS.append((["status", "-sb"], "ahead"))
 _CMDS.append((["ls-files", "--other", "--exclude-standard"], None))
 
 
+def _is_git_dir(d):
+    return os.path.exists(os.path.join(d, ".git"))
+
+
 def _get_folders(env):
     """Get git-controlled folders."""
     dirs = []
@@ -21,10 +25,12 @@ def _get_folders(env):
     results.append("/etc")
     results.append(env.HOME)
     for d in dirs:
+        if _is_git_dir(d):
+            results.append(d)
         for check in os.listdir(d):
             fpath = os.path.join(d, check)
             if os.path.isdir(fpath):
-                if os.path.exists(os.path.join(fpath, ".git")):
+                if _is_git_dir(fpath):
                     results.append(fpath)
     return results
 
