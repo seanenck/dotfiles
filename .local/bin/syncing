@@ -178,7 +178,9 @@ def _sync(env, stdout, dt):
 
 def _email(env):
     """Run email."""
-    subprocess.call([os.path.join(env.HOME_BIN, "email")])
+    subprocess.Popen([os.path.join(env.HOME_BIN, "email")],
+                     stdout=subprocess.DEVNULL,
+                     stderr=subprocess.DEVNULL)
 
 
 def _daemon(env):
