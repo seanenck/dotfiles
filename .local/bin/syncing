@@ -165,6 +165,7 @@ def _zip(env, directory, basename, stdout):
 
 def _sync(env, stdout, dt):
     """Run all syncs."""
+    print("sync? ({})".format(dt), file=stdout)
     if not _test_ssh(env):
         return False
     print("running sync: {}".format(dt), file=stdout)
