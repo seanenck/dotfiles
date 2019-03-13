@@ -15,6 +15,9 @@ _MID_RANGE = 95
 _MAIN = "eDP1"
 _VLEFT = "DP1-1"
 _HRIGHT = "DP1-8"
+_DOWN = "down"
+_UP = "up"
+_LOW = "low"
 _ALL_DISPLAYS = [_MAIN, _VLEFT, _HRIGHT]
 
 
@@ -36,8 +39,20 @@ def _get_displays(filtered=" "):
 def _backlight(sub):
     """Handle backlight."""
     bright = _get_brightness()
-    is_up = sub == "up"
-    is_down = sub == "down"
+    if sub == _LOW:
+        _backlight(_DOWN)
+        _backlight(_DOWN)
+        return
+    elif sub == "high":
+        _backlight(_UP)
+        _backlight(_UP)
+        return
+    elif sub == "mid":
+        _backlight(_LOW)
+        _backlight(_UP)
+        return
+    is_up = sub == _UP
+    is_down = sub == _DOWN
     if bright == _UNKNOWN_BRIGHTNESS:
         if is_up:
             bright = _LOW_BRIGHT

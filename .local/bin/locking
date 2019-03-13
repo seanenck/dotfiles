@@ -33,8 +33,7 @@ def _i3lock(env, now=False):
     """unable i3lock."""
     subprocess.call(["i3lock", "-c", "333333"])
     subprocess.call(["volume", "mute"])
-    for i in range(0, 2):
-        subprocess.call(["subsystem", "backlight", "down"])
+    subprocess.call(["subsystem", "backlight", "low"])
     running = True
     start = time.time()
     lock_now = now
@@ -51,7 +50,7 @@ def _i3lock(env, now=False):
             continue
         running = False
     subprocess.call(["subsystem", "force", "on"])
-    subprocess.call(["subsystem", "backlight", "up"])
+    subprocess.call(["subsystem", "backlight", "mid"])
 
 
 def _sleep(env):
