@@ -1,204 +1,272 @@
-#!/bin/bash
-source $HOME/.config/home/common
-source $PRIV_CONF
-COMMON_STORE=/mnt/Storage/Active/
-INBOX_PATH=${COMMON_STORE}Inbox/
-PROFILE_PATH=${COMMON_STORE}Drop/Profiles
-SPACING="    "
-TODAY=$(date +%Y-%m-%d-%p)
-ARCHIVE=${USER_TMP}profile.$TODAY.tar.gz
-BACKUP=${USER_TMP}profile.backup.$TODAY
-GIT_SYNC=${USER_TMP}git.sync
-GIT_PREV=${GIT_SYNC}.prev
-READY="ready"
-IS_CONNECTED=1
-NOT_CONNECTED=0
-RSYNC_MAIL=${USER_TMP}rsync.mail.
+#!/usr/bin/python3
+"""Resource syncing."""
+import common
+import subprocess
+import os
+import datetime
+import sys
+import time
 
-test-ssh() {
-    local running
-    running=$(ssh -o BatchMode=yes -o ConnectTimeout=5 $1 echo $READY 2>&1)
-    if [[ "$running" == "$READY" ]]; then
-        echo $IS_CONNECTED
-    else
-        echo $NOT_CONNECTED
-    fi
-}
 
-_dobackup() {
-    if [ -e "$BACKUP" ]; then
-        echo 0
-    else
-        echo 1
-    fi
-}
+_DAEMON = "daemon"
+_COMMON_STORE = "/mnt/Storage/Active/"
+_INBOX_STORE = os.path.join(_COMMON_STORE, "Inbox") + "/"
+_PROFILE_PATH = os.path.join(_COMMON_STORE, "Drop", "Profiles") + "/"
+_FIND = "find " + _PROFILE_PATH + " -type f -mtime +7 -exec rm {} \\;"
 
-_backup() {
-    echo "daily backup"
-    if [ ! -e $ARCHIVE ]; then
-        echo "archiving"
-        tar zcf $ARCHIVE $HOME/.mozilla/ &>/dev/null
-        echo "archive completed: $?"
-    fi
-    echo "${SPACING}pushing profile out"
-    scp $ARCHIVE $BASE_SERVER:$PROFILE_PATH/
-    ssh $BASE_SERVER "find $PROFILE_PATH -type f -mtime +7 -exec rm {} \;"
-    rm -f $ARCHIVE
-    for f in $(ls $PERSONAL_LOC | grep "@"); do
-        local h p d
-        h=${RSYNC_MAIL}$f
-        p=${h}.prev
-        d=0
-        if echo $f | grep -v -q localhost; then
-            find ${PERSONAL_LOC}/$f -type f | sort > $h
-            if [ -e "$p" ]; then
-                diff -u $h $p > /dev/null
-                if [ $? -eq 0 ]; then
-                    echo "no change to $f"
-                    d=1
-                fi
-            fi
-            mv $h $p
-        fi
-        echo "backing up $f ($d)"
-        if [ $d -eq 0 ]; then
-            echo "syncing $f"
-            rsync -vacr --delete-after $PERSONAL_LOC/$f/ $BASE_SERVER:${INBOX_PATH}/$f/ | sed "s/^/    /g"
-        fi
-    done
-    touch $BACKUP
-}
 
-_dogit() {
-    local d changes
-    echo "git" > $GIT_SYNC
-    for d in $(echo "$@"); do
-        git -C "$d" log --pretty=format:'%h' -n 1 >> $GIT_SYNC
-        echo ": $d" >> $GIT_SYNC
-    done
-    changes=1
-    if [ -e "$GIT_PREV" ]; then
-        touch $GIT_PREV
-        diff -u $GIT_PREV $GIT_SYNC > /dev/null
-        if [ $? -eq 0 ]; then
-            changes=0
-        fi
-    fi
-    echo $changes
-}
+def _test_ssh(env):
+    """Check ssh connection."""
+    r = subprocess.call(["ssh",
+                         "-o", "BatchMode=yes",
+                         "-o", "ConnectTimeout=5",
+                         env.BASE_SERVER,
+                         "echo",
+                         "online"],
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL)
+    return r == 0
 
-_gitpush() {
-    local d
-    echo "syncing..."
-    for d in $(echo "$@"); do
-        echo "$d"
-        git -C "$d" push 2>&1 | sed "s/^/$SPACING/g"
-    done
-    if [ -e $GIT_SYNC ]; then
-        mv $GIT_SYNC $GIT_PREV
-    fi
-}
 
-_sendzips() {
-    local f hashed prev last bname
-    echo "sending zips..."
-    for f in $(echo "$@" | tr ' ' '\n' | grep -v "$HOME_STORE"); do
-        bname=$(basename $f)
-        prev=$USER_TMP$bname.ziphash
-        hashed=$(git -C $f rev-parse HEAD)
-        echo "checking zip status: $f"
-        zip=1
-        if [ -e $prev ]; then
-            last=$(cat $prev)
-            if [[ "$last" == "$hashed" ]]; then
-                zip=0
-            fi
-        fi
-        if [ $zip -eq 1 ]; then
-            echo "zipping..."
-            local stime
-            stime=$(date +%s)
-            local fname
-            fname=${USER_TMP}$bname.$TODAY-$stime.mail
-            local zname
-            zname="$fname.7z"
-            7z a -p$ZIP_PASS $zname $f/ > /dev/null
-            local subj
-            subj="automated: zips ($bname) $TODAY"
-            mpack -s "$subj" -o $fname $zname
-            cat $fname | python3 $HOME_BIN/inject_mail.py --subject "$subj" --address $ZIP_MAIL --maildir ${MAIL_DIR}fastmail/Filtered/Automated/
-            rm -f $zname
-            rm -f $fname
-        fi
-        echo "$hashed" > $prev
-    done
-}
+def _call(cmd, stdout):
+    """Call with stdout/err to output given."""
+    subprocess.call(cmd, stdout=stdout, stderr=stdout)
+    if stdout == subprocess.DEVNULL:
+        return
+    stdout.flush()
 
-sync-now() {
-    echo "syncing"
-    local dirs pushgit pushbackup
-    ${HOME_BIN}/email
-    dirs="${PRIV_PATH} ${HOME_STORE} ${PERM_PASS}/personal"
-    pushgit=$(_dogit "$dirs" | tail -n 1)
-    pushbackup=$(_dobackup | tail -n 1)
-    echo "status (git: $pushgit, archive: $pushbackup)"
-    _sendzips "$dirs"
-    if [ $pushgit -eq 0 ]; then
-        if [ $pushbackup -eq 0 ]; then
-            return
-        fi
-    fi
-    auth=$(cat $SSH_AUTH_TMP)
-    export SSH_AUTH_SOCK=$auth
-    available=$(test-ssh $BASE_SERVER)
-    echo "====================="
-    echo "running "$(date +%Y-%m-%dT%H:%M:%S)
-    echo "====================="
-    echo "checked for connection...$available"
-    if [ $available -eq $IS_CONNECTED ]; then
-        if [ -e $SSH_AUTH_TMP ]; then
-            if [ $pushgit -eq 1 ]; then
-                _gitpush "$dirs"
-            fi
-            if [ $pushbackup -eq 1 ]; then
-                _backup
-            fi
-            echo "local sync completed"
-            touch $LAST_SYNC
-        else
-            echo "ssh agent unavailable"
-        fi
-    fi
-}
 
-last=0
-mutt=0
-while [ 1 -eq 1 ]; do
-    # TODO: reset our delta state on minute rollover
-    curr=$(date +%s)
-    if [ $last -eq 0 ]; then
-        last=$curr
-    fi
-    delta=$((curr-last))
-    if [ $delta -gt 1200 ]; then
-        last=$curr
-        network=$(wsw --mode current)
-        echo $network | grep -q -E "$NET_SYNC"
-        if [ $? -eq 0 ]; then
-            sync-now >> ${USER_TMP}sync.$TODAY
-        fi
-    fi
-    pidof mutt > /dev/null
-    if [ $? -eq 0 ]; then
-        if [ $mutt -eq 0 ]; then
-            mutt=1
-            ${HOME_BIN}/email
-        fi
-    else
-        if [ $mutt -eq 1 ]; then
-            mutt=0
-            ${HOME_BIN}/email
-        fi
-    fi
-    sleep 15
-done
+def _diff(prev, current):
+    """Diff runner."""
+    d = subprocess.call(["diff", "-u", prev, current],
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL)
+    return d == 0
+
+
+def _backup(env, stdout):
+    """Run file backups."""
+    backup_file = os.path.join(env.USER_TMP,
+                               "backup.{}".format(env.HOUR))
+    if os.path.exists(backup_file):
+        return
+    print("running backup {}".format(backup_file), file=stdout)
+    archive = os.path.join(env.USER_TMP,
+                           "profile.{}.tar.gz".format(env.AM_PM))
+    if not os.path.exists(archive):
+        print("creating archive {}".format(archive), file=stdout)
+        files = [os.path.join(env.HOME, ".mozilla") + "/"]
+        stdout.flush()
+        _call(["tar", "zcf", archive] + files, stdout)
+        print("archive created", file=stdout)
+        print("publish profile", file=stdout)
+        stdout.flush()
+        _call(["scp", archive, "{}:{}".format(env.BASE_SERVER, _PROFILE_PATH)],
+              stdout)
+        _call(["ssh", env.BASE_SERVER, _FIND], stdout)
+    for f in os.listdir(env.PERSONAL_LOC):
+        if "@" not in f:
+            continue
+        fpath = os.path.join(env.PERSONAL_LOC, f)
+        do = True
+        cur = None
+        prev = None
+        if "localhost" not in f:
+            cur = os.path.join(env.USER_TMP, "rsync.mail.{}".format(f))
+            prev = cur + ".prev"
+            files = []
+            for root, _, objects in os.walk(fpath):
+                for o in objects:
+                    files.append(os.path.join(root, o))
+            with open(cur, 'w') as c:
+                for o in sorted(files):
+                    c.write(o + "\n")
+            if os.path.exists(prev):
+                if _diff(cur, prev):
+                    do = False
+                    print("{} no change".format(f), file=stdout)
+        if do:
+            print("syncing {}".format(fpath), file=stdout)
+            stdout.flush()
+            _call(["rsync",
+                   "-avcr",
+                   "--delete-after",
+                   fpath + "/",
+                   "{}:{}/{}/".format(env.BASE_SERVER, _INBOX_STORE, f)],
+                  stdout)
+        if cur is not None and prev is not None:
+            os.rename(cur, prev)
+    open(backup_file, 'w').close()
+
+
+def _git(env, stdout):
+    """Git syncing."""
+    dirs = []
+    dirs.append(env.PRIV_PATH)
+    dirs.append(env.HOME_STORE)
+    dirs.append(os.path.join(env.PERM_PASS, "personal"))
+    pushes = []
+    for d in dirs:
+        bname = d.replace(env.HOME, "").replace("/",
+                                                " ").strip().replace(" ", "_")
+        git_cur = os.path.join(env.USER_TMP, "git.sync." + bname)
+        git_prev = git_cur + ".prev"
+        with open(git_cur, 'w') as c:
+            subprocess.call(["git",
+                             "-C",
+                             d,
+                             "log",
+                             "--pretty=format:%h",
+                             "-n",
+                             "1"],
+                            stdout=c)
+        push = True
+        if os.path.exists(git_prev):
+            if _diff(git_prev, git_cur):
+                push = False
+        if push:
+            print("pushing {}".format(d), file=stdout)
+            stdout.flush()
+            _call(["git", "-C", d, "push"], stdout)
+        os.rename(git_cur, git_prev)
+        if d != env.HOME_STORE:
+            if push:
+                print("checking zip status for {}".format(d), file=stdout)
+                _zip(env, d, bname, subprocess.DEVNULL)
+
+
+def _zip(env, directory, basename, stdout):
+    """Zip a directory change."""
+    dt = datetime.datetime.now().strftime("%Y%m%d.%s")
+    mail = "zip.{}.{}".format(basename, dt)
+    fname = os.path.join(env.USER_TMP, mail)
+    zname = fname + ".7z"
+    _call(["7z", "a", "-p{}".format(env.ZIP_PASS), zname, directory + "/"],
+          stdout)
+    subj = "automated: zips ({}) {}".format(basename, env.HOUR)
+    _call(["mpack", "-s", subj, "-o", fname, zname], stdout)
+    _call(["python3",
+           os.path.join(env.HOME_BIN, "inject_mail.py"),
+           "--input",
+           fname,
+           "--subject",
+           subj,
+           "--address",
+           env.ZIP_MAIL,
+           "--maildir",
+           os.path.join(env.MAIL_DIR,
+                        "fastmail",
+                        "Filtered",
+                        "Automated") + "/"],
+          stdout)
+    os.remove(fname)
+    os.remove(zname)
+
+
+def _sync(env, stdout, dt):
+    """Run all syncs."""
+    if not _test_ssh(env):
+        return False
+    print("running sync: {}".format(dt), file=stdout)
+    stdout.flush()
+    _backup(env, stdout)
+    _git(env, stdout)
+    open(env.LAST_SYNC, 'w').close()
+    return True
+
+
+def _email(env):
+    """Run email."""
+    subprocess.call([os.path.join(env.HOME_BIN, "email")])
+
+
+def _daemon(env):
+    """Run in daemon mode."""
+    last = datetime.datetime.now()
+    last_minute = -1
+    in_error = False
+    mutt = False
+    while True:
+        sync = in_error
+        success = False
+        dt = datetime.datetime.now()
+        if last_minute == -1:
+            last_minute = dt.minute
+        if last_minute == 59 and dt.minute == 0:
+            sync = True
+        if not sync:
+            delta = dt - last
+            ts = delta.total_seconds()
+            ts = ts / 60
+            if ts > 20:
+                sync = True
+        if sync:
+            out, err = common.get_output_or_error(["wsw", "--mode", "current"])
+            if not err:
+                network = out.decode("utf-8").strip()
+                found = False
+                for n in env.NET_SYNC.split(" "):
+                    if n in network:
+                        found = True
+                        break
+                if not found:
+                    sync = False
+        if sync:
+            success = _setup_sync(env, dt)
+            if not success:
+                in_error = True
+        last_minute = dt.minute
+        if success:
+            last = dt
+            in_error = False
+        time.sleep(15)
+        m = subprocess.call(["pidof", "mutt"],
+                            stdout=subprocess.DEVNULL,
+                            stderr=subprocess.DEVNULL)
+        if m == 0:
+            if not mutt:
+                _email(env)
+                mutt = True
+        else:
+            if mutt:
+                _email(env)
+                mutt = False
+
+
+def _setup_sync(env, dt):
+    _email(env)
+    env.AM_PM = dt.strftime("%Y-%m-%d-%p")
+    env.HOUR = dt.strftime("%Y-%m-%d-%H")
+    log_file = os.path.join(env.USER_TMP, "sync.{}".format(env.AM_PM))
+    with open(log_file, 'a') as f:
+        return _sync(env, f, dt)
+
+
+
+def _startup(env):
+    fname = os.path.realpath(__file__)
+    while not os.path.exists(env.SSH_AUTH_TMP):
+        time.sleep(1)
+    e = os.environ
+    with open(env.SSH_AUTH_TMP, 'r') as f:
+        e["SSH_AUTH_SOCK"] = f.read().strip()
+    subprocess.call([fname, _DAEMON], env=e)
+
+
+def main():
+    """Program entry."""
+    env = common.read_env()
+    if len(sys.argv) == 1:
+        _startup(env)
+        return
+    if sys.argv[1] == "run":
+        dt = datetime.datetime.now()
+        if not _setup_sync(env, dt):
+            print("failed")
+    if sys.argv[1] != _DAEMON:
+        return
+    _daemon(env)
+
+
+if __name__ == "__main__":
+    main()

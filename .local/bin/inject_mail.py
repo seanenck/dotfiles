@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Inject email directly into maildir."""
-import sys
 import mailbox
 import email
 import argparse
@@ -15,11 +14,13 @@ def main():
     parser.add_argument("--address", type=str)
     parser.add_argument("--maildir", type=str)
     parser.add_argument("--subject", type=str)
+    parser.add_argument("--input", type=str)
     args = parser.parse_args()
     if not args.address or not args.subject:
         print("address and subject required")
         return
-    message = mailbox.email.message_from_file(sys.stdin)
+    with open(args.input, 'r') as f:
+        message = mailbox.email.message_from_file(f)
     if not args.maildir or not os.path.exists(args.maildir):
         print("maildir does not exist")
         return
