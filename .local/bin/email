@@ -44,15 +44,13 @@ def _run_logged(cmd, log_name):
     """Run a logged command."""
     mode = 'w'
     created = True
-    failure = False
     log = log_name + ".log"
     if os.path.exists(log):
         mode = 'a'
         created = False
     with open(log, mode) as f:
-        r = subprocess.call(cmd, stdout=f, stderr=subprocess.DEVNULL)
-        failure = r != 0
-    return (failure, created)
+        subprocess.call(cmd, stdout=f, stderr=subprocess.DEVNULL)
+    return created
 
 
 def _mbsync(env):
@@ -65,9 +63,7 @@ def _mbsync(env):
             os.mkdir(d)
     dt = datetime.datetime.now().strftime("%Y-%m-%d-%H")
     log_file = os.path.join(env.USER_TMP, "mbsync.{}".format(dt))
-    failed, created = _run_logged(["mbsync", "-aV"], log_file)
-    if failed:
-        common.notify("mbsync failure", 30)
+    created = _run_logged(["mbsync", "-aV"], log_file)
     if created:
         _clean_index(env)
     _run_logged(["notmuch", "new"], log_file + ".index")
