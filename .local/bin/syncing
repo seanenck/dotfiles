@@ -189,6 +189,7 @@ def _daemon(env):
     last_minute = -1
     in_error = False
     mutt = False
+    _setup_sync(env, last)
     while True:
         sync = in_error
         success = False
