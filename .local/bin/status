@@ -59,8 +59,10 @@ def _daemon(env):
         _run_command(["subsystem", "brightness", "status"], brightness)
         if len(brightness) == 1:
             bright = brightness[0]
+        l = common.lock_status(env)
+        if l:
+            outputs.append(l)
         outputs.append("disp:{}".format(bright))
-        _run_command(["locking", "status"], outputs)
         volume = []
         _run_command(["volume", "ismute"], volume)
         _run_command(["volume", "volume"], volume)
@@ -131,6 +133,7 @@ def main():
                 print(l)
             common.normal_text()
     elif args.command == "daemon":
+        env = common.add_env(env)
         _daemon(env)
     elif args.command == "toggle":
         if os.path.exists(env.HIDE):

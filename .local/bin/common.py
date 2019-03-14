@@ -7,6 +7,21 @@ GMAIL_ACCOUNT = "gmail"
 FMAIL_ACCOUNT = "fastmail"
 
 
+def lock_status(env):
+    """Lock status."""
+    if os.path.exists(env.unlocked):
+        return "UNLOCKED"
+    elif os.path.exists(env.nosleep):
+        return "NO_ZZZ"
+
+
+def add_env(env):
+    """Add environment settings."""
+    env.unlocked = env.USER_TMP + "/display.unlocked"
+    env.nosleep = env.USER_TMP + "/display.nosleep"
+    return env
+
+
 def get_output_or_error(command, env=None):
     """Get output or error from command."""
     p = Popen(command, stdout=PIPE, env=env)

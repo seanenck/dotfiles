@@ -7,14 +7,6 @@ import subprocess
 import time
 
 
-def _status(env):
-    """Get locking status."""
-    if os.path.exists(env.unlocked):
-        print("UNLOCKED")
-    elif os.path.exists(env.nosleep):
-        print("NO_ZZZ")
-
-
 def _is_locked():
     res = subprocess.call(["pidof", "i3lock"])
     return res == 0
@@ -87,16 +79,13 @@ def main():
     parser.add_argument("command")
     args = parser.parse_args()
     env = common.read_env()
-    env.unlocked = env.USER_TMP + "/display.unlocked"
-    env.nosleep = env.USER_TMP + "/display.nosleep"
+    env = common.add_env(env)
     if args.command == "toggle":
         _toggle(env)
     elif args.command == "lock":
         _lock(env)
     elif args.command == "sleep":
         _sleep(env)
-    else:
-        _status(env)
 
 
 if __name__ == "__main__":
