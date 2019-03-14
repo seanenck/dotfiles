@@ -8,6 +8,7 @@ import time
 import git
 import subprocess
 import os
+import mail
 
 
 _DELIMITER = "|"
@@ -30,11 +31,10 @@ def _notifications(env):
     os.rename(git_tmp, env.GIT_STATUS)
     if g > 0:
         _notify("{} ^AHEAD^".format(g))
-    out, err = common.get_output_or_error(["email", "count"])
-    if err is None:
-        emails = out.decode("utf-8").strip()
-        if emails:
-            _notify(emails)
+    cnt = mail.count(env)
+    if len(cnt) > 0:
+        print(cnt)
+        _notify(" ".join(cnt))
 
 
 def _run_command(cmd, append):

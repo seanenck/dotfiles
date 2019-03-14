@@ -6,38 +6,7 @@ import os
 import time
 import datetime
 import subprocess
-
-_ACCOUNTS = [common.GMAIL_ACCOUNT, common.FMAIL_ACCOUNT]
-
-
-def _countdirs(dirs, account, ind):
-    """Count dir emails."""
-    cnt = 0
-    for d in dirs:
-        cnt += len(os.listdir(d))
-    if cnt > 0:
-        print("{} {}({})".format(cnt, account, ind))
-
-
-def _count(env):
-    """Get unread counts."""
-    for a in _ACCOUNTS:
-        unread = []
-        new = []
-        acct = os.path.join(env.MAIL_DIR, a)
-        for root, dirs, _ in os.walk(acct):
-            for d in dirs:
-                rootd = os.path.join(root, d)
-                if "Trash" in rootd:
-                    continue
-                if d == "cur":
-                    if "Filtered" in rootd or "Spam" in rootd:
-                        if "Filtered/Automated" not in rootd:
-                            unread.append(rootd)
-                elif d == "new":
-                    new.append(rootd)
-        _countdirs(new, a, "n")
-        _countdirs(unread, a, "u")
+import mail
 
 
 def _run_logged(cmd, log_name):
@@ -86,7 +55,7 @@ def _imap(env):
 
 def _client(env, account):
     """Connect an email client."""
-    if account not in _ACCOUNTS:
+    if account not in mail.ACCOUNTS:
         return
     time.sleep(0.5)
     muttrc = os.path.join(env.HOME, ".mutt", "{}.muttrc".format(account))
@@ -141,8 +110,6 @@ def main():
             print("search term(s) required")
             return
         _search(env, commands)
-    elif cmd == "count":
-        _count(env)
     else:
         print("unknown command")
 
