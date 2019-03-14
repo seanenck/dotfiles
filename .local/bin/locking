@@ -5,6 +5,7 @@ import common
 import os
 import subprocess
 import time
+import display
 
 
 def _is_locked():
@@ -25,7 +26,7 @@ def _i3lock(env, now=False):
     """unable i3lock."""
     subprocess.call(["i3lock", "-c", "333333"])
     subprocess.call(["volume", "mute"])
-    subprocess.call(["subsystem", "backlight", "low"])
+    display.backlight(display.LOW_BACKLIGHT)
     running = True
     start = time.time()
     lock_now = now
@@ -41,8 +42,8 @@ def _i3lock(env, now=False):
                 start = time.time()
             continue
         running = False
-    subprocess.call(["subsystem", "force", "on"])
-    subprocess.call(["subsystem", "backlight", "mid"])
+    display.on()
+    display.backlight(display.MID_BACKLIGHT)
 
 
 def _sleep(env):

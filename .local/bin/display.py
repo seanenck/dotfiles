@@ -18,7 +18,10 @@ _HRIGHT = "DP1-8"
 _DOWN = "down"
 _UP = "up"
 _LOW = "low"
+_MID = "mid"
 _ALL_DISPLAYS = [_MAIN, _VLEFT, _HRIGHT]
+LOW_BACKLIGHT = _LOW
+MID_BACKLIGHT = _MID
 
 
 def _get_displays(filtered=" "):
@@ -47,7 +50,7 @@ def backlight(sub):
         backlight(_UP)
         backlight(_UP)
         return
-    elif sub == "mid":
+    elif sub == _MID:
         backlight(_LOW)
         backlight(_UP)
         return
