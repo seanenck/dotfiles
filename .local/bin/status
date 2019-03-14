@@ -9,6 +9,7 @@ import git
 import subprocess
 import os
 import mail
+import display
 
 
 _DELIMITER = "|"
@@ -54,14 +55,10 @@ def _daemon(env):
         t = datetime.datetime.now()
         time_format = t.strftime("%Y-%m-%d{}%H:%M".format(_DELIMITER))
         outputs = [time_format]
-        brightness = []
-        bright = "?"
-        _run_command(["subsystem", "brightness", "status"], brightness)
-        if len(brightness) == 1:
-            bright = brightness[0]
         l = common.lock_status(env)
         if l:
             outputs.append(l)
+        bright = display.get_brightness()
         outputs.append("disp:{}".format(bright))
         volume = []
         _run_command(["volume", "ismute"], volume)
