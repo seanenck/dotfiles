@@ -56,9 +56,9 @@ def _daemon(env):
         t = datetime.datetime.now()
         time_format = t.strftime("%Y-%m-%d{}%H:%M".format(_DELIMITER))
         outputs = [time_format]
-        l = common.lock_status(env)
-        if l:
-            outputs.append(l)
+        locked = common.lock_status(env)
+        if locked:
+            outputs.append(locked)
         bright = display.get_brightness()
         outputs.append("disp:{}".format(bright))
         if vol.ismute():
