@@ -147,7 +147,7 @@ def _zip(env, directory, basename, stdout):
     subj = "automated: zips ({}) {}".format(bname, env.HOUR)
     _call(["mpack", "-s", subj, "-o", fname, zname], stdout)
     _call(["python3",
-           os.path.join(env.HOME_BIN, "inject_mail.py"),
+           os.path.join(env.HOME_BIN, "mail.py"),
            "--input",
            fname,
            "--subject",
