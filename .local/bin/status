@@ -10,6 +10,7 @@ import subprocess
 import os
 import mail
 import display
+import vol
 
 
 _DELIMITER = "|"
@@ -60,18 +61,11 @@ def _daemon(env):
             outputs.append(l)
         bright = display.get_brightness()
         outputs.append("disp:{}".format(bright))
-        volume = []
-        _run_command(["volume", "ismute"], volume)
-        _run_command(["volume", "volume"], volume)
-        muted = False
-        vol = "?"
-        if len(volume) == 2:
-            muted = volume[0] == "true"
-            if muted:
-                vol = "0"
-            else:
-                vol = volume[1]
-        outputs.append("vol:{}".format(vol))
+        if vol.ismute():
+            volume = "0"
+        else:
+            volume = vol.status()
+        outputs.append("vol:{}".format(volume))
         charge = "?"
         with open("/sys/class/power_supply/AC/online", 'r') as f:
             if f.read().strip() == "0":
