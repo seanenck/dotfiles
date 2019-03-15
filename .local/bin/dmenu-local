@@ -8,8 +8,8 @@ import subprocess
 
 
 _BROWSER = "firefox"
-_GMUTT = "gmutt"
-_FASTMUTT = "fastmutt"
+_GMUTT = "gmail"
+_FASTMUTT = "fastmail"
 _PASSWORDS = "passwords"
 _LOCALS = [_GMUTT, _FASTMUTT, _PASSWORDS]
 _APPS = ["vlc", "pavucontrol", "zim"] + _LOCALS
@@ -30,13 +30,10 @@ def _local(env, cmd):
     command = ["kitty",
                "--title={}".format(cmd),
                os.path.join(env.HOME_BIN, "email"),
-               "client"]
+               "client",
+               cmd]
     if cmd == _PASSWORDS:
         command = ["keepassx", os.path.join(env.PRIV_PATH, "passwords")]
-    elif cmd == _GMUTT:
-        command += [common.GMAIL_ACCOUNT]
-    elif cmd == _FASTMUTT:
-        command += [common.FMAIL_ACCOUNT]
     subprocess.call(command)
 
 
