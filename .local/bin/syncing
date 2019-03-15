@@ -169,11 +169,12 @@ def _sync(env, stdout, dt):
     print("sync? ({})".format(dt), file=stdout)
     if not _test_ssh(env):
         return False
-    print("running sync: {}".format(dt), file=stdout)
+    print("RUNNING: {}".format(dt), file=stdout)
     stdout.flush()
     _backup(env, stdout)
     _git(env, stdout)
     open(env.LAST_SYNC, 'w').close()
+    print("COMPLETE", file=stdout)
     return True
 
 
