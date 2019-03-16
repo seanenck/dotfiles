@@ -25,6 +25,7 @@ PRIV_CONF=${PERM_CONFIGS}priv.aliases
 XDG_USER_CONFIG=${HOME_XDG}user-dirs.dirs
 JOURNALS=${USER_TMP}journal
 LAST_SYNC=${USER_TMP}last.sync
+REPOSITORY=${PERM_LOCATION}repository/
 
 # string vars
 BASE_SERVER="fact"
@@ -59,6 +60,7 @@ _exports() {
              DEB_BUILD_GO \
              JOURNALS \
              LAST_SYNC \
+             REPOSITORY \
              DEB_BUILD_DIR \
              DEB_BUILD_ROOT; do
         echo "$f=${!f}"

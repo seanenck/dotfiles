@@ -3,6 +3,7 @@ import argparse
 import os
 import subprocess
 import debian
+import common
 
 _PREV = ".prev"
 
@@ -77,9 +78,9 @@ def main():
     """Program entry."""
     parser = argparse.ArgumentParser()
     parser.add_argument("deb")
-    parser.add_argument("destination")
     args = parser.parse_args()
-    _pool(args.deb, args.destination)
+    env = common.read_env()
+    _pool(args.deb, env.REPOSITORY)
 
 
 if __name__ == "__main__":
