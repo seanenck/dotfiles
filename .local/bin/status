@@ -25,17 +25,16 @@ def _notify(message):
 
 def _notifications(env):
     """Notification outputs."""
-    if os.path.exists(env.HIDE):
-        return
     git_tmp = env.GIT_STATUS + ".tmp"
     with open(git_tmp, 'w') as f:
         g = git.status(env, f)
     os.rename(git_tmp, env.GIT_STATUS)
+    if os.path.exists(env.HIDE):
+        return
     if g > 0:
         _notify("{} ^AHEAD^".format(g))
     cnt = mail.count(env)
     if len(cnt) > 0:
-        print(cnt)
         _notify(" ".join(cnt))
 
 

@@ -21,7 +21,6 @@ def status():
     avg = 0
     if len(totals) > 0:
         avg = int(sum([int(x) for x in totals]) / len(totals))
-    print(avg)
     return avg
 
 
@@ -56,7 +55,6 @@ def ismute():
         if "Mute: yes" in l:
             result = True
             break
-    print(str(result).lower())
     return result
 
 
