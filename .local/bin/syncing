@@ -55,7 +55,7 @@ def _backup(env, stdout):
                            "profile.{}.tar.gz".format(env.AM_PM))
     if not os.path.exists(archive):
         print("creating archive {}".format(archive), file=stdout)
-        files = [os.path.join(env.HOME, ".mozilla") + "/"]
+        files = [os.path.join(env.HOME, ".mozilla") + "/", env.REPOSITORY]
         stdout.flush()
         _call(["tar", "zcf", archive] + files, stdout)
         print("archive created", file=stdout)
