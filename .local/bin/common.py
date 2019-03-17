@@ -70,6 +70,12 @@ def touch(file_name):
     open(file_name, 'a').close()
 
 
+def _env_adj(env):
+    """Internal environment adjustments."""
+    env.REPOSITORY = os.path.join(env.PERM_LOCATION, "repository") + "/"
+    return env
+
+
 def read_env():
     """Read the environment for my user."""
     home_env = os.environ["HOME"]
@@ -87,4 +93,4 @@ def read_env():
         key = parts[0]
         value = "=".join(parts[1:])
         setattr(result, key, value)
-    return result
+    return _env_adj(result)
