@@ -11,8 +11,7 @@ complete -F _email email
 
 _totp() {
     local opts cur
-    source $HOME/.config/home/common
-    opts=$($HOME_BIN/totp _list_)
+    opts=$(totp _list_)
     cur=${COMP_WORDS[COMP_CWORD]}
     COMPREPLY=( $(compgen -W "$opts" -- $cur) )
 }
@@ -21,7 +20,6 @@ complete -F _totp totp
 
 _wsw() {
     local opts cur
-    source $HOME/.config/home/common
     opts=$(wsw --mode list)
     cur=${COMP_WORDS[COMP_CWORD]}
     COMPREPLY=( $(compgen -W "reload $opts" -- $cur) )
