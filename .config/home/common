@@ -26,9 +26,6 @@ XDG_USER_CONFIG=${HOME_XDG}user-dirs.dirs
 JOURNALS=${USER_TMP}journal
 LAST_SYNC=${USER_TMP}last.sync
 
-# string vars
-BASE_SERVER="fact"
-
 export OPENSC_CONF="$HOME/.config/opensc.conf"
 
 _exports() {
@@ -40,7 +37,6 @@ _exports() {
              PERSONAL_LOC \
              XDG_DOWNLOAD_DIR \
              PERM_CONFIGS \
-             BASE_SERVER \
              HOME_CACHE \
              PERM_LOCATION \
              TOTP_PASS \
