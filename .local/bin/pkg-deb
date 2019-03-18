@@ -99,13 +99,12 @@ def _build(env, settings):
         for f in os.listdir(d):
             p = os.path.join(d, f)
             if d == env.DEB_BUILD_ROOT:
-                if not os.path.islink(p) and os.path.isdir(p):
+                if p in env.DEB_BUILD_DIR or env.DEB_BUILD_DIR in p:
                     continue
-            else:
-                if os.path.isdir(p):
-                    print("rmdir'ing: " + p)
-                    shutil.rmtree(p)
-                    continue
+            if os.path.isdir(p):
+                print("rmdir'ing: " + p)
+                shutil.rmtree(p)
+                continue
             print("removing: " + p)
             os.remove(p)
     source = _git_clone(env, settings, pkgver)
