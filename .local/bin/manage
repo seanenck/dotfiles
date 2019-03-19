@@ -4,18 +4,6 @@ import argparse
 import os
 import tempfile
 
-_SCRIPTS = "https://www.weechat.org/files/scripts/"
-
-
-def _weechat(env):
-    """Synchronize weechat."""
-    import urllib.request
-    for a in ["autosort", "buffer_autoset"]:
-        print("pulling: " + a)
-        p = a + ".py"
-        output = os.path.join(env.HOME, ".weechat/python/" + p)
-        urllib.request.urlretrieve(_SCRIPTS + p, output)
-
 
 _PURGE = ["mv",
           "cp",
@@ -144,9 +132,7 @@ def main():
     parser.add_argument("command")
     args = parser.parse_args()
     env = common.read_env()
-    if args.command == "weechat":
-        _weechat(env)
-    elif args.command == "music":
+    if args.command == "music":
         _music(env)
     elif args.command == "history-dryrun":
         _history(env, False)
