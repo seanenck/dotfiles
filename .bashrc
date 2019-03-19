@@ -76,6 +76,10 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+if [ ! -z "$NO_SOURCE" ]; then
+    return
+fi
+
 source $HOME/.local/bin/conf
 if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
     _init &

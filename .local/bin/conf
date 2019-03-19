@@ -10,6 +10,7 @@ USER_TMP=${HOME_CACHE}tmp/
 
 # perm/store
 PERM_LOCATION=${HOME}/store/
+PERM_APPS=${PERM_LOCATION}apps/
 PERSONAL_LOC=${PERM_LOCATION}personal/
 HOME_STORE=${PERSONAL_LOC}documents/
 PERM_CONFIGS=${HOME_STORE}configs/
@@ -49,6 +50,7 @@ _exports() {
              TOTP_PASS \
              PRIV_PATH \
              PERM_PASS \
+             PERM_APPS \
              SSH_AUTH_TMP \
              ZIP_PASS \
              ZIP_MAIL \
