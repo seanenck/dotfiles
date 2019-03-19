@@ -80,7 +80,7 @@ def _env_adj(env):
 def read_env():
     """Read the environment for my user."""
     home_env = os.environ["HOME"]
-    home = os.path.join(home_env, ".config", "home", "common")
+    home = os.path.join(home_env, ".local", "bin", "conf")
     output, err = get_output_or_error(["bash",
                                        "-c",
                                        "source " + home + "; _exports"])

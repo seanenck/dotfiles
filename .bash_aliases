@@ -26,6 +26,6 @@ ssh() {
 }
 
 clear-journal() {
-    source $HOME/.config/home/common
+    source $HOME/.local/bin/conf
     rm -f $JOURNALS
 }
