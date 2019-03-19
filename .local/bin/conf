@@ -1,0 +1,101 @@
+#!/bin/bash
+## various points
+HOME_BIN=$HOME/.local/bin
+HOME_XDG=$HOME/.config/
+HOME_CONF=${HOME_XDG}home/
+
+# cache files
+HOME_CACHE=$HOME/.cache/home/
+USER_TMP=${HOME_CACHE}tmp/
+
+# perm/store
+PERM_LOCATION=${HOME}/store/
+PERSONAL_LOC=${PERM_LOCATION}personal/
+HOME_STORE=${PERSONAL_LOC}documents/
+PERM_CONFIGS=${HOME_STORE}configs/
+PRIV_PATH=${PERSONAL_LOC}private/
+PERM_PASS=${PERM_LOCATION}pass/
+
+# mail
+MAIL_DIR=$HOME/.mutt/imap/
+
+# files
+SSH_AUTH_TMP=/tmp/ssh-auth.sock
+PRIV_CONF=${PERM_CONFIGS}priv.aliases
+XDG_USER_CONFIG=${HOME_XDG}user-dirs.dirs
+JOURNALS=${USER_TMP}journal
+LAST_SYNC=${USER_TMP}last.sync
+
+# debian
+DEB_SIGN_KEY=031E9E4B09CFD8D3F0ED35025109CDF607B5BB04
+MIRROR_SERVER="voidedtech.com"
+MIRROR_COMPONENTS="enckse epiphyte"
+DEB_BUILD_GO="/build/go/"
+DEB_BUILD_ROOT="${DEB_BUILD_GO}src/"
+DEB_BUILD_DIR="${DEB_BUILD_ROOT}packages/"
+
+export OPENSC_CONF="$HOME/.config/opensc.conf"
+
+_exports() {
+    source $PRIV_CONF
+    source ${XDG_USER_CONFIG}
+    for f in HOME_BIN \
+             USER_TMP \
+             PERSONAL_LOC \
+             XDG_DOWNLOAD_DIR \
+             PERM_CONFIGS \
+             HOME_CACHE \
+             PERM_LOCATION \
+             TOTP_PASS \
+             PRIV_PATH \
+             PERM_PASS \
+             SSH_AUTH_TMP \
+             ZIP_PASS \
+             ZIP_MAIL \
+             NET_SYNC \
+             HOME_STORE \
+             PRIV_CONF \
+             MAIL_DIR \
+             MIRROR_SERVER \
+             MIRROR_COMPONENTS \
+             DEB_SIGN_KEY \
+             DEB_BUILD_GO \
+             JOURNALS \
+             LAST_SYNC \
+             DEB_BUILD_DIR \
+             DEB_BUILD_ROOT; do
+        echo "$f=${!f}"
+    done
+}
+
+_setup() {
+    local xsess
+    echo "user init "$(date +%Y-%m-%d-%H-%M-%S)
+
+    # cleanup xsession errors
+    xsess=$HOME/.xsession-errors
+    cat $xsess >> ${USER_TMP}xsession.$(date +%Y-%m-%d)
+    echo > $xsess
+    
+    # make sure I can operate
+    mkdir -p $USER_TMP
+
+    # check mail for valid files
+    echo "checking mail files..."
+    find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch\/" | grep -v "Trash\/" | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)" >> $JOURNALS
+
+    # cleanup temp dirs
+    echo "cleaning up directories..."
+    find ${USER_TMP}* -mtime +1 -type f -exec rm {} \;
+    find $USER_TMP -empty -type d -delete
+    find $HOME/.vim/{swap,undo} -mmin +1440 -type f -exec rm {} \;
+    if [ ! -e $LAST_SYNC ]; then
+        echo "no recent syncs" >> $JOURNALS
+    fi
+    ${HOME_BIN}/volume mute
+    echo "init completed"
+}
+
+_init() {
+    _setup >> ${USER_TMP}userinit.$(date +%Y-%m-%d)
+}
