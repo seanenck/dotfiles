@@ -90,7 +90,6 @@ export EDITOR="$VISUAL"
 source $XDG_USER_CONFIG
 export GOPATH=$HOME/.go
 export TERM=xterm
-source ~/.config/home/debian
 DEBEMAIL="enckse@voidedtech.com"
 DEBFULLNAME="Sean Enck"
 export DEBEMAIL DEBFULLNAME DEB_SIGN_KEY DEB_BUILD_DIR DEB_BUILD_GO
