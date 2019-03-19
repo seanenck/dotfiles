@@ -126,10 +126,13 @@ def main():
         env = common.add_env(env)
         _daemon(env)
     elif args.command == "toggle":
+        show = True
         if os.path.exists(env.HIDE):
+            show = False
             os.remove(env.HIDE)
         else:
             open(env.HIDE, 'w').close()
+        _notify("show notifications? {}".format(show).lower())
     elif args.command == "journal":
         if os.path.exists(env.JOURNALS):
             first = True
