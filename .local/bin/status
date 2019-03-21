@@ -66,10 +66,12 @@ def _daemon(env):
             volume = vol.status()
         outputs.append("vol:{}".format(volume))
         charge = "?"
+        charging = False
         with open("/sys/class/power_supply/AC/online", 'r') as f:
             if f.read().strip() == "0":
                 charge = "-"
             else:
+                charging = True
                 charge = "+"
         total_bat = 0
         batteries = []
@@ -79,7 +81,7 @@ def _daemon(env):
                 per = f.read().strip()
                 total_bat += float(per)
                 batteries.append(per)
-        if total_bat < 20:
+        if total_bat < 20 and not charging:
             _notify("WARNING: BATTERY")
         b = ",".join(batteries)
         b = "bat:{}({})".format(charge, b)
