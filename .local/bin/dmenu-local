@@ -13,11 +13,14 @@ _FASTMUTT = "fastmail"
 _PASSWORDS = "passwords"
 _LOCALS = [_GMUTT, _FASTMUTT, _PASSWORDS]
 _APPS = ["vlc", "pavucontrol", "zim"] + _LOCALS
+_SEARCH = "search "
 
 
 def _search(term):
     """Search for a term via browser."""
     import urllib.parse
+    if term.startswith(_SEARCH):
+        term = term[len(_SEARCH):]
     query = {}
     query["q"] = term
     params = urllib.parse.urlencode(query)
