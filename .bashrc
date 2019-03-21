@@ -104,7 +104,7 @@ fi
 if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
     source /usr/share/bash-completion/completions/pass
-    for i in $(echo "$PASS_ALIASES"); do
+    for i in $(ls $PERM_PASS); do
         alias pass-$i="PASSWORD_STORE_DIR=${PERM_PASS}$i pass"
         eval '_pc_'$i'() { PASSWORD_STORE_DIR='${PERM_PASS}$i'/ _pass; }'
         complete -o filenames -o nospace -F _pc_$i pass-$i
