@@ -16,6 +16,14 @@ import vol
 _DELIMITER = "|"
 _NOTIFICATIONS = 10
 _NOTIFY_LEN = _NOTIFICATIONS + 5
+_WEEKDAYS = {}
+_WEEKDAYS[0] = "mo"
+_WEEKDAYS[1] = "tu"
+_WEEKDAYS[2] = "we"
+_WEEKDAYS[3] = "th"
+_WEEKDAYS[4] = "fr"
+_WEEKDAYS[5] = "sa"
+_WEEKDAYS[6] = "su"
 
 
 def _notify(message):
@@ -53,7 +61,14 @@ def _daemon(env):
         os.remove(env.HIDE)
     while True:
         t = datetime.datetime.now()
-        time_format = t.strftime("%Y-%m-%d{}%H:%M".format(_DELIMITER))
+        w = t.weekday()
+        wd = "un"
+        if w in _WEEKDAYS:
+            wd = _WEEKDAYS[w]
+        wd = wd.upper()
+        time_format = t.strftime("%Y-%m-%d{}{}{}%H:%M".format(_DELIMITER,
+                                                              wd,
+                                                              _DELIMITER))
         outputs = [time_format]
         locked = common.lock_status(env)
         if locked:
