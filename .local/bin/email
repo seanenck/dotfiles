@@ -26,7 +26,7 @@ def _mbsync(env):
     """Run mbsync."""
     if subprocess.call(["pidof", "mbsync"]) == 0:
         print("mbsync already running")
-        return
+        return False
     for d in [env.INDEX_DIR, env.INDEX_CUR, env.INDEX_NEW]:
         if not os.path.exists(d):
             os.mkdir(d)
@@ -36,6 +36,7 @@ def _mbsync(env):
     if created:
         _clean_index(env)
     _run_logged(["notmuch", "new"], log_file + ".index")
+    return True
 
 
 def _clean_index(env):
@@ -46,11 +47,18 @@ def _clean_index(env):
             os.unlink(fpath)
 
 
-def _imap(env):
+def _imap(env, queue=False):
     """Run imap sync."""
     if not common.is_online():
         return
-    _mbsync(env)
+    result = _mbsync(env)
+    if queue and not result:
+        count = 0
+        while count < 30:
+            time.sleep(1)
+            if _mbsync(env):
+                return
+            count += 1
 
 
 def _client(env, account):
@@ -110,6 +118,8 @@ def main():
             print("search term(s) required")
             return
         _search(env, commands)
+    elif cmd == "queue":
+        _imap(env, queue=True)
     else:
         print("unknown command")
 
