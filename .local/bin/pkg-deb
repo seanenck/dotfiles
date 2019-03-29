@@ -15,6 +15,7 @@ _BUILDDEPS = ["make",
 _LINT = "lint.log"
 _DEBIAN = "debian"
 _BIN = "bin"
+_PATH = "path://"
 
 
 def _precheck():
@@ -78,7 +79,12 @@ def _git_clone(env, settings, pkgver):
         git_args += ["--branch", settings.git_version]
     if settings.git_shallow:
         git_args += ["--depth", "1"]
-    git_args += [settings.url, clone_dir]
+    use_url = settings.url
+    if use_url.startswith(_PATH):
+        use_url = use_url.replace(_PATH, "")
+        if use_url.startswith("."):
+            use_url = os.path.abspath(os.path.join(os.getcwd(), use_url))
+    git_args += [use_url, clone_dir]
     subprocess.call(git_args)
     return clone_dir
 
