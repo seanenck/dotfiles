@@ -97,12 +97,14 @@ export TERM=xterm
 DEBEMAIL="enckse@voidedtech.com"
 DEBFULLNAME="Sean Enck"
 export DEBEMAIL DEBFULLNAME DEB_SIGN_KEY DEB_BUILD_DIR DEB_BUILD_GO
+if [ -e "$PRIV_CONF" ]; then
+    source $PRIV_CONF
+fi
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
     return
 fi
 
 if [ -e "$PRIV_CONF" ]; then
-    source $PRIV_CONF
     source /usr/share/bash-completion/completions/pass
     for i in $(ls $PERM_PASS); do
         alias pass-$i="PASSWORD_STORE_DIR=${PERM_PASS}$i pass"
