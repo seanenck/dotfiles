@@ -73,6 +73,8 @@ def _dmenu(env, args):
         if "." in result and " " not in result:
             subprocess.call([_BROWSER, result])
             return
+        if not result:
+            return
         _search(result)
 
 
