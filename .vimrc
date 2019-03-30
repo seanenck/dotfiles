@@ -75,3 +75,19 @@ for i in ['q', '<F1>']
     execute "map " . i . " <Nop>"
 endfor
 imap <F1> <Nop>
+
+" airline
+set hidden
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+nmap <C-t> :enew<cr>
+
+" Move to the next buffer
+nmap <C-d> :bnext<cr>
+
+" Move to the previous buffer
+nmap <C-a> :bprevious<cr>
+
+" Close the current buffer and move to the previous one
+" This replicates the idea of closing a tab
+nmap <C-w> :bp <BAR> bd #<cr>
