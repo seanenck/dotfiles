@@ -88,7 +88,7 @@ def _set_brightness(value, displays):
 
 
 def change_workspaces(command):
-    """Change workspace"""
+    """Change workspace."""
     displays = _get_displays()
     if _MAIN not in displays:
         print("missing main display")

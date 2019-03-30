@@ -250,7 +250,6 @@ def _setup_sync(env, dt):
         return _sync(env, f, dt)
 
 
-
 def _startup(env):
     fname = os.path.realpath(__file__)
     while not os.path.exists(env.SSH_AUTH_TMP):
