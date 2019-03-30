@@ -3,6 +3,7 @@
 HOME_BIN=$HOME/.local/bin
 HOME_XDG=$HOME/.config/
 HOME_CONF=${HOME_XDG}home/
+VIM_DIR=$HOME/.vim
 
 # cache files
 HOME_CACHE=$HOME/.cache/home/
@@ -64,6 +65,7 @@ _exports() {
              DEB_BUILD_GO \
              JOURNALS \
              LAST_SYNC \
+             VIM_DIR \
              DEB_BUILD_DIR \
              DEB_BUILD_ROOT; do
         echo "$f=${!f}"
@@ -90,7 +92,7 @@ _setup() {
     echo "cleaning up directories..."
     find ${USER_TMP}* -mtime +1 -type f -exec rm {} \;
     find $USER_TMP -empty -type d -delete
-    find $HOME/.vim/{swap,undo} -mmin +1440 -type f -exec rm {} \;
+    find $VIM_DIR/{swap,undo} -mmin +1440 -type f -exec rm {} \;
     if [ ! -e $LAST_SYNC ]; then
         echo "no recent syncs" >> $JOURNALS
     fi

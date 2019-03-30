@@ -3,6 +3,7 @@ import common
 import argparse
 import os
 import tempfile
+import subprocess
 
 
 _PURGE = ["mv",
@@ -42,6 +43,12 @@ _BY_SIZE = {
         "python3": 2,
         "schroot": 3,
         "python2": 2}
+
+
+def _cloned(env):
+    for d in [os.path.join(env.VIM_DIR, "bundle", "nerdtree")]:
+        print("{} update".format(d))
+        subprocess.call(["git", "-C", d, "pull"])
 
 
 def _history_dryrun(message, line):
@@ -98,7 +105,6 @@ def _history(env, purge):
 
 def _music(env):
     """Synchronize music."""
-    import subprocess
     music_file = os.path.join(env.PERM_CONFIGS, "music")
     includes = []
     chars = []
@@ -138,6 +144,8 @@ def main():
         _history(env, False)
     elif args.command == "history-purge":
         _history(env, True)
+    elif args.command == "cloned":
+        _cloned(env)
     else:
         print("unknown command")
 
