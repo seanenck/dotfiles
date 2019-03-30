@@ -31,6 +31,8 @@ clear-journal() {
 }
 
 hpcssh() {
+    local cwd=$PWD
     cd ${PERM_APPS}hpcssh
     ./connect $@
+    cd $cwd
 }
