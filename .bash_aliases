@@ -29,3 +29,8 @@ clear-journal() {
     source $HOME/.local/bin/conf
     rm -f $JOURNALS
 }
+
+hpcssh() {
+    cd ${PERM_APPS}hpcssh
+    ./connect $@
+}
