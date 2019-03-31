@@ -170,6 +170,7 @@ def _build(env, settings):
             deb_mani = mani + "." + bname
             with open(deb_mani, 'w') as manifest:
                 bin_deb = os.path.join(_BIN, d)
+                print("post processing {}".format(bin_deb))
                 subprocess.call(["lintian", bin_deb], stdout=f)
                 subprocess.call(["debsigs",
                                  "--sign=origin",
