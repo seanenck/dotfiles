@@ -36,7 +36,7 @@ def _get_displays(filtered=" "):
         if connected not in l:
             continue
         results.append(l.split(" ")[0])
-    return results
+    return set(results + [_VLEFT, _HRIGHT])
 
 
 def backlight(sub):
