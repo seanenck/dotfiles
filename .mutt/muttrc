@@ -44,7 +44,7 @@ bind index,pager B sidebar-toggle-visible
 
 macro index,pager \Cp "<sidebar-prev><sidebar-open>"
 macro index,pager \Cn "<sidebar-next><sidebar-open>"
-macro index,pager <f5> "<enter-command>unset wait\_key<enter><shell-escape>/home/enck/.local/bin/email &<enter><enter-command>set wait\_key<enter>" "Refresh"
+macro index,pager <f5> "<enter-command>unset wait\_key<enter><shell-escape>/home/enck/.local/bin/email > /dev/null &<enter><enter-command>set wait\_key<enter>" "Refresh"
 macro attach 'V' "<pipe-entry>cat >~/.cache/home/tmp/mutt.mail.html && netsurf ~/.cache/home/tmp/mutt.mail.html<enter>"
 
 color hdrdefault blue black
