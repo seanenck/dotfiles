@@ -97,3 +97,4 @@ autocmd vimenter * NERDTree
 autocmd vimenter * wincmd p
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 nmap <F1> :NERDTreeFocus<cr>
+let g:miniBufExplModSelTarget = 1
