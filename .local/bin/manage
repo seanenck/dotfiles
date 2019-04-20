@@ -45,12 +45,6 @@ _BY_SIZE = {
         "python2": 2}
 
 
-def _cloned(env):
-    for d in [os.path.join(env.VIM_DIR, "bundle", "nerdtree")]:
-        print("{} update".format(d))
-        subprocess.call(["git", "-C", d, "pull"])
-
-
 def _history_dryrun(message, line):
     """Report history dryrun purges."""
     print("{} -> ({})".format(line, message))
@@ -144,8 +138,6 @@ def main():
         _history(env, False)
     elif args.command == "history-purge":
         _history(env, True)
-    elif args.command == "cloned":
-        _cloned(env)
     else:
         print("unknown command")
 

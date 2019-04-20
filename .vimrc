@@ -91,10 +91,3 @@ nmap <C-a> :bprevious<cr>
 " Close the current buffer and move to the previous one
 " This replicates the idea of closing a tab
 nmap <C-w> :bp <BAR> bd #<cr>
-
-execute pathogen#infect()
-autocmd vimenter * NERDTree
-autocmd vimenter * wincmd p
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-nmap <F1> :NERDTreeFocus<cr>
-let g:miniBufExplModSelTarget = 1

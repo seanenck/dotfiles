@@ -31,7 +31,7 @@ _manage() {
     local cur opts
     if [ $COMP_CWORD -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        COMPREPLY=( $(compgen -W "music history-dryrun history-purge cloned" -- $cur) )
+        COMPREPLY=( $(compgen -W "music history-dryrun history-purge" -- $cur) )
     fi
 }
 
