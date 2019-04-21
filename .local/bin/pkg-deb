@@ -141,8 +141,6 @@ def _build(env, settings):
     os.chdir(source)
     subprocess.call(["dh_make", "-s", "-y", "--createorig"])
     environ = os.environ
-    if settings.gopath:
-        environ["GOPATH"] = env.DEB_BUILD_GO
     environ["DEB_SRC_DIR"] = source
     print('building package...')
     subprocess.call(["dpkg-buildpackage", "-us", "-uc"],
