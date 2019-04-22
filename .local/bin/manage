@@ -126,6 +126,19 @@ def _music(env):
                          "--delete-excluded"])
 
 
+def _git_updates(env):
+    for r, f, d in os.walk(env.PERM_LOCATION):
+        if "personal" in r:
+            continue
+        git_dir = os.path.join(r, ".git")
+        if os.path.exists(git_dir):
+            print("")
+            print(r)
+            print("")
+            subprocess.call(["git", "-C", r, "pull"])
+            print("")
+
+
 def main():
     """Program entry."""
     parser = argparse.ArgumentParser()
@@ -138,6 +151,8 @@ def main():
         _history(env, False)
     elif args.command == "history-purge":
         _history(env, True)
+    elif args.command == "git-update-store":
+        _git_updates(env)
     else:
         print("unknown command")
 
