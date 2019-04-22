@@ -93,6 +93,8 @@ export EDITOR="$VISUAL"
 
 source $XDG_USER_CONFIG
 export GOPATH=$HOME/.go
+export RUSTUP_HOME=$HOME/.rust/rustup
+export CARGO_HOME=$HOME/.rust/cargo
 export TERM=xterm
 DEBEMAIL="enckse@voidedtech.com"
 DEBFULLNAME="Sean Enck"
