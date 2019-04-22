@@ -9,7 +9,7 @@ alias dquilt="quilt --quiltrc=${HOME}/.config/quiltrc-dpkg"
 alias duplicates="find . -type f -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate"
 alias syncing="/home/enck/.local/bin/syncing run"
 
-for f in zim vlc mutt; do
+for f in zim vlc mutt virtualbox; do
     alias $f="echo 'disabled in bash'"
 done
 

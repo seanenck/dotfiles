@@ -12,7 +12,7 @@ _GMUTT = "gmail"
 _FASTMUTT = "fastmail"
 _PASSWORDS = "passwords"
 _LOCALS = [_GMUTT, _FASTMUTT, _PASSWORDS]
-_APPS = ["vlc", "pavucontrol", "zim" "virtualbox"] + _LOCALS
+_APPS = ["vlc", "pavucontrol", "zim", "virtualbox"] + _LOCALS
 _SEARCH = "search "
 
 
