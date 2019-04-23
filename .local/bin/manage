@@ -43,6 +43,7 @@ _BY_SIZE = {
         "python3": 2,
         "schroot": 3,
         "python2": 2}
+_KNOWN = {"gitgrep": ("git", "grep", 3)}
 
 
 def _history_dryrun(message, line):
@@ -62,6 +63,7 @@ def _history(env, purge):
             ls = line.strip()
             adding = True
             if len(ls) < 11:
+                adding = False
                 cnt += _history_dryrun("less than 10 chars", ls)
             for p in _PURGE:
                 if ls.startswith("{} ".format(p)) or ls == p:
@@ -81,6 +83,15 @@ def _history(env, purge):
                         msg = "short command {} ({})".format(b, str(sized))
                         cnt += _history_dryrun(msg, ls)
                         break
+            for k in _KNOWN:
+                parts = ls.split(" ")
+                known = _KNOWN[k]
+                if parts[0] == known[0]:
+                    if parts[1] == known[1]:
+                        if len(parts) == known[2]:
+                            adding = False
+                            msg = "known command {}".format(known)
+                            cnt += _history_dryrun(msg, ls)
             if line in lines:
                 cnt += _history_dryrun("line not unique", ls)
                 adding = False
