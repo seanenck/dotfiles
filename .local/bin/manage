@@ -26,6 +26,7 @@ _PURGE = ["mv",
           "locking"]
 
 
+_DEPRECATED = ["aptitude"]
 _NAME_IGNORES = [".bash_history", "pacman", "reboot", "poweroff"]
 _BY_SIZE = {
         "ssh": 3,
@@ -43,7 +44,10 @@ _BY_SIZE = {
         "python3": 2,
         "schroot": 3,
         "python2": 2}
-_KNOWN = {"gitgrep": ("git", "grep", 3)}
+_KNOWN = {
+        "gitgrep": ("git", "grep", 3),
+        "aptcache": ("apt-cache", "search", 3)
+        }
 
 
 def _history_dryrun(message, line):
@@ -62,6 +66,8 @@ def _history(env, purge):
         for line in f:
             ls = line.strip()
             adding = True
+            parts = ls.split(" ")
+            lparts = len(parts)
             if len(ls) < 11:
                 adding = False
                 cnt += _history_dryrun("less than 10 chars", ls)
@@ -75,23 +81,31 @@ def _history(env, purge):
                     adding = False
                     cnt += _history_dryrun("ignored " + i, ls)
             for b in _BY_SIZE:
-                parts = ls.split(" ")
                 sized = _BY_SIZE[b]
-                if len(parts) <= sized:
+                if lparts <= sized:
                     if parts[0] == b:
                         adding = False
                         msg = "short command {} ({})".format(b, str(sized))
                         cnt += _history_dryrun(msg, ls)
                         break
             for k in _KNOWN:
-                parts = ls.split(" ")
                 known = _KNOWN[k]
-                if parts[0] == known[0]:
-                    if parts[1] == known[1]:
-                        if len(parts) == known[2]:
+                if lparts == known[2]:
+                    if parts[0] == known[0]:
+                        if parts[1] == known[1]:
                             adding = False
                             msg = "known command {}".format(known)
                             cnt += _history_dryrun(msg, ls)
+            for d in _DEPRECATED:
+                check_part = None
+                check_part = parts[0]
+                if lparts >= 2:
+                    if parts[0] == "sudo":
+                        check_part = parts[1]
+                if d == check_part:
+                    adding = False
+                    msg = "{} is deprecated".format(check_part)
+                    cnt += _history_dryrun(msg, ls)
             if line in lines:
                 cnt += _history_dryrun("line not unique", ls)
                 adding = False
