@@ -18,8 +18,10 @@ def _is_git_dir(d):
 def _get_folders(env):
     """Get git-controlled folders."""
     dirs = []
-    for d in os.listdir(env.PERM_LOCATION):
-        dirs.append(os.path.join(env.PERM_LOCATION, d))
+    for r, _, _ in os.walk(env.PERM_LOCATION):
+        d = os.path.join(r, ".git")
+        if os.path.exists(d):
+            dirs.append(r)
     dirs.append(os.path.join(env.HOME, "workspace"))
     results = []
     results.append("/etc")
