@@ -120,7 +120,8 @@ def change_workspaces(command):
         time.sleep(1)
         _set_brightness(str(_MID_BRIGHT), _ALL_DISPLAYS)
     time.sleep(1)
-    subprocess.call(["pkill", "dwm"])
+    for n in ["dwm", "dunst"]:
+        subprocess.call(["pkill", n])
 
 
 def on():
