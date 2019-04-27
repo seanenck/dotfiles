@@ -41,12 +41,6 @@ if has('persistent_undo')
 endif
 
 set viminfo+=n$HOME/.cache/viminfo
-let pymode = $HOME . "/.vim/plugin/py.vim"
-if findfile(pymode, ".") == pymode
-    let g:pymode_python = 'python3'
-    inoremap <S-Left> <C-o>:call PyShift(0)<CR>
-    inoremap <S-Right> <C-o>:call PyShift(1)<CR>
-endif
 
 " map to command and insert
 for i in ['', 'i']
@@ -56,16 +50,9 @@ for i in ['', 'i']
     execute i . "noremap <C-Left> <home>"
 endfor
 
-set number
-let extension = expand('%:e')
-if extension == "go"
-    set tabstop=4
-    set noexpandtab
-else
-    match OverLength /\%80v.\+/
-    set tabstop=4
-    set expandtab
-endif
+match OverLength /\%80v.\+/
+set tabstop=4
+set expandtab
 set shiftwidth=4
 set complete-=i
 set foldmethod=indent
@@ -75,19 +62,3 @@ for i in ['q', '<F1>']
     execute "map " . i . " <Nop>"
 endfor
 imap <F1> <Nop>
-
-" airline
-set hidden
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
-nmap <C-t> :enew<cr>
-
-" Move to the next buffer
-nmap <C-d> :bnext<cr>
-
-" Move to the previous buffer
-nmap <C-a> :bprevious<cr>
-
-" Close the current buffer and move to the previous one
-" This replicates the idea of closing a tab
-nmap <C-w> :bp <BAR> bd #<cr>
