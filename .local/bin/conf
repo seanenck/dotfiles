@@ -49,6 +49,7 @@ _exports() {
              HOME_CACHE \
              PERM_LOCATION \
              TOTP_PASS \
+             HOME_XDG \
              PRIV_PATH \
              PERM_PASS \
              PERM_APPS \
