@@ -17,7 +17,7 @@ geany_project() {
     if [ -z "$1" ]; then
         echo "project required"
     else
-        pgrep geany
+        pgrep geany > /dev/null
         if [ $? -eq 0 ]; then
             /usr/bin/geany $1
         else
