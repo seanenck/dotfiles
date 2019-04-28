@@ -26,11 +26,12 @@ vlc() {
 }
 
 geany_project() {
+    source $HOME/.local/bin/conf
     if [ -z "$1" ]; then
         echo "project required"
     else
         _nohup_cmd geany
-        /usr/bin/geany $1
+        /usr/bin/geany $GEANY_PROJ/$1
     fi
 }
 

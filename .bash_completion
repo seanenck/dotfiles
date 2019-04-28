@@ -46,7 +46,7 @@ _geanyproj() {
         for f in $(find $GEANY_PROJ -type f -name "*.geany"); do
             basepath=$(cat $f | grep "base_path=" | cut -d "=" -f 2 | head -n 1)
             if [ -d "$basepath" ]; then
-                opts="$opts $f"
+                opts="$opts "$(echo $f | sed "s#$GEANY_PROJ##g")
             fi
         done
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
