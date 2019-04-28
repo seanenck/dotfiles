@@ -14,15 +14,16 @@ for f in zim vlc mutt virtualbox geany; do
 done
 
 geany_project() {
+    local cmd
     if [ -z "$1" ]; then
         echo "project required"
     else
         pgrep geany > /dev/null
-        if [ $? -eq 0 ]; then
-            /usr/bin/geany $1
-        else
-            echo "geany is not running..."
+        if [ $? -ne 0 ]; then
+            nohup /usr/bin/geany >/dev/null 2>&1 &
+            sleep 0.25
         fi
+        /usr/bin/geany $1
     fi
 }
 
