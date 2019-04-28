@@ -9,7 +9,7 @@ alias dquilt="quilt --quiltrc=${HOME}/.config/quiltrc-dpkg"
 alias duplicates="find . -type f -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate"
 alias syncing="/home/enck/.local/bin/syncing run"
 
-for f in zim mutt virtualbox geany; do
+for f in zim mutt; do
     alias $f="echo 'disabled in bash'"
 done
 
@@ -21,16 +21,22 @@ _nohup_cmd() {
     fi
 }
 
+virtualbox() {
+    _nohup_cmd virtualbox
+}
+
 vlc() {
     _nohup_cmd vlc "$@"
 }
 
+geany() {
+    geany_project
+}
+
 geany_project() {
     source $HOME/.local/bin/conf
-    if [ -z "$1" ]; then
-        echo "project required"
-    else
-        _nohup_cmd geany
+    _nohup_cmd geany
+    if [ ! -z "$1" ]; then
         /usr/bin/geany $GEANY_PROJ/$1
     fi
 }
