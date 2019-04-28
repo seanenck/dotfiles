@@ -56,7 +56,7 @@ def _backup(env, stdout):
     if not os.path.exists(archive):
         print("creating archive {}".format(archive), file=stdout)
         files = [os.path.join(env.HOME, ".mozilla") + "/",
-                 os.path.join(env.PERM_LOCATION, "geany"),
+                 os.path.join(env.GEANY_PROJ),
                  os.path.join(env.HOME_XDG, "geany"),
                  env.REPOSITORY,
                  env.PERM_APPS]

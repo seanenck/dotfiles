@@ -13,6 +13,19 @@ for f in zim vlc mutt virtualbox geany; do
     alias $f="echo 'disabled in bash'"
 done
 
+geany_project() {
+    if [ -z "$1" ]; then
+        echo "project required"
+    else
+        pgrep geany
+        if [ $? -eq 0 ]; then
+            /usr/bin/geany $1
+        else
+            echo "geany is not running..."
+        fi
+    fi
+}
+
 proxy() {
     if [ -z "$1" ]; then
         echo "host required"

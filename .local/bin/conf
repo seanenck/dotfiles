@@ -17,6 +17,7 @@ HOME_STORE=${PERSONAL_LOC}documents/
 PERM_CONFIGS=${HOME_STORE}configs/
 PRIV_PATH=${PERSONAL_LOC}private/
 PERM_PASS=${PERM_LOCATION}pass/
+GEANY_PROJ=${PERM_LOCATION}geany/
 
 # mail
 MAIL_DIR=$HOME/.mutt/imap/
@@ -50,6 +51,7 @@ _exports() {
              PERM_LOCATION \
              TOTP_PASS \
              HOME_XDG \
+             GEANY_PROJ \
              PRIV_PATH \
              PERM_PASS \
              PERM_APPS \
