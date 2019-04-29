@@ -21,6 +21,10 @@ _nohup_cmd() {
     fi
 }
 
+firefox() {
+    _nohup_cmd firefox "$@"
+}
+
 virtualbox() {
     _nohup_cmd virtualbox
 }
