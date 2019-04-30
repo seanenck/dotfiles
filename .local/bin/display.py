@@ -98,25 +98,25 @@ def change_workspaces(command):
     if not is_docked and not is_mobile:
         return
     not_main = [x for x in displays if x != _MAIN]
-    for d in [x for x in displays if x != _MAIN]:
+    for d in not_main:
         subprocess.call(["xrandr", "--output", d, "--off"])
     time.sleep(1)
     subprocess.call(["xrandr", "--output", _MAIN, "--primary", "--auto"])
     if is_docked:
         subprocess.call(["xrandr",
                          "--output",
-                         _VLEFT,
+                         _HRIGHT,
                          "--auto",
                          "--left-of",
+                         _MAIN])
+        subprocess.call(["xrandr",
+                         "--output",
+                         _VLEFT,
+                         "--auto",
+                         "--right-of",
                          _MAIN,
                          "--rotate",
                          "right"])
-        subprocess.call(["xrandr",
-                         "--output",
-                         _HRIGHT,
-                         "--auto",
-                         "--right-of",
-                         _MAIN])
         time.sleep(1)
         _set_brightness(str(_MID_BRIGHT), _ALL_DISPLAYS)
     time.sleep(1)
