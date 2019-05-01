@@ -105,18 +105,18 @@ def change_workspaces(command):
     if is_docked:
         subprocess.call(["xrandr",
                          "--output",
-                         _HRIGHT,
-                         "--auto",
-                         "--left-of",
-                         _MAIN])
-        subprocess.call(["xrandr",
-                         "--output",
                          _VLEFT,
                          "--auto",
-                         "--right-of",
+                         "--left-of",
                          _MAIN,
                          "--rotate",
                          "right"])
+        subprocess.call(["xrandr",
+                         "--output",
+                         _HRIGHT,
+                         "--auto",
+                         "--right-of",
+                         _MAIN])
         time.sleep(1)
         _set_brightness(str(_MID_BRIGHT), _ALL_DISPLAYS)
     time.sleep(1)
