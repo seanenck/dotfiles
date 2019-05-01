@@ -124,7 +124,7 @@ def _history(env, purge):
 
 def _music(env):
     """Synchronize music."""
-    music_file = os.path.join(env.PERM_CONFIGS, "music")
+    music_file = os.path.join(env.HOME_XDG, "music")
     includes = []
     chars = []
     with open(music_file, 'r') as f:
