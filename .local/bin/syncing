@@ -12,7 +12,7 @@ _DAEMON = "daemon"
 _COMMON_STORE = "/mnt/Storage/Active/"
 _INBOX_STORE = os.path.join(_COMMON_STORE, "Inbox") + "/"
 _PROFILE_PATH = os.path.join(_COMMON_STORE, "Drop", "Profiles") + "/"
-_FIND = "find " + _PROFILE_PATH + " -type f -mtime +7 -exec rm {} \\;"
+_FIND = "find " + _PROFILE_PATH + " -type f -mtime +30 -exec rm {} \\;"
 
 
 def _test_ssh(env):
