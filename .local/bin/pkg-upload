@@ -16,7 +16,7 @@ _DISTS = "dists"
 def _upload(env):
     """Upload the package."""
     target = "{}:/opt/debian".format(env.MIRROR_SERVER)
-    subprocess.call(["rsync", "-avc", "-e", "ssh", _DISTS, target])
+    subprocess.call(["rsync", "-avc", "-e", "ssh", _DISTS, target, "--delete-after"])
 
 
 def _pack(env, pool, objects):
