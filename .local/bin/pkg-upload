@@ -11,68 +11,12 @@ import urllib.request
 
 _REPOS = {"stable": "stretch", "unstable": "sid"}
 _DISTS = "dists"
-_PACKED = "packages.tar.gz"
-_INDEX = "index.html"
-_CSS = "package.css"
-_URL = "https://voidedtech.com/cgit/debs/plain/"
-_UPLOAD = "upload.tar.gz"
-_ARCHIVE = "archive"
-_SHELL = "configure"
-_CONFIGURE = """#!/bin/bash
-if [ ! -d """ + _DISTS + """ ]; then
-    echo 'missing dists folder, right dir?'
-    exit 1
-fi
-mkdir -p """ + _ARCHIVE + """
-for f in $(find """ + _DISTS + """/ -type f -name "*.deb"); do
-    mv $f """ + _ARCHIVE + """/$(basename $f)
-done
-for f in $(find """ + _ARCHIVE + """/ -type f -mtime +90); do
-    echo "removing $f"
-    rm -f $f
-done
-rm """ + _UPLOAD + """
-tar xf """ + _PACKED + """
-rm """ + _PACKED + """
-rm configure
-"""
-
-
-def _download(resource, index=".index/", stdout=None, markdown=False):
-    """Download a file."""
-    file_name = "{}{}".format(index, resource)
-    output = resource + ".tmp"
-    urllib.request.urlretrieve(_URL + file_name, output)
-    if markdown:
-        md = output + ".md"
-        with open(md, 'w') as m:
-            subprocess.call(["markdown", output], stdout=m)
-        os.remove(output)
-        output = md
-    if stdout is None:
-        os.rename(output, resource)
-    else:
-        with open(output, 'r') as r:
-            for l in r:
-                stdout.write(l)
-        os.remove(output)
 
 
 def _upload(env):
     """Upload the package."""
-    print("deploying locally...")
-    subprocess.call(["rsync", "-acv", _DISTS, "/opt/mirror", "--delete-after"])
-    print("uploading...")
-    with open(_INDEX, 'w') as f:
-        _download("header.html", stdout=f)
-        _download("README.md", index="", stdout=f, markdown=True)
-        _download("footer.html", stdout=f)
-    _download(_CSS)
-    with open(_SHELL, 'w') as f:
-        f.write(_CONFIGURE)
-    subprocess.call(["chmod", "u+x", _SHELL])
-    subprocess.call(["tar", "cvzf", _UPLOAD, _INDEX, _CSS, _SHELL, _PACKED])
-    subprocess.call(["scp", _UPLOAD, env.MIRROR_SERVER + ":~/"])
+    target = "{}:/opt/debian".format(env.MIRROR_SERVER)
+    subprocess.call(["rsync", "-avc", "-e", "ssh", _DISTS, target])
 
 
 def _pack(env, pool, objects):
@@ -139,7 +83,6 @@ def _pack(env, pool, objects):
                          "-o",
                          release_file + ".gpg",
                          release_file])
-        subprocess.call(["tar", "cvzf", _PACKED, _DISTS + "/"])
     return True
 
 
@@ -156,7 +99,7 @@ def main():
     try:
         os.chdir(tmpd)
         if _pack(deb_env, deb_env.REPOSITORY, m):
-            print("upload to {} (Y/n)?".format(deb_env.MIRROR_SERVER))
+            print("push to {} (Y/n)?".format(deb_env.MIRROR_SERVER))
             y = input()
             if y != "n":
                 _upload(deb_env)
