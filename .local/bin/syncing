@@ -6,6 +6,7 @@ import os
 import datetime
 import sys
 import time
+import debian
 
 
 _DAEMON = "daemon"
@@ -56,9 +57,8 @@ def _backup(env, stdout):
     if not os.path.exists(archive):
         print("creating archive {}".format(archive), file=stdout)
         files = [os.path.join(env.HOME, ".mozilla") + "/",
-                 os.path.join(env.GEANY_PROJ),
                  os.path.join(env.HOME_XDG, "geany"),
-                 env.REPOSITORY,
+                 os.path.join(env.REPOSITORY, debian.MANIFEST),
                  env.PERM_APPS]
         stdout.flush()
         _call(["tar", "zcf", archive] + files, stdout)
