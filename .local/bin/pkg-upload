@@ -60,6 +60,8 @@ def _download(resource, index=".index/", stdout=None, markdown=False):
 
 def _upload(env):
     """Upload the package."""
+    print("deploying locally...")
+    subprocess.call(["rsync", "-acv", _DISTS, "/opt/mirror", "--delete-after"])
     print("uploading...")
     with open(_INDEX, 'w') as f:
         _download("header.html", stdout=f)
