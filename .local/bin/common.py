@@ -72,7 +72,7 @@ def touch(file_name):
 
 def _env_adj(env):
     """Environment adjustment."""
-    env.REPOSITORY = os.path.join(env.PERM_LOCATION, "repository") + "/"
+    env.REPOSITORY = os.path.join(env.PERM_LOCATION, "managed", "repository") + "/"
     env.BASE_SERVER = "fact"
     return env
 
