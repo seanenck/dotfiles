@@ -21,7 +21,7 @@ def _upload(env):
 
 def _pack(env, pool, objects):
     """Package pools."""
-    print("packaging...")
+    print("preparing...")
     repos = sorted(set([x.repo for x in objects]))
     for r in repos:
         if r not in _REPOS:
@@ -99,10 +99,7 @@ def main():
     try:
         os.chdir(tmpd)
         if _pack(deb_env, deb_env.REPOSITORY, m):
-            print("push to {} (Y/n)?".format(deb_env.MIRROR_SERVER))
-            y = input()
-            if y != "n":
-                _upload(deb_env)
+            _upload(deb_env)
         shutil.rmtree(tmpd)
     except Exception as e:
         shutil.rmtree(tmpd)
