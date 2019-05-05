@@ -75,17 +75,21 @@ def _git_clone(env, settings, pkgver):
     if os.path.exists(clone_dir):
         shutil.rmtree(clone_dir)
     git_args = ["git", "clone"]
-    if settings.git_checkout:
-        git_args += ["--branch", settings.git_version]
-    if settings.git_shallow:
-        git_args += ["--depth", "1"]
     use_url = settings.url
-    if use_url.startswith(_PATH):
+    is_local = use_url.startswith(_PATH)
+    if not is_local and settings.git_checkout:
+        git_args += ["--branch", settings.git_version]
+    if not is_local and settings.git_shallow:
+        git_args += ["--depth", "1"]
+    if is_local:
         use_url = use_url.replace(_PATH, "")
         if use_url.startswith("."):
             use_url = os.path.abspath(os.path.join(os.getcwd(), use_url))
-    git_args += [use_url, clone_dir]
-    subprocess.call(git_args)
+        shutil.copytree(use_url, clone_dir)
+        manual = True
+    if not is_local:
+        git_args += [use_url, clone_dir]
+        subprocess.call(git_args)
     return clone_dir
 
 
