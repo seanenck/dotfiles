@@ -58,7 +58,6 @@ def _backup(env, stdout):
         print("creating archive {}".format(archive), file=stdout)
         files = [os.path.join(env.HOME, ".mozilla") + "/",
                  os.path.join(env.HOME_XDG, "geany"),
-                 os.path.join(env.REPOSITORY, debian.MANIFEST),
                  env.PERM_APPS]
         stdout.flush()
         _call(["tar", "zcf", archive] + files, stdout)

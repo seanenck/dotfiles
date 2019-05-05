@@ -10,13 +10,12 @@ import urllib.request
 
 
 _REPOS = {"stable": "stretch", "unstable": "sid"}
-_DISTS = "dists"
 
 
 def _upload(env):
     """Upload the package."""
     target = "{}:/opt/debian".format(env.MIRROR_SERVER)
-    subprocess.call(["rsync", "-avc", "-e", "ssh", _DISTS, target, "--delete-after"])
+    subprocess.call(["rsync", "-avc", "-e", "ssh", debian.DISTS, target, "--delete-after"])
 
 
 def _pack(env, pool, objects):

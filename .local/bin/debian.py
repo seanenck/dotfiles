@@ -5,6 +5,8 @@ import common
 
 MANIFEST = "manifest"
 DEB = ".deb"
+DISTS = "dists"
+DELIMITER = ":"
 
 
 def parse_manifest(manifest_file):
@@ -14,7 +16,7 @@ def parse_manifest(manifest_file):
     results = []
     with open(manifest_file, 'r') as f:
         for l in f:
-            parts = l.strip().split(":")
+            parts = l.strip().split(DELIMITER)
             if len(parts) != 3:
                 print("invalid entry: " + l)
             o = common.Object()
