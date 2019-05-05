@@ -6,7 +6,6 @@ import os
 import datetime
 import sys
 import time
-import debian
 
 
 _DAEMON = "daemon"
