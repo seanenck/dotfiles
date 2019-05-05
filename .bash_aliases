@@ -13,26 +13,13 @@ for f in zim mutt; do
     alias $f="echo 'disabled in bash'"
 done
 
-_nohup_cmd() {
-    pgrep $1 > /dev/null
-    if [ $? -ne 0 ]; then
-        nohup /usr/bin/$1 "${@:2}" >/dev/null 2>&1 &
-        sleep 0.25
-    fi
-}
-
-firefox() {
-    _nohup_cmd firefox
-    if [ ! -z "$@" ]; then
-        /usr/bin/firefox "$@"
-    fi
-}
-
 virtualbox() {
+    source $HOME/.local/bin/conf
     _nohup_cmd virtualbox
 }
 
 vlc() {
+    source $HOME/.local/bin/conf
     _nohup_cmd vlc "$@"
 }
 

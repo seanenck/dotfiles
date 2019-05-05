@@ -7,7 +7,7 @@ import csv
 import subprocess
 
 
-_BROWSER = "firefox"
+_BROWSER = "/usr/bin/firefox"
 _GMUTT = "gmail"
 _FASTMUTT = "fastmail"
 _PASSWORDS = "passwords"

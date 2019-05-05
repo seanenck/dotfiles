@@ -105,3 +105,12 @@ _setup() {
 _init() {
     _setup >> ${USER_TMP}userinit.$(date +%Y-%m-%d)
 }
+
+_nohup_cmd() {
+    local l=/usr/bin/$1
+    pgrep $l > /dev/null
+    if [ $? -ne 0 ]; then
+        nohup $l "${@:2}" >/dev/null 2>&1 &
+        sleep 0.25
+    fi
+}
