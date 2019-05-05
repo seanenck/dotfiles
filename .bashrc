@@ -90,6 +90,7 @@ fi
 
 export VISUAL=vim
 export EDITOR="$VISUAL"
+export TICKETS="${HOME_CACHE}hpc/"
 
 source $XDG_USER_CONFIG
 export GOPATH=$HOME/.go

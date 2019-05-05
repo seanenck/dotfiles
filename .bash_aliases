@@ -51,13 +51,3 @@ clear-journal() {
     source $HOME/.local/bin/conf
     rm -f $JOURNALS
 }
-
-hpcssh() {
-    source $HOME/.local/bin/conf
-    export TICKETS="${HOME_CACHE}hpc/"
-    local cwd=$PWD
-    local hpc=/usr/share/hpcssh
-    cd $hpc
-    ./connect $@
-    cd $cwd
-}
