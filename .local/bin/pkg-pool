@@ -102,7 +102,7 @@ def _rebuild(repo):
             obj = debs[k]
             append_to = []
             if len(obj) == len(repos):
-                append_to = ["all"]
+                append_to = [debian.IS_ALL]
             else:
                 append_to = obj
             for a in append_to:

@@ -7,6 +7,7 @@ MANIFEST = "manifest"
 DEB = ".deb"
 DISTS = "dists"
 DELIMITER = ":"
+IS_ALL = "all"
 
 
 def parse_manifest(manifest_file):

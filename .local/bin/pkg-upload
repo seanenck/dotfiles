@@ -30,7 +30,7 @@ def _pack(env, pool, objects):
         for comp in env.MIRROR_COMPONENTS.split(" "):
             root = os.path.join(dist, comp, "binary-amd64")
             os.makedirs(root)
-            flt = ["all", comp]
+            flt = [debian.IS_ALL, comp]
             debs = [x.deb for x in objects if x.repo == r and x.filter in flt]
             for d in debs:
                 shutil.copyfile(os.path.join(pool, d),
