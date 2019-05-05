@@ -22,7 +22,10 @@ _nohup_cmd() {
 }
 
 firefox() {
-    _nohup_cmd firefox "$@"
+    _nohup_cmd firefox
+    if [ ! -z "$@" ]; then
+        /usr/bin/firefox "$@"
+    fi
 }
 
 virtualbox() {
