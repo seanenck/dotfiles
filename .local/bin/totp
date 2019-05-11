@@ -5,6 +5,7 @@ import sys
 import os
 import datetime
 import subprocess
+import time
 
 
 _PASS_TOTP = "totp/"
@@ -30,6 +31,7 @@ def _display(env, args):
             print("input mismatch (tokens != retrieved)")
             return
     last_second = -1
+    running_count = 0
     while True:
         output = []
         n = datetime.datetime.now()
@@ -71,6 +73,11 @@ def _display(env, args):
         line = "\n".join(output).strip()
         print(line)
         common.normal_text()
+        time.sleep(0.5)
+        running_count += 1
+        if running_count > 120:
+            print("exiting")
+            return
 
 
 def main():
