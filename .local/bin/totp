@@ -32,7 +32,34 @@ def _display(env, args):
             return
     last_second = -1
     running_count = 0
+    use_tokens = {}
+    use_env = {}
+    use_env["PASSWORD_STORE_DIR"] = env.PASS_LOC
+    if len(listed) > 1:
+        print('getting tokens...')
+    for l in listed:
+        totp = os.path.join(_PASS_TOTP, l)
+        val, err = common.get_output_or_error(["pass", "show", totp],
+                                              env=use_env)
+        if err is not None:
+            print("error accessing: " + l)
+            print(err)
+            return
+        token = val.decode("utf-8").strip()
+        use_tokens[l] = token
+    if len(use_tokens) == 0:
+        print("no tokens found...")
+        return
+    is_first = True
     while True:
+        if is_first:
+            is_first = False
+        else:
+            time.sleep(0.5)
+        running_count += 1
+        if running_count > 120:
+            print("exiting")
+            return
         output = []
         n = datetime.datetime.now()
         if n.second == last_second:
@@ -42,21 +69,11 @@ def _display(env, args):
         expiring = "{}, expires: {} (seconds)".format(n.strftime("%H:%M:%S"),
                                                       left)
         output.append(expiring)
-        for l in listed:
-            e = {}
-            e["PASSWORD_STORE_DIR"] = env.PASS_LOC
-            totp = os.path.join(_PASS_TOTP, l)
-            val, err = common.get_output_or_error(["pass", "show", totp],
-                                                  env=e)
-            if err is not None:
-                print("error accessing: " + l)
-                print(err)
-                continue
-            token = val.decode("utf-8").strip()
+        for l in use_tokens.keys():
             val, err = common.get_output_or_error(["oathtool",
                                                    "--base32",
                                                    "--totp",
-                                                   token])
+                                                   use_tokens[l]])
             if err is not None:
                 print("unable to get token: " + l)
                 print(err)
@@ -73,11 +90,6 @@ def _display(env, args):
         line = "\n".join(output).strip()
         print(line)
         common.normal_text()
-        time.sleep(0.5)
-        running_count += 1
-        if running_count > 120:
-            print("exiting")
-            return
 
 
 def main():
