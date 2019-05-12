@@ -13,6 +13,7 @@ _COMMON_STORE = "/mnt/Storage/Active/"
 _INBOX_STORE = os.path.join(_COMMON_STORE, "Inbox") + "/"
 _PROFILE_PATH = os.path.join(_COMMON_STORE, "Drop", "Profiles") + "/"
 _FIND = "find " + _PROFILE_PATH + " -type f -mtime +7 -exec rm {} \\;"
+_ETC = os.path.join("/opt", "etcbackup")
 
 
 def _test_ssh(env):
@@ -44,6 +45,10 @@ def _diff(prev, current):
     return d == 0
 
 
+def _scp(env, name, stdout):
+    _call(["scp", name, "{}:{}".format(env.BASE_SERVER, _PROFILE_PATH)], stdout)
+
+
 def _backup(env, stdout):
     """Run file backups."""
     backup_file = os.path.join(env.USER_TMP,
@@ -62,8 +67,14 @@ def _backup(env, stdout):
         print("archive created", file=stdout)
         print("publish profile", file=stdout)
         stdout.flush()
-        _call(["scp", archive, "{}:{}".format(env.BASE_SERVER, _PROFILE_PATH)],
-              stdout)
+        _scp(env, archive, stdout)
+        etc = sorted(os.listdir(_ETC))
+        if len(etc) > 0:
+            etc_file = etc[-1]
+            print("backing up etc: {}".format(etc_file), file=stdout)
+            _scp(env, os.path.join(_ETC, etc_file), stdout)
+        else:
+            print("no etc backup", file=stdout)
         _call(["ssh", env.BASE_SERVER, _FIND], stdout)
     for f in os.listdir(env.PERSONAL_LOC):
         if "@" not in f:
