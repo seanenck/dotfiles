@@ -4,6 +4,7 @@ HOME_BIN=$HOME/.local/bin
 HOME_XDG=$HOME/.config/
 HOME_CONF=${HOME_XDG}home/
 VIM_DIR=$HOME/.vim
+GEANY_CONFIG=${HOME_XDG}geany
 
 # cache files
 HOME_CACHE=$HOME/.cache/home/
@@ -11,13 +12,11 @@ USER_TMP=${HOME_CACHE}tmp/
 
 # perm/store
 PERM_LOCATION=${HOME}/store/
-PERM_APPS=${PERM_LOCATION}apps/
 PERSONAL_LOC=${PERM_LOCATION}personal/
 HOME_STORE=${PERSONAL_LOC}documents/
 PERM_CONFIGS=${HOME_STORE}configs/
 PRIV_PATH=${PERSONAL_LOC}private/
 PERM_PASS=${PERM_LOCATION}pass/
-GEANY_PROJ=${PERM_APPS}geany/
 
 # mail
 MAIL_DIR=$HOME/.mutt/imap/
@@ -28,6 +27,7 @@ PRIV_CONF=${PERM_CONFIGS}priv.aliases
 XDG_USER_CONFIG=${HOME_XDG}user-dirs.dirs
 JOURNALS=${USER_TMP}journal
 LAST_SYNC=${USER_TMP}last.sync
+GEANY_PROJ=${GEANY_CONFIG}/projects/
 
 # debian
 DEB_SIGN_KEY=031E9E4B09CFD8D3F0ED35025109CDF607B5BB04
@@ -48,12 +48,12 @@ _exports() {
              XDG_DOWNLOAD_DIR \
              PERM_CONFIGS \
              HOME_CACHE \
+             GEANY_CONFIG \
              PERM_LOCATION \
              TOTP_PASS \
              HOME_XDG \
              PRIV_PATH \
              PERM_PASS \
-             PERM_APPS \
              SSH_AUTH_TMP \
              ZIP_PASS \
              ZIP_MAIL \
