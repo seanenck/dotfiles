@@ -13,11 +13,6 @@ for f in zim mutt; do
     alias $f="echo 'disabled in bash'"
 done
 
-virtualbox() {
-    source $HOME/.local/bin/conf
-    _nohup_cmd virtualbox
-}
-
 vlc() {
     source $HOME/.local/bin/conf
     _nohup_cmd vlc "$@"
