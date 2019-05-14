@@ -94,6 +94,7 @@ export TICKETS="${HOME_CACHE}hpc/"
 
 source $XDG_USER_CONFIG
 export GOPATH=$HOME/.go
+export GOCACHE=$GOPATH/cache
 export RUSTUP_HOME=$HOME/.rust/rustup
 export CARGO_HOME=$HOME/.rust/cargo
 export TERM=xterm
