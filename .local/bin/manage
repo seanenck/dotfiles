@@ -33,21 +33,39 @@ _BY_SIZE = {
         "scp": 3,
         "git": 2,
         "cat": 2,
+        "firefox": 2,
         "apt-get": 3,
         "apt-cache": 3,
         "aptitude": 2,
         "dpkg": 2,
         "find": 2,
         "apt": 2,
+        "cd": 2,
+        "ps": 2,
+        "man": 2,
         "sudo": 2,
         "python": 2,
+        "touch": 2,
+        "scp": 4,
+        "kill": 3,
+        "diff": 4,
+        "ls": 2,
         "python3": 2,
+        "echo": 2,
         "schroot": 3,
+        "source": 2,
+        "unzip": 2,
+        "make": 2,
         "python2": 2}
+
 _KNOWN = {
-        "gitgrep": ("git", "grep", 3),
-        "aptcache": ("apt-cache", "search", 3)
+        "aptcache": ("apt-cache", "search", 3),
+        "tarxf": ("tar", "xf", 3),
+        "tarczvf": ("tar", "czvf", 4)
         }
+
+for g in ["rm", "grep", "add", "checkout", "log", "diff", "show", "revert"]:
+    _KNOWN["git{}".format(g)] = ("git", g, 3)
 
 
 def _history_dryrun(message, line):
