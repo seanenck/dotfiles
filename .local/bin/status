@@ -140,7 +140,7 @@ def main():
             os.remove(env.HIDE)
         else:
             open(env.HIDE, 'w').close()
-        _notify("show notifications? {}".format(show).lower())
+        _notify("show notifications? {}".format(not show).lower())
     elif args.command == "journal":
         if os.path.exists(env.JOURNALS):
             first = True
