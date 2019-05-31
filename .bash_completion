@@ -31,7 +31,7 @@ _manage() {
     local cur
     if [ $COMP_CWORD -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        COMPREPLY=( $(compgen -W "music history-dryrun history-purge git-update-store" -- $cur) )
+        COMPREPLY=( $(compgen -W "music schroots history-dryrun history-purge git-update-store" -- $cur) )
     fi
 }
 

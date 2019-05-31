@@ -182,6 +182,19 @@ def _git_updates(env):
             print("")
 
 
+def _schroots(env):
+    """Manage schroot updates."""
+    for l in os.listdir(env.SCHROOTS):
+        for command in ["update", "upgrade"]:
+            print("\n{} -> {}".format(l, command))
+            subprocess.call(["sudo",
+                             "schroot",
+                             "-c",
+                             "source:{}".format(l),
+                             "apt",
+                             command])
+
+
 def main():
     """Program entry."""
     parser = argparse.ArgumentParser()
@@ -190,6 +203,8 @@ def main():
     env = common.read_env()
     if args.command == "music":
         _music(env)
+    elif args.command == "schroots":
+        _schroots(env)
     elif args.command == "history-dryrun":
         _history(env, False)
     elif args.command == "history-purge":
