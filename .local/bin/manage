@@ -148,7 +148,14 @@ def _music(env):
     with open(music_file, 'r') as f:
         for l in f:
             strip = l.strip()
-            c = strip[0] + "/"
+            lower = strip.lower()
+            c = None
+            for pre in ["the", "a"]:
+                if lower.startswith("{} ".format(pre)):
+                    c = strip[len(pre) + 1:][0]
+            if c is None:
+                c = strip[0]
+            c = c + "/"
             if c not in chars:
                 includes.append(c)
                 chars.append(c)
