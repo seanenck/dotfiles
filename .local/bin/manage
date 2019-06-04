@@ -193,7 +193,7 @@ def _schroots(env):
     """Manage schroot updates."""
     for l in os.listdir(env.SCHROOTS):
         for command in ["update", "upgrade"]:
-            print("\n{} -> {}".format(l, command))
+            print("\n\n  ===> {} -> {}\n\n".format(l, command))
             subprocess.call(["sudo",
                              "schroot",
                              "-c",
