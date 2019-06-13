@@ -1,7 +1,6 @@
 alias clip="xclip -selection 'clip-board'"
 alias diff="diff -u"
 alias ls='ls --color=auto'
-alias ossh="/usr/bin/ossh -F /dev/null"
 alias dd="sudo dd status=progress"
 alias gmail="/home/enck/.local/bin/email client gmail"
 alias fastmail="/home/enck/.local/bin/email client fastmail"
