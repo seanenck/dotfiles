@@ -9,6 +9,7 @@ _CMDS.append((["update-index", "-q", "--refresh"], None))
 _CMDS.append((["diff-index", "--name-only", "HEAD", "--"], None))
 _CMDS.append((["status", "-sb"], "ahead"))
 _CMDS.append((["ls-files", "--other", "--exclude-standard"], None))
+_MAX_CHANGES = 50
 
 
 def _is_git_dir(d):
@@ -70,6 +71,9 @@ def _get_all_changes(env):
         r = _get_changes(f)
         len_r = len(r)
         if len_r > 0:
+            if len_r > _MAX_CHANGES:
+                r = r[0:_MAX_CHANGES]
+                r.append("...")
             results[f] = r
             total += len_r
     return (results, total)
