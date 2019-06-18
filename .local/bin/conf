@@ -4,7 +4,6 @@ HOME_BIN=$HOME/.local/bin
 HOME_XDG=$HOME/.config/
 HOME_CONF=${HOME_XDG}home/
 VIM_DIR=$HOME/.vim
-GEANY_CONFIG=${HOME_XDG}geany
 
 # cache files
 HOME_CACHE=$HOME/.cache/home/
@@ -27,7 +26,6 @@ PRIV_CONF=${PERM_CONFIGS}priv.aliases
 XDG_USER_CONFIG=${HOME_XDG}user-dirs.dirs
 JOURNALS=${USER_TMP}journal
 LAST_SYNC=${USER_TMP}last.sync
-GEANY_PROJ=${GEANY_CONFIG}/projects/
 
 # debian
 DEB_SIGN_KEY=031E9E4B09CFD8D3F0ED35025109CDF607B5BB04
@@ -48,7 +46,6 @@ _exports() {
              XDG_DOWNLOAD_DIR \
              PERM_CONFIGS \
              HOME_CACHE \
-             GEANY_CONFIG \
              PERM_LOCATION \
              TOTP_PASS \
              HOME_XDG \

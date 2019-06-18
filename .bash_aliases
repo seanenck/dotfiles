@@ -16,18 +16,6 @@ vlc() {
     _nohup_cmd vlc "$@"
 }
 
-geany() {
-    geany_project
-}
-
-geany_project() {
-    source $HOME/.local/bin/conf
-    _nohup_cmd geany
-    if [ ! -z "$1" ]; then
-        /usr/bin/geany $GEANY_PROJ/$1
-    fi
-}
-
 proxy() {
     if [ -z "$1" ]; then
         echo "host required"

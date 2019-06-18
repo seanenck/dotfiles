@@ -36,21 +36,3 @@ _manage() {
 }
 
 complete -F _manage manage
-
-_geanyproj() {
-    local cur opts
-    if [ $COMP_CWORD -eq 1 ]; then
-        source $HOME/.local/bin/conf
-        cur=${COMP_WORDS[COMP_CWORD]}
-        opts=""
-        for f in $(find $GEANY_PROJ -type f -name "*.geany"); do
-            basepath=$(cat $f | grep "base_path=" | cut -d "=" -f 2 | head -n 1)
-            if [ -d "$basepath" ]; then
-                opts="$opts "$(echo $f | sed "s#$GEANY_PROJ##g")
-            fi
-        done
-        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-    fi
-}
-
-complete -F _geanyproj geany_project
