@@ -41,6 +41,12 @@ if has('persistent_undo')
 endif
 
 set viminfo+=n$HOME/.cache/viminfo
+let pymode = $HOME . "/.vim/plugin/py.vim"
+if findfile(pymode, ".") == pymode
+    let g:pymode_python = 'python3'
+    inoremap <S-Left> <C-o>:call PyShift(0)<CR>
+    inoremap <S-Right> <C-o>:call PyShift(1)<CR>
+endif
 
 " map to command and insert
 for i in ['', 'i']
@@ -50,9 +56,17 @@ for i in ['', 'i']
     execute i . "noremap <C-Left> <home>"
 endfor
 
-match OverLength /\%80v.\+/
-set tabstop=4
-set expandtab
+set number
+let extension = expand('%:e')
+if extension == "go"
+    set tabstop=4
+    set noexpandtab
+else
+    match OverLength /\%80v.\+/
+    set tabstop=4
+    set expandtab
+endif
+
 set shiftwidth=4
 set complete-=i
 set foldmethod=indent
