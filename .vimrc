@@ -76,3 +76,8 @@ for i in ['q', '<F1>']
     execute "map " . i . " <Nop>"
 endfor
 imap <F1> <Nop>
+
+nnoremap <C-J> <C-W><C-v>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-K> <C-W><C-Q>
