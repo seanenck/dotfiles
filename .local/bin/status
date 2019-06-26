@@ -50,8 +50,9 @@ def _run_command(cmd, append):
 def _daemon(env):
     """Daemon runner."""
     state = _NOTIFICATIONS
-    if os.path.exists(env.HIDE):
-        os.remove(env.HIDE)
+    for f in [env.HIDE, env.unlocked, env.nosleep]:
+        if os.path.exists(f):
+            os.remove(f)
     while True:
         t = datetime.datetime.now()
         w = t.weekday()
