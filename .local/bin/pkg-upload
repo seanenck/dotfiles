@@ -9,7 +9,7 @@ import subprocess
 import urllib.request
 
 
-_REPOS = {"stable": "stretch", "unstable": "sid"}
+_REPOS = {"stable": "buster", "unstable": "sid"}
 
 
 def _upload(env):
