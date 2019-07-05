@@ -72,7 +72,8 @@ def touch(file_name):
 
 def _env_adj(env):
     """Environment adjustment."""
-    env.REPOSITORY = os.path.join(env.PERM_LOCATION, "managed", "repository") + "/"
+    env.MANAGED = os.path.join(env.PERM_LOCATION, "managed")
+    env.REPOSITORY = os.path.join(env.MANAGED, "repository") + "/"
     env.BASE_SERVER = "fact"
     env.SCHROOTS = "/opt/chroot/"
     return env

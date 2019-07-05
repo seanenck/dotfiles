@@ -171,7 +171,7 @@ def _music(env):
                          '--exclude',
                          '*',
                          env.BASE_SERVER + ":store/Home/Media/Music/",
-                         os.path.join(env.HOME_CACHE, "music"),
+                         os.path.join(env.MANAGED, "music"),
                          "--delete-after",
                          "--delete-excluded"])
 
