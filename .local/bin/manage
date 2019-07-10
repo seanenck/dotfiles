@@ -64,10 +64,17 @@ _KNOWN = {
         "tarczvf": ("tar", "czvf", 4)
         }
 
-for g in ["rm", "grep", "add", "checkout", "log", "diff", "show", "revert"]:
-    _KNOWN["git{}".format(g)] = ("git", g, 3)
+_GIT_COMMANDS = {
+    3: ["rm", "grep", "add", "checkout", "log", "diff", "show", "revert"],
+    4: ["commit", "bisect"]
+}
 
+for gc in _GIT_COMMANDS:
+    _values = _GIT_COMMANDS[gc]
+    for g in _values:
+        _KNOWN["git{}".format(g)] = ("git", g, gc)
 
+print(_KNOWN)
 def _history_dryrun(message, line):
     """Report history dryrun purges."""
     print("{} -> ({})".format(line, message))
