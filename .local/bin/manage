@@ -60,6 +60,7 @@ _BY_SIZE = {
 
 _KNOWN = {
         "aptcache": ("apt-cache", "search", 3),
+        "aptsearch": ("apt", "search", 3),
         "tarxf": ("tar", "xf", 3),
         "tarczvf": ("tar", "czvf", 4)
         }
@@ -74,7 +75,6 @@ for gc in _GIT_COMMANDS:
     for g in _values:
         _KNOWN["git{}".format(g)] = ("git", g, gc)
 
-print(_KNOWN)
 def _history_dryrun(message, line):
     """Report history dryrun purges."""
     print("{} -> ({})".format(line, message))
