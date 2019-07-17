@@ -152,7 +152,7 @@ def _build(env, settings):
                     cwd=source)
     os.chdir("..")
     debs = []
-    for f in os.listdir("."):
+    for f in sorted(os.listdir(".")):
         if f.endswith(debian.DEB):
             if "dbgsym" in f:
                 continue
