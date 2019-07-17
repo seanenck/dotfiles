@@ -127,16 +127,17 @@ def _build(env, settings):
     if os.path.exists(git_dir):
         shutil.rmtree(git_dir)
     shutil.copytree(_DEBIAN, os.path.join(source, _DEBIAN))
-    for root, _, files in os.walk(source):
-        for f in files:
-            makefile = os.path.join(root, f)
-            if "Makefile" in makefile:
-                print("adjusting Makefile for version: " + makefile)
-                subprocess.call(["sed", "-i", "/^VERSION/ d", makefile])
-                subprocess.call(["sed",
-                                 "-i",
-                                 "1s/^/VERSION := {}\\n/".format(pkgver),
-                                 makefile])
+    if settings.make_version:
+        for root, _, files in os.walk(source):
+            for f in files:
+                makefile = os.path.join(root, f)
+                if "Makefile" in makefile:
+                    print("adjusting Makefile for version: " + makefile)
+                    subprocess.call(["sed", "-i", "/^VERSION/ d", makefile])
+                    subprocess.call(["sed",
+                                     "-i",
+                                     "1s/^/VERSION := {}\\n/".format(pkgver),
+                                     makefile])
     cwd = os.getcwd()
     bindir = os.path.join(cwd, _BIN)
     if os.path.exists(bindir):
@@ -146,6 +147,7 @@ def _build(env, settings):
     subprocess.call(["dh_make", "-s", "-y", "--createorig"])
     environ = os.environ
     environ["DEB_SRC_DIR"] = source
+    environ["BUILD_VERSION"] = pkgver
     print('building package...')
     subprocess.call(["dpkg-buildpackage", "-us", "-uc"],
                     env=environ,
