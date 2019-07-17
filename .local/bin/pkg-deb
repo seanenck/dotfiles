@@ -208,7 +208,7 @@ def _settings(config, package):
     """Load settings."""
     o = common.Object()
     o.gopath = _setting_bool(package, "gopath", True)
-    o.make_version = _setting_bool(package, "makever", True)
+    o.make_version = _setting_bool(package, "makever", False)
     o.git_checkout = True
     o.git_version = None
     if "git" in config:
