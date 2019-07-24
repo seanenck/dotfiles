@@ -6,6 +6,8 @@ import tempfile
 import subprocess
 
 
+_SERVER_MUSIC = "store/Home/Media/Music"
+
 _PURGE = ["mv",
           "cp",
           "rm",
@@ -153,34 +155,41 @@ def _music(env):
     includes = []
     chars = []
     with open(music_file, 'r') as f:
-        for l in f:
-            strip = l.strip()
-            lower = strip.lower()
-            c = None
-            for pre in ["the", "a"]:
-                if lower.startswith("{} ".format(pre)):
-                    c = strip[len(pre) + 1:][0]
-            if c is None:
-                c = strip[0]
-            c = c + "/"
-            if c not in chars:
-                includes.append(c)
-                chars.append(c)
-            includes.append(c + strip + "/***")
+        with tempfile.NamedTemporaryFile() as tmp:
+            for l in f:
+                strip = l.strip()
+                lower = strip.lower()
+                c = None
+                for pre in ["the", "a"]:
+                    if lower.startswith("{} ".format(pre)):
+                        c = strip[len(pre) + 1:][0]
+                if c is None:
+                    c = strip[0]
+                c = c + "/"
+                obj = c + strip + "/"
+                subprocess.call(["ssh",
+                                 env.BASE_SERVER,
+                                 "find",
+                                 "'{}'".format(os.path.join(_SERVER_MUSIC, obj)),
+                                 "-type",
+                                 "f"],
+                                 stdout=tmp)
+            with open(tmp.name) as t:
+                for l in t.readlines():
+                    line = l.strip()
+                    if line.endswith(".mp3") or line.endswith(".MP3"):
+                        includes.append(line.replace(_SERVER_MUSIC + "/", ""))
     with tempfile.NamedTemporaryFile() as tmp:
         for l in includes:
             tmp.write((l + "\n").encode("UTF-8"))
         tmp.flush()
         subprocess.call(["rsync",
                          "-av",
-                         "--include-from",
+                         "--files-from",
                          tmp.name,
-                         '--exclude',
-                         '*',
-                         env.BASE_SERVER + ":store/Home/Media/Music/",
+                         env.BASE_SERVER + ":{}/".format(_SERVER_MUSIC),
                          os.path.join(env.MANAGED, "music"),
-                         "--delete-after",
-                         "--delete-excluded"])
+                         "--delete-after"])
 
 
 def _git_updates(env):
