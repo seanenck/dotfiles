@@ -208,7 +208,11 @@ def _git_updates(env):
 def _schroots(env):
     """Manage schroot updates."""
     for l in sorted(os.listdir(env.SCHROOTS)):
-        for command in ["update", "upgrade", "autoremove"]:
+        for command in ["update",
+                        "upgrade",
+                        "dist-upgrade",
+                        "autoremove",
+                        "autoclean"]:
             print("\n\n  ===> {} -> {}\n\n".format(l, command))
             subprocess.call(["sudo",
                              "schroot",
