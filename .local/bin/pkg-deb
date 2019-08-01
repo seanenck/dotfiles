@@ -199,7 +199,7 @@ def _build(env, settings):
                 for l in lines:
                     output.write(l + "\n")
     subprocess.call(["sort", "-o", lint_log, lint_tmp])
-    res = subprocess.call(["diff", "-u", lint_log, _LINT])
+    res = subprocess.call(["diff", "-u", _LINT, lint_log])
     if res != 0:
         print("lint change detected ^")
 
