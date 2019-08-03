@@ -137,7 +137,7 @@ def main():
                 continue
             with open(obj.path, 'r') as fobj:
                 for l in fobj.readlines():
-                    print(l.strip())
+                    print(l.rstrip())
     if args.command == _RM_CMD:
         for obj in f:
             if obj.isdir:
