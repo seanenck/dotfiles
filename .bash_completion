@@ -36,3 +36,37 @@ _manage() {
 }
 
 complete -F _manage manage
+
+_notes() { 
+    source $HOME/.local/bin/conf
+    local cur files f filter fname ftype
+    if [ $COMP_CWORD -eq 1 ]; then
+        cur=${COMP_WORDS[COMP_CWORD]}
+        COMPREPLY=( $(compgen -W "rm ls show edit" -- $cur) )
+    else
+        if [ $COMP_CWORD -eq 2 ]; then
+            cur=${COMP_WORDS[1]}
+            filter=""
+            case $cur in
+                "rm" | "show")
+                    filter="file"
+                    ;;
+            esac
+            files=""
+            for f in $(notes ls | sed "s/ \+/ /g" | sed "s/ /+/g"); do
+                fname=$(echo "$f" | cut -d "+" -f 1)
+                ftype=$(echo "$f" | cut -d "+" -f 2)
+                if [ ! -z "$filter" ]; then
+                    if echo $ftype | grep -v -q "$filter"; then
+                        continue
+                    fi
+                fi
+                files="$fname $files"
+            done
+            files=$(echo $files | sed "s/ $//g") 
+            COMPREPLY=( $(compgen -W "$files" -- ${COMP_WORDS[COMP_CWORD]}) )
+        fi
+    fi
+}
+
+complete -F _notes notes

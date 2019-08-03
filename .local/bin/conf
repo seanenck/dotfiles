@@ -16,6 +16,7 @@ HOME_STORE=${PERSONAL_LOC}documents/
 PERM_CONFIGS=${HOME_STORE}configs/
 PRIV_PATH=${PERSONAL_LOC}private/
 PERM_PASS=${PERM_LOCATION}pass/
+PERSONAL_NOTES="${PERSONAL_LOC}notebook@localhost"
 
 # mail
 MAIL_DIR=$HOME/.mutt/imap/

@@ -88,7 +88,7 @@ if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
     return
 fi
 
-export NOTES_DIR="${PERSONAL_LOC}notebook@localhost"
+export NOTES_DIR="${PERSONAL_NOTES}"
 export VISUAL=vim
 export EDITOR="$VISUAL"
 export TICKETS="${HOME_CACHE}hpc/"
