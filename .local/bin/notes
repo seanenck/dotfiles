@@ -4,11 +4,6 @@ import os
 import subprocess
 import sys
 
-# notes ls [input?]
-# notes show [input]
-# notes edit [input]
-
-
 _LS_CMD = "ls"
 _EDIT_CMD = "edit"
 _SHOW_CMD = "show"
