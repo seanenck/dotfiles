@@ -32,9 +32,8 @@ LAST_SYNC=${USER_TMP}last.sync
 DEB_SIGN_KEY=031E9E4B09CFD8D3F0ED35025109CDF607B5BB04
 MIRROR_SERVER="voidedtech.com"
 MIRROR_COMPONENTS="enckse epiphyte"
-DEB_BUILD_GO="/build/go/"
-DEB_BUILD_ROOT="${DEB_BUILD_GO}src/"
-DEB_BUILD_DIR="${DEB_BUILD_ROOT}packages/"
+DEB_BUILD_ROOT="/build/packages/"
+DEB_BUILD_DIR="${DEB_BUILD_ROOT}workdir/"
 
 export OPENSC_CONF="$HOME/.config/opensc.conf"
 
@@ -62,7 +61,6 @@ _exports() {
              MIRROR_SERVER \
              MIRROR_COMPONENTS \
              DEB_SIGN_KEY \
-             DEB_BUILD_GO \
              JOURNALS \
              LAST_SYNC \
              VIM_DIR \

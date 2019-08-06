@@ -101,7 +101,7 @@ export CARGO_HOME=$HOME/.rust/cargo
 export TERM=xterm
 DEBEMAIL="enckse@voidedtech.com"
 DEBFULLNAME="Sean Enck"
-export DEBEMAIL DEBFULLNAME DEB_SIGN_KEY DEB_BUILD_DIR DEB_BUILD_GO
+export DEBEMAIL DEBFULLNAME DEB_SIGN_KEY DEB_BUILD_DIR
 if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
 fi
