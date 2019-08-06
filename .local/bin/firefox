@@ -2,6 +2,10 @@
 source $HOME/.local/bin/conf
 _nohup_cmd firefox
 if [ ! -z "$1" ]; then
-    sleep 0.25
-    /usr/bin/firefox "$@"
+    sleep 0.5
+    args=""
+    for f in "$@"; do
+        args="$args -new-tab $f"
+    done
+    /usr/bin/firefox $args
 fi
