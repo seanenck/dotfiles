@@ -108,12 +108,20 @@ def main():
                 _error("{} does not exist".format(l.input))
         if len(prints) > 0:
             m = max([len(x[0]) for x in prints])
-            fmt = "{{:{}}}".format(str(m))
-            for obj in prints:
-                ind = "file"
+            for obj in sorted(prints):
+                color = "92"
+                name = obj[0]
                 if obj[1]:
-                    ind = "dir"
-                print("{} [{}]".format(fmt.format(obj[0]), ind))
+                    color = "94"
+                    ind = "dr-"
+                else:
+                    ind = "-"
+                    if name.endswith(_MD_FILE):
+                        color = "95"
+                        ind += "rw"
+                    else:
+                        ind += "r-"
+                print("{} \033[{}m{}\033[0m".format(ind, color, name))
         return
     if args.command == _EDIT_CMD:
         for obj in f:
