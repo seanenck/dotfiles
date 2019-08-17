@@ -18,6 +18,7 @@ class Ctx(object):
     def __init__(self):
         self.editor = None
         self.dir = None
+        self.browser = None
 
 
 def _value_or_environ(value, env_key):
@@ -65,6 +66,7 @@ def main():
     parser.add_argument("command")
     parser.add_argument("--directory")
     parser.add_argument("--editor")
+    parser.add_argument("--browser")
     args, unknown = parser.parse_known_args()
     if args.command not in _CMDS:
         print("unknown command: {}".format(args.command))
@@ -72,6 +74,7 @@ def main():
     ctx = Ctx()
     ctx.dir = _value_or_environ(args.directory, "NOTES_DIR")
     ctx.editor = _value_or_environ(args.editor, "EDITOR") or "vi"
+    ctx.browser = _value_or_environ(args.browser, "BROWSER") or "firefox"
     if not ctx.dir:
         print("directory not set")
         return
@@ -130,6 +133,9 @@ def main():
                 continue
             use_path = obj.path
             if not use_path.endswith(_MD_FILE):
+                if os.path.exists(use_path):
+                    _error("{} is not an editable file".format(obj.input))
+                    return
                 use_path = "{}{}".format(obj.path, _MD_FILE)
             d = os.path.dirname(use_path)
             if not os.path.exists(d):
@@ -141,7 +147,7 @@ def main():
             if obj.isdir:
                 continue
             if not obj.path.endswith(_MD_FILE):
-                _error("{} is not a note file".format(obj.input))
+                subprocess.call([ctx.browser, obj.path])
                 continue
             with open(obj.path, 'r') as fobj:
                 for l in fobj.readlines():
