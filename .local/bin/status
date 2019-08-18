@@ -67,11 +67,11 @@ def _daemon(env):
             outputs.append(locked)
         bright = display.get_brightness()
         outputs.append("disp:{}".format(bright))
-        if vol.ismute():
-            volume = "0"
-        else:
-            volume = vol.status()
-        outputs.append("vol:{}".format(volume))
+        volume = "/"
+        if not vol.ismute():
+            if vol.status():
+                volume = "="
+        outputs.append("vol:<{}".format(volume))
         charge = "?"
         charging = False
         with open("/sys/class/power_supply/AC/online", 'r') as f:

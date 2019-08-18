@@ -19,8 +19,6 @@ def main():
         vol.volume(-1)
     elif args.command == "ismute":
         vol.ismute()
-    elif args.command == "volume":
-        vol.status()
     else:
         print("unknown command")
 

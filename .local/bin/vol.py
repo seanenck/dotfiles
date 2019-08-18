@@ -2,8 +2,6 @@
 """Volume control."""
 import subprocess
 
-_MAX_VOLUME = 65535
-
 
 def status():
     """Get current volume status."""
@@ -21,7 +19,7 @@ def status():
     avg = 0
     if len(totals) > 0:
         avg = int(sum([int(x) for x in totals]) / len(totals))
-    return avg
+    return avg > 0
 
 
 def _pactl():
@@ -60,15 +58,9 @@ def ismute():
 
 def volume(change):
     """Change the volume."""
-    vol = status()
-    actual = (0.01 * vol) * _MAX_VOLUME
-    change = _MAX_VOLUME * change * 0.1
-    actual = actual + change
-    if actual > _MAX_VOLUME:
-        actual = _MAX_VOLUME
-    if actual < 0:
-        actual = 0
-    actual = int(actual)
+    actual = 0
+    if change > 0:
+        actual = 1000;
     _change_volume_settings("set-sink-volume", actual)
 
 
