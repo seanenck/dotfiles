@@ -2,7 +2,7 @@
 """Volume control."""
 import subprocess
 
-_MAX_VOLUME = 65535
+_MAX_VOLUME =  1000
 
 
 def status():
@@ -14,13 +14,15 @@ def status():
         if "Base" in l:
             continue
         percents = l.split("/")
+        idx = -1
         for p in percents:
+            idx += 1
             if "%" not in p:
                 continue
-            totals.append(p.replace("%", "").strip())
+            totals.append(percents[idx - 1].split(":")[-1].strip())
     avg = 0
     if len(totals) > 0:
-        avg = int(sum([int(x) for x in totals]) / len(totals))
+        avg = int(sum([int(x) / _MAX_VOLUME * 100 for x in totals]) / len(totals))
     return avg
 
 
