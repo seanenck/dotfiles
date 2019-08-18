@@ -37,6 +37,8 @@ deviceid=$(xinput list | sed -n '/TPPS/s%.*id=\([0-9]\+\).*%\1%p')
 accel=$(xinput list-props "$deviceid" | sed -n '/Accel\ Speed\ (/s%.*Accel Speed (\([0-9]\+\)).*%\1%p')
 xinput set-prop "$deviceid" "$accel" -0.25
 xinput set-prop $(xinput | grep "Finger" | sed -n -e 's/^.*id=//p' | sed -e "s/\s/ /g" | cut -d " " -f 1) "Device Enabled" 0
+xset b off
+xset b 0 0 0
 $localbin/subsystem backlight mid
 $localbin/subsystem workspaces mobile
 while true; do
