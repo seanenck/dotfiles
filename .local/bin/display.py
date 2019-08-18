@@ -20,6 +20,7 @@ _UP = "up"
 _LOW = "low"
 _MID = "mid"
 _ALL_DISPLAYS = [_MAIN, _VLEFT, _HRIGHT]
+_MODE = ["--mode", "2560x1440"]
 LOW_BACKLIGHT = _LOW
 MID_BACKLIGHT = _MID
 
@@ -101,7 +102,7 @@ def change_workspaces(command):
     for d in not_main:
         subprocess.call(["xrandr", "--output", d, "--off"])
     time.sleep(1)
-    subprocess.call(["xrandr", "--output", _MAIN, "--primary", "--auto"])
+    subprocess.call(["xrandr", "--output", _MAIN, "--primary"] + _MODE)
     if is_docked:
         subprocess.call(["xrandr",
                          "--output",

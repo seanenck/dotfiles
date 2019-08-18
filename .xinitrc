@@ -34,6 +34,7 @@ fi
 . /etc/profile
 . $HOME/.profile
 $localbin/subsystem backlight mid
+$localbin/subsystem workspaces mobile
 while true; do
     pidof dwm > /dev/null
     if [ $? -ne 0 ]; then
