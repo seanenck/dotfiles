@@ -82,7 +82,7 @@ def _daemon(env):
                 charge = "+"
         total_bat = 0
         batteries = []
-        for b in range(0, 2):
+        for b in range(0, 1):
             bat = "/sys/class/power_supply/BAT{}/capacity".format(b)
             with open(bat, 'r') as f:
                 per = f.read().strip()
