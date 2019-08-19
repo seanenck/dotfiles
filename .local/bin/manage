@@ -74,7 +74,7 @@ _GIT_COMMANDS = {
     4: ["commit", "bisect", "checkout"]
 }
 
-_STARTS_WITH = ["pass-"]
+_STARTS_WITH = ["pass-", "git commit -am", "vim ", "sudo git "]
 
 for gc in _GIT_COMMANDS:
     _values = _GIT_COMMANDS[gc]
