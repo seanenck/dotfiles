@@ -17,10 +17,12 @@ _PURGE = ["mv",
           "vim",
           "ls"
           "manage",
+          "notes",
           "pkg-deb",
           "pkg-pool",
           "pkg-upload",
           "less",
+          "qalc",
           "wsw",
           "pkill",
           "i3",
@@ -69,8 +71,10 @@ _KNOWN = {
 
 _GIT_COMMANDS = {
     3: ["rm", "grep", "add", "checkout", "log", "diff", "show", "revert"],
-    4: ["commit", "bisect"]
+    4: ["commit", "bisect", "checkout"]
 }
+
+_STARTS_WITH = ["pass-"]
 
 for gc in _GIT_COMMANDS:
     _values = _GIT_COMMANDS[gc]
@@ -116,6 +120,10 @@ def _history(env, purge):
                         msg = "short command {} ({})".format(b, str(sized))
                         cnt += _history_dryrun(msg, ls)
                         break
+            for s in _STARTS_WITH:
+                if ls.startswith(s):
+                    adding = False
+                    cnt += _history_dryrun("startswith {}".format(s), ls)
             for k in _KNOWN:
                 known = _KNOWN[k]
                 if lparts == known[2]:
