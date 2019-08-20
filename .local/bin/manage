@@ -218,33 +218,35 @@ def _git_updates(env):
             print("")
 
 
-def _schroots(env):
-    """Manage schroot updates."""
+def _schroots(env, cmds):
+    """Run commands against all schroots."""
     for l in sorted(os.listdir(env.SCHROOTS)):
-        for command in ["update",
-                        "upgrade",
-                        "dist-upgrade",
-                        "autoremove",
-                        "autoclean"]:
-            print("\n\n  ===> {} -> {}\n\n".format(l, command))
+        for c in cmds:
+            print("\n\n  ===> {} -> {}\n\n".format(l, c))
             subprocess.call(["sudo",
                              "schroot",
                              "-c",
-                             "source:{}".format(l),
-                             "apt",
-                             command])
+                             "source:{}".format(l), "--"] + c)
+
 
 
 def main():
     """Program entry."""
     parser = argparse.ArgumentParser()
     parser.add_argument("command")
-    args = parser.parse_args()
+    args, unknowns = parser.parse_known_args()
     env = common.read_env()
     if args.command == "music":
         _music(env)
     elif args.command == "schroots":
-        _schroots(env)
+        cmd = [["apt"] + [x] for x in ["update",
+                                       "upgrade",
+                                       "dist-upgrade",
+                                       "autoremove",
+                                       "autoclean"]]
+        if len(unknowns) > 0:
+            cmd = [unknowns]
+        _schroots(env, cmd)
     elif args.command == "history-dryrun":
         _history(env, False)
     elif args.command == "history-purge":
