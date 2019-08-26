@@ -147,6 +147,27 @@ def _git(env, stdout):
                 _zip(env, d, bname, subprocess.DEVNULL)
 
 
+def _notes(env, stdout):
+    for d in ["important"]:
+        dirname = os.path.join(env.PERSONAL_NOTES, d)
+        print("reading notes for {}".format(d), file=stdout)
+        if not os.path.exists(dirname):
+            continue
+        for f in os.listdir(dirname):
+            hash_file = os.path.join(env.USER_TMP, "notes.{}.hash".format(f))
+            n = os.path.join(dirname, f)
+            mod = str(os.path.getmtime(n))
+            changed = True
+            if os.path.exists(hash_file):
+                with open(hash_file, 'r') as h:
+                    last = h.read().strip()
+                    changed = last == mod
+            with open(hash_file, 'w') as h:
+                h.write(mod)
+            if changed:
+                _add_mail(n, "notes: {}".format(f), env, stdout)
+
+
 def _add_mail(fname, subj, env, stdout):
     _call(["python3",
            os.path.join(env.HOME_BIN, "mail.py"),
@@ -173,7 +194,7 @@ def _zip(env, directory, basename, stdout):
     _call(["7z", "a", "-p{}".format(env.ZIP_PASS), zname, directory + "/"],
           stdout)
     bname = basename.split("_")[-1]
-    subj = "zips ({}) {}".format(bname, env.HOUR)
+    subj = "zips: {}".format(bname)
     _call(["mpack", "-s", subj, "-o", fname, zname], stdout)
     _add_mail(fname, subj, env, stdout)
     os.remove(fname)
@@ -189,6 +210,7 @@ def _sync(env, stdout, dt):
     stdout.flush()
     _backup(env, stdout)
     _git(env, stdout)
+    _notes(env, stdout)
     open(env.LAST_SYNC, 'w').close()
     print("COMPLETE", file=stdout)
     return True
