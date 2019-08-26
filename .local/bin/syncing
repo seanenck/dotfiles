@@ -161,7 +161,7 @@ def _notes(env, stdout):
             if os.path.exists(hash_file):
                 with open(hash_file, 'r') as h:
                     last = h.read().strip()
-                    changed = last == mod
+                    changed = last != mod
             with open(hash_file, 'w') as h:
                 h.write(mod)
             if changed:
