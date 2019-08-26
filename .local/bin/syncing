@@ -147,17 +147,7 @@ def _git(env, stdout):
                 _zip(env, d, bname, subprocess.DEVNULL)
 
 
-def _zip(env, directory, basename, stdout):
-    """Zip a directory change."""
-    dt = datetime.datetime.now().strftime("%Y%m%d.%s")
-    mail = "zip.{}.{}".format(basename, dt)
-    fname = os.path.join(env.USER_TMP, mail)
-    zname = fname + ".7z"
-    _call(["7z", "a", "-p{}".format(env.ZIP_PASS), zname, directory + "/"],
-          stdout)
-    bname = basename.split("_")[-1]
-    subj = "zips ({}) {}".format(bname, env.HOUR)
-    _call(["mpack", "-s", subj, "-o", fname, zname], stdout)
+def _add_mail(fname, subj, env, stdout):
     _call(["python3",
            os.path.join(env.HOME_BIN, "mail.py"),
            "--input",
@@ -172,6 +162,20 @@ def _zip(env, directory, basename, stdout):
                         "Filtered",
                         "Automated") + "/"],
           stdout)
+
+
+def _zip(env, directory, basename, stdout):
+    """Zip a directory change."""
+    dt = datetime.datetime.now().strftime("%Y%m%d.%s")
+    mail = "zip.{}.{}".format(basename, dt)
+    fname = os.path.join(env.USER_TMP, mail)
+    zname = fname + ".7z"
+    _call(["7z", "a", "-p{}".format(env.ZIP_PASS), zname, directory + "/"],
+          stdout)
+    bname = basename.split("_")[-1]
+    subj = "zips ({}) {}".format(bname, env.HOUR)
+    _call(["mpack", "-s", subj, "-o", fname, zname], stdout)
+    _add_mail(fname, subj, env, stdout)
     os.remove(fname)
     os.remove(zname)
 
