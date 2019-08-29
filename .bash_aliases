@@ -17,6 +17,11 @@ vlc() {
     _nohup_cmd vlc "$@"
 }
 
+geany() {
+    source $HOME/.local/bin/conf
+    _nohup_cmd geany "$@"
+}
+
 proxy() {
     if [ -z "$1" ]; then
         echo "host required"
