@@ -166,10 +166,14 @@ def _notes(env, stdout):
             with open(hash_file, 'w') as h:
                 h.write(mod)
             if changed:
-                _add_mail(n, "notes: {}".format(f), env, stdout)
+                _add_mail(n, 
+                          "notes: {}".format(f),
+                          env,
+                          stdout,
+                          flags=["--plaintext"])
 
 
-def _add_mail(fname, subj, env, stdout):
+def _add_mail(fname, subj, env, stdout, flags=[]):
     _call(["python3",
            os.path.join(env.HOME_BIN, "mail.py"),
            "--input",
@@ -182,7 +186,7 @@ def _add_mail(fname, subj, env, stdout):
            os.path.join(env.MAIL_DIR,
                         "fastmail",
                         "Filtered",
-                        "Automated") + "/"],
+                        "Automated") + "/"] + flags,
           stdout)
 
 

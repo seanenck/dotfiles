@@ -6,6 +6,7 @@ import argparse
 import os
 from email.mime.message import MIMEMessage
 import email.utils
+from email.mime.text import MIMEText
 import common
 
 ACCOUNTS = [common.GMAIL_ACCOUNT, common.FMAIL_ACCOUNT]
@@ -50,22 +51,25 @@ def main():
     parser.add_argument("--maildir", type=str)
     parser.add_argument("--subject", type=str)
     parser.add_argument("--input", type=str)
+    parser.add_argument("--plaintext", action="store_true")
     args = parser.parse_args()
     if not args.address or not args.subject:
         print("address and subject required")
         return
-    with open(args.input, 'r') as f:
-        message = mailbox.email.message_from_file(f)
     if not args.maildir or not os.path.exists(args.maildir):
         print("maildir does not exist")
         return
-    print(message)
-    maildir = mailbox.Maildir(args.maildir)
-    msg = MIMEMessage(message)
+    with open(args.input, 'r') as f:
+        if args.plaintext:
+            msg = MIMEText(f.read())
+        else:
+            message = mailbox.email.message_from_file(f)
+            msg = MIMEMessage(message)
     msg.add_header("To", args.address)
     msg.add_header("From", args.address)
     msg.add_header("Subject", args.subject)
     msg.add_header("Date", email.utils.formatdate(localtime=True))
+    maildir = mailbox.Maildir(args.maildir)
     maildir.add(msg)
 
 
