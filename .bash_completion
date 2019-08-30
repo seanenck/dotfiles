@@ -37,6 +37,21 @@ _manage() {
 
 complete -F _manage manage
 
+_proxy() {
+    local kh
+    kh="$HOME/.ssh/known_hosts"
+    if [ -e "$kh" ]; then
+        local cur opts
+        if [ $COMP_CWORD -eq 1 ]; then
+            opts=$(cat "$kh" | cut -d ":" -f 1 | grep "^\[" | grep "\]$" | sed "s/\[//g;s/\]//g")
+            cur=${COMP_WORDS[COMP_CWORD]}
+            COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+        fi
+    fi
+}
+
+complete -F _proxy proxy
+
 _notes() { 
     local cur files f filter fname ftype
     if [ $COMP_CWORD -eq 1 ]; then
