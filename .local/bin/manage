@@ -6,7 +6,7 @@ import tempfile
 import subprocess
 
 
-_SERVER_MUSIC = "store/Home/Media/Music"
+_SERVER_MUSIC = "store/Home/Music"
 
 _PURGE = ["mv",
           "cp",
