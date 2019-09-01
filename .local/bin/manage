@@ -167,6 +167,7 @@ def _music(env):
     music_file = os.path.join(env.HOME_XDG, "music")
     includes = []
     chars = []
+    music_dir = os.path.join(env.MANAGED, "music")
     with open(music_file, 'r') as f:
         with tempfile.NamedTemporaryFile() as tmp:
             for l in f:
@@ -201,8 +202,18 @@ def _music(env):
                          "--files-from",
                          tmp.name,
                          env.BASE_SERVER + ":{}/".format(_SERVER_MUSIC),
-                         os.path.join(env.MANAGED, "music"),
-                         "--delete-after"])
+                         music_dir])
+    removals = []
+    for r, _, files in os.walk(music_dir):
+        for f in files:
+            file_path = os.path.join(r, f)
+            path = file_path.replace(music_dir, "")[1:]
+            if path not in includes:
+                removals.append(file_path)
+    if len(removals) > 0:
+        for r in removals:
+            print("removing: {}".format(r))
+            os.remove(r)
 
 
 def _git_updates(env):
