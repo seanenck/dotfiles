@@ -28,10 +28,27 @@ _wsw() {
 complete -F _wsw wsw
 
 _manage() {
-    local cur
+    local cur opts
     if [ $COMP_CWORD -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        COMPREPLY=( $(compgen -W "music schroots history-dryrun history-purge git-update-store" -- $cur) )
+        COMPREPLY=( $(compgen -W "music schroots history git" -- $cur) )
+    else
+        if [ $COMP_CWORD -eq 2 ]; then
+            cur=${COMP_WORDS[1]}
+            case "$cur" in
+                "history")
+                    opts="purge dryrun"
+                    ;;
+                "git")
+                    opts="update-store"
+                    ;;
+                *)
+                    ;;
+            esac
+            if [ ! -z "$opts" ]; then
+                COMPREPLY=( $(compgen -W "$opts" -- ${COMP_WORDS[COMP_CWORD]}) )
+            fi
+        fi
     fi
 }
 

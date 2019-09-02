@@ -240,6 +240,22 @@ def _schroots(env, cmds):
                              "source:{}".format(l), "--"] + c)
 
 
+def _exit(msg):
+    print(msg)
+    exit(1)
+
+
+def _parse_subcommand(unknowns, default, options):
+    if len(unknowns) == 0:
+        return default
+    if len(unknowns) != 1:
+        _exit("unknown subcommand: arguments {}".format(unknowns))
+    cmd = unknowns[0]
+    if cmd in options:
+        return options.index(cmd)
+    else:
+        _exit("unknown subcommand: {}".format(cmd))
+
 
 def main():
     """Program entry."""
@@ -258,12 +274,15 @@ def main():
         if len(unknowns) > 0:
             cmd = [unknowns]
         _schroots(env, cmd)
-    elif args.command == "history-dryrun":
-        _history(env, False)
+    elif args.command == "history":
+        sub = _parse_subcommand(unknowns, 0, ["dryrun", "purge"])
+        _history(env, sub > 0)
     elif args.command == "history-purge":
         _history(env, True)
-    elif args.command == "git-update-store":
-        _git_updates(env)
+    elif args.command == "git":
+        sub = _parse_subcommand(unknowns, 0, ["update-store"])
+        if sub == 0:
+            _git_updates(env)
     else:
         print("unknown command")
 
