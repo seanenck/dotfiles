@@ -7,15 +7,48 @@ import common
 import shutil
 import subprocess
 import urllib.request
+import datetime
 
 
 _REPOS = {"stable": "buster", "unstable": "sid"}
+_OPT_DEB = "/opt/debian"
+_ARCHIVE = os.path.join(_OPT_DEB, "archive")
+_SNAP = "snapshot-"
 
+
+def _run_ssh(env, cmd):
+    subprocess.call(["ssh", env.MIRROR_SERVER] + cmd)
 
 def _upload(env):
     """Upload the package."""
-    target = "{}:/opt/debian".format(env.MIRROR_SERVER)
-    subprocess.call(["rsync", "-avc", "-e", "ssh", debian.DISTS, target, "--delete-after"])
+    target = "{}:{}".format(env.MIRROR_SERVER, _OPT_DEB)
+    dt = datetime.datetime.now().strftime("{}%Y-%m-%dT%H-%M-%S".format(_SNAP))
+    _run_ssh(env, ["find",
+                   _ARCHIVE,
+                   "-maxdepth",
+                   "1",
+                   "-mtime",
+                   "30",
+                   "-type",
+                   "d",
+                   "-name",
+                   "{}*".format(_SNAP),
+                   "-exec",
+                   "rm",
+                   "-rf",
+                   "{}",
+                   "\\;"])
+    _run_ssh(env, ["cp",
+                   "-r",
+                   os.path.join(_OPT_DEB, debian.DISTS),
+                   os.path.join(_ARCHIVE, dt)])
+    subprocess.call(["rsync",
+                     "-avc",
+                     "-e",
+                     "ssh",
+                     debian.DISTS,
+                     target,
+                     "--delete-after"])
 
 
 def _pack(env, pool, objects):
