@@ -91,7 +91,7 @@ def _daemon(env):
         if total_bat < 20 and not charging:
             _notify("WARNING: BATTERY")
         b = ",".join(batteries)
-        b = "bat:{}({})".format(charge, b)
+        b = "bat:{}{}".format(charge, b)
         outputs.append(b)
         if common.is_online():
             outputs.append("UP")
