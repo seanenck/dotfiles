@@ -85,7 +85,7 @@ _setup() {
 
     # check mail for valid files
     echo "checking mail files..."
-    find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch\/" | grep -v "Trash\/" | grep -v -E "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)" >> $JOURNALS
+    find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch/" | grep -v "Trash/" | grep -v "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)" >> $JOURNALS
 
     # cleanup temp dirs
     echo "cleaning up directories..."
