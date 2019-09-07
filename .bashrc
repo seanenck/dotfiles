@@ -92,19 +92,18 @@ export NOTES_DIR="${PERSONAL_NOTES}"
 export VISUAL=vim
 export EDITOR="$VISUAL"
 export TICKETS="${HOME_CACHE}hpc/"
-
 source $XDG_USER_CONFIG
-export GOPATH=$HOME/.go
-export GOCACHE=$GOPATH/cache
 
 export TERM=xterm
 DEBEMAIL="enckse@voidedtech.com"
 DEBFULLNAME="Sean Enck"
-export DEBEMAIL DEBFULLNAME DEB_SIGN_KEY DEB_BUILD_DIR
+export DEB_SIGN_KEY
+
 if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
 fi
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
+    # rust
     IS_RUST_DEB=0
     if [ -x /usr/bin/cargo ]; then
         RUST_HOME=$HOME/.debrust/
@@ -117,6 +116,11 @@ if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
     if [ $IS_RUST_DEB -eq 0 ]; then
         export PATH="$CARGO_HOME/bin:$PATH"
     fi
+    # go
+    export GOPATH=$HOME/.go
+    export GOCACHE=$GOPATH/cache
+    # debian
+    export DEB_BUILD_DIR DEBEMAIL DEBFULLNAME
     return
 fi
 
