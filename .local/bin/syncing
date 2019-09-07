@@ -196,7 +196,14 @@ def _zip(env, directory, basename, stdout):
     mail = "zip.{}.{}".format(basename, dt)
     fname = os.path.join(env.USER_TMP, mail)
     zname = fname + ".7z"
-    _call(["7z", "a", "-p{}".format(env.ZIP_PASS), zname, directory + "/"],
+    files = []
+    for r, _, file_names in os.walk(directory):
+        for f in file_names:
+            full_path = os.path.join(r, f)
+            if "/.git" in full_path:
+                continue
+            files.append(full_path)
+    _call(["7z", "a", "-spf", "-p{}".format(env.ZIP_PASS), zname] + files,
           stdout)
     bname = basename.split("_")[-1]
     subj = "zips: {}".format(bname)
