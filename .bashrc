@@ -103,24 +103,7 @@ if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
 fi
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
-    # rust
-    IS_RUST_DEB=0
-    if [ -x /usr/bin/cargo ]; then
-        RUST_HOME=$HOME/.debrust/
-        IS_RUST_DEB=1
-    else
-        RUST_HOME=$HOME/.rust/
-    fi
-    export CARGO_HOME=${RUST_HOME}cargo
-    export RUSTUP_HOME=${RUST_HOME}rustup
-    if [ $IS_RUST_DEB -eq 0 ]; then
-        export PATH="$CARGO_HOME/bin:$PATH"
-    fi
-    # go
-    export GOPATH=$HOME/.go
-    export GOCACHE=$GOPATH/cache
-    # debian
-    export DEB_BUILD_DIR DEBEMAIL DEBFULLNAME
+    source $HOME/.bashrc_schroot
     return
 fi
 
