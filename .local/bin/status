@@ -97,8 +97,13 @@ def _daemon(env):
             outputs.append("UP")
         else:
             outputs.append("DOWN")
-        _run_command(["wsw", "--mode", "addr"], outputs)
-        subprocess.call(["xsetroot", "-name", _DELIMITER.join(outputs)])
+        addrs = []
+        _run_command(["wsw", "--mode", "addr"], addrs)
+        has_addr = ""
+        if len(addrs) > 0:
+            has_addr = ":"
+        show = "{}{}{}".format(_DELIMITER.join(outputs), has_addr, "".join(addrs))
+        subprocess.call(["xsetroot", "-name", show])
         if state >= _NOTIFICATIONS:
             _notifications(env)
             state = -1
