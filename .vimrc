@@ -77,7 +77,19 @@ for i in ['q', '<F1>']
 endfor
 imap <F1> <Nop>
 
-nnoremap <C-J> <C-W><C-v>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-nnoremap <C-K> <C-W><C-Q>
+
+" airline
+set hidden
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+nmap <C-n> :enew<cr>
+
+" Move to the next buffer
+nmap <C-PageUp> :bnext<cr>
+
+" Move to the previous buffer
+nmap <C-PageDown> :bprevious<cr>
+
+" Close the current buffer and move to the previous one
+" This replicates the idea of closing a tab
+nmap <C-w> :bp <BAR> bd #<cr>
