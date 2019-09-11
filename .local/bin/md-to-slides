@@ -1,0 +1,144 @@
+#!/usr/bin/python3
+import os
+import argparse
+import subprocess
+import json
+import shutil
+
+
+_STATE = ".mdstate"
+_MD = "markdown"
+_HTMLTOPDF = "wkhtmltopdf"
+_PDFUNITE = "pdfunite"
+
+
+_CSS = """
+body {
+    padding-left: 0.5in;
+    padding-right: 0.5in;
+    padding-top: 0.5in;
+    padding-bottom: 0.5in;
+    font-size: 32px;
+    line-height: 1.5;
+    font-family: Arial, Helvetica, sans-serif;
+}
+h1 {
+    text-align: center;
+    font-size: 48px;
+}
+"""
+
+
+def _list_files(directory, ignores=[]):
+    for f in os.listdir(directory):
+        if len(ignores) > 0:
+            rel = os.path.relpath(f)
+            if rel in ignores:
+                continue
+        path = os.path.join(directory, f)
+        if os.path.isfile(path):
+            if f.endswith(".md"):
+                yield path
+        elif os.path.isdir(f):
+            subdir = os.path.join(directory, f)
+            for sub in _list_files(subdir):
+                yield sub
+
+
+def _mdtoslides(args):
+    """Convert markdown to pdf slides."""
+    files = list(_list_files(".", ignores=[os.path.relpath(args.output)]))
+    if len(files) == 0:
+        print("no markdown files found in directory")
+        return
+    if not os.path.exists(args.output):
+        print("making output directory")
+        os.mkdir(args.output)
+    print("preparing...")
+    for f in os.listdir(args.output):
+        if f == _STATE:
+            continue
+        _, ext = os.path.splitext(f)
+        if ext == ".pdf":
+            continue
+        os.remove(os.path.join(args.output, f))
+    css = _CSS
+    if os.path.exists(args.css):
+        print("using custom css")
+        with open(args.css, 'r') as f:
+            css = f.read()
+    idx = 0
+    html_index = {}
+    state = {}
+    for f in sorted(files):
+        print("converting " + f)
+        str_id = str(idx)
+        file_name = os.path.join(args.output, str_id + ".html")
+        html_index[idx] = file_name
+        with open(file_name, 'w') as w:
+            w.write("<html><head><style>\n")
+            w.write(css)
+            w.write("</style></head><body>\n")
+            w.write("<div id='slide-" + str_id + "'>\n")
+            w.flush()
+            subprocess.call([_MD, f], stdout=w)
+            w.write("</div></body></html>")
+        p = subprocess.Popen(["md5sum", file_name], stdout=subprocess.PIPE)
+        out, _ = p.communicate()
+        hashed = ""
+        if out:
+            hashed = out.decode("utf-8").strip().split(" ")[0]
+        state[str(idx)] = hashed
+        idx += 1
+    pdf_files = []
+    prev = {}
+    state_file = os.path.join(args.output, _STATE)
+    if os.path.exists(state_file):
+        with open(state_file, 'r') as f:
+            prev = json.loads(f.read())
+    with open(os.devnull) as dn:
+        for i in sorted(html_index.keys()):
+            f = html_index[i]
+            pdf_file = f + ".pdf"
+            pdf_files.append(pdf_file)
+            str_i = str(i)
+            if str_i in state and str_i in prev:
+                if state[str_i] == prev[str_i]:
+                    continue
+            if os.path.exists(pdf_file):
+                os.remove(pdf_file)
+            with open(f, 'r') as h:
+                print("building " + pdf_file)
+                subprocess.call([_HTMLTOPDF,
+                                 "-O",
+                                 "landscape",
+                                 "-",
+                                 pdf_file],
+                                stdin=h,
+                                stderr=dn)
+    if len(pdf_files) != idx:
+        print('WARNING: md -> html -> pdf mismatch')
+    out_file = os.path.join(args.output, "output.pdf")
+    cmd = [_PDFUNITE] + pdf_files + [out_file]
+    subprocess.call(cmd)
+    with open(state_file, 'w') as f:
+        f.write(json.dumps(state))
+    print("completed")
+
+
+def main():
+    """Program entry."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", default="bin/")
+    parser.add_argument("--css", default="slides.css")
+    args = parser.parse_args()
+    for cmd in [_MD, _HTMLTOPDF, _PDFUNITE]:
+        which = shutil.which(cmd)
+        if which is None:
+            print("requires: poppler-utils wkhtmltopdf markdown")
+            exit(1)
+    _mdtoslides(args)
+
+
+if __name__ == "__main__":
+    main()
