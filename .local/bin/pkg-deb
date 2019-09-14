@@ -149,7 +149,7 @@ def _build(env, settings):
     environ["DEB_SRC_DIR"] = source
     environ["BUILD_VERSION"] = pkgver
     print('building package...')
-    subprocess.call(["dpkg-buildpackage", "-us", "-uc"],
+    subprocess.call(["dpkg-buildpackage", "-us", "-uc", "--build=binary"],
                     env=environ,
                     cwd=source)
     os.chdir("..")
