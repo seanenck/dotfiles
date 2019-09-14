@@ -9,15 +9,17 @@ import subprocess
 import mail
 
 
-def _section(log, mode, dt):
+def _section(log, mode, info):
     log.write("====================\n")
-    log.write("{}: {}\n".format(mode, dt))
+    log.write("{}: {}\n".format(mode, info))
     log.write("====================\n")
+    log.flush()
 
 
 def _run_logged(cmd, log):
     """Run a logged command."""
     subprocess.call(cmd, stdout=log, stderr=log)
+    log.flush()
 
 
 def _mbsync(env):
@@ -38,14 +40,11 @@ def _mbsync(env):
         created = False
     with open(log_file, mode) as f:
         _section(f, "BEGIN", now)
-        f.write("BEGIN: {}\n".format(now))
-        f.flush()
         _run_logged(["mbsync", "-aV"], f)
-        f.flush()
+        _section(f, "INDEX, created", created)
         if created:
             _clean_index(env)
         _run_logged(["notmuch", "new"], f)
-        f.flush()
         _section(f, "END", now)
     return True
 
