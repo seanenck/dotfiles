@@ -46,7 +46,8 @@ def _diff(prev, current):
 
 
 def _scp(env, name, stdout):
-    _call(["scp", name, "{}:{}".format(env.BASE_SERVER, _PROFILE_PATH)], stdout)
+    _call(["scp", name, "{}:{}".format(env.BASE_SERVER, _PROFILE_PATH)],
+          stdout)
 
 
 def _backup(env, stdout):
@@ -165,7 +166,7 @@ def _notes(env, stdout):
             with open(hash_file, 'w') as h:
                 h.write(mod)
             if changed:
-                _add_mail(n, 
+                _add_mail(n,
                           "notes: {}".format(f),
                           env,
                           stdout,

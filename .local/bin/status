@@ -102,7 +102,9 @@ def _daemon(env):
         has_addr = ""
         if len(addrs) > 0:
             has_addr = ":"
-        show = "{}{}{}".format(_DELIMITER.join(outputs), has_addr, "".join(addrs))
+        show = "{}{}{}".format(_DELIMITER.join(outputs),
+                               has_addr,
+                               "".join(addrs))
         subprocess.call(["xsetroot", "-name", show])
         if state >= _NOTIFICATIONS:
             _notifications(env)

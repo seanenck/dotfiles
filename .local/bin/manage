@@ -82,6 +82,7 @@ for gc in _GIT_COMMANDS:
     for g in _values:
         _KNOWN["git{}".format(g)] = ("git", g, gc)
 
+
 def _history_dryrun(message, line):
     """Report history dryrun purges."""
     print("{} -> ({})".format(line, message))
@@ -185,10 +186,11 @@ def _music(env):
                 subprocess.call(["ssh",
                                  env.BASE_SERVER,
                                  "find",
-                                 "'{}'".format(os.path.join(_SERVER_MUSIC, obj)),
+                                 "'{}'".format(os.path.join(_SERVER_MUSIC,
+                                                            obj)),
                                  "-type",
                                  "f"],
-                                 stdout=tmp)
+                                stdout=tmp)
             with open(tmp.name) as t:
                 for l in t.readlines():
                     line = l.strip()

@@ -61,6 +61,7 @@ def _get_path(ctx, inputs, must_exist, allow_empty):
 def _error(msg):
     print("ERROR: {}".format(msg), file=sys.stderr)
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("command")
@@ -155,7 +156,7 @@ def main():
     if args.command == _RM_CMD:
         for obj in f:
             if obj.isdir:
-                _error("{} cannot remove directories, remove all files".format(obj.input))
+                _error("remove all files (ignored: {})".format(obj.input))
                 continue
             os.remove(obj.path)
             dname = os.path.dirname(obj.path)

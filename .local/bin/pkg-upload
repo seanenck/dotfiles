@@ -19,6 +19,7 @@ _SNAP = "snapshot-"
 def _run_ssh(env, cmd):
     subprocess.call(["ssh", env.MIRROR_SERVER] + cmd)
 
+
 def _upload(env):
     """Upload the package."""
     target = "{}:{}".format(env.MIRROR_SERVER, _OPT_DEB)

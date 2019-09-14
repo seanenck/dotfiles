@@ -60,7 +60,7 @@ def volume(change):
     """Change the volume."""
     actual = 0
     if change > 0:
-        actual = 1000;
+        actual = 1000
     _change_volume_settings("set-sink-volume", actual)
 
 
