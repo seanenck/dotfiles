@@ -70,8 +70,10 @@ if has('persistent_undo')
 endif
 
 set viminfo+=n$HOME/.cache/viminfo
-inoremap <S-Right> <C-o>:><CR>
+vnoremap <S-Right> >gv
+vnoremap <S-Left> <gv
 inoremap <S-Left> <C-o>:<<CR>
+inoremap <S-Right> <C-o>:><CR>
 
 " map to command and insert
 for i in ['', 'i']
