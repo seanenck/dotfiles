@@ -19,7 +19,11 @@ smplayer() {
 
 mplayer() {
     source $HOME/.local/bin/conf
-    /usr/bin/mplayer -input conf=${HOME_XDG}mplayer.conf -af volume=-20:1 -loop 0 -shuffle -playlist ${HOME_XDG}playlist
+    local args="-playlist ${HOME_XDG}playlist"
+    if [ ! -z "$1" ]; then
+        args="$@"
+    fi
+    /usr/bin/mplayer -input conf=${HOME_XDG}mplayer.conf -af volume=-20:1 -loop 0 -shuffle "$args"
 }
 
 proxy() {
