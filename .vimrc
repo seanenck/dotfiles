@@ -15,6 +15,37 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endif
 
+function! Smart_TabComplete()
+  let line = getline('.')
+  " from the start to one character right of cursor
+  let substr = strpart(line, -1, col('.')+1)
+  " word to cursor
+  let substr = matchstr(substr, "[^ \t|\.]*$")
+  " empty string, nothing to match
+  if (strlen(substr)==0)
+    return "\<tab>"
+  endif
+  let has_period = match(substr, '\.') != -1
+  let has_slash = match(substr, '\/') != -1
+  if (!has_period && !has_slash)
+    " text
+    return "\<C-X>\<C-P>"
+  elseif ( has_slash )
+    " file
+    return "\<C-X>\<C-F>"
+  else
+    " plugin
+    return "\<C-X>\<C-O>"
+  endif
+endfunction
+
+hi PMenu ctermfg=242 ctermbg=0
+hi PMenuSel ctermbg=242
+set wildmode=longest,list,full
+set wildmenu
+set completeopt=menuone
+inoremap <expr> <TAB> Smart_TabComplete()
+
 if has("autocmd")
   filetype plugin indent on
 
@@ -66,7 +97,6 @@ else
 endif
 
 set shiftwidth=4
-set complete-=i
 set foldmethod=indent
 set foldlevelstart=99
 

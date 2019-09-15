@@ -247,7 +247,6 @@ def _exit(msg):
     print(msg)
     exit(1)
 
-
 def _parse_subcommand(unknowns, default, options):
     if len(unknowns) == 0:
         return default
