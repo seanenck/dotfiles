@@ -17,6 +17,11 @@ smplayer() {
     _nohup_cmd smplayer "$@"
 }
 
+mplayer() {
+    source $HOME/.local/bin/conf
+    /usr/bin/mplayer -af volume=-20:1 -loop 1 -shuffle -playlist ${HOME_XDG}playlist
+}
+
 proxy() {
     if [ -z "$1" ]; then
         echo "host required"
