@@ -81,13 +81,6 @@ set hidden
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 nmap <C-n> :enew<cr>
-
-" Move to the next buffer
 nmap <C-PageUp> :bprevious<cr>
-
-" Move to the previous buffer
 nmap <C-PageDown> :bnext<cr>
-
-" Close the current buffer and move to the previous one
-" This replicates the idea of closing a tab
 nmap <C-w> :bp <BAR> bd #<cr>
