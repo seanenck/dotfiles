@@ -70,12 +70,8 @@ if has('persistent_undo')
 endif
 
 set viminfo+=n$HOME/.cache/viminfo
-let pymode = $HOME . "/.vim/plugin/py.vim"
-if findfile(pymode, ".") == pymode
-    let g:pymode_python = 'python3'
-    inoremap <S-Left> <C-o>:call PyShift(0)<CR>
-    inoremap <S-Right> <C-o>:call PyShift(1)<CR>
-endif
+inoremap <S-Right> <C-o>:><CR>
+inoremap <S-Left> <C-o>:<<CR>
 
 " map to command and insert
 for i in ['', 'i']
