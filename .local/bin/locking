@@ -18,7 +18,8 @@ def _suspend(env):
     """Suspend."""
     if os.path.exists(env.nosleep):
         return
-    subprocess.call(["pkill", "vlc"])
+    for p in ["smplayer", "mplayer"]:
+        subprocess.call(["pkill", p])
     subprocess.call(["systemctl", "suspend"])
     time.sleep(5)
 

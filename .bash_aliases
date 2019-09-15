@@ -12,9 +12,9 @@ for f in mutt; do
     alias $f="echo 'disabled in bash'"
 done
 
-vlc() {
+smplayer() {
     source $HOME/.local/bin/conf
-    _nohup_cmd vlc "$@"
+    _nohup_cmd smplayer "$@"
 }
 
 proxy() {
