@@ -3,7 +3,7 @@
 set noautoindent
 set background=dark
 set nowrap
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+highlight OverLength ctermbg=lightgrey ctermfg=red guibg=#592929
 if has('mouse')
   set mouse=a
 endif
