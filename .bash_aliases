@@ -19,11 +19,15 @@ smplayer() {
 
 mplayer() {
     source $HOME/.local/bin/conf
-    local args="-playlist ${HOME_XDG}playlist"
+    local arg="${HOME_XDG}playlist"
     if [ ! -z "$1" ]; then
-        args="$@"
+        arg="$1"
+        if file "$arg" | grep -q -v "ASCII text"; then
+            echo "not a playlist"
+            return
+        fi
     fi
-    /usr/bin/mplayer -input conf=${HOME_XDG}mplayer.conf -af volume=-20:1 -loop 0 -shuffle "$args"
+    /usr/bin/mplayer -input conf=${HOME_XDG}mplayer.conf -af volume=-20:1 -loop 0 -shuffle -playlist "$arg"
 }
 
 proxy() {
