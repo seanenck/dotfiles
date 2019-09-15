@@ -18,7 +18,7 @@ endif
 function! Smart_TabComplete()
   let line = getline('.')
   " from the start to one character right of cursor
-  let substr = strpart(line, -1, col('.')+1)
+  let substr = strpart(line, -1, col('.'))
   " word to cursor
   let substr = matchstr(substr, "[^ \t|\.]*$")
   " empty string, nothing to match
