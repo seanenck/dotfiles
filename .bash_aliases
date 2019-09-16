@@ -19,13 +19,11 @@ smplayer() {
 
 mplayer() {
     source $HOME/.local/bin/conf
-    pgrep mplayer > /dev/null
-    local playlist=${HOME_XDG}playlist
-    if [ ! -z "$1" ]; then
+    local tmpfile=$(mktemp --suffix="mplayer")
+    if [ -z "$1" ]; then
+        cat ${HOME_XDG}playlist > $tmpfile
+    else
         local oldifs=$IFS
-        local tmpfile=$(mktemp --suffix="mplayer")
-        local playlist=${USER_TMP}playlist
-        echo $tmpfile
         IFS=$'\n'
         for f in $@; do
             find $f -type f >> $tmpfile
@@ -35,10 +33,11 @@ mplayer() {
             fi
         done
         IFS=$oldifs
-        cat $tmpfile | sort -u > $playlist
-        rm -f $tmpfile
     fi
-    _nohup_cmd kitty --class mplayer -- /usr/bin/mplayer -input conf=${HOME_XDG}mplayer.conf -af volume=-20:1 -loop 0 -shuffle -playlist $playlist
+    local playlist=${USER_TMP}playlist
+    cat $tmpfile | sort -u | sort --random-sort > $playlist
+    rm -f $tmpfile
+    _nohup_cmd kitty --class mplayer -- /usr/bin/mplayer -input conf=${HOME_XDG}mplayer.conf -af volume=-20:1 -loop 0 -playlist $playlist
 }
 
 proxy() {
