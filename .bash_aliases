@@ -19,7 +19,8 @@ smplayer() {
 
 mplayer() {
     source $HOME/.local/bin/conf
-    local tmpfile=$(mktemp --suffix="mplayer")
+    local playlist=${USER_TMP}mplayer.playlist
+    local tmpfile=$playlist.tmp
     if [ -z "$1" ]; then
         cat ${HOME_XDG}playlist > $tmpfile
     else
@@ -34,7 +35,6 @@ mplayer() {
         done
         IFS=$oldifs
     fi
-    local playlist=${USER_TMP}playlist
     cat $tmpfile | sort -u | sort --random-sort > $playlist
     rm -f $tmpfile
     _nohup_cmd kitty --class mplayer -- /usr/bin/mplayer -input conf=${HOME_XDG}mplayer.conf -af volume=-20:1 -loop 0 -playlist $playlist
