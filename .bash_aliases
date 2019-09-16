@@ -24,7 +24,7 @@ mplayer() {
     if [ ! -z "$1" ]; then
         local oldifs=$IFS
         local tmpfile=$(mktemp --suffix="mplayer")
-        local playlist=$tmpfile.playlist
+        local playlist=${USER_TMP}playlist
         echo $tmpfile
         IFS=$'\n'
         for f in $@; do
