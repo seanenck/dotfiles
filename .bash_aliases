@@ -19,15 +19,26 @@ smplayer() {
 
 mplayer() {
     source $HOME/.local/bin/conf
-    local arg="${HOME_XDG}playlist"
+    pgrep mplayer > /dev/null
+    local playlist=${HOME_XDG}playlist
     if [ ! -z "$1" ]; then
-        arg="$1"
-        if file "$arg" | grep -q -v "ASCII text"; then
-            echo "not a playlist"
-            return
-        fi
+        local oldifs=$IFS
+        local tmpfile=$(mktemp --suffix="mplayer")
+        local playlist=$tmpfile.playlist
+        echo $tmpfile
+        IFS=$'\n'
+        for f in $@; do
+            find $f -type f >> $tmpfile
+            if [ $? -ne 0 ]; then
+                echo "^ invalid: $f?"
+                return
+            fi
+        done
+        IFS=$oldifs
+        cat $tmpfile | sort -u > $playlist
+        rm -f $tmpfile
     fi
-    /usr/bin/mplayer -input conf=${HOME_XDG}mplayer.conf -af volume=-20:1 -loop 0 -shuffle -playlist "$arg"
+    /usr/bin/mplayer -input conf=${HOME_XDG}mplayer.conf -af volume=-20:1 -loop 0 -shuffle -playlist $playlist
 }
 
 proxy() {
