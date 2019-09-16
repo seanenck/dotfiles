@@ -38,7 +38,7 @@ mplayer() {
         cat $tmpfile | sort -u > $playlist
         rm -f $tmpfile
     fi
-    /usr/bin/mplayer -input conf=${HOME_XDG}mplayer.conf -af volume=-20:1 -loop 0 -shuffle -playlist $playlist
+    _nohup_cmd kitty --class mplayer -- /usr/bin/mplayer -input conf=${HOME_XDG}mplayer.conf -af volume=-20:1 -loop 0 -shuffle -playlist $playlist
 }
 
 proxy() {
