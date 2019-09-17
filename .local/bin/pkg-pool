@@ -74,55 +74,11 @@ def _pool(src, dest):
     _move(src, dest, manifest)
 
 
-def _rebuild(repo):
-    dist = os.path.join(repo, debian.DISTS)
-    if not os.path.exists(dist):
-        print("no dist folder found?")
-        return
-    releases = os.listdir(dist)
-    output = []
-    for r in releases:
-        rpath = os.path.join(dist, r)
-        repos = []
-        for repo in os.listdir(rpath):
-            repo_path = os.path.join(rpath, repo)
-            if not os.path.isdir(repo_path):
-                continue
-            repos.append((repo, repo_path))
-        debs = {}
-        for repo in repos:
-            for root, _, files in os.walk(repo[1]):
-                for f in files:
-                    if not f.endswith(debian.DEB):
-                        continue
-                    if f not in debs:
-                        debs[f] = []
-                    debs[f].append(repo[0])
-        for k in sorted(debs.keys()):
-            obj = debs[k]
-            append_to = []
-            if len(obj) == len(repos):
-                append_to = [debian.IS_ALL]
-            else:
-                append_to = obj
-            for a in append_to:
-                output.append(debian.DELIMITER.join([r, a, k]))
-    for r in sorted(output):
-        print(r)
-
-
 def main():
     """Program entry."""
     parser = argparse.ArgumentParser()
     parser.add_argument("object")
-    parser.add_argument("--rebuild", action="store_true")
     args = parser.parse_args()
-    if args.rebuild:
-        if not os.path.isdir(args.object):
-            print('object must be a directory')
-            return
-        _rebuild(args.object)
-        return
     env = common.read_env()
     _pool(args.object, env.REPOSITORY)
 
