@@ -261,7 +261,7 @@ def _daemon(env):
             if not err:
                 network = out.decode("utf-8").strip()
                 found = False
-                for n in env.NET_SYNC.split(" "):
+                for n in env.NET_SYNC:
                     if n in network:
                         found = True
                         break

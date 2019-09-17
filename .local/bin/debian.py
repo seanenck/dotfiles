@@ -8,6 +8,7 @@ DEB = ".deb"
 DISTS = "dists"
 DELIMITER = ":"
 IS_ALL = "all"
+MIRROR = "voidedtech.com"
 
 
 def parse_manifest(manifest_file):

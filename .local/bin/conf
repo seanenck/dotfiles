@@ -30,8 +30,6 @@ LAST_SYNC=${USER_TMP}last.sync
 
 # debian
 DEB_SIGN_KEY=031E9E4B09CFD8D3F0ED35025109CDF607B5BB04
-MIRROR_SERVER="voidedtech.com"
-MIRROR_COMPONENTS="enckse epiphyte"
 DEB_BUILD_ROOT="/build/packages/"
 DEB_BUILD_DIR="${DEB_BUILD_ROOT}workdir/"
 
@@ -54,13 +52,10 @@ _exports() {
              SSH_AUTH_TMP \
              ZIP_PASS \
              ZIP_MAIL \
-             NET_SYNC \
              HOME_STORE \
              PERSONAL_NOTES \
              PRIV_CONF \
              MAIL_DIR \
-             MIRROR_SERVER \
-             MIRROR_COMPONENTS \
              DEB_SIGN_KEY \
              JOURNALS \
              LAST_SYNC \

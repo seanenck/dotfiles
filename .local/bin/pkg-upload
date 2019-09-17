@@ -17,12 +17,12 @@ _SNAP = "snapshot-"
 
 
 def _run_ssh(env, cmd):
-    subprocess.call(["ssh", env.MIRROR_SERVER] + cmd)
+    subprocess.call(["ssh", debian.MIRROR] + cmd)
 
 
 def _upload(env):
     """Upload the package."""
-    target = "{}:{}".format(env.MIRROR_SERVER, _OPT_DEB)
+    target = "{}:{}".format(debian.MIRROR, _OPT_DEB)
     dt = datetime.datetime.now().strftime("{}%Y-%m-%dT%H-%M-%S".format(_SNAP))
     _run_ssh(env, ["find",
                    _ARCHIVE,
@@ -52,7 +52,7 @@ def _upload(env):
                      "--delete-after"])
 
 
-def _pack(env, pool, objects):
+def _pack(env, pool, objects, components):
     """Package pools."""
     print("preparing...")
     repos = sorted(set([x.repo for x in objects]))
@@ -61,7 +61,7 @@ def _pack(env, pool, objects):
             raise Exception("unknown repo")
         codename = _REPOS[r]
         dist = os.path.join("dists", r)
-        for comp in env.MIRROR_COMPONENTS.split(" "):
+        for comp in components:
             root = os.path.join(dist, comp, "binary-amd64")
             os.makedirs(root)
             flt = [debian.IS_ALL, comp]
@@ -94,7 +94,7 @@ def _pack(env, pool, objects):
         with open(release_file, 'w') as f:
             obj = {"Suite": r,
                    "Codename": codename,
-                   "Components": env.MIRROR_COMPONENTS}
+                   "Components": components}
             for o in obj:
                 f.write("{}: {}\n".format(o, obj[o]))
         with open(release_file, 'a') as f:
@@ -127,11 +127,11 @@ def main():
         return
     mani = os.path.join(deb_env.REPOSITORY, debian.MANIFEST)
     m = debian.parse_manifest(mani)
-    tmpd = "/home/enck/downloads/test/"
+    comps = sorted(set([x.filter for x in m if x.filter != debian.IS_ALL]))
     tmpd = tempfile.mkdtemp()
     try:
         os.chdir(tmpd)
-        if _pack(deb_env, deb_env.REPOSITORY, m):
+        if _pack(deb_env, deb_env.REPOSITORY, m, comps):
             _upload(deb_env)
         shutil.rmtree(tmpd)
     except Exception as e:

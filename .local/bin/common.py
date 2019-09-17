@@ -76,6 +76,7 @@ def _env_adj(env):
     env.REPOSITORY = os.path.join(env.MANAGED, "repository") + "/"
     env.BASE_SERVER = "fact"
     env.SCHROOTS = "/opt/chroot/"
+    env.NET_SYNC = ["default", "home"]
     return env
 
 
