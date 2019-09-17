@@ -3,7 +3,7 @@ userresources=$HOME/.Xresources
 usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
-localbin=$HOME/.local/bin/
+localbin=$HOME/.local/bin
 
 # merge in defaults and keymaps
 if [ -f $sysresources ]; then
