@@ -10,7 +10,7 @@ _STATE = ".mdstate"
 _MD = "markdown"
 _HTMLTOPDF = "wkhtmltopdf"
 _PDFUNITE = "pdfunite"
-
+_ROOT = "root"
 
 _CSS = """
 body {
@@ -45,6 +45,13 @@ def _list_files(directory, ignores=[]):
                 yield sub
 
 
+def _path_cleanup(p):
+    r = p
+    for obj in [("/", "-"), (".-", "{}-".format(_ROOT)), (".", "")]:
+        r = r.replace(obj[0], obj[1])
+    return r
+
+
 def _mdtoslides(args):
     """Convert markdown to pdf slides."""
     files = list(_list_files(".", ignores=[os.path.relpath(args.output)]))
@@ -74,16 +81,25 @@ def _mdtoslides(args):
     idx = 0
     html_index = {}
     state = {}
+    cwd = os.getcwd()
     for f in sorted(files):
         print("converting " + f)
         str_id = str(idx)
         file_name = os.path.join(args.output, str_id + ".html")
         html_index[idx] = file_name
+        uname = _path_cleanup(f)
+        dname = f.split("/")
+        dname = "/".join(dname[0:len(dname)-1]).strip()
+        dname = _path_cleanup(dname)
+        if not dname:
+            dname = _ROOT
         with open(file_name, 'w') as w:
             w.write("<html><head><style>\n")
             w.write(css)
             w.write("</style></head><body>\n")
-            w.write("<div id='slide-" + str_id + "'>\n")
+            w.write("<div class='{} {} slide-{}'>\n".format(uname,
+                                                            dname,
+                                                            str_id))
             w.flush()
             subprocess.call([_MD, f], stdout=w)
             w.write("</div></body></html>")
