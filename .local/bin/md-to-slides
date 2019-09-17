@@ -66,7 +66,11 @@ def _mdtoslides(args):
     if os.path.exists(args.css):
         print("using custom css")
         with open(args.css, 'r') as f:
-            css = f.read()
+            read_css = f.read()
+            if args.merge_css:
+                css = "{}\n{}".format(css, read_css)
+            else:
+                css = read_css
     idx = 0
     html_index = {}
     state = {}
@@ -131,6 +135,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", default="bin/")
     parser.add_argument("--css", default="slides.css")
+    parser.add_argument("--merge-css", action="store_true")
     args = parser.parse_args()
     for cmd in [_MD, _HTMLTOPDF, _PDFUNITE]:
         which = shutil.which(cmd)
