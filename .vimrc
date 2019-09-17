@@ -105,6 +105,7 @@ imap <F1> <Nop>
 
 
 " airline
+" git clone https://github.com/vim-airline/vim-airline ~/.vim/pack/dist/start/vim-airline
 set hidden
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
