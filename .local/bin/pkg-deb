@@ -89,7 +89,10 @@ def _git_clone(env, settings, pkgver):
         manual = True
     if not is_local:
         git_args += [use_url, clone_dir]
-        subprocess.call(git_args)
+        retcode = subprocess.call(git_args)
+        if retcode != 0:
+            print("^ command failed: {}".format(retcode))
+            return
     return clone_dir
 
 
