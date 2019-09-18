@@ -17,4 +17,4 @@ export GOPATH=$HOME/.go
 export GOCACHE=$GOPATH/cache
 
 # debian
-export DEB_BUILD_DIR DEBEMAIL DEBFULLNAME
+export DEBEMAIL DEBFULLNAME

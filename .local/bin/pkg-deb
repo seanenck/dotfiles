@@ -67,10 +67,10 @@ def _read_version():
 
 
 def _git_clone(env, settings, pkgver):
-    if not os.path.exists(env.DEB_BUILD_DIR):
+    if not os.path.exists(debian.DEB_BUILD_DIR):
         print("no build dir")
         return
-    clone_dir = os.path.join(env.DEB_BUILD_DIR, settings.name + "-" + pkgver)
+    clone_dir = os.path.join(debian.DEB_BUILD_DIR, settings.name + "-" + pkgver)
     print("clone dir: " + clone_dir)
     if os.path.exists(clone_dir):
         shutil.rmtree(clone_dir)
@@ -107,12 +107,12 @@ def _build(env, settings):
         settings.git_version = pkgver
     else:
         settings.git_version = settings.git_version.replace("PKGVER", pkgver)
-    for d in [env.DEB_BUILD_ROOT, env.DEB_BUILD_DIR]:
+    for d in [debian.DEB_BUILD_ROOT, debian.DEB_BUILD_DIR]:
         print("cleaning: " + d)
         for f in os.listdir(d):
             p = os.path.join(d, f)
-            if d == env.DEB_BUILD_ROOT:
-                if p in env.DEB_BUILD_DIR or env.DEB_BUILD_DIR in p:
+            if d == debian.DEB_BUILD_ROOT:
+                if p in debian.DEB_BUILD_DIR or debian.DEB_BUILD_DIR in p:
                     continue
             if os.path.isdir(p):
                 print("rmdir'ing: " + p)

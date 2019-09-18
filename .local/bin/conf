@@ -24,8 +24,6 @@ JOURNALS=${USER_TMP}journal
 
 # debian
 DEB_SIGN_KEY=031E9E4B09CFD8D3F0ED35025109CDF607B5BB04
-DEB_BUILD_ROOT="/build/packages/"
-DEB_BUILD_DIR="${DEB_BUILD_ROOT}workdir/"
 
 export OPENSC_CONF="$HOME/.config/opensc.conf"
 
@@ -49,9 +47,7 @@ _exports() {
              PERSONAL_NOTES \
              PRIV_CONF \
              DEB_SIGN_KEY \
-             JOURNALS \
-             DEB_BUILD_DIR \
-             DEB_BUILD_ROOT; do
+             JOURNALS; do
         echo "$f=${!f}"
     done
 }
