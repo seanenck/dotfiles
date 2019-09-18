@@ -16,15 +16,11 @@ PRIV_PATH=${PERSONAL_LOC}private/
 PERM_PASS=${PERM_LOCATION}pass/
 PERSONAL_NOTES="${PERSONAL_LOC}notebook@localhost"
 
-# mail
-MAIL_DIR=$HOME/.mutt/imap/
-
 # files
 SSH_AUTH_TMP=/tmp/ssh-auth.sock
 PRIV_CONF=${PERM_CONFIGS}priv.aliases
 XDG_USER_CONFIG=${HOME_XDG}user-dirs.dirs
 JOURNALS=${USER_TMP}journal
-LAST_SYNC=${USER_TMP}last.sync
 
 # debian
 DEB_SIGN_KEY=031E9E4B09CFD8D3F0ED35025109CDF607B5BB04
@@ -52,10 +48,8 @@ _exports() {
              HOME_STORE \
              PERSONAL_NOTES \
              PRIV_CONF \
-             MAIL_DIR \
              DEB_SIGN_KEY \
              JOURNALS \
-             LAST_SYNC \
              DEB_BUILD_DIR \
              DEB_BUILD_ROOT; do
         echo "$f=${!f}"
@@ -70,24 +64,7 @@ _setup() {
     xsess=$HOME/.xsession-errors
     cat $xsess >> ${USER_TMP}xsession.$(date +%Y-%m-%d)
     echo > $xsess
-    
-    # make sure I can operate
-    mkdir -p $USER_TMP
-
-    # check mail for valid files
-    echo "checking mail files..."
-    find $MAIL_DIR -type f -exec file {} \; | grep -v "\.notmuch/" | grep -v "Trash/" | grep -v "(ASCII|UTF-8 Unicode|ISO-8859) text(,|$)" >> $JOURNALS
-
-    # cleanup temp dirs
-    echo "cleaning up directories..."
-    find ${USER_TMP}* -mtime +1 -type f -exec rm {} \;
-    find $USER_TMP -empty -type d -delete
-    find $HOME/.vim/{swap,undo} -mtime 1 -type f -exec rm {} \;
-    if [ ! -e $LAST_SYNC ]; then
-        echo "no recent syncs" >> $JOURNALS
-    fi
-    ${HOME_BIN}/volume mute
-    echo "init completed"
+    $HOME_BIN/startup >> $JOURNALS
 }
 
 _init() {

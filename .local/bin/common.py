@@ -77,6 +77,8 @@ def _env_adj(env):
     env.BASE_SERVER = "fact"
     env.SCHROOTS = "/opt/chroot/"
     env.NET_SYNC = ["default", "home"]
+    env.LAST_SYNC = os.path.join(env.USER_TMP, "last.sync")
+    env.MAIL_DIR = os.path.join(env.HOME, ".mutt", "imap")
     return env
 
 
