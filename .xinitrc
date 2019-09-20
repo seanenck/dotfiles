@@ -44,7 +44,7 @@ $localbin/subsystem workspaces mobile
 while true; do
     pidof dwm > /dev/null
     if [ $? -ne 0 ]; then
-        dwm &
+        $HOME/store/managed/dwm/dwm &
         sleep 1
         xsetroot -solid "#333333"
     fi
