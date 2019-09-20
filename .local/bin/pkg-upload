@@ -29,7 +29,7 @@ def _upload(env):
                    "-maxdepth",
                    "1",
                    "-mtime",
-                   "30",
+                   "90",
                    "-type",
                    "d",
                    "-name",
