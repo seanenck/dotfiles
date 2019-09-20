@@ -28,6 +28,7 @@ _wsw() {
 complete -F _wsw wsw
 
 _manage() {
+    source $HOME/.local/bin/conf
     local cur opts
     if [ $COMP_CWORD -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
@@ -40,7 +41,7 @@ _manage() {
                     opts="purge dryrun"
                     ;;
                 "git")
-                    opts="update-store"
+                    opts="all "$(ls $PERM_LOCATION)
                     ;;
                 *)
                     ;;

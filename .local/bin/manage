@@ -219,10 +219,16 @@ def _music(env):
             os.remove(r)
 
 
-def _git_updates(env):
-    for r, f, d in os.walk(env.PERM_LOCATION):
-        if "personal" in r:
-            continue
+def _git_updates(env, update):
+    if len(update) > 1:
+        print("one update per run")
+        return
+    target = None
+    if len(update) == 1:
+        target = update[0]
+    if target is None or target == "all":
+        target = ""
+    for r, f, d in os.walk(os.path.join(env.PERM_LOCATION, target)):
         git_dir = os.path.join(r, ".git")
         if os.path.exists(git_dir):
             print("")
@@ -282,9 +288,7 @@ def main():
     elif args.command == "history-purge":
         _history(env, True)
     elif args.command == "git":
-        sub = _parse_subcommand(unknowns, 0, ["update-store"])
-        if sub == 0:
-            _git_updates(env)
+        _git_updates(env, unknowns)
     else:
         print("unknown command")
 
