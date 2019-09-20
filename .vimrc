@@ -110,6 +110,7 @@ set hidden
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 nmap <C-n> :enew<cr>
+nmap <C-t> :enew<cr>
 nmap <C-PageUp> :bprevious<cr>
 nmap <C-PageDown> :bnext<cr>
 nmap <C-w> :bp <BAR> bd #<cr>
