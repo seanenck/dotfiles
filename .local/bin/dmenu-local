@@ -5,8 +5,10 @@ import common
 import os
 import csv
 import subprocess
+import urllib.parse
 
 
+_SEARCH = "search"
 _BROWSER = "/usr/bin/firefox"
 _GMUTT = "gmail"
 _FASTMUTT = "fastmail"
@@ -62,11 +64,7 @@ def _dmenu(env, args):
             return
         if not result:
             return
-        subprocess.call(["dmenu-search",
-                         "--browser",
-                         _BROWSER,
-                         "--term",
-                         result])
+        search(_BROWSER, result)
 
 
 def main():
@@ -76,6 +74,16 @@ def main():
         args = sys.argv[1:]
     env = common.read_env()
     _dmenu(env, args)
+
+
+def search(browser, term):
+    if term.startswith(_SEARCH):
+        term = term[len(_SEARCH):]
+    query = {}
+    query["q"] = term
+    params = urllib.parse.urlencode(query)
+    subprocess.call([browser,
+                     "https://www.duckduckgo.com/?{}".format(params)])
 
 
 if __name__ == "__main__":
