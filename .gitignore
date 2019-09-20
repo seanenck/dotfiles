@@ -2,5 +2,8 @@
 !.local/
 .local/*
 !.local/bin/
+.local/bin/*-bin
+!.local/src/
+.local/src/**/bin
 *.pyc
 __pycache__
