@@ -8,7 +8,6 @@ build: $(OBJECTS) $(FORMAT)
 
 $(OBJECTS): $(SRC)
 	go build $(FLAGS) -o $@ $(shell basename $@ | sed "s|$(BIN)||g")/main.go
-	install -Dm755 $@ $(HOME)/.local/$@-bin
 
 clean:
 	rm -f $(BINDATA)
