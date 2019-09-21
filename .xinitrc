@@ -42,9 +42,9 @@ xset b 0 0 0
 $localbin/subsystem backlight mid
 $localbin/subsystem workspaces mobile
 while true; do
-    pidof dwm > /dev/null
+    pidof dwm-bin > /dev/null
     if [ $? -ne 0 ]; then
-        $HOME/store/managed/dwm/dwm &
+        $localbin/dwm-bin &
         sleep 1
         xsetroot -solid "#333333"
     fi
