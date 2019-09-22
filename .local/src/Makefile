@@ -6,6 +6,8 @@ all: build install
 
 build:
 	make -C go
+	rm -rf $(DWM)
+	git clone enckse:external/dwm $(DWM)
 	make -C $(DWM) dwm
 
 install:
