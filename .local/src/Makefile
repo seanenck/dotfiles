@@ -1,5 +1,5 @@
 TARGET  := $(HOME)/.local/bin/
-DWM     := $(HOME)/store/managed/dwm/
+DWM     := $(HOME)/workspace/dwm/
 POSTFIX := -bin
 
 all: build install
