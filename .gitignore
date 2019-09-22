@@ -4,6 +4,6 @@
 !.local/bin/
 .local/bin/*-bin
 !.local/src/
-.local/src/**/bin
+.local/src/go/qrencode
 *.pyc
 __pycache__

@@ -1,19 +1,16 @@
-BIN     := bin/
 FLAGS   := -ldflags '-linkmode external -extldflags $(LDFLAGS) -s -w' -gcflags=all=-trimpath=$(GOPATH) -asmflags=all=-trimpath=$(GOPATH) -buildmode=pie
 SRC     := $(shell find . -type f -name "*.go")
-FORMAT  := $(BIN)format
-OBJECTS := $(BIN)qrencode
+OBJECTS := qrencode
 
-build: $(OBJECTS) $(FORMAT)
+.PHONY: build lint clean
+
+build: $(OBJECTS) lint
 
 $(OBJECTS): $(SRC)
-	go build $(FLAGS) -o $@ $(shell basename $@ | sed "s|$(BIN)||g")/main.go
+	go build $(FLAGS) -o $@ cmd/$@.go
 
 clean:
-	rm -f $(BINDATA)
-	rm -rf $(BIN)
-	mkdir -p $(BIN)
+	rm -f $(OBJECTS)
 
-$(FORMAT): $(SRC)
-	goformatter
-	@touch $(FORMAT)
+lint:
+	@golinter
