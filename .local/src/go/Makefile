@@ -7,7 +7,7 @@ OBJECTS := qrencode
 build: $(OBJECTS) lint
 
 $(OBJECTS): $(SRC)
-	go build $(FLAGS) -o $@ cmd/$@.go
+	go build $(FLAGS) -o $@ cmd/$@/main.go
 
 clean:
 	rm -f $(OBJECTS)
