@@ -17,8 +17,7 @@ func readStdin() ([]string, error) {
 	for scanner.Scan() {
 		messages = append(messages, scanner.Text())
 	}
-	err := scanner.Err()
-	if err != nil {
+	if err := scanner.Err(); err != nil {
 		return nil, err
 	}
 	return messages, nil
