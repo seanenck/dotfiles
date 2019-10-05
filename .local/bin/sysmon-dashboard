@@ -9,14 +9,34 @@ _runcmd() {
         echo "no command"
         exit 1
     fi
-    ssh $1 -o BatchMode=yes -o ConnectTimeout=5 ${@:2} 2>/dev/null
+    ssh $1 -o BatchMode=yes -o ConnectTimeout=20 ${@:2} 2>/dev/null
     return $?
 }
 
+_keyvalues() {
+    local key value f cnt idx tree
+    cnt=$(echo "$@" | tr ' ' '\n' | wc -l)
+    idx=1
+    for f in $(echo "$@"); do
+        tree="├"
+        if [ $idx -eq $cnt ]; then
+            tree="└"
+        fi
+        key=$(echo "$f" | cut -d ":" -f 1)
+        value=$(echo "$f" | cut -d ":" -f 2- | sed "s/\_/ /g" | sed "s/,//g")
+        printf "          $tree─ %-6s: %s\n" "$key" "$value"
+        idx=$((idx+1))
+    done
+}
+
 _server() {
-    local online color stopping sysmon
+    local online color stopping data sysmon red normal
     stopping=0
-    online=$(_runcmd $1 echo online)
+    online="online ┐"
+    data=$(_runcmd $1 "uptime -p | sed 's/ /_/g' | sed 's/^/uptime:/g';
+cat /etc/debian_version | sed 's/^/debian:/g';\
+uname -r -v | cut -d ' ' -f 1,5 | sed 's/ / (/g' | sed 's/$/)/g' | sed 's/ /_/g' | sed 's/^/kernel:/g';\
+cat /var/log/sysmon.log.* | cut -d ' ' -f 2 | sed 's/://g' | grep -v '^$' | sed 's/^/sysmon:/g' | sort -u")
     if [ $? -eq 0 ]; then
         color="$NORMAL"
     else
@@ -28,11 +48,19 @@ _server() {
     if [ $stopping -gt 0 ]; then
         return
     fi
-    sysmon=$(_runcmd $1 "cat /var/log/sysmon.log.*" | cut -d " " -f 2 | sed "s/://g" | grep -v "^$" | sort -u)
+    sysmon=$(_keyvalues $(echo "$data" | grep "^sysmon:"))
     if [ ! -z "$sysmon" ]; then
-        echo -e "└─ sysmon$PROBLEM"
-        echo -e "$sysmon$NORMAL" | sed "s/^/  └─ /g"
+        red=$(tput setaf 1)
+        normal=$(tput sgr0)
+        data="$data
+warnings:${red}┐${normal}"
     fi
+    _keyvalues $(echo "$data" | grep -v "^sysmon:")
+    if [ -z "$sysmon" ]; then
+        return
+    fi
+    sysmon=$(echo "$sysmon" | sed "s/^/             /g" | sed "s/sysmon: //g")
+    echo -e "$PROBLEM$sysmon$NORMAL"
 }
 
 _process() {
