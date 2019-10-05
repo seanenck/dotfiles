@@ -20,11 +20,20 @@ body {
     padding-bottom: 0.5in;
     font-size: 32px;
     line-height: 1.5;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 h1 {
+    background-color: #c2d6d6;
     text-align: center;
     font-size: 48px;
+}
+li:nth-child(odd){
+    background: #e6f2ff;
+}
+li {
+    background: #f2e6ff;
+    list-style-type: square;
+    margin: 3px 0;
 }
 """
 
@@ -43,6 +52,20 @@ def _list_files(directory, ignores=[]):
             subdir = os.path.join(directory, f)
             for sub in _list_files(subdir):
                 yield sub
+
+
+def _write_html(w, css, unique_id, dir_id, obj_id, md):
+    w.write("<!doctype html><html lang='en'><style>\n")
+    w.write(css)
+    w.write("</style></head><body>\n")
+    w.write("<div class='{} {} slide-{}'>\n".format(unique_id,
+                                                    dir_id,
+                                                    obj_id))
+    w.flush()
+    res = subprocess.call([_MD, md], stdout=w)
+    if res != 0:
+        raise Exception("markdown processing failed")
+    w.write("</div></body></html>")
 
 
 def _path_cleanup(p):
@@ -94,20 +117,14 @@ def _mdtoslides(args):
         if not dname:
             dname = _ROOT
         with open(file_name, 'w') as w:
-            w.write("<html><head><style>\n")
-            w.write(css)
-            w.write("</style></head><body>\n")
-            w.write("<div class='{} {} slide-{}'>\n".format(uname,
-                                                            dname,
-                                                            str_id))
-            w.flush()
-            subprocess.call([_MD, f], stdout=w)
-            w.write("</div></body></html>")
+            _write_html(w, css, uname, dname, str_id, f)
         p = subprocess.Popen(["md5sum", file_name], stdout=subprocess.PIPE)
-        out, _ = p.communicate()
+        out, err = p.communicate()
         hashed = ""
         if out:
             hashed = out.decode("utf-8").strip().split(" ")[0]
+        if err:
+            raise Exception("unable to md5sum: {}".format(err))
         state[str(idx)] = hashed
         idx += 1
     pdf_files = []
@@ -129,18 +146,28 @@ def _mdtoslides(args):
                 os.remove(pdf_file)
             with open(f, 'r') as h:
                 print("building " + pdf_file)
-                subprocess.call([_HTMLTOPDF,
-                                 "-O",
-                                 "landscape",
-                                 "-",
-                                 pdf_file],
-                                stdin=h,
-                                stderr=dn)
+                margins = []
+                for x in ["--margin-{}".format(x) for x in ["top",
+                                                            "left",
+                                                            "right",
+                                                            "bottom"]]:
+                    margins += [x, "0"]
+                r = subprocess.call([_HTMLTOPDF] + margins + [
+                                     "-O",
+                                     "landscape",
+                                     "-",
+                                     pdf_file],
+                                    stdin=h,
+                                    stderr=dn)
+                if r != 0:
+                    raise Exception("html to pdf failed")
     if len(pdf_files) != idx:
         print('WARNING: md -> html -> pdf mismatch')
     out_file = os.path.join(args.output, "output.pdf")
     cmd = [_PDFUNITE] + pdf_files + [out_file]
-    subprocess.call(cmd)
+    r = subprocess.call(cmd)
+    if r != 0:
+        raise Exception("pdf unite failed")
     with open(state_file, 'w') as f:
         f.write(json.dumps(state))
     print("completed")
@@ -158,7 +185,12 @@ def main():
         if which is None:
             print("requires: poppler-utils wkhtmltopdf markdown")
             exit(1)
-    _mdtoslides(args)
+    try:
+        _mdtoslides(args)
+    except Exception as e:
+        print("unable to process")
+        print(e)
+        exit(1)
 
 
 if __name__ == "__main__":
