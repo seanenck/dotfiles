@@ -77,21 +77,13 @@ def _path_cleanup(p):
 
 def _mdtoslides(args):
     """Convert markdown to pdf slides."""
-    files = list(_list_files(".", ignores=[os.path.relpath(args.output)]))
-    if len(files) == 0:
+    inputs = list(_list_files(".", ignores=[os.path.relpath(args.output)]))
+    if len(inputs) == 0:
         print("no markdown files found in directory")
         return
     if not os.path.exists(args.output):
         print("making output directory")
         os.mkdir(args.output)
-    print("preparing...")
-    for f in os.listdir(args.output):
-        if f == _STATE:
-            continue
-        _, ext = os.path.splitext(f)
-        if ext == ".pdf":
-            continue
-        os.remove(os.path.join(args.output, f))
     css = _CSS
     if os.path.exists(args.css):
         print("using custom css")
@@ -101,6 +93,64 @@ def _mdtoslides(args):
                 css = "{}\n{}".format(css, read_css)
             else:
                 css = read_css
+    if args.no_highlighting:
+        files = inputs
+    else:
+        from pygments import highlight
+        from pygments.lexers import get_lexer_by_name, guess_lexer
+        from pygments.formatters import HtmlFormatter
+        idx = 0
+        files = []
+        formatter = HtmlFormatter()
+        formatter_css = formatter.get_style_defs()
+        css += "\n{}".format(formatter_css)
+        for f in sorted(inputs):
+            guessed = False
+            with open(f, 'r') as in_file:
+                output_file = os.path.join(args.output, "{}.md".format(idx))
+                print("preprocessing {} to {}".format(f, output_file))
+                in_section = None
+                lines = []
+                lexer_name = None
+                for l in [x.rstrip() for x in in_file.readlines()]:
+                    if l.startswith("```"):
+                        if in_section is not None:
+                            code = "\n".join(in_section)
+                            if lexer_name is None:
+                                l = guess_lexer(code)
+                                guessed = True
+                            else:
+                                l = get_lexer_by_name(lex)
+                            lines.append(highlight(code, l, formatter))
+                            in_section = None
+                        else:
+                            lex = l.replace("```", "")
+                            if lex != "":
+                                lexer_name = lex
+                            in_section = []
+                        continue
+                    if in_section is not None:
+                        in_section.append(l)
+                        continue
+                    lines.append(l)
+                if in_section is not None:
+                    raise Exception("unclosed code section: {}".format(f))
+                with open(output_file, 'w') as out_file:
+                    out_file.write("\n".join(lines))
+                files.append(output_file)
+            idx += 1
+            if guessed:
+                print("WARN: guessed lexer in {}".format(f))
+    print("preparing...")
+    for f in os.listdir(args.output):
+        if f == _STATE:
+            continue
+        _, ext = os.path.splitext(f)
+        if ext == ".pdf":
+            continue
+        if os.path.join(args.output, f) in files:
+            continue
+        os.remove(os.path.join(args.output, f))
     idx = 0
     html_index = {}
     state = {}
@@ -179,6 +229,7 @@ def main():
     parser.add_argument("--output", default="bin/")
     parser.add_argument("--css", default="slides.css")
     parser.add_argument("--merge-css", action="store_true")
+    parser.add_argument("--no-highlighting", action="store_true")
     args = parser.parse_args()
     for cmd in [_MD, _HTMLTOPDF, _PDFUNITE]:
         which = shutil.which(cmd)
