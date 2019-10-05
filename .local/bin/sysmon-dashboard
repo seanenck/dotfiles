@@ -33,6 +33,7 @@ _server() {
     stopping=0
     online="online ┐"
     data=$(_runcmd $1 "uptime -p | sed 's/ /_/g' | sed 's/^/uptime:/g';
+date +%Y-%m-%dT%H-%M-%S | sed 's/^/polled:/g';\
 cat /etc/debian_version | sed 's/^/debian:/g';\
 uname -r -v | cut -d ' ' -f 1,5 | sed 's/ / (/g' | sed 's/$/)/g' | sed 's/ /_/g' | sed 's/^/kernel:/g';\
 cat /var/log/sysmon.log.* | cut -d ' ' -f 2 | sed 's/://g' | grep -v '^$' | sed 's/^/sysmon:/g' | sort -u")
@@ -75,8 +76,7 @@ fi
 
 while [ 1 -eq 1 ]; do
     clear
-    count=0
-    date +%Y-%m-%dT%H:%M:%S
+    date +%Y-%m-%dT%H-%M-%S
     for s in $(echo $@ | sort -u); do
         _process $s
     done
