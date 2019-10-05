@@ -8,7 +8,7 @@ _runcmd() {
         echo "no command"
         exit 1
     fi
-    ssh $1 -o BatchMode=yes -o ConnectTimeout=20 ${@:2} 2>/dev/null
+    ssh $1 -o BatchMode=yes -o ConnectTimeout=10 ${@:2} 2>/dev/null
     return $?
 }
 
