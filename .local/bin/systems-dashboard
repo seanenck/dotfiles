@@ -1,0 +1,71 @@
+#!/bin/bash
+NORMAL="\033[0m"
+PROBLEM="\033[1;31m"
+SLEEP=600
+PAUSE=5
+
+_runcmd() {
+    if [ -z "$2" ]; then
+        echo "no command"
+        exit 1
+    fi
+    ssh $1 -o BatchMode=yes -o ConnectTimeout=5 ${@:2} 2>/dev/null
+    return $?
+}
+
+_server() {
+    local online color stopping sysmon
+    stopping=0
+    online=$(_runcmd $1 echo online)
+    if [ $? -eq 0 ]; then
+        color="$NORMAL"
+    else
+        color="$PROBLEM"
+        online="offline"
+        stopping=1
+    fi
+    echo -e "$color└─ $online$NORMAL"
+    if [ $stopping -gt 0 ]; then
+        return
+    fi
+    sysmon=$(_runcmd $1 "cat /var/log/sysmon.log*" | cut -d " " -f 2 | sed "s/://g" | grep -v "^$" | sort -u)
+    if [ ! -z "$sysmon" ]; then
+        echo -e "└─ sysmon$PROBLEM"
+        echo -e "$sysmon$NORMAL" | sed "s/^/  └─ /g"
+    fi
+}
+
+_process() {
+    echo
+    echo " $1"
+    _server $1 | sed "s/^/  /g"
+}
+
+if [ -z "$1" ]; then
+    echo "no systems given"
+    exit 1
+fi
+
+while [ 1 -eq 1 ]; do
+    clear
+    count=0
+    date +%Y-%m-%dT%H:%M:%S
+    for s in $(echo $@ | sort -u); do
+        _process $s
+    done
+    echo
+    echo
+    while [ $count -lt $SLEEP ]; do
+        delta=$((SLEEP-count))
+        show=$delta
+        if [ $delta -lt 100 ]; then
+            show=" $delta"
+            if [ $delta -lt 10 ]; then
+                delta=" $show"
+            fi
+        fi
+        echo -en "\rnext update in $show seconds"
+        count=$((count+PAUSE))
+        sleep $PAUSE
+    done
+done
