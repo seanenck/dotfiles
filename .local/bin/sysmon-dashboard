@@ -28,7 +28,7 @@ _server() {
     if [ $stopping -gt 0 ]; then
         return
     fi
-    sysmon=$(_runcmd $1 "cat /var/log/sysmon.log*" | cut -d " " -f 2 | sed "s/://g" | grep -v "^$" | sort -u)
+    sysmon=$(_runcmd $1 "cat /var/log/sysmon.log.*" | cut -d " " -f 2 | sed "s/://g" | grep -v "^$" | sort -u)
     if [ ! -z "$sysmon" ]; then
         echo -e "└─ sysmon$PROBLEM"
         echo -e "$sysmon$NORMAL" | sed "s/^/  └─ /g"
