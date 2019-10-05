@@ -2,7 +2,6 @@
 NORMAL="\033[0m"
 PROBLEM="\033[1;31m"
 SLEEP=60
-PAUSE=5
 
 _runcmd() {
     if [ -z "$2" ]; then
@@ -82,18 +81,6 @@ while [ 1 -eq 1 ]; do
         _process $s
     done
     echo
-    echo
-    while [ $count -lt $SLEEP ]; do
-        delta=$((SLEEP-count))
-        show=$delta
-        if [ $delta -lt 100 ]; then
-            show=" $delta"
-            if [ $delta -lt 10 ]; then
-                delta=" $show"
-            fi
-        fi
-        echo -en "\rnext update in $show seconds"
-        count=$((count+PAUSE))
-        sleep $PAUSE
-    done
+    echo "[enter] to refresh now, else waiting $SLEEP seconds"
+    read -t $SLEEP
 done
