@@ -6,6 +6,18 @@ import json
 import shutil
 
 
+def _warn(message):
+    print("=> WARN: {}".format(message))
+
+
+_NO_PYTHON_MARKDOWN = False
+try:
+    import markdown
+except ImportError:
+    _warn("python markdown not available")
+    _NO_PYTHON_MARKDOWN = True
+
+
 _STATE = ".mdstate"
 _MD = "markdown"
 _HTMLTOPDF = "wkhtmltopdf"
@@ -31,9 +43,34 @@ li:nth-child(odd){
     background: #e6f2ff;
 }
 li {
-    background: #f2e6ff;
+    background: #cce6ff;
     list-style-type: square;
     margin: 3px 0;
+}
+.slide {
+    font-size: 18px;
+}
+
+table {
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 4px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+tr {
+    background-color: #e6e6e6;
+}
+
+th {
+  background-color: #666699;
+  color: #ffffff;
 }
 """
 
@@ -54,17 +91,26 @@ def _list_files(directory, ignores=[]):
                 yield sub
 
 
-def _write_html(w, css, unique_id, dir_id, obj_id, md):
+def _write_html(w, css, unique_id, dir_id, obj_id, md, slide, of):
     w.write("<!doctype html><html lang='en'><style>\n")
     w.write(css)
     w.write("</style></head><body>\n")
+    slide_progress = "&nbsp;"
+    if slide > 1:
+        slide_progress = "{} of {}".format(slide, of)
+    w.write("<div class='slide'>{}</div>".format(slide_progress))
     w.write("<div class='{} {} slide-{}'>\n".format(unique_id,
                                                     dir_id,
                                                     obj_id))
     w.flush()
-    res = subprocess.call([_MD, md], stdout=w)
-    if res != 0:
-        raise Exception("markdown processing failed")
+    if _NO_PYTHON_MARKDOWN:
+        res = subprocess.call([_MD, md], stdout=w)
+        if res != 0:
+            raise Exception("markdown processing failed")
+    else:
+        with open(md, 'r') as md_text:
+            w.write(markdown.markdown(md_text.read(),
+                    extensions=["markdown.extensions.tables"]))
     w.write("</div></body></html>")
 
 
@@ -73,6 +119,63 @@ def _path_cleanup(p):
     for obj in [("/", "-"), (".-", "{}-".format(_ROOT)), (".", "")]:
         r = r.replace(obj[0], obj[1])
     return r
+
+
+def _pygments(args, inputs, css):
+    try:
+        import pygments
+    except ImportError:
+        _warn("pygments unavailable")
+        return inputs, css
+    from pygments import highlight
+    from pygments.lexers import get_lexer_by_name, guess_lexer
+    from pygments.formatters import HtmlFormatter
+    idx = 0
+    files = []
+    formatter = HtmlFormatter()
+    did = False
+    formatter_css = formatter.get_style_defs()
+    for f in sorted(inputs):
+        guessed = False
+        with open(f, 'r') as in_file:
+            output_file = os.path.join(args.output, "{}.md".format(idx))
+            print("preprocessing {} to {}".format(f, output_file))
+            in_section = None
+            lines = []
+            lexer_name = None
+            for line in [x.rstrip() for x in in_file.readlines()]:
+                if line.startswith("```"):
+                    if in_section is not None:
+                        code = "\n".join(in_section)
+                        if lexer_name is None:
+                            use_lex = guess_lexer(code)
+                            guessed = True
+                        else:
+                            use_lex = get_lexer_by_name(lex)
+                        lines.append(highlight(code, use_lex, formatter))
+                        did = True
+                        in_section = None
+                    else:
+                        lex = line.replace("```", "")
+                        if lex != "":
+                            lexer_name = lex
+                        in_section = []
+                    continue
+                if in_section is not None:
+                    in_section.append(line)
+                    continue
+                lines.append(line)
+            if in_section is not None:
+                raise Exception("unclosed code section: {}".format(f))
+            with open(output_file, 'w') as out_file:
+                out_file.write("\n".join(lines))
+            files.append(output_file)
+        idx += 1
+        if guessed:
+            _warn("guessed lexer in {}".format(f))
+    if did:
+        css += "\n{}".format(formatter_css)
+    return files, css
 
 
 def _mdtoslides(args):
@@ -96,51 +199,7 @@ def _mdtoslides(args):
     if args.no_highlighting:
         files = inputs
     else:
-        from pygments import highlight
-        from pygments.lexers import get_lexer_by_name, guess_lexer
-        from pygments.formatters import HtmlFormatter
-        idx = 0
-        files = []
-        formatter = HtmlFormatter()
-        formatter_css = formatter.get_style_defs()
-        css += "\n{}".format(formatter_css)
-        for f in sorted(inputs):
-            guessed = False
-            with open(f, 'r') as in_file:
-                output_file = os.path.join(args.output, "{}.md".format(idx))
-                print("preprocessing {} to {}".format(f, output_file))
-                in_section = None
-                lines = []
-                lexer_name = None
-                for l in [x.rstrip() for x in in_file.readlines()]:
-                    if l.startswith("```"):
-                        if in_section is not None:
-                            code = "\n".join(in_section)
-                            if lexer_name is None:
-                                l = guess_lexer(code)
-                                guessed = True
-                            else:
-                                l = get_lexer_by_name(lex)
-                            lines.append(highlight(code, l, formatter))
-                            in_section = None
-                        else:
-                            lex = l.replace("```", "")
-                            if lex != "":
-                                lexer_name = lex
-                            in_section = []
-                        continue
-                    if in_section is not None:
-                        in_section.append(l)
-                        continue
-                    lines.append(l)
-                if in_section is not None:
-                    raise Exception("unclosed code section: {}".format(f))
-                with open(output_file, 'w') as out_file:
-                    out_file.write("\n".join(lines))
-                files.append(output_file)
-            idx += 1
-            if guessed:
-                print("WARN: guessed lexer in {}".format(f))
+        files, css = _pygments(args, inputs, css)
     print("preparing...")
     for f in os.listdir(args.output):
         if f == _STATE:
@@ -155,6 +214,7 @@ def _mdtoslides(args):
     html_index = {}
     state = {}
     cwd = os.getcwd()
+    l_files = len(files)
     for f in sorted(files):
         print("converting " + f)
         str_id = str(idx)
@@ -167,7 +227,7 @@ def _mdtoslides(args):
         if not dname:
             dname = _ROOT
         with open(file_name, 'w') as w:
-            _write_html(w, css, uname, dname, str_id, f)
+            _write_html(w, css, uname, dname, str_id, f, idx + 1, l_files)
         p = subprocess.Popen(["md5sum", file_name], stdout=subprocess.PIPE)
         out, err = p.communicate()
         hashed = ""
@@ -230,7 +290,11 @@ def main():
     parser.add_argument("--css", default="slides.css")
     parser.add_argument("--merge-css", action="store_true")
     parser.add_argument("--no-highlighting", action="store_true")
+    parser.add_argument("--print-css", action="store_true")
     args = parser.parse_args()
+    if args.print_css:
+        print(_CSS)
+        return
     for cmd in [_MD, _HTMLTOPDF, _PDFUNITE]:
         which = shutil.which(cmd)
         if which is None:
