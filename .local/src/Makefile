@@ -1,4 +1,4 @@
-DWM     := $(HOME)/workspace/dwm/
+DWM     := $(shell mktemp -d)/dwm/
 DIRS    := go rust
 
 .PHONY: $(DIRS) dwm
