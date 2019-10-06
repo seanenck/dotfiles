@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"crypto/md5"
 	"encoding/json"
 	"flag"
@@ -11,6 +12,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"sort"
+	"strings"
 )
 
 const (
@@ -99,7 +101,7 @@ type (
 		ID       string
 		DirID    string
 		ObjectID string
-		Content  string
+		Content  template.HTML
 	}
 
 	buildObject struct {
@@ -108,6 +110,8 @@ type (
 		html  string
 		pdf   string
 		ident int
+		total int
+		req   *runRequest
 	}
 )
 
@@ -202,18 +206,6 @@ func (r *runRequest) listMarkdownFiles() ([]string, error) {
 	return files, nil
 }
 
-/*
-func newHTML() {
-	Slide struct {
-		Style    template.CSS
-		Progress string
-		ID       string
-		DirID    string
-		ObjectID string
-		Content  string
-	}
-}*/
-
 func isCommandAvailable(name string) error {
 	cmd := exec.Command("which", name)
 	if err := cmd.Run(); err != nil {
@@ -243,19 +235,93 @@ func (o buildObject) err(message string, err error) {
 	o.log(fmt.Sprintf("ERROR %s (%v)", message, err))
 }
 
+func (o buildObject) hashFile() string {
+	return o.md
+}
+
+func cleanPath(path string, withFile bool) string {
+	use := path
+	if !withFile {
+		use = filepath.Dir(path)
+	}
+	for _, c := range [...]string{"/", ".", "_"} {
+		use = strings.Replace(use, c, "-", -1)
+	}
+	return fmt.Sprintf("md-%s", use)
+}
+
 func build(channel chan string, obj buildObject, state map[string]string) {
-	fmt.Println("converting", obj.input, obj.md)
+	obj.log(fmt.Sprintf("converting %s %s", obj.input, obj.md))
 	b, err := ioutil.ReadFile(obj.input)
 	if err != nil {
 		obj.err("unable to read input file", err)
 		channel <- ""
+		return
 	}
 	hash := fmt.Sprintf("%x", md5.Sum(b))
-	old, ok := state[obj.input]
-	if ok {
+	old, ok := state[obj.hashFile()]
+	if ok && exists(obj.html) && exists(obj.pdf) {
 		if old == hash {
+			obj.log(fmt.Sprintf("unchanged: %s", obj.input))
 			channel <- hash
+			return
 		}
+	}
+	// TODO: pygments
+	if !obj.req.noHighlight {
+	}
+	if err := ioutil.WriteFile(obj.md, b, 0644); err != nil {
+		obj.err("unable to write md file", err)
+		channel <- ""
+		return
+	}
+	obj.log(fmt.Sprintf("%s -> %s", obj.md, obj.html))
+	if err := pythonMarkdown("-f", obj.html, obj.md); err != nil {
+		obj.err("unable to convert markdown", err)
+		channel <- ""
+		return
+	}
+	b, err = ioutil.ReadFile(obj.html)
+	if err != nil {
+		obj.err("unable to read html in", err)
+		channel <- ""
+		return
+	}
+	progress := ""
+	if !obj.req.noIndex && obj.ident > 0 {
+		progress = fmt.Sprintf("%d of %d", obj.ident+1, obj.total)
+	}
+	slide := Slide{
+		Style:    template.CSS(obj.req.useCSS),
+		Progress: progress,
+		ID:       fmt.Sprintf("md-%d", obj.ident),
+		DirID:    cleanPath(obj.input, false),
+		ObjectID: cleanPath(obj.input, true),
+		Content:  template.HTML(string(b)),
+	}
+	var buffer bytes.Buffer
+	if err := obj.req.templateHTML.Execute(&buffer, slide); err != nil {
+		obj.err("unable to execute template", err)
+		channel <- ""
+		return
+	}
+	if err := ioutil.WriteFile(obj.html, buffer.Bytes(), 0644); err != nil {
+		obj.err("unable to write html", err)
+		channel <- ""
+		return
+	}
+	cmd := exec.Command(wkHTMLToPDF,
+		"--margin-top", "0",
+		"--margin-bottom", "0",
+		"--margin-left", "0",
+		"--margin-right", "0",
+		"-O", "landscape",
+		obj.html,
+		obj.pdf)
+	if err := cmd.Run(); err != nil {
+		obj.err("wkhtmltopdf failed", err)
+		channel <- ""
+		return
 	}
 	channel <- hash
 }
@@ -280,6 +346,8 @@ func (r *runRequest) process() error {
 		}
 	}
 	chans := make(map[string]chan string)
+	count := len(files)
+	var pdf []string
 	for idx, f := range files {
 		c := make(chan string)
 		root := filepath.Join(r.outputDirectory, fmt.Sprintf("%d.", idx))
@@ -289,9 +357,12 @@ func (r *runRequest) process() error {
 			html:  root + "html",
 			pdf:   root + "pdf",
 			ident: idx,
+			req:   r,
+			total: count,
 		}
 		go build(c, obj, state)
-		chans[f] = c
+		chans[obj.hashFile()] = c
+		pdf = append(pdf, obj.pdf)
 	}
 	newState := make(map[string]string)
 	for k, c := range chans {
@@ -300,6 +371,13 @@ func (r *runRequest) process() error {
 			fatal("error building file", nil)
 		}
 		newState[k] = result
+	}
+	output := filepath.Join(r.outputDirectory, "output.pdf")
+	pdf = append(pdf, output)
+	fmt.Println("compiling", output)
+	cmd := exec.Command(pdfUnite, pdf...)
+	if err := cmd.Run(); err != nil {
+		return err
 	}
 	b, err := json.MarshalIndent(newState, "", "  ")
 	if err != nil {
