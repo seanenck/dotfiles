@@ -220,6 +220,9 @@ def _mdtoslides(args):
     state = {}
     cwd = os.getcwd()
     l_files = len(files)
+    show_idx = 1
+    if args.no_index:
+        show_idx = 0
     for f in sorted(files):
         print("converting " + f)
         str_id = str(idx)
@@ -232,7 +235,14 @@ def _mdtoslides(args):
         if not dname:
             dname = _ROOT
         with open(file_name, 'w') as w:
-            _write_html(w, css, uname, dname, str_id, f, idx + 1, l_files)
+            _write_html(w,
+                        css,
+                        uname,
+                        dname,
+                        str_id,
+                        f,
+                        show_idx * (idx + 1),
+                        l_files)
         p = subprocess.Popen(["md5sum", file_name], stdout=subprocess.PIPE)
         out, err = p.communicate()
         hashed = ""
@@ -296,6 +306,7 @@ def main():
     parser.add_argument("--merge-css", action="store_true")
     parser.add_argument("--no-highlighting", action="store_true")
     parser.add_argument("--print-css", action="store_true")
+    parser.add_argument("--no-index", action="store_true")
     args = parser.parse_args()
     if args.print_css:
         print(_CSS)
