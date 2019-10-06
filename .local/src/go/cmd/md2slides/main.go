@@ -247,12 +247,21 @@ func pythonMarkdown(parameters ...string) error {
 	return nil
 }
 
-func (o buildObject) log(message string) {
-	fmt.Println(fmt.Sprintf("%3d -> %s", o.ident, message))
+func (o buildObject) msg(cat, message string, color bool) {
+	category := cat
+	if color {
+		category = fmt.Sprintf("\033[1;31m%s\033[0m", cat)
+	}
+	msg := fmt.Sprintf("[%s] %3d -> %s", category, o.ident, message)
+	fmt.Println(msg)
+}
+
+func (o buildObject) info(message string) {
+	o.msg("INFO", message, false)
 }
 
 func (o buildObject) err(message string, err error) {
-	o.log(fmt.Sprintf("ERROR %s (%v)", message, err))
+	o.msg("ERROR", fmt.Sprintf("%s (%v)", message, err), true)
 }
 
 func (o buildObject) hashFile() string {
@@ -260,7 +269,7 @@ func (o buildObject) hashFile() string {
 }
 
 func (o buildObject) warn(message string) {
-	o.log(fmt.Sprintf("WARN %s", message))
+	o.msg("WARN", message, true)
 }
 
 func (o buildObject) pygmentize(md string) ([]byte, string, error) {
@@ -340,7 +349,7 @@ func cleanPath(path string, withFile bool) string {
 }
 
 func build(channel chan string, obj buildObject, state map[string]string) {
-	obj.log(fmt.Sprintf("%s -> %s", obj.input, obj.md))
+	obj.info(fmt.Sprintf("%s -> %s", obj.input, obj.md))
 	b, err := ioutil.ReadFile(obj.input)
 	if err != nil {
 		obj.err("unable to read input file", err)
@@ -351,7 +360,7 @@ func build(channel chan string, obj buildObject, state map[string]string) {
 	old, ok := state[obj.hashFile()]
 	if ok && exists(obj.html) && exists(obj.pdf) {
 		if old == hash {
-			obj.log(fmt.Sprintf("unchanged: %s", obj.input))
+			obj.info(fmt.Sprintf("unchanged: %s", obj.input))
 			channel <- hash
 			return
 		}
@@ -363,7 +372,7 @@ func build(channel chan string, obj buildObject, state map[string]string) {
 		if obj.req.noHighlight {
 			obj.warn("highlight block found but disabled")
 		} else {
-			obj.log(fmt.Sprintf("pygmentize %s", obj.md))
+			obj.info(fmt.Sprintf("pygmentize %s", obj.md))
 			mdNew, style, err := obj.pygmentize(mdRaw)
 			if err != nil {
 				obj.err("unable to pygmentize", err)
@@ -379,7 +388,7 @@ func build(channel chan string, obj buildObject, state map[string]string) {
 		channel <- ""
 		return
 	}
-	obj.log(fmt.Sprintf("%s -> %s", obj.md, obj.html))
+	obj.info(fmt.Sprintf("%s -> %s", obj.md, obj.html))
 	if err := pythonMarkdown("-f", obj.html, obj.md); err != nil {
 		obj.err("unable to convert markdown", err)
 		channel <- ""
@@ -414,7 +423,7 @@ func build(channel chan string, obj buildObject, state map[string]string) {
 		channel <- ""
 		return
 	}
-	obj.log(fmt.Sprintf("%s -> %s", obj.html, obj.pdf))
+	obj.info(fmt.Sprintf("%s -> %s", obj.html, obj.pdf))
 	cmd := exec.Command(wkHTMLToPDF,
 		"--margin-top", "0",
 		"--margin-bottom", "0",
