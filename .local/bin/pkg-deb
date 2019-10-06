@@ -130,17 +130,6 @@ def _build(env, settings):
     if os.path.exists(git_dir):
         shutil.rmtree(git_dir)
     shutil.copytree(_DEBIAN, os.path.join(source, _DEBIAN))
-    if settings.make_version:
-        for root, _, files in os.walk(source):
-            for f in files:
-                makefile = os.path.join(root, f)
-                if "Makefile" in makefile:
-                    print("adjusting Makefile for version: " + makefile)
-                    subprocess.call(["sed", "-i", "/^VERSION/ d", makefile])
-                    subprocess.call(["sed",
-                                     "-i",
-                                     "1s/^/VERSION := {}\\n/".format(pkgver),
-                                     makefile])
     cwd = os.getcwd()
     bindir = os.path.join(cwd, _BIN)
     if os.path.exists(bindir):
@@ -153,9 +142,12 @@ def _build(env, settings):
     environ["BUILD_VERSION"] = pkgver
     environ["VERSION"] = pkgver
     print('building package...')
-    subprocess.call(["dpkg-buildpackage", "-us", "-uc", "--build=binary"],
-                    env=environ,
-                    cwd=source)
+    r = subprocess.call(["dpkg-buildpackage", "-us", "-uc", "--build=binary"],
+                        env=environ,
+                        cwd=source)
+    if r != 0:
+        print("dpkg-buildpackage failed")
+        return
     os.chdir("..")
     debs = []
     for f in sorted(os.listdir(".")):
@@ -172,6 +164,7 @@ def _build(env, settings):
     lint_tmp = lint_log + ".tmp"
     mani = os.path.join(bindir, "manifest")
     manifests = []
+    has_lintian = shutil.which("lintian") is not None
     with open(lint_tmp, 'w') as f:
         for d in debs:
             bname = d.split("_")[0]
@@ -179,13 +172,23 @@ def _build(env, settings):
             with open(deb_mani, 'w') as manifest:
                 bin_deb = os.path.join(_BIN, d)
                 print("post processing {}".format(bin_deb))
-                subprocess.call(["lintian", bin_deb], stdout=f)
-                subprocess.call(["debsigs",
-                                 "--sign=origin",
-                                 "-k",
-                                 env.DEB_SIGN_KEY,
-                                 bin_deb])
-                subprocess.call(["dpkg", "-c", bin_deb], stdout=manifest)
+                if has_lintian:
+                    r = subprocess.call(["lintian", bin_deb], stdout=f)
+                    if r != 0:
+                        print("lintian failed")
+                        return
+                r = subprocess.call(["debsigs",
+                                     "--sign=origin",
+                                     "-k",
+                                     env.DEB_SIGN_KEY,
+                                     bin_deb])
+                if r != 0:
+                    print("sign failed")
+                    return
+                r = subprocess.call(["dpkg", "-c", bin_deb], stdout=manifest)
+                if r != 0:
+                    print("dpkg -c failed")
+                    return
                 manifests.append(deb_mani)
     with open("install.manifest", 'w') as output:
         output.write("files:\n")
@@ -202,9 +205,15 @@ def _build(env, settings):
                 lines = sorted([bname + ": " + x for x in lines if x])
                 for l in lines:
                     output.write(l + "\n")
-    subprocess.call(["sort", "-o", lint_log, lint_tmp])
-    res = subprocess.call(["diff", "-u", _LINT, lint_log])
-    if res != 0:
+    r = subprocess.call(["sort", "-o", lint_log, lint_tmp])
+    if r != 0:
+        print("sort failed")
+        return
+    if not has_lintian:
+        print("no lintian...")
+        return
+    r = subprocess.call(["diff", "-u", _LINT, lint_log])
+    if r != 0:
         print("lint change detected ^")
 
 
@@ -212,7 +221,6 @@ def _settings(config, package):
     """Load settings."""
     o = common.Object()
     o.gopath = _setting_bool(package, "gopath", True)
-    o.make_version = _setting_bool(package, "makever", False)
     o.git_checkout = True
     o.git_version = None
     if "git" in config:
