@@ -6,23 +6,37 @@ import json
 import shutil
 
 
+def _message(cat, msg):
+    print("=> {}: {}".format(cat, msg))
+
+
 def _warn(message):
-    print("=> WARN: {}".format(message))
+    _message("WARN", message)
 
 
-_NO_PYTHON_MARKDOWN = False
+def _error(message):
+    _message("ERROR", message)
+
+
+_MISSING_PACKAGE = False
 try:
     import markdown
 except ImportError:
-    _warn("python markdown not available")
-    _NO_PYTHON_MARKDOWN = True
+    _error("python-markdown unavailable")
+    _MISSING_PACKAGE = True
+
+try:
+    import pygments
+except ImportError:
+    _error("pygments unavailable")
+    _MISSING_PACKAGE = True
 
 
 _STATE = ".mdstate"
-_MD = "markdown"
 _HTMLTOPDF = "wkhtmltopdf"
 _PDFUNITE = "pdfunite"
 _ROOT = "root"
+_CMDS = [_HTMLTOPDF, _PDFUNITE]
 
 _CSS = """
 body {
@@ -103,14 +117,9 @@ def _write_html(w, css, unique_id, dir_id, obj_id, md, slide, of):
                                                     dir_id,
                                                     obj_id))
     w.flush()
-    if _NO_PYTHON_MARKDOWN:
-        res = subprocess.call([_MD, md], stdout=w)
-        if res != 0:
-            raise Exception("markdown processing failed")
-    else:
-        with open(md, 'r') as md_text:
-            w.write(markdown.markdown(md_text.read(),
-                    extensions=["markdown.extensions.tables"]))
+    with open(md, 'r') as md_text:
+        w.write(markdown.markdown(md_text.read(),
+                extensions=["markdown.extensions.tables"]))
     w.write("</div></body></html>")
 
 
@@ -122,11 +131,6 @@ def _path_cleanup(p):
 
 
 def _pygments(args, inputs, css):
-    try:
-        import pygments
-    except ImportError:
-        _warn("pygments unavailable")
-        return inputs, css
     from pygments import highlight
     from pygments.lexers import get_lexer_by_name, guess_lexer
     from pygments.formatters import HtmlFormatter
@@ -295,11 +299,11 @@ def main():
     if args.print_css:
         print(_CSS)
         return
-    for cmd in [_MD, _HTMLTOPDF, _PDFUNITE]:
-        which = shutil.which(cmd)
-        if which is None:
-            print("requires: poppler-utils wkhtmltopdf markdown")
-            exit(1)
+    commands = [_error("{} is not installed".format(x)) for x in _CMDS
+                if shutil.which(x) is None]
+    checks = [_MISSING_PACKAGE] + [True for x in commands]
+    if any([x for x in checks if x or x is None]):
+        exit(1)
     try:
         _mdtoslides(args)
     except Exception as e:
