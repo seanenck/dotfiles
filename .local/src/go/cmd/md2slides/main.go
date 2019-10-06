@@ -119,13 +119,6 @@ type (
 )
 
 func (r *runRequest) check(run bool) error {
-	if run {
-		if !exists(r.outputDirectory) {
-			if err := os.Mkdir(r.outputDirectory, 0755); err != nil {
-				return err
-			}
-		}
-	}
 	if r.cssFile == "" {
 		if r.mergeCSS {
 			return fmt.Errorf("merge CSS invalid with no CSS file")
@@ -151,6 +144,13 @@ func (r *runRequest) check(run bool) error {
 	for _, cmd := range [...]string{pdfUnite, wkHTMLToPDF, pygmentize} {
 		if err := isCommandAvailable(cmd); err != nil {
 			return fmt.Errorf("%s command not found: %v", cmd, err)
+		}
+	}
+	if run {
+		if !exists(r.outputDirectory) {
+			if err := os.Mkdir(r.outputDirectory, 0755); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
