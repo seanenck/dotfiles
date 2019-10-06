@@ -276,7 +276,6 @@ def main():
     elif args.command == "schroots":
         cmd = [["apt"] + [x] for x in ["update",
                                        "upgrade",
-                                       "dist-upgrade",
                                        "autoremove",
                                        "autoclean"]]
         if len(unknowns) > 0:
