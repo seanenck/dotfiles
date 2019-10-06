@@ -40,7 +40,7 @@ def notify(message, duration):
 
 def is_online():
     """Report if online (or not)."""
-    return call(["wsw", "--mode", "online"]) == 0
+    return call(["wsw-bin", "--mode", "online"]) == 0
 
 
 class Object(object):

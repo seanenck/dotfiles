@@ -257,7 +257,7 @@ def _daemon(env):
             if ts > 20:
                 sync = True
         if sync:
-            out, err = common.get_output_or_error(["wsw", "--mode", "current"])
+            out, err = common.get_output_or_error(["wsw-bin", "--mode", "current"])
             if not err:
                 network = out.decode("utf-8").strip()
                 found = False

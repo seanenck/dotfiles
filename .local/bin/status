@@ -98,7 +98,7 @@ def _daemon(env):
         else:
             outputs.append("DOWN")
         addrs = []
-        _run_command(["wsw", "--mode", "addr"], addrs)
+        _run_command(["wsw-bin", "--mode", "addr"], addrs)
         has_addr = ""
         if len(addrs) > 0:
             has_addr = ":"

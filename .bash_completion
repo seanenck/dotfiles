@@ -18,14 +18,14 @@ _totp() {
 
 complete -F _totp totp
 
-_wsw() {
+_wsw-bin() {
     local opts cur
-    opts=$(wsw --mode list)
+    opts=$(wsw-bin --mode list)
     cur=${COMP_WORDS[COMP_CWORD]}
     COMPREPLY=( $(compgen -W "reload $opts" -- $cur) )
 }
 
-complete -F _wsw wsw
+complete -F _wsw-bin wsw-bin
 
 _manage() {
     source $HOME/.local/bin/conf
