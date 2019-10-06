@@ -158,6 +158,7 @@ def _pygments(args, inputs, css):
                             use_lex = get_lexer_by_name(lex)
                         lines.append(highlight(code, use_lex, formatter))
                         did = True
+                        lexer_name = None
                         in_section = None
                     else:
                         lex = line.replace("```", "")
