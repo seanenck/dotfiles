@@ -16,9 +16,12 @@ import (
 )
 
 const (
+	defaultLexer = "text"
 	pdfUnite     = "pdfunite"
 	wkHTMLToPDF  = "wkhtmltopdf"
 	pygmentize   = "pygmentize"
+	codeBlock    = "```"
+	formatter    = "html"
 	templateHTML = `<!doctype html>
 <html lang='en'>
 <head><style>
@@ -214,6 +217,23 @@ func isCommandAvailable(name string) error {
 	return nil
 }
 
+func pythonPygments(file string, parameters ...string) error {
+	if parameters == nil || len(parameters) == 0 {
+		return fmt.Errorf("invalid parameters (none given)")
+	}
+	stdout, err := os.Create(file)
+	if err != nil {
+		return err
+	}
+	defer stdout.Close()
+	cmd := exec.Command("pygmentize", parameters...)
+	cmd.Stdout = stdout
+	if err := cmd.Run(); err != nil {
+		return err
+	}
+	return nil
+}
+
 func pythonMarkdown(parameters ...string) error {
 	args := []string{"-m", "markdown", "-x", "markdown.extensions.tables"}
 	if parameters == nil || len(parameters) == 0 {
@@ -239,6 +259,75 @@ func (o buildObject) hashFile() string {
 	return o.md
 }
 
+func (o buildObject) warn(message string) {
+	o.log(fmt.Sprintf("WARN %s", message))
+}
+
+func (o buildObject) pygmentize(md string) ([]byte, string, error) {
+	cssFile := o.md + ".css"
+	err := pythonPygments(cssFile, "-S", "colorful", "-f", formatter)
+	if err != nil {
+		return nil, "", err
+	}
+	b, err := ioutil.ReadFile(cssFile)
+	if err != nil {
+		return nil, "", err
+	}
+	usedDefaultLexer := false
+	in := false
+	var lines []string
+	var codeLines []string
+	lexer := defaultLexer
+	inLines := strings.Split(md, "\n")
+	for idx, l := range inLines {
+		strip := strings.TrimSpace(l)
+		if strings.HasPrefix(strip, codeBlock) {
+			if in {
+				code := strings.Join(codeLines, "\n")
+				if lexer == defaultLexer {
+					usedDefaultLexer = true
+				}
+				fragment := fmt.Sprintf("%s%d", o.md, idx)
+				codeFragment := fragment + ".txt"
+				htmlFragment := fragment + ".html"
+				if err := ioutil.WriteFile(codeFragment, []byte(code), 0644); err != nil {
+					return nil, "", err
+				}
+				if err := pythonPygments(htmlFragment, "-f", formatter, "-l", lexer, codeFragment); err != nil {
+					return nil, "", err
+				}
+				raw, err := ioutil.ReadFile(htmlFragment)
+				if err != nil {
+					return nil, "", err
+				}
+				lines = append(lines, string(raw))
+				codeLines = []string{}
+				lexer = defaultLexer
+				in = false
+			} else {
+				in = true
+				lexer = strings.TrimSpace(strings.Replace(strip, codeBlock, "", -1))
+				if lexer == "" {
+					lexer = defaultLexer
+				}
+			}
+			continue
+		}
+		if in {
+			codeLines = append(codeLines, l)
+			continue
+		}
+		lines = append(lines, l)
+	}
+	if in {
+		return nil, "", fmt.Errorf("unclosed code block")
+	}
+	if usedDefaultLexer {
+		o.warn(fmt.Sprintf("used default lexer: %s", defaultLexer))
+	}
+	return []byte(strings.Join(lines, "\n")), string(b), nil
+}
+
 func cleanPath(path string, withFile bool) string {
 	use := path
 	if !withFile {
@@ -251,7 +340,7 @@ func cleanPath(path string, withFile bool) string {
 }
 
 func build(channel chan string, obj buildObject, state map[string]string) {
-	obj.log(fmt.Sprintf("converting %s %s", obj.input, obj.md))
+	obj.log(fmt.Sprintf("%s -> %s", obj.input, obj.md))
 	b, err := ioutil.ReadFile(obj.input)
 	if err != nil {
 		obj.err("unable to read input file", err)
@@ -267,8 +356,23 @@ func build(channel chan string, obj buildObject, state map[string]string) {
 			return
 		}
 	}
-	// TODO: pygments
-	if !obj.req.noHighlight {
+	mdRaw := string(b)
+	highlight := strings.Contains(mdRaw, codeBlock)
+	css := obj.req.useCSS
+	if highlight {
+		if obj.req.noHighlight {
+			obj.warn("highlight block found but disabled")
+		} else {
+			obj.log(fmt.Sprintf("pygmentize %s", obj.md))
+			mdNew, style, err := obj.pygmentize(mdRaw)
+			if err != nil {
+				obj.err("unable to pygmentize", err)
+				channel <- ""
+				return
+			}
+			css = fmt.Sprintf("%s\n%s", css, style)
+			b = mdNew
+		}
 	}
 	if err := ioutil.WriteFile(obj.md, b, 0644); err != nil {
 		obj.err("unable to write md file", err)
@@ -292,7 +396,7 @@ func build(channel chan string, obj buildObject, state map[string]string) {
 		progress = fmt.Sprintf("%d of %d", obj.ident+1, obj.total)
 	}
 	slide := Slide{
-		Style:    template.CSS(obj.req.useCSS),
+		Style:    template.CSS(css),
 		Progress: progress,
 		ID:       fmt.Sprintf("md-%d", obj.ident),
 		DirID:    cleanPath(obj.input, false),
@@ -310,6 +414,7 @@ func build(channel chan string, obj buildObject, state map[string]string) {
 		channel <- ""
 		return
 	}
+	obj.log(fmt.Sprintf("%s -> %s", obj.html, obj.pdf))
 	cmd := exec.Command(wkHTMLToPDF,
 		"--margin-top", "0",
 		"--margin-bottom", "0",
