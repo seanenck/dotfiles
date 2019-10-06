@@ -1,6 +1,6 @@
 FLAGS   := -ldflags '-linkmode external -extldflags $(LDFLAGS) -s -w' -gcflags=all=-trimpath=$(GOPATH) -asmflags=all=-trimpath=$(GOPATH) -buildmode=pie
 SRC     := $(shell find . -type f -name "*.go")
-OBJECTS := qrencode
+OBJECTS := qrencode md2slides
 
 .PHONY: build lint clean
 
