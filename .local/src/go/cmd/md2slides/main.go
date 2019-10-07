@@ -62,7 +62,7 @@ li:nth-child(odd){
     background: #e6f2ff;
 }
 li {
-    background: #cce6ff;
+	background: #fff7cc;
     list-style-type: square;
     margin: 3px 0;
 }
@@ -88,8 +88,8 @@ tr {
 }
 
 th {
-  background-color: #666699;
-  color: #ffffff;
+	background-color: #666699;
+	color: #ffffff;
 }
 `
 )
