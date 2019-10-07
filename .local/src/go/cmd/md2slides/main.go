@@ -68,12 +68,12 @@ li {
 }
 
 table {
-  width: 100%;
+	width: 100%;
 }
 
 th, td {
-  text-align: left;
-  padding: 4px;
+	text-align: left;
+	padding: 4px;
 }
 
 tr:nth-child(even) {
@@ -85,8 +85,8 @@ tr {
 }
 
 th {
-	background-color: #666699;
-	color: #ffffff;
+    background-color: #666699;
+    color: #ffffff;
 }
 `
 )
@@ -395,15 +395,6 @@ func build(channel chan string, obj buildObject, state map[string]string) {
 		channel <- ""
 		return
 	}
-	hash := fmt.Sprintf("%x", md5.Sum(b))
-	old, ok := state[obj.hashFile()]
-	if ok && exists(obj.html) && exists(obj.pdf) {
-		if old == hash {
-			obj.notice(fmt.Sprintf("unchanged: %s", obj.input))
-			channel <- hash
-			return
-		}
-	}
 	mdRaw := string(b)
 	highlight := strings.Contains(mdRaw, codeBlock)
 	css := obj.req.useCSS
@@ -420,6 +411,18 @@ func build(channel chan string, obj buildObject, state map[string]string) {
 			}
 			css = fmt.Sprintf("%s\n%s", css, style)
 			b = mdNew
+		}
+	}
+	hashObjects := []byte{}
+	hashObjects = append(hashObjects, b...)
+	hashObjects = append(hashObjects, []byte(css)...)
+	hash := fmt.Sprintf("%x", md5.Sum(hashObjects))
+	old, ok := state[obj.hashFile()]
+	if ok && exists(obj.html) && exists(obj.pdf) {
+		if old == hash {
+			obj.notice(fmt.Sprintf("unchanged: %s", obj.input))
+			channel <- hash
+			return
 		}
 	}
 	if err := ioutil.WriteFile(obj.md, b, 0644); err != nil {
