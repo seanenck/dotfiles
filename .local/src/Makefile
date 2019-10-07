@@ -3,7 +3,12 @@ DIRS    := go rust
 
 .PHONY: $(DIRS) dwm
 
-all: $(DIRS) dwm
+all: required $(DIRS) dwm
+
+required:
+ifeq ($(SCHROOT_CHROOT_NAME),)
+	$(error "must be run in schroot")
+endif
 
 $(DIRS):
 	make -C $@

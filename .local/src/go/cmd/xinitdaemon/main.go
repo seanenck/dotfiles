@@ -46,7 +46,7 @@ func main() {
 	go func() {
 		daemon(false, "dunst", "-config", dunstConf)
 	}()
-	xautolock := fmt.Sprintf("\"%s lock\"", filepath.Join(localBin, "locking"))
+	xautolock := filepath.Join(localBin, "locking")
 	go func() {
 		daemon(false, "xautolock", "-time", "5", "-locker", xautolock)
 	}()

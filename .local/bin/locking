@@ -8,6 +8,8 @@ import time
 import display
 import vol
 
+_LOCK = "lock"
+
 
 def _is_locked():
     res = subprocess.call(["pidof", "i3lock"])
@@ -79,13 +81,13 @@ def _toggle(env):
 def main():
     """Program entry."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("command")
+    parser.add_argument("--command", default=_LOCK)
     args = parser.parse_args()
     env = common.read_env()
     env = common.add_env(env)
     if args.command == "toggle":
         _toggle(env)
-    elif args.command == "lock":
+    elif args.command == _LOCK:
         _lock(env)
     elif args.command == "sleep":
         _sleep(env)
