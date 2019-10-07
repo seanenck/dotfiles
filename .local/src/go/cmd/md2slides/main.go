@@ -102,6 +102,9 @@ type (
 		noIndex         bool
 		maxCount        int
 		useCSS          string
+		debug           bool
+		stateFile       string
+		outputFile      string
 		templateHTML    *template.Template
 	}
 
@@ -283,7 +286,11 @@ func (o buildObject) msg(msgType messageType, message string) {
 	if useColor != "" {
 		category = fmt.Sprintf("\033[1;%sm%s\033[0m", useColor, category)
 	}
-	msg := fmt.Sprintf("    %-8s [%4d] -> %s", category, o.ident, message)
+	id := fmt.Sprintf("[%4d]", o.ident)
+	if o.ident < 0 {
+		id = "      "
+	}
+	msg := fmt.Sprintf("    %-8s %s %s", category, id, message)
 	fmt.Println(msg)
 }
 
@@ -413,9 +420,17 @@ func build(channel chan string, obj buildObject, state map[string]string) {
 			b = mdNew
 		}
 	}
+	progress := ""
+	if !obj.req.noIndex && obj.ident > 0 {
+		progress = fmt.Sprintf("%d of %d", obj.ident+1, obj.total)
+	}
+	if obj.req.debug {
+		progress = fmt.Sprintf("%s (%d) progress: %s", obj.input, obj.ident, progress)
+	}
 	hashObjects := []byte{}
 	hashObjects = append(hashObjects, b...)
 	hashObjects = append(hashObjects, []byte(css)...)
+	hashObjects = append(hashObjects, []byte(fmt.Sprintf("%v", obj.req.debug))...)
 	hash := fmt.Sprintf("%x", md5.Sum(hashObjects))
 	old, ok := state[obj.hashFile()]
 	if ok && exists(obj.html) && exists(obj.pdf) {
@@ -441,10 +456,6 @@ func build(channel chan string, obj buildObject, state map[string]string) {
 		obj.err("unable to read html in", err)
 		channel <- ""
 		return
-	}
-	progress := ""
-	if !obj.req.noIndex && obj.ident > 0 {
-		progress = fmt.Sprintf("%d of %d", obj.ident+1, obj.total)
 	}
 	slide := Slide{
 		Style:    template.CSS(css),
@@ -492,7 +503,7 @@ func (r *runRequest) process() error {
 		fatal("no files found", nil)
 	}
 	state := make(map[string]string)
-	stateFile := filepath.Join(r.outputDirectory, "state.json")
+	stateFile := filepath.Join(r.outputDirectory, r.stateFile)
 	if exists(stateFile) {
 		b, err := ioutil.ReadFile(stateFile)
 		if err != nil {
@@ -529,9 +540,8 @@ func (r *runRequest) process() error {
 		}
 		newState[k] = result
 	}
-	output := filepath.Join(r.outputDirectory, "output.pdf")
+	output := filepath.Join(r.outputDirectory, r.outputFile)
 	pdf = append(pdf, output)
-	fmt.Println("compiling", output)
 	cmd := exec.Command(pdfUnite, pdf...)
 	if err := cmd.Run(); err != nil {
 		return err
@@ -543,17 +553,26 @@ func (r *runRequest) process() error {
 	if err := ioutil.WriteFile(stateFile, b, 0644); err != nil {
 		return err
 	}
+	fmt.Println("======================================================================")
+	parent := buildObject{ident: -1}
+	if r.debug {
+		parent.warn("DEBUG build")
+	}
+	parent.success(fmt.Sprintf("build %s", output))
 	return nil
 }
 
 func main() {
-	output := flag.String("output", "bin/", "output directory")
+	output := flag.String("artifacts", "bin/", "output directory")
 	css := flag.String("css", "", "CSS to use (can be overriden by pygments)")
 	mergeCSS := flag.Bool("merge-css", false, "merge given CSS with default css (else override)")
 	noHighlight := flag.Bool("no-highlighting", false, "disable pygments highlighting")
 	printCSS := flag.Bool("print-css", false, "print CSS (don't process)")
 	noIndex := flag.Bool("no-index", false, "disable index output (header numbering)")
 	maxCount := flag.Int("max-count", 100, "prevent scanning too many files")
+	debug := flag.Bool("debug", false, "enable debugging information in slides")
+	outFile := flag.String("output", "output.pdf", "output file name")
+	stateFile := flag.String("state", "state.json", "state file to use")
 	flag.Parse()
 	tmpl, err := template.New("t").Parse(templateHTML)
 	if err != nil {
@@ -567,6 +586,9 @@ func main() {
 		noIndex:         *noIndex,
 		templateHTML:    tmpl,
 		maxCount:        *maxCount,
+		debug:           *debug,
+		stateFile:       *stateFile,
+		outputFile:      *outFile,
 	}
 	printCSSOnly := *printCSS
 	if err := r.check(!printCSSOnly); err != nil {
