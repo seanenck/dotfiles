@@ -93,6 +93,7 @@ type (
 		mergeCSS        bool
 		noHighlight     bool
 		noIndex         bool
+		maxCount        int
 		useCSS          string
 		templateHTML    *template.Template
 	}
@@ -204,6 +205,9 @@ func (r *runRequest) listMarkdownFiles() ([]string, error) {
 	})
 	if err != nil {
 		return nil, err
+	}
+	if len(files) > r.maxCount {
+		return nil, fmt.Errorf("%d exceeds the max amount of files allowed", len(files))
 	}
 	sort.Strings(files)
 	return files, nil
@@ -510,6 +514,7 @@ func main() {
 	noHighlight := flag.Bool("no-highlighting", false, "disable pygments highlighting")
 	printCSS := flag.Bool("print-css", false, "print CSS (don't process)")
 	noIndex := flag.Bool("no-index", false, "disable index output (header numbering)")
+	maxCount := flag.Int("max-count", 100, "prevent scanning too many files")
 	flag.Parse()
 	tmpl, err := template.New("t").Parse(templateHTML)
 	if err != nil {
@@ -522,6 +527,7 @@ func main() {
 		noHighlight:     *noHighlight,
 		noIndex:         *noIndex,
 		templateHTML:    tmpl,
+		maxCount:        *maxCount,
 	}
 	printCSSOnly := *printCSS
 	if err := r.check(!printCSSOnly); err != nil {
