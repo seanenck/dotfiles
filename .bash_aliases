@@ -13,6 +13,34 @@ smplayer() {
     _nohup_cmd smplayer "$@"
 }
 
+update-alternative() {
+    if [ -z "$1" ]; then
+        echo "alternative name missing..."
+        return
+    fi
+    if [ -z "$2" ]; then
+        echo "target missing..."
+        return
+    fi
+    sudo update-alternatives --install /usr/bin/$1 $1 $2 100
+}
+
+shrink-image() {
+    local s
+    if [ ! -e "$1" ]; then
+        echo "image name missing"
+        return
+    fi
+    for s in $(seq 1 2); do
+        echo "pass $s"
+        convert -resize %50 $1 $1
+    done
+}
+
+dirty-memory() {
+    watch -n 1 grep -e Dirty: -e Writeback: /proc/meminfo
+}
+
 mplayer() {
     source $HOME/.local/bin/conf
     local playlist=${USER_TMP}mplayer.playlist

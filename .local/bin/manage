@@ -27,6 +27,8 @@ _PURGE = ["mv",
           "wsw",
           "pkill",
           "i3",
+          "goimports",
+          "totp",
           "volume",
           "locking"]
 
@@ -51,6 +53,7 @@ _BY_SIZE = {
         "sudo": 2,
         "python": 2,
         "touch": 2,
+        "grep": 2,
         "scp": 4,
         "kill": 3,
         "diff": 4,
