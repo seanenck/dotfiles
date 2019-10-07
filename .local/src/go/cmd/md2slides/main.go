@@ -59,6 +59,7 @@ h1 {
     font-size: 48px;
 }
 li {
+	background-color: #f0f5f5;
     list-style-type: square;
     margin: 3px 0;
 }
