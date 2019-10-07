@@ -40,6 +40,16 @@ mplayer() {
     _nohup_cmd kitty --class mplayer -- /usr/bin/mplayer -input conf=${HOME_XDG}mplayer.conf -af volume=-20:1 -loop 0 -playlist $playlist
 }
 
+totp() {
+    local cmd
+    source $HOME/.local/bin/conf
+    cmd=""
+    if [ ! -z "$1" ]; then
+        cmd="--command $1"
+    fi
+    $HOME_SRC_GO/totp-bin --pass $(_totp_pass) $cmd
+}
+
 proxy() {
     if [ -z "$1" ]; then
         echo "host required"

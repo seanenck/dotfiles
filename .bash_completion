@@ -11,7 +11,8 @@ complete -F _email email
 
 _totp() {
     local opts cur
-    opts=$(totp _list_)
+    source $HOME/.local/bin/conf
+    opts=$($HOME_SRC_GO/totp-bin --list --pass $(_totp_pass))
     cur=${COMP_WORDS[COMP_CWORD]}
     COMPREPLY=( $(compgen -W "$opts" -- $cur) )
 }

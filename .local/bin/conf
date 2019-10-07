@@ -2,6 +2,8 @@
 ## various points
 HOME_BIN=$HOME/.local/bin
 HOME_XDG=$HOME/.config/
+HOME_SRC=$HOME/.local/src
+HOME_SRC_GO=${HOME_SRC}/go/
 
 # cache files
 HOME_CACHE=$HOME/.cache/home/
@@ -50,6 +52,11 @@ _exports() {
              JOURNALS; do
         echo "$f=${!f}"
     done
+}
+
+_totp_pass() {
+    source $PRIV_CONF
+    echo $PERM_PASS/$TOTP_PASS
 }
 
 _setup() {
