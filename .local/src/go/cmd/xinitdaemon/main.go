@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os/exec"
 	"path/filepath"
 	"time"
@@ -19,7 +20,7 @@ func run(local bool, cmd string, args ...string) {
 	}
 	command := exec.Command(cmd, args...)
 	if err := command.Run(); err != nil {
-		fmt.Println(fmt.Sprintf("%s %v -> %v", exe, args, err))
+		log.Println(fmt.Sprintf("%s %v -> %v", exe, args, err))
 	}
 }
 
@@ -36,6 +37,7 @@ func main() {
 	flag.Parse()
 	localBin = *bin
 	homeDir := *home
+	log.Println("started...")
 	run(true, "subsystem", "backlight", "mid")
 	run(true, "subsystem", "workspaces", "mobile")
 	go func() {
