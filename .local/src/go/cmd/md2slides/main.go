@@ -275,7 +275,7 @@ func (o buildObject) msg(msgType messageType, message string) {
 		category = "NOTICE  "
 	case goodMsg:
 		useColor = greenColor
-		category = "PASSED  "
+		category = "BUILT   "
 	default:
 		category = "UNKNOWN "
 		useColor = redColor
