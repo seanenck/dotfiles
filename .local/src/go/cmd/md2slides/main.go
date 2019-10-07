@@ -540,7 +540,26 @@ func (r *runRequest) process() error {
 		}
 		newState[k] = result
 	}
+	done := len(state) == len(newState)
+	if done {
+		for k, v := range state {
+			newValue, ok := newState[k]
+			if ok {
+				if newValue == v {
+					continue
+				}
+			}
+			done = false
+			break
+		}
+	}
 	output := filepath.Join(r.outputDirectory, r.outputFile)
+	fmt.Println("======================================================================")
+	parent := buildObject{ident: -1}
+	if done && exists(output) {
+		parent.notice("no changes detected")
+		return nil
+	}
 	pdf = append(pdf, output)
 	cmd := exec.Command(pdfUnite, pdf...)
 	if err := cmd.Run(); err != nil {
@@ -553,12 +572,10 @@ func (r *runRequest) process() error {
 	if err := ioutil.WriteFile(stateFile, b, 0644); err != nil {
 		return err
 	}
-	fmt.Println("======================================================================")
-	parent := buildObject{ident: -1}
 	if r.debug {
 		parent.warn("DEBUG build")
 	}
-	parent.success(fmt.Sprintf("build %s", output))
+	parent.success(fmt.Sprintf("%s", output))
 	return nil
 }
 
