@@ -40,4 +40,4 @@ xinput set-prop $(xinput | grep "Finger" | sed -n -e 's/^.*id=//p' | sed -e "s/\
 xset b off
 xset b 0 0 0
 xsetroot -solid "#333333"
-$localbin/xinitdaemon -bin $localbin -home $HOME > /tmp/.xinitdaemon
+$HOME/.local/src/go/xinitdaemon-bin -bin $localbin -home $HOME > /tmp/.xinitdaemon

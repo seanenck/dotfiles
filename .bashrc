@@ -99,6 +99,14 @@ DEBEMAIL="enckse@voidedtech.com"
 DEBFULLNAME="Sean Enck"
 export DEB_SIGN_KEY
 
+
+for f in mutt; do
+    alias $f="echo 'disabled in bash'"
+done
+for f in qrencode md2slides; do
+    alias $f="$HOME_SRC_GO/$f-bin"
+done
+
 if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
 fi
