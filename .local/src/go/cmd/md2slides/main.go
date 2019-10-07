@@ -16,6 +16,14 @@ import (
 )
 
 const (
+	errorMsg     = 0
+	warnMsg      = 1
+	noticeMsg    = 2
+	infoMsg      = 3
+	goodMsg      = 4
+	redColor     = "31"
+	yellowColor  = "32"
+	greenColor   = "33"
 	defaultLexer = "text"
 	pdfUnite     = "pdfunite"
 	wkHTMLToPDF  = "wkhtmltopdf"
@@ -87,6 +95,8 @@ th {
 )
 
 type (
+	messageType int
+
 	runRequest struct {
 		outputDirectory string
 		cssFile         string
@@ -251,29 +261,57 @@ func pythonMarkdown(parameters ...string) error {
 	return nil
 }
 
-func (o buildObject) msg(cat, message string, color bool) {
-	category := cat
-	if color {
-		category = fmt.Sprintf("\033[1;31m%s\033[0m", cat)
+func (o buildObject) msg(msgType messageType, message string) {
+	category := ""
+	useColor := ""
+	switch msgType {
+	case errorMsg:
+		useColor = redColor
+		category = "ERROR   "
+	case warnMsg:
+		useColor = redColor
+		category = "WARN    "
+	case infoMsg:
+		category = "INFO"
+	case noticeMsg:
+		useColor = yellowColor
+		category = "NOTICE  "
+	case goodMsg:
+		useColor = greenColor
+		category = "PASSED  "
+	default:
+		category = "UNKNOWN "
+		useColor = redColor
 	}
-	msg := fmt.Sprintf("[%s] %3d -> %s", category, o.ident, message)
+	if useColor != "" {
+		category = fmt.Sprintf("\033[1;%sm%s\033[0m", useColor, category)
+	}
+	msg := fmt.Sprintf("    %-8s [%4d] -> %s", category, o.ident, message)
 	fmt.Println(msg)
 }
 
+func (o buildObject) success(message string) {
+	o.msg(goodMsg, message)
+}
+
 func (o buildObject) info(message string) {
-	o.msg("INFO", message, false)
+	o.msg(infoMsg, message)
 }
 
 func (o buildObject) err(message string, err error) {
-	o.msg("ERROR", fmt.Sprintf("%s (%v)", message, err), true)
+	o.msg(errorMsg, fmt.Sprintf("%s (%v)", message, err))
 }
 
 func (o buildObject) hashFile() string {
 	return o.md
 }
 
+func (o buildObject) notice(message string) {
+	o.msg(noticeMsg, message)
+}
+
 func (o buildObject) warn(message string) {
-	o.msg("WARN", message, true)
+	o.msg(warnMsg, message)
 }
 
 func (o buildObject) pygmentize(md string) ([]byte, string, error) {
@@ -364,7 +402,7 @@ func build(channel chan string, obj buildObject, state map[string]string) {
 	old, ok := state[obj.hashFile()]
 	if ok && exists(obj.html) && exists(obj.pdf) {
 		if old == hash {
-			obj.info(fmt.Sprintf("unchanged: %s", obj.input))
+			obj.notice(fmt.Sprintf("unchanged: %s", obj.input))
 			channel <- hash
 			return
 		}
@@ -441,6 +479,7 @@ func build(channel chan string, obj buildObject, state map[string]string) {
 		channel <- ""
 		return
 	}
+	obj.success(fmt.Sprintf("%s -> %s", obj.input, obj.pdf))
 	channel <- hash
 }
 
