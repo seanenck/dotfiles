@@ -58,11 +58,7 @@ h1 {
     text-align: center;
     font-size: 48px;
 }
-li:nth-child(odd){
-    background: #e6f2ff;
-}
 li {
-	background: #fff7cc;
     list-style-type: square;
     margin: 3px 0;
 }
