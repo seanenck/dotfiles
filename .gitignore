@@ -4,8 +4,7 @@
 !.local/bin/
 .local/bin/*-bin
 !.local/src/
-.local/src/go/qrencode
-.local/src/go/md2slides
+.local/src/go/*-bin
 *.pyc
 target
 __pycache__

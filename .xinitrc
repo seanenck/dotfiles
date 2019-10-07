@@ -39,30 +39,5 @@ xinput set-prop "$deviceid" "$accel" -0.25
 xinput set-prop $(xinput | grep "Finger" | sed -n -e 's/^.*id=//p' | sed -e "s/\s/ /g" | cut -d " " -f 1) "Device Enabled" 0
 xset b off
 xset b 0 0 0
-$localbin/subsystem backlight mid
-$localbin/subsystem workspaces mobile
-while true; do
-    pidof dwm-bin > /dev/null
-    if [ $? -ne 0 ]; then
-        $localbin/dwm-bin &
-        sleep 1
-        xsetroot -solid "#333333"
-    fi
-    pidof dunst > /dev/null
-    if [ $? -ne 0 ]; then
-        dunst -config $HOME/.config/dunst &
-    fi
-    pidof xautolock > /dev/null
-    if [ $? -ne 0 ]; then
-        xautolock -time 5 -locker "$localbin/locking lock" &
-    fi
-    pgrep status > /dev/null
-    if [ $? -ne 0 ]; then
-        $localbin/status daemon &
-    fi
-    pgrep syncing > /dev/null
-    if [ $? -ne 0 ]; then
-        $localbin/syncing &
-    fi
-    sleep 1
-done
+xsetroot -solid "#333333"
+$localbin/xinitdaemon -bin $localbin -home $HOME > /tmp/.xinitdaemon
