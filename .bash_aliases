@@ -25,6 +25,22 @@ update-alternative() {
     sudo update-alternatives --install /usr/bin/$1 $1 $2 100
 }
 
+proxy-port() {
+    if [ -z "$1" ]; then
+        echo "no local port"
+        return
+    fi
+    if [ -z "$2" ]; then
+        echo "no remote port"
+        return
+    fi
+    if [ -z "$3" ]; then
+        echo "no server"
+        return
+    fi
+    ssh -L $1:localhost:$2 $3
+}
+
 shrink-image() {
     local s
     if [ ! -e "$1" ]; then
