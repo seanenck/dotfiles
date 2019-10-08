@@ -103,6 +103,10 @@ for i in ['q', '<F1>']
 endfor
 imap <F1> <Nop>
 
+nnoremap <C-K> <C-W><C-v>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-J> <C-W><C-H>
+nnoremap <C-X> <C-W><C-Q>
 
 " airline
 " git clone https://github.com/vim-airline/vim-airline ~/.vim/pack/dist/start/vim-airline
