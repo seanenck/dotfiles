@@ -26,19 +26,20 @@ update-alternative() {
 }
 
 proxy-port() {
+    local port
     if [ -z "$1" ]; then
-        echo "no local port"
-        return
-    fi
-    if [ -z "$2" ]; then
-        echo "no remote port"
-        return
-    fi
-    if [ -z "$3" ]; then
         echo "no server"
         return
     fi
-    ssh -L $1:localhost:$2 $3
+    if [ -z "$2" ]; then
+        echo "no port"
+        return
+    fi
+    port=$2
+    if [ ! -z "$3" ]; then
+        port=$3
+    fi
+    ssh -L $2:localhost:$port $1
 }
 
 shrink-image() {
