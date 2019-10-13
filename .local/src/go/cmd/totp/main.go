@@ -154,7 +154,7 @@ func display(token, pass, totp string, available []string) error {
 }
 
 func main() {
-	totp := flag.String("totp", "totp", "directory of totp codes in a pass database")
+	totp := flag.String("totp", "services/totp", "directory of totp codes in a pass database")
 	pass := flag.String("pass", "", "pass database")
 	listNames := flag.Bool("list", false, "list available totp options")
 	subcmd := flag.String("command", "", "command or totp token to few")
