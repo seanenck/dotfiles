@@ -27,9 +27,6 @@ def _mbsync(env):
     if subprocess.call(["pidof", "mbsync"]) == 0:
         print("mbsync already running")
         return False
-    for d in [env.INDEX_DIR, env.INDEX_CUR, env.INDEX_NEW]:
-        if not os.path.exists(d):
-            os.mkdir(d)
     now = datetime.datetime.now()
     dt = now.strftime("%Y-%m-%d")
     log_file = os.path.join(env.USER_TMP, "mbsync.{}.log".format(dt))
@@ -38,6 +35,12 @@ def _mbsync(env):
     if os.path.exists(log_file):
         mode = 'a'
         created = False
+    if not created:
+        import shutil
+        shutil.rmtree(env.INDEX_DIR)
+    for d in [env.INDEX_DIR, env.INDEX_CUR, env.INDEX_NEW]:
+        if not os.path.exists(d):
+            os.mkdir(d)
     with open(log_file, mode) as f:
         _section(f, "BEGIN", now)
         _run_logged(["mbsync", "-aV"], f)
