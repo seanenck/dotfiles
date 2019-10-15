@@ -12,7 +12,8 @@ import datetime
 
 _REPOS = {"stable": "buster", "unstable": "sid"}
 _OPT_DEB = "/opt/debian"
-_ARCHIVE = os.path.join(_OPT_DEB, "archive")
+_ARCHIVE = "archive"
+_ARCHIVE_DIR = os.path.join(_OPT_DEB, _ARCHIVE)
 _SNAP = "snapshot-"
 
 
@@ -20,41 +21,62 @@ def _run_ssh(env, cmd):
     subprocess.call(["ssh", debian.MIRROR] + cmd)
 
 
-def _upload(env):
+def _run_rsync(args, src, target):
+    subprocess.call(["rsync", "-avc"] + args + ["-e", "ssh", src, target])
+
+
+def _section(begins):
+    t = begins
+    start = "\n"
+    end = ""
+    if t is None:
+        end = "\n"
+        start = ""
+        t = "ENDS HERE"
+    print("{}===== {} ====={}".format(start, t, end))
+
+
+def _upload(env, contents):
     """Upload the package."""
     target = "{}:{}".format(debian.MIRROR, _OPT_DEB)
+    dirs = {}
+    for ck, cv in contents.items():
+        for rk, rv in cv.items():
+            objs = set([os.path.dirname(x) for x in rv])
+            if len(objs) != 1:
+                raise Exception("unable to get unique archive dir")
+            dirs[os.path.join(ck, rk)] = list(objs)[0]
+    for dk, dv in dirs.items():
+        _section("ARCHIVING")
+        print("archive: {}".format(dk))
+        _run_rsync(["--include", '*/', "--include", '*.deb', "--exclude", '*'],
+                   "{}/".format(dv),
+                   "{}/{}/{}".format(target, _ARCHIVE, dk))
+        _section(None)
     dt = datetime.datetime.now().strftime("{}%Y-%m-%dT%H-%M-%S".format(_SNAP))
+    _section("PURGE OLD")
     _run_ssh(env, ["find",
-                   _ARCHIVE,
-                   "-maxdepth",
-                   "1",
+                   _ARCHIVE_DIR,
                    "-mtime",
                    "90",
                    "-type",
-                   "d",
+                   "f",
                    "-name",
-                   "{}*".format(_SNAP),
+                   "*.deb",
                    "-exec",
                    "rm",
-                   "-rf",
                    "{}",
                    "\\;"])
-    _run_ssh(env, ["cp",
-                   "-r",
-                   os.path.join(_OPT_DEB, debian.DISTS),
-                   os.path.join(_ARCHIVE, dt)])
-    subprocess.call(["rsync",
-                     "-avc",
-                     "-e",
-                     "ssh",
-                     debian.DISTS,
-                     target,
-                     "--delete-after"])
+    _section(None)
+    _section("UPLOADING")
+    _run_rsync(["--delete-after"], debian.DISTS, target)
+    _section(None)
 
 
 def _pack(env, pool, objects, components):
     """Package pools."""
     print("preparing...")
+    repo_contents = {}
     repos = sorted(set([x.repo for x in objects]))
     for r in repos:
         if r not in _REPOS:
@@ -66,10 +88,15 @@ def _pack(env, pool, objects, components):
             os.makedirs(root)
             flt = [debian.IS_ALL, comp]
             debs = [x.deb for x in objects if x.repo == r and x.filter in flt]
+            held = []
             for d in debs:
-                shutil.copyfile(os.path.join(pool, d),
-                                os.path.join(root, d))
+                holder = os.path.join(root, d)
+                shutil.copyfile(os.path.join(pool, d), holder)
+                held.append(holder)
             packages = os.path.join(root, "Packages")
+            if comp not in repo_contents:
+                repo_contents[comp] = {}
+            repo_contents[comp][r] = held
             with open(packages, 'w') as f:
                 subprocess.call(["apt-ftparchive", "packages", root], stdout=f)
             old_packages = os.path.join(pool, "{}.{}.packages".format(r, comp))
@@ -116,7 +143,7 @@ def _pack(env, pool, objects, components):
                          "-o",
                          release_file + ".gpg",
                          release_file])
-    return True
+    return repo_contents
 
 
 def main():
@@ -131,8 +158,9 @@ def main():
     tmpd = tempfile.mkdtemp()
     try:
         os.chdir(tmpd)
-        if _pack(deb_env, deb_env.REPOSITORY, m, comps):
-            _upload(deb_env)
+        contents = _pack(deb_env, deb_env.REPOSITORY, m, comps)
+        if contents:
+            _upload(deb_env, contents)
         shutil.rmtree(tmpd)
     except Exception as e:
         shutil.rmtree(tmpd)
