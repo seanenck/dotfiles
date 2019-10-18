@@ -106,6 +106,7 @@ type (
 		stateFile       string
 		outputFile      string
 		templateHTML    *template.Template
+		clean           bool
 	}
 
 	// Slide represents an output slide
@@ -504,7 +505,7 @@ func (r *runRequest) process() error {
 	}
 	state := make(map[string]string)
 	stateFile := filepath.Join(r.outputDirectory, r.stateFile)
-	if exists(stateFile) {
+	if !r.clean && exists(stateFile) {
 		b, err := ioutil.ReadFile(stateFile)
 		if err != nil {
 			return err
@@ -590,6 +591,7 @@ func main() {
 	debug := flag.Bool("debug", false, "enable debugging information in slides")
 	outFile := flag.String("output", "output.pdf", "output file name")
 	stateFile := flag.String("state", "state.json", "state file to use")
+	clean := flag.Bool("clean", false, "clean build (ignore past state)")
 	flag.Parse()
 	tmpl, err := template.New("t").Parse(templateHTML)
 	if err != nil {
@@ -606,6 +608,7 @@ func main() {
 		debug:           *debug,
 		stateFile:       *stateFile,
 		outputFile:      *outFile,
+		clean:           *clean,
 	}
 	printCSSOnly := *printCSS
 	if err := r.check(!printCSSOnly); err != nil {
