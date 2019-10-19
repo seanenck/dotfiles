@@ -107,6 +107,7 @@ type (
 		outputFile      string
 		templateHTML    *template.Template
 		clean           bool
+		include         bool
 	}
 
 	// Slide represents an output slide
@@ -184,16 +185,32 @@ func fatal(message string, err error) {
 	os.Exit(1)
 }
 
-func (r *runRequest) listMarkdownFiles() ([]string, error) {
+func (r *runRequest) listMarkdownFiles(obj buildObject) ([]string, error) {
 	var files []string
 	rooted, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
+	preBuild := 0
 	err = filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
 		n := info.Name()
 		ext := filepath.Ext(n)
 		if ext != ".md" {
+			if r.include && info.Mode().IsRegular() {
+				copying := filepath.Join(r.outputDirectory, filepath.Base(path))
+				if !exists(copying) {
+					if preBuild == 0 {
+						outDelimiter()
+						preBuild++
+					}
+					obj.info(fmt.Sprintf("copying include file: %s", path))
+					b, err := ioutil.ReadFile(path)
+					if err != nil {
+						return err
+					}
+					return ioutil.WriteFile(copying, b, 0644)
+				}
+			}
 			return nil
 		}
 		full, err := filepath.Abs(path)
@@ -216,6 +233,9 @@ func (r *runRequest) listMarkdownFiles() ([]string, error) {
 	})
 	if err != nil {
 		return nil, err
+	}
+	if preBuild > 0 {
+		outDelimiter()
 	}
 	if len(files) > r.maxCount {
 		return nil, fmt.Errorf("%d exceeds the max amount of files allowed", len(files))
@@ -384,6 +404,10 @@ func (o buildObject) pygmentize(md string) ([]byte, string, error) {
 	return []byte(strings.Join(lines, "\n")), string(b), nil
 }
 
+func outDelimiter() {
+	fmt.Println("======================================================================")
+}
+
 func cleanPath(path string, withFile bool) string {
 	use := path
 	if !withFile {
@@ -496,7 +520,8 @@ func build(channel chan string, obj buildObject, state map[string]string) {
 }
 
 func (r *runRequest) process() error {
-	files, err := r.listMarkdownFiles()
+	parent := buildObject{ident: -1}
+	files, err := r.listMarkdownFiles(parent)
 	if err != nil {
 		return err
 	}
@@ -555,8 +580,7 @@ func (r *runRequest) process() error {
 		}
 	}
 	output := filepath.Join(r.outputDirectory, r.outputFile)
-	fmt.Println("======================================================================")
-	parent := buildObject{ident: -1}
+	outDelimiter()
 	if done && exists(output) {
 		parent.notice("no changes detected")
 		return nil
@@ -592,6 +616,7 @@ func main() {
 	outFile := flag.String("output", "output.pdf", "output file name")
 	stateFile := flag.String("state", "state.json", "state file to use")
 	clean := flag.Bool("clean", false, "clean build (ignore past state)")
+	include := flag.Bool("include", true, "include non-markdown files in output directory")
 	flag.Parse()
 	tmpl, err := template.New("t").Parse(templateHTML)
 	if err != nil {
@@ -609,6 +634,7 @@ func main() {
 		stateFile:       *stateFile,
 		outputFile:      *outFile,
 		clean:           *clean,
+		include:         *include,
 	}
 	printCSSOnly := *printCSS
 	if err := r.check(!printCSSOnly); err != nil {
