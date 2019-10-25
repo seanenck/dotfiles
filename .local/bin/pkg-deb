@@ -175,8 +175,7 @@ def _build(env, settings):
                 if has_lintian:
                     r = subprocess.call(["lintian", bin_deb], stdout=f)
                     if r != 0:
-                        print("lintian failed")
-                        return
+                        print("lintian failed warnings")
                 r = subprocess.call(["debsigs",
                                      "--sign=origin",
                                      "-k",
