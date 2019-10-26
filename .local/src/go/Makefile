@@ -1,4 +1,3 @@
-FLAGS   := -ldflags '-linkmode external -extldflags $(LDFLAGS) -s -w' -gcflags=all=-trimpath=$(PWD) -asmflags=all=-trimpath=$(PWD) -ldflags=-extldflags=-zrelro -ldflags=-extldflags=-znow -buildmode=pie
 SRC     := $(shell find . -type f -name "*.go")
 OBJECTS := qrencode-bin md2slides-bin xinitdaemon-bin totp-bin
 
@@ -7,7 +6,7 @@ OBJECTS := qrencode-bin md2slides-bin xinitdaemon-bin totp-bin
 build: $(OBJECTS) lint
 
 $(OBJECTS): $(SRC)
-	go build $(FLAGS) -o $@ cmd/$(shell echo $@ | sed "s/-bin//g")/main.go
+	go build -buildmode=pie -o $@ cmd/$(shell echo $@ | sed "s/-bin//g")/main.go
 
 clean:
 	rm -f $(OBJECTS)
