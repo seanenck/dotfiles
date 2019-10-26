@@ -1,4 +1,4 @@
-FLAGS   := -ldflags '-linkmode external -extldflags $(LDFLAGS) -s -w' -gcflags=all=-trimpath=$(GOPATH) -asmflags=all=-trimpath=$(GOPATH) -buildmode=pie
+FLAGS   := -ldflags '-linkmode external -extldflags $(LDFLAGS) -s -w' -gcflags=all=-trimpath=$(PWD) -asmflags=all=-trimpath=$(PWD) -ldflags=-extldflags=-zrelro -ldflags=-extldflags=-znow -buildmode=pie
 SRC     := $(shell find . -type f -name "*.go")
 OBJECTS := qrencode-bin md2slides-bin xinitdaemon-bin totp-bin
 
