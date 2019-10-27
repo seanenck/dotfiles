@@ -69,7 +69,7 @@ if has('persistent_undo')
     set undolevels=5000
 endif
 
-set viminfo+=n$HOME/.cache/viminfo
+set viminfo+=n$HOME/.vim/viminfo
 vnoremap <S-Right> >gv
 vnoremap <S-Left> <gv
 inoremap <S-Left> <C-o>:<<CR>
