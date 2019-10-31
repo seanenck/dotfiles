@@ -8,7 +8,7 @@ import common
 _PREV = ".prev"
 
 
-def _move(src, dest, manifest):
+def _move(env, src, dest, manifest):
     """Pool a package."""
     bname = os.path.basename(src)
     to = os.path.join(dest, bname)
@@ -43,12 +43,20 @@ def _move(src, dest, manifest):
                 fpath = os.path.join(dest, c)
                 operations.append(["mv", fpath, fpath + _PREV])
     operations.append(["cp", src, dest])
+    operations.append(["debsigs",
+                       "--sign=origin",
+                       "-k",
+                       env.DEB_SIGN_KEY,
+                       os.path.join(dest, bname)])
     for o in operations:
-        subprocess.call(o)
+        r = subprocess.call(o)
+        if r != 0:
+            raise Exception("{} failed".format(o))
 
 
-def _pool(src, dest):
+def _pool(env, src):
     """Add a package to the pool."""
+    dest = env.REPOSITORY
     valid = True
     if os.path.exists(src):
         if not os.path.isfile(src) or not src.endswith(debian.DEB):
@@ -71,7 +79,7 @@ def _pool(src, dest):
         print("pool does not exist")
     if not valid:
         return
-    _move(src, dest, manifest)
+    _move(env, src, dest, manifest)
 
 
 def main():
@@ -80,7 +88,7 @@ def main():
     parser.add_argument("object")
     args = parser.parse_args()
     env = common.read_env()
-    _pool(args.object, env.REPOSITORY)
+    _pool(env, args.object)
 
 
 if __name__ == "__main__":

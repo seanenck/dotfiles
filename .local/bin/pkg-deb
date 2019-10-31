@@ -176,14 +176,6 @@ def _build(env, settings):
                     r = subprocess.call(["lintian", bin_deb], stdout=f)
                     if r != 0:
                         print("lintian failed warnings")
-                r = subprocess.call(["debsigs",
-                                     "--sign=origin",
-                                     "-k",
-                                     env.DEB_SIGN_KEY,
-                                     bin_deb])
-                if r != 0:
-                    print("sign failed")
-                    return
                 r = subprocess.call(["dpkg", "-c", bin_deb], stdout=manifest)
                 if r != 0:
                     print("dpkg -c failed")
