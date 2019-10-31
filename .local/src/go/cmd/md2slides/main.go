@@ -636,6 +636,9 @@ func main() {
 		clean:           *clean,
 		include:         *include,
 	}
+	if r.debug {
+		r.noIndex = false
+	}
 	printCSSOnly := *printCSS
 	if err := r.check(!printCSSOnly); err != nil {
 		fatal("unable to process", err)
