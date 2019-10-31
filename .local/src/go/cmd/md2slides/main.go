@@ -610,7 +610,7 @@ func main() {
 	mergeCSS := flag.Bool("merge-css", false, "merge given CSS with default css (else override)")
 	noHighlight := flag.Bool("no-highlighting", false, "disable pygments highlighting")
 	printCSS := flag.Bool("print-css", false, "print CSS (don't process)")
-	noIndex := flag.Bool("no-index", false, "disable index output (header numbering)")
+	noIndex := flag.Bool("no-index", true, "disable index output (header numbering)")
 	maxCount := flag.Int("max-count", 100, "prevent scanning too many files")
 	debug := flag.Bool("debug", false, "enable debugging information in slides")
 	outFile := flag.String("output", "output.pdf", "output file name")
