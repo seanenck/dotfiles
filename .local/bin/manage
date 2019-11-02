@@ -179,7 +179,7 @@ def _music(env):
                 strip = l.strip()
                 lower = strip.lower()
                 c = None
-                for pre in ["the", "a"]:
+                for pre in ["the"]:
                     if lower.startswith("{} ".format(pre)):
                         c = strip[len(pre) + 1:][0]
                 if c is None:
