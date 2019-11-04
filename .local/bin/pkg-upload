@@ -17,6 +17,9 @@ _ARCHIVE = "archive"
 _ARCHIVE_DIR = os.path.join(_OPT_DEB, _ARCHIVE)
 _SNAP = "snapshot-"
 _IS_LOCAL = "local"
+_REMOTE = "remote"
+_INTERNAL = "internal"
+_TARGETS = ["develop", _INTERNAL, _REMOTE]
 
 
 def _run_ssh(dest, cmd):
@@ -40,7 +43,10 @@ def _section(begins):
 
 def _upload(env, dest, contents, local):
     """Upload the package."""
-    target = "{}:{}".format(dest, _OPT_DEB)
+    if dest:
+        target = "{}:{}".format(dest, _OPT_DEB)
+    else:
+        target = _OPT_DEB
     if not local:
         dirs = {}
         for ck, cv in contents.items():
@@ -74,6 +80,7 @@ def _upload(env, dest, contents, local):
     _section("UPLOADING")
     _run_rsync(["--delete-after"], debian.DISTS, target)
     _section(None)
+    print("COMPLETE: {}".format(target))
 
 
 def _pack(env, pool, objects, components, local):
@@ -154,7 +161,7 @@ def _pack(env, pool, objects, components, local):
 def main():
     """Program entry."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--local", action="store_true")
+    parser.add_argument("target")
     args = parser.parse_args()
     deb_env = common.read_env()
     if not os.path.exists(deb_env.REPOSITORY):
@@ -162,18 +169,29 @@ def main():
         return
     mani = os.path.join(deb_env.REPOSITORY, debian.MANIFEST)
     m = debian.parse_manifest(mani)
-    if args.local:
+    t = args.target
+    if t == "_list_":
+        print(" ".join(_TARGETS))
+        return
+    if t not in _TARGETS:
+        print("unknown target: {}".format(t))
+        return
+    local = t != _REMOTE
+    if local:
         comps = [_IS_LOCAL]
-        mirror = deb_env.BASE_SERVER
+        if t == _INTERNAL:
+            mirror = deb_env.BASE_SERVER
+        else:
+            mirror = None
     else:
         mirror = debian.MIRROR
         comps = sorted(set([x.filter for x in m if x.filter != debian.IS_ALL and x.filter != _IS_LOCAL]))
     tmpd = tempfile.mkdtemp()
     try:
         os.chdir(tmpd)
-        contents = _pack(deb_env, deb_env.REPOSITORY, m, comps, args.local)
+        contents = _pack(deb_env, deb_env.REPOSITORY, m, comps, local)
         if contents:
-            _upload(deb_env, mirror, contents, args.local)
+            _upload(deb_env, mirror, contents, local)
         shutil.rmtree(tmpd)
     except Exception as e:
         shutil.rmtree(tmpd)

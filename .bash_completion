@@ -97,3 +97,12 @@ _notes() {
 }
 
 complete -F _notes notes
+
+_pkg-upload() {
+    local opts cur
+    opts=$(pkg-upload _list_)
+    cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+}
+
+complete -F _pkg-upload pkg-upload
