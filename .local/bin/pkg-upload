@@ -30,56 +30,14 @@ def _run_rsync(args, src, target):
     subprocess.call(["rsync", "-avc"] + args + ["-e", "ssh", src, target])
 
 
-def _section(begins):
-    t = begins
-    start = "\n"
-    end = ""
-    if t is None:
-        end = "\n"
-        start = ""
-        t = "ENDS HERE"
-    print("{}===== {} ====={}".format(start, t, end))
-
-
 def _upload(env, dest, contents, local):
     """Upload the package."""
     if dest:
         target = "{}:{}".format(dest, _OPT_DEB)
     else:
         target = _OPT_DEB
-    if not local:
-        dirs = {}
-        for ck, cv in contents.items():
-            for rk, rv in cv.items():
-                objs = set([os.path.dirname(x) for x in rv])
-                if len(objs) != 1:
-                    raise Exception("unable to get unique archive dir")
-                dirs[os.path.join(ck, rk)] = list(objs)[0]
-        for dk, dv in dirs.items():
-            _section("ARCHIVING")
-            print("archive: {}".format(dk))
-            _run_rsync(["--include", '*/', "--include", '*.deb', "--exclude", '*'],
-                       "{}/".format(dv),
-                       "{}/{}/{}".format(target, _ARCHIVE, dk))
-            _section(None)
-        dt = datetime.datetime.now().strftime("{}%Y-%m-%dT%H-%M-%S".format(_SNAP))
-        _section("PURGE OLD")
-        _run_ssh(dest, ["find",
-                        _ARCHIVE_DIR,
-                        "-mtime",
-                        "90",
-                        "-type",
-                        "f",
-                        "-name",
-                        "*.deb",
-                        "-exec",
-                        "rm",
-                        "{}",
-                        "\\;"])
-        _section(None)
-    _section("UPLOADING")
     _run_rsync(["--delete-after"], debian.DISTS, target)
-    _section(None)
+    print("")
     print("COMPLETE: {}".format(target))
 
 
