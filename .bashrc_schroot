@@ -13,7 +13,7 @@ if [ $IS_RUST_DEB -eq 0 ]; then
 fi
 
 # go
-export GOPATH=$HOME/.go
+export GOPATH=/opt/go/gopath
 export GOCACHE=$GOPATH/cache
 
 # debian
