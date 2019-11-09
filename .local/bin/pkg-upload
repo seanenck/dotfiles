@@ -69,13 +69,6 @@ def _pack(env, pool, objects, components, local):
             repo_contents[comp][r] = held
             with open(packages, 'w') as f:
                 subprocess.call(["apt-ftparchive", "packages", root], stdout=f)
-            old_packages = os.path.join(pool, "{}.{}.packages".format(r, comp))
-            if os.path.exists(old_packages):
-                res = subprocess.call(["diff", "-u", old_packages, packages])
-                if res != 0:
-                    print("please review changes to {}:{}".format(r, comp))
-                    input()
-                    shutil.copyfile(packages, old_packages)
             package_gz = packages + ".gz"
             with open(package_gz, 'w') as f:
                 subprocess.call(["gzip",
