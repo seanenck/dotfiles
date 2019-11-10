@@ -9,7 +9,7 @@ DISTS = "dists"
 DELIMITER = ":"
 IS_ALL = "all"
 MIRROR = "voidedtech.com"
-DEB_BUILD_ROOT = "/" + os.path.join("opt", "build")
+DEB_BUILD_ROOT = "/" + os.path.join("opt", "build", "packages")
 DEB_BUILD_DIR = os.path.join(DEB_BUILD_ROOT, "workdir")
 
 
