@@ -38,7 +38,8 @@ def _upload(env, dest, contents, local):
         target = _OPT_DEB
     _run_rsync(["--delete-after"], debian.DISTS, target)
     print("")
-    print("COMPLETE: {}".format(target))
+    print("=> COMPLETE: {}".format(target))
+    print("")
 
 
 def _pack(env, pool, objects, components, local):
