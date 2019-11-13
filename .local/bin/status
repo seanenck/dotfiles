@@ -17,6 +17,7 @@ import calendar
 _DELIMITER = "|"
 _NOTIFICATIONS = 10
 _NOTIFY_LEN = _NOTIFICATIONS + 5
+_BAT_THRESHOLD = 20
 
 
 def _notify(message):
@@ -87,8 +88,11 @@ def _daemon(env):
             with open(bat, 'r') as f:
                 per = f.read().strip()
                 total_bat += float(per)
+                if total_bat < 1:
+                    total_bat = _BAT_THRESHOLD
+                    per = "???"
                 batteries.append(per)
-        if total_bat < 20 and not charging:
+        if total_bat < _BAT_THRESHOLD and not charging:
             _notify("WARNING: BATTERY")
         b = ",".join(batteries)
         b = "bat:{}{}".format(charge, b)
