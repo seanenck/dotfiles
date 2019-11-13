@@ -158,7 +158,7 @@ fn kill_now(command: String) {
     match command_no_output(Command::new("pkill").arg(command.to_string())).output() {
         Ok(_) => {}
         Err(e) => {
-            println!("unable to kill wpa_supplicant: {}", e);
+            println!("unable to kill {}: {}", command, e);
         }
     }
 }
@@ -182,7 +182,15 @@ fn set_link(link_name: String, up: bool) {
 fn update(networks: String, cache: String, profile: Profile) {
     match list_interfaces(false) {
         Ok(interfaces) => {
-            kill_now("dhclient".to_string());
+            let cmd = Command::new("dhclient")
+                .arg("-r")
+                .output();
+            match cmd {
+                Ok(_) => {}
+                Err(e) => {
+                    println!("dhclient release error: {}", e);
+                }
+            }
             for iface in interfaces {
                 set_link(iface.name, false);
             }
@@ -216,6 +224,7 @@ fn update(networks: String, cache: String, profile: Profile) {
                 });
                 thread::sleep(Duration::from_secs(3));
             }
+            kill_now("dhclient".to_string());
             let dhclient_iface = profile.iface.to_owned();
             thread::spawn(move || {
                 let cmd = Command::new("dhclient")
@@ -225,7 +234,7 @@ fn update(networks: String, cache: String, profile: Profile) {
                 match cmd {
                     Ok(_) => {}
                     Err(e) => {
-                        println!("wpa_supplicant error: {}", e);
+                        println!("dhclient acquire error: {}", e);
                     }
                 }
             });
