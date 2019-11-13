@@ -90,7 +90,7 @@ def _daemon(env):
                 total_bat += float(per)
                 if total_bat < 1:
                     total_bat = _BAT_THRESHOLD
-                    per = "???"
+                    per = "??"
                 batteries.append(per)
         if total_bat < _BAT_THRESHOLD and not charging:
             _notify("WARNING: BATTERY")
