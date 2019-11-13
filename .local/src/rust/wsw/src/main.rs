@@ -216,9 +216,7 @@ fn update(networks: String, cache: String, profile: Profile) {
                 });
             }
             thread::spawn(move || {
-                let cmd = Command::new("dhclient")
-                    .arg("-d")
-                    .output();
+                let cmd = Command::new("dhclient").arg("-d").output();
                 match cmd {
                     Ok(_) => {}
                     Err(e) => {
