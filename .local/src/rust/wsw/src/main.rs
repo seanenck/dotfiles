@@ -214,10 +214,14 @@ fn update(networks: String, cache: String, profile: Profile) {
                 thread::spawn(move || {
                     run_supplicant(networks, profile_name, profile_iface, profile_mode);
                 });
+                thread::sleep(Duration::from_secs(3));
             }
             let dhclient_iface = profile.iface.to_owned();
             thread::spawn(move || {
-                let cmd = Command::new("dhclient").arg("-d").arg(dhclient_iface).output();
+                let cmd = Command::new("dhclient")
+                    .arg("-d")
+                    .arg(dhclient_iface)
+                    .output();
                 match cmd {
                     Ok(_) => {}
                     Err(e) => {
