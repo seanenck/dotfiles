@@ -154,6 +154,15 @@ fn check_online(url: String, file: String) {
     }
 }
 
+fn kill_now(command: String) {
+    match command_no_output(Command::new("pkill").arg(command.to_string())).output() {
+        Ok(_) => {}
+        Err(e) => {
+            println!("unable to kill wpa_supplicant: {}", e);
+        }
+    }
+}
+
 fn set_link(link_name: String, up: bool) {
     let op = if up { "up" } else { "down" };
     match Command::new("ip")
@@ -173,6 +182,7 @@ fn set_link(link_name: String, up: bool) {
 fn update(networks: String, cache: String, profile: Profile) {
     match list_interfaces(false) {
         Ok(interfaces) => {
+            kill_now("dhclient".to_string());
             for iface in interfaces {
                 set_link(iface.name, false);
             }
@@ -193,12 +203,7 @@ fn update(networks: String, cache: String, profile: Profile) {
                     println!("unable to write cache: {}", e);
                 }
             }
-            match command_no_output(Command::new("pkill").arg("wpa_supplicant")).output() {
-                Ok(_) => {}
-                Err(e) => {
-                    println!("unable to kill wpa_supplicant: {}", e);
-                }
-            }
+            kill_now("wpa_supplicant".to_string());
             thread::sleep(Duration::from_secs(3));
             set_link(profile.iface.to_owned(), true);
             thread::sleep(Duration::from_secs(3));
@@ -210,6 +215,17 @@ fn update(networks: String, cache: String, profile: Profile) {
                     run_supplicant(networks, profile_name, profile_iface, profile_mode);
                 });
             }
+            thread::spawn(move || {
+                let cmd = Command::new("dhclient")
+                    .arg("-d")
+                    .output();
+                match cmd {
+                    Ok(_) => {}
+                    Err(e) => {
+                        println!("wpa_supplicant error: {}", e);
+                    }
+                }
+            });
             println!("change completed: {}", &profile);
         }
         Err(e) => {
