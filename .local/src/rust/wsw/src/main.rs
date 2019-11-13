@@ -180,70 +180,62 @@ fn set_link(link_name: String, up: bool) {
 }
 
 fn update(networks: String, cache: String, profile: Profile) {
-    match list_interfaces(false) {
-        Ok(interfaces) => {
-            let cmd = Command::new("dhclient")
-                .arg("-r")
-                .output();
-            match cmd {
-                Ok(_) => {}
-                Err(e) => {
-                    println!("dhclient release error: {}", e);
-                }
-            }
-            for iface in interfaces {
-                set_link(iface.name, false);
-            }
-            println!("changing profile: {}", profile);
-            let file = OpenOptions::new()
-                .write(true)
-                .truncate(true)
-                .create(true)
-                .open(cache);
-            match file {
-                Ok(mut file_obj) => match file_obj.write(format!("{}", &profile).as_bytes()) {
-                    Ok(_) => {}
-                    Err(e) => {
-                        println!("state write failed: {}", e);
-                    }
-                },
-                Err(e) => {
-                    println!("unable to write cache: {}", e);
-                }
-            }
-            kill_now("wpa_supplicant".to_string());
-            thread::sleep(Duration::from_secs(3));
-            set_link(profile.iface.to_owned(), true);
-            thread::sleep(Duration::from_secs(3));
-            if profile.name != DEFAULT_PROFILE {
-                let profile_name = format!("{}", profile);
-                let profile_iface = profile.iface.to_owned();
-                let profile_mode = profile.mode.to_owned();
-                thread::spawn(move || {
-                    run_supplicant(networks, profile_name, profile_iface, profile_mode);
-                });
-                thread::sleep(Duration::from_secs(3));
-            }
-            kill_now("dhclient".to_string());
-            let dhclient_iface = profile.iface.to_owned();
-            thread::spawn(move || {
-                let cmd = Command::new("dhclient")
-                    .arg("-d")
-                    .arg(dhclient_iface)
-                    .output();
-                match cmd {
-                    Ok(_) => {}
-                    Err(e) => {
-                        println!("dhclient acquire error: {}", e);
-                    }
-                }
-            });
-            println!("change completed: {}", &profile);
-        }
+    let interfaces = list_interfaces(false);
+    let cmd = Command::new("dhclient").arg("-r").output();
+    match cmd {
+        Ok(_) => {}
         Err(e) => {
-            println!("unable to read interfaces: {}", e);
+            println!("dhclient release error: {}", e);
         }
     }
+    for iface in interfaces {
+        set_link(iface.name, false);
+    }
+    println!("changing profile: {}", profile);
+    let file = OpenOptions::new()
+        .write(true)
+        .truncate(true)
+        .create(true)
+        .open(cache);
+    match file {
+        Ok(mut file_obj) => match file_obj.write(format!("{}", &profile).as_bytes()) {
+            Ok(_) => {}
+            Err(e) => {
+                println!("state write failed: {}", e);
+            }
+        },
+        Err(e) => {
+            println!("unable to write cache: {}", e);
+        }
+    }
+    kill_now("wpa_supplicant".to_string());
+    thread::sleep(Duration::from_secs(3));
+    set_link(profile.iface.to_owned(), true);
+    thread::sleep(Duration::from_secs(3));
+    if profile.name != DEFAULT_PROFILE {
+        let profile_name = format!("{}", profile);
+        let profile_iface = profile.iface.to_owned();
+        let profile_mode = profile.mode.to_owned();
+        thread::spawn(move || {
+            run_supplicant(networks, profile_name, profile_iface, profile_mode);
+        });
+        thread::sleep(Duration::from_secs(3));
+    }
+    kill_now("dhclient".to_string());
+    let dhclient_iface = profile.iface.to_owned();
+    thread::spawn(move || {
+        let cmd = Command::new("dhclient")
+            .arg("-d")
+            .arg(dhclient_iface)
+            .output();
+        match cmd {
+            Ok(_) => {}
+            Err(e) => {
+                println!("dhclient acquire error: {}", e);
+            }
+        }
+    });
+    println!("change completed: {}", &profile);
 }
 
 fn run_supplicant(networks: String, profile_name: String, interface: String, mode_type: String) {
@@ -329,7 +321,7 @@ fn daemonize(ctx: &Context) {
     online.join().expect("unable to wait for online thread");
 }
 
-fn list_interfaces(populated: bool) -> Result<Vec<NetInterface>, String> {
+fn list_interfaces(populated: bool) -> Vec<NetInterface> {
     let mut interfaces: Vec<NetInterface> = Vec::new();
     for iface in datalink::interfaces() {
         let mut has = false;
@@ -352,22 +344,16 @@ fn list_interfaces(populated: bool) -> Result<Vec<NetInterface>, String> {
         }
         interfaces.push(interface);
     }
-    Ok(interfaces)
+    interfaces
 }
 
 fn show_addresses() {
-    match list_interfaces(true) {
-        Ok(interfaces) => {
-            let mut addresses: Vec<String> = Vec::new();
-            for iface in interfaces {
-                addresses.push(format!("{}", iface));
-            }
-            println!("{}", addresses.join(""));
-        }
-        Err(e) => {
-            println!("unable to retrieve addresses: {}", e);
-        }
+    let interfaces = list_interfaces(true);
+    let mut addresses: Vec<String> = Vec::new();
+    for iface in interfaces {
+        addresses.push(format!("{}", iface));
     }
+    println!("{}", addresses.join(""));
 }
 
 fn list_profiles(ctx: &Context) -> Result<Vec<Profile>, String> {
@@ -394,43 +380,36 @@ fn list_profiles(ctx: &Context) -> Result<Vec<Profile>, String> {
                     }
                 }
             }
-            match list_interfaces(false) {
-                Ok(ifaces) => {
-                    let mut profiles: Vec<Profile> = Vec::new();
-                    for i in ifaces {
-                        let p = Profile {
-                            name: DEFAULT_PROFILE.to_string(),
-                            mode: "".to_string(),
-                            iface: i.name.to_owned(),
-                        };
-                        profiles.push(p);
-                        let use_iname: &str = &i.name;
-                        for file in files.iter().cloned() {
-                            let file_name = &file;
-                            if !file_name.contains(use_iname) {
-                                continue;
-                            }
-
-                            let parts: Vec<&str> = file_name.split('.').collect();
-                            if parts.len() != 3 {
-                                println!("invalid profile detected, skipped: {}", file_name);
-                                continue;
-                            }
-                            let fp = Profile {
-                                name: parts[2].to_string(),
-                                mode: parts[0].to_string(),
-                                iface: parts[1].to_string(),
-                            };
-                            profiles.push(fp);
-                        }
+            let ifaces = list_interfaces(false);
+            let mut profiles: Vec<Profile> = Vec::new();
+            for i in ifaces {
+                let p = Profile {
+                    name: DEFAULT_PROFILE.to_string(),
+                    mode: "".to_string(),
+                    iface: i.name.to_owned(),
+                };
+                profiles.push(p);
+                let use_iname: &str = &i.name;
+                for file in files.iter().cloned() {
+                    let file_name = &file;
+                    if !file_name.contains(use_iname) {
+                        continue;
                     }
-                    Ok(profiles)
-                }
-                Err(e) => {
-                    println!("unable to list interfaces: {}", e);
-                    Err("no interfaces".to_string())
+
+                    let parts: Vec<&str> = file_name.split('.').collect();
+                    if parts.len() != 3 {
+                        println!("invalid profile detected, skipped: {}", file_name);
+                        continue;
+                    }
+                    let fp = Profile {
+                        name: parts[2].to_string(),
+                        mode: parts[0].to_string(),
+                        iface: parts[1].to_string(),
+                    };
+                    profiles.push(fp);
                 }
             }
+            Ok(profiles)
         }
         Err(e) => {
             println!("unable to list profiles: {}", e);
