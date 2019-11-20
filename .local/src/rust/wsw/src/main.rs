@@ -238,6 +238,7 @@ fn update(networks: String, cache: String, hostname: String, profile: Profile) {
             }
         }
     });
+    thread::sleep(Duration::from_secs(1));
     match Command::new("hostnamectl")
         .arg("set-hostname")
         .arg(hostname)
