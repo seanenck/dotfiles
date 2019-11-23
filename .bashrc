@@ -140,5 +140,11 @@ echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
+for f in $HOME_SRC/go/xinitdaemon-bin $HOME_SRC/rust/wsw/target/release/wsw $HOME_BIN/dwm-bin; do
+    if [ ! -x $f ]; then
+        echo "missing required binary: $f"
+    fi
+done
+
 status git 2> /dev/null
 status journal
