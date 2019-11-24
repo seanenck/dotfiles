@@ -150,7 +150,7 @@ def _git(env, stdout):
 
 def _notes(env, stdout):
     for d in ["important"]:
-        dirname = os.path.join(env.PERSONAL_NOTES, d)
+        dirname = os.path.join(env.HOME_STORE, d)
         print("reading notes for {}".format(d), file=stdout)
         if not os.path.exists(dirname):
             continue
