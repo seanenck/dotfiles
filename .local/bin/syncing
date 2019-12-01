@@ -73,7 +73,11 @@ def _backup(env, stdout):
         if len(etc) > 0:
             etc_file = etc[-1]
             print("backing up etc: {}".format(etc_file), file=stdout)
-            _scp(env, os.path.join(_ETC, etc_file), stdout)
+            _call(["rsync",
+                   "-avc",
+                   os.path.join(_ETC, etc_file),
+                   "{}:{}".format(env.BASE_SERVER, _PROFILE_PATH)],
+                  stdout)
         else:
             print("no etc backup", file=stdout)
         _call(["ssh", env.BASE_SERVER, _FIND], stdout)
