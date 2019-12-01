@@ -3,9 +3,5 @@
 .local/*
 !.local/bin/
 .local/bin/*-bin
-!.local/src/
-.local/src/go/*-bin
 *.pyc
-target
 __pycache__
-bindata.go
