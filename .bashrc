@@ -106,6 +106,10 @@ done
 for f in qrencode md2slides; do
     alias $f="$HOME_SRC_GO/$f-bin"
 done
+for f in $(find ${PERM_CONFIGS}aetig -type f -name "*.yaml"); do
+    bname=$(basename $f | sed "s/\.yaml//g")
+    alias aetig_$bname="$HOME_SRC_GO/aetig-bin -config $f"
+done
 
 if [ -e "$PRIV_CONF" ]; then
     source $PRIV_CONF
