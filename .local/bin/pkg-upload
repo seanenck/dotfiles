@@ -19,7 +19,8 @@ _SNAP = "snapshot-"
 _IS_LOCAL = "local"
 _REMOTE = "remote"
 _INTERNAL = "internal"
-_TARGETS = ["develop", _INTERNAL, _REMOTE]
+_ALL = "all"
+_TARGETS = ["develop", _INTERNAL, _REMOTE, _ALL]
 
 
 def _run_ssh(dest, cmd):
@@ -125,6 +126,14 @@ def main():
     if t == "_list_":
         print(" ".join(_TARGETS))
         return
+    if t == _ALL:
+        print("processing all targets, enter to begin")
+        input()
+        for target in _TARGETS:
+            if target == _ALL:
+                continue
+            print("processing target: {}".format(target))
+            subprocess.call([__file__, target])
     if t not in _TARGETS:
         print("unknown target: {}".format(t))
         return
