@@ -88,7 +88,7 @@ totp() {
     if [ ! -z "$1" ]; then
         cmd="--command $1"
     fi
-    $HOME_SRC_GO/totp-bin --pass $(_totp_pass) $cmd
+    totp --pass $(_totp_pass) $cmd
 }
 
 proxy() {

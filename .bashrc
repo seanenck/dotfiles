@@ -103,9 +103,6 @@ export DEB_SIGN_KEY
 for f in mutt; do
     alias $f="echo 'disabled in bash'"
 done
-for f in qrencode md2slides; do
-    alias $f="$HOME_SRC_GO/$f-bin"
-done
 for f in $(find ${PERM_CONFIGS}aetig -type f -name "*.yaml"); do
     bname=$(basename $f | sed "s/\.yaml//g")
     alias aetig_$bname="$HOME_SRC_GO/aetig-bin -config $f"
@@ -143,12 +140,6 @@ echo $SSH_AUTH_SOCK > $SSH_AUTH_TMP
 # gpg setup
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
-
-for f in $HOME_SRC/go/xinitdaemon-bin $HOME_SRC/rust/wsw/target/release/wsw $HOME_BIN/dwm-bin; do
-    if [ ! -x $f ]; then
-        echo "missing required binary: $f"
-    fi
-done
 
 status git 2> /dev/null
 status journal
