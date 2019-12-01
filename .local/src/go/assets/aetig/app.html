@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="{{ $.URL }}common.css" />
+<link rel="stylesheet" href="{{ .URL }}datatables.min.css">
+<script type="text/javascript" src="{{ .URL }}jquery.min.js"></script>
+<script type="text/javascript" src="{{ .URL }}datatables.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#datagrid').DataTable( {
+	data: {{ .Data }},
+	columns: {{ .Columns }},
+	lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "All"]]
+    } );
+} );
+</script>
+
+<title>aetig</title>
+</head>
+<body>
+<div class="header-text">
+    <div id="header">
+	<p>aetig</p>
+    </div><hr>
+</div>
+<div id="main">
+<a href="/issues/all/">all</a>
+<a href="/issues/closed/">closed</a>
+<a href="/issues/opened/">opened</a>
+<b>(currently: {{ .State }})</b>
+<br />
+<table id="datagrid" class="display" width="100%"></table>
+</div>
+</body>
+</html>

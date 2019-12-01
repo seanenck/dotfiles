@@ -8,3 +8,4 @@
 *.pyc
 target
 __pycache__
+bindata.go
