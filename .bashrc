@@ -105,7 +105,7 @@ for f in mutt; do
 done
 for f in $(find ${PERM_CONFIGS}aetig -type f -name "*.yaml"); do
     bname=$(basename $f | sed "s/\.yaml//g")
-    alias aetig_$bname="$HOME_SRC_GO/aetig-bin -config $f"
+    alias aetig_$bname="aetig -config $f -mode"
 done
 
 if [ -e "$PRIV_CONF" ]; then
