@@ -4,6 +4,7 @@ HOME_BIN=$HOME/.local/bin
 HOME_XDG=$HOME/.config/
 HOME_SRC=$HOME/.local/src
 HOME_SRC_GO=${HOME_SRC}/go/
+HOME_EXT=$HOME/.bin/
 
 # cache files
 HOME_CACHE=$HOME/.cache/home/

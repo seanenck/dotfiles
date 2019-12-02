@@ -58,7 +58,7 @@ dirty-memory() {
     watch -n 1 grep -e Dirty: -e Writeback: /proc/meminfo
 }
 
-mplayer() {
+music() {
     source $HOME/.local/bin/conf
     local playlist=${USER_TMP}mplayer.playlist
     local tmpfile=$playlist.tmp
@@ -88,7 +88,7 @@ totp() {
     if [ ! -z "$1" ]; then
         cmd="--command $1"
     fi
-    totp --pass $(_totp_pass) $cmd
+    ${HOME_EXT}totp --pass $(_totp_pass) $cmd
 }
 
 proxy() {
