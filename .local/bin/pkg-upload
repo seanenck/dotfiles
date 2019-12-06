@@ -132,7 +132,9 @@ def main():
         for target in _TARGETS:
             if target == _ALL:
                 continue
+            print("=====================")
             print("processing target: {}".format(target))
+            print("=====================")
             subprocess.call([__file__, target])
     if t not in _TARGETS:
         print("unknown target: {}".format(t))
