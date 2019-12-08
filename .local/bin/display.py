@@ -1,14 +1,7 @@
 #!/usr/bin/python3
-"""Subsystem operations (displays)."""
-import argparse
 import common
 import subprocess
 import time
-
-_MAIN = "eDP-1"
-_VLEFT = "DP-2-1"
-_HRIGHT = "DP-2-8"
-_EXTERNAL = "HDMI-1"
 
 _UNKNOWN_BRIGHTNESS = -1
 _FULL_BRIGHT = 1.0
@@ -20,25 +13,137 @@ _DOWN = "down"
 _UP = "up"
 _LOW = "low"
 _MID = "mid"
-_ALL_DISPLAYS = [_MAIN, _VLEFT, _HRIGHT]
-_MODE = ["--mode", "2560x1440"]
 LOW_BACKLIGHT = _LOW
 MID_BACKLIGHT = _MID
 
 
-def _get_displays(filtered=" "):
-    """Get displays."""
-    out, err = common.get_output_or_error(["xrandr"])
-    if err:
-        return []
-    connected = "{}connected".format(filtered)
-    objects = [x.strip() for x in out.decode("utf-8").split("\n")]
-    results = []
-    for l in objects:
-        if connected not in l:
-            continue
-        results.append(l.split(" ")[0])
-    return set(results + [_VLEFT, _HRIGHT])
+class Display(object):
+    """Display object."""
+
+    def __init__(self):
+        self._main = None
+        self._vleft = None
+        self._hright = None
+        self._external = None
+        self._candock = False
+        self._canext = False
+        self._displays = []
+        self._mode = ["--mode", "2560x1440"]
+
+    @staticmethod
+    def new():
+        d = Display()
+        displays = Display._get_displays()
+        for disp in displays:
+            name = disp[0]
+            d._displays.append(name)
+            conn = not disp[1]
+            if "HDMI" in name:
+                if conn:
+                    d._external = name
+                    d._canext = True
+            elif name.startswith("eDP"):
+                if conn:
+                    d._main = name
+            elif name.startswith("DP"):
+                if conn:
+                    if name.endswith("8"):
+                        d._hright = name
+                    elif name.endswith("1"):
+                        d_vleft = name
+        if d._hright and d._vleft:
+            d._candock = True
+        return d
+
+    @staticmethod
+    def _get_displays():
+        """Get displays."""
+        out, err = common.get_output_or_error(["xrandr"])
+        if err:
+            return []
+        objects = [x.strip() for x in out.decode("utf-8").split("\n")]
+        results = []
+        for l in objects:
+            if "connected" not in l:
+                continue
+            discon = "disconnected" in l
+            results.append((l.split(" ")[0], discon))
+        return results
+
+
+    def brightness(self, value):
+        for d in self._displays:
+            subprocess.call(["xrandr", "--output", d, "--brightness", value])
+
+
+    def change(self, command):
+        """Chnage workspace."""
+        if self._main is None:
+            print("no main display")
+            return
+        is_docked = command == "docked"
+        is_mobile = command == "mobile"
+        is_ext = command == "external"
+        if not is_docked and not is_mobile and not is_ext:
+            print("no command")
+            return
+        for d in self._displays:
+            if d == self._main:
+                continue
+            subprocess.call(["xrandr", "--output", d, "--off"])
+        time.sleep(1)
+        subprocess.call(["xrandr", "--output", self._main, "--primary"] + self._mode)
+        if is_ext:
+            if self._canext:
+                subprocess.call(["xrandr", "--output", self._external, "--auto", "--right-of", self._main])
+        if is_docked:
+            if self._candock:
+                subprocess.call(["xrandr",
+                                 "--output",
+                                 self._vleft,
+                                 "--auto",
+                                 "--left-of",
+                                 self._main,
+                                 "--rotate",
+                                 "right"])
+                subprocess.call(["xrandr",
+                                 "--output",
+                                 self._hright,
+                                 "--auto",
+                                 "--right-of",
+                                 self._main])
+        if is_ext or is_docked:
+            time.sleep(1)
+            self.brightness(str(_MID_BRIGHT))
+        time.sleep(1)
+        for n in ["dwm", "dunst"]:
+            subprocess.call(["pkill", n])
+
+
+def change_workspaces(command):
+    """Change workspace."""
+    Display.new().change(command)
+
+
+def on():
+    """Force displays on."""
+    subprocess.call(["xset", "-display", ":0", "dpms", "force", "on"])
+
+
+def get_brightness():
+    """Get brightness."""
+    out, err = common.get_output_or_error(["xrandr",
+                                           "--current",
+                                           "--verbose"])
+    if err is None:
+        lines = [float(x.strip().split(":")[1].strip())
+                 for x in out.decode("utf-8").split("\n")
+                 if "Brightness" in x]
+        len_l = len(lines)
+        if len_l > 0:
+            return int(sum(lines) / len_l * 100)
+    return _UNKNOWN_BRIGHTNESS
+
 
 
 def backlight(sub):
@@ -81,70 +186,4 @@ def backlight(sub):
                 bright = _MID_BRIGHT
         else:
             return
-    _set_brightness(str(bright), _get_displays())
-
-
-def _set_brightness(value, displays):
-    for d in displays:
-        subprocess.call(["xrandr", "--output", d, "--brightness", value])
-
-
-def change_workspaces(command):
-    """Change workspace."""
-    displays = _get_displays()
-    if _MAIN not in displays:
-        print("missing main display")
-        return
-    is_docked = command == "docked"
-    is_mobile = command == "mobile"
-    is_external = command == "external"
-    if not is_docked and not is_mobile and not is_external:
-        return
-    not_main = [x for x in displays if x != _MAIN]
-    for d in not_main:
-        subprocess.call(["xrandr", "--output", d, "--off"])
-    time.sleep(1)
-    subprocess.call(["xrandr", "--output", _MAIN, "--primary"] + _MODE)
-    if is_external:
-        subprocess.call(["xrandr", "--output", _EXTERNAL, "--auto", "--right-of", _MAIN])
-        return
-    if is_docked:
-        subprocess.call(["xrandr",
-                         "--output",
-                         _VLEFT,
-                         "--auto",
-                         "--left-of",
-                         _MAIN,
-                         "--rotate",
-                         "right"])
-        subprocess.call(["xrandr",
-                         "--output",
-                         _HRIGHT,
-                         "--auto",
-                         "--right-of",
-                         _MAIN])
-        time.sleep(1)
-        _set_brightness(str(_MID_BRIGHT), _ALL_DISPLAYS)
-    time.sleep(1)
-    for n in ["dwm", "dunst"]:
-        subprocess.call(["pkill", n])
-
-
-def on():
-    """Force displays on."""
-    subprocess.call(["xset", "-display", ":0", "dpms", "force", "on"])
-
-
-def get_brightness():
-    """Get brightness."""
-    out, err = common.get_output_or_error(["xrandr",
-                                           "--current",
-                                           "--verbose"])
-    if err is None:
-        lines = [float(x.strip().split(":")[1].strip())
-                 for x in out.decode("utf-8").split("\n")
-                 if "Brightness" in x]
-        len_l = len(lines)
-        if len_l > 0:
-            return int(sum(lines) / len_l * 100)
-    return _UNKNOWN_BRIGHTNESS
+    Display.new().brightness(str(bright))
