@@ -50,7 +50,7 @@ class Display(object):
                     if name.endswith("8"):
                         d._hright = name
                     elif name.endswith("1"):
-                        d_vleft = name
+                        d._vleft = name
         if d._hright and d._vleft:
             d._candock = True
         return d
@@ -77,7 +77,7 @@ class Display(object):
 
 
     def change(self, command):
-        """Chnage workspace."""
+        """Change workspace."""
         if self._main is None:
             print("no main display")
             return
