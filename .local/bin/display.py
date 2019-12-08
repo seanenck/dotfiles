@@ -5,6 +5,10 @@ import common
 import subprocess
 import time
 
+_MAIN = "eDP-1"
+_VLEFT = "DP-2-1"
+_HRIGHT = "DP-2-8"
+_EXTERNAL = "HDMI-1"
 
 _UNKNOWN_BRIGHTNESS = -1
 _FULL_BRIGHT = 1.0
@@ -12,9 +16,6 @@ _MID_BRIGHT = 0.9
 _LOW_BRIGHT = 0.3
 _LOW_RANGE = 35
 _MID_RANGE = 95
-_MAIN = "eDP-1"
-_VLEFT = "DP-2-1"
-_HRIGHT = "DP-2-8"
 _DOWN = "down"
 _UP = "up"
 _LOW = "low"
@@ -96,13 +97,17 @@ def change_workspaces(command):
         return
     is_docked = command == "docked"
     is_mobile = command == "mobile"
-    if not is_docked and not is_mobile:
+    is_external = command == "external"
+    if not is_docked and not is_mobile and not is_external:
         return
     not_main = [x for x in displays if x != _MAIN]
     for d in not_main:
         subprocess.call(["xrandr", "--output", d, "--off"])
     time.sleep(1)
     subprocess.call(["xrandr", "--output", _MAIN, "--primary"] + _MODE)
+    if is_external:
+        subprocess.call(["xrandr", "--output", _EXTERNAL, "--auto", "--right-of", _MAIN])
+        return
     if is_docked:
         subprocess.call(["xrandr",
                          "--output",
