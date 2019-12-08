@@ -50,6 +50,16 @@ def _scp(env, name, stdout):
           stdout)
 
 
+def _prearchive(env):
+    files = []
+    for fname, cmd in {"dpkg.install": ["dpkg", "--get-selections"]}.items():
+        name = os.path.join(env.USER_TMP, fname)
+        with open(name, 'w') as f:
+            _call(cmd, f)
+        files.append(name)
+    return files
+
+
 def _backup(env, stdout):
     """Run file backups."""
     backup_file = os.path.join(env.USER_TMP,
@@ -63,6 +73,7 @@ def _backup(env, stdout):
         print("creating archive {}".format(archive), file=stdout)
         files = [os.path.join(env.HOME, ".mozilla") + "/",
                  os.path.join(env.HOME, ".bash_history")]
+        files += _prearchive(env)
         stdout.flush()
         _call(["tar", "zcf", archive] + files, stdout)
         print("archive created", file=stdout)
