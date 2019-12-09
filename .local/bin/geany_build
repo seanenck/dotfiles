@@ -2,5 +2,6 @@
 if [ -d "/opt/chroot/$1" ]; then
     source ~/.bashrc_schroot
     schroot --preserve-environment -c chroot:$1 -- /bin/bash -c ${@:2}
+else
+    $@
 fi
-$@
