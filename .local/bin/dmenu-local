@@ -14,7 +14,7 @@ _GMUTT = "gmail"
 _FASTMUTT = "fastmail"
 _PASSWORDS = "passwords"
 _LOCALS = [_GMUTT, _FASTMUTT, _PASSWORDS]
-_APPS = ["smplayer", "pavucontrol"] + _LOCALS
+_APPS = ["smplayer", "pavucontrol", "geany"] + _LOCALS
 
 
 def _local(env, cmd):
