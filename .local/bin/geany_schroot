@@ -1,0 +1,3 @@
+#!/bin/bash
+source ~/.bashrc_schroot
+schroot --preserve-environment -c chroot:$1 -- /bin/bash -c ${@:2}

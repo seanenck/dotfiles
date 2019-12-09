@@ -100,7 +100,7 @@ DEBFULLNAME="Sean Enck"
 export DEB_SIGN_KEY
 
 
-for f in mutt; do
+for f in mutt geany; do
     alias $f="echo 'disabled in bash'"
 done
 for f in $(find ${PERM_CONFIGS}aetig -type f -name "*.yaml"); do
