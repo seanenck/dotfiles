@@ -3,7 +3,6 @@
 import os
 from subprocess import Popen, PIPE, call
 
-GMAIL_ACCOUNT = "gmail"
 FMAIL_ACCOUNT = "fastmail"
 
 

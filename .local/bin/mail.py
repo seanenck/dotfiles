@@ -9,7 +9,7 @@ import email.utils
 from email.mime.text import MIMEText
 import common
 
-ACCOUNTS = [common.GMAIL_ACCOUNT, common.FMAIL_ACCOUNT]
+ACCOUNTS = [common.FMAIL_ACCOUNT]
 
 
 def _countdirs(dirs, account, ind):

@@ -10,10 +10,9 @@ import urllib.parse
 
 _SEARCH = "search"
 _BROWSER = "/usr/bin/firefox"
-_GMUTT = "gmail"
 _FASTMUTT = "fastmail"
 _PASSWORDS = "passwords"
-_LOCALS = [_GMUTT, _FASTMUTT, _PASSWORDS]
+_LOCALS = [_FASTMUTT, _PASSWORDS]
 _APPS = ["smplayer", "pavucontrol", "geany"] + _LOCALS
 
 
