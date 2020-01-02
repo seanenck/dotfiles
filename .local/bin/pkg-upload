@@ -127,7 +127,7 @@ def main():
         print(" ".join(_TARGETS))
         return
     if t == _ALL:
-        print("processing all targets, enter to begin")
+        print("processing all targets, [ENTER] to begin")
         input()
         for target in _TARGETS:
             if target == _ALL:
