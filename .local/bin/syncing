@@ -72,8 +72,7 @@ def _backup(env, stdout):
     if not os.path.exists(archive):
         print("creating archive {}".format(archive), file=stdout)
         files = [os.path.join(env.HOME, ".mozilla") + "/",
-                 os.path.join(env.HOME, ".bash_history"),
-                 os.path.join(env.HOME_XDG, ".geany") + "/"]
+                 os.path.join(env.HOME, ".bash_history")]
         files += _prearchive(env)
         stdout.flush()
         _call(["tar", "zcf", archive] + files, stdout)
