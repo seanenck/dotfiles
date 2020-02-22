@@ -111,6 +111,41 @@ def _pack(env, pool, objects, components, local):
     return repo_contents
 
 
+def _binary_upload(tmp):
+    binaries = os.path.join(tmp, "build")
+    hashes = {}
+    for root, _, files in os.walk(tmp):
+        for f in files:
+            if f.endswith(debian.DEB):
+                fname = os.path.join(root, f)
+                parts = f.split("_")
+                pkg = "_".join(parts[0:2])
+                pkg_dir = os.path.join(binaries, pkg)
+                if os.path.exists(pkg_dir):
+                    continue
+                pkg_tmp = os.path.join(pkg_dir, "tmp")
+                os.makedirs(pkg_tmp)
+                subprocess.call(["ar", "x", "--output", pkg_tmp, fname])
+                build = os.path.join(binaries, "{}.tar.xz".format(pkg))
+                shutil.move(os.path.join(pkg_tmp, "data.tar.xz"), build)
+                shutil.rmtree(pkg_dir)
+                o, e = subprocess.Popen(["sha256sum", build],
+                                        stdout=subprocess.PIPE).communicate()
+                hash_value = o.decode("utf-8").strip().split(" ")[0]
+                hashes["{}.tar.xz".format(pkg)] = hash_value
+    with open(os.path.join(binaries, "index.html"), 'w') as f:
+        f.write("<html>")
+        for h in sorted(hashes.keys()):
+            v = hashes[h]
+            f.write("<code>{}</code> <a href='{}'>{}</a><br />\n".format(v,
+                                                                         h,
+                                                                         h))
+        f.write("</html>")
+    _run_rsync(["--delete-after"],
+               binaries,
+               "{}:/opt/binaries".format(debian.MIRROR))
+
+
 def main():
     """Program entry."""
     parser = argparse.ArgumentParser()
@@ -155,6 +190,8 @@ def main():
         contents = _pack(deb_env, deb_env.REPOSITORY, m, comps, local)
         if contents:
             _upload(deb_env, mirror, contents, local)
+        if not local:
+            _binary_upload(tmpd)
         shutil.rmtree(tmpd)
     except Exception as e:
         shutil.rmtree(tmpd)
