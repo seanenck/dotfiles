@@ -106,3 +106,17 @@ clear-journal() {
     source $HOME/.local/bin/conf
     rm -f $JOURNALS
 }
+
+wiki() {
+    local f cwd
+    source $HOME/.local/bin/conf
+    f="$PERSONAL_NOTES/$1"
+    if [ ! -e "$f" ]; then
+        echo "no file given"
+        return
+    fi
+    vim $f
+    cwd=$PWD
+    cd $PERSONAL_NOTES && labsite local > /dev/null
+    cd $cwd
+}

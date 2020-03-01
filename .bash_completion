@@ -79,3 +79,13 @@ _pkg-upload() {
 }
 
 complete -F _pkg-upload pkg-upload
+
+_wiki() {
+    source $HOME/.local/bin/conf
+    local cur opts
+    cur=${COMP_WORDS[COMP_CWORD]}
+    opts=$(find $PERSONAL_NOTES -type f -name "*.md" | sed "s#$PERSONAL_NOTES/##g")
+    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+}
+
+complete -F _wiki wiki
