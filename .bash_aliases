@@ -108,14 +108,9 @@ clear-journal() {
 }
 
 wiki() {
-    local f cwd
+    local cwd
     source $HOME/.local/bin/conf
-    f="$PERSONAL_NOTES/$1"
-    if [ ! -e "$f" ]; then
-        echo "no file given"
-        return
-    fi
-    vim $f
+    vim $PERSONAL_NOTES/$1
     cwd=$PWD
     cd $PERSONAL_NOTES && labsite local > /dev/null
     cd $cwd
