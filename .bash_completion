@@ -71,33 +71,6 @@ _proxy() {
 
 complete -F _proxy proxy
 
-_notes() { 
-    local cur files f filter fname ftype
-    if [ $COMP_CWORD -eq 1 ]; then
-        cur=${COMP_WORDS[COMP_CWORD]}
-        COMPREPLY=( $(compgen -W "rm ls show edit" -- $cur) )
-    else
-        if [ $COMP_CWORD -eq 2 ]; then
-            cur=${COMP_WORDS[1]}
-            filter=""
-            case $cur in
-                "rm" | "show")
-                    filter="-type f"
-                    ;;
-            esac
-            files=""
-            source $HOME/.local/bin/conf
-            for f in $(find $NOTES_DIR/ $filter | sed "s#$NOTES_DIR/##g"); do
-                files="$f $files"
-            done
-            files=$(echo $files | sed "s/ $//g") 
-            COMPREPLY=( $(compgen -W "$files" -- ${COMP_WORDS[COMP_CWORD]}) )
-        fi
-    fi
-}
-
-complete -F _notes notes
-
 _pkg-upload() {
     local opts cur
     opts=$(pkg-upload _list_)

@@ -18,7 +18,6 @@ _PURGE = ["mv",
           "vim",
           "ls"
           "manage",
-          "notes",
           "pkg-deb",
           "pkg-pool",
           "pkg-upload",
