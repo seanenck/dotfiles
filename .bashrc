@@ -123,10 +123,6 @@ if [ -e "$PRIV_CONF" ]; then
         eval '_pc_'$i'() { PASSWORD_STORE_DIR='${PERM_PASS}$i'/ _pass; }'
         complete -o filenames -o nospace -F _pc_$i pass-$i
     done
-    for i in $(echo "$LUKS_ENTRIES"); do
-        n=$(echo "$i" | cut -d "/" -f 1)
-        alias luks-$n='enterkeys $(PASSWORD_STORE_DIR='${PERM_PASS}$LUKS_PASS' pass show '$LUKS_OFF$i'/luks 2>&1)'
-    done
 fi
 
 # ssh agent

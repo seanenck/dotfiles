@@ -1,41 +1,7 @@
 #!/usr/bin/python3
 import sys
-import time
 import subprocess
 import common
-
-
-def _enterkeys(keys):
-    """Enter keys."""
-    subprocess.call(["xdotool", "type", keys[0]])
-    for k in keys[1:]:
-        subprocess.call(["xdotool", "key", k])
-
-
-def _browser(keys):
-    """Enter keys into a browser."""
-    waiting = True
-    while waiting:
-        print("please active the browser window")
-        time.sleep(3)
-        active, err = common.get_output_or_error(["xdotool",
-                                                  "getactivewindow"])
-        if err is not None:
-            continue
-        window, err = common.get_output_or_error(["xdotool",
-                                                  "search",
-                                                  "--class",
-                                                  "Firefox"])
-        if err is not None:
-            continue
-        act = active.decode("utf-8").strip()
-        for l in [x.strip() for x in window.decode("utf-8").split("\n")]:
-            print(l)
-            print(act)
-            if act == l:
-                waiting = False
-                _enterkeys(keys + ["Return"])
-
 
 def _autoclip():
     """Auto clipboard copy."""
@@ -51,8 +17,6 @@ def main():
     commands = sys.argv[1:]
     if commands[0] == "autoclip" and len(commands) == 1:
         _autoclip()
-    else:
-        _browser(commands)
 
 
 if __name__ == "__main__":
