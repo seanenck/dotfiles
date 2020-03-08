@@ -49,6 +49,11 @@ archpkg() {
 }
 
 archrepo() {
+    if [ -z "$1" ]; then
+        echo "no package given..."
+        return
+    fi
+    repo-add ~/store/managed/pacman/enckse.db.tar.gz $1
     local files=$(tar -tf ~/store/managed/pacman/enckse.db.tar.gz | cut -d "/" -f 1 | sort -u)
     local f t d cmd had=0
     cmd=""
