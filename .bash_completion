@@ -1,0 +1,18 @@
+#!/bin/bash
+_totp() {
+    local opts cur
+    opts=$(/home/enck/.bin/totp --list --pass ~/store/pass/personal)
+    cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+}
+
+complete -F _totp totp
+
+_wsw() {
+    local opts cur
+    opts=$(wsw --mode list)
+    cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "reload $opts" -- $cur) )
+}
+
+complete -F _wsw wsw
