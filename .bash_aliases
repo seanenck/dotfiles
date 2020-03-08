@@ -40,3 +40,9 @@ overlay() {
     sudo mount -o bind,rw ~/store $shm/fs/home/enck/store
     arch-nspawn $shm/fs
 }
+
+archpkg() {
+    makechrootpkg -c -r $CHROOT
+    namcap *.tar.xz
+    cp *.tar.xz ~/store/managed/pacman/
+}
