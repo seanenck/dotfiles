@@ -21,7 +21,7 @@ touch $NOTICES
 if [ $DRYRUN -ne 0 ]; then
     oldifs=$IFS
     IFS=$'\n'
-    for f in $(cat $NOTICES); do
+    for f in $(cat $NOTICES) $(ls $CACHE | grep "etc.tar.gz" | wc -l | grep -v '^0$' | sed 's/^/etc [/g;s/$/]/g'); do
         notify-send -t 30000 "backup: $f"
     done
     CHECK=${CACHE}$(date +%Y-%m-%d.%H).txt
