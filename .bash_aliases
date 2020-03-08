@@ -35,7 +35,8 @@ overlay() {
     sudo mount -t overlay overlay \
          -o lowerdir=~/store/chroots/development/root,upperdir=$shm/upper,workdir=$shm/workdir \
          $shm/fs
-    mkdir -p $shm/fs/home/enck/workspace
+    mkdir -p $shm/fs/home/enck/{workspace,store}
     sudo mount -o bind,rw ~/workspace $shm/fs/home/enck/workspace
+    sudo mount -o bind,rw ~/store $shm/fs/home/enck/store
     arch-nspawn $shm/fs
 }
