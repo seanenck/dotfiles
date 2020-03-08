@@ -42,7 +42,37 @@ overlay() {
 }
 
 archpkg() {
+    rm *.tar.xz
     makechrootpkg -c -r $CHROOT
     namcap *.tar.xz
     cp *.tar.xz ~/store/managed/pacman/
+}
+
+archrepo() {
+    local files=$(tar -tf ~/store/managed/pacman/enckse.db.tar.gz | cut -d "/" -f 1 | sort -u)
+    local f t d cmd had=0
+    cmd=""
+    for f in $(ls ~/store/managed/pacman/*.tar.xz); do
+        d=0
+        f=$(basename $f)
+        for t in $files; do
+            if [[ "$f" == "$t-x86_64.pkg.tar.xz" ]]; then
+                d=1
+            fi
+        done
+        if [ $d -eq 0 ]; then
+            had=1
+            cmd="$cmd $f"
+            echo " -> $f"
+        fi
+    done
+    if [ $had -eq 1 ]; then
+        had="N"
+        read -p "purge files (y/N)? " had
+        if [[ "$had" == "y" ]]; then
+            for f in $cmd; do
+                rm ~/store/managed/pacman/$f
+            done
+        fi
+    fi
 }
