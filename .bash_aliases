@@ -25,3 +25,17 @@ totp() {
 ssh() {
     TERM=xterm /usr/bin/ssh "$@" || return
 }
+
+overlay() {
+    local shm=/dev/shm/overlay/$(uuidgen)
+    mkdir -p $shm
+    mkdir -p $shm/workdir
+    mkdir -p $shm/upper
+    mkdir -p $shm/fs
+    sudo mount -t overlay overlay \
+         -o lowerdir=~/store/chroots/development/root,upperdir=$shm/upper,workdir=$shm/workdir \
+         $shm/fs
+    mkdir -p $shm/fs/home/enck/workspace
+    sudo mount -o bind,rw ~/workspace $shm/fs/home/enck/workspace
+    arch-nspawn $shm/fs
+}
