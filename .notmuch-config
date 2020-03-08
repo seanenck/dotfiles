@@ -1,0 +1,19 @@
+[database]
+path=/home/enck/.mutt/imap
+
+[user]
+name=Sean Enck
+primary_email=enckse@voidedtech.com
+
+[new]
+tags=unread;inbox;
+ignore=.uidvalidity;.mbsyncstate;/.*/Trash/;
+
+[search]
+exclude_tags=deleted;spam;
+
+[maildir]
+synchronize_flags=true
+
+[crypto]
+gpg_path=gpg

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+_current() {
+    xrandr --current --verbose | grep Brightness | cut -d ":" -f 2 | head -n 1 | awk '{ print $1 * 100 }'
+}
+
+value=0.9
+if [ ! -z "$1" ]; then
+    if [[ "$1" == "status" ]]; then
+        _current
+        exit 0
+    fi
+    case "$1" in
+        "low")
+            value=0.3
+            ;;
+        "high")
+            value=1.0
+            ;;
+        "up")
+            if [ $(_current) -lt 50 ]; then
+                brightness middle
+            else
+                brightness high
+            fi
+            exit 0
+            ;;
+        "down")
+            if [ $(_current) -gt 95 ]; then
+                brightness middle
+            else
+                brightness low
+            fi
+            exit 0
+            ;;
+    esac        
+fi
+for f in $(xrandr | grep " connected" | cut -d " " -f 1); do
+    xrandr --output $f --brightness $value
+done

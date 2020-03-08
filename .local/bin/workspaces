@@ -1,0 +1,20 @@
+#!/bin/bash
+for f in $(xrandr | grep " connected" | cut -d " " -f 1); do
+    xrandr --output $f --off
+done
+
+xrandr --output eDP-1 --mode 2560x1440
+if [ ! -z "$1" ]; then
+    case "$1" in
+        "docked")
+            xrandr --output DP-2-1 --left-of eDP-1 --mode 2560x1440 --rotate right
+            xrandr --output DP-2-8 --right-of eDP-1 --mode 2560x1440
+            ;;
+    esac
+fi
+sleep 0.5
+brightness middle
+sleep 0.5
+for p in dunst dwm status; do
+    pkill $p
+done

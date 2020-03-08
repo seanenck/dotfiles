@@ -1,0 +1,77 @@
+#!/bin/bash
+
+NO_STATUS=/tmp/nostatus
+
+if [ ! -z "$1" ]; then
+    case "$1" in
+        "toggle")
+            change="on"
+            if [ -e "$NO_STATUS" ]; then
+                rm -f $NO_STATUS
+            else
+                change="off"
+                touch $NO_STATUS
+            fi
+            notify-send -t 5000 "notifications: $change"
+            ;;
+        "notify")
+            if [ ! -e "$NO_STATUS" ]; then
+                gitstatus
+                mail status
+                backup status
+            fi
+            ;;
+        "mail")
+            wsw --mode online
+            if [ $? -ne 0 ]; then
+                exit 0
+            fi
+            wsw --mode current | grep -q -E "home|default"
+            if [ $? -ne 0 ]; then
+                exit 0
+            fi
+            timestamp=/tmp/mail.$(date +%Y-%m-%d-%H).txt
+            if [ -e $timestamp ]; then
+                exit 0
+            fi
+            mail
+            touch $timestamp
+            ;;
+    esac
+    exit 0
+fi
+
+_status() {
+    date=$(date +%Y-%m-%d)
+    week=$(date +%a | tr '[:lower:]' '[:upper:]')
+    time=$(date +%H:%M)
+    bright=$(brightness status)
+    locked=$(locker status)
+    if [ ! -z "$locked" ]; then
+        locked="|$locked"
+    fi
+    vol=$(volume status)
+    bat=$(cat /sys/class/power_supply/BAT0/capacity)
+    charge="-"
+    if [ $(cat /sys/class/power_supply/AC/online) -eq 1 ]; then
+        charge="+"
+    else
+        if [ $bat -lt 20 ]; then
+            notify-send -t 30000 "BATTERY LOW"
+        fi
+    fi
+    online="UP"
+    wsw --mode online
+    if [ $? -ne 0 ]; then
+        online="DOWN"
+    fi
+    addr=$(wsw --mode addr)
+    echo "$date|$week|$time$locked|disp:$bright|vol:$vol|bat:$bat$charge|$online:$addr"
+}
+
+while [ 1 -eq 1 ]; do
+    xsetroot -name $(_status)
+    status notify &
+    status mail &
+    sleep 20
+done

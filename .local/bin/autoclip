@@ -1,0 +1,3 @@
+#!/bin/bash
+source ~/store/personal/config/etc/autoclip
+_autoclip

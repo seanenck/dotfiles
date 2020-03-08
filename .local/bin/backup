@@ -1,0 +1,131 @@
+#!/bin/bash
+DRYRUN=0
+if [ ! -z "$1" ]; then
+    if [[ "$1" == "status" ]]; then
+        DRYRUN=1
+    fi
+fi
+
+if [ $DRYRUN -eq 0 ]; then
+    ssh -o BatchMode=yes -o ConnectTimeout=5 fact echo is-online > /dev/null
+    if [ $? -ne 0 ]; then
+        echo "backup system not online"
+        exit 1
+    fi
+fi
+
+CACHE=$HOME/.cache/backup/
+NOTICES=${CACHE}notices.txt
+touch $NOTICES
+
+if [ $DRYRUN -ne 0 ]; then
+    oldifs=$IFS
+    IFS=$'\n'
+    for f in $(cat $NOTICES); do
+        notify-send -t 30000 "backup: $f"
+    done
+    CHECK=${CACHE}$(date +%Y-%m-%d.%H).txt
+    if [ -e $CHECK ]; then
+        exit 0
+    fi
+    touch $CHECK
+fi
+
+mkdir -p $CACHE
+echo "backing up inboxes"
+for f in $(find ~/store/personal/ -maxdepth 1 -type d | grep "@"); do
+    echo " -> $f"
+    if [ $DRYRUN -ne 0 ]; then
+        cat $NOTICES | grep "$(basename $f)" | grep -q inbox
+        if [ $? -eq 0 ]; then
+            continue
+        fi
+        cur=${CACHE}$(basename $f).manifest.txt
+        old=$cur.prev
+        touch $cur
+        touch $old
+        find $f -type f -exec md5sum {} \; | sort > $cur
+        diff -u $old $cur > /dev/null
+        if [ $? -ne 0 ]; then
+            echo "$(basename $f) [inbox]" >> $NOTICES
+        fi
+        mv $cur $old
+    else
+        rsync -avcr --delete-after $f/ fact:~/store/Active/Inbox/$(basename $f)
+    fi
+done
+
+echo "backing up git repos"
+for f in ~/store/personal/private ~/store/pass/personal; do
+    echo " -> $f"
+    commit=$(git -C $f log --format=%h -n 1)
+    if [ $DRYRUN -ne 0 ]; then
+        cat $NOTICES | grep "$(basename f)" | grep -q git
+        if [ $? -eq 0 ]; then
+            continue
+        fi
+        hashed=${CACHE}$(basename $f).git.$commit
+        if [ ! -e $hashed ]; then
+            echo "$(basename $f) [git]" >> $NOTICES
+            touch $hashed
+        fi
+    else
+        # do stuff
+        zippass=$(PASSWORD_STORE_DIR=~/store/pass/personal pass show keys/zips)
+        zipfile=${CACHE}$(basename $f).$commit.7z
+        if [ -e $zipfile ]; then
+            continue
+        fi
+        rm -f $zipfile
+        7z a -spf -p$zippass $zipfile $(find $f -type f | grep -v "\.git")
+        python3 ~/.local/bin/inbox.py \
+                --input $zipfile \
+                --subject "zip: $(basename $f)"
+    fi
+done
+
+echo "backing up md files"
+for f in $(find ~/store/personal/config/important -type f); do
+    echo " -> $f"
+    if [ $DRYRUN -ne 0 ]; then
+        cat $NOTICES | grep "$(basename $f)" | grep -q markdown
+        if [ $? -eq 0 ]; then
+            continue
+        fi
+        cur=${CACHE}$(basename $f).md.txt
+        old=$cur.prev
+        touch $cur
+        touch $old
+        md5sum $f > $cur
+        diff -u $old $cur > /dev/null
+        if [ $? -ne 0 ]; then
+            echo "$(basename $f) [markdown]" >> $NOTICES
+        fi
+        mv $cur $old
+    else
+        md=${CACHE}$(basename $f).mail
+        if [ -e $md ]; then
+            continue
+        fi
+        cp $f $md
+        python3 ~/.local/bin/inbox.py \
+                --input $md \
+                --subject "notes: $(basename $f)" \
+                --plaintext
+    fi
+done
+
+if [ $DRYRUN -eq 0 ]; then
+    profiles=${CACHE}profiles.$(date +%s).tar.gz
+    tar czf $profiles ~/.mozilla ~/.bash_history 2> /dev/null
+    scp $profiles fact:~/store/Active/Drop/Profiles
+    rm -f $profiles
+    for f in $(ssh fact find ~/store/Active/Drop/Profiles -mtime +7); do
+        ssh fact rm $f
+    done
+    for f in $(find $CACHE -type f -name "*.etc.tar.gz"); do
+        scp $f fact:~/store/Active/Drop/Profiles/
+        rm $f
+    done
+    rm -f $NOTICES
+fi

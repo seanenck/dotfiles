@@ -1,0 +1,76 @@
+[global]
+    follow = mouse
+    geometry = "250x0-5-30"
+    indicate_hidden = yes
+    shrink = no
+    transparency = 0
+    notification_height = 0
+    separator_height = 2
+    padding = 8
+    horizontal_padding = 8
+    frame_width = 3
+    frame_color = "#aaaaaa"
+    separator_color = frame
+    sort = yes
+    idle_threshold = 120
+
+    ### Text ###
+    font = Monospace 10
+    line_height = 0
+    markup = no
+    alignment = left
+    show_age_threshold = 60
+    word_wrap = no
+    ellipsize = end
+    ignore_newline = yes
+    stack_duplicates = true
+    hide_duplicate_count = true
+    show_indicators = no
+    ### Icons ###
+    # Align icons left/right/off
+    icon_position = off
+    max_icon_size = 32
+    icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
+
+    ### History ###
+    sticky_history = no
+    history_length = 1
+
+    ### Misc/Advanced ###
+    title = Dunst
+    class = Dunst
+    startup_notification = false
+
+[experimental]
+    # Calculate the dpi to use on a per-monitor basis.
+    # If this setting is enabled the Xft.dpi value will be ignored and instead
+    # dunst will attempt to calculate an appropriate dpi value for each monitor
+    # using the resolution and physical size. This might be useful in setups
+    # where there are multiple screens with very different dpi values.
+    per_monitor_dpi = false
+
+[urgency_low]
+    background = "#222222"
+    foreground = "#888888"
+    timeout = 10
+
+[urgency_normal]
+    background = "#285577"
+    foreground = "#ffffff"
+    timeout = 10
+
+[urgency_critical]
+    background = "#900000"
+    foreground = "#ffffff"
+    frame_color = "#ff0000"
+    timeout = 0
+
+[pinverify]
+    summary = "PIN verified"
+    format = ""
+[scready]
+    summary = "Smart card is ready to use"
+    format = ""
+[scremoved]
+    summary = "Smart card removed"
+    format = ""

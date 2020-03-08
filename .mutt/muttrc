@@ -1,0 +1,70 @@
+set mbox_type   = Maildir
+set editor = "vim"
+
+set spoolfile   = "+INBOX"
+unset record
+
+set alias_file  = ~/store/personal/config/etc/mutt.aliases
+set sort_alias  = alias
+source $alias_file
+source ~/.mutt/gpg.rc
+
+set realname    = "Sean Enck"
+set sort_aux    = reverse-last-date-received
+set sort        = threads
+set sort_re
+set quit        = ask-yes
+
+mailboxes +INBOX
+save-hook . '=INBOX'
+
+set date_format = "%Y-%m-%d"
+set index_format = "%4C %Z | %D | %-15.15n | %s (%4c)"
+
+set sidebar_visible
+set sidebar_width = 27
+set timeout = 30
+unset markers
+
+set mailcap_path 	= ~/.mutt/mailcap
+auto_view text/html
+alternative_order text/plain text/enriched text/html
+
+set send_charset="us-ascii:utf-8"
+set sleep_time = 0
+
+bind index,pager \CB noop
+bind index,pager \CD noop
+bind index,pager \CF noop
+bind index,pager O noop
+bind index <Up> previous-entry
+bind index <Down> next-entry
+bind index,pager B sidebar-toggle-visible
+
+macro index,pager \Cp "<sidebar-prev><sidebar-open>"
+macro index,pager \Cn "<sidebar-next><sidebar-open>"
+macro index,pager <f5> "<enter-command>unset wait\_key<enter><shell-escape>/home/enck/.local/bin/mail > /dev/null &<enter><enter-command>set wait\_key<enter>" "Refresh"
+macro attach 'V' "<pipe-entry>cat >/tmp/mutt.mail.html && ~/.local/bin/firefox /tmp/mutt.mail.html<enter>"
+macro index <F8> \
+"<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
+<shell-escape>notmuch-mutt -r --prompt search<enter>\
+<change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>\
+<enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
+"notmuch: search mail"
+
+color hdrdefault blue black
+color quoted blue black
+color signature blue black
+color attachment green black
+color prompt brightmagenta black
+color message white  black
+color error white black
+color indicator black green
+color status brightgreen blue
+color tree white black
+color normal white black
+color markers green black
+color search white black
+color tilde brightmagenta black
+color index blue black ~F
+color index green black "~N|~O"

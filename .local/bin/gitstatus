@@ -1,0 +1,16 @@
+#!/bin/bash
+
+_gitstatus() {
+    git -C $1 update-index -q --refresh
+    git -C $1 diff-index --name-only HEAD --
+    git -C $1 status -sb | grep ahead
+    git -C $1 ls-files --other --exclude-standard
+}
+
+for f in $HOME/.git /etc/.git $(find /home/enck/workspace -type d -name ".git") $(find /home/enck/store -type d -name ".git"); do
+    dname=$(dirname $f)
+    count=$(_gitstatus $dname | wc -l)
+    if [ $count -gt 0 ]; then
+        notify-send -t 30000 "$(echo $dname | sed "s#/home/enck#~#g") [$count]"
+    fi
+done

@@ -1,0 +1,54 @@
+#!/bin/bash
+
+_current() {
+    if pactl list sinks | grep -q "Mute: yes"; then
+        echo 0
+    else
+        pactl list sinks | grep -E "Volume" | grep -v "Base Volume:" | cut -d "/" -f 2 | cut -d "%" -f 1 | sed "s/^\s*//g" | awk '{ sum += $2 } END { print $sum }'
+    fi
+}
+
+_pactl() {
+    for f in 0 1 2 3 4; do
+        pactl $1 $f $2 > /dev/null 2>&1
+    done
+}
+
+_mute() {
+    local value=$1
+    if [ -z "$value" ]; then
+        value=1
+        if pactl list sinks | grep -q "Mute: yes"; then
+            value=0
+        fi
+    fi
+    _pactl set-sink-mute $value
+}
+
+if [ -z "$1" ]; then
+    _current
+    exit 0
+fi
+
+delta=0
+case "$1" in
+    "mute")
+        _mute 1
+        exit 0
+        ;;
+    "togglemute")
+        _mute
+        exit 0
+        ;;
+    "inc")
+        delta=+10
+        ;;
+    "dec")
+        delta=-10
+        ;;
+    "status")
+        _current
+        exit 0
+        ;;
+esac
+_pactl set-sink-volume ${delta}%

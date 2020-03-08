@@ -1,0 +1,86 @@
+#!/bin/bash
+
+NO_ZZZ="/tmp/nozzz"
+NO_LOCK="/tmp/nolock"
+
+_current() {
+    if [ -e $NO_ZZZ ]; then
+        echo "NO_ZZZ"
+    else
+        if [ -e "$NO_LOCK" ]; then
+            echo "UNLOCKED"
+        fi
+    fi
+}
+
+_lock() {
+    if [ -e "$NO_LOCK" ]; then
+        return
+    fi
+    local count
+    if pgrep -x i3lock > /dev/null; then
+        return
+    fi
+    volume mute
+    brightness low
+    sleep 0.5
+    i3lock -c 333333
+    count=0
+    if [ ! -z "$1" ]; then
+        if [ $1 -eq 1 ]; then
+            count=301
+        fi
+    fi
+    while [ 1 -eq 1 ]; do
+        if pgrep -x i3lock > /dev/null; then
+            sleep 1
+            count=$((count+1))
+            if [ ! -e "$NO_ZZZ" ]; then
+                if [ $count -gt 300 ]; then
+                    for p in smplayer mplayer; do
+                        pkill $p
+                    done
+                    systemctl suspend
+                    count=0
+                fi
+            fi
+            continue
+        else
+            break
+        fi
+    done
+    brightness middle
+    xset -display :0 dpms force on
+}
+
+CMD="lock"
+if [ ! -z "$1" ]; then
+    CMD="$1"
+fi
+
+case "$CMD" in
+    "status")
+        _current
+        exit 0
+        ;;
+    "toggle")
+        pkill status
+        if [ -e $NO_ZZZ ]; then
+            rm -f $NO_ZZZ
+        else
+            if [ -e $NO_LOCK ]; then
+                rm -f $NO_LOCK
+                touch $NO_ZZZ
+            else
+                touch $NO_LOCK
+            fi
+        fi
+        exit 0
+        ;;
+    "sleep")
+        _lock 1
+        ;;
+    "lock")
+        _lock 0
+        ;;
+esac
