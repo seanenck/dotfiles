@@ -42,8 +42,11 @@ overlay() {
 }
 
 archpkg() {
-    rm *.tar.xz
+    rm -f *.tar.xz
     makechrootpkg -c -r $CHROOT
+    if [ $? -ne 0 ]; then
+        return
+    fi
     namcap *.tar.xz
     cp *.tar.xz ~/store/managed/pacman/
 }
