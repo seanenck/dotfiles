@@ -81,3 +81,11 @@ archrepo() {
         fi
     fi
 }
+
+wiki() {
+    local cwd
+    vim ~/store/personal/notebook@localhost/$1
+    cwd=$PWD
+    cd ~/store/personal/notebook@localhost/ && labsite local > /dev/null
+    cd $cwd
+}
