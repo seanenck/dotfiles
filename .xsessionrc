@@ -1,3 +1,0 @@
-# Source system and local profile
-. /etc/profile
-. $HOME/.profile

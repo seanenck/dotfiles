@@ -1,7 +1,0 @@
-/*
-!.local/
-.local/*
-!.local/bin/
-.local/bin/*-bin
-*.pyc
-__pycache__
