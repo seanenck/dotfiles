@@ -35,6 +35,7 @@ if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
     return
 fi
 
+export CHROOT=~/store/chroots/build
 export TERM=xterm
 export VISUAL=vim
 export EDITOR="$VISUAL"
