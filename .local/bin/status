@@ -70,9 +70,14 @@ _status() {
     echo "$date|$week|$time$locked|disp:$bright|vol:$vol|bat:$bat$charge|$online:$addr"
 }
 
+count=1
 while [ 1 -eq 1 ]; do
     xsetroot -name $(_status)
-    status notify &
-    status mail &
-    sleep 20
+    count=$((count+1))
+    if [ $count -eq 5 ]; then
+        status notify &
+        status mail &
+        count=0
+    fi
+    sleep 5
 done
