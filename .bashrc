@@ -28,6 +28,7 @@ HISTFILESIZE=-1
 shopt -s checkwinsize
 
 . ~/.bash_aliases
+. ~/.bash_completion
 . /usr/share/bash-completion/bash_completion
 
 if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then

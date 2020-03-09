@@ -1,0 +1,92 @@
+#!/usr/bin/python3
+import configparser
+import os
+import tempfile
+import subprocess
+
+def _chunk(section, key):
+    if key not in section:
+        return []
+    parts = section[key]
+    components = []
+    for p in parts.split(" "):
+        for n in p.split("\n"):
+            components.append(n.strip())
+    return components
+
+def _stringify(command, objects, is_install=False, no_dest=False, system=True):
+    if len(objects) == 0:
+        return []
+    results = []
+    for o in objects:
+        if o == "":
+            continue
+        dest = "$(DESTDIR)/"
+        if no_dest:
+            dest = ""
+        if is_install and system:
+            d = os.path.dirname(o)
+            results.append("install -d {}".format(dest + d))
+        destfile = dest + o
+        if not system:
+            destfile = dest + os.path.basename(o)
+        obj = []
+        if is_install:
+            obj += [o]
+        obj += [destfile]
+        results.append(" ".join(command + obj))
+    return ["\t{}".format(x) for x in results]
+
+def main():
+    config_file = "local.pkg"
+    if not os.path.exists(config_file):
+        return
+    cfg = configparser.ConfigParser()
+    with open(config_file, 'r') as f:
+        cfg.read_file(f)
+    options = []
+    for o in os.listdir("."):
+        if o.endswith(".pkg.tar.xz"):
+            options += [o]
+    if len(options) == 0:
+        return
+    choice = list(reversed(sorted(options)))[0]
+    version = "-".join(choice.split("-")[1:3])
+    with tempfile.TemporaryDirectory(prefix="localpkg_") as td:
+        subprocess.call(["tar", "xf", choice, "-C", td])
+        for s in cfg.sections():
+            print('building: {}'.format(s))
+            lines = []
+            section = cfg[s]
+            syspkg = True
+            if "local_package" in section:
+                syspkg = not bool(section["local_package"])
+            needs = _chunk(section, "needs")
+            i644 = _chunk(section, "install_644")
+            i755 = _chunk(section, "install_755")
+            rem = _chunk(section, "remove")
+            cwd = os.getcwd()
+            archive = os.path.join(cwd, s + "." + version + ".tar.gz")
+            needs = _stringify(["test", "-x"], [os.path.join("/usr/bin/", x) for x in needs], no_dest=True)
+            rem = _stringify(["rm", "-f"], rem + i644 + i755, system=syspkg)
+            install = _stringify(["install", "-Dm644"], i644, is_install=True, system=syspkg)
+            install += _stringify(["install", "-Dm755"], i755, is_install=True, system=syspkg)
+            d = [("needs", needs), ("remove", rem), ("install", install)]
+            d = [x for x in d if len(x[1]) > 0]
+            with open(os.path.join(td, "Makefile"), 'w') as f:
+                destdir = ""
+                if not syspkg:
+                    destdir = "/usr/local/bin"
+                f.write("DESTDIR={}\n\n".format(destdir))
+                f.write("all: {}\n\n".format(" ".join(x[0] for x in d)))
+                for obj in d:
+                    f.write("{}:\n".format(obj[0]))
+                    for item in obj[1]:
+                        f.write("{}\n".format(item))
+                    f.write("\n")
+            if os.path.exists(archive):
+                os.remove(archive)
+            subprocess.call(["tar", "czf", archive, "."], cwd=td)
+
+if __name__ == "__main__":
+    main()

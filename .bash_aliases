@@ -43,12 +43,15 @@ overlay() {
 
 archpkg() {
     rm -f *.tar.xz
+    if [ -x configure.sh ]; then
+        echo "configure..."
+        ./configure.sh
+    fi
     makechrootpkg -c -r $CHROOT
     if [ $? -ne 0 ]; then
         return
     fi
     namcap *.tar.xz
-    cp *.tar.xz ~/store/managed/pacman/
 }
 
 archrepo() {
