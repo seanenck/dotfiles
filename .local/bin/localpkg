@@ -93,6 +93,10 @@ def main():
             installer = os.path.join(cwd, s + "." + version + ".tar.gz")
             with open("configure", "w") as f:
                 f.write("#!/bin/bash\n")
+                f.write("if [ $UID -eq 0 ]; then\n")
+                f.write("    echo 'do not run as root'\n")
+                f.write("    exit 1\n")
+                f.write("fi\n")
                 f.write("echo {}\n".format(s))
                 f.write("tmpdir=$(mktemp -d)\n")
                 f.write("tar xf {} -C $tmpdir\n".format(tar_name))
