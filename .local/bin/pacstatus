@@ -1,0 +1,5 @@
+#!/bin/bash
+IFS=$'\n'
+for f in $(pacman -Qqtd); do
+    notify-send -t 30000 "orphan: $f"
+done

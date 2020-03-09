@@ -19,6 +19,7 @@ if [ ! -z "$1" ]; then
                 gitstatus
                 mail status
                 backup status
+                pacstatus
             fi
             ;;
         "mail")
