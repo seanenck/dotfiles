@@ -7,7 +7,7 @@ _gitstatus() {
     git -C $1 ls-files --other --exclude-standard
 }
 
-for f in $HOME/.git /etc/.git $(find /home/enck/workspace -type d -name ".git") $(find /home/enck/store -type d -name ".git" | grep -v "chroots"); do
+for f in $HOME/.git /etc/.git $(find /home/enck/workspace -type d -name ".git") $(find /home/enck/store -maxdepth 5 -type d -name ".git" | grep -v "chroots"); do
     dname=$(dirname $f)
     count=$(_gitstatus $dname | wc -l)
     if [ $count -gt 0 ]; then

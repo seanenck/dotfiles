@@ -36,11 +36,17 @@ if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
     return
 fi
 
-export CHROOT=~/store/chroots/builds
 export TERM=xterm
 export VISUAL=vim
 export EDITOR="$VISUAL"
 source ~/.config/user-dirs.dirs
+if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
+    PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
+    return
+fi
+
+export CHROOT=~/store/chroots/builds
+mkdir -p /dev/shm/schroot/overlay
 
 # ssh agent
 # Set SSH to use gpg-agent
