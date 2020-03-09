@@ -117,7 +117,8 @@ done
 
 if [ $DRYRUN -eq 0 ]; then
     profiles=${CACHE}profiles.$(date +%s).tar.gz
-    tar czf $profiles ~/.mozilla ~/.bash_history 2> /dev/null
+    pacman -Qqe > ~/.cache/packages
+    tar czf $profiles ~/.mozilla ~/.bash_history ~/.cache/packages 2> /dev/null
     scp $profiles fact:~/store/Active/Drop/Profiles
     rm -f $profiles
     for f in $(ssh fact find ~/store/Active/Drop/Profiles -mtime +7); do
