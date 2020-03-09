@@ -25,3 +25,12 @@ _wiki() {
 }
 
 complete -F _wiki wiki
+
+_pkgrelease() {
+    local cur opts
+    cur=${COMP_WORDS[COMP_CWORD]}
+    opts="external internal"
+    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+}
+
+complete -F _pkgrelease pkgrelease

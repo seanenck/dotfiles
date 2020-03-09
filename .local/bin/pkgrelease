@@ -1,0 +1,47 @@
+#!/bin/bash
+MODE=$1
+if [ -z "$MODE" ]; then
+    echo "no mode given"
+    exit 1
+fi
+MODE=~/store/managed/binaries/$MODE/
+_html() {
+    echo "<html>
+<body>
+<pre>
+binaries
+===
+
+1. download &lt;file&gt;.tar.gz
+2. compare sha256 hash
+3. tar xf &lt;file&gt;.tar.gz
+4. ./configure
+5. follow the prompts
+<pre>
+<hr /><pre>"
+    sha256sum *.tar.gz
+    echo "</pre></body></html>"
+}
+
+purge=""
+for f in $(find $MODE -type f -exec basename {} \; | cut -d "." -f 1 | sort -u); do
+    echo "accounting: $(basename $f)"
+    count=0
+    for d in $(find ${MODE} | grep "$f\." | sort -u -r); do
+        if [ $count -ge 3 ]; then
+            purge="$purge $d"
+            echo " -> remove $(basename $d)"
+        fi
+        count=$((count+1))
+    done
+done
+
+if [ ! -z "$purge" ]; then
+    read -p "purge (y/N)? " yes
+    if [[ "$yes" == "y" ]]; then
+        rm -f $purge
+    fi
+fi
+
+_html > $MODE/index.html
+rsync -av --delete-after $MODE voidedtech.com:/opt/binaries/$1/
