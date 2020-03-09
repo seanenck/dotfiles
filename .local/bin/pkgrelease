@@ -19,12 +19,14 @@ binaries
 5. follow the prompts
 <pre>
 <hr /><pre>"
-    sha256sum *.tar.gz
+    for f in $(ls $MODE*.tar.gz); do
+        echo "<code>$(sha256sum $f | cut -d " " -f 1)</code> <a href='$(basename $f)'>$(basename $f)</a>"
+    done
     echo "</pre></body></html>"
 }
 
 purge=""
-for f in $(find $MODE -type f -exec basename {} \; | cut -d "." -f 1 | sort -u); do
+for f in $(find $MODE -type f -name "*.tar.gz" -exec basename {} \; | cut -d "." -f 1 | sort -u); do
     echo "accounting: $(basename $f)"
     count=0
     for d in $(find ${MODE} | grep "$f\." | sort -u -r); do
@@ -44,4 +46,10 @@ if [ ! -z "$purge" ]; then
 fi
 
 _html > $MODE/index.html
-rsync -av --delete-after $MODE voidedtech.com:/opt/binaries/$1/
+targets="voidedtech.com"
+if [[ "$1" == "internal" ]]; then
+    targets="$targets fact"
+fi
+for t in $targets; do
+    rsync -av --delete-after $MODE $t:/opt/binaries/$1/
+done
