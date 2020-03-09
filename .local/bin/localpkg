@@ -115,7 +115,11 @@ def main():
             subprocess.call(["tar", "-czf", installer, "configure", tar_name])
             os.remove(archive)
             os.remove('configure')
-            os.rename(installer, "/home/enck/store/managed/binaries/{}".format(installer_name))
+            release = "internal"
+            if "release" in section:
+                if bool(section["release"]):
+                    release = "external"
+            os.rename(installer, "/home/enck/store/managed/binaries/{}/{}".format(release, installer_name))
 
 if __name__ == "__main__":
     main()
