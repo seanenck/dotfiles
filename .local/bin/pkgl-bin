@@ -98,9 +98,11 @@ def main():
             installer_name = s + "." + version + ".tar.gz"
             installer = os.path.join(cwd, installer_name)
             with open("configure", "w") as f:
+                rm = "rm {} configure\n".format(tar_name)
                 f.write("#!/bin/bash\n")
                 f.write("if [ $UID -eq 0 ]; then\n")
                 f.write("    echo 'do not run as root'\n")
+                f.write("    {}".format(rm))
                 f.write("    exit 1\n")
                 f.write("fi\n")
                 f.write("echo {}\n".format(s))
@@ -114,7 +116,7 @@ def main():
                 f.write('    fi\n')
                 f.write('fi\n')
                 f.write('echo "$(date +%Y-%m-%d:%H:%M:%S) -> $target {}" >> $HOME/.localpkg.log\n'.format(installer))
-                f.write("rm {} configure\n".format(tar_name))
+                f.write(rm)
                 f.write("cd $tmpdir && sudo make $target\n")
             os.chmod("configure", 0o755)
             subprocess.call(["tar", "-czf", installer, "configure", tar_name])
