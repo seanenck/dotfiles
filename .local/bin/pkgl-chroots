@@ -1,9 +1,17 @@
 #!/bin/bash
 COMMAND="$@"
+_header() {
+    echo
+    echo "=== $1 ==="
+    echo
+}
+
 if [ -z "$COMMAND" ]; then
+    _header "builds"
     arch-nspawn $CHROOT/root pacman -Syyu
     COMMAND="pacman -Syyu"
 fi
 for f in $(ls $CHROOT/.. | grep -v builds); do
+    _header $f
     sudo schroot -c source:$f -- $COMMAND
 done
