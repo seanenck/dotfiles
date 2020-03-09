@@ -12,6 +12,8 @@ _html() {
 binaries
 ===
 
+Simple hosted pre-built binaries of personal projects.
+
 1. download &lt;file&gt;.tar.gz
 2. compare sha256 hash
 3. tar xf &lt;file&gt;.tar.gz
@@ -22,7 +24,7 @@ binaries
     for f in $(ls $MODE*.tar.gz); do
         echo "<code>$(sha256sum $f | cut -d " " -f 1)</code> <a href='$(basename $f)'>$(basename $f)</a>"
     done
-    echo "</pre></body></html>"
+    echo "</pre><small>last updated: $(date +%Y-%m-%d)</small></body></html>"
 }
 
 purge=""
