@@ -41,7 +41,7 @@ overlay() {
     arch-nspawn $shm/fs
 }
 
-archpkg() {
+pkgl() {
     rm -f *.tar.xz
     if [ -x configure.sh ]; then
         echo "configure..."
@@ -54,7 +54,7 @@ archpkg() {
     namcap *.tar.xz
 }
 
-archrepo() {
+pkgl-repo() {
     if [ -z "$1" ]; then
         echo "no package given..."
         return
