@@ -74,3 +74,6 @@
 [scremoved]
     summary = "Smart card removed"
     format = ""
+
+[shortcuts]
+    close_all = ctrl+shift+space
