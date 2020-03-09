@@ -18,13 +18,8 @@ if [ ! -z "$1" ]; then
             if [ ! -e "$NO_STATUS" ]; then
                 gitstatus
                 mail status
-                timestamp=/tmp/status.$(date +%Y-%m-%d-%H).txt
-                if [ -e $timestamp ]; then
-                    exit 0
-                fi
                 backup status
                 pacstatus
-                touch $timestamp
             fi
             ;;
         "mail")
