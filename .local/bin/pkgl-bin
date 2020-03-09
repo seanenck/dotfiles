@@ -117,7 +117,7 @@ def main():
                 f.write('fi\n')
                 f.write('echo "$(date +%Y-%m-%d:%H:%M:%S) -> $target {}" >> $HOME/.localpkg.log\n'.format(installer))
                 f.write(rm)
-                f.write("cd $tmpdir && sudo make $target\n")
+                f.write("cd $tmpdir && sudo make $target | tee -a $HOME/.localpkg.log\n")
             os.chmod("configure", 0o755)
             subprocess.call(["tar", "-czf", installer, "configure", tar_name])
             os.remove(archive)
