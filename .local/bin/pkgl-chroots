@@ -1,0 +1,9 @@
+#!/bin/bash
+COMMAND="$@"
+if [ -z "$COMMAND" ]; then
+    arch-nspawn $CHROOT/root pacman -Syyu
+    COMMAND="pacman -Syyu"
+fi
+for f in $(ls $CHROOT/.. | grep -v builds); do
+    sudo schroot -c source:$f -- $COMMAND
+done
