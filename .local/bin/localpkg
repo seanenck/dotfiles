@@ -90,7 +90,8 @@ def main():
             if os.path.exists(archive):
                 os.remove(archive)
             subprocess.call(["tar", "-czf", archive, "."], cwd=td)
-            installer = os.path.join(cwd, s + "." + version + ".tar.gz")
+            installer_name = s + "." + version + ".tar.gz"
+            installer = os.path.join(cwd, installer_name)
             with open("configure", "w") as f:
                 f.write("#!/bin/bash\n")
                 f.write("if [ $UID -eq 0 ]; then\n")
@@ -114,6 +115,7 @@ def main():
             subprocess.call(["tar", "-czf", installer, "configure", tar_name])
             os.remove(archive)
             os.remove('configure')
+            os.rename(installer, "/home/enck/store/managed/binaries/{}".format(installer_name))
 
 if __name__ == "__main__":
     main()
