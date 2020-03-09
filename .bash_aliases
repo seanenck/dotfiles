@@ -19,7 +19,7 @@ totp() {
     if [ ! -z "$1" ]; then
         cmd="--command $1"
     fi
-    totp --pass ~/store/pass/personal $cmd
+    /usr/bin/totp --pass ~/store/pass/personal $cmd
 }
 
 ssh() {
