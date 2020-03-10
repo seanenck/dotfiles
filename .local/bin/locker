@@ -23,7 +23,7 @@ _lock() {
     fi
     volume mute
     brightness low
-    sleep 0.5
+    sleep 0.1
     i3lock -c 333333
     count=0
     if [ ! -z "$1" ]; then
