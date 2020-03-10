@@ -31,7 +31,7 @@ if [ ! -z "$1" ]; then
             if [ $? -ne 0 ]; then
                 exit 0
             fi
-            timestamp=/tmp/mail.$(date +%Y-%m-%d-%H).txt
+            timestamp=/tmp/mail.$(date -d @$(( (($(date +%s) + 900) / 1800) * 1800)) +%Y-%m-%d-%H-%M).txt
             if [ -e $timestamp ]; then
                 exit 0
             fi
