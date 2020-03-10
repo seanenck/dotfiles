@@ -80,3 +80,7 @@ wiki() {
     cd ~/store/personal/notebook@localhost/ && labsite local > /dev/null
     cd $cwd
 }
+
+mplayer() {
+    /usr/bin/mplayer -input conf=~/.config/mplayer.conf -af volume=-20:1 -loop 0 -playlist ~/.cache/playlist
+}
