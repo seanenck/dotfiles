@@ -82,10 +82,16 @@ pkgl-repo() {
 }
 
 wiki() {
-    local cwd
-    vim ~/store/personal/notebook@localhost/$1
+    local cwd dir w
+    dir=~/store/personal/notebook@localhost/
+    vim $dir$1
     cwd=$PWD
-    cd ~/store/personal/notebook@localhost/ && labsite local > /dev/null
+    w=~/.cache/wiki/
+    cd $dir
+    labsite local > /dev/null
+    rsync -av ${dir}/bin/ $w --delete-after > /dev/null
+    rm -rf ${dir}bin/
+    ln -s $w ${dir}bin
     cd $cwd
 }
 
