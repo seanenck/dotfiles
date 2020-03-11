@@ -39,6 +39,7 @@ fi
 export TERM=xterm
 export VISUAL=vim
 export EDITOR="$VISUAL"
+export GOPATH="$HOME/.cache/go"
 source ~/.config/user-dirs.dirs
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
     PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
