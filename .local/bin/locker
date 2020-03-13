@@ -37,6 +37,7 @@ _lock() {
             count=$((count+1))
             if [ ! -e "$NO_ZZZ" ]; then
                 if [ $count -gt 300 ]; then
+                    status sleep
                     for p in smplayer mplayer; do
                         pkill $p
                     done

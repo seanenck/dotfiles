@@ -22,6 +22,9 @@ if [ ! -z "$1" ]; then
                 pacstatus
             fi
             ;;
+        "sleep")
+            rm -f $NO_STATUS
+            ;;
         "mail")
             wsw --mode online
             if [ $? -ne 0 ]; then
