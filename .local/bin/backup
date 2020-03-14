@@ -116,7 +116,7 @@ for f in $(find ~/store/personal/config/important -type f); do
 done
 
 if [ $DRYRUN -eq 0 ]; then
-    backup dryrun
+    backup status
     profiles=${CACHE}profiles.$(date +%s).tar.gz
     pacman -Qqe > ~/.cache/packages
     tar czf $profiles ~/.mozilla ~/.bash_history ~/.cache/packages 2> /dev/null
