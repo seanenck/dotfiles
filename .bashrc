@@ -68,3 +68,9 @@ for i in $(ls ~/store/pass/); do
 done
 
 source ~/store/personal/config/etc/private.exports
+manage-synced-repos() {
+    for f in $(echo "$SYNCED_REPOS"); do
+        echo "syncing: $f"
+        git -C $f pull
+    done
+}
