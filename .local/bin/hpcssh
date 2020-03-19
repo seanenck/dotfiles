@@ -1,0 +1,46 @@
+#!/bin/bash
+HPCSSH=$HOME/.bin/hpcssh
+source $HPCSSH/env
+if [ -z "$1" ]; then
+    echo "no command specified"
+    exit 1
+fi
+export PATH="$HPCSSH/krb5/bin/:$HPCSSH/ossh/bin/:$PATH"
+
+_connect() {
+    local found
+    if [ -z "$TICKETS" ]; then
+        echo "please set your TICKETS environment variable"
+        return
+    fi
+    mkdir -p $TICKETS
+    chmod 700 $TICKETS
+    export KRB5CCNAME=DIR:$TICKETS
+
+    KRB5=${HPCSSH}/krb5/
+    export PATH=${KRB5}bin:${HPCSSH}/ossh/bin:$PATH
+    export KRB5_CONFIG=${KRB5}etc/krb5.conf
+    export OPENSC_CONF="${KRB5}etc/opensc.conf"
+    pkinit -V
+    if [ $? -ne 0 ]; then
+        return
+    fi
+    found=0
+    for c in $HPCSSH_COMMANDS; do
+        if [[ "$1" == "$c" ]]; then
+            found=1
+            break
+        fi
+    done
+    if [ $found -eq 0 ]; then
+        echo "invalid command"
+        return
+    fi
+    $1 ${@:2}
+}
+
+cwd=$PWD
+cd $HPCSSH
+_connect $@
+cd $cwd
+
