@@ -8,6 +8,7 @@ _header() {
 
 if [ -z "$COMMAND" ]; then
     _header "builds"
+    sudo rsync -avc $HOME/store/managed/pacman/ $CHROOT/root/opt/pacman/ --delete-after
     arch-nspawn $CHROOT/root pacman -Syyu
     COMMAND="pacman -Syyu"
 fi
