@@ -11,10 +11,8 @@ if [ -z "$COMMAND" ]; then
     sudo rsync -avc $HOME/store/managed/pacman/ $CHROOT/root/opt/pacman/ --delete-after
     arch-nspawn $CHROOT/root pacman -Syyu
     COMMAND="pacman -Syyu"
-    sudo schroot -c source:debian -- apt update
-    sudo schroot -c source:debian -- apt upgrade
 fi
-for f in $(ls $CHROOT/.. | grep -v builds | grep -v debian); do
+for f in $(ls $CHROOT/.. | grep -v builds); do
     _header $f
     sudo schroot -c source:$f -- $COMMAND
 done

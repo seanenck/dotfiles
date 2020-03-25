@@ -29,9 +29,7 @@ shopt -s checkwinsize
 
 . ~/.bash_aliases
 . ~/.bash_completion
-if [ -e /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-fi
+. /usr/share/bash-completion/bash_completion
 
 if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
     exec startx $HOME/.xinitrc > /tmp/xinit.log 2>&1
