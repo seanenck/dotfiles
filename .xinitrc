@@ -1,5 +1,5 @@
 #!/bin/sh
-xrdb --merge $HOME/.Xresources
+xrdb -merge $HOME/.Xresources
 
 # start some nice programs
 if [ -d /etc/X11/xinit/xinitrc.d ] ; then
@@ -14,10 +14,14 @@ fi
 xset b off
 xset b 0 0 0
 xsetroot -solid "#333333"
+wsw --mode online
+if [ $? -ne 0 ]; then
+    wsw reload
+fi
 $HOME/.local/bin/workspaces mobile
 $HOME/.local/bin/volume mute
-find /home/enck/.vim/swap/* -mtime +1 -exec rm {} \;
-find /home/enck/.vim/undo/* -mtime +1 -exec rm {} \;
+find /home/enck/.vim/swap/ -type f -mtime +1 -exec rm {} \;
+find /home/enck/.vim/undo/ -type f -mtime +1 -exec rm {} \;
 while [ 1 -eq 1 ]; do
     if pgrep -x dwm > /dev/null; then
         sleep 0.5
