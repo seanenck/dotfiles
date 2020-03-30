@@ -21,6 +21,11 @@ dirty-memory() {
     watch -n 1 grep -e Dirty: -e Writeback: /proc/meminfo
 }
 
+less() {
+    local cmd=$(find /usr/share/vim/**/macros/less.sh | sort -r | head -n 1)
+    $cmd $@
+}
+
 totp() {
     local cmd
     cmd=""
