@@ -130,6 +130,7 @@ uat() {
     $HOME/store/unreal/$engine/Engine/Build/BatchFiles/RunUAT.sh \
         BuildPlugin \
         -targetplatforms=Linux \
+        -nop4 \
         ${@:2} \
         -platform=Linux \
         -plugin=$PWD/$plugin -Package=$output
