@@ -131,5 +131,5 @@ uat() {
         BuildPlugin \
         -targetplatforms=Linux \
         -platform=Linux \
-        -plugin=$plugin -Package=$output
+        -plugin=$PWD/$plugin -Package=$output
 }
