@@ -107,3 +107,29 @@ mplayer() {
 fastmail() {
     /usr/bin/mutt -F ~/.mutt/fastmail.muttrc
 }
+
+uat() {
+    local plugin
+    local output
+    local engine
+    output=$1
+    if [ -z "$output" ]; then
+        echo "no output directory given"
+        return
+    fi
+    plugin=$(ls | grep uplugin)
+    if [ -z "$plugin" ]; then
+        echo "no plugin found"
+        return
+    fi
+    engine=$(ls ~/store/unreal/ | grep -v plugins)
+    if [ -z "$engine" ]; then
+        echo "unable to find engine"
+        return
+    fi
+    $HOME/store/unreal/$engine/Engine/Build/BatchFiles/RunUAT.sh \
+        BuildPlugin \
+        -targetplatforms=Linux \
+        -platform=Linux \
+        -plugin=$plugin -Package=$output
+}
