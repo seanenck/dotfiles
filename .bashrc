@@ -32,6 +32,7 @@ shopt -s checkwinsize
 . /usr/share/bash-completion/bash_completion
 
 if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
+    export MESA_LOADER_DRIVER_OVERRIDE=i965
     exec startx $HOME/.xinitrc > /tmp/xinit.log 2>&1
     return
 fi
