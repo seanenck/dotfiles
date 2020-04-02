@@ -122,12 +122,12 @@ uat() {
         echo "no plugin found"
         return
     fi
-    engine=$(ls ~/store/unreal/ | grep -v plugins)
+    engine=$(readlink ~/store/unreal/current)
     if [ -z "$engine" ]; then
         echo "unable to find engine"
         return
     fi
-    $HOME/store/unreal/$engine/Engine/Build/BatchFiles/RunUAT.sh \
+    ${engine}Engine/Build/BatchFiles/RunUAT.sh \
         BuildPlugin \
         -targetplatforms=Linux \
         -nop4 \
