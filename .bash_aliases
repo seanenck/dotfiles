@@ -127,6 +127,8 @@ uat() {
         echo "unable to find engine"
         return
     fi
+    uebp_LogFolder=$HOME/.cache/UAT/
+    export uebp_LogFolder
     ${engine}Engine/Build/BatchFiles/RunUAT.sh \
         BuildPlugin \
         -targetplatforms=Linux \
