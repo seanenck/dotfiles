@@ -16,6 +16,7 @@ fi
 
 CACHE=$HOME/.cache/backup/
 NOTICES=${CACHE}notices.txt
+CHECK=${CACHE}$(date +%Y-%m-%d.%H).txt
 touch $NOTICES
 
 if [ $DRYRUN -ne 0 ]; then
@@ -24,7 +25,6 @@ if [ $DRYRUN -ne 0 ]; then
     for f in $(cat $NOTICES) $(ls $CACHE | grep "etc.tar.gz" | wc -l | grep -v '^0$' | sed 's/^/etc [/g;s/$/]/g'); do
         notify-send -t 30000 "backup: $f"
     done
-    CHECK=${CACHE}$(date +%Y-%m-%d.%H).txt
     if [ -e $CHECK ]; then
         exit 0
     fi
@@ -116,6 +116,7 @@ for f in $(find ~/store/personal/config/important -type f); do
 done
 
 if [ $DRYRUN -eq 0 ]; then
+    rm -f $CHECK
     backup status
     profiles=${CACHE}profiles.$(date +%s).tar.gz
     pacman -Qqe > ~/.cache/packages
