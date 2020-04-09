@@ -70,7 +70,6 @@ for f in ~/store/personal/private ~/store/pass/personal; do
             touch $hashed
         fi
     else
-        # do stuff
         zippass=$(PASSWORD_STORE_DIR=~/store/pass/personal pass show keys/zips)
         zipfile=${CACHE}$(basename $f).$commit.7z
         if [ -e $zipfile ]; then
@@ -117,7 +116,7 @@ done
 
 if [ $DRYRUN -eq 0 ]; then
     rm -f $CHECK
-    backup status
+    backup status >/dev/null
     profiles=${CACHE}profiles.$(date +%s).tar.gz
     pacman -Qqe > ~/.cache/packages
     tar czf $profiles ~/.mozilla ~/.bash_history ~/.cache/packages 2> /dev/null
