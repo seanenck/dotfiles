@@ -40,6 +40,7 @@ ssh() {
 }
 
 pkgl() {
+    rm -f *.log
     rm -f *.tar.xz
     if [ -x configure.sh ]; then
         echo "configure..."
