@@ -45,7 +45,7 @@ pkgl() {
     if [ $? -ne 0 ]; then
         return
     fi
-    namcap *.tar.xz
+    namcap *.pkg.tar.xz
 }
 
 pkgl-repo() {
