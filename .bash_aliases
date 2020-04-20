@@ -127,7 +127,7 @@ uat() {
     export uebp_LogFolder
     ${engine}Engine/Build/BatchFiles/RunUAT.sh \
         BuildPlugin \
-        -targetplatforms=Linux \
+        -notargetplatforms \
         -nop4 \
         ${@:2} \
         -plugin=$PWD/$plugin -Package=$output
