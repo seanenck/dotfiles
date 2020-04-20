@@ -43,5 +43,5 @@ pkgl() {
         echo "invalid command $1"
         return
     fi
-    $HOME/.local/bin/pkgl/$1 ${2:@}
+    $HOME/.local/bin/pkgl/$1 ${@:2}
 }

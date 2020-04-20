@@ -52,7 +52,6 @@ def main():
         print("no source xz found")
         return
     choice = list(reversed(sorted(options)))[0]
-    version = "-".join(choice.split("-")[1:3])
     with tempfile.TemporaryDirectory(prefix="localpkg_") as td:
         subprocess.call(["tar", "xf", choice, "-C", td])
         for s in cfg.sections():
@@ -95,6 +94,7 @@ def main():
             if os.path.exists(archive):
                 os.remove(archive)
             subprocess.call(["tar", "-czf", archive, "."], cwd=td)
+            version = "-".join(choice.replace(s, "").split("-")[1:3])
             installer_name = s + "." + version + ".tar.gz"
             installer = os.path.join(cwd, installer_name)
             with open("configure", "w") as f:
