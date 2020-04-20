@@ -130,6 +130,5 @@ uat() {
         -targetplatforms=Linux \
         -nop4 \
         ${@:2} \
-        -platform=Linux \
         -plugin=$PWD/$plugin -Package=$output
 }
