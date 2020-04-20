@@ -45,3 +45,54 @@ pkgl() {
     fi
     $HOME/.local/bin/pkgl/$1 ${@:2}
 }
+
+wiki() {
+    local cwd dir w
+    dir=~/store/personal/notebook@localhost/
+    vim $dir$1
+    cwd=$PWD
+    w=~/.cache/wiki/
+    cd $dir
+    labsite local > /dev/null
+    rsync -av ${dir}/bin/ $w --delete-after > /dev/null
+    rm -rf ${dir}bin/
+    ln -s $w ${dir}bin
+    cd $cwd
+}
+
+mplayer() {
+    /usr/bin/mplayer -input conf=~/.config/mplayer.conf -af volume=-20:1 -loop 0 -playlist ~/.cache/playlist
+}
+
+fastmail() {
+    /usr/bin/mutt -F ~/.mutt/fastmail.muttrc
+}
+
+uat() {
+    local plugin
+    local output
+    local engine
+    output=$1
+    if [ -z "$output" ]; then
+        echo "no output directory given"
+        return
+    fi
+    plugin=$(ls | grep uplugin)
+    if [ -z "$plugin" ]; then
+        echo "no plugin found"
+        return
+    fi
+    engine=$(readlink ~/store/unreal/current)
+    if [ -z "$engine" ]; then
+        echo "unable to find engine"
+        return
+    fi
+    uebp_LogFolder=$HOME/.cache/UAT/
+    export uebp_LogFolder
+    ${engine}Engine/Build/BatchFiles/RunUAT.sh \
+        BuildPlugin \
+        -notargetplatforms \
+        -nop4 \
+        ${@:2} \
+        -plugin=$PWD/$plugin -Package=$output
+}
