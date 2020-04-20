@@ -26,11 +26,25 @@ _wiki() {
 
 complete -F _wiki wiki
 
-_pkgl-binrel() {
+_pkgl() {
     local cur opts
     cur=${COMP_WORDS[COMP_CWORD]}
-    opts="external internal"
-    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    if [ $COMP_CWORD -eq 1 ]; then
+        opts=$(ls $HOME/.local/bin/pkgl/)
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    else
+        if [ $COMP_CWORD -eq 2 ]; then
+            cur=${COMP_WORDS[1]}
+            case "$cur" in
+                "binrel")
+                     opts="external internal"
+                     COMPREPLY=( $(compgen -W "$opts" -- ${COMP_WORDS[COMP_CWORD]}) )
+                    ;;
+                *)
+                    ;;
+            esac
+        fi
+    fi
 }
 
-complete -F _pkgl-binrel pkgl-binrel
+complete -F _pkgl pkgl

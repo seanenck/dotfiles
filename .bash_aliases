@@ -35,100 +35,13 @@ ssh() {
 }
 
 pkgl() {
-    rm -f *.log
-    rm -f *.tar.xz
-    if [ -x configure.sh ]; then
-        echo "configure..."
-        ./configure.sh
-    fi
-    makechrootpkg -c -r $CHROOT
-    if [ $? -ne 0 ]; then
-        return
-    fi
-    namcap *.pkg.tar.xz
-}
-
-pkgl-repo() {
     if [ -z "$1" ]; then
-        echo "no package given..."
+        echo "no subcommand given"
         return
     fi
-    repo-add ~/store/managed/pacman/enckse.db.tar.gz $1
-    local files=$(tar -tf ~/store/managed/pacman/enckse.db.tar.gz | cut -d "/" -f 1 | sort -u)
-    local f t d cmd had=0
-    cmd=""
-    for f in $(ls ~/store/managed/pacman/*.tar.xz); do
-        d=0
-        f=$(basename $f)
-        for t in $files; do
-            if [[ "$f" == "$t-x86_64.pkg.tar.xz" ]]; then
-                d=1
-            fi
-        done
-        if [ $d -eq 0 ]; then
-            had=1
-            cmd="$cmd $f"
-            echo " -> $f"
-        fi
-    done
-    if [ $had -eq 1 ]; then
-        had="N"
-        read -p "purge files (y/N)? " had
-        if [[ "$had" == "y" ]]; then
-            for f in $cmd; do
-                rm ~/store/managed/pacman/$f
-            done
-        fi
-    fi
-}
-
-wiki() {
-    local cwd dir w
-    dir=~/store/personal/notebook@localhost/
-    vim $dir$1
-    cwd=$PWD
-    w=~/.cache/wiki/
-    cd $dir
-    labsite local > /dev/null
-    rsync -av ${dir}/bin/ $w --delete-after > /dev/null
-    rm -rf ${dir}bin/
-    ln -s $w ${dir}bin
-    cd $cwd
-}
-
-mplayer() {
-    /usr/bin/mplayer -input conf=~/.config/mplayer.conf -af volume=-20:1 -loop 0 -playlist ~/.cache/playlist
-}
-
-fastmail() {
-    /usr/bin/mutt -F ~/.mutt/fastmail.muttrc
-}
-
-uat() {
-    local plugin
-    local output
-    local engine
-    output=$1
-    if [ -z "$output" ]; then
-        echo "no output directory given"
+    if [ ! -x "$HOME/.local/bin/pkgl/$1" ]; then
+        echo "invalid command $1"
         return
     fi
-    plugin=$(ls | grep uplugin)
-    if [ -z "$plugin" ]; then
-        echo "no plugin found"
-        return
-    fi
-    engine=$(readlink ~/store/unreal/current)
-    if [ -z "$engine" ]; then
-        echo "unable to find engine"
-        return
-    fi
-    uebp_LogFolder=$HOME/.cache/UAT/
-    export uebp_LogFolder
-    ${engine}Engine/Build/BatchFiles/RunUAT.sh \
-        BuildPlugin \
-        -notargetplatforms \
-        -nop4 \
-        ${@:2} \
-        -plugin=$PWD/$plugin -Package=$output
+    $HOME/.local/bin/pkgl/$1 ${2:@}
 }

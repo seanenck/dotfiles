@@ -1,0 +1,12 @@
+#!/bin/bash
+rm -f *.log
+rm -f *.tar.xz
+if [ -x configure.sh ]; then
+    echo "configure..."
+    ./configure.sh
+fi
+makechrootpkg -c -r $CHROOT
+if [ $? -ne 0 ]; then
+    return
+fi
+namcap *.pkg.tar.xz
