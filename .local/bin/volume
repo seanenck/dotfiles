@@ -31,6 +31,7 @@ if [ -z "$1" ]; then
 fi
 
 delta=0
+curvol=$(_current)
 case "$1" in
     "mute")
         _mute 1
@@ -41,9 +42,15 @@ case "$1" in
         exit 0
         ;;
     "inc")
+        if [ $curvol -ge 100 ]; then
+            exit 0
+        fi
         delta=+10
         ;;
     "dec")
+        if [ $curvol -le 0 ]; then
+            exit 0
+        fi
         delta=-10
         ;;
     "status")
