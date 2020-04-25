@@ -101,8 +101,8 @@ while [ 1 -eq 1 ]; do
     if [ $count -eq 5 ]; then
         status notify &
         status mail &
-        status displays &
         count=0
     fi
+    status displays &
     sleep 5
 done
