@@ -1,11 +1,11 @@
 #!/bin/bash
 if [ -z "$1" ]; then
     echo "no package given..."
-    return
+    exit 1
 fi
 repo-add ~/store/managed/pacman/enckse.db.tar.gz $1
-local files=$(tar -tf ~/store/managed/pacman/enckse.db.tar.gz | cut -d "/" -f 1 | sort -u)
-local f t d cmd had=0
+files=$(tar -tf ~/store/managed/pacman/enckse.db.tar.gz | cut -d "/" -f 1 | sort -u)
+had=0
 cmd=""
 for f in $(ls ~/store/managed/pacman/*.tar.xz); do
     d=0

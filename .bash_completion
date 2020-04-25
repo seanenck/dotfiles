@@ -35,14 +35,20 @@ _pkgl() {
     else
         if [ $COMP_CWORD -eq 2 ]; then
             cur=${COMP_WORDS[1]}
+            opts=""
             case "$cur" in
                 "binrel")
-                     opts="external internal"
-                     COMPREPLY=( $(compgen -W "$opts" -- ${COMP_WORDS[COMP_CWORD]}) )
+                    opts="external internal"
+                    ;;
+                "repo")
+                    opts=$(ls | grep ".pkg.tar.xz")
                     ;;
                 *)
                     ;;
             esac
+            if [ ! -z "$opts" ]; then
+                 COMPREPLY=( $(compgen -W "$opts" -- ${COMP_WORDS[COMP_CWORD]}) )
+            fi
         fi
     fi
 }
