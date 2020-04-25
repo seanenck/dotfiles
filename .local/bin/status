@@ -13,7 +13,7 @@ if [ ! -z "$1" ]; then
             exited=$?
             mv $displays $prev
             if [ $exited -ne 0 ]; then
-                count=$(cat $displays | wc -l)
+                count=$(cat $prev | wc -l)
                 if [ $count -gt 1 ]; then
                    workspaces docked
                 else
