@@ -4,6 +4,23 @@ NO_STATUS=/tmp/nostatus
 
 if [ ! -z "$1" ]; then
     case "$1" in
+        "displays")
+            displays=$HOME/.cache/displays
+            prev=$displays.prev
+            xrandr | grep " connected" | cut -d " " -f 1 > $displays
+            touch $prev
+            diff -u $displays $prev > /dev/null
+            exited=$?
+            mv $displays $prev
+            if [ $exited -ne 0 ]; then
+                count=$(cat $displays | wc -l)
+                if [ $count -gt 1 ]; then
+                   workspaces docked
+                else
+                   workspaces
+                fi
+            fi
+            ;;
         "toggle")
             change="on"
             if [ -e "$NO_STATUS" ]; then
@@ -84,6 +101,7 @@ while [ 1 -eq 1 ]; do
     if [ $count -eq 5 ]; then
         status notify &
         status mail &
+        status displays &
         count=0
     fi
     sleep 5
