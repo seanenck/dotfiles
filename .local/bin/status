@@ -13,7 +13,6 @@ if [ ! -z "$1" ]; then
             exited=$?
             mv $displays $prev
             if [ $exited -ne 0 ]; then
-                notify-send 10000 "displays changed"
                 count=$(cat $displays | wc -l)
                 if [ $count -gt 1 ]; then
                    workspaces docked
