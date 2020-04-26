@@ -77,13 +77,10 @@ for i in ['q', '<F1>']
 endfor
 imap <F1> <Nop>
 
-nnoremap <C-K> <C-W><C-v>
 nnoremap <C-L> <C-W><C-L>
-nnoremap <C-J> <C-W><C-H>
-nnoremap <C-X> <C-W><C-Q>
+nnoremap <C-K> <C-W><C-H>
 
 " airline
-" git clone https://github.com/vim-airline/vim-airline ~/.vim/pack/dist/start/vim-airline
 set hidden
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
@@ -92,3 +89,10 @@ nmap <C-t> :enew<cr>
 nmap <C-PageUp> :bprevious<cr>
 nmap <C-PageDown> :bnext<cr>
 nmap <C-w> :bp <BAR> bd #<cr>
+
+" nerdtree
+autocmd vimenter * NERDTree
+autocmd VimEnter * wincmd p
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let NERDTreeShowHidden=1
+map <C-v> :NERDTreeToggle<CR>:wincmd p<CR>
