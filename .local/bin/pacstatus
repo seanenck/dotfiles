@@ -26,3 +26,8 @@ if [ ! -z "$size" ]; then
         notify-send -t 30000 "pkgcache: $size(G)"
     fi
 fi
+linux=$(pacman -Qi linux | grep Version | cut -d ":" -f 2 | sed "s/ //g")
+arch=$(uname -r | sed "s/-arch/.arch/g")
+if [ "$linux" != "$arch" ]; then
+    notify-send -t 30000 "linux: kernel"
+fi
