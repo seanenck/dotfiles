@@ -7,6 +7,6 @@ if [ -x configure.sh ]; then
 fi
 makechrootpkg -c -r $CHROOT
 if [ $? -ne 0 ]; then
-    return
+    exit 1
 fi
 namcap *.pkg.tar.xz
