@@ -121,11 +121,14 @@ if [ $DRYRUN -eq 0 ]; then
     profiles=${CACHE}profiles.$(date +%s).tar.gz
     pacman -Qqe > ~/.cache/packages
     tar czf $profiles ~/.mozilla ~/.bash_history ~/.cache/packages 2> /dev/null
+    echo "sending profiles"
     scp $profiles fact:~/store/Active/Drop/Profiles
     rm -f $profiles
+    echo "cleaning up profiles"
     for f in $(ssh fact find ~/store/Active/Drop/Profiles -mtime +7); do
         ssh fact rm $f
     done
+    echo "sending etc archive"
     for f in $(find $CACHE -type f -name "*.etc.tar.gz"); do
         scp $f fact:~/store/Active/Drop/Profiles/
         rm $f
