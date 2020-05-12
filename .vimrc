@@ -89,10 +89,3 @@ nmap <C-t> :enew<cr>
 nmap <C-PageUp> :bprevious<cr>
 nmap <C-PageDown> :bnext<cr>
 nmap <C-w> :bp <BAR> bd #<cr>
-
-" nerdtree
-autocmd vimenter * NERDTree
-autocmd VimEnter * wincmd p
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let NERDTreeShowHidden=1
-map <C-v> :NERDTreeToggle<CR>:wincmd p<CR>
