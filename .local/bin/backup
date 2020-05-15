@@ -83,38 +83,6 @@ for f in ~/store/personal/private ~/store/pass/personal; do
     fi
 done
 
-echo "backing up md files"
-for f in $(find ~/store/personal/config/important -type f); do
-    echo " -> $f"
-    md=${CACHE}$(basename $f).mail
-    if [ $DRYRUN -ne 0 ]; then
-        cat $NOTICES | grep "$(basename $f)" | grep -q markdown
-        if [ $? -eq 0 ]; then
-            continue
-        fi
-        cur=${CACHE}$(basename $f).md.txt
-        old=$cur.prev
-        touch $cur
-        touch $old
-        md5sum $f > $cur
-        diff -u $old $cur > /dev/null
-        if [ $? -ne 0 ]; then
-            echo "$(basename $f) [markdown]" >> $NOTICES
-            rm -f $md
-        fi
-        mv $cur $old
-    else
-        if [ -e $md ]; then
-            continue
-        fi
-        cp $f $md
-        python3 ~/.local/bin/inbox.py \
-                --input $md \
-                --subject "notes: $(basename $f)" \
-                --plaintext
-    fi
-done
-
 if [ $DRYRUN -eq 0 ]; then
     rm -f $CHECK
     backup status >/dev/null
