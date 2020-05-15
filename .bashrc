@@ -62,16 +62,10 @@ export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
 source /usr/share/bash-completion/completions/pass
-for i in $(ls ~/store/pass/); do
-    alias pass-$i="PASSWORD_STORE_DIR=~/store/pass/$i pass"
-    eval '_pc_'$i'() { PASSWORD_STORE_DIR='~/store/pass/$i'/ _pass; }'
+for i in $(ls ~/.pass/); do
+    alias pass-$i="PASSWORD_STORE_DIR=~/.pass/$i pass"
+    eval '_pc_'$i'() { PASSWORD_STORE_DIR='~/.pass/$i'/ _pass; }'
     complete -o filenames -o nospace -F _pc_$i pass-$i
 done
 
 source ~/store/personal/config/etc/private.exports
-manage-synced-repos() {
-    for f in $(echo "$SYNCED_REPOS"); do
-        echo "syncing: $f"
-        git -C $f pull
-    done
-}

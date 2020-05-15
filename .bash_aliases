@@ -43,7 +43,7 @@ totp() {
     if [ ! -z "$1" ]; then
         cmd="--command $1"
     fi
-    /usr/bin/totp --pass ~/store/pass/personal $cmd
+    /usr/bin/totp --pass ~/.pass/personal $cmd
 }
 
 ssh() {
@@ -64,7 +64,7 @@ pkgl() {
 
 wiki() {
     local cwd dir w
-    dir=~/store/personal/notebook@localhost/
+    dir=~/store/personal/mail/notebook@localhost/
     vim $dir$1
     cwd=$PWD
     w=~/.cache/wiki/

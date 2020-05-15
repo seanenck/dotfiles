@@ -1,7 +1,7 @@
 #!/bin/bash
 _totp() {
     local opts cur
-    opts=$(/usr/bin/totp --list --pass ~/store/pass/personal)
+    opts=$(/usr/bin/totp --list --pass ~/.pass/personal)
     cur=${COMP_WORDS[COMP_CWORD]}
     COMPREPLY=( $(compgen -W "$opts" -- $cur) )
 }
@@ -20,7 +20,7 @@ complete -F _wsw wsw
 _wiki() {
     local cur opts
     cur=${COMP_WORDS[COMP_CWORD]}
-    opts=$(find ~/store/personal/notebook@localhost -type f -name "*.md" | sed "s#/home/enck/store/personal/notebook@localhost/##g")
+    opts=$(find ~/store/personal/mail/notebook@localhost -type f -name "*.md" | sed "s#/home/enck/store/personal/mail/notebook@localhost/##g")
     COMPREPLY=( $(compgen -W "$opts" -- $cur) )
 }
 

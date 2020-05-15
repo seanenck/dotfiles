@@ -33,7 +33,7 @@ fi
 
 mkdir -p $CACHE
 echo "backing up inboxes"
-for f in $(find ~/store/personal/ -maxdepth 1 -type d | grep "@"); do
+for f in $(find ~/store/personal/mail/ -maxdepth 1 -mindepth 1 -type d); do
     echo " -> $f"
     if [ $DRYRUN -ne 0 ]; then
         cat $NOTICES | grep "$(basename $f)" | grep -q inbox
@@ -70,7 +70,7 @@ for f in ~/store/personal/private; do
             touch $hashed
         fi
     else
-        zippass=$(PASSWORD_STORE_DIR=~/store/pass/personal pass show keys/zips)
+        zippass=$(PASSWORD_STORE_DIR=~/.pass/personal pass show keys/zips)
         zipfile=${CACHE}$(basename $f).$commit.7z
         if [ -e $zipfile ]; then
             continue
