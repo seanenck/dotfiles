@@ -61,11 +61,5 @@ fi
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
-source /usr/share/bash-completion/completions/pass
-for i in $(ls ~/.pass/); do
-    alias pass-$i="PASSWORD_STORE_DIR=~/.pass/$i pass"
-    eval '_pc_'$i'() { PASSWORD_STORE_DIR='~/.pass/$i'/ _pass; }'
-    complete -o filenames -o nospace -F _pc_$i pass-$i
-done
-
+source ~/.pass/env
 source ~/store/personal/config/etc/private.exports
