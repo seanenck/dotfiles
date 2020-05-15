@@ -79,7 +79,7 @@ for f in ~/store/personal/private ~/store/pass/personal; do
         7z a -spf -p$zippass $zipfile $(find $f -type f | grep -v "\.git")
         python3 ~/.local/bin/inbox.py \
                 --input $zipfile \
-                --subject "zip: $(basename $f)"
+                --subject "$(basename $f).zip"
     fi
 done
 
