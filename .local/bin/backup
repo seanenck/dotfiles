@@ -56,7 +56,7 @@ for f in $(find ~/store/personal/ -maxdepth 1 -type d | grep "@"); do
 done
 
 echo "backing up git repos"
-for f in ~/store/personal/private ~/store/pass/personal; do
+for f in ~/store/personal/private; do
     echo " -> $f"
     commit=$(git -C $f log --format=%h -n 1)
     if [ $DRYRUN -ne 0 ]; then
