@@ -20,7 +20,7 @@ complete -F _wsw wsw
 _wiki() {
     local cur opts
     cur=${COMP_WORDS[COMP_CWORD]}
-    opts=$(find ~/store/personal/mirror/notebook@localhost -type f -name "*.md" | sed "s#/home/enck/store/personal/mirror/notebook@localhost/##g")
+    opts=$(find ~/store/personal/mirror/notebook -type f -name "*.md" | sed "s#/home/enck/store/personal/mirror/notebook/##g")
     COMPREPLY=( $(compgen -W "$opts" -- $cur) )
 }
 

@@ -64,7 +64,7 @@ pkgl() {
 
 wiki() {
     local cwd dir w
-    dir=~/store/personal/mirror/notebook@localhost/
+    dir=~/store/personal/mirror/notebook/
     vim $dir$1
     cwd=$PWD
     w=~/.cache/wiki/
