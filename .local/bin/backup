@@ -33,7 +33,7 @@ fi
 
 mkdir -p $CACHE
 echo "backing up inboxes"
-for f in $(find ~/store/personal/mail/ -maxdepth 1 -mindepth 1 -type d); do
+for f in $(find ~/store/personal/mirror/ -maxdepth 1 -mindepth 1 -type d); do
     echo " -> $f"
     if [ $DRYRUN -ne 0 ]; then
         cat $NOTICES | grep "$(basename $f)" | grep -q inbox
