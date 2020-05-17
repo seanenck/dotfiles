@@ -51,7 +51,7 @@ for f in $(find ~/store/personal/mirror/ -maxdepth 1 -mindepth 1 -type d); do
         fi
         mv $cur $old
     else
-        rsync -avcr --delete-after $f/ fact:~/store/Active/Inbox/$(basename $f)
+        rsync -avcr --delete-after $f/ fact:~/store/Active/Drop/Mirror/$(basename $f)
     fi
 done
 
