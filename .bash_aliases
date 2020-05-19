@@ -83,32 +83,3 @@ mplayer() {
 fastmail() {
     /usr/bin/mutt -F ~/.mutt/fastmail.muttrc
 }
-
-uat() {
-    local plugin
-    local output
-    local engine
-    output=$1
-    if [ -z "$output" ]; then
-        echo "no output directory given"
-        return
-    fi
-    plugin=$(ls | grep uplugin)
-    if [ -z "$plugin" ]; then
-        echo "no plugin found"
-        return
-    fi
-    engine=$(readlink ~/store/unreal/current)
-    if [ -z "$engine" ]; then
-        echo "unable to find engine"
-        return
-    fi
-    uebp_LogFolder=$HOME/.cache/UAT/
-    export uebp_LogFolder
-    ${engine}Engine/Build/BatchFiles/RunUAT.sh \
-        BuildPlugin \
-        -notargetplatforms \
-        -nop4 \
-        ${@:2} \
-        -plugin=$PWD/$plugin -Package=$output
-}

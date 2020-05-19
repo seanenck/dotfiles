@@ -61,5 +61,7 @@ fi
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
+export UNREAL_SRC=~/store/unreal/current/
+
 source ~/.pass/env
 source ~/store/personal/config/etc/private.exports
