@@ -44,6 +44,9 @@ export GOPATH="$HOME/.cache/go"
 source ~/.config/user-dirs.dirs
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
     PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
+    if [ ! -z "$SSH_AUTH_SOCK" ]; then
+        export SSH_AUTH_SOCK="$SSH_AUTH_SOCK"
+    fi
     return
 fi
 
