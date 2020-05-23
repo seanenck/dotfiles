@@ -5,29 +5,19 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-PS1='[\u@\h \W]\$ '
 # If not running interactively, don't do anything
+. ~/.local/bashrc
 case $- in
     *i*) ;;
       *) return;;
 esac
-
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth:erasedups
-
-# append to the history file, don't overwrite it
-shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=-1
-HISTFILESIZE=-1
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
 . ~/.bash_aliases
+. ~/.local/aliases
 . ~/.bash_completion
 . /usr/share/bash-completion/bash_completion
 
@@ -38,8 +28,6 @@ if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
 fi
 
 export TERM=xterm
-export VISUAL=vim
-export EDITOR="$VISUAL"
 export GOPATH="$HOME/.cache/go"
 source ~/.config/user-dirs.dirs
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
