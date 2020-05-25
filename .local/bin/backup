@@ -32,11 +32,11 @@ if [ $DRYRUN -ne 0 ]; then
 fi
 
 mkdir -p $CACHE
-echo "backing up inboxes"
+echo "backing up mirrors"
 for f in $(find ~/store/personal/mirror/ -maxdepth 1 -mindepth 1 -type d); do
     echo " -> $f"
     if [ $DRYRUN -ne 0 ]; then
-        cat $NOTICES | grep "$(basename $f)" | grep -q inbox
+        cat $NOTICES | grep "$(basename $f)" | grep -q mirror
         if [ $? -eq 0 ]; then
             continue
         fi
@@ -47,7 +47,7 @@ for f in $(find ~/store/personal/mirror/ -maxdepth 1 -mindepth 1 -type d); do
         find $f -type f -exec md5sum {} \; | sort > $cur
         diff -u $old $cur > /dev/null
         if [ $? -ne 0 ]; then
-            echo "$(basename $f) [inbox]" >> $NOTICES
+            echo "$(basename $f) [mirror]" >> $NOTICES
         fi
         mv $cur $old
     else
