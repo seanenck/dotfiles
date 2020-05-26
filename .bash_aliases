@@ -74,6 +74,7 @@ fastmail() {
 }
 
 tasks() {
+    find ~/store/personal/tasks/Trash -type f -mtime +30 -exec rm {} \;
     local subj body tmpf
     if [ -z "$1" ]; then
         /usr/bin/mutt -F ~/.mutt/tasks.muttrc
