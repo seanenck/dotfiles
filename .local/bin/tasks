@@ -8,6 +8,8 @@ case "$CMD" in
     "show")
         /usr/bin/mutt -F ~/.mutt/tasks.muttrc
         ;;
+    "null")
+        ;;
     "add")
         read -p "subject: " subj
         echo "body:"
@@ -16,7 +18,7 @@ case "$CMD" in
         for line in "${body[@]}"; do
            echo "$line" >> $tmpf
         done
-        python ~/.local/bin/inbox.py --maildir ~/store/personal/tasks/INBOX/ \
+        python ~/.local/bin/inbox.py --maildir ~/store/personal/mirror/tasks/INBOX/ \
                                      --subject "$subj" \
                                      --input $tmpf \
                                      --plaintext
