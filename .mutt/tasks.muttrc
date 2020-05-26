@@ -2,6 +2,7 @@ set from        = "enckse@voidedtech.com"
 set sendmail    = "/home/enck/store/personal/tasks/add"
 set folder      = ~/store/personal/tasks
 set postponed   = "=Drafts"
+set include     = yes
 set history_file = "~/.mutt/tasks.mutthistory"
 macro index,pager d "<save-message>=Trash<enter><enter>" "Trash"
 source ~/store/personal/config/mail/tasks.muttrc
