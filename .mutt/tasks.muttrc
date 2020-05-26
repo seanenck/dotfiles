@@ -8,5 +8,5 @@ macro index,pager d "<save-message>=Trash<enter><enter>" "Trash"
 source ~/.mutt/muttrc
 set record = =Sent
 set trash = "=Trash"
-unset sidebar_visible
 mailboxes +INBOX
+mailboxes +Archive
