@@ -11,7 +11,8 @@ _SEARCH = "search"
 _BROWSER = "/usr/bin/firefox-developer-edition"
 _FASTMUTT = "fastmail"
 _PASSWORDS = "passwords"
-_LOCALS = [_FASTMUTT, _PASSWORDS]
+_TASKS = "tasks"
+_LOCALS = [_FASTMUTT, _PASSWORDS, _TASKS]
 _APPS = ["smplayer", "pavucontrol"] + _LOCALS
 
 
@@ -25,6 +26,8 @@ def _local(cmd):
                "/home/enck/.mutt/fastmail.muttrc"]
     if cmd == _PASSWORDS:
         command = ["keepassxc", "/home/enck/store/personal/private/confidential/passwords"]
+    elif cmd == _TASKS:
+        command[-1] = "/home/enck/.mutt/tasks.muttrc"
     subprocess.call(command, cwd=cwd)
 
 
