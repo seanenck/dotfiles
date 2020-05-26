@@ -88,7 +88,7 @@ if [ $DRYRUN -eq 0 ]; then
     backup status >/dev/null
     profiles=${CACHE}profiles.$(date +%s).tar.gz
     pacman -Qqe > ~/.cache/packages
-    tar czf $profiles ~/.mozilla ~/.bash_history ~/.cache/packages 2> /dev/null
+    tar czf $profiles ~/.mozilla ~/.bash_history ~/.cache/packages ~/store/personal/tasks 2> /dev/null
     echo "sending profiles"
     scp $profiles fact:~/store/Active/Drop/Profiles
     rm -f $profiles
