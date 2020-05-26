@@ -1,0 +1,24 @@
+#!/bin/bash
+find ~/store/personal/tasks/Trash -type f -mtime +30 -exec rm {} \;
+CMD="$1"
+if [ -z "$CMD" ]; then
+    CMD="show"
+fi
+case "$CMD" in
+    "show")
+        /usr/bin/mutt -F ~/.mutt/tasks.muttrc
+        ;;
+    "add")
+        read -p "subject: " subj
+        echo "body:"
+        mapfile body
+        tmpf=$(mktemp)
+        for line in "${body[@]}"; do
+           echo "$line" >> $tmpf
+        done
+        python ~/.local/bin/inbox.py --maildir ~/store/personal/tasks/INBOX/ \
+                                     --subject "$subj" \
+                                     --input $tmpf \
+                                     --plaintext
+        ;;
+esac

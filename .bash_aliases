@@ -72,25 +72,3 @@ mplayer() {
 fastmail() {
     /usr/bin/mutt -F ~/.mutt/fastmail.muttrc
 }
-
-tasks() {
-    find ~/store/personal/tasks/Trash -type f -mtime +30 -exec rm {} \;
-    local subj body tmpf
-    if [ -z "$1" ]; then
-        /usr/bin/mutt -F ~/.mutt/tasks.muttrc
-    else
-        if [[ "$1" == "add" ]]; then
-            read -p "subject: " subj
-            echo "body:"
-            mapfile body
-            tmpf=$(mktemp)
-            for line in "${body[@]}"; do
-               echo "$line" >> $tmpf
-            done
-            python ~/.local/bin/inbox.py --maildir ~/store/personal/tasks/INBOX/ \
-                                         --subject "$subj" \
-                                         --input $tmpf \
-                                         --plaintext
-        fi
-    fi
-}

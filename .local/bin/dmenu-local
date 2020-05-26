@@ -27,7 +27,7 @@ def _local(cmd):
     if cmd == _PASSWORDS:
         command = ["keepassxc", "/home/enck/store/personal/private/confidential/passwords"]
     elif cmd == _TASKS:
-        command[-1] = "/home/enck/.mutt/tasks.muttrc"
+        command = ["kitty", "--title=tasks", "/home/enck/.local/bin/tasks"]
     subprocess.call(command, cwd=cwd)
 
 
