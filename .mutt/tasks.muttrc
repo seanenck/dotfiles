@@ -9,4 +9,5 @@ source ~/.mutt/muttrc
 set record = =Sent
 set trash = "=Trash"
 mailboxes +INBOX
+mailboxes +Stalled
 mailboxes +Archive
