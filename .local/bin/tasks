@@ -1,5 +1,5 @@
 #!/bin/bash
-find ~/store/personal/tasks/Trash -type f -mtime +30 -exec rm {} \;
+find ~/store/personal/mirror/tasks/Trash -type f -mtime +30 -exec rm {} \;
 CMD="$1"
 if [ -z "$CMD" ]; then
     CMD="show"
