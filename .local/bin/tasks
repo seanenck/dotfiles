@@ -4,6 +4,14 @@ CMD="$1"
 if [ -z "$CMD" ]; then
     CMD="show"
 fi
+
+_body() {
+    mapfile body
+    for line in "${body[@]}"; do
+       echo "$line"
+    done
+}
+
 case "$CMD" in
     "show")
         /usr/bin/mutt -F ~/.mutt/tasks.muttrc
@@ -13,11 +21,8 @@ case "$CMD" in
     "add")
         read -p "subject: " subj
         echo "body:"
-        mapfile body
         tmpf=$(mktemp)
-        for line in "${body[@]}"; do
-           echo "$line" >> $tmpf
-        done
+        _body | grep -v "^$" >> $tmpf
         python ~/.local/bin/inbox.py --maildir ~/store/personal/mirror/tasks/INBOX/ \
                                      --subject "$subj" \
                                      --input $tmpf \
