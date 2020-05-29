@@ -14,92 +14,86 @@ if [ $DRYRUN -eq 0 ]; then
     fi
 fi
 
+MIRRORS="$HOME/store/personal/mirror/"
+REPOS="$HOME/store/personal/private/"
 CACHE=$HOME/.cache/backup/
-NOTICES=${CACHE}notices.txt
+FILES=${CACHE}files.txt
+LAST=$FILES.backup
 CHECK=${CACHE}$(date +%Y-%m-%d.%H).txt
-touch $NOTICES
+NOTIFY=${CACHE}notify
+touch $FILES $LAST
+
+_hash() {
+    local dir
+    for dir in $MIRRORS $REPOS; do
+        find $dir -type f -printf "%p.%TY-%Tm-%TdT%TH:%TM:%TS\n"
+    done
+}
+
+_dryrun() {
+    if [ -e $CHECK ]; then
+        echo "recently checked"
+        return
+    fi
+    _hash | sort > $FILES
+    diff -u $FILES $LAST > /dev/null
+    if [ $? -ne 0 ]; then
+        touch $NOTIFY
+    fi
+    mv $FILES $LAST
+}
 
 if [ $DRYRUN -ne 0 ]; then
-    oldifs=$IFS
-    IFS=$'\n'
-    for f in $(cat $NOTICES) $(ls $CACHE | grep "etc.tar.gz" | wc -l | grep -v '^0$' | sed 's/^/etc [/g;s/$/]/g'); do
-        notify-send -t 30000 "backup: $f"
-    done
-    if [ -e $CHECK ]; then
-        exit 0
+    _dryrun
+    if [ -e $NOTIFY ]; then
+        notify-send -t 30000 "backup"
     fi
     touch $CHECK
+    exit 0
 fi
 
+
 mkdir -p $CACHE
+echo "cleaning up cache"
+find $CACHE -type f -mtime +30 -exec rm {} \;
+
 echo "backing up mirrors"
-for f in $(find ~/store/personal/mirror/ -maxdepth 1 -mindepth 1 -type d); do
+for f in $(find $MIRRORS -maxdepth 1 -mindepth 1 -type d); do
     echo " -> $f"
-    if [ $DRYRUN -ne 0 ]; then
-        cat $NOTICES | grep "$(basename $f)" | grep -q mirror
-        if [ $? -eq 0 ]; then
-            continue
-        fi
-        cur=${CACHE}$(basename $f).manifest.txt
-        old=$cur.prev
-        touch $cur
-        touch $old
-        find $f -type f -exec md5sum {} \; | sort > $cur
-        diff -u $old $cur > /dev/null
-        if [ $? -ne 0 ]; then
-            echo "$(basename $f) [mirror]" >> $NOTICES
-        fi
-        mv $cur $old
-    else
-        rsync -avcr --exclude Trash --delete-after $f/ fact:~/store/Active/Drop/Mirror/$(basename $f)
-    fi
+    rsync -avcr --exclude Trash --delete-after $f/ fact:~/store/Active/Drop/Mirror/$(basename $f)
 done
 
 echo "backing up git repos"
-for f in ~/store/personal/private; do
+for f in $REPOS; do
     echo " -> $f"
     commit=$(git -C $f log --format=%h -n 1)
-    if [ $DRYRUN -ne 0 ]; then
-        cat $NOTICES | grep "$(basename f)" | grep -q git
-        if [ $? -eq 0 ]; then
-            continue
-        fi
-        hashed=${CACHE}$(basename $f).git.$commit
-        if [ ! -e $hashed ]; then
-            echo "$(basename $f) [git]" >> $NOTICES
-            touch $hashed
-        fi
-    else
-        zippass=$(PASSWORD_STORE_DIR=~/.pass/personal pass show keys/zips)
-        zipfile=${CACHE}$(basename $f).$commit.7z
-        if [ -e $zipfile ]; then
-            continue
-        fi
-        rm -f $zipfile
-        7z a -spf -p$zippass $zipfile $(find $f -type f | grep -v "\.git")
-        python3 ~/.local/bin/inbox.py \
-                --input $zipfile \
-                --subject "$(basename $f).zip"
+    zippass=$(PASSWORD_STORE_DIR=~/.pass/personal pass show keys/zips)
+    zipfile=${CACHE}$(basename $f).$commit.7z
+    if [ -e $zipfile ]; then
+        continue
     fi
+    rm -f $zipfile
+    7z a -spf -p$zippass $zipfile $(find $f -type f | grep -v "\.git")
+    python3 ~/.local/bin/inbox.py \
+            --input $zipfile \
+            --subject "$(basename $f).zip"
 done
 
-if [ $DRYRUN -eq 0 ]; then
-    rm -f $CHECK
-    backup status >/dev/null
-    profiles=${CACHE}profiles.$(date +%s).tar.gz
-    pacman -Qqe > ~/.cache/packages
-    tar czf $profiles ~/.mozilla ~/.bash_history ~/.cache/packages 2> /dev/null
-    echo "sending profiles"
-    scp $profiles fact:~/store/Active/Drop/Profiles
-    rm -f $profiles
-    echo "cleaning up profiles"
-    for f in $(ssh fact find ~/store/Active/Drop/Profiles -mtime +7); do
-        ssh fact rm $f
-    done
-    echo "sending etc archive"
-    for f in $(find $CACHE -type f -name "*.etc.tar.gz"); do
-        scp $f fact:~/store/Active/Drop/Profiles/
-        rm $f
-    done
-    rm -f $NOTICES
-fi
+rm -f $NOTIFY
+rm -f $CHECK
+_dryrun
+profiles=${CACHE}profiles.$(date +%s).tar.gz
+pacman -Qqe > ~/.cache/packages
+tar czf $profiles ~/.mozilla ~/.bash_history ~/.cache/packages 2> /dev/null
+echo "sending profiles"
+scp $profiles fact:~/store/Active/Drop/Profiles
+rm -f $profiles
+echo "cleaning up profiles"
+for f in $(ssh fact find ~/store/Active/Drop/Profiles -mtime +7); do
+    ssh fact rm $f
+done
+echo "sending etc archive"
+for f in $(find $CACHE -type f -name "*.etc.tar.gz"); do
+    scp $f fact:~/store/Active/Drop/Profiles/
+    rm $f
+done
