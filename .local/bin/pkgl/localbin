@@ -100,6 +100,13 @@ def main():
             with open("configure", "w") as f:
                 rm = "rm {} configure\n".format(tar_name)
                 f.write("#!/bin/bash\n")
+                f.write("if [ ! -z \"$1\" ]; then\n")
+                f.write("   if [[ \"$1\" == \"auto\" ]]; then\n")
+                f.write("       tar xf {}\n".format(tar_name))
+                f.write("       make install\n")
+                f.write("       exit 0\n")
+                f.write("   fi\n")
+                f.write("fi\n")
                 f.write("if [ $UID -eq 0 ]; then\n")
                 f.write("    echo 'do not run as root'\n")
                 f.write("    {}".format(rm))
