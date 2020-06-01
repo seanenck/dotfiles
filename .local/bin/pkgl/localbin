@@ -97,19 +97,12 @@ def main():
             version = "-".join(choice.replace(s, "").split("-")[1:3])
             installer_name = s + "." + version + ".tar.gz"
             installer = os.path.join(cwd, installer_name)
+            rms = "rm {}\n".format(" ".join([tar_name, "configure", "deploy"]))
             with open("configure", "w") as f:
-                rm = "rm {} configure\n".format(tar_name)
                 f.write("#!/bin/bash\n")
-                f.write("if [ ! -z \"$1\" ]; then\n")
-                f.write("   if [[ \"$1\" == \"auto\" ]]; then\n")
-                f.write("       tar xf {}\n".format(tar_name))
-                f.write("       make install\n")
-                f.write("       exit 0\n")
-                f.write("   fi\n")
-                f.write("fi\n")
                 f.write("if [ $UID -eq 0 ]; then\n")
                 f.write("    echo 'do not run as root'\n")
-                f.write("    {}".format(rm))
+                f.write("    {}".format(rms))
                 f.write("    exit 1\n")
                 f.write("fi\n")
                 f.write("echo {}\n".format(s))
@@ -123,12 +116,19 @@ def main():
                 f.write('    fi\n')
                 f.write('fi\n')
                 f.write('echo "$(date +%Y-%m-%d:%H:%M:%S) -> $target {}" >> $HOME/.localpkg.log\n'.format(installer))
-                f.write(rm)
+                f.write(rms)
                 f.write("cd $tmpdir && sudo make $target | tee -a $HOME/.localpkg.log\n")
-            os.chmod("configure", 0o755)
-            subprocess.call(["tar", "-czf", installer, "configure", tar_name])
+            with open("deploy", "w") as f:
+                f.write("#!/bin/bash\n")
+                f.write("tar xf {}\n".format(tar_name))
+                f.write("make install\n")
+                f.write(rms)
+            for fname in ["configure", "deploy"]:
+                os.chmod(fname, 0o755)
+            subprocess.call(["tar", "-czf", installer, "deploy", "configure", tar_name])
             os.remove(archive)
             os.remove('configure')
+            os.remove("deploy")
             release = "internal"
             if "release" in section:
                 if bool(section["release"]):
