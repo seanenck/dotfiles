@@ -27,3 +27,11 @@
     diff = /usr/share/git/diff-highlight/diff-highlight | less
 [pull]
 	rebase = false
+[log]
+	date = iso-strict
+[status]
+	short = true
+	branch = true
+	showStash = true
+[tag]
+	gpgSign = true
