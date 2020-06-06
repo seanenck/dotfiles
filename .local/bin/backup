@@ -33,8 +33,12 @@ CHECK=${CACHE}$(date +%Y-%m-%d.%H).txt
 NOTIFY=${CACHE}notify
 touch $FILES $LAST
 
-if [ $CLEAR -eq 1 ]; then
+_clear() {
     rm -f $NOTIFY
+}
+
+if [ $CLEAR -eq 1 ]; then
+    _clear
     exit 0
 fi
 
@@ -117,3 +121,4 @@ for f in $(find $CACHE -type f -name "*.etc.tar.gz"); do
     scp $f fact:~/store/Active/Drop/Profiles/
     rm $f
 done
+_clear
