@@ -58,14 +58,11 @@ if [ ! -z "$purge" ]; then
     fi
 fi
 
+targets="voidedtech.com"
 if [ $INTERNAL -ne 1 ]; then
     _html > $MODE/index.html
 fi
 
-targets="voidedtech.com"
-if [[ "$1" == "internal" ]]; then
-    targets="$targets fact"
-fi
 for t in $targets; do
     rsync -av --delete-after $MODE $t:/opt/$LOCATION/
 done
