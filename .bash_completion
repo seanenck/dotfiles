@@ -62,3 +62,11 @@ _tasks() {
 }
 
 complete -F _tasks tasks
+
+_backup() {
+    local cur
+    cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "status clear" -- $cur) )
+}
+
+complete -F _backup backup

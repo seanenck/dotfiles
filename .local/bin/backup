@@ -1,9 +1,15 @@
 #!/bin/bash
 DRYRUN=0
+CLEAR=0
 if [ ! -z "$1" ]; then
-    if [[ "$1" == "status" ]]; then
-        DRYRUN=1
-    fi
+    case "$1" in
+        "status")
+            DRYRUN=1
+            ;;
+        "clear")
+            CLEAR=1
+            ;;
+    esac
 fi
 
 if [ $DRYRUN -eq 0 ]; then
@@ -22,6 +28,11 @@ LAST=$FILES.backup
 CHECK=${CACHE}$(date +%Y-%m-%d.%H).txt
 NOTIFY=${CACHE}notify
 touch $FILES $LAST
+
+if [ $CLEAR -eq 1 ]; then
+    rm -f $NOTIFY
+    exit 0
+fi
 
 _hash() {
     local dir
