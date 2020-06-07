@@ -32,6 +32,8 @@ alternative_order text/plain text/enriched text/html
 
 set send_charset="us-ascii:utf-8"
 set sleep_time = 0
+set pager_index_lines=20
+set pager_stop=yes
 
 bind index,pager \CB noop
 bind index,pager \CD noop
