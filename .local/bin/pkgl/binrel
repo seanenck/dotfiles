@@ -61,6 +61,8 @@ fi
 targets="voidedtech.com"
 if [ $INTERNAL -ne 1 ]; then
     _html > $MODE/index.html
+else
+    targets="$targets core"
 fi
 
 for t in $targets; do

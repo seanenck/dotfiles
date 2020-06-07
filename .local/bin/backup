@@ -17,7 +17,7 @@ if [ ! -z "$1" ]; then
 fi
 
 if [ $DRYRUN -eq 0 ]; then
-    ssh -o BatchMode=yes -o ConnectTimeout=5 fact echo is-online > /dev/null
+    ssh -o BatchMode=yes -o ConnectTimeout=5 core echo is-online > /dev/null
     if [ $? -ne 0 ]; then
         echo "backup system not online"
         exit 1
@@ -81,7 +81,7 @@ echo
 echo "backing up mirrors"
 for f in $(find $MIRRORS -maxdepth 1 -mindepth 1 -type d); do
     echo " -> $f"
-    rsync -avcr --exclude Trash --delete-after $f/ fact:~/store/Active/Drop/Mirror/$(basename $f) | sed "s/^/    /g"
+    rsync -avcr --exclude Trash --delete-after $f/ core:~/store/Active/Drop/Mirror/$(basename $f) | sed "s/^/    /g"
 done
 
 echo
@@ -109,17 +109,17 @@ pacman -Qqe > ~/.cache/packages
 tar czf $profiles ~/.mozilla ~/.bash_history ~/.cache/packages 2> /dev/null
 echo
 echo "sending profiles"
-scp $profiles fact:~/store/Active/Drop/Profiles
+scp $profiles core:~/store/Active/Drop/Profiles
 rm -f $profiles
 echo
 echo "cleaning up profiles"
-for f in $(ssh fact find ~/store/Active/Drop/Profiles -mtime +7); do
-    ssh fact rm $f
+for f in $(ssh core find ~/store/Active/Drop/Profiles -mtime +7); do
+    ssh core rm $f
 done
 echo
 echo "sending etc archive"
 for f in $(find $CACHE -type f -name "*.etc.tar.gz"); do
-    scp $f fact:~/store/Active/Drop/Profiles/
+    scp $f core:~/store/Active/Drop/Profiles/
     rm $f
 done
 _clear
