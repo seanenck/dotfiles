@@ -118,7 +118,7 @@ for f in $(ssh core find ~/store/Active/Drop/Profiles -mtime +7); do
 done
 echo
 echo "sending etc archive"
-for f in $(find $CACHE -type f -name "*.etc.tar.gz"); do
+for f in $(find $CACHE -type f -name "*.backup.tar.gz"); do
     scp $f core:~/store/Active/Drop/Profiles/
     rm $f
 done
