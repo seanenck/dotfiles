@@ -6,7 +6,7 @@
 [[ $- != *i* ]] && return
 
 # If not running interactively, don't do anything
-. ~/.local/bashrc
+. /etc/voidedtech/bash/bashrc
 case $- in
     *i*) ;;
       *) return;;
@@ -17,7 +17,7 @@ esac
 shopt -s checkwinsize
 
 . ~/.bash_aliases
-. ~/.local/aliases
+. /etc/voidedtech/bash/aliases
 . ~/.bash_completion
 . /usr/share/bash-completion/bash_completion
 
