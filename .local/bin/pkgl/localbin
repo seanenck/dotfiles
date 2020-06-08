@@ -129,11 +129,7 @@ def main():
             os.remove(archive)
             os.remove('configure')
             os.remove("deploy")
-            release = "internal"
-            if "release" in section:
-                if bool(section["release"]):
-                    release = "external"
-            os.rename(installer, "/home/enck/store/managed/binaries/{}/{}".format(release, installer_name))
+            os.rename(installer, "/home/enck/store/managed/binaries/{}".format(installer_name))
 
 if __name__ == "__main__":
     main()
