@@ -29,6 +29,7 @@ fi
 
 export TERM=xterm
 export GOPATH="$HOME/.cache/go"
+export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 source ~/.config/user-dirs.dirs
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
     PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
