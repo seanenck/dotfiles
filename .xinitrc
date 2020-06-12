@@ -14,10 +14,7 @@ fi
 xset b off
 xset b 0 0 0
 xsetroot -solid "#333333"
-wsw --mode online
-if [ $? -ne 0 ]; then
-    wsw reload
-fi
+$HOME/.local/bin/ltcten connect
 $HOME/.local/bin/workspaces mobile
 $HOME/.local/bin/volume mute
 find /home/enck/.vim/swap/ -type f -mtime +1 -exec rm {} \;

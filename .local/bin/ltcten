@@ -1,0 +1,67 @@
+#!/bin/bash
+LAST_PROFILE=$HOME/.cache/network.profile
+NETCTL=/etc/netctl/
+
+_change() {
+    PROFILE="$1"
+    if [ -z "$1" ]; then
+        if [ -e "$LAST_PROFILE" ]; then
+            PROFILE=$(cat $LAST_PROFILE)
+        else
+            echo "no last profile"
+            exit 1
+        fi
+    fi
+    if [ ! -e "$NETCTL$PROFILE" ]; then
+        echo "not a netctl profile"
+        exit 1
+    fi
+    echo $PROFILE > $LAST_PROFILE
+    sudo netctl stop-all
+    sudo netctl start $PROFILE
+}
+
+_connect() {
+    _online
+    if [ $? -ne 0 ]; then
+        _change
+    fi
+}
+
+_online() {
+    ping -c1 -w5 voidedtech.com > /dev/null 2>&1
+}
+
+_addresses() {
+    ip -4 -o address | cut -d " " -f 2,7 | grep -v "lo 127.0.0.1" | cut -d "/" -f 1 | sed "s/ /:/g"
+}
+
+_status() {
+    sudo netctl list | grep "^\*" | cut -d " " -f 2-
+}
+
+cmd=$1
+if [ -z "$cmd" ]; then
+    echo "no command given"
+    exit 1
+fi
+case $cmd in
+    "addr")
+        _addresses
+        ;;
+    "online")
+        _online
+        ;;
+    "connect")
+        _connect
+        ;;
+    "status")
+        _status
+        ;;
+    "change")
+        _change "${@:2}"
+        ;;
+    *)
+        echo "unknown command: $cmd"
+        exit 1
+esac
