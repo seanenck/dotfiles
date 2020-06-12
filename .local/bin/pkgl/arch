@@ -5,8 +5,7 @@ if [ -x configure.sh ]; then
     echo "configure..."
     ./configure.sh
 fi
-makechrootpkg -c -r $CHROOT
+makechrootpkg -c -n -d /var/cache/pacman/pkg -r $CHROOT
 if [ $? -ne 0 ]; then
     exit 1
 fi
-namcap *.pkg.tar.xz
