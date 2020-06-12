@@ -8,14 +8,19 @@ _totp() {
 
 complete -F _totp totp
 
-_wsw() {
+_ltcten() {
     local opts cur
-    opts=$(wsw --mode list)
     cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "reload $opts" -- $cur) )
+    if [ $COMP_CWORD -eq 1 ]; then
+        opts="change"
+        COMPREPLY=( $(compgen -W "change" -- $cur) )
+    else
+        opts=$(ltcten list)
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    fi
 }
 
-complete -F _wsw wsw
+complete -F _ltcten ltcten
 
 _wiki() {
     local cur opts

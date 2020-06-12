@@ -43,11 +43,11 @@ if [ ! -z "$1" ]; then
             rm -f $NO_STATUS
             ;;
         "mail")
-            wsw --mode online
+            ltcten online
             if [ $? -ne 0 ]; then
                 exit 0
             fi
-            wsw --mode current | grep -q -E "home|default"
+            ltcten status | grep -q -E "home|default"
             if [ $? -ne 0 ]; then
                 exit 0
             fi
@@ -86,11 +86,11 @@ _status() {
         fi
     fi
     online="UP"
-    wsw --mode online
+    ltcten online
     if [ $? -ne 0 ]; then
         online="DOWN"
     fi
-    addr=$(wsw --mode addr)
+    addr=$(ltcten addr)
     echo "$date|$week|$time$locked|disp:$bright|vol:$vol|bat:$bat$charge|$online:$addr"
 }
 
