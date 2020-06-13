@@ -62,14 +62,6 @@ _pkgl() {
 
 complete -F _pkgl pkgl
 
-_tasks() {
-    local cur
-    cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "add show" -- $cur) )
-}
-
-complete -F _tasks tasks
-
 _backup() {
     local cur
     cur=${COMP_WORDS[COMP_CWORD]}
