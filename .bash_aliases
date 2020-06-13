@@ -41,18 +41,6 @@ ssh() {
     TERM=xterm /usr/bin/ssh "$@" || return
 }
 
-pkgl() {
-    if [ -z "$1" ]; then
-        echo "no subcommand given"
-        return
-    fi
-    if [ ! -x "$HOME/.local/bin/pkgl/$1" ]; then
-        echo "invalid command $1"
-        return
-    fi
-    $HOME/.local/bin/pkgl/$1 ${@:2}
-}
-
 wiki() {
     local cwd dir w
     dir=~/store/personal/mirror/notebook/

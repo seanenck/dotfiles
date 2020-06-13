@@ -1,0 +1,174 @@
+#!/bin/bash
+
+_archpkg() {
+    rm -f *.log
+    rm -f *.tar.xz
+    if [ -x configure.sh ]; then
+        echo "configure..."
+        ./configure.sh
+    fi
+    makechrootpkg -c -n -d /var/cache/pacman/pkg -r $CHROOT
+    if [ $? -ne 0 ]; then
+        exit 1
+    fi
+}
+
+_binrel_html() {
+    local f
+    echo "<html>
+<body>
+<pre>
+binaries
+===
+
+Simple hosted pre-built binaries of personal projects.
+
+1. download &lt;file&gt;.tar.gz
+2. compare sha256 hash
+3. tar xf &lt;file&gt;.tar.gz
+4. ./configure
+5. follow the prompts
+<pre>
+<hr /><pre>"
+    for f in $(ls $MODE*.tar.gz); do
+        echo "<code>$(sha256sum $f | cut -d " " -f 1)</code> <a href='$(basename $f)'>$(basename $f)</a>"
+    done
+    echo "</pre><small>last updated: $(date +%Y-%m-%d)</small></body></html>"
+}
+
+_binrel() {
+    local mode internal f location purge count targets
+    mode=$1
+    if [ -z "$mode" ]; then
+        echo "no mode given"
+        exit 1
+    fi
+    location=0
+    if [[ "$1" == "pacman" ]]; then
+        internal=1
+    fi
+    location=$mode
+    mode="$HOME/store/managed/$mode/"
+
+    purge=""
+    if [ $internal -ne 1 ]; then
+        for f in $(find $mode -type f -name "*.tar.gz" -exec basename {} \; | cut -d "." -f 1 | sort -u); do
+            echo "accounting: $(basename $f)"
+            count=0
+            for d in $(find ${mode} | grep "$f\." | sort -u -r); do
+                if [ $count -ge 3 ]; then
+                    purge="$purge $d"
+                    echo " -> remove $(basename $d)"
+                fi
+                count=$((count+1))
+            done
+        done
+    fi
+
+    if [ ! -z "$purge" ]; then
+        read -p "purge (y/N)? " yes
+        if [[ "$yes" == "y" ]]; then
+            rm -f $purge
+        fi
+    fi
+
+    targets="voidedtech.com"
+    if [ $internal -ne 1 ]; then
+        _binrel_html > $mode/index.html
+    else
+        targets="$targets core"
+    fi
+
+    for t in $targets; do
+        rsync -av --delete-after $mode $t:/opt/$location/
+    done
+}
+
+_chroots_header() {
+    echo
+    echo "=== $1 ==="
+    echo
+}
+
+_chroots() {
+    local cmd f
+    cmd="$@"
+    if [ -z "$cmd" ]; then
+        _chroots_header "builds"
+        arch-nspawn $CHROOT/root pacman -Syyu
+        cmd="pacman -Syyu"
+    fi
+    for f in $(ls $CHROOT/.. | grep -v builds); do
+        _header $f
+        sudo schroot -c source:$f -- $cmd
+    done
+}
+
+_repoadd() {
+    local files had cmd f d
+    if [ -z "$1" ]; then
+        echo "no package given..."
+        exit 1
+    fi
+    repo-add ~/store/managed/pacman/enckse.db.tar.gz $1
+    files=$(tar -tf ~/store/managed/pacman/enckse.db.tar.gz | cut -d "/" -f 1 | sort -u)
+    had=0
+    cmd=""
+    for f in $(ls ~/store/managed/pacman/*.tar.xz); do
+        d=0
+        f=$(basename $f)
+        for t in $files; do
+            if [[ "$f" == "$t-x86_64.pkg.tar.xz" ]]; then
+                d=1
+            fi
+        done
+        if [ $d -eq 0 ]; then
+            had=1
+            cmd="$cmd $f"
+            echo " -> $f"
+        fi
+    done
+    if [ $had -eq 1 ]; then
+        had="N"
+        read -p "purge files (y/N)? " had
+        if [[ "$had" == "y" ]]; then
+            for f in $cmd; do
+                rm ~/store/managed/pacman/$f
+            done
+        fi
+    fi
+}
+
+_localbin() {
+    ~/.local/bin/localbin.py
+}
+
+mode="$1"
+if [ -z "$mode" ]; then
+    echo "no command given"
+    exit 1
+fi
+
+case "$mode" in
+    "arch")
+        _archpkg
+        ;;
+    "chroots")
+        _chroots "${@:2}"
+        ;;
+    "binrel")
+        _binrel "${@:2}"
+        ;;
+    "localbin")
+        _localbin
+        ;;
+    "repoadd")
+        _repoadd "${@:2}"
+        ;;
+    "help")
+        echo "arch chroots binrel localbin repoadd"
+        ;;
+    *)
+        echo "unknown command: $mode"
+        ;;
+esac

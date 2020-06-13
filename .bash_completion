@@ -37,7 +37,7 @@ _pkgl() {
     local cur opts
     cur=${COMP_WORDS[COMP_CWORD]}
     if [ $COMP_CWORD -eq 1 ]; then
-        opts=$(ls $HOME/.local/bin/pkgl/)
+        opts=$(pkgl help)
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     else
         if [ $COMP_CWORD -eq 2 ]; then
@@ -45,9 +45,9 @@ _pkgl() {
             opts=""
             case "$cur" in
                 "binrel")
-                    opts="external internal"
+                    opts="pacman binaries"
                     ;;
-                "repo")
+                "repoadd")
                     opts=$(ls | grep ".pkg.tar.xz")
                     ;;
                 *)
