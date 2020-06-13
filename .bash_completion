@@ -15,7 +15,7 @@ _ltcten() {
         opts="change"
         COMPREPLY=( $(compgen -W "change" -- $cur) )
     else
-        opts=$(ltcten list)
+        opts=$(ltcten list | grep -v "wpa\.")
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     fi
 }
