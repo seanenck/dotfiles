@@ -33,10 +33,11 @@ if [ ! -z "$1" ]; then
             ;;
         "notify")
             if [ ! -e "$NO_STATUS" ]; then
-                gitstatus
+                source ~/.local/lib/status.sh
+                git_status
                 mail status
                 backup status
-                pacstatus
+                pacman_status
             fi
             ;;
         "sleep")
