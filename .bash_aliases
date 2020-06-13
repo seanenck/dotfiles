@@ -28,15 +28,6 @@ firefox() {
     fi
 }
 
-totp() {
-    local cmd
-    cmd=""
-    if [ ! -z "$1" ]; then
-        cmd="--command $1"
-    fi
-    /usr/bin/totp --pass ~/.pass/personal $cmd
-}
-
 ssh() {
     TERM=xterm /usr/bin/ssh "$@" || return
 }

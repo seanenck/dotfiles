@@ -1,7 +1,7 @@
 #!/bin/bash
 _totp() {
     local opts cur
-    opts=$(/usr/bin/totp --list --pass ~/.pass/personal)
+    opts=$(totp list)
     cur=${COMP_WORDS[COMP_CWORD]}
     COMPREPLY=( $(compgen -W "$opts" -- $cur) )
 }
