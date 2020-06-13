@@ -98,9 +98,9 @@ _chroots() {
         arch-nspawn $CHROOT/root pacman -Syyu
         cmd="pacman -Syyu"
     fi
-    for f in $(ls $CHROOT/.. | grep -v builds); do
+    for f in $(schroot --list | grep "source"); do
         _chroots_header $f
-        sudo schroot -c source:$f -- $cmd
+        sudo schroot -c $f -- $cmd
     done
 }
 
