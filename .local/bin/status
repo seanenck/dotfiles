@@ -51,7 +51,8 @@ if [ ! -z "$1" ]; then
             if [ $? -ne 0 ]; then
                 exit 0
             fi
-            timestamp=/tmp/mail.$(date -d @$(( (($(date +%s) + 900) / 1800) * 1800)) +%Y-%m-%d-%H-%M).txt
+            mkdir -p /tmp/mail/
+            timestamp=/tmp/mail/$(date -d @$(( (($(date +%s) + 900) / 1800) * 1800)) +%Y-%m-%d-%H-%M).txt
             if pgrep -x mutt; then
                 rm -f $timestamp
                 exit 0
