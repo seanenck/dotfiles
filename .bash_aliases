@@ -33,17 +33,7 @@ ssh() {
 }
 
 wiki() {
-    local cwd dir w
-    dir=~/store/personal/mirror/notebook/
-    vim $dir$1
-    cwd=$PWD
-    w=~/.cache/wiki/
-    cd $dir
-    labsite local > /dev/null
-    rsync -av ${dir}/bin/ $w --delete-after > /dev/null
-    rm -rf ${dir}bin/
-    ln -s $w ${dir}bin
-    cd $cwd
+    ~/store/personal/mirror/notebook/configure.sh "$@"
 }
 
 mplayer() {
