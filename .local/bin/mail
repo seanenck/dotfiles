@@ -15,11 +15,11 @@ else
         "status")
             oldifs=$IFS
             IFS=$'\n'
-            for d in $(find ~/.mutt/imap -type d -name new | grep -v Trash); do
+            for d in $(find ~/store/personal/imap -type d -name new | grep -v Trash); do
                 dname=$(dirname $d)
                 count=$(ls $dname/new/ | wc -l)
                 if [ $count -gt 0 ]; then
-                    notify-send -t 30000 "$(echo $dname | sed 's#/home/enck/.mutt/imap/##g' | cut -d "/" -f 2-) [$count]"
+                    notify-send -t 30000 "$(echo $dname | sed 's#/home/enck/store/personal/imap/##g' | cut -d "/" -f 2-) [$count]"
                 fi
             done
             IFS=$oldifs

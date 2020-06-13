@@ -14,7 +14,7 @@ def main():
     """Program entry."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--address", type=str, default="enckse@voidedtech.com")
-    parser.add_argument("--maildir", type=str, default="/home/enck/.mutt/imap/fastmail/Filtered/Automated/")
+    parser.add_argument("--maildir", type=str, default="/home/enck/store/personal/imap/fastmail/Filtered/Automated/")
     parser.add_argument("--subject", type=str)
     parser.add_argument("--input", type=str)
     parser.add_argument("--plaintext", action="store_true")
