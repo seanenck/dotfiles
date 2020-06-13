@@ -1,0 +1,70 @@
+#!/bin/bash
+export PASSWORD_STORE_DIR=~/.pass/personal
+OFFSET=services/totp/
+DIR=$PASSWORD_STORE_DIR/$OFFSET
+
+_list() {
+    find $DIR -type f -name "*.gpg" -exec basename {} \; | sed "s/\.gpg//g" | sort
+}
+
+_display() {
+    local first cnt last second now left pad exp startc endc passwd oath
+    if [ ! -e "$DIR$1.gpg" ]; then
+        echo "token does not exist"
+        return
+    fi
+    first=1
+    cnt=0
+    last=61
+    passwd=$(pass show $OFFSET/$1)
+    while [ 1 -eq 1 ]; do
+        if [ $first -ne 1 ]; then
+            sleep 0.5
+        fi
+        first=0
+        if [ $cnt -gt 120 ]; then
+            echo "exiting (timeout)"
+            return
+        fi
+        cnt=$((cnt+1))
+        now=$(date +%H:%M:%S)
+        second=$(echo $now | cut -d ":" -f 3)
+        if [ $second -eq $last ]; then
+            continue
+        fi
+        last=$second
+        pad=""
+        left=$(echo $last | sed "s/^0//g")
+        left=$((60-left))
+        startc=""
+        endc=""
+        if [ $left -lt 10 ]; then
+            pad="0"
+            startc="\033[1;31m"
+            endc="\033[0m"
+        fi
+        exp="$now, expires: $pad$left (seconds)"
+        oath=$(oathtool --base32 --totp $passwd)
+        clear
+        echo -e "$startc$exp
+
+$1
+    $oath
+
+-> CTRL-C to exit$endc"
+    done
+}
+
+mode="$1"
+if [ -z "$mode" ]; then
+    echo "no command given"
+    exit 1
+fi
+case "$mode" in
+    "list")
+        _list
+        ;;
+    *)
+        _display "$1"
+        ;;
+esac
