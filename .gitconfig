@@ -1,3 +1,5 @@
+[alias]
+    current = !git status && git diff --stat
 [commit]
     gpgsign = true
 [core]
