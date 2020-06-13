@@ -99,7 +99,7 @@ _chroots() {
         cmd="pacman -Syyu"
     fi
     for f in $(ls $CHROOT/.. | grep -v builds); do
-        _header $f
+        _chroots_header $f
         sudo schroot -c source:$f -- $cmd
     done
 }
@@ -140,7 +140,7 @@ _repoadd() {
 }
 
 _localbin() {
-    ~/.local/lib/localbin.py
+    python3 ~/.local/lib/localbin.py
 }
 
 mode="$1"
