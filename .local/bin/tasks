@@ -23,7 +23,7 @@ case "$CMD" in
         echo "body:"
         tmpf=$(mktemp)
         _body | grep -v "^$" >> $tmpf
-        python ~/.local/bin/inbox.py --maildir ~/store/personal/mirror/tasks/INBOX/ \
+        python ~/.local/lib/inbox.py --maildir ~/store/personal/mirror/tasks/INBOX/ \
                                      --subject "$subj" \
                                      --input $tmpf \
                                      --plaintext
