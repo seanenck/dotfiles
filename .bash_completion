@@ -12,11 +12,13 @@ _ltcten() {
     local opts cur
     cur=${COMP_WORDS[COMP_CWORD]}
     if [ $COMP_CWORD -eq 1 ]; then
-        opts="change"
-        COMPREPLY=( $(compgen -W "change" -- $cur) )
-    else
-        opts=$(ltcten list | grep -v "wpa\.")
+        opts=$(ltcten help)
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    else
+        if [[ "$cur" == "change" ]]; then
+            opts=$(ltcten list)
+            COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+        fi
     fi
 }
 
