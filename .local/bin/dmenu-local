@@ -11,7 +11,7 @@ _SEARCH = "search"
 _BROWSER = "/usr/bin/firefox-developer-edition"
 _FASTMUTT = "fastmail"
 _PASSWORDS = "passwords"
-_LOCALS = [_FASTMUTT, _PASSWORDS, _TASKS]
+_LOCALS = [_FASTMUTT, _PASSWORDS]
 _APPS = ["smplayer", "pavucontrol"] + _LOCALS
 
 
