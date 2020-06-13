@@ -1,0 +1,38 @@
+#!/bin/bash
+dir=~/store/personal/mirror/notebook/
+page=$dir$1
+echo $page | grep -q '\.md$'
+if [ $? -ne 0 ]; then
+    echo "not a markdown file"
+    exit
+fi
+vim $dir$1
+cwd=$PWD
+w=~/.cache/wiki/
+cd $dir
+
+_yaml() {
+    echo "target: bin
+home: README.md
+site: notes
+
+pages:
+    directory: pages
+    side:"
+    for f in $(ls pages/ | sed "s/\.md//g" | sort); do
+        echo "      $f: $f"
+    done
+    echo "
+    top:
+        references: references
+
+tasks:
+    enable: false"
+}
+
+_yaml > site.yaml
+labsite local > /dev/null
+rsync -av ${dir}/bin/ $w --delete-after > /dev/null
+rm -rf ${dir}bin/
+ln -s $w ${dir}bin
+cd $cwd
