@@ -52,7 +52,14 @@ if [ ! -z "$1" ]; then
                 exit 0
             fi
             mkdir -p /tmp/mail/
-            timestamp=/tmp/mail/$(date -d @$(( (($(date +%s) + 900) / 1800) * 1800)) +%Y-%m-%d-%H-%M).txt
+            datehour=$(date +%Y-%m-%d-%H)
+            minute=$(date +%M)
+            if [ $minute -ge 30 ]; then
+                minute="30"
+            else
+                minute="00"
+            fi
+            timestamp=/tmp/mail/$datehour-$minute.txt
             if pgrep -x mutt; then
                 rm -f $timestamp
                 exit 0
