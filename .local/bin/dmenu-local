@@ -5,21 +5,17 @@ use autodie;
 use Text::CSV;
 use URI::Escape;
 
-my @dmenu_cmd = ("dmenu");
-push @dmenu_cmd, @ARGV;
-
 my $browser   = "/usr/bin/firefox-developer-edition";
 my $fastmail  = "fastmail";
 my $passwords = "passwords";
 
-my @apps = ( "smplayer", "pavucontrol" );
-
-push @apps, $fastmail;
-push @apps, $passwords;
+my %available;
+foreach my $app ("smplayer", "pavucontrol", $fastmail, $passwords) {
+    $available{$app} = $app;
+}
 
 my $csv = Text::CSV->new( { sep_char => ',' } );
 open( my $data, '<', "/home/enck/store/personal/config/etc/urls.csv" );
-my %available;
 while ( my $line = <$data> ) {
     chomp $line;
     if ( $csv->parse($line) ) {
@@ -27,14 +23,9 @@ while ( my $line = <$data> ) {
         my $arg    = $fields[2];
         chomp $arg;
         my @args = split / /, $arg;
-        unshift @args, $browser;
         push @args, $fields[1];
-        $available{ $fields[0] } = join " ", @args;
+        $available{ $fields[0] } = $browser . " " .join " ", @args;
     }
-}
-
-foreach my $app (@apps) {
-    $available{$app} = $app;
 }
 
 my $cmd = "echo '";
@@ -44,7 +35,7 @@ foreach my $opt ( keys %available ) {
 }
 
 chomp $cmd;
-$cmd = "$cmd' | sort | " . join " ", @dmenu_cmd;
+$cmd = "$cmd' | sort | dmenu " . join " ", @ARGV;
 $cmd =~ s/#/\\#/g;
 my $stdout = `$cmd`;
 chomp $stdout;
