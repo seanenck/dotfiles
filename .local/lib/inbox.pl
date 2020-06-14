@@ -15,13 +15,11 @@ my $addr    = 'enckse@voidedtech.com';
 my $maildir = "/home/enck/store/personal/imap/fastmail/Filtered/Automated/";
 my $subject = "";
 my $input   = "";
-my $plaintext;
 GetOptions(
     "address=s" => \$addr,
     "maildir=s" => \$maildir,
     "subject=s" => \$subject,
     "input=s"   => \$input,
-    "plaintext" => \$plaintext
 ) or die "unable to parse commands";
 
 $addr                           || die "address is required";
@@ -30,20 +28,11 @@ $maildir                        || die "maildir is required";
 ( -e $maildir and -d $maildir ) || die "invalid mailrdir";
 -e $input                       || die "invalid input file";
 
-open( my $data, '<:encoding(UTF-8)', $input );
-
 my $type;
 my $message_body;
-if ($plaintext) {
-    $message_body = do { local $/; <$data> };
-    $type         = "text/plain";
-}
-else {
-    $type = "multipart/mixed";
-}
 
 my $mime = MIME::Entity->build(
-    Type    => $type,
+    Type    => "multipart/mixed",
     From    => $addr,
     To      => $addr,
     Subject => $subject,
@@ -51,13 +40,11 @@ my $mime = MIME::Entity->build(
     Data    => $message_body
 );
 
-if ( !$plaintext ) {
-    $mime->attach(
-        Path     => $input,
-        Type     => "application/zip",
-        Encoding => "base64"
-    );
-}
+$mime->attach(
+    Path     => $input,
+    Type     => "application/zip",
+    Encoding => "base64"
+);
 
 my $convert = Mail::Message::Convert::MimeEntity->new;
 my Mail::Message $msg = $convert->from($mime);
