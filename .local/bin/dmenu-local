@@ -1,88 +1,77 @@
-#!/usr/bin/python3
-"""dmenu wrapper."""
-import sys
-import os
-import csv
-import subprocess
-import urllib.parse
+#!/usr/bin/perl
+use strict;
+use warnings;
+use autodie;
+use Text::CSV;
+use URI::Escape;
 
+my @dmenu_cmd = ("dmenu");
+push @dmenu_cmd, @ARGV;
 
-_SEARCH = "search"
-_BROWSER = "/usr/bin/firefox-developer-edition"
-_FASTMUTT = "fastmail"
-_PASSWORDS = "passwords"
-_LOCALS = [_FASTMUTT, _PASSWORDS]
-_APPS = ["smplayer", "pavucontrol"] + _LOCALS
+my $browser = "/usr/bin/firefox-developer-edition";
+my $fastmail = "fastmail";
+my $passwords = "passwords";
 
+my @apps = ("smplayer", "pavucontrol");
 
-def _local(cmd):
-    """Run a local command."""
-    cwd = "/home/enck/downloads"
-    command = ["kitty",
-               "--title={}".format(cmd),
-               "mutt",
-               "-F",
-               "/home/enck/.mutt/fastmail.muttrc"]
-    if cmd == _PASSWORDS:
-        command = ["keepassxc", "/home/enck/store/personal/private/confidential/passwords"]
-    subprocess.call(command, cwd=cwd)
+push @apps, $fastmail;
+push @apps, $passwords;
 
+my $csv = Text::CSV->new({ sep_char => ',' });
+open(my $data, '<', "/home/enck/store/personal/config/etc/urls.csv");
+my %available;
+while (my $line = <$data>) {
+    chomp $line;
+    if ($csv->parse($line)) {
+        my @fields = $csv->fields();
+        my $arg = $fields[2];
+        chomp $arg;
+        my @args = split / /,$arg;
+        unshift @args, $browser;
+        push @args, $fields[1];
+        $available{$fields[0]} = join " ",@args;
+    }
+}
 
-def _dmenu(args):
-    """dmenu backing call."""
-    urls = "/home/enck/store/personal/config/etc/urls.csv"
-    available = {}
-    dmenu_cmd = ["dmenu"] + args
-    with open(urls, 'r') as f:
-        reader = csv.reader(f)
-        for r in reader:
-            name = r[0]
-            url = r[1]
-            args = r[2].split(" ")
-            args = [x for x in args if x]
-            available[name] = [_BROWSER] + args + [url]
-    for a in _APPS:
-        available[a] = a
-    p = subprocess.Popen(dmenu_cmd,
-                         stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    options = sorted(available.keys())
-    stdout, err = p.communicate(input=("\n".join(options)).encode("utf-8"))
-    if err is not None:
-        return
-    result = stdout.decode("utf-8").strip()
-    if result in options:
-        cmd = result.lower()
-        if cmd in _LOCALS:
-            _local(cmd)
-        else:
-            c = available[cmd]
-            subprocess.call(c)
-    else:
-        if "." in result and " " not in result:
-            subprocess.call([_BROWSER, result])
-            return
-        if not result:
-            return
-        search(_BROWSER, result)
+foreach my $app (@apps) {
+    $available{$app} = $app;
+}
 
+my $cmd = "echo '";
+keys %available;
+foreach my $opt (keys %available) {
+    $cmd = "$cmd$opt\n"
+}
 
-def main():
-    """Program entry."""
-    args = []
-    if len(sys.argv) > 1:
-        args = sys.argv[1:]
-    _dmenu(args)
+chomp $cmd;
+$cmd = "$cmd' | sort | " . join " ", @dmenu_cmd;
+$cmd =~ s/#/\\#/g;
+my $stdout = `$cmd`;
+chomp $stdout;
+if ($stdout eq "") {
+    exit;
+}
 
+my @localcmd = ();
+if ($stdout eq $fastmail) {
+    @localcmd = ("kitty", "--title=$stdout", "mutt", "-F", "/home/enck/.mutt/fastmail.muttrc");
+}
 
-def search(browser, term):
-    if term.startswith(_SEARCH):
-        term = term[len(_SEARCH):]
-    query = {}
-    query["q"] = term
-    params = urllib.parse.urlencode(query)
-    subprocess.call([browser,
-                     "https://www.duckduckgo.com/?{}".format(params)])
+if ($stdout eq $passwords) {
+    @localcmd = ("keepassxc", "/home/enck/store/personal/private/confidential/passwords");
+}
 
+my $length = @localcmd;
+if ($length > 0) {
+    system("cd /home/enck/downloads && " . join " ", @localcmd);
+    exit;
+}
 
-if __name__ == "__main__":
-    main()
+if (exists($available{$stdout})) {
+    system($available{$stdout});
+    exit;
+}
+
+$stdout =~ s/^search //;
+my $uri = " https://www.duckduckgo.com/?q=" . uri_escape($stdout);
+system($browser . $uri);
