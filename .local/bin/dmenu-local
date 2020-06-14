@@ -8,28 +8,28 @@ use URI::Escape;
 my @dmenu_cmd = ("dmenu");
 push @dmenu_cmd, @ARGV;
 
-my $browser = "/usr/bin/firefox-developer-edition";
-my $fastmail = "fastmail";
+my $browser   = "/usr/bin/firefox-developer-edition";
+my $fastmail  = "fastmail";
 my $passwords = "passwords";
 
-my @apps = ("smplayer", "pavucontrol");
+my @apps = ( "smplayer", "pavucontrol" );
 
 push @apps, $fastmail;
 push @apps, $passwords;
 
-my $csv = Text::CSV->new({ sep_char => ',' });
-open(my $data, '<', "/home/enck/store/personal/config/etc/urls.csv");
+my $csv = Text::CSV->new( { sep_char => ',' } );
+open( my $data, '<', "/home/enck/store/personal/config/etc/urls.csv" );
 my %available;
-while (my $line = <$data>) {
+while ( my $line = <$data> ) {
     chomp $line;
-    if ($csv->parse($line)) {
+    if ( $csv->parse($line) ) {
         my @fields = $csv->fields();
-        my $arg = $fields[2];
+        my $arg    = $fields[2];
         chomp $arg;
-        my @args = split / /,$arg;
+        my @args = split / /, $arg;
         unshift @args, $browser;
         push @args, $fields[1];
-        $available{$fields[0]} = join " ",@args;
+        $available{ $fields[0] } = join " ", @args;
     }
 }
 
@@ -39,8 +39,8 @@ foreach my $app (@apps) {
 
 my $cmd = "echo '";
 keys %available;
-foreach my $opt (keys %available) {
-    $cmd = "$cmd$opt\n"
+foreach my $opt ( keys %available ) {
+    $cmd = "$cmd$opt\n";
 }
 
 chomp $cmd;
@@ -48,30 +48,35 @@ $cmd = "$cmd' | sort | " . join " ", @dmenu_cmd;
 $cmd =~ s/#/\\#/g;
 my $stdout = `$cmd`;
 chomp $stdout;
-if ($stdout eq "") {
+if ( $stdout eq "" ) {
     exit;
 }
 
 my @localcmd = ();
-if ($stdout eq $fastmail) {
-    @localcmd = ("kitty", "--title=$stdout", "mutt", "-F", "/home/enck/.mutt/fastmail.muttrc");
+if ( $stdout eq $fastmail ) {
+    @localcmd = (
+        "kitty", "--title=$stdout", "mutt", "-F",
+        "/home/enck/.mutt/fastmail.muttrc"
+    );
 }
 
-if ($stdout eq $passwords) {
-    @localcmd = ("keepassxc", "/home/enck/store/personal/private/confidential/passwords");
+if ( $stdout eq $passwords ) {
+    @localcmd = (
+        "keepassxc", "/home/enck/store/personal/private/confidential/passwords"
+    );
 }
 
 my $length = @localcmd;
-if ($length > 0) {
-    system("cd /home/enck/downloads && " . join " ", @localcmd);
+if ( $length > 0 ) {
+    system( "cd /home/enck/downloads && " . join " ", @localcmd );
     exit;
 }
 
-if (exists($available{$stdout})) {
-    system($available{$stdout});
+if ( exists( $available{$stdout} ) ) {
+    system( $available{$stdout} );
     exit;
 }
 
 $stdout =~ s/^search //;
 my $uri = " https://www.duckduckgo.com/?q=" . uri_escape($stdout);
-system($browser . $uri);
+system( $browser . $uri );
