@@ -16,10 +16,10 @@ foreach my $app ( "smplayer", "pavucontrol", $fastmail, $passwords ) {
 }
 
 my $csv = Text::CSV->new( { sep_char => ',' } );
-open( my $data, '<', "/home/enck/store/personal/config/etc/urls.csv" );
-while ( my $line = <$data> ) {
-    chomp $line;
-    if ( $csv->parse($line) ) {
+open my $DATA, '< /home/enck/store/personal/config/etc/urls.csv';
+while (<$DATA>) {
+    chomp;
+    if ( $csv->parse($_) ) {
         my @fields = $csv->fields();
         my $arg    = $fields[2];
         chomp $arg;
