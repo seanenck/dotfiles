@@ -43,23 +43,18 @@ if ( $stdout eq "" ) {
     exit;
 }
 
-my @localcmd = ();
 if ( $stdout eq $fastmail ) {
-    @localcmd = (
+    my @localcmd = (
         "kitty", "--title=$stdout", "mutt", "-F",
         "/home/enck/.mutt/fastmail.muttrc"
     );
+    system( "cd /home/enck/downloads && " . shell_quote @localcmd );
+    exit;
 }
 
 if ( $stdout eq $passwords ) {
-    @localcmd = (
-        "keepassxc", "/home/enck/store/personal/private/confidential/passwords"
-    );
-}
-
-my $length = @localcmd;
-if ( $length > 0 ) {
-    system( "cd /home/enck/downloads && " . shell_quote @localcmd );
+    system( "keepassxc",
+        "/home/enck/store/personal/private/confidential/passwords" );
     exit;
 }
 
