@@ -51,7 +51,6 @@ _hash() {
 
 _dryrun() {
     if [ -e $CHECK ]; then
-        echo "recently checked"
         return
     fi
     _hash | sort > $FILES
