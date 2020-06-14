@@ -10,14 +10,17 @@ complete -F _totp totp
 
 _ltcten() {
     local opts cur
-    cur=${COMP_WORDS[COMP_CWORD]}
     if [ $COMP_CWORD -eq 1 ]; then
+        cur=${COMP_WORDS[COMP_CWORD]}
         opts=$(ltcten help)
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     else
-        if [[ "$cur" == "change" ]]; then
-            opts=$(ltcten list)
-            COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+        if [ $COMP_CWORD -eq 2 ]; then
+            cur=${COMP_WORDS[1]}
+            if [[ "$cur" == "change" ]]; then
+                opts=$(ltcten list)
+                COMPREPLY=( $(compgen -W "$opts" -- ${COMP_WORDS[COMP_CWORD]}) )
+            fi
         fi
     fi
 }
