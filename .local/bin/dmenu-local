@@ -4,6 +4,7 @@ use warnings;
 use autodie;
 use Text::CSV;
 use URI::Escape;
+use String::ShellQuote;
 
 my $browser   = "/usr/bin/firefox-developer-edition";
 my $fastmail  = "fastmail";
@@ -24,7 +25,7 @@ while ( my $line = <$data> ) {
         chomp $arg;
         my @args = split / /, $arg;
         push @args, $fields[1];
-        $available{ $fields[0] } = $browser . " " . join " ", @args;
+        $available{ $fields[0] } = $browser . " " . shell_quote @args;
     }
 }
 
@@ -35,8 +36,7 @@ foreach my $opt ( keys %available ) {
 }
 
 chomp $cmd;
-$cmd = "$cmd' | sort | dmenu " . join " ", @ARGV;
-$cmd =~ s/#/\\#/g;
+$cmd = "$cmd' | sort | dmenu " . shell_quote @ARGV;
 my $stdout = `$cmd`;
 chomp $stdout;
 if ( $stdout eq "" ) {
@@ -59,7 +59,7 @@ if ( $stdout eq $passwords ) {
 
 my $length = @localcmd;
 if ( $length > 0 ) {
-    system( "cd /home/enck/downloads && " . join " ", @localcmd );
+    system( "cd /home/enck/downloads && " . shell_quote @localcmd );
     exit;
 }
 
