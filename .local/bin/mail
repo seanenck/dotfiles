@@ -4,13 +4,13 @@ if pgrep -x mbsync > /dev/null; then
 fi
 
 _sync() {
-    mbsync -aV
+    mbsync -a
     notmuch new
 }
 
 if [ -z "$1" ]; then
     mkdir -p /tmp/mbsync
-    _sync > /tmp/mbsync/$(date +%Y-%m-%d).log 2>&1
+    _sync 2>&1 | systemd-cat -t "mbsync"
 else
     case "$1" in
         "status")
