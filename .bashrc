@@ -23,7 +23,7 @@ shopt -s checkwinsize
 
 if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
     export MESA_LOADER_DRIVER_OVERRIDE=i965
-    exec startx $HOME/.xinitrc > /tmp/xinit.log 2>&1
+    exec startx $HOME/.xinitrc 2>&1 | systemd-cat -t "xinit"
     return
 fi
 
