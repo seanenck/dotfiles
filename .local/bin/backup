@@ -96,7 +96,7 @@ for f in $REPOS; do
     fi
     rm -f $zipfile
     7z a -spf -p$zippass $zipfile $(find $f -type f | grep -v "\.git")
-    python3 ~/.local/lib/inbox.py \
+    perl ~/.local/lib/inbox.pl \
             --input $zipfile \
             --subject "$(basename $f).zip"
 done
