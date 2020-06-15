@@ -34,26 +34,3 @@ pacman_status() {
         notify-send -t 30000 "linux: kernel"
     fi
 }
-
-_gitstatus() {
-    git -C $1 update-index -q --refresh
-    git -C $1 diff-index --name-only HEAD --
-    git -C $1 status -sb | grep ahead
-    git -C $1 ls-files --other --exclude-standard
-}
-
-git_status() {
-    local dir f dname count
-    dir="$HOME/.git /etc/.git $(find /home/enck/workspace -type d -name ".git")"
-    for f in $(ls ~/store/ | grep -v chroots); do
-        dir="$dir $(find /home/enck/store/$f -maxdepth 3 -type d -name ".git")"
-    done
-
-    for f in $dir; do
-        dname=$(dirname $f)
-        count=$(_gitstatus $dname | wc -l)
-        if [ $count -gt 0 ]; then
-            notify-send -t 30000 "$(echo $dname | sed "s#/home/enck#~#g") [$count]"
-        fi
-    done
-}

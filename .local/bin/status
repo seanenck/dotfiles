@@ -10,7 +10,7 @@ if [ ! -z "$1" ]; then
         "notify")
             if [ ! -e "$NO_STATUS" ]; then
                 source ~/.local/lib/status.sh
-                git_status
+                perl ~/.local/lib/status.pl
                 mail status
                 backup status
                 pacman_status
