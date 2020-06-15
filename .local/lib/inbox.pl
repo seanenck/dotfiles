@@ -49,7 +49,7 @@ $mime->attach(
 my $convert = Mail::Message::Convert::MimeEntity->new;
 my Mail::Message $msg = $convert->from($mime);
 
-open STDERR, '>/dev/null';
+open STDERR, '>', '/dev/null';
 
 my $folder = new Mail::Box::Maildir(
     folder            => $maildir,

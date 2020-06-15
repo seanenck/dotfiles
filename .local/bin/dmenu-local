@@ -16,7 +16,7 @@ foreach my $app ( "smplayer", "pavucontrol", $fastmail, $passwords ) {
 }
 
 my $csv = Text::CSV->new( { sep_char => ',' } );
-open my $DATA, '< /home/enck/store/personal/config/etc/urls.csv';
+open my $DATA, '<', '/home/enck/store/personal/config/etc/urls.csv';
 while (<$DATA>) {
     chomp;
     if ( $csv->parse($_) ) {
