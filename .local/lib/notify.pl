@@ -52,7 +52,7 @@ for my $pkg ( split( / /, $packages ) ) {
 $deps = join( " ", sort( split( / /, $deps ) ) );
 my $curpkg = $home . "/.cache/pkg.deps";
 my $prvpkg = $curpkg . ".prev";
-system("pacman -Si $deps 2> /dev/null | grep -E '^(Name|Version)' > $curpkg");
+system("pacman -Si $deps 2> /dev/null | grep -E '^(Name|Version)' | tr '\n' ' ' | sed 's/N/\\nN/g' | sed 's/\\s*//g;s/Version:/ /g;s/Name://g' > $curpkg");
 system("touch $prvpkg");
 my $cmp = compare( $curpkg, $prvpkg );
 if ( $cmp != 0 ) {
