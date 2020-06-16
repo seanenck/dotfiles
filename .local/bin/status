@@ -1,53 +1,105 @@
-#!/bin/bash
+#!/usr/bin/perl
+use warnings;
+use strict;
+use File::Compare;
+use File::Copy qw(move);
+use autodie;
 
-NO_STATUS=/tmp/nostatus
+my $no_status = "/tmp/nostatus";
+my $home      = $ENV{"HOME"};
 
-if [ ! -z "$1" ]; then
-    case "$1" in
-        "toggle")
-            perl ~/.local/bin/status.pl toggle
-            ;;
-    esac
-    exit 0
-fi
-
-_status() {
-    date=$(date +%Y-%m-%d)
-    week=$(date +%a | tr '[:lower:]' '[:upper:]')
-    time=$(date +%H:%M)
-    bright=$(brightness status)
-    locked=$(locker status)
-    if [ ! -z "$locked" ]; then
-        locked="|$locked"
-    fi
-    vol=$(volume status)
-    bat=$(cat /sys/class/power_supply/BAT0/capacity)
-    charge="-"
-    if [ $(cat /sys/class/power_supply/AC/online) -eq 1 ]; then
-        charge="+"
-    else
-        if [ $bat -lt 20 ]; then
-            notify-send -t 30000 "BATTERY LOW"
-        fi
-    fi
-    online="UP"
-    ltcten online
-    if [ $? -ne 0 ]; then
-        online="DOWN"
-    fi
-    addr=$(ltcten addr)
-    echo "$date|$week|$time$locked|disp:$bright|vol:$vol|bat:$bat$charge|$online:$addr"
+sub create_status() {
+    my $date   = `date +%Y-%m-%d`;
+    my $week   = `date +%a | tr '[:lower:]' '[:upper:]'`;
+    my $time   = `date +%H:%M`;
+    my $bright = `brightness status`;
+    my $locked = `locker status`;
+    if ($locked) {
+        $locked = "|$locked";
+    }
+    my $vol    = `volume status`;
+    my $bat    = `cat /sys/class/power_supply/BAT0/capacity`;
+    my $charge = "-";
+    if ( `cat /sys/class/power_supply/AC/online` == "1" ) {
+        $charge = "+"
+    }
+    else {
+        if ( $bat < 20) {
+            system('notify-send -t 30000 "BATTERY LOW"');
+        }
+    }
+    my $online = system("ltcten online") ? "DOWN" : "UP";
+    my $addr   = `ltcten addr`;
+    my $status = "$date|$week|$time$locked|disp:$bright|vol:$vol|bat:$bat$charge|$online:$addr";
+    $status =~ s/\n//g;
+    system("xsetroot -name '$status'");
 }
 
-count=1
-while [ 1 -eq 1 ]; do
-    xsetroot -name $(_status)
-    count=$((count+1))
-    if [ $count -eq 5 ]; then
-        perl ~/.local/bin/status.pl notify &
-        perl ~/.local/bin/status.pl mail &
-        count=0
-    fi
-    perl ~/.local/bin/status.pl displays &
-    sleep 5
-done
+if (@ARGV) {
+    my $command = $ARGV[0];
+    if ( $command eq "displays" ) {
+        my $display_cache = $home . "/.cache/displays";
+        my $prev_cache    = $display_cache . ".prev";
+        system("xrandr | grep ' connected' | cut -d ' ' -f 1 > $display_cache");
+        system("touch $prev_cache");
+        my $cmp = compare( $display_cache, $prev_cache );
+        move $display_cache, $prev_cache;
+        if ( $cmp != 0 ) {
+            my $workspace = `cat $prev_cache | wc -l` > 1 ? " docked" : "";
+            system("workspaces$workspace");
+        }
+    }
+    elsif ( $command eq "toggle" || $command eq "sleep" ) {
+        my $change = "on";
+        if ( -e "$no_status" || $command eq "sleep" ) {
+            system("rm -f $no_status");
+        }
+        else {
+            $change = "off";
+            system("touch $no_status");
+        }
+        if ( $command ne "sleep" ) {
+            system("notify-send -t 5000 'notifications: $change'");
+        }
+    }
+    elsif ( $command eq "mail" ) {
+        exit if system("ltcten online");
+        exit if system("ltcten status | grep -q -E 'home|default'");
+        my $mail_file = "/tmp/mail";
+        system("mkdir -p $mail_file");
+        my $time = `date +%Y-%m-%d-%H-`;
+        chomp $time;
+        $time .= `date +%M` >= 30 ? "30" : "00";
+        $mail_file = $mail_file . "/$time";
+
+        unless ( system("pgrep -x mutt > /dev/null") ) {
+            system("rm -f $mail_file");
+            exit;
+        }
+        exit if -e "$mail_file";
+        system("mail");
+        system("touch $mail_file");
+    }
+    elsif ( $command eq "notify" ) {
+        if ( not -e $no_status ) {
+            system("perl $home/.local/lib/notify.pl");
+        }
+    }
+    elsif ( $command eq "line" ) {
+        create_status;
+    }
+    exit;
+}
+
+my $cnt = 1;
+while (1) {
+    system("status line");
+    $cnt++;
+    if ( $cnt >= 5 ) {
+        system("status notify &");
+        system("status mail &");
+        $cnt = 0
+    }
+    system("status displays &");
+    sleep 5;
+}
