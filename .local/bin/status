@@ -21,16 +21,17 @@ sub create_status() {
     my $bat    = `cat /sys/class/power_supply/BAT0/capacity`;
     my $charge = "-";
     if ( `cat /sys/class/power_supply/AC/online` == "1" ) {
-        $charge = "+"
+        $charge = "+";
     }
     else {
-        if ( $bat < 20) {
+        if ( $bat < 20 ) {
             system('notify-send -t 30000 "BATTERY LOW"');
         }
     }
     my $online = system("ltcten online") ? "DOWN" : "UP";
     my $addr   = `ltcten addr`;
-    my $status = "$date|$week|$time$locked|disp:$bright|vol:$vol|bat:$bat$charge|$online:$addr";
+    my $status =
+"$date|$week|$time$locked|disp:$bright|vol:$vol|bat:$bat$charge|$online:$addr";
     $status =~ s/\n//g;
     system("xsetroot -name '$status'");
 }
@@ -98,7 +99,7 @@ while (1) {
     if ( $cnt >= 5 ) {
         system("status notify &");
         system("status mail &");
-        $cnt = 0
+        $cnt = 0;
     }
     system("status displays &");
     sleep 5;
