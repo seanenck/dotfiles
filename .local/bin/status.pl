@@ -6,11 +6,12 @@ use File::Copy qw(move);
 use autodie;
 
 my $no_status = "/tmp/nostatus";
+my $home = $ENV{"HOME"};
 
 if (@ARGV) {
     my $command = $ARGV[0];
     if ( $command eq "displays" ) {
-        my $display_cache = $ENV{"HOME"} . "/.cache/displays";
+        my $display_cache = $home . "/.cache/displays";
         my $prev_cache    = $display_cache . ".prev";
         system("xrandr | grep ' connected' | cut -d ' ' -f 1 > $display_cache");
         system("touch $prev_cache");
@@ -51,6 +52,11 @@ if (@ARGV) {
         exit if -e "$mail_file";
         system("mail");
         system("touch $mail_file");
+    }
+    elsif ( $command eq "notify" ) {
+        if ( not -e $no_status ) {
+            system("perl $home/.local/lib/notify.pl");
+        }
     }
     exit;
 }

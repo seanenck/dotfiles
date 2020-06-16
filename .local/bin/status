@@ -7,11 +7,6 @@ if [ ! -z "$1" ]; then
         "toggle")
             perl ~/.local/bin/status.pl toggle
             ;;
-        "notify")
-            if [ ! -e "$NO_STATUS" ]; then
-                perl ~/.local/lib/notify.pl
-            fi
-            ;;
         "sleep")
             perl ~/.local/bin/status.pl sleep
             ;;
@@ -52,7 +47,7 @@ while [ 1 -eq 1 ]; do
     xsetroot -name $(_status)
     count=$((count+1))
     if [ $count -eq 5 ]; then
-        status notify &
+        perl ~/.local/bin/status.pl notify &
         perl ~/.local/bin/status.pl mail &
         count=0
     fi
