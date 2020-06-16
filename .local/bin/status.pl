@@ -6,7 +6,7 @@ use File::Copy qw(move);
 use autodie;
 
 my $no_status = "/tmp/nostatus";
-my $home = $ENV{"HOME"};
+my $home      = $ENV{"HOME"};
 
 if (@ARGV) {
     my $command = $ARGV[0];

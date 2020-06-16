@@ -36,20 +36,23 @@ system("backup status");
 
 my $packages = `pacman -Qqdt`;
 $packages =~ tr/\n/ /;
-for (split(/ /, $packages)) {
+for ( split( / /, $packages ) ) {
     system("notify-send -t 30000 'orphan: $_'");
 }
 
-$packages = `find $home/store/managed/PKGBUILD -maxdepth 2 -type f -name PKGBUILD | tr '\\n' ' '`;
+$packages =
+`find $home/store/managed/PKGBUILD -maxdepth 2 -type f -name PKGBUILD | tr '\\n' ' '`;
 my $deps = "";
-for my $pkg (split(/ /, $packages)) {
-    $deps .= `cat $pkg | grep "^\\s*depends" | cut -d '(' -f 2 | cut -d ')' -f 1 | sed 's/"//g' | sed "s/'//g" | tr '\\n' ' '` . " ";
+for my $pkg ( split( / /, $packages ) ) {
+    $deps .=
+`cat $pkg | grep "^\\s*depends" | cut -d '(' -f 2 | cut -d ')' -f 1 | sed 's/"//g' | sed "s/'//g" | tr '\\n' ' '`
+      . " ";
 }
 
-$deps = join(" ",sort(split(/ /,$deps)));
+$deps = join( " ", sort( split( / /, $deps ) ) );
 my $curpkg = $home . "/.cache/pkg.deps";
 my $prvpkg = $curpkg . ".prev";
-`pacman -Si $deps 2> /dev/null | grep -E "^(Name|Version)" > $curpkg`;
+system(`pacman -Si $deps 2> /dev/null | grep -E "^(Name|Version)" > $curpkg`);
 system("touch $prvpkg");
 my $cmp = compare( $curpkg, $prvpkg );
 if ( $cmp != 0 ) {
@@ -57,12 +60,15 @@ if ( $cmp != 0 ) {
 }
 move $curpkg, $prvpkg;
 
-$packages = `du -h /var/cache/pacman/pkg | tr '\t' ' ' | cut -d " " -f 1 | grep "G" | sed "s/G//g" | cut -d "." -f 1`;
+$packages =
+`du -h /var/cache/pacman/pkg | tr '\t' ' ' | cut -d " " -f 1 | grep "G" | sed "s/G//g" | cut -d "." -f 1`;
 chomp $packages;
 if ( $packages > 10 ) {
     system("notify-send -t 30000 'pkgcache: $packages(G)'");
 }
 
-if (`uname -r | sed "s/-arch/.arch/g"` ne `pacman -Qi linux | grep Version | cut -d ":" -f 2 | sed "s/ //g"`) {
+if ( `uname -r | sed "s/-arch/.arch/g"` ne
+    `pacman -Qi linux | grep Version | cut -d ":" -f 2 | sed "s/ //g"` )
+{
     system("notify-send -t 30000 'linux: kernel'");
 }
