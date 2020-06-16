@@ -41,28 +41,6 @@ for ( split( / /, $packages ) ) {
 }
 
 $packages =
-`find $home/store/managed/PKGBUILD -maxdepth 2 -type f -name PKGBUILD | tr '\\n' ' '`;
-my $deps = "";
-for my $pkg ( split( / /, $packages ) ) {
-    $deps .=
-`cat $pkg | grep "^\\s*depends" | cut -d '(' -f 2 | cut -d ')' -f 1 | sed 's/"//g' | sed "s/'//g" | tr '\\n' ' '`
-      . " ";
-}
-
-$deps = join( " ", sort( split( / /, $deps ) ) );
-my $curpkg = $home . "/.cache/pkg.deps";
-my $prvpkg = $curpkg . ".prev";
-system(
-"pacman -Si $deps 2> /dev/null | grep -E '^(Name|Version)' | tr '\n' ' ' | sed 's/N/\\nN/g' | sed 's/\\s*//g;s/Version:/ /g;s/Name://g' > $curpkg"
-);
-system("touch $prvpkg");
-my $cmp = compare( $curpkg, $prvpkg );
-if ( $cmp != 0 ) {
-    system("notify-send -t 30000 'PKGBUILD: deps'");
-}
-move $curpkg, $prvpkg;
-
-$packages =
 `du -h /var/cache/pacman/pkg | tr '\t' ' ' | cut -d " " -f 1 | grep "G" | sed "s/G//g" | cut -d "." -f 1`;
 chomp $packages;
 if ( $packages > 10 ) {
