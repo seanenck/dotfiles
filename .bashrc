@@ -53,8 +53,5 @@ fi
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
-export UNREAL_SRC=$(readlink ~/store/unreal/current)
-export uebp_LogFolder=$HOME/.cache/UAT/
-
 source ~/.pass/env
 source ~/store/personal/config/etc/private.exports
