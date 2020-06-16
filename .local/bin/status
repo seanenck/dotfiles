@@ -7,9 +7,6 @@ if [ ! -z "$1" ]; then
         "toggle")
             perl ~/.local/bin/status.pl toggle
             ;;
-        "sleep")
-            perl ~/.local/bin/status.pl sleep
-            ;;
     esac
     exit 0
 fi
