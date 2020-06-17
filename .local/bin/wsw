@@ -121,17 +121,8 @@ sleep 3
 echo "starting dhclient"
 dhclient $interface
 
-pids=$(pidof dhclient)
-
-run=1
-while [ $run -eq 1 ]; do
-    sleep 1
-    run=0
-    for p in $(echo $pids); do
-        if ps -p $p > /dev/null; then
-            run=1
-        fi
-    done
+while [ 1 -eq 1 ]; do
+    sleep 5
 done
 ';
 
