@@ -1,10 +1,11 @@
 #!/usr/bin/perl
+use strict;
+use warnings;
 
-my $wsw = "/var/lib/wsw";
+my $wsw = "/home/enck/.cache/wsw";
 my $storage = "/home/enck/store/personal/config/etc/wsw/";
 my $interface = "";
 my $profile = "";
-my $interface = "";
 my $driver = "";
 my $config = "$storage";
 
@@ -15,6 +16,19 @@ if (@ARGV) {
     }
     elsif ( $cmd eq "addr" ) {
         print `ip -4 -o address | cut -d " " -f 2,7 | grep -v "lo 127.0.0.1" | cut -d "/" -f 1 | sed "s/ /:/g" | tr '\\n' ',' | sed 's/^/[/g;s/\$/]/g;s/,]/]/g'`;
+    }
+    elsif ( $cmd eq "kill" ) {
+        for (`ps ax | grep "bash" | grep "wsw" | grep -v rg | cut -d " " -f 3`) {
+            system("kill -9 $_");
+        }
+    }
+    elsif ( $cmd eq "daemon" ) {
+        print "starting wsw daemon\n";
+        while (1) {
+            system("$wsw") if -e "$wsw";
+            sleep 1;
+            print "reloading\n";
+        }
     }
     elsif ( $cmd eq "online" ) {
         my $exit = system("ping -c1 -w5 voidedtech.com > /dev/null 2>&1") == 0 ? 0 : 1;
@@ -35,7 +49,7 @@ if (@ARGV) {
     }
     elsif ( $cmd eq "reload" ) {
         if ( -e $wsw ) {
-            system("touch $wsw");
+            system("sudo wsw kill");
         }
     }
     elsif ( $cmd eq "change" ) {
@@ -58,6 +72,8 @@ if (@ARGV) {
 }
 
 exit unless $profile;
+
+system("sudo wsw kill");
 
 my $script = "#!/bin/bash\n# $profile\n";
 $script .= "interface=\"" . $interface . "\"\n";
@@ -104,11 +120,18 @@ fi
 sleep 3
 echo "starting dhclient"
 dhclient $interface
+
 pids=$(pidof dhclient)
 
-while [ ! -z "$pids" ]; do
-    pids=$(pidof dhclient)
-    sleep 5
+run=1
+while [ $run -eq 1 ]; do
+    sleep 1
+    run=0
+    for p in $(echo $pids); do
+        if ps -p $p > /dev/null; then
+            run=1
+        fi
+    done
 done
 ';
 
