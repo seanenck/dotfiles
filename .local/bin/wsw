@@ -2,12 +2,12 @@
 use strict;
 use warnings;
 
-my $wsw = "/home/enck/.cache/wsw";
-my $storage = "/home/enck/store/personal/config/etc/wsw/";
+my $wsw       = "/home/enck/.cache/wsw";
+my $storage   = "/home/enck/store/personal/config/etc/wsw/";
 my $interface = "";
-my $profile = "";
-my $driver = "";
-my $config = "$storage";
+my $profile   = "";
+my $driver    = "";
+my $config    = "$storage";
 
 if (@ARGV) {
     my $cmd = shift @ARGV;
@@ -15,10 +15,12 @@ if (@ARGV) {
         print "addr online status list reload change";
     }
     elsif ( $cmd eq "addr" ) {
-        print `ip -4 -o address | cut -d " " -f 2,7 | grep -v "lo 127.0.0.1" | cut -d "/" -f 1 | sed "s/ /:/g" | tr '\\n' ',' | sed 's/^/[/g;s/\$/]/g;s/,]/]/g'`;
+        print
+`ip -4 -o address | cut -d " " -f 2,7 | grep -v "lo 127.0.0.1" | cut -d "/" -f 1 | sed "s/ /:/g" | tr '\\n' ',' | sed 's/^/[/g;s/\$/]/g;s/,]/]/g'`;
     }
     elsif ( $cmd eq "kill" ) {
-        for (`ps ax | grep "bash" | grep "wsw" | grep -v rg | cut -d " " -f 3`) {
+        for (`ps ax | grep "bash" | grep "wsw" | grep -v rg | cut -d " " -f 3`)
+        {
             system("kill -9 $_");
         }
     }
@@ -31,19 +33,21 @@ if (@ARGV) {
         }
     }
     elsif ( $cmd eq "online" ) {
-        my $exit = system("ping -c1 -w5 voidedtech.com > /dev/null 2>&1") == 0 ? 0 : 1;
+        my $exit =
+          system("ping -c1 -w5 voidedtech.com > /dev/null 2>&1") == 0 ? 0 : 1;
         exit $exit;
     }
     elsif ( $cmd eq "status" ) {
         if ( -e $wsw ) {
-            print `cat $wsw | head -n 2  | tail -n 1 | grep "^#" | cut -d " " -f 2`;
+            print
+              `cat $wsw | head -n 2  | tail -n 1 | grep "^#" | cut -d " " -f 2`;
         }
         else {
             print "none\n";
         }
     }
     elsif ( $cmd eq "list" ) {
-        for (split(/ /,`ls $storage`)) {
+        for ( split( / /, `ls $storage` ) ) {
             print $_;
         }
     }
@@ -56,10 +60,11 @@ if (@ARGV) {
         my $ask = shift @ARGV;
         $config .= $ask;
         if ( -e $config ) {
-            $interface = `cat $config | head -n 1 | grep "^#" | cut -d " " -f 2`;
+            $interface =
+              `cat $config | head -n 1 | grep "^#" | cut -d " " -f 2`;
             chomp $interface;
             if ($interface) {
-                if ($interface =~ /^e/) {
+                if ( $interface =~ /^e/ ) {
                     $driver = "-D wired";
                 }
                 if ( `cat $config | wc -l` < 2 ) {
