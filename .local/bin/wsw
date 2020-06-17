@@ -18,14 +18,9 @@ if (@ARGV) {
         print
 `ip -4 -o address | cut -d " " -f 2,7 | grep -v "lo 127.0.0.1" | cut -d "/" -f 1 | sed "s/ /:/g" | tr '\\n' ',' | sed 's/^/[/g;s/\$/]/g;s/,]/]/g'`;
     }
-    elsif ( $cmd eq "kill" ) {
-        for (`ps ax | grep "bash" | grep "wsw" | grep -v rg | cut -d " " -f 3`)
-        {
-            system("kill -9 $_");
-        }
-    }
     elsif ( $cmd eq "daemon" ) {
         print "starting wsw daemon\n";
+        my @stats = stat $wsw;
         while (1) {
             system("$wsw") if -e "$wsw";
             sleep 1;
@@ -47,14 +42,10 @@ if (@ARGV) {
         }
     }
     elsif ( $cmd eq "list" ) {
-        for ( split( / /, `ls $storage` ) ) {
-            print $_;
-        }
+        print $_ for ( split( / /, `ls $storage` ) );
     }
     elsif ( $cmd eq "reload" ) {
-        if ( -e $wsw ) {
-            system("sudo wsw kill");
-        }
+        system("touch $wsw") if -e $wsw;
     }
     elsif ( $cmd eq "change" ) {
         my $ask = shift @ARGV;
@@ -64,12 +55,8 @@ if (@ARGV) {
               `cat $config | head -n 1 | grep "^#" | cut -d " " -f 2`;
             chomp $interface;
             if ($interface) {
-                if ( $interface =~ /^e/ ) {
-                    $driver = "-D wired";
-                }
-                if ( `cat $config | wc -l` < 2 ) {
-                    $config = "";
-                }
+                $driver = "-D wired" if ( $interface =~ /^e/ );
+                $config = ""         if ( `cat $config | wc -l` < 2 );
                 $profile = $ask;
             }
         }
@@ -78,12 +65,13 @@ if (@ARGV) {
 
 exit unless $profile;
 
-system("sudo wsw kill");
-
 my $script = "#!/bin/bash\n# $profile\n";
 $script .= "interface=\"" . $interface . "\"\n";
 $script .= "config=\"" . $config . "\"\n";
 $script .= "driver=\"" . $driver . "\"\n";
+$script .= "_status() {
+    stat $wsw  | grep Modify | cut -d \" \" -f 3
+}";
 
 $script .= '
 interfaces=$(ip addr | grep "^[1-9]" | cut -d ":" -f 2 | sed "s/\s*//g" | grep -v "^lo$")
@@ -100,6 +88,8 @@ if [ $matched -eq 0 ]; then
     echo "$interface not found/available"
     exit 1
 fi
+
+stats=$(_status)
 
 echo "releasing"
 dhclient -r
@@ -126,9 +116,15 @@ sleep 3
 echo "starting dhclient"
 dhclient $interface
 
+current=$(_status)
 while [ 1 -eq 1 ]; do
+    current=$(_status)
+    if [[ "$current" != "$stats" ]]; then
+        break
+    fi
     sleep 5
 done
 ';
 
 system("echo '$script' > $wsw");
+chmod 0755, $wsw;
