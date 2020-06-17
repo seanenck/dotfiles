@@ -14,7 +14,7 @@ fi
 xset b off
 xset b 0 0 0
 xsetroot -solid "#333333"
-$HOME/.local/bin/ltcten connect
+$HOME/.local/bin/wsw reload
 $HOME/.local/bin/workspaces mobile
 $HOME/.local/bin/volume mute
 find /home/enck/.vim/swap/ -type f -mtime +1 -exec rm {} \;

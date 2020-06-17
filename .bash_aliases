@@ -1,5 +1,3 @@
-alias netctl="ltcten"
-
 for f in smplayer mutt; do
     alias $f="echo disabled in bash"
 done

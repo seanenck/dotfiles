@@ -28,8 +28,8 @@ sub create_status() {
             system('notify-send -t 30000 "BATTERY LOW"');
         }
     }
-    my $online = system("ltcten online") ? "DOWN" : "UP";
-    my $addr   = `ltcten addr`;
+    my $online = system("wsw online") ? "DOWN" : "UP";
+    my $addr   = `wsw addr`;
     my $status =
 "$date|$week|$time$locked|disp:$bright|vol:$vol|bat:$bat$charge|$online:$addr";
     $status =~ s/\n//g;
@@ -64,8 +64,8 @@ if (@ARGV) {
         }
     }
     elsif ( $command eq "mail" ) {
-        exit if system("ltcten online");
-        exit if system("ltcten status | grep -q -E 'home|default'");
+        exit if system("wsw online");
+        exit if system("wsw status | grep -q -E 'home|default'");
         my $mail_file = "/tmp/mail";
         system("mkdir -p $mail_file");
         my $time = `date +%Y-%m-%d-%H-`;
