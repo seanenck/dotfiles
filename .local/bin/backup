@@ -54,7 +54,7 @@ _dryrun() {
         return
     fi
     _hash | sort > $FILES
-    diff -u $FILES $LAST > /dev/null
+    diff -u $FILES $LAST | systemd-cat -t "backup"
     if [ $? -ne 0 ]; then
         touch $NOTIFY
     fi
