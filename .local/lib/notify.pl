@@ -31,7 +31,18 @@ for my $dir (@dirs) {
     }
 }
 
-system("mail status");
+my $imap = "$home/store/personal/imap/fastmail";
+for (`find $imap -type d -name new -exec dirname {} \\; | grep -v Trash`) {
+    chomp;
+    my $count = `ls "$_/new/" | wc -l`;
+    chomp $count;
+    if ( $count > 0 ) {
+        my $dname = $_;
+        $dname =~ s#$imap/##g;
+        system("notify-send -t 30000 '$dname [$count]'");
+    }
+}
+
 system("backup status");
 
 my $packages = `pacman -Qqdt`;

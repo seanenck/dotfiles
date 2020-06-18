@@ -25,9 +25,7 @@ pages:
     echo "
     top:
         references: references
-
-tasks:
-    enable: false"
+"
 }
 
 _yaml > site.yaml
