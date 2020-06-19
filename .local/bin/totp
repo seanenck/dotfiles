@@ -1,4 +1,6 @@
 #!/usr/bin/perl
+use strict;
+use warnings;
 
 my $pass_home   = '$HOME/.pass/personal';
 my $pass_offset = "services/totp";
