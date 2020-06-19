@@ -16,10 +16,8 @@ case "$1" in
             exit 0
         fi
 
-        if [ -z "$1" ]; then
-            mkdir -p /tmp/mbsync
-            _sync 2>&1 | systemd-cat -t "mbsync"
-        fi
+        mkdir -p /tmp/mbsync
+        _sync 2>&1 | systemd-cat -t "mbsync"
         ;;
     "autoclip")
         source ~/store/personal/config/etc/private.exports

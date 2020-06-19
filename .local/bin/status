@@ -78,7 +78,7 @@ if (@ARGV) {
             exit;
         }
         exit if -e "$mail_file";
-        system("mail");
+        system("system mail");
         system("touch $mail_file");
     }
     elsif ( $command eq "notify" ) {
