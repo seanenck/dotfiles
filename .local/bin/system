@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+    echo "no command"
+    exit 1
+fi
+
+_sync() {
+    mbsync -a
+    notmuch new
+}
+
+case "$1" in
+    "mail")
+        if pgrep -x mbsync > /dev/null; then
+            exit 0
+        fi
+
+        if [ -z "$1" ]; then
+            mkdir -p /tmp/mbsync
+            _sync 2>&1 | systemd-cat -t "mbsync"
+        fi
+        ;;
+    "autoclip")
+        source ~/store/personal/config/etc/private.exports
+        PASSWORD_STORE_DIR=/home/enck/.pass/personal pass -c $AUTOCLIP
+        ;;
+    *)
+        echo "unknown command"
+        ;;
+esac

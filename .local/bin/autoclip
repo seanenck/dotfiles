@@ -1,3 +1,0 @@
-#!/bin/bash
-source ~/store/personal/config/etc/private.exports
-PASSWORD_STORE_DIR=/home/enck/.pass/personal pass -c $AUTOCLIP
