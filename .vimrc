@@ -77,8 +77,10 @@ for i in ['q', '<F1>']
 endfor
 imap <F1> <Nop>
 
-nnoremap <C-L> <C-W><C-L>
+nnoremap <C-L> :vsplit<cr>
+nnoremap <C-J> <C-W><C-L>
 nnoremap <C-K> <C-W><C-H>
+nnoremap <C-H> :close<cr>
 
 " airline
 set hidden
