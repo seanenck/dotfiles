@@ -82,7 +82,7 @@ if filereadable("/etc/vim/vimrc.local")
 endif
 
 if executable("fzf")
-    nnoremap <C-o> :call fzf#run({'source': 'if [ -d .git ]; then git ls-files; else find . -type f -maxdepth 3; fi',
+    nnoremap <C-o> :call fzf#run({'source': 'if [ -d .git ]; then git ls-files; else find . -type f -maxdepth 5; fi',
                 \'sink': 'e',
                 \'options': '--multi',
                 \'window': '30vnew'})<cr>
