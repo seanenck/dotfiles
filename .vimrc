@@ -77,12 +77,14 @@ nnoremap <C-J> <C-W><C-L>
 nnoremap <C-K> <C-W><C-H>
 nnoremap <C-H> :close<cr>
 
-" airline
-set hidden
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
-nmap <C-n> :enew<cr>
-nmap <C-t> :enew<cr>
-nmap <C-PageUp> :bprevious<cr>
-nmap <C-PageDown> :bnext<cr>
-nmap <C-w> :bp <BAR> bd #<cr>
+try
+    let g:airline#extensions#tabline#enabled = 1
+    let g:airline#extensions#tabline#fnamemod = ':t'
+    set hidden
+    nmap <C-n> :enew<cr>
+    nmap <C-t> :enew<cr>
+    nmap <C-PageUp> :bprevious<cr>
+    nmap <C-PageDown> :bnext<cr>
+    nmap <C-w> :bp <BAR> bd #<cr>
+catch
+endtry
