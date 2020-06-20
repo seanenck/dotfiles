@@ -77,7 +77,16 @@ nnoremap <C-J> <C-W><C-L>
 nnoremap <C-K> <C-W><C-H>
 nnoremap <C-H> :close<cr>
 
-nnoremap <C-o> :call fzf#run({'source': 'if [ -d .git ]; then git ls-files; else find . -type f; fi', 'sink': 'e', 'window': '30vnew'})<cr>
+if filereadable("/etc/vim/vimrc.local")
+  source /etc/vim/vimrc.local
+endif
+
+if executable("fzf")
+    nnoremap <C-o> :call fzf#run({'source': 'if [ -d .git ]; then git ls-files; else find . -type f -maxdepth 3; fi',
+                \'sink': 'e',
+                \'options': '--multi',
+                \'window': '30vnew'})<cr>
+endif
 
 try
     let g:airline#extensions#tabline#enabled = 1
