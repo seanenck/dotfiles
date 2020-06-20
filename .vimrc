@@ -77,6 +77,8 @@ nnoremap <C-J> <C-W><C-L>
 nnoremap <C-K> <C-W><C-H>
 nnoremap <C-H> :close<cr>
 
+nnoremap <C-o> :call fzf#run({'source': 'if [ -d .git ]; then git ls-files; else find . -type f; fi', 'sink': 'e', 'window': '30vnew'})<cr>
+
 try
     let g:airline#extensions#tabline#enabled = 1
     let g:airline#extensions#tabline#fnamemod = ':t'
