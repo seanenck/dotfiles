@@ -88,7 +88,6 @@ endif
 
 try
     let g:airline#extensions#tabline#enabled = 1
-    let g:airline#extensions#tabline#fnamemod = ':t'
     set hidden
     nmap <C-n> :enew<CR>
     nmap <C-t> :enew<CR>
