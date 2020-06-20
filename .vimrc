@@ -54,14 +54,11 @@ for i in ['', 'i']
 endfor
 
 set number
-let extension = expand('%:e')
 set tabstop=4
-if extension == "go"
-    set noexpandtab
-else
-    match OverLength /\%80v.\+/
-    set tabstop=4
-    set expandtab
+match OverLength /\%80v.\+/
+set expandtab
+if has("autocmd")
+    autocmd Filetype go setlocal noexpandtab
 endif
 
 set shiftwidth=4
