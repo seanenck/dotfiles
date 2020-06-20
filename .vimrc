@@ -3,7 +3,8 @@
 set noautoindent
 set background=dark
 set nowrap
-highlight OverLength ctermbg=238 ctermfg=255 guibg=#592929
+highlight ColorColumn ctermbg=235 guibg=#592929
+let &colorcolumn=join(range(81,82),",")
 if has('mouse')
   set mouse=a
 endif
@@ -55,7 +56,6 @@ endfor
 
 set number
 set tabstop=4
-match OverLength /\%80v.\+/
 set expandtab
 if has("autocmd")
     autocmd Filetype go setlocal noexpandtab
