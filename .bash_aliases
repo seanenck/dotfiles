@@ -32,10 +32,6 @@ ssh() {
     TERM=xterm /usr/bin/ssh "$@" || return
 }
 
-mplayer() {
-    /usr/bin/mplayer -input conf=~/.config/mplayer.conf -af volume=-20:1 -loop 0 -playlist ~/.cache/playlist
-}
-
 fastmail() {
     /usr/bin/mutt -F ~/.mutt/fastmail.muttrc
 }

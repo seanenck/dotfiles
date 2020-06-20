@@ -17,8 +17,6 @@ xsetroot -solid "#333333"
 $HOME/.local/bin/wsw reload
 $HOME/.local/bin/workspaces mobile
 $HOME/.local/bin/volume mute
-find /home/enck/.vim/swap/ -type f -mtime +1 -exec rm {} \;
-find /home/enck/.vim/undo/ -type f -mtime +1 -exec rm {} \;
 while [ 1 -eq 1 ]; do
     if pgrep -x dwm > /dev/null; then
         sleep 0.5

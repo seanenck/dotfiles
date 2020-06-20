@@ -15,11 +15,6 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endif
 
-set whichwrap=b,s,<,>,[,]
-set wildmode=longest,list,full
-set wildmenu
-set completeopt=menuone
-
 if has("autocmd")
   filetype plugin indent on
 
