@@ -72,8 +72,8 @@ imap <F1> <Nop>
 
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-K> <C-W><C-H>
-nnoremap <C-c> :close<cr>
-nnoremap <C-o> :vsplit<cr>
+nnoremap <C-c> :close<CR>
+nnoremap <C-o> :vsplit<CR>
 
 if filereadable("/etc/vim/vimrc.local")
     source /etc/vim/vimrc.local
@@ -83,17 +83,17 @@ if executable("fzf")
     nnoremap <NUL> :call fzf#run({'source': 'if [ -d .git ]; then git ls-files; else find . -type f -maxdepth 5; fi',
                 \'sink': 'e',
                 \'options': '--multi',
-                \'right': '30'})<cr>
+                \'right': '30'})<CR>
 endif
 
 try
     let g:airline#extensions#tabline#enabled = 1
     let g:airline#extensions#tabline#fnamemod = ':t'
     set hidden
-    nmap <C-n> :enew<cr>
-    nmap <C-t> :enew<cr>
-    nmap <C-PageUp> :bprevious<cr>
-    nmap <C-PageDown> :bnext<cr>
-    nmap <C-w> :bp <BAR> bd #<cr>
+    nmap <C-n> :enew<CR>
+    nmap <C-t> :enew<CR>
+    nmap <C-PageUp> :bprevious<CR>
+    nmap <C-PageDown> :bnext<CR>
+    nmap <C-w> :bp <BAR> bd #<CR>
 catch
 endtry
