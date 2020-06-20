@@ -72,17 +72,17 @@ for i in ['q', '<F1>']
 endfor
 imap <F1> <Nop>
 
-nnoremap <C-L> :vsplit<cr>
-nnoremap <C-J> <C-W><C-L>
+nnoremap <C-L> <C-W><C-L>
 nnoremap <C-K> <C-W><C-H>
-nnoremap <C-H> :close<cr>
+nnoremap <C-c> :close<cr>
+nnoremap <C-o> :vsplit<cr>
 
 if filereadable("/etc/vim/vimrc.local")
   source /etc/vim/vimrc.local
 endif
 
 if executable("fzf")
-    nnoremap <C-o> :call fzf#run({'source': 'if [ -d .git ]; then git ls-files; else find . -type f -maxdepth 5; fi',
+    nnoremap <NUL> :call fzf#run({'source': 'if [ -d .git ]; then git ls-files; else find . -type f -maxdepth 5; fi',
                 \'sink': 'e',
                 \'options': '--multi',
                 \'window': '30vnew'})<cr>
