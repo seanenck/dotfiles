@@ -16,19 +16,20 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 if has("autocmd")
-  filetype plugin indent on
+    filetype plugin indent on
 
-  augroup vimrcEx
-  au!
+    augroup vimrcEx
+    au!
 
-  autocmd FileType text setlocal textwidth=78
+    autocmd FileType text setlocal textwidth=78
 
-  autocmd BufReadPost *
-    \ if line("'\"") >= 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
+    " Return to where we last were
+    autocmd BufReadPost *
+        \ if line("'\"") >= 1 && line("'\"") <= line("$") |
+        \   exe "normal! g`\"" |
+        \ endif
 
-  augroup END
+    augroup END
 endif
 
 set directory=$HOME/.vim/swap
@@ -78,7 +79,7 @@ nnoremap <C-c> :close<cr>
 nnoremap <C-o> :vsplit<cr>
 
 if filereadable("/etc/vim/vimrc.local")
-  source /etc/vim/vimrc.local
+    source /etc/vim/vimrc.local
 endif
 
 if executable("fzf")
