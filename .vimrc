@@ -85,7 +85,7 @@ if executable("fzf")
     nnoremap <NUL> :call fzf#run({'source': 'if [ -d .git ]; then git ls-files; else find . -type f -maxdepth 5; fi',
                 \'sink': 'e',
                 \'options': '--multi',
-                \'window': '30vnew'})<cr>
+                \'right': '30'})<cr>
 endif
 
 try
