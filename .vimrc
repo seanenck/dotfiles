@@ -4,7 +4,7 @@ set noautoindent
 set background=dark
 set nowrap
 highlight ColorColumn ctermbg=235 guibg=#592929
-let &colorcolumn=join(range(81,82),",")
+let &colorcolumn=join(range(81,81),",")
 if has('mouse')
   set mouse=a
 endif
