@@ -5,15 +5,9 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# If not running interactively, don't do anything
 . /etc/voidedtech/bash/bashrc
-case $- in
-    *i*) ;;
-      *) return;;
-esac
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
+# check the window size after each command
 shopt -s checkwinsize
 
 for file in $HOME/.bash_aliases \
