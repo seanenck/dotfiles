@@ -99,7 +99,7 @@ if (@ARGV) {
         }
         $cleanup = $cleanup_dir . $cleanup;
         exit if -e $cleanup;
-        for (("undo", "swap")) {
+        for (("undo", "swap", "backup")) {
             system("find $home/.vim/$_/ -type f -mtime +1 -exec rm {} \\;");
         }
         system("touch $cleanup");
