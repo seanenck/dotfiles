@@ -3,8 +3,17 @@
 set noautoindent
 set background=dark
 set nowrap
-highlight ColorColumn ctermbg=235 guibg=#592929
-let &colorcolumn=join(range(81,81),",")
+
+function ToggleLine()
+    if &colorcolumn == 81
+        let &colorcolumn=0
+    else
+        highlight ColorColumn ctermbg=235 guibg=#592929
+        let &colorcolumn=join(range(81,81),",")
+    endif
+endfunction
+
+call ToggleLine()
 if has('mouse')
   set mouse=a
 endif
@@ -69,6 +78,8 @@ for i in ['q', '<F1>']
     execute "map " . i . " <Nop>"
 endfor
 imap <F1> <Nop>
+
+nnoremap <C-e> :call ToggleLine()<CR>
 
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-K> <C-W><C-H>
