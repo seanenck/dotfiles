@@ -86,6 +86,8 @@ nnoremap <C-K> <C-W><C-H>
 nnoremap <C-c> :close<CR>
 nnoremap <C-o> :vsplit<CR>
 
+let loaded_netrwPlugin = 1
+
 if filereadable("/etc/vim/vimrc.local")
     source /etc/vim/vimrc.local
 endif
