@@ -140,7 +140,7 @@ _repoadd() {
 }
 
 _localbin() {
-    python3 ~/.local/lib/localbin.py
+    perl ~/.local/lib/localbin.pl $@
 }
 
 mode="$1"
@@ -160,7 +160,7 @@ case "$mode" in
         _binrel "${@:2}"
         ;;
     "localbin")
-        _localbin
+        _localbin "${@:2}"
         ;;
     "repoadd")
         _repoadd "${@:2}"

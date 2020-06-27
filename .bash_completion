@@ -53,6 +53,9 @@ _pkgl() {
                 "repoadd")
                     opts=$(ls | grep ".pkg.tar.xz")
                     ;;
+                "localbin")
+                    opts=$(find ~/store/managed/PKGBUILD/ -type f -name "*.pkg.tar.xz")
+                    ;;
                 *)
                     ;;
             esac

@@ -27,6 +27,7 @@ for my $fname ( split( / /, $files ) ) {
         print "WARN: ignoring non-binary: $fname\n";
         next;
     }
+    print "INFO: install => " . $fname . "\n";
     push @installs, "usr/bin/" . $fname;
 }
 
@@ -98,6 +99,6 @@ print $fh $script;
 chmod 0755, $configure;
 
 die "unable to archive"
-  if system( "cd $tmpdir && tar czvf $target " . join( " ", @archive ) );
+  if system( "cd $tmpdir && tar czf $target " . join( " ", @archive ) );
 
 print "INFO: wrote $target\n";
