@@ -14,14 +14,14 @@ endfunction
 
 call ToggleLine()
 if has('mouse')
-  set mouse=a
+    set mouse=a
 endif
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
+    syntax on
+    set hlsearch
 endif
 
 if has("autocmd")
@@ -46,13 +46,13 @@ let &g:undodir=&g:directory . '/undo//'
 let &g:backupdir=&g:directory . '/backup//'
 let &g:directory=&g:directory . '/swap//'
 if ! isdirectory(expand(&g:directory))
-  silent! call mkdir(expand(&g:directory), 'p', 0700)
+    silent! call mkdir(expand(&g:directory), 'p', 0700)
 endif
 if ! isdirectory(expand(&g:backupdir))
-  silent! call mkdir(expand(&g:backupdir), 'p', 0700)
+    silent! call mkdir(expand(&g:backupdir), 'p', 0700)
 endif
 if ! isdirectory(expand(&g:undodir))
-  silent! call mkdir(expand(&g:undodir), 'p', 0700)
+    silent! call mkdir(expand(&g:undodir), 'p', 0700)
 endif
 
 if has('persistent_undo')
