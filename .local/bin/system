@@ -21,7 +21,10 @@ case "$1" in
         ;;
     "autoclip")
         source ~/store/personal/config/etc/private.exports
-        PASSWORD_STORE_DIR=/home/enck/.pass/personal pass -c $AUTOCLIP
+        PASSWORD_STORE_DIR=/home/enck/.pass/personal pass -c $AUTOCLIP > /dev/null
+        ;;
+    "terminal")
+        kitty > /dev/null 2>&1
         ;;
     *)
         echo "unknown command"
