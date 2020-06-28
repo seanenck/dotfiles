@@ -1,10 +1,10 @@
 #!/usr/bin/perl
 
-my $tmpdir = "/tmp/locker/";
-my $no_zzz = $tmpdir . "nozzz";
+my $tmpdir  = "/tmp/locker/";
+my $no_zzz  = $tmpdir . "nozzz";
 my $no_lock = $tmpdir . "nolock";
 
-if ( ! -d $tmpdir ) {
+if ( !-d $tmpdir ) {
     mkdir $tmpdir;
 }
 
@@ -16,22 +16,23 @@ sub do_lock {
     system("volume mute");
     system("brightness low");
     system("sleep 0.1");
+
     #system("i3lock -c 333333");
-    my $mode = shift @_;
+    my $mode  = shift @_;
     my $count = 0;
     if ( $mode == 1 ) {
         $count = 301;
     }
 
     while (1) {
-        break if (system("pgrep -x i3lock > /dev/null") == 0);
+        break if ( system("pgrep -x i3lock > /dev/null") == 0 );
         sleep 1;
         $count++;
-        if ( ! -e $no_zzz ) {
+        if ( !-e $no_zzz ) {
             if ( $count > 300 ) {
                 system("status sleep");
-                system("pkill $_") for (("smplayer", "mplayer"));
-                $count = 0
+                system("pkill $_") for ( ( "smplayer", "mplayer" ) );
+                $count = 0;
             }
         }
     }
@@ -43,13 +44,13 @@ sub do_lock {
 my $command = "lock";
 $command = shift @ARGV if (@ARGV);
 
-if ($command eq "lock") {
+if ( $command eq "lock" ) {
     do_lock(0);
 }
-elsif ($command eq "sleep") {
+elsif ( $command eq "sleep" ) {
     do_lock(1);
 }
-elsif ($command eq "status") {
+elsif ( $command eq "status" ) {
     if ( -e $no_zzz ) {
         print "NO_SLEEP";
     }
@@ -57,7 +58,7 @@ elsif ($command eq "status") {
         print "UNLOCKED";
     }
 }
-elsif ($command eq "toggle") {
+elsif ( $command eq "toggle" ) {
     system("pkill status");
     if ( -e $no_zzz ) {
         unlink $no_zzz;
