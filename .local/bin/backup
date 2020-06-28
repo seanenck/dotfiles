@@ -29,7 +29,8 @@ REPOS="$HOME/store/personal/private/"
 CACHE=$HOME/.cache/backup/
 FILES=${CACHE}files.txt
 LAST=$FILES.backup
-CHECK=${CACHE}$(date +%Y-%m-%d.%H).txt
+CHECK_CACHE=/tmp/backup/
+CHECK=${CHECK_CACHE}$(date +%Y-%m-%d.%H).txt
 NOTIFY=${CACHE}notify
 touch $FILES $LAST
 
@@ -66,6 +67,7 @@ if [ $DRYRUN -ne 0 ]; then
     if [ -e $NOTIFY ]; then
         notify-send -t 30000 "backup"
     fi
+    mkdir -p $CHECK_CACHE
     touch $CHECK
     exit 0
 fi
@@ -74,13 +76,12 @@ fi
 mkdir -p $CACHE
 echo "cleaning up cache"
 find $CACHE -type f -mtime +30 -exec rm {} \;
-find $CACHE -type f -name "$(date +%Y)*" -mtime +3 -exec rm {} \;
 
 echo
 echo "backing up mirrors"
 for f in $(find $MIRRORS -maxdepth 1 -mindepth 1 -type d); do
     echo " -> $f"
-    rsync -avcr --exclude Trash --delete-after $f/ core:~/store/Active/Drop/Mirror/$(basename $f) | sed "s/^/    /g"
+    rsync -avcr --delete-after $f/ core:~/store/Active/Drop/Mirror/$(basename $f) | sed "s/^/    /g"
 done
 
 echo
