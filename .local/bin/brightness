@@ -1,4 +1,6 @@
 #!/usr/bin/perl
+use strict;
+use warnings;
 
 my $command = "mid";
 $command = shift @ARGV if (@ARGV);

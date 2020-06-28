@@ -1,4 +1,6 @@
 #!/usr/bin/perl
+use strict;
+use warnings;
 
 my $tmpdir  = "/tmp/locker/";
 my $no_zzz  = $tmpdir . "nozzz";
