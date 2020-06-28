@@ -1,87 +1,75 @@
-#!/bin/bash
+#!/usr/bin/perl
 
-NO_ZZZ="/tmp/nozzz"
-NO_LOCK="/tmp/nolock"
+my $tmpdir = "/tmp/locker/";
+my $no_zzz = $tmpdir . "nozzz";
+my $no_lock = $tmpdir . "nolock";
 
-_current() {
-    if [ -e $NO_ZZZ ]; then
-        echo "NO_ZZZ"
-    else
-        if [ -e "$NO_LOCK" ]; then
-            echo "UNLOCKED"
-        fi
-    fi
+if ( ! -d $tmpdir ) {
+    mkdir $tmpdir;
 }
 
-_lock() {
-    if [ -e "$NO_LOCK" ]; then
-        return
-    fi
-    local count
-    if pgrep -x i3lock > /dev/null; then
-        return
-    fi
-    volume mute
-    brightness low
-    sleep 0.1
-    i3lock -c 333333
-    count=0
-    if [ ! -z "$1" ]; then
-        if [ $1 -eq 1 ]; then
-            count=301
-        fi
-    fi
-    while [ 1 -eq 1 ]; do
-        if pgrep -x i3lock > /dev/null; then
-            sleep 1
-            count=$((count+1))
-            if [ ! -e "$NO_ZZZ" ]; then
-                if [ $count -gt 300 ]; then
-                    status sleep
-                    for p in smplayer mplayer; do
-                        pkill $p
-                    done
-                    systemctl suspend
-                    count=0
-                fi
-            fi
-            continue
-        else
-            break
-        fi
-    done
-    brightness middle
-    xset -display :0 dpms force on
+sub do_lock {
+    if ( -e $no_lock ) {
+        return;
+    }
+    return if system("pgrep -x i3lock > /dev/null") == 0;
+    system("volume mute");
+    system("brightness low");
+    system("sleep 0.1");
+    #system("i3lock -c 333333");
+    my $mode = shift @_;
+    my $count = 0;
+    if ( $mode == 1 ) {
+        $count = 301;
+    }
+
+    while (1) {
+        break if (system("pgrep -x i3lock > /dev/null") == 0);
+        sleep 1;
+        $count++;
+        if ( ! -e $no_zzz ) {
+            if ( $count > 300 ) {
+                system("status sleep");
+                system("pkill $_") for (("smplayer", "mplayer"));
+                $count = 0
+            }
+        }
+    }
+
+    system("brightness middle");
+    system("xset -display :0 dpms force on");
 }
 
-CMD="lock"
-if [ ! -z "$1" ]; then
-    CMD="$1"
-fi
+my $command = "lock";
+$command = shift @ARGV if (@ARGV);
 
-case "$CMD" in
-    "status")
-        _current
-        exit 0
-        ;;
-    "toggle")
-        pkill status
-        if [ -e $NO_ZZZ ]; then
-            rm -f $NO_ZZZ
-        else
-            if [ -e $NO_LOCK ]; then
-                rm -f $NO_LOCK
-                touch $NO_ZZZ
-            else
-                touch $NO_LOCK
-            fi
-        fi
-        exit 0
-        ;;
-    "sleep")
-        _lock 1
-        ;;
-    "lock")
-        _lock 0
-        ;;
-esac
+if ($command eq "lock") {
+    do_lock(0);
+}
+elsif ($command eq "sleep") {
+    do_lock(1);
+}
+elsif ($command eq "status") {
+    if ( -e $no_zzz ) {
+        print "NO_SLEEP";
+    }
+    elsif ( -e $no_lock ) {
+        print "UNLOCKED";
+    }
+}
+elsif ($command eq "toggle") {
+    system("pkill status");
+    if ( -e $no_zzz ) {
+        unlink $no_zzz;
+    }
+    else {
+        if ( -e $no_lock ) {
+            unlink $no_lock;
+            system("touch $no_zzz");
+        }
+        else {
+            system("touch $no_lock");
+        }
+    }
+}
+
