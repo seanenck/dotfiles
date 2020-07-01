@@ -21,11 +21,8 @@ random_caps() {
 }
 
 firefox() {
-    if pgrep -x firefox; then
-        firefox-developer-edition "$@"
-    else
-        echo "firefox not running"
-    fi
+    firefox-developer-edition "$@" &
+    disown
 }
 
 ssh() {
