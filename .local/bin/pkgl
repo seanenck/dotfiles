@@ -49,6 +49,10 @@ _binrel() {
     fi
     location=$mode
     mode="$HOME/store/managed/$mode/"
+    if [ ! -d "$mode" ]; then
+        echo "invalid mode"
+        exit 1
+    fi
 
     purge=""
     if [ $internal -ne 1 ]; then
