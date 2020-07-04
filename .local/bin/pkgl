@@ -109,16 +109,19 @@ _chroots() {
 }
 
 _repoadd() {
-    local files had cmd f d
-    if [ -z "$1" ]; then
+    local files had cmd f d cwd
+    cwd=$PWD
+    if [ -z "$cwd/$1" ]; then
         echo "no package given..."
         exit 1
     fi
-    repo-add ~/store/managed/pacman/enckse.db.tar.gz $1
-    files=$(tar -tf ~/store/managed/pacman/enckse.db.tar.gz | cut -d "/" -f 1 | sort -u)
+    cp $PWD/$1 ~/store/managed/pacman/$1
+    cd ~/store/managed/pacman/
+    repo-add enckse.db.tar.gz $1
+    files=$(tar -tf enckse.db.tar.gz | cut -d "/" -f 1 | sort -u)
     had=0
     cmd=""
-    for f in $(ls ~/store/managed/pacman/*.tar.xz); do
+    for f in $(ls *.tar.xz); do
         d=0
         f=$(basename $f)
         for t in $files; do
@@ -137,10 +140,11 @@ _repoadd() {
         read -p "purge files (y/N)? " had
         if [[ "$had" == "y" ]]; then
             for f in $cmd; do
-                rm ~/store/managed/pacman/$f
+                rm $f
             done
         fi
     fi
+    cd $cwd
 }
 
 _localbin() {
