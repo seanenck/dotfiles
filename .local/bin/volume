@@ -1,61 +1,58 @@
-#!/bin/bash
+#!/usr/bin/perl
+use strict;
+use warnings;
 
-_current() {
-    if pactl list sinks | grep -q "Mute: yes"; then
-        echo 0
-    else
-        pactl list sinks | grep -E "Volume" | grep -v "Base Volume:" | cut -d "/" -f 2 | cut -d "%" -f 1 | sed "s/^\s*//g" | awk '{ sum += $2 } END { print $sum }'
-    fi
+sub muted {
+    return system("pactl list sinks | grep -q 'Mute: yes'") == 0;
 }
 
-_pactl() {
-    for f in 0 1 2 3 4; do
-        pactl $1 $f $2 > /dev/null 2>&1
-    done
+sub current {
+    return 0 if muted;
+    my $volume =
+`pactl list sinks | grep -E "Volume" | grep -v "Base Volume:" | cut -d "/" -f 2 | cut -d "%" -f 1 | sed "s/^\\s*//g" | awk '{ sum += \$2 } END { print \$sum }'`;
+    chomp $volume;
+    return $volume;
 }
 
-_mute() {
-    local value=$1
-    if [ -z "$value" ]; then
-        value=1
-        if pactl list sinks | grep -q "Mute: yes"; then
-            value=0
-        fi
-    fi
-    _pactl set-sink-mute $value
+sub pactl {
+    my $cmd = shift @_;
+    my $val = shift @_;
+    for ( ( 0, 1, 2, 3, 4 ) ) {
+        system("pactl $cmd $_ $val > /dev/null 2>&1");
+    }
 }
 
-if [ -z "$1" ]; then
-    _current
-    exit 0
-fi
+my $cmd = "status";
+if (@ARGV) {
+    $cmd = shift @ARGV;
+}
 
-delta=0
-curvol=$(_current)
-case "$1" in
-    "mute")
-        _mute 1
-        exit 0
-        ;;
-    "togglemute")
-        _mute
-        exit 0
-        ;;
-    "inc")
-        if [ $curvol -ge 100 ]; then
-            exit 0
-        fi
-        delta=+10
-        ;;
-    "dec")
-        if [ $curvol -le 0 ]; then
-            exit 0
-        fi
-        delta=-10
-        ;;
-    "status")
-        _current
-        exit 0
-        ;;
-esac
-_pactl set-sink-volume ${delta}%
+if ( $cmd eq "status" ) {
+    print current;
+    exit 0;
+}
+elsif ( $cmd eq "mute" or $cmd eq "togglemute" ) {
+    my $mute = "1";
+    if ( $cmd eq "togglemute" ) {
+        $mute = "0" if muted;
+    }
+    pactl "set-sink-mute", $mute;
+    exit 0;
+}
+elsif ( $cmd eq "inc" or $cmd eq "dec" ) {
+    my $current = 0 + current;
+    my $delta   = "";
+    if ( $cmd eq "inc" ) {
+        if ( $current < 100 ) {
+            $delta = "+";
+        }
+    }
+    else {
+        if ( $current > 0 ) {
+            $delta = "-";
+        }
+    }
+    if ($delta) {
+        pactl "set-sink-volume", "${delta}10%";
+    }
+}
