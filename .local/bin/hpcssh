@@ -1,18 +1,21 @@
 #!/bin/bash
+
 HPCSSH=$HOME/.bin/hpcssh
-source $HPCSSH/env
+TICKETS="$HOME/.cache/tickets/"
+OSSH="$HPCSSH/ossh/bin/"
+
 if [ -z "$1" ]; then
     echo "no command specified"
     exit 1
 fi
-export PATH="$HPCSSH/krb5/bin/:$HPCSSH/ossh/bin/:$PATH"
+export PATH="$HPCSSH/krb5/bin/:$OSSH:$PATH"
 
 _connect() {
-    local found
-    if [ -z "$TICKETS" ]; then
-        echo "please set your TICKETS environment variable"
+    if [ ! -x $OSSH/$1 ]; then
+        echo "invalid command"
         return
     fi
+
     mkdir -p $TICKETS
     chmod 700 $TICKETS
     export KRB5CCNAME=DIR:$TICKETS
@@ -25,17 +28,6 @@ _connect() {
     if [ $? -ne 0 ]; then
         return
     fi
-    found=0
-    for c in $HPCSSH_COMMANDS; do
-        if [[ "$1" == "$c" ]]; then
-            found=1
-            break
-        fi
-    done
-    if [ $found -eq 0 ]; then
-        echo "invalid command"
-        return
-    fi
     $1 ${@:2}
 }
 
@@ -43,4 +35,3 @@ cwd=$PWD
 cd $HPCSSH
 _connect $@
 cd $cwd
-
