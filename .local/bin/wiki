@@ -1,36 +1,33 @@
-#!/bin/bash
-dir=~/store/personal/mirror/notebook/
-page=$dir$1
-echo $page | grep -q '\.md$'
-if [ $? -ne 0 ]; then
-    echo "not a markdown file"
-    exit
-fi
-vim $dir$1
-cwd=$PWD
-w=~/.cache/wiki/
-cd $dir
+#!/usr/bin/perl
+use strict;
+use warnings;
+use autodie;
 
-_yaml() {
-    echo "target: bin
+my $dir    = $ENV{"HOME"} . "/store/personal/mirror/notebook/";
+my $dirbin = $dir . "bin";
+my $md     = (@ARGV) ? shift @ARGV : "";
+die "not a markdown file: $md" if ( not $md =~ m/\.md$/ );
+my $page = $dir . "$md";
+system("vim $page");
+
+my $yaml = `cd $dir && echo 'target: bin
 home: README.md
 site: notes
 
 pages:
     directory: pages
-    side:"
-    for f in $(ls pages/ | sed "s/\.md//g" | sort); do
-        echo "      $f: $f"
+    side:'
+    for f in \$(ls pages/ | sed 's/\\.md//g' | sort); do
+        echo \"      \$f: \$f\"
     done
-    echo "
+    echo '
     top:
-        references: references
-"
-}
+        references: references'`;
+chomp $yaml;
+system("echo '$yaml' > $dir/site.yaml");
+system("cd $dir && labsite local > /dev/null");
 
-_yaml > site.yaml
-labsite local > /dev/null
-rsync -av ${dir}/bin/ $w --delete-after > /dev/null
-rm -rf ${dir}bin/
-ln -s $w ${dir}bin
-cd $cwd
+my $wiki = $ENV{"HOME"} . "/.cache/wiki/";
+system("rsync -av $dirbin/ $wiki --delete-after > /dev/null");
+system("rm -rf $dirbin");
+system("ln -s $wiki $dirbin");
