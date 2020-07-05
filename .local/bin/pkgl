@@ -13,79 +13,8 @@ _archpkg() {
     fi
 }
 
-_binrel_html() {
-    local f
-    echo "<html>
-<body>
-<pre>
-binaries
-===
-
-Simple hosted pre-built binaries of personal projects.
-
-1. download &lt;file&gt;.tar.gz
-2. compare sha256 hash
-3. tar xf &lt;file&gt;.tar.gz
-4. ./configure
-5. follow the prompts
-<pre>
-<hr /><pre>"
-    for f in $(ls $mode*.tar.gz); do
-        echo "<code>$(sha256sum $f | cut -d " " -f 1)</code> <a href='$(basename $f)'>$(basename $f)</a>"
-    done
-    echo "</pre><small>last updated: $(date +%Y-%m-%d)</small></body></html>"
-}
-
 _binrel() {
-    local mode internal f location purge count targets
-    mode=$1
-    if [ -z "$mode" ]; then
-        echo "no mode given"
-        exit 1
-    fi
-    internal=0
-    if [[ "$1" == "pacman" ]]; then
-        internal=1
-    fi
-    location=$mode
-    mode="$HOME/store/managed/$mode/"
-    if [ ! -d "$mode" ]; then
-        echo "invalid mode"
-        exit 1
-    fi
-
-    purge=""
-    if [ $internal -ne 1 ]; then
-        for f in $(find $mode -type f -name "*.tar.gz" -exec basename {} \; | cut -d "." -f 1 | sort -u); do
-            echo "accounting: $(basename $f)"
-            count=0
-            for d in $(find ${mode} | grep "$f\." | sort -u -r); do
-                if [ $count -ge 3 ]; then
-                    purge="$purge $d"
-                    echo " -> remove $(basename $d)"
-                fi
-                count=$((count+1))
-            done
-        done
-    fi
-
-    if [ ! -z "$purge" ]; then
-        read -p "purge (y/N)? " yes
-        if [[ "$yes" == "y" ]]; then
-            rm -f $purge
-        fi
-    fi
-
-    targets="voidedtech.com"
-    if [ $internal -ne 1 ]; then
-        _binrel_html > $mode/index.html
-    else
-        targets="$targets core"
-    fi
-
-    for t in $targets; do
-        rsync -av --delete-after $mode $t:/opt/$location/
-    done
+    perl ~/.local/lib/binrel.pl $@
 }
 
 _chroots_header() {
