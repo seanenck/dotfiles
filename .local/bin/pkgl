@@ -71,7 +71,7 @@ case "$mode" in
         _repoadd "${@:2}"
         ;;
     "help")
-        echo "arch chroots binrel localbin repoadd"
+        echo "arch binrel localbin repoadd"
         ;;
     *)
         echo "unknown command: $mode"

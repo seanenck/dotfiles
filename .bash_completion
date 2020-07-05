@@ -75,3 +75,14 @@ _backup() {
 }
 
 complete -F _backup backup
+
+_system() {
+    local cur opts
+    cur=${COMP_WORDS[COMP_CWORD]}
+    if [ $COMP_CWORD -eq 1 ]; then
+        opts="chroots mail history"
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    fi
+}
+
+complete -F _system system
