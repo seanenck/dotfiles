@@ -1,44 +1,12 @@
-#!/bin/bash
+#!/usr/bin/perl
+use strict;
+use warnings;
 
-_archpkg() {
-    perl ~/.local/lib/archpkg.pl
+die "no mode given" if ( !@ARGV );
+
+my $mode = shift @ARGV;
+my $script = $ENV{"HOME"} . "/.local/lib/$mode.pl";
+if ( -e $script ) {
+    exit system("perl $script @ARGV");
 }
-
-_binrel() {
-    perl ~/.local/lib/binrel.pl $@
-}
-
-_repoadd() {
-    perl ~/.local/lib/repoadd.pl $@
-}
-
-_localbin() {
-    perl ~/.local/lib/localbin.pl $@
-}
-
-mode="$1"
-if [ -z "$mode" ]; then
-    echo "no command given"
-    exit 1
-fi
-
-case "$mode" in
-    "arch")
-        _archpkg
-        ;;
-    "binrel")
-        _binrel "${@:2}"
-        ;;
-    "localbin")
-        _localbin "${@:2}"
-        ;;
-    "repoadd")
-        _repoadd "${@:2}"
-        ;;
-    "help")
-        echo "arch binrel localbin repoadd"
-        ;;
-    *)
-        echo "unknown command: $mode"
-        ;;
-esac
+print "archpkg binrel localbin repoadd";
