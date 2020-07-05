@@ -76,7 +76,7 @@ _backup() {
 
 complete -F _backup backup
 
-_system() {
+_sys() {
     local cur opts
     cur=${COMP_WORDS[COMP_CWORD]}
     if [ $COMP_CWORD -eq 1 ]; then
@@ -85,4 +85,4 @@ _system() {
     fi
 }
 
-complete -F _system system
+complete -F _sys sys
