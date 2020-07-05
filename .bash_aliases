@@ -1,4 +1,4 @@
-alias mail="system mail"
+alias mail="sys mail"
 
 for f in smplayer mutt; do
     alias $f="echo disabled in bash"

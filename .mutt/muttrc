@@ -44,7 +44,7 @@ bind index,pager B sidebar-toggle-visible
 
 macro index,pager \Cp "<sidebar-prev><sidebar-open>"
 macro index,pager \Cn "<sidebar-next><sidebar-open>"
-macro index,pager <f5> "<enter-command>unset wait\_key<enter><shell-escape>/home/enck/.local/bin/system mail > /dev/null &<enter><enter-command>set wait\_key<enter>" "Refresh"
+macro index,pager <f5> "<enter-command>unset wait\_key<enter><shell-escape>/home/enck/.local/bin/sys mail > /dev/null &<enter><enter-command>set wait\_key<enter>" "Refresh"
 macro attach 'V' "<pipe-entry>cat >/tmp/mutt.mail.html && /usr/bin/firefox-developer-edition /tmp/mutt.mail.html<enter>"
 macro index <F8> \
 "<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
