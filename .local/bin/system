@@ -26,6 +26,9 @@ elsif ( $cmd eq "autoclip" ) {
 elsif ( $cmd eq "terminal" ) {
     system("kitty > /dev/null 2>&1");
 }
+elsif ( $cmd eq "chroots" ) {
+    system("perl ~/.local/lib/chroots.pl @ARGV");
+}
 elsif ( $cmd eq "history" ) {
     my $hist = "/tmp/history";
     my $bash = "~/.bash_history";

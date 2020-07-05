@@ -8,26 +8,6 @@ _binrel() {
     perl ~/.local/lib/binrel.pl $@
 }
 
-_chroots_header() {
-    echo
-    echo "=== $1 ==="
-    echo
-}
-
-_chroots() {
-    local cmd f
-    cmd="$@"
-    if [ -z "$cmd" ]; then
-        _chroots_header "builds"
-        arch-nspawn $CHROOT/root pacman -Syyu
-        cmd="pacman -Syyu"
-    fi
-    for f in $(schroot --list | grep "source"); do
-        _chroots_header $f
-        sudo schroot -c $f -- $cmd
-    done
-}
-
 _repoadd() {
     local files had cmd f d cwd
     cwd=$PWD
@@ -80,9 +60,6 @@ fi
 case "$mode" in
     "arch")
         _archpkg
-        ;;
-    "chroots")
-        _chroots "${@:2}"
         ;;
     "binrel")
         _binrel "${@:2}"
