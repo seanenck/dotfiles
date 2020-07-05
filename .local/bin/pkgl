@@ -1,16 +1,7 @@
 #!/bin/bash
 
 _archpkg() {
-    rm -f *.log
-    rm -f *.tar.xz
-    if [ -x configure.sh ]; then
-        echo "configure..."
-        ./configure.sh
-    fi
-    makechrootpkg -c -n -d /var/cache/pacman/pkg -r $CHROOT
-    if [ $? -ne 0 ]; then
-        exit 1
-    fi
+    perl ~/.local/lib/archpkg.pl
 }
 
 _binrel() {
