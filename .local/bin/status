@@ -67,7 +67,7 @@ if (@ARGV) {
         exit if system("wsw online");
         exit if system("wsw status | grep -q -E 'home|default'");
         my $mail_files = "/tmp/mail";
-        if ( ! -d $mail_files ) {
+        if ( !-d $mail_files ) {
             mkdir $mail_files;
         }
         my $time = `date +%Y-%m-%d-%H-`;
@@ -90,16 +90,17 @@ if (@ARGV) {
     }
     elsif ( $command eq "line" ) {
         create_status;
-    } elsif ( $command eq "cleanup" ) {
+    }
+    elsif ( $command eq "cleanup" ) {
         my $cleanup = `date +%Y-%m-%d`;
         chomp $cleanup;
         my $cleanup_dir = "/tmp/cleanup/";
-        if ( ! -d $cleanup_dir ) {
+        if ( !-d $cleanup_dir ) {
             mkdir $cleanup_dir;
         }
         $cleanup = $cleanup_dir . $cleanup;
         exit if -e $cleanup;
-        for (("undo", "swap", "backup")) {
+        for ( ( "undo", "swap", "backup" ) ) {
             system("find $home/.vim/$_/ -type f -mtime +1 -exec rm {} \\;");
         }
         system("touch $cleanup");
