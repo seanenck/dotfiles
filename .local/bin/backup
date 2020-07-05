@@ -1,125 +1,105 @@
-#!/bin/bash
-DRYRUN=0
-CLEAR=0
-if [ ! -z "$1" ]; then
-    case "$1" in
-        "status")
-            DRYRUN=1
-            ;;
-        "clear")
-            CLEAR=1
-            ;;
-        *)
-            echo "unknown command $1"
-            exit 1
-            ;;
-    esac
-fi
+#!/usr/bin/perl
+use strict;
+use warnings;
 
-if [ $DRYRUN -eq 0 ]; then
-    ssh -o BatchMode=yes -o ConnectTimeout=5 core echo is-online > /dev/null
-    if [ $? -ne 0 ]; then
-        echo "backup system not online"
-        exit 1
-    fi
-fi
+my $cache = $ENV{"HOME"} . "/.cache/backup/";
+mkdir $cache if !-d $cache;
+my $tmp = "/tmp/backup/";
+mkdir $tmp if !-d $tmp;
+my $check = `date +%Y-%m-%d.%H`;
+chomp $check;
+$check = $tmp . $check;
+my $notify   = $cache . "notify";
+my $hashes   = $cache . "hashes";
+my $lasthash = $hashes . ".prev";
 
-MIRRORS="$HOME/store/personal/mirror/"
-REPOS="$HOME/store/personal/private/"
-CACHE=$HOME/.cache/backup/
-FILES=${CACHE}files.txt
-LAST=$FILES.backup
-CHECK_CACHE=/tmp/backup/
-CHECK=${CHECK_CACHE}$(date +%Y-%m-%d.%H).txt
-NOTIFY=${CACHE}notify
-touch $FILES $LAST
+my $mirrors = $ENV{"HOME"} . "/store/personal/mirror/";
+my $repo    = $ENV{"HOME"} . "/store/personal/private/";
 
-_clear() {
-    rm -f $NOTIFY
+sub dryrun {
+    if ( -e $check ) {
+        return;
+    }
+    system("touch $hashes $lasthash");
+    for ( ( $mirrors, $repo ) ) {
+        system(
+"find $_ -type f -printf '%p.%TY-%Tm-%TdT%TH:%TM:%TS\n' | sort > $hashes"
+        );
+    }
+    system("touch $notify")
+      if system("diff -u $hashes $lasthash > /dev/null") != 0;
+    system("mv $hashes $lasthash");
 }
 
-if [ $CLEAR -eq 1 ]; then
-    _clear
-    exit 0
-fi
-
-_hash() {
-    local dir
-    for dir in $MIRRORS $REPOS; do
-        find $dir -type f -printf "%p.%TY-%Tm-%TdT%TH:%TM:%TS\n"
-    done
+sub clean {
+    system("rm -f $notify");
 }
 
-_dryrun() {
-    if [ -e $CHECK ]; then
-        return
-    fi
-    _hash | sort > $FILES
-    diff -u $FILES $LAST | systemd-cat -t "backup"
-    if [ $? -ne 0 ]; then
-        touch $NOTIFY
-    fi
-    mv $FILES $LAST
+if (@ARGV) {
+    my $mode = shift @ARGV;
+    if ( $mode eq "status" ) {
+        dryrun;
+        system("notify-send -t 30000 'backup'") if -e $notify;
+        system("touch $check");
+        exit 0;
+    }
+    elsif ( $mode eq "clear" ) {
+        clean;
+        exit 0;
+    }
+    else {
+        die "unknown command: $mode";
+    }
 }
 
-if [ $DRYRUN -ne 0 ]; then
-    _dryrun
-    if [ -e $NOTIFY ]; then
-        notify-send -t 30000 "backup"
-    fi
-    mkdir -p $CHECK_CACHE
-    touch $CHECK
-    exit 0
-fi
+die "backup system unavailable"
+  if system(
+    "ssh -o BatchMode=yes -o ConnectTimeout=5 core echo is-online > /dev/null");
 
+print "\n=> cleaning up cache\n";
+system("find $cache -type f -mtime +30 -exec rm {} \\;");
 
-mkdir -p $CACHE
-echo "cleaning up cache"
-find $CACHE -type f -mtime +30 -exec rm {} \;
+print "backing up mirrors\n";
+for (`ls $mirrors`) {
+    chomp;
+    system(
+"rsync -avcr --delete-after $mirrors/$_/ core:~/store/Active/Drop/Mirror/$_ | sed 's/^/$_ ->    /g'"
+    );
+}
 
-echo
-echo "backing up mirrors"
-for f in $(find $MIRRORS -maxdepth 1 -mindepth 1 -type d); do
-    echo " -> $f"
-    rsync -avcr --delete-after $f/ core:~/store/Active/Drop/Mirror/$(basename $f) | sed "s/^/    /g"
-done
+print "\n=> backing up git repos\n";
+my $zippass = `PASSWORD_STORE_DIR=~/.pass/personal pass show keys/zips`;
+chomp $zippass;
+my $commit = `git -C $repo log --format=%h -n 1`;
+chomp $commit;
+my $zipfile = $cache . "private.$commit.7z";
+if ( !-e $zipfile ) {
+    print "creating zipfile\n";
+    system(
+        "7z a -spf -p$zippass $zipfile $(find $repo -type f | grep -v '\\.git')"
+    );
+    system(
+        "perl ~/.local/lib/inbox.pl --input $zipfile --subject 'private.zip'");
+}
 
-echo
-echo "backing up git repos"
-for f in $REPOS; do
-    echo " -> $f"
-    commit=$(git -C $f log --format=%h -n 1)
-    zippass=$(PASSWORD_STORE_DIR=~/.pass/personal pass show keys/zips)
-    zipfile=${CACHE}$(basename $f).$commit.7z
-    if [ -e $zipfile ]; then
-        continue
-    fi
-    rm -f $zipfile
-    7z a -spf -p$zippass $zipfile $(find $f -type f | grep -v "\.git")
-    perl ~/.local/lib/inbox.pl \
-            --input $zipfile \
-            --subject "$(basename $f).zip"
-done
+system("rm -f $notify $check");
+dryrun;
 
-rm -f $NOTIFY
-rm -f $CHECK
-_dryrun
-profiles=${CACHE}profiles.$(date +%s).tar.gz
-pacman -Qqe > ~/.cache/packages
-tar czf $profiles ~/.mozilla ~/.bash_history ~/.cache/packages 2> /dev/null
-echo
-echo "sending profiles"
-scp $profiles core:~/store/Active/Drop/Profiles
-rm -f $profiles
-echo
-echo "cleaning up profiles"
-for f in $(ssh core find ~/store/Active/Drop/Profiles -mtime +7); do
-    ssh core rm $f
-done
-echo
-echo "sending etc archive"
-for f in $(find $CACHE -type f -name "*.backup.tar.gz"); do
-    scp $f core:~/store/Active/Drop/Profiles/
-    rm $f
-done
-_clear
+print "\n=> syncing profiles\n";
+system(
+    "ssh core 'find ~/store/Active/Drop/Profiles -mtime +7 -exec rm {} \\;'");
+my $profile = `date +%s`;
+chomp $profile;
+$profile = $cache . "profiles.$profile.tar.gz";
+my $packages = $cache . "packages";
+system("pacman -Qqe > $packages");
+system("tar czf $profile ~/.mozilla ~/.bash_history $packages 2> /dev/null");
+system("scp $profile core:~/store/Active/Drop/Profiles/");
+system("rm -f $profile");
+
+print "\n=> sending backups\n";
+if ( system("exit \$(ls $cache | grep backup.tar.gz | wc -l)") ) {
+    system("scp $cache*.backup.tar.gz core:~/store/Active/Drop/Profiles/");
+    system("rm -f $cache*.backup.tar.gz");
+}
+clean;
