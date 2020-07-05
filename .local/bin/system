@@ -36,7 +36,7 @@ elsif ( $cmd eq "history" ) {
     for (`cat $bash | sort -u`) {
         chomp;
         my $found = 0;
-        for my $exe ( ( "cd", "vim", "git", "rm", "cp", "mv", "ls" ) ) {
+        for my $exe ( ( "cd", "vim", "git", "rm", "cp", "mv", "ls", "cat" ) ) {
             if ( $_ =~ m/^$exe / ) {
                 $found = 1;
                 last;
