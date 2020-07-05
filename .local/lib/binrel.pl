@@ -14,6 +14,28 @@ if ( $mode eq "pacman" ) {
     push @targets, "core";
 }
 else {
+    for my $bname (
+`find $path -type f -exec basename {} \\; | grep -v "index.html" | rev | cut -d "-" -f 3- | rev | sort -u`
+      )
+    {
+        chomp $bname;
+        my $first = 1;
+        for (`ls $path | grep "^$bname" | sort -r`) {
+            chomp;
+            if ( $first == 1 ) {
+                $first = 0;
+                next;
+            }
+            print "purge: $_ (Y/n)? ";
+            my $line = <STDIN>;
+            $line = lc $line;
+            chomp $line;
+            if ( $line eq "n" ) {
+                next;
+            }
+            system("rm -f $path/$_");
+        }
+    }
     open my $fh, ">", "${path}index.html";
     print $fh "<html>
 <body>
