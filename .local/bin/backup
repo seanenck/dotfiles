@@ -74,9 +74,8 @@ my $commit = `git -C $repo log --format=%h -n 1`;
 chomp $commit;
 my $zipfile = $cache . "private.$commit.7z";
 if ( !-e $zipfile ) {
-    print "creating zipfile\n";
     system(
-        "7z a -spf -p$zippass $zipfile $(find $repo -type f | grep -v '\\.git')"
+        "7z a -spf -p$zippass $zipfile \$(find $repo -type f | grep -v '\\.git')"
     );
     system(
         "perl ~/.local/lib/inbox.pl --input $zipfile --subject 'private.zip'");
