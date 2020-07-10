@@ -120,7 +120,7 @@ current=$(_status)
 while [ 1 -eq 1 ]; do
     current=$(_status)
     if [[ "$current" != "$stats" ]]; then
-        break
+        exit 0
     fi
     sleep 5
 done
