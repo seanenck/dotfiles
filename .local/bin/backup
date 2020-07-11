@@ -27,7 +27,7 @@ sub dryrun {
         );
     }
     system("touch $notify")
-      if system("diff -u $hashes $lasthash > /dev/null") != 0;
+      if system("diff -u $hashes $lasthash | systemd-cat -t backup") != 0;
     system("mv $hashes $lasthash");
 }
 
