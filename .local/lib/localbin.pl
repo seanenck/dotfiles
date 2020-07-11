@@ -7,7 +7,7 @@ use File::Basename;
 
 die "package required" if ( !@ARGV );
 my $package = shift @ARGV;
-die "not a valid package" unless ( $package =~ /\.tar\.xz$/ );
+die "not a valid package" unless ( $package =~ /\.tar\.zst$/ );
 
 my $tmpdir = tempdir( CLEANUP => 1 );
 
@@ -34,7 +34,7 @@ for my $fname ( split( / /, $files ) ) {
 die "no files to install" if ( @installs == 0 );
 
 my ($base) = fileparse($package);
-$base =~ s/\-x86_64\.pkg\.tar\.xz//;
+$base =~ s/\-x86_64\.pkg\.tar\.zst//;
 my $target = "/home/enck/store/managed/binaries/" . $base . ".tar.gz";
 my ($archive) = fileparse($target);
 unlink $target if ( -e $target );

@@ -15,7 +15,7 @@ system("cd $repo && repo-add $database $package");
 
 my @purge;
 for my $tar (
-`find $repo -type f -name "*.tar.xz" -exec basename {} \\; | rev | cut -d "-" -f 4- | rev | sort -u`
+`find $repo -type f -name "*.tar.zst" -exec basename {} \\; | rev | cut -d "-" -f 4- | rev | sort -u`
   )
 {
     chomp $tar;

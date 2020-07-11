@@ -4,7 +4,7 @@ use warnings;
 
 die "no PKGBUILD" if !-e "PKGBUILD";
 
-for ( ( "log", "tar.xz" ) ) {
+for ( ( "log", "tar.zst" ) ) {
     system("rm -f *.$_");
 }
 

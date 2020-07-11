@@ -51,10 +51,10 @@ _pkgl() {
                     opts="pacman binaries"
                     ;;
                 "repoadd")
-                    opts=$(ls | grep ".pkg.tar.xz")
+                    opts=$(ls | grep ".pkg.tar.zst")
                     ;;
                 "localbin")
-                    opts=$(find ~/store/managed/PKGBUILD/ -type f -name "*.pkg.tar.xz")
+                    opts=$(find ~/store/managed/PKGBUILD/ -type f -name "*.pkg.tar.zst")
                     ;;
                 *)
                     ;;
