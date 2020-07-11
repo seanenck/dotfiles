@@ -1,8 +1,3 @@
-alias mail="sys mail"
-
-for f in vlc mutt; do
-    alias $f="echo disabled in bash"
-done
 
 random_caps() {
     local n c res
@@ -20,15 +15,6 @@ random_caps() {
     echo "$res"
 }
 
-firefox() {
-    firefox-developer-edition "$@" &
-    disown
-}
-
 ssh() {
     TERM=xterm /usr/bin/ssh "$@" || return
-}
-
-fastmail() {
-    /usr/bin/mutt -F ~/.mutt/fastmail.muttrc
 }

@@ -34,6 +34,20 @@ if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
     return
 fi
 
+alias mail="sys mail"
+for f in vlc mutt; do
+    alias $f="echo disabled in bash"
+done
+
+firefox() {
+    firefox-developer-edition "$@" &
+    disown
+}
+
+fastmail() {
+    /usr/bin/mutt -F ~/.mutt/fastmail.muttrc
+}
+
 export CHROOT=~/store/chroots/builds
 mkdir -p /dev/shm/schroot/overlay
 
