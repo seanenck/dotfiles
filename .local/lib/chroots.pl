@@ -16,11 +16,11 @@ sub header {
 if ( !@ARGV ) {
     header "builds";
     my $makepkg = "/tmp/makepkg.conf";
-    system("cat /etc/makepkg.conf > $makepkg");
-    system("cat \$HOME/.makepkg.conf >> $makepkg");
+    system("cat /etc/makepkg.conf \$HOME/.makepkg.conf > $makepkg");
     system("sudo install -Dm644 $makepkg \$CHROOT/root/etc/makepkg");
     system("arch-nspawn \$CHROOT/root $command");
     print "\n";
+    unlink $makepkg;
 }
 
 for (`schroot --list | grep "source"`) {
