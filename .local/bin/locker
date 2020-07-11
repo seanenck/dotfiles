@@ -32,7 +32,7 @@ sub do_lock {
         if ( !-e $no_zzz ) {
             if ( $count > 300 ) {
                 system("status sleep");
-                system("pkill $_") for ( ( "smplayer", "mplayer" ) );
+                system("pkill $_") for ( ( "vlc" ) );
                 system("systemctl suspend");
                 $count = 0;
             }

@@ -1,6 +1,6 @@
 alias mail="sys mail"
 
-for f in smplayer mutt; do
+for f in vlc mutt; do
     alias $f="echo disabled in bash"
 done
 
