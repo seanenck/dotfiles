@@ -89,10 +89,10 @@ system(
     "ssh core 'find ~/store/Active/Drop/Profiles -mtime +7 -exec rm {} \\;'");
 my $profile = `date +%s`;
 chomp $profile;
-$profile = $cache . "profiles.$profile.tar.gz";
+$profile = $cache . "profiles.$profile.tar.xz";
 my $packages = $cache . "packages";
 system("pacman -Qqe > $packages");
-system("tar czf $profile ~/.mozilla ~/.bash_history $packages 2> /dev/null");
+system("tar cJf $profile ~/.mozilla ~/.bash_history $packages 2> /dev/null");
 system("scp $profile core:~/store/Active/Drop/Profiles/");
 system("rm -f $profile");
 
