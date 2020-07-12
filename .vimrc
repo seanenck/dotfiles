@@ -104,22 +104,26 @@ if filereadable("/etc/vim/vimrc.local")
 endif
 
 if executable("fzf") && executable("rg")
-    function! RunFZF()
-        let [line_start, column_start] = getpos("'<")[1:2]
-        let [line_end, column_end] = getpos("'>")[1:2]
-        let lines = getline(line_start, line_end)
-        if len(lines) == 0
-            return ''
+    function! RunFZF(mode)
+        if a:mode == "visual"
+            let word = split(getline('.')[col('.')-1:])[0]
+            let [line_start, column_start] = getpos("'<")[1:2]
+            let [line_end, column_end] = getpos("'>")[1:2]
+            let lines = getline(line_start, line_end)
+            if len(lines) != 1
+                return ''
+            endif
+            let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+            let lines[0] = lines[0][column_start - 1:]
+            let search = join(lines, "\n")
         endif
-        let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
-        let lines[0] = lines[0][column_start - 1:]
-        let search = join(lines, "\n")
-        call fzf#run({'source': 'rg --files-with-matches --hidden --max-depth 5 "' . search . '" 2>/dev/null',
+        let search = substitute(search, "\"", "\\\"", "")
+        call fzf#run({'source': 'rg --files-with-matches --hidden --max-depth 5 --no-ignore "' . search . '" 2>/dev/null',
                 \'sink': 'e',
                 \'options': '--multi',
                 \'right': '30'})
     endfunction
-    vnoremap <NUL> :call RunFZF()<CR>
+    vnoremap <NUL> :call RunFZF("visual")<CR>
 endif
 
 try
