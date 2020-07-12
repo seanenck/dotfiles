@@ -12,6 +12,7 @@ $check = $tmp . $check;
 my $notify   = $cache . "notify";
 my $hashes   = $cache . "hashes";
 my $lasthash = $hashes . ".prev";
+my $backuplog = $check . ".log";
 
 my $mirrors = $ENV{"HOME"} . "/store/personal/mirror/";
 my $repo    = $ENV{"HOME"} . "/store/personal/private/";
@@ -27,7 +28,7 @@ sub dryrun {
         );
     }
     system("touch $notify")
-      if system("diff -u $hashes $lasthash | systemd-cat -t backup") != 0;
+      if system("diff -u $hashes $lasthash > $backuplog") != 0;
     system("mv $hashes $lasthash");
 }
 
