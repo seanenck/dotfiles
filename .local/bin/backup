@@ -23,7 +23,7 @@ sub dryrun {
     system("touch $hashes $lasthash");
     for ( ( $mirrors, $repo ) ) {
         system(
-"find $_ -type f -printf '%p.%TY-%Tm-%TdT%TH:%TM:%TS\n' | sort > $hashes"
+"find $_ -type f -printf '%p.%TY-%Tm-%TdT%TH:%TM:%TS\n' | sort >> $hashes"
         );
     }
     system("touch $notify")
