@@ -116,14 +116,22 @@ if executable("fzf") && executable("rg")
             let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
             let lines[0] = lines[0][column_start - 1:]
             let search = join(lines, "\n")
+        else
+            if a:mode == "normal"
+                let search = split(getline('.')[col('.')-1:])[0]
+                if search == ''
+                    return ''
+                endif
+            endif
         endif
         let search = substitute(search, "\"", "\\\"", "")
         call fzf#run({'source': 'rg --files-with-matches --hidden --max-depth 5 --no-ignore "' . search . '" 2>/dev/null',
                 \'sink': 'e',
-                \'options': '--multi',
+                \'options': '--multi --header "' . search . '"',
                 \'right': '30'})
     endfunction
     vnoremap <NUL> :call RunFZF("visual")<CR>
+    nnoremap <NUL> :call RunFZF("normal")<CR>
 endif
 
 try
