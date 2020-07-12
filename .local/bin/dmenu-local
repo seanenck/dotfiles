@@ -63,6 +63,6 @@ if ( exists( $available{$stdout} ) ) {
     exit;
 }
 
-$stdout =~ s/^search //;
+$stdout =~ s/^search //i;
 my $uri = " https://www.duckduckgo.com/?q=" . uri_escape($stdout);
 system( $browser . $uri );
