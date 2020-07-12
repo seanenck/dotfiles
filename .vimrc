@@ -114,7 +114,11 @@ if executable("fzf") && executable("rg")
         let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
         let lines[0] = lines[0][column_start - 1:]
         let search = join(lines, "\n")
-        call fzf#run({'source': 'rg -l ' . search,
+        let dir = '*'
+        if isdirectory('.git')
+            let dir = ''
+        endif
+        call fzf#run({'source': 'rg --files-with-matches --max-depth 5 "' . search . '" ' . dir . ' 2>/dev/null',
                 \'sink': 'e',
                 \'options': '--multi',
                 \'right': '30'})
