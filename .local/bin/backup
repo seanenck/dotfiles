@@ -92,7 +92,7 @@ my $profile = `date +%s`;
 chomp $profile;
 $profile = $cache . "profiles.$profile.tar.xz";
 my $packages = $cache . "packages";
-system("pacman -Qqe > $packages");
+system("pcm packages > $packages");
 system("tar cJf $profile ~/.mozilla ~/.bash_history $packages 2> /dev/null");
 system("scp $profile core:~/store/Active/Drop/Profiles/");
 system("rm -f $profile");

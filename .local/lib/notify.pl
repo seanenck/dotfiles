@@ -44,14 +44,9 @@ for (`find $imap -type d -name new -exec dirname {} \\; | grep -v Trash`) {
 }
 
 system("backup status");
+system("pcm orphans | xargs -0 -r notify-send -t 30000 'orphans:'");
 
-my $packages = `pacman -Qqdt`;
-$packages =~ tr/\n/ /;
-for ( split( / /, $packages ) ) {
-    system("notify-send -t 30000 'orphan: $_'");
-}
-
-$packages =
+my $packages =
 `du -h /var/cache/pacman/pkg | tr '\t' ' ' | cut -d " " -f 1 | grep "G" | sed "s/G//g" | cut -d "." -f 1`;
 chomp $packages;
 if ( $packages > 10 ) {
