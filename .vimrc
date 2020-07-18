@@ -95,7 +95,7 @@ nnoremap <C-e> :call ToggleLine()<CR>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-K> <C-W><C-H>
 nnoremap <C-c> :close<CR>
-nnoremap <C-o> :vsplit<CR>
+nnoremap <C-v> :vsplit<CR>
 
 let loaded_netrwPlugin = 1
 
@@ -132,6 +132,11 @@ if executable("fzf") && executable("rg")
     endfunction
     vnoremap <NUL> :call RunFZF("visual")<CR>
     nnoremap <NUL> :call RunFZF("normal")<CR>
+
+    nnoremap <C-o> :call fzf#run({'source': 'if [ -d .git ]; then git ls-files; else find . -type f -maxdepth 5; fi 2>/dev/null',
+            \'sink': 'e',
+            \'options': '--multi',
+            \'right': '30'})<CR>
 endif
 
 try
