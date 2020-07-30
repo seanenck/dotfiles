@@ -94,3 +94,11 @@ _pcm() {
 }
 
 complete -F _pcm pcm
+
+_bundle() {
+    local cur
+    cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "rpm deb" -- $cur) )
+}
+
+complete -F _bundle bundle
