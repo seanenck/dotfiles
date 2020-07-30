@@ -4,6 +4,12 @@ use warnings;
 use Cwd;
 
 my $type = shift @ARGV;
+
+if ( $type eq "clean" ) {
+    system("cd " . $ENV{"HOME"} . " && podman image prune --force --all");
+    exit;
+}
+
 my $name = shift @ARGV;
 my $vers = shift @ARGV;
 
