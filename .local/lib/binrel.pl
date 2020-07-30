@@ -23,15 +23,7 @@ binaries
 
 Simple hosted pre-built binaries of personal projects.
 
-tar files:
-1. download &lt;file&gt;.tar.gz
-2. compare sha256 hash
-3. tar xf &lt;file&gt;.tar.gz
-4. ./configure
-5. follow the prompts
-
-deb/rpm:
-1. download &lt;file&gt;.tar.gz
+1. download &lt;file&gt;.(rpm|deb)
 2. compare sha256 hash
 3. install using package manager
 <pre>
