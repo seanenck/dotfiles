@@ -9,4 +9,4 @@ my $script = $ENV{"HOME"} . "/.local/lib/$mode.pl";
 if ( -e $script ) {
     exit system("perl $script @ARGV");
 }
-print "archpkg binrel localbin repoadd";
+print "archpkg binrel repoadd";

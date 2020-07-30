@@ -53,9 +53,6 @@ _pkgl() {
                 "repoadd")
                     opts=$(ls | grep ".pkg.tar.zst")
                     ;;
-                "localbin")
-                    opts=$(find ~/store/managed/PKGBUILD/ -type f -name "*.pkg.tar.zst")
-                    ;;
                 *)
                     ;;
             esac
