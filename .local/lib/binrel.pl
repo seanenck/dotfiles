@@ -14,28 +14,6 @@ if ( $mode eq "pacman" ) {
     push @targets, "core";
 }
 else {
-    for my $bname (
-`find $path -type f -exec basename {} \\; | grep -v "index.html" | rev | cut -d "-" -f 3- | rev | sort -u`
-      )
-    {
-        chomp $bname;
-        my $first = 1;
-        for (`ls $path | grep "^$bname" | sort -r`) {
-            chomp;
-            if ( $first == 1 ) {
-                $first = 0;
-                next;
-            }
-            print "purge: $_ (Y/n)? ";
-            my $line = <STDIN>;
-            $line = lc $line;
-            chomp $line;
-            if ( $line eq "n" ) {
-                next;
-            }
-            system("rm -f $path/$_");
-        }
-    }
     open my $fh, ">", "${path}index.html";
     print $fh "<html>
 <body>
@@ -45,14 +23,20 @@ binaries
 
 Simple hosted pre-built binaries of personal projects.
 
+tar files:
 1. download &lt;file&gt;.tar.gz
 2. compare sha256 hash
 3. tar xf &lt;file&gt;.tar.gz
 4. ./configure
 5. follow the prompts
+
+deb/rpm:
+1. download &lt;file&gt;.tar.gz
+2. compare sha256 hash
+3. install using package manager
 <pre>
 <hr /><pre>";
-    for (`ls $path*.tar.gz`) {
+    for (`ls $path/* | grep -v html`) {
         chomp;
         my $hash     = `sha256sum $_ | cut -d " " -f 1`;
         my $basename = `basename $_`;
