@@ -6,7 +6,7 @@ use Cwd;
 my $type = shift @ARGV;
 
 if ( $type eq "clean" ) {
-    system("cd " . $ENV{"HOME"} . " && podman image prune --force --all");
+    system( "cd " . $ENV{"HOME"} . " && podman image prune --force --all" );
     exit;
 }
 
@@ -15,9 +15,9 @@ my $vers = shift @ARGV;
 
 my $def = $ENV{"HOME"} . "/.local/lib/dockerfiles/$type.Dockerfile";
 
-die "invalid type" if ! -e $def;
-die "name required" if ! $name;
-die "version required" if ! $vers;
+die "invalid type"     if !-e $def;
+die "name required"    if !$name;
+die "version required" if !$vers;
 
 my $folder = "";
 if ( $type eq "deb" ) {
@@ -27,9 +27,11 @@ elsif ( $type eq "rpm" ) {
     $folder = "rpmbuild";
 }
 
-die "no packaging folder found" if ! -d $folder;
+die "no packaging folder found" if !-d $folder;
 
 my $cwd = getcwd();
 system("cp $def $cwd/Dockerfile");
-system("podman build --tag $type:$name-$type-$vers -f ./Dockerfile --volume $cwd:/$type --build-arg OBJECT_VERSION=$vers --build-arg OBJECT_NAME=$name");
+system(
+"podman build --tag $type:$name-$type-$vers -f ./Dockerfile --volume $cwd:/$type --build-arg OBJECT_VERSION=$vers --build-arg OBJECT_NAME=$name"
+);
 system("rm -f $cwd/Dockerfile");
