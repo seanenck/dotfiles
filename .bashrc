@@ -27,6 +27,9 @@ export TERM=xterm
 export GOPATH="$HOME/.cache/go"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
+    for f in $(ls ~/.local/bin); do
+        alias $f="echo '$f not available in schroot'"
+    done
     PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
     if [ ! -z "$SSH_AUTH_SOCK" ]; then
         export SSH_AUTH_SOCK="$SSH_AUTH_SOCK"
