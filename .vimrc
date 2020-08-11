@@ -137,6 +137,7 @@ if executable("fzf") && executable("rg")
             \'sink': 'e',
             \'options': '--multi',
             \'right': '30'})<CR>
+    command Windows :<CR>
 endif
 
 try
