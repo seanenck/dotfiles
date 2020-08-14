@@ -5,8 +5,8 @@ use File::Compare;
 use File::Copy qw(move);
 use autodie;
 
-my $no_status = "/tmp/nostatus";
-my $home      = $ENV{"HOME"};
+my $no_status      = "/tmp/nostatus";
+my $home           = $ENV{"HOME"};
 my $battery_notice = $ENV{"NOTIFY_MESSAGES"} . "/battery";
 
 sub create_status() {
@@ -18,9 +18,9 @@ sub create_status() {
     if ($locked) {
         $locked = "|$locked";
     }
-    my $vol    = `volume status`;
-    my $bat    = `cat /sys/class/power_supply/BAT0/capacity`;
-    my $charge = "-";
+    my $vol     = `volume status`;
+    my $bat     = `cat /sys/class/power_supply/BAT0/capacity`;
+    my $charge  = "-";
     my $warning = 0;
     if ( `cat /sys/class/power_supply/AC/online` == "1" ) {
         $charge = "+";

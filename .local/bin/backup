@@ -9,9 +9,9 @@ mkdir $tmp if !-d $tmp;
 my $check = `date +%Y-%m-%d.%H`;
 chomp $check;
 $check = $tmp . $check;
-my $notify   = $ENV{"NOTIFY_MESSAGES"} . "/backup";
-my $hashes   = $cache . "hashes";
-my $lasthash = $hashes . ".prev";
+my $notify    = $ENV{"NOTIFY_MESSAGES"} . "/backup";
+my $hashes    = $cache . "hashes";
+my $lasthash  = $hashes . ".prev";
 my $backuplog = $check . ".log";
 
 my $mirrors = $ENV{"HOME"} . "/store/personal/mirror/";
@@ -75,7 +75,7 @@ chomp $commit;
 my $zipfile = $cache . "private.$commit.7z";
 if ( !-e $zipfile ) {
     system(
-        "7z a -spf -p$zippass $zipfile \$(find $repo -type f | grep -v '\\.git')"
+"7z a -spf -p$zippass $zipfile \$(find $repo -type f | grep -v '\\.git')"
     );
     system(
         "perl ~/.local/lib/inbox.pl --input $zipfile --subject 'private.zip'");
@@ -92,7 +92,9 @@ chomp $profile;
 $profile = $cache . "profiles.$profile.tar.xz";
 my $packages = $cache . "packages";
 system("pcm packages > $packages");
-system("tar cJf $profile ~/.config/chromium ~/.bash_history $packages 2> /dev/null");
+system(
+    "tar cJf $profile ~/.config/chromium ~/.bash_history $packages 2> /dev/null"
+);
 system("scp $profile core:~/store/Active/Drop/Profiles/");
 system("rm -f $profile");
 
