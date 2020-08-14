@@ -4,9 +4,9 @@ use strict;
 use File::Compare;
 use File::Copy qw(move);
 
-my $home = $ENV{"HOME"};
+my $home     = $ENV{"HOME"};
 my $messages = $ENV{"NOTIFY_MESSAGES"} . "/";
-my @dirs = ( $home . "/.git", "/etc/.git" );
+my @dirs     = ( $home . "/.git", "/etc/.git" );
 for ( "workspace", "store" ) {
     my $found = `find $home/$_/ -maxdepth 3 -type d -name ".git" | tr '\n' ' '`;
     chomp $found;
@@ -31,7 +31,7 @@ for my $dir (@dirs) {
     }
     if ( $count > 0 ) {
         $dname =~ s#$home#~#g;
-        push @cats, "git";
+        push @cats,   "git";
         push @alerts, "git:\"$dname\" [$count]";
     }
 }
@@ -44,7 +44,7 @@ for (`find $imap -type d -name new -exec dirname {} \\; | grep -v Trash`) {
     if ( $count > 0 ) {
         my $dname = $_;
         $dname =~ s#$imap/##g;
-        push @cats, "mail";
+        push @cats,   "mail";
         push @alerts, "mail:'$dname [$count]'";
     }
 }
@@ -52,8 +52,8 @@ for (`find $imap -type d -name new -exec dirname {} \\; | grep -v Trash`) {
 system("backup status");
 for (`pcm orphans`) {
     chomp;
-    next if ! $_;
-    push @cats, "orphan";
+    next if !$_;
+    push @cats,   "orphan";
     push @alerts, "orphan:$_";
 }
 
@@ -61,43 +61,44 @@ my $packages =
 `du -h /var/cache/pacman/pkg | tr '\t' ' ' | cut -d " " -f 1 | grep "G" | sed "s/G//g" | cut -d "." -f 1`;
 chomp $packages;
 if ( $packages > 10 ) {
-    push @cats, "pkgcache";
+    push @cats,   "pkgcache";
     push @alerts, "pkgcache: $packages(G)";
 }
 
 if ( `uname -r | sed "s/-arch/.arch/g"` ne
     `pacman -Qi linux | grep Version | cut -d ":" -f 2 | sed "s/ //g"` )
 {
-    push @cats, "kernel";
+    push @cats,   "kernel";
     push @alerts, "kernel:linux: kernel";
 }
 
 for my $file (`ls $messages`) {
     my $notice = `cat $messages$file`;
     chomp $notice;
-    for my $line (split("\n", $notice)) {
-        my @category = split(":", $line);
-        push @cats, $category[0];
+    for my $line ( split( "\n", $notice ) ) {
+        my @category = split( ":", $line );
+        push @cats,   $category[0];
         push @alerts, $line;
     }
 }
 
 my %tracked;
-my $text = "";
+my $text  = "";
 my $first = 1;
 for my $cat (@cats) {
-    if ( exists($tracked{$cat}) ) {
+    if ( exists( $tracked{$cat} ) ) {
         next;
     }
     if ( $first == 1 ) {
         $first = 0;
-    } else {
+    }
+    else {
         $text = $text . "\n---\n\n";
     }
     $text = $text . "$cat:\n";
     my @remainders;
     for my $alert (@alerts) {
-        if ($alert =~ /^$cat:/) {
+        if ( $alert =~ /^$cat:/ ) {
             my $msg = $alert =~ s/^$cat://g;
             $text = $text . "  $alert\n";
             next;
