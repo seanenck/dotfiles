@@ -11,3 +11,8 @@ fi
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
+
+export NOTIFY_MESSAGES="$HOME/.cache/messages"
+if [ ! -d "$NOTIFY_MESSAGES" ]; then
+    mkdir -p $NOTIFY_MESSAGES
+fi
