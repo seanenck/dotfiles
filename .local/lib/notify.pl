@@ -33,7 +33,7 @@ for my $dir (@dirs) {
     if ( $count > 0 ) {
         $dname =~ s#$home#~#g;
         push @cats,   "git";
-        push @alerts, "git:\"$dname\" [$count]";
+        push @alerts, "git:$dname [$count]";
     }
 }
 
