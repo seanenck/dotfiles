@@ -1,8 +1,7 @@
 [global]
     follow = mouse
     geometry = "250x0-5-30"
-    indicate_hidden = yes
-    shrink = no
+    indicate_hidden = true
     transparency = 0
     notification_height = 0
     separator_height = 2
@@ -17,15 +16,12 @@
     ### Text ###
     font = Monospace 10
     line_height = 0
-    markup = no
+    markup = full
     alignment = left
-    show_age_threshold = 60
-    word_wrap = no
     ellipsize = end
-    ignore_newline = yes
     stack_duplicates = true
     hide_duplicate_count = true
-    show_indicators = no
+    show_indicators = false
     ### Icons ###
     # Align icons left/right/off
     icon_position = off
@@ -40,6 +36,7 @@
     title = Dunst
     class = Dunst
     startup_notification = false
+    corner_radius = 10
 
 [experimental]
     # Calculate the dpi to use on a per-monitor basis.
@@ -74,6 +71,3 @@
 [scremoved]
     summary = "Smart card removed"
     format = ""
-
-[shortcuts]
-    close_all = ctrl+shift+space
