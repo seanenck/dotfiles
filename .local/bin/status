@@ -7,6 +7,7 @@ use autodie;
 
 my $no_status = "/tmp/nostatus";
 my $home      = $ENV{"HOME"};
+my $battery_notice = $ENV{"NOTIFY_MESSAGES"} . "/battery";
 
 sub create_status() {
     my $date   = `date +%Y-%m-%d`;
@@ -20,14 +21,17 @@ sub create_status() {
     my $vol    = `volume status`;
     my $bat    = `cat /sys/class/power_supply/BAT0/capacity`;
     my $charge = "-";
+    my $warning = 0;
     if ( `cat /sys/class/power_supply/AC/online` == "1" ) {
         $charge = "+";
     }
     else {
         if ( $bat < 20 ) {
-            system('notify-send -t 30000 "BATTERY LOW"');
+            $warning = 1;
+            system("echo 'battery:LOW' > $battery_notice");
         }
     }
+    system("rm -f $battery_notice") if $warning == 0;
     my $online = system("wsw online") ? "DOWN" : "UP";
     my $addr   = `wsw addr`;
     my $status =
