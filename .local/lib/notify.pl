@@ -84,7 +84,7 @@ for my $file (`ls $messages`) {
 }
 
 if ( @alerts == 0 ) {
-    system("dunstify -c $id");
+    system("dunstify -C $id");
     exit 0;
 }
 
