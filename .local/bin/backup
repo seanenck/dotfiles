@@ -9,7 +9,7 @@ mkdir $tmp if !-d $tmp;
 my $check = `date +%Y-%m-%d.%H`;
 chomp $check;
 $check = $tmp . $check;
-my $notify   = $cache . "notify";
+my $notify   = $ENV{"NOTIFY_MESSAGES"} . "/backup";
 my $hashes   = $cache . "hashes";
 my $lasthash = $hashes . ".prev";
 my $backuplog = $check . ".log";
@@ -27,7 +27,7 @@ sub dryrun {
 "find $_ -type f -printf '%p.%TY-%Tm-%TdT%TH:%TM:%TS\n' | sort >> $hashes"
         );
     }
-    system("touch $notify")
+    system("echo 'backup:required' > $notify")
       if system("diff -u $hashes $lasthash > $backuplog") != 0;
     system("mv $hashes $lasthash");
 }
@@ -40,7 +40,6 @@ if (@ARGV) {
     my $mode = shift @ARGV;
     if ( $mode eq "status" ) {
         dryrun;
-        system("notify-send -t 30000 'backup'") if -e $notify;
         system("touch $check");
         exit 0;
     }
