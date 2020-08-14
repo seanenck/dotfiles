@@ -93,7 +93,7 @@ chomp $profile;
 $profile = $cache . "profiles.$profile.tar.xz";
 my $packages = $cache . "packages";
 system("pcm packages > $packages");
-system("tar cJf $profile ~/.mozilla ~/.bash_history $packages 2> /dev/null");
+system("tar cJf $profile ~/.config/chromium ~/.bash_history $packages 2> /dev/null");
 system("scp $profile core:~/store/Active/Drop/Profiles/");
 system("rm -f $profile");
 
