@@ -4,6 +4,7 @@ use strict;
 use File::Compare;
 use File::Copy qw(move);
 
+my $id       = 1000;
 my $home     = $ENV{"HOME"};
 my $messages = $ENV{"NOTIFY_MESSAGES"} . "/";
 my @dirs     = ( $home . "/.git", "/etc/.git" );
@@ -82,6 +83,11 @@ for my $file (`ls $messages`) {
     }
 }
 
+if ( @alerts == 0 ) {
+    system("dunstify -c $id");
+    exit 0;
+}
+
 my %tracked;
 my $text  = "";
 my $first = 1;
@@ -109,4 +115,4 @@ for my $cat (@cats) {
     $tracked{$cat} = 1;
 }
 
-system("dunstify -r 1000 -t 60000 '$text'");
+system("dunstify -r $id -t 60000 '$text'");
