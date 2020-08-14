@@ -42,8 +42,8 @@ for f in vlc mutt; do
     alias $f="echo disabled in bash"
 done
 
-firefox() {
-    firefox-developer-edition "$@" &
+chromium() {
+    chromium "$@" &
     disown
 }
 
