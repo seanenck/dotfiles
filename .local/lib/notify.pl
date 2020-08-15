@@ -66,9 +66,16 @@ if ( $packages > 10 ) {
     push @alerts, "pkgcache: $packages(G)";
 }
 
-if ( `uname -r | sed "s/-arch/.arch/g"` ne
-    `pacman -Qi linux | grep Version | cut -d ":" -f 2 | sed "s/ //g"` )
-{
+my $kernel = 1;
+
+for (("linux", "linux-lts")) {
+    if ( `uname -r | sed "s/-arch/.arch/g"` ne
+        `pacman -Qi $_ | grep Version | cut -d ":" -f 2 | sed "s/ //g"` ) {
+        $kernel = 0;
+    }
+}
+
+if ( $kernel == 1 ) {
     push @cats,   "kernel";
     push @alerts, "kernel:linux: kernel";
 }
