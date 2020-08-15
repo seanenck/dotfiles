@@ -23,9 +23,6 @@ elsif ( $cmd eq "autoclip" ) {
 "source ~/store/personal/config/etc/private.exports && PASSWORD_STORE_DIR=/home/enck/.pass/personal pass -c \$AUTOCLIP > /dev/null"
     );
 }
-elsif ( $cmd eq "terminal" ) {
-    system("kitty > /dev/null 2>&1");
-}
 elsif ( $cmd eq "chroots" ) {
     system("perl ~/.local/lib/chroots.pl @ARGV");
 }
