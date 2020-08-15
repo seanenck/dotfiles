@@ -24,7 +24,6 @@
 
 "volume dec"
   XF86AudioLowerVolume
-#  AudioLowerVolume
 
 "volume togglemute"
   XF86AudioMute
