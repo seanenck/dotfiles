@@ -22,6 +22,7 @@ while [ 1 -eq 1 ]; do
         sleep 0.5
     else
         echo "starting dwm"
+        xbindkeys --poll-rc
         dwm &
     fi
     if pgrep -x dunst > /dev/null; then
