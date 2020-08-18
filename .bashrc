@@ -43,7 +43,7 @@ for f in vlc mutt; do
 done
 
 chromium() {
-    chromium "$@" &
+    /usr/bin/chromium "$@" &
     disown
 }
 
