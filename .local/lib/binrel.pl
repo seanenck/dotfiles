@@ -6,7 +6,7 @@ use autodie;
 my $mode;
 die "no mode given" if ( !@ARGV );
 $mode = shift @ARGV;
-my $path = $ENV{"HOME"} . "/store/managed/$mode/";
+my $path = $ENV{"HOME"} . "/store/binaries/$mode/";
 die "invalid mode" if !-d $path;
 
 my @targets = ("voidedtech.com");
