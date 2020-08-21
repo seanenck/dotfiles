@@ -74,6 +74,7 @@ my $commit = `git -C $repo log --format=%h -n 1`;
 chomp $commit;
 my $zipfile = $cache . "private.$commit.7z";
 if ( !-e $zipfile ) {
+    system("find $cache -type f -name '*.7z' -delete");
     system(
 "7z a -spf -p$zippass $zipfile \$(find $repo -type f | grep -v '\\.git')"
     );
@@ -89,6 +90,7 @@ system(
     "ssh core 'find ~/store/Active/Drop/Profiles -mtime +7 -exec rm {} \\;'");
 my $profile = `date +%s`;
 chomp $profile;
+system("find $cache -type f -name 'profiles.*.tar.xz' -delete");
 $profile = $cache . "profiles.$profile.tar.xz";
 my $packages = $cache . "packages";
 system("pcm packages > $packages");
