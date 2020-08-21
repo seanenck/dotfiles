@@ -1,0 +1,29 @@
+pkgname=hpcssh
+pkgver=20200723
+pkgrel=1
+pkgdesc="HPC SSH access"
+url="https://centers.hpc.mil/users/index.html"
+arch=('x86_64')
+license=('custom')
+source=("HPCMP_RELEASE_20200630b_client-2.6.32-754.30.2.el6.x86_64-Linux-64.tgz"
+        "hpcssh.sh"
+        "krb5.patch"
+        "opensc.conf"
+        "user-openssh-8.3p1a-x86_64-unknown-linux-gnu.tgz")
+sha256sums=("e77ec3ec14530cba3232a604b2c362e5e929629bebf85506e23364b3bc8dae97"
+            "8b1879f3313fd19b5220c136c33d67999081eb42ac93d7985a536b7b955ccab1"
+            "7bcb7d7d11619e02f8863bf0c97e2ac3deb14ff199981c3bb6f54689e7558935"
+            "43973a0e2919606fc41c47c6d05a086a9e69e4c2f7fb84233df8058dea931709"
+            "2a3511644bdc5ed436268f27611c7eb3144820271b39c39aab74c8c1a471524b")
+
+build() {
+    patch -p0 < krb5.patch
+}
+
+package() {
+    install -d $pkgdir/usr/lib/hpcssh
+    cp -r ossh/ $pkgdir/usr/lib/hpcssh/
+    cp -r krb5/ $pkgdir/usr/lib/hpcssh/
+    install -Dm644 opensc.conf $pkgdir/usr/lib/hpcssh/krb5/etc/opensc.conf
+    install -Dm755 hpcssh.sh $pkgdir/usr/bin/hpcssh
+}

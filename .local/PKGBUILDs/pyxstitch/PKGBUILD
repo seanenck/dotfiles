@@ -1,0 +1,33 @@
+pkgname=python-pyxstitch
+_name=${pkgname#python-}
+pkgver=1.9.0
+pkgrel=2
+pkgdesc="takes source code files and produces syntax-highlighted patterns for cross stitching."
+arch=("x86_64")
+url="https://github.com/enckse/$_name"
+license=('MIT')
+depends=('python' 'python-pillow' 'python-setuptools' 'python-pygments')
+optdepends=("bash-completion: for bash completions")
+_rawcontent="https://raw.githubusercontent.com/enckse/$_name/v$pkgver/"
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz"
+        "${_rawcontent}LICENSE"
+        "${_rawcontent}resources/bash.completions"
+        "${_rawcontent}resources/$_name.1")
+sha256sums=("0679f8bdec94d2e3135f96bb396fea7c7ef578ddaf8264294c97fec12c6762d8"
+            "e57f1c320b8cf8798a7d2ff83a6f9e06a33a03585f6e065fea97f1d86db84052"
+            "e19458e5a751a1d496e681a0ff50b78f823fd18861fadc6f98982731a70aa773"
+            "4aee529ee100590a9e97fa1b22239c90222fd7ae2cdd0c308d683c903e550723")
+
+build() {
+    sed -i "s/<Date>/$(date +"%B %Y")/g;s/<Version>/$pkgver/g" pyxstitch.1
+    rm -f *.gz
+    gzip pyxstitch.1
+}
+
+package() {
+    install -Dm644 pyxstitch.1.gz "$pkgdir/usr/share/man/man1/pyxstitch.1.gz"
+    install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+    install -Dm 644 bash.completions "$pkgdir/usr/share/bash-completion/completions/pyxstitch"
+    cd "$srcdir/$_name-$pkgver"
+    python setup.py install --root="$pkgdir/" --optimize=1
+}

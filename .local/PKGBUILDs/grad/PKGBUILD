@@ -1,0 +1,33 @@
+pkgname=grad
+pkgver=0.9.9
+pkgrel=1
+pkgdesc="(g)o (rad)ius server and administration"
+url="https://cgit.voidedtech.com/grad/"
+arch=('x86_64')
+license=('GPL3')
+makedepends=('go' 'git')
+depends=('openssl' 'bash')
+#source=("https://cgit.voidedtech.com/grad/snapshot/grad-$pkgver.tar.gz")
+source=("git+git://cgit.voidedtech.com/grad")
+#sha256sums=("9d63e6b72b834316bf156f3907256959804a952578b108be26dfa1bff647f553")
+sha256sums=("SKIP")
+
+build() {
+    cd grad
+    make package
+}
+
+package() {
+    cd grad
+    install -Dm644 bin/grad.1.gz "$pkgdir/usr/share/man/man1/grad.1.gz"
+    install -Dm755 bin/grad $pkgdir/usr/bin/grad
+    install -Dm755 bin/grad-daemon.sh $pkgdir/usr/bin/grad-daemon
+    install -d $pkgdir/usr/lib/grad/
+    install -d $pkgdir/usr/lib/grad/templates
+    install -Dm755 hostap/hostap/hostapd/hostapd $pkgdir/usr/lib/grad/hostapd
+    install -d $pkgdir/etc/grad
+    install -Dm600 bin/grad.env $pkgdir/etc/grad/env
+    install -Dm644 bin/grad.conf $pkgdir/etc/grad/grad.conf
+    install -Dm644 bin/hostapd.conf $pkgdir/etc/grad/hostapd/hostapd.conf
+    cp hostap/certs/* $pkgdir/usr/lib/grad/templates/
+}

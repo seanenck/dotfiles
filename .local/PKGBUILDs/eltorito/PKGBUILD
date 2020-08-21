@@ -1,0 +1,14 @@
+pkgname=eltorito
+pkgver=20181201
+pkgrel=2
+pkgdesc="el torito image extractor"
+url="https://cgit.voidedtech.com/labsite/"
+arch=('x86_64')
+license=('MIT')
+depends=('python3')
+source=("https://raw.githubusercontent.com/enckse/eltorito/master/eltorito.py")
+sha256sums=("427c5b4c9471c386e7300c2d88db779c02cf026455c13f11b6e259536c32388c")
+
+package() {
+    install -Dm755 eltorito.py $pkgdir/usr/bin/eltorito
+}

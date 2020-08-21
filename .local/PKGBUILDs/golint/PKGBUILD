@@ -1,0 +1,29 @@
+pkgname=golint
+pkgver=2020.183
+pkgrel=3
+pkgdesc="golang lint"
+arch=('x86_64')
+license=('BSD 3-Clause')
+url="https://github.com/golang/lint"
+makedepends=('go' 'git')
+depends=('python' 'go-tools')
+source=("git://github.com/golang/lint.git" "golinter")
+sha256sums=('SKIP' '0a19437733d88aec1533db81380703c9afe7b8fbb64cab0131722dda13c3d619')
+
+pkgver() {
+    cd "$srcdir/lint"
+    echo $(date +%Y).$(git rev-list --count master)
+}
+
+build() {
+    export GOBIN="$srcdir/lint/bin/"
+    export GOPATH=$GOBIN
+    mkdir -p $GOBIN
+	cd $srcdir/lint/golint
+    go install -v .
+}
+
+package() {
+    install -Dm755 $srcdir/lint/bin/golint $pkgdir/usr/bin/golint
+    install -Dm755 $srcdir/golinter $pkgdir/usr/bin/golinter
+}
