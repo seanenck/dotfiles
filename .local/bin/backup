@@ -87,18 +87,21 @@ dryrun;
 
 print "\n=> syncing profiles\n";
 system(
-    "ssh core 'find ~/store/Active/Drop/Profiles -mtime +7 -exec rm {} \\;'");
-my $profile = `date +%s`;
+    "ssh core 'find ~/store/Active/Drop/Profiles -mindepth 1 -maxdepth 1 -mtime +7 -type d -exec rm -rf {} \\;'");
+
+my $profile = `date +%Y-%m-%dT%H-%M-%S`;
 chomp $profile;
-system("find $cache -type f -name 'profiles.*.tar.xz' -delete");
-$profile = $cache . "profiles.$profile.tar.xz";
+$profile = "~/store/Active/Drop/Profiles/$profile";
+system("ssh core 'mkdir -p $profile'");
+$profile = "core:$profile";
 my $packages = $cache . "packages";
 system("pcm packages > $packages");
-system(
-    "tar cJf $profile ~/.config/chromium ~/.bash_history $packages 2> /dev/null"
-);
-system("scp $profile core:~/store/Active/Drop/Profiles/");
-system("rm -f $profile");
+for (("~/.config/chromium", "~/.bash_history", $packages)) {
+    my $target = `basename $_  | sed "s/\\.//g"`;
+    chomp $target;
+    print("    -> sending $_ to $profile/$target\n");
+    system("rsync -ar $_ $profile/$target | sed 's/^/$target ->    /g'");
+}
 
 print "\n=> sending backups\n";
 if ( system("exit \$(ls $cache | grep backup.tar.gz | wc -l)") ) {
