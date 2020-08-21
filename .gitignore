@@ -3,5 +3,14 @@
 .local/*
 !.local/bin/
 !.local/lib/
+!.local/PKGBUILDs
+
+.local/PKGBUILDs/**/*
+!.local/PKGBUILDs/**/
+!.local/PKGBUILDs/**/PKGBUILD
+!.local/PKGBUILDs/**/*.patch
+!.local/PKGBUILDs/**/*.conf
+!.local/PKGBUILDs/**/*.sh
+
 *.pyc
 __pycache__
