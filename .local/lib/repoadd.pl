@@ -7,7 +7,7 @@ my $package = shift @ARGV;
 die "no package exists: $package" if !-e $package;
 
 die "not a valid package" if ( not $package =~ m/\.tar\./ );
-my $repo     = $ENV{"HOME"} . "/store/managed/pacman/";
+my $repo     = $ENV{"HOME"} . "/store/binaries/pacman/";
 my $database = "enckse.db.tar.gz";
 
 system("cp $package $repo");
