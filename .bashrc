@@ -18,8 +18,6 @@ for file in $HOME/.bash_aliases \
     . $file
 done
 
-export LESSHISTFILE=$HOME/.cache/lesshst
-
 if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
     exec startx $HOME/.xinitrc 2>&1 | systemd-cat -t "xinit"
     exit
