@@ -1,14 +1,15 @@
 pkgname=(voidedskel sysmon corescripts enckse-extras)
 _pkgname=coretools
 _home=home
-pkgver=2020.1452.3100
+pkgver=2020.1476.3104
 pkgrel=1
 url="https://cgit.voidedtech.com/coretools/"
 arch=('x86_64')
 license=('MIT')
+_giturl="git+git://cgit.voidedtech.com/"
 makedepends=("git" "go" "go-bindata" "golint")
-source=("$_pkgname::git+git://cgit.voidedtech.com/coretools"
-        "$_home::git+git://cgit.voidedtech.com/home")
+source=("$_pkgname::${_giturl}$_pkgname"
+        "$_home::${_giturl}$_home")
 md5sums=('SKIP' 'SKIP')
 
 pkgver(){
@@ -25,7 +26,7 @@ build() {
 
 package_corescripts() {
     pkgdesc="scripts for core systems"
-    depends=('rclone' 'rsync' 'python' 'isync' 'sysmon')
+    depends=('rclone' 'rsync' 'isync' 'sysmon')
     local f
     cd $_pkgname/server
     install -d $pkgdir/usr/lib/systemd/system
