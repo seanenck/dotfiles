@@ -60,7 +60,7 @@ print "\n=> cleaning up cache\n";
 system("find $cache -type f -mtime +30 -exec rm {} \\;");
 
 print "backing up mirrors\n";
-for (`ls $mirrors | grep "@"`) {
+for (`ls $mirrors`) {
     chomp;
     system(
 "rsync -avcr --delete-after $mirrors/$_/ core:~/store/Active/Drop/Mirror/$_ | sed 's/^/$_ ->    /g'"
