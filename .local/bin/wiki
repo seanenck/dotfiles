@@ -30,4 +30,8 @@ system("cd $dir && labsite local > /dev/null");
 my $wiki = $ENV{"HOME"} . "/.cache/wiki/";
 system("rsync -av $dirbin/ $wiki --delete-after > /dev/null");
 system("rm -rf $dirbin");
+if (system('wsw status') == 0) {
+    print "uploading\n";
+    system("rsync -avcr --delete-after $dir/ core:~/store/Active/Drop/Mirror/notebook | sed 's/^/ ->    /g'");
+}
 system("ln -s $wiki $dirbin");

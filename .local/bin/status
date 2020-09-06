@@ -69,7 +69,7 @@ if (@ARGV) {
     }
     elsif ( $command eq "mail" ) {
         exit if system("wsw online");
-        exit if system("wsw status | grep -q -E 'home|default'");
+        exit if system("wsw status") != 0;
         my $mail_files = "/tmp/mail";
         if ( !-d $mail_files ) {
             mkdir $mail_files;
