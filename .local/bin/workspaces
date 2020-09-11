@@ -20,6 +20,6 @@ if (@ARGV) {
 system("sleep 0.5");
 system("brightness middle");
 system("sleep 0.5");
-for ( ( "dunst", "dwm", "status" ) ) {
+for ( ( "dunst", "dwm", "status", "xautolock" ) ) {
     system("pkill $_");
 }
