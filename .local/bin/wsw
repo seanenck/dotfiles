@@ -57,12 +57,17 @@ if (@ARGV) {
                 $config = ""         if ( `cat $config | wc -l` < 2 );
                 $profile = $ask;
             }
+            else {
+                print "invalid interface: $config\n";
+            }
+        }
+        else {
+            print "unknown config: $ask\n";
         }
     }
 }
 
 exit unless $profile;
-
 my $script = "#!/bin/bash\n# $profile\n";
 $script .= "interface=\"" . $interface . "\"\n";
 $script .= "config=\"" . $config . "\"\n";
