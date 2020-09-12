@@ -22,6 +22,9 @@ if ( $cmd eq "list" ) {
 }
 
 die "unknown token $cmd" if system("test -e $pass_dir/$cmd.gpg") != 0;
+
+$SIG{'INT'} = sub { exit; };
+
 my $count = 0;
 my $last  = -1;
 my $key   = `PASSWORD_STORE_DIR=$pass_home pass show $pass_offset/$cmd`;
@@ -32,7 +35,7 @@ do {
     chomp $now;
     my $second = 0 + ( split( /:/, $now ) )[2];
     if ( $second == $last ) {
-        continue;
+        next;
     }
     $last = $second;
     my $pad    = "";
