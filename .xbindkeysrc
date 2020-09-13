@@ -28,6 +28,9 @@
 "volume togglemute"
   XF86AudioMute
 
+"volume togglevoice"
+  XF86AudioMicMute
+
 "brightness up"
   XF86MonBrightnessUp
 

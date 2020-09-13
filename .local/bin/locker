@@ -15,7 +15,7 @@ sub do_lock {
         return;
     }
     return if system("pgrep -x i3lock > /dev/null") == 0;
-    system("volume mute");
+    system("volume silent");
     system("brightness low");
     system("sleep 0.1");
 

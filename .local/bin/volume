@@ -17,7 +17,7 @@ sub current {
 sub pactl {
     my $cmd = shift @_;
     my $val = shift @_;
-    for ( ( 0, 1, 2, 3, 4 ) ) {
+    for ( ( 0, 1, 2, 3, 4, 5, 6 ) ) {
         system("pactl $cmd $_ $val > /dev/null 2>&1");
     }
 }
@@ -31,12 +31,24 @@ if ( $cmd eq "status" ) {
     print current;
     exit 0;
 }
+elsif ( $cmd eq "silent" ) {
+    system("volume mute");
+    system("volume voice");
+}
 elsif ( $cmd eq "mute" or $cmd eq "togglemute" ) {
     my $mute = "1";
     if ( $cmd eq "togglemute" ) {
-        $mute = "0" if muted;
+        $mute = "toggle";
     }
     pactl "set-sink-mute", $mute;
+    exit 0;
+}
+elsif ( $cmd eq "voice" or $cmd eq "togglevoice" ) {
+    my $mute = "1";
+    if ( $cmd eq "togglevoice" ) {
+        $mute = "toggle";
+    }
+    pactl "set-source-mute", $mute;
     exit 0;
 }
 elsif ( $cmd eq "inc" or $cmd eq "dec" ) {
