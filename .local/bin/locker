@@ -21,15 +21,15 @@ sub do_lock {
     system("i3lock -c 333333");
     my $mode  = shift @_;
     my $count = 0;
-    if ( $mode == 1 ) {
-        $count = 301;
-    }
     # 5 minutes
     my $timeout = 300;
     my $charge = `status charging`;
     if ( $charge eq "+" ) {
         # 4 hours
         $timeout = $timeout * 48;
+    }
+    if ( $mode == 1 ) {
+        $count = $timeout + 1;
     }
     while (1) {
         last if ( system("pgrep -x i3lock > /dev/null") != 0 );
