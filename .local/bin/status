@@ -20,12 +20,9 @@ sub create_status() {
     }
     my $vol     = `volume status`;
     my $bat     = `cat /sys/class/power_supply/BAT0/capacity`;
-    my $charge  = "-";
     my $warning = 0;
-    if ( `cat /sys/class/power_supply/AC/online` == "1" ) {
-        $charge = "+";
-    }
-    else {
+    my $charge  = `status charging`;
+    if ( $charge ne "+" ) {
         if ( $bat < 20 ) {
             $warning = 1;
             system("echo 'battery:LOW' > $battery_notice");
@@ -53,6 +50,13 @@ if (@ARGV) {
             my $workspace = `cat $prev_cache | wc -l` > 1 ? " docked" : "";
             system("workspaces$workspace");
         }
+    }
+    elsif ( $command eq "charging" ) {
+        my $charge  = "-";
+        if ( `cat /sys/class/power_supply/AC/online` == "1" ) {
+            $charge = "+";
+        }
+        print $charge;
     }
     elsif ( $command eq "toggle" || $command eq "sleep" ) {
         my $change = "on";
