@@ -15,7 +15,6 @@ sub do_lock {
         return;
     }
     return if system("pgrep -x i3lock > /dev/null") == 0;
-    system("volume silent");
     system("brightness low");
     system("sleep 0.1");
 
@@ -25,7 +24,7 @@ sub do_lock {
     if ( $mode == 1 ) {
         $count = 301;
     }
-    # minute
+    # 5 minutes
     my $timeout = 300;
     my $charge = `status charging`;
     if ( $charge eq "+" ) {
@@ -37,7 +36,8 @@ sub do_lock {
         sleep 1;
         $count++;
         if ( !-e $no_zzz ) {
-            if ( $count > 300 ) {
+            if ( $count > $timeout ) {
+                system("volume mute");
                 system("status sleep");
                 system("pkill $_") for ( ( "vlc" ) );
                 system("systemctl suspend");
