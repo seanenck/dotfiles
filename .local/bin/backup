@@ -18,10 +18,10 @@ my $mirrors = $ENV{"HOME"} . "/store/personal/mirror/";
 my $repo    = $ENV{"HOME"} . "/store/personal/private/";
 
 sub dryrun {
+    system("touch $hashes $lasthash");
     if ( -e $check ) {
         return;
     }
-    system("touch $hashes $lasthash");
     for ( ( $mirrors, $repo ) ) {
         system(
 "find $_ -type f -printf '%p.%TY-%Tm-%TdT%TH:%TM:%TS\n' | grep -v '${mirrors}notebook' | sort >> $hashes"
