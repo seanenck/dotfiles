@@ -1,7 +1,7 @@
 pkgname=(voidedskel sysmon corescripts enckse-extras)
 _pkgname=coretools
 _home=home
-pkgver=2020.1476.3104
+pkgver=2020.1483.3123
 pkgrel=1
 url="https://cgit.voidedtech.com/coretools/"
 arch=('x86_64')

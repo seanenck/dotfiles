@@ -11,7 +11,7 @@ my $fastmail  = "fastmail";
 my $passwords = "passwords";
 
 my %available;
-foreach my $app ( "vlc", "pavucontrol", $fastmail, $passwords, "mumble" ) {
+foreach my $app ( "vlc", "pavucontrol", $fastmail, $passwords, "mumble", "epdfview" ) {
     $available{$app} = $app;
 }
 
