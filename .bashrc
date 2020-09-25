@@ -38,12 +38,12 @@ if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
 fi
 
 alias mail="sys mail"
-for f in vlc mutt mumble epdfview; do
+for f in vlc mutt mumble epdfview firefox-developer-edition; do
     alias $f="echo disabled in bash"
 done
 
-chromium() {
-    /usr/bin/chromium "$@" &
+firefox() {
+    /usr/bin/firefox-developer-edition "$@" &
     disown
 }
 

@@ -6,7 +6,7 @@ use Text::CSV;
 use URI::Escape;
 use String::ShellQuote;
 
-my $browser   = "/usr/bin/chromium";
+my $browser   = "/usr/bin/firefox-developer-edition";
 my $fastmail  = "fastmail";
 my $passwords = "passwords";
 

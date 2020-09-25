@@ -19,7 +19,3 @@ random_caps() {
 ssh() {
     TERM=xterm /usr/bin/ssh "$@" || return
 }
-
-proxium() {
-    /usr/bin/chromium --proxy-server="socks5://localhost:1234" --host-resolver-rules="MAP * ~NOTFOUND , EXCLUDE localhost"
-}

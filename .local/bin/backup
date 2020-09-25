@@ -96,7 +96,7 @@ system("ssh core 'mkdir -p $profile'");
 $profile = "core:$profile";
 my $packages = $cache . "packages";
 system("pcm packages > $packages");
-for (("~/.config/chromium", "~/.bash_history", $packages)) {
+for (("~/.mozilla", "~/.bash_history", $packages)) {
     my $target = `basename $_  | sed "s/\\.//g"`;
     chomp $target;
     print("    -> sending $_ to $profile/$target\n");
