@@ -15,13 +15,20 @@ if ( $mode eq "pacman" ) {
 }
 else {
     open my $fh, ">", "${path}index.html";
-    print $fh "<html>
+    print $fh "<!doctype html>
+<html lang=\"en\">
+<head>
+	<meta charset=\"utf-8\"/>
+    <link href=\"/main.css\" rel=\"stylesheet\" type=\"text/css\" />
+	<title>Binaries</title>
+</head>
 <body>
+<div class=\"header-text\"><div id=\"header\">
+        <p>Binaries</p></div><p>Simple hosted pre-built binaries of personal projects</p>
+<hr></div>
+<div id=\"main\">
 <pre>
-binaries
-===
-
-Simple hosted pre-built binaries of personal projects.
+Instructions
 
 1. download &lt;file&gt;.(rpm|deb)
 2. compare sha256 hash
@@ -38,7 +45,12 @@ Simple hosted pre-built binaries of personal projects.
     }
     my $date = `date +%Y-%m-%d`;
     chomp $date;
-    print $fh "</pre><small>last updated: $date</small></body></html>";
+    print $fh "</pre><small>last updated: $date</small></div>
+<div class=\"footer-text\"><hr />
+    <a href=\"/\">home</a>
+</div>
+</body>
+</html>";
 }
 
 for (@targets) {
