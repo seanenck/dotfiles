@@ -36,6 +36,7 @@ elsif ( $cmd eq "mute" or $cmd eq "togglemute" ) {
     if ( $cmd eq "togglemute" ) {
         $mute = "toggle";
     }
+    pactl "set-sink-volume", "50%";
     pactl "set-sink-mute", $mute;
     exit 0;
 }
