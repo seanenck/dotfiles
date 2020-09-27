@@ -5,6 +5,7 @@ use autodie;
 use Text::CSV;
 use URI::Escape;
 use String::ShellQuote;
+use URI;
 
 my $browser   = "/usr/bin/firefox-developer-edition";
 my $fastmail  = "fastmail";
@@ -64,5 +65,17 @@ if ( exists( $available{$stdout} ) ) {
 }
 
 $stdout =~ s/^search //i;
-my $uri = " https://www.duckduckgo.com/?q=" . uri_escape($stdout);
-system( $browser . $uri );
+my $uri = URI->new("http://$stdout");
+my $url = "";
+if ( $uri->host ) {
+    my $host = $uri->host;
+    if ( grep( /[a-zA-Z0-9]+\.[a-z]{2,}/, $host ) ) {
+        $url = $host;
+    }
+}
+
+if ( $url eq "" ) {
+    $url = "https://www.duckduckgo.com/?q=" . uri_escape($stdout);
+}
+
+system( $browser . " " . $url );
