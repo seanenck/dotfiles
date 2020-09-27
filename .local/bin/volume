@@ -27,6 +27,55 @@ if ( $cmd eq "status" ) {
     print current;
     exit 0;
 }
+elsif ( $cmd eq "reset" ) {
+    my $objects = `ponymix list`;
+    my @parts   = split( "\n", $objects );
+    my $last    = "";
+    my $sink    = 0;
+    for my $obj (@parts) {
+        if ( $obj =~ s/^source [0-9]+: //g ) {
+            $last = $obj;
+            $sink = 0;
+            next;
+        }
+        elsif ( $obj =~ s/^sink [0-9]+: //g ) {
+            $last = $obj;
+            $sink = 1;
+            next;
+        }
+        if ($last) {
+            my $command = "-t";
+            if ($sink) {
+                $command = "$command sink";
+            }
+            else {
+                $command = "$command source";
+            }
+            $command = "$command -d $last";
+            my $action = "";
+            if ($sink) {
+                if ( $obj =~ /Speaker \+ Headphones/ ) {
+                    $action = "set-volume 50";
+                }
+                else {
+                    $action = "mute";
+                }
+            }
+            else {
+                if ( $obj =~ /Headphones Stereo Microphone/ ) {
+                    $action = "set-volume 100";
+                }
+                else {
+                    $action = "mute";
+                }
+            }
+            $command = "$command $action";
+            print $command, "\n";
+            system("ponymix $command > /dev/null");
+        }
+        $last = "";
+    }
+}
 elsif ( $cmd eq "mute" or $cmd eq "togglemute" ) {
     my $action = "mute";
     if ( $cmd eq "togglemute" ) {
