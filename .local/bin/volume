@@ -54,12 +54,7 @@ elsif ( $cmd eq "reset" ) {
             $command = "$command -d $last";
             my $action = "";
             if ($sink) {
-                if ( $obj =~ /Speaker \+ Headphones/ ) {
-                    $action = "set-volume 50";
-                }
-                else {
-                    $action = "mute";
-                }
+                $action = "mute";
             }
             else {
                 if ( $obj =~ /Headphones Stereo Microphone/ ) {
@@ -70,7 +65,6 @@ elsif ( $cmd eq "reset" ) {
                 }
             }
             $command = "$command $action";
-            print $command, "\n";
             system("ponymix $command > /dev/null");
         }
         $last = "";

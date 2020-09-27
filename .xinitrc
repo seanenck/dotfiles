@@ -16,7 +16,7 @@ xset b 0 0 0
 xsetroot -solid "#333333"
 $HOME/.local/bin/wsw reload
 $HOME/.local/bin/workspaces mobile
-$HOME/.local/bin/volume silent
+$HOME/.local/bin/volume reset
 while [ 1 -eq 1 ]; do
     if pgrep -x dwm > /dev/null; then
         sleep 0.5
