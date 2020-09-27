@@ -37,7 +37,7 @@ sub do_lock {
         $count++;
         if ( !-e $no_zzz ) {
             if ( $count > $timeout ) {
-                system("volume mute");
+                system("volume reset");
                 system("status sleep");
                 system("pkill $_") for ( ( "vlc" ) );
                 system("systemctl suspend");
