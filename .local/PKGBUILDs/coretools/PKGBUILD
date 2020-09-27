@@ -1,7 +1,7 @@
 pkgname=(voidedskel sysmon corescripts enckse-extras labsite)
 _pkgname=coretools
 _home=home
-pkgver=2020.1486.3130
+pkgver=2020.1486.3131
 pkgrel=1
 url="https://cgit.voidedtech.com/coretools/"
 arch=('x86_64')
@@ -90,6 +90,6 @@ package_enckse-extras() {
 
 package_labsite() {
     cd $_pkgname/labsite
-    install -Dm755 labsite $pkgdir/usr/bin/labsite
+    install -Dm755 bin/labsite $pkgdir/usr/bin/labsite
     install -Dm644 completions/labsite $pkgdir/usr/share/bash-completion/completions/labsite
 }
