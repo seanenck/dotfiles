@@ -1,7 +1,7 @@
-pkgname=(voidedskel sysmon corescripts enckse-extras)
+pkgname=(voidedskel sysmon corescripts enckse-extras labsite)
 _pkgname=coretools
 _home=home
-pkgver=2020.1483.3123
+pkgver=2020.1486.3130
 pkgrel=1
 url="https://cgit.voidedtech.com/coretools/"
 arch=('x86_64')
@@ -20,6 +20,8 @@ build() {
     cd $_pkgname
     cd server
     make package
+    cd ../labsite
+    make labsite
     cd ../common/tools
     make qrenc md2slides
 }
@@ -84,4 +86,10 @@ package_enckse-extras() {
     install -d $pkgdir/usr/bin/
     install -Dm755 bin/qrenc $pkgdir/usr/bin/
     install -Dm755 bin/md2slides $pkgdir/usr/bin/
+}
+
+package_labsite() {
+    cd $_pkgname/labsite
+    install -Dm755 labsite $pkgdir/usr/bin/labsite
+    install -Dm644 completions/labsite $pkgdir/usr/share/bash-completion/completions/labsite
 }
