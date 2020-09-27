@@ -3,23 +3,19 @@ use strict;
 use warnings;
 
 sub muted {
-    return system("pactl list sinks | grep -q 'Mute: yes'") == 0;
+    return system("ponymix is-muted") == 0;
 }
 
 sub current {
     return 0 if muted;
-    my $volume =
-`pactl list sinks | grep -E "Volume" | grep -v "Base Volume:" | cut -d "/" -f 2 | cut -d "%" -f 1 | sed "s/^\\s*//g" | awk '{ sum += \$2 } END { print \$sum }'`;
+    my $volume = `ponymix get-volume`;
     chomp $volume;
     return $volume;
 }
 
-sub pactl {
-    my $cmd = shift @_;
-    my $val = shift @_;
-    for ( ( 0, 1, 2, 3, 4 ) ) {
-        system("pactl $cmd $_ $val > /dev/null 2>&1");
-    }
+sub setvol {
+    my $vol = shift @ARGV;
+    system("ponymix set-volume $vol");
 }
 
 my $cmd = "status";
@@ -32,28 +28,25 @@ if ( $cmd eq "status" ) {
     exit 0;
 }
 elsif ( $cmd eq "mute" or $cmd eq "togglemute" ) {
-    my $mute = "1";
+    my $action = "mute";
     if ( $cmd eq "togglemute" ) {
-        $mute = "toggle";
+        $action = "toggle";
     }
-    pactl "set-sink-volume", "50%";
-    pactl "set-sink-mute", $mute;
-    exit 0;
+    system("ponymix $action");
 }
 elsif ( $cmd eq "inc" or $cmd eq "dec" ) {
-    my $current = 0 + current;
-    my $delta   = "";
+    my $cur = current;
     if ( $cmd eq "inc" ) {
-        if ( $current < 100 ) {
-            $delta = "+";
+        if ( $cur >= 100 ) {
+            exit 0;
         }
+        $cur = $cur + 10;
     }
     else {
-        if ( $current > 0 ) {
-            $delta = "-";
+        if ( $cur <= 0 ) {
+            exit 0;
         }
+        $cur = $cur - 10;
     }
-    if ($delta) {
-        pactl "set-sink-volume", "${delta}10%";
-    }
+    system("ponymix set-volume $cur > /dev/null");
 }
