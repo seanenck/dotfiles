@@ -23,10 +23,15 @@ while (<$DATA>) {
     if ( $csv->parse($_) ) {
         my @fields = $csv->fields();
         my $arg    = $fields[2];
+        my $alt    = $fields[3];
         chomp $arg;
         my @args = split / /, $arg;
         push @args, $fields[1];
-        $available{ $fields[0] } = $browser . " " . shell_quote @args;
+        my $use = $browser;
+        if ( $alt ) {
+            $use = $alt
+        }
+        $available{ $fields[0] } = $use . " " . shell_quote @args;
     }
 }
 
