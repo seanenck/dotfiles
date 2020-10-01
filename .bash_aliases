@@ -15,7 +15,3 @@ random_caps() {
     done
     echo "$res"
 }
-
-ssh() {
-    TERM=xterm /usr/bin/ssh "$@" || return
-}
