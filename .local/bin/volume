@@ -57,7 +57,7 @@ elsif ( $cmd eq "reset" ) {
                 $action = "mute";
             }
             else {
-                if ( $obj =~ /Headphones Stereo Microphone/ ) {
+                if ( $obj =~ /Built-in Audio Analog Stereo/ ) {
                     $action = "set-volume 100";
                 }
                 else {
