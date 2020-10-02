@@ -94,9 +94,13 @@ chomp $profile;
 $profile = "~/store/Active/Drop/Profiles/$profile";
 system("ssh core 'mkdir -p $profile'");
 $profile = "core:$profile";
+my $timers = $cache . "systemd.timers";
+system("systemctl list-timers > $timers");
+my $units = $cache . "systemd.units";
+system("systemctl list-units > $units");
 my $packages = $cache . "packages";
 system("pcm packages > $packages");
-for (("~/.mozilla", "~/.bash_history", $packages)) {
+for (("~/.mozilla", "~/.bash_history", $packages, $timers, $units)) {
     my $target = `basename $_  | sed "s/\\.//g"`;
     chomp $target;
     print("    -> sending $_ to $profile/$target\n");
