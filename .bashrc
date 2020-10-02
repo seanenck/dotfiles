@@ -51,7 +51,7 @@ fastmail() {
     /usr/bin/mutt -F ~/.mutt/fastmail.muttrc
 }
 
-export CHROOT=~/store/chroots/builds
+export CHROOT=/opt/chroots/builds
 mkdir -p /dev/shm/schroot/overlay
 
 unset SSH_AGENT_PID
