@@ -13,6 +13,7 @@ my $notify    = $ENV{"NOTIFY_MESSAGES"} . "/backup";
 my $hashes    = $cache . "hashes";
 my $lasthash  = $hashes . ".prev";
 my $backuplog = $check . ".log";
+my $server    = "shelf";
 
 my $mirrors = $ENV{"HOME"} . "/store/personal/mirror/";
 my $repo    = $ENV{"HOME"} . "/store/personal/private/";
@@ -54,7 +55,7 @@ if (@ARGV) {
 
 die "backup system unavailable"
   if system(
-    "ssh -o BatchMode=yes -o ConnectTimeout=5 core echo is-online > /dev/null");
+    "ssh -o BatchMode=yes -o ConnectTimeout=5 $server echo is-online > /dev/null");
 
 print "\n=> cleaning up cache\n";
 system("find $cache -type f -mtime +30 -exec rm {} \\;");
@@ -63,7 +64,7 @@ print "backing up mirrors\n";
 for (`ls $mirrors`) {
     chomp;
     system(
-"rsync -avcr --delete-after $mirrors/$_/ core:~/store/Active/Drop/Mirror/$_ | sed 's/^/$_ ->    /g'"
+"rsync -avcr --delete-after $mirrors/$_/ $server:~/store/Active/Drop/Mirror/$_ | sed 's/^/$_ ->    /g'"
     );
 }
 
@@ -87,14 +88,14 @@ dryrun;
 
 print "\n=> syncing profiles\n";
 system(
-"ssh core 'find ~/store/Active/Drop/Profiles -mindepth 1 -maxdepth 1 -mtime +7 -type d -exec rm -rf {} \\;'"
+"ssh $server 'find ~/store/Active/Drop/Profiles -mindepth 1 -maxdepth 1 -mtime +7 -type d -exec rm -rf {} \\;'"
 );
 
 my $profile = `date +%Y-%m-%dT%H-%M-%S`;
 chomp $profile;
 $profile = "~/store/Active/Drop/Profiles/$profile";
-system("ssh core 'mkdir -p $profile'");
-$profile = "core:$profile";
+system("ssh $server 'mkdir -p $profile'");
+$profile = "$server:$profile";
 my $timers = $cache . "systemd.timers";
 system("systemctl list-timers > $timers");
 my $units = $cache . "systemd.units";
@@ -111,7 +112,7 @@ for ( ( "~/.mozilla", "~/.bash_history", $packages, $timers, $units ) ) {
 
 print "\n=> sending backups\n";
 if ( system("exit \$(ls $cache | grep backup.tar.gz | wc -l)") ) {
-    system("scp $cache*.backup.tar.gz core:~/store/Active/Drop/Profiles/");
+    system("scp $cache*.backup.tar.gz $server:~/store/Active/Drop/Profiles/");
     system("rm -f $cache*.backup.tar.gz");
 }
 clean;

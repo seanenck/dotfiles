@@ -34,6 +34,6 @@ system("ln -s $wiki $dirbin");
 if ( system('wsw status') == 0 ) {
     print "uploading\n";
     system(
-"rsync -avcr --delete-after $dir/ core:~/store/Active/Drop/Mirror/notebook | sed 's/^/ ->    /g'"
+"rsync -avcr --delete-after $dir/ shelf:~/store/Active/Drop/Mirror/notebook | sed 's/^/ ->    /g'"
     );
 }

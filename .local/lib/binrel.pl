@@ -11,7 +11,7 @@ die "invalid mode" if !-d $path;
 
 my @targets = ("voidedtech.com");
 if ( $mode eq "pacman" ) {
-    push @targets, "core";
+    push @targets, "shelf";
 }
 else {
     open my $fh, ">", "${path}index.html";
