@@ -34,10 +34,12 @@ if (@ARGV) {
     }
     elsif ( $cmd eq "status" ) {
         if ( -e $wsw ) {
-            my $loc = system("cat $wsw | head -n 2  | tail -n 1 | grep '^#' | cut -d ' ' -f 2 | grep -q -E 'home|default'");
+            my $loc = system(
+"cat $wsw | head -n 2  | tail -n 1 | grep '^#' | cut -d ' ' -f 2 | grep -q -E 'home|default'"
+            );
             exit 0 if $loc == 0;
         }
-        exit 1
+        exit 1;
     }
     elsif ( $cmd eq "list" ) {
         print $_ for ( split( / /, `ls $storage` ) );

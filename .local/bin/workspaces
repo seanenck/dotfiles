@@ -11,10 +11,10 @@ system("xrandr --output eDP-1 --mode 2560x1440");
 if (@ARGV) {
     my $cmd = shift @ARGV;
     if ( $cmd eq "docked" ) {
+        system("xrandr --output DP-2-1-8 --right-of eDP-1 --mode 2560x1440");
         system(
-"xrandr --output DP-2-1-8 --right-of eDP-1 --mode 2560x1440"
+"xrandr --output DP-2-8 --left-of eDP-1 --mode 2560x1440 --rotate right"
         );
-        system("xrandr --output DP-2-8 --left-of eDP-1 --mode 2560x1440 --rotate right");
     }
 }
 system("sleep 0.5");

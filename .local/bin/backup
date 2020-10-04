@@ -87,7 +87,8 @@ dryrun;
 
 print "\n=> syncing profiles\n";
 system(
-    "ssh core 'find ~/store/Active/Drop/Profiles -mindepth 1 -maxdepth 1 -mtime +7 -type d -exec rm -rf {} \\;'");
+"ssh core 'find ~/store/Active/Drop/Profiles -mindepth 1 -maxdepth 1 -mtime +7 -type d -exec rm -rf {} \\;'"
+);
 
 my $profile = `date +%Y-%m-%dT%H-%M-%S`;
 chomp $profile;
@@ -100,7 +101,8 @@ my $units = $cache . "systemd.units";
 system("systemctl list-units > $units");
 my $packages = $cache . "packages";
 system("pcm packages > $packages");
-for (("~/.mozilla", "~/.bash_history", $packages, $timers, $units)) {
+
+for ( ( "~/.mozilla", "~/.bash_history", $packages, $timers, $units ) ) {
     my $target = `basename $_  | sed "s/\\.//g"`;
     chomp $target;
     print("    -> sending $_ to $profile/$target\n");

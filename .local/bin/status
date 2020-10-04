@@ -19,20 +19,20 @@ sub create_status() {
     if ($locked) {
         $locked = "|$locked";
     }
-    my $vol     = `volume status`;
+    my $vol      = `volume status`;
     my $bat_stat = "";
-    my $bat = 0;
-    for ((0, 1)) {
+    my $bat      = 0;
+    for ( ( 0, 1 ) ) {
         my $bat_cur = `acpi | grep "Battery $_:" | cut -d "," -f 2`;
         chomp $bat_cur;
-        if ( $bat_cur ) {
+        if ($bat_cur) {
             $bat_cur =~ s/ //g;
             $bat_cur =~ s/%//g;
-            if ( $bat_stat ) {
+            if ($bat_stat) {
                 $bat_stat = "$bat_stat,";
             }
             $bat_stat = "$bat_stat$bat_cur";
-            $bat = $bat + $bat_cur;
+            $bat      = $bat + $bat_cur;
         }
     }
     my $warning = 0;
@@ -67,7 +67,7 @@ if (@ARGV) {
         }
     }
     elsif ( $command eq "charging" ) {
-        my $charge  = "-";
+        my $charge = "-";
         if ( `cat /sys/class/power_supply/AC/online` == "1" ) {
             $charge = "+";
         }

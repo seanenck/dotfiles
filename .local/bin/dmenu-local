@@ -28,8 +28,8 @@ while (<$DATA>) {
         my @args = split / /, $arg;
         push @args, $fields[1];
         my $use = $browser;
-        if ( $alt ) {
-            $use = $alt
+        if ($alt) {
+            $use = $alt;
         }
         $available{ $fields[0] } = $use . " " . shell_quote @args;
     }

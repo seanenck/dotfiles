@@ -4,7 +4,7 @@ use warnings;
 
 die "no mode given" if ( !@ARGV );
 
-my $mode = shift @ARGV;
+my $mode   = shift @ARGV;
 my $script = $ENV{"HOME"} . "/.local/lib/$mode.pl";
 if ( -e $script ) {
     exit system("perl $script @ARGV");

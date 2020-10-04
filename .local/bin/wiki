@@ -31,7 +31,9 @@ my $wiki = $ENV{"HOME"} . "/.cache/wiki/";
 system("rsync -av $dirbin/ $wiki --delete-after > /dev/null");
 system("rm -rf $dirbin");
 system("ln -s $wiki $dirbin");
-if (system('wsw status') == 0) {
+if ( system('wsw status') == 0 ) {
     print "uploading\n";
-    system("rsync -avcr --delete-after $dir/ core:~/store/Active/Drop/Mirror/notebook | sed 's/^/ ->    /g'");
+    system(
+"rsync -avcr --delete-after $dir/ core:~/store/Active/Drop/Mirror/notebook | sed 's/^/ ->    /g'"
+    );
 }
