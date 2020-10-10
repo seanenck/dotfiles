@@ -98,8 +98,12 @@ if ( $command ne "daemon" ) {
 system("mkdir -p $tmpdir");
 system("chmod 777 $tmpdir");
 my $update_file = new_key;
+my $count       = 0;
 while (1) {
-    unblock( 0, $update_file );
+    if ( $count >= 30 ) {
+        unblock( 0, $update_file );
+        $count = 0;
+    }
     if ( -e $update_file ) {
         print "updating hosts\n";
         system("mv $update_file $hosts")
@@ -107,6 +111,7 @@ while (1) {
         my $update_file = new_key;
         system("rm -f $tmpdir/*");
     }
-    system("sleep 30");
+    system("sleep 10");
+    $count = $count + 1;
 }
 
