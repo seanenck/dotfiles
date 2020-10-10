@@ -102,3 +102,14 @@ _bundle() {
 }
 
 complete -F _bundle bundle
+
+_block() {
+    local cur opts
+    cur=${COMP_WORDS[COMP_CWORD]}
+    if [ $COMP_CWORD -eq 1 ]; then
+        opts="on off"
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    fi
+}
+
+complete -F _block block
