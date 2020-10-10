@@ -8,6 +8,7 @@ my $configs = "$home/store/personal/config/etc/block/";
 my $tmpdir  = "/tmp/block";
 my $hosts   = "/etc/hosts";
 my $cache   = "$home/.cache/unblock";
+my $chars   = 10;
 
 sub get_key {
     my $key = shift @_;
@@ -17,7 +18,8 @@ sub get_key {
 sub new_key {
     my $key = `pwgen 64 1`;
     chomp $key;
-    print "UNBLOCK KEY IS: $key\n";
+    print "UNBLOCK KEY IS: $key ($chars)\n";
+    $key = substr $key, 0, $chars;
     my $key_file = get_key $key;
     return $key_file;
 }
