@@ -82,11 +82,11 @@ sub unblock {
 my $command = "";
 if (@ARGV) {
     $command = shift @ARGV;
-    if ( $command eq "off" ) {
+    if ( $command eq "disable" ) {
         unblock( 1, "" );
         exit 0;
     }
-    elsif ( $command eq "on" ) {
+    elsif ( $command eq "enable" ) {
         system("rm -f $cache");
         exit 0;
     }
