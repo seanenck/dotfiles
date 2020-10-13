@@ -8,6 +8,7 @@ my $configs = "$home/store/personal/config/etc/block/";
 my $tmpdir  = "/tmp/block";
 my $hosts   = "/etc/hosts";
 my $cache   = "$home/.cache/unblock";
+my $max_cnt = 9;
 
 sub get_key {
     my $key = shift @_;
@@ -100,9 +101,9 @@ if ( $command ne "daemon" ) {
 system("mkdir -p $tmpdir");
 system("chmod 777 $tmpdir");
 my $update_file = new_key;
-my $count       = 0;
+my $count       = $max_cnt;
 while (1) {
-    if ( $count >= 30 ) {
+    if ( $count >= $max_cnt ) {
         unblock( 0, $update_file );
         $count = 0;
     }
