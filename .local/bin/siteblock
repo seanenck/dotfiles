@@ -48,6 +48,16 @@ sub rebuild {
       if system("diff -u $tmpfile $hosts > /dev/null");
 }
 
+sub today {
+    my $date = `date +%j`;
+    chomp $date;
+    return $date;
+}
+
+sub block_now {
+    system("rm -f $cache");
+}
+
 sub unblock {
     my $is_ui       = shift @_;
     my $unlock_key  = shift @_;
@@ -70,7 +80,7 @@ sub unblock {
         $do_block = 0 if -e $cache;
     }
     else {
-        system("rm -f $cache");
+        block_now;
     }
     if ($do_block) {
         if ($is_ui) {
@@ -102,8 +112,15 @@ system("mkdir -p $tmpdir");
 system("chmod 777 $tmpdir");
 my $update_file = new_key;
 my $count       = $max_cnt;
+my $now         = today;
 while (1) {
+    my $check = today;
     if ( $count >= $max_cnt ) {
+        if ( $check ne $now ) {
+            print "day rollover\n";
+            $now = $check;
+            block_now;
+        }
         unblock( 0, $update_file );
         $count = 0;
     }
