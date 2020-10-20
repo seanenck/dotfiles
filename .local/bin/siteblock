@@ -12,7 +12,7 @@ my $max_cnt = 9;
 
 sub get_key {
     my $key = shift @_;
-    return $tmpdir . "$key";
+    return $tmpdir . "/$key";
 }
 
 sub new_key {
