@@ -19,7 +19,7 @@ sub new_key {
     my $key = `pwgen 64 1`;
     chomp $key;
     my $chars = 5 + int rand(15);
-    print "UNBLOCK KEY IS: $key ($chars)\n";
+    system("echo 'UNBLOCK KEY IS: $key ($chars)' | tee $tmpdir/key");
     $key = substr $key, 0, $chars;
     my $key_file = get_key $key;
     return $key_file;
