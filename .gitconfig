@@ -13,24 +13,24 @@
 [include]
     path = ~/store/personal/config/etc/gitconfig
 [log]
-	date = iso-strict
+    date = iso-strict
 [pager]
     log = /usr/share/git/diff-highlight/diff-highlight | less
     show = /usr/share/git/diff-highlight/diff-highlight | less
     diff = /usr/share/git/diff-highlight/diff-highlight | less
 [pull]
-	rebase = false
+    rebase = false
 [push]
     default = simple
 [sendemail]
     smtpserver = "/usr/bin/msmtp"
     smtpencryption = tls
 [status]
-	short = true
-	branch = true
-	showStash = true
+    short = true
+    branch = true
+    showStash = true
 [tag]
-	gpgSign = true
+    gpgSign = true
 [user]
     name = Sean Enck
     email = enckse@voidedtech.com
