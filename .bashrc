@@ -24,6 +24,8 @@ if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
 fi
 
 export TERM=xterm
+export PAGER=less
+export BROWSER=firefox-developer-edition
 export GOPATH="$HOME/.cache/go"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
@@ -38,12 +40,12 @@ if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
 fi
 
 alias mail="sys mail"
-for f in vlc mutt mumble firefox-developer-edition; do
+for f in vlc mutt mumble $BROWSER; do
     alias $f="echo disabled in bash"
 done
 
 firefox() {
-    /usr/bin/firefox-developer-edition "$@" &
+    /usr/bin/$BROWSER "$@" &
     disown
 }
 
