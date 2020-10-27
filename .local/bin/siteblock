@@ -101,6 +101,13 @@ if (@ARGV) {
         system("rm -f $cache");
         exit 0;
     }
+    elsif ( $command eq "status" ) {
+        system("clear");
+        system("journalctl -t siteblock -e | tail -n 10");
+        print "\n";
+        system("cat /etc/hosts");
+        exit 0;
+    }
 }
 
 if ( $command ne "daemon" ) {

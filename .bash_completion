@@ -107,7 +107,7 @@ _siteblock() {
     local cur opts
     cur=${COMP_WORDS[COMP_CWORD]}
     if [ $COMP_CWORD -eq 1 ]; then
-        opts="enable disable"
+        opts="enable disable status"
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     fi
 }
