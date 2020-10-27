@@ -104,7 +104,7 @@ my $packages = $cache . "packages";
 system("pcm packages > $packages");
 
 for ( ( "~/.mozilla", "~/.bash_history", $packages, $timers, $units ) ) {
-    my $target = `basename $_  | sed "s/\\.//g"`;
+    my $target = `basename $_  | sed "s/^\\.//g"`;
     chomp $target;
     print("    -> sending $_ to $profile/$target\n");
     system("rsync -ar $_ $profile/$target | sed 's/^/$target ->    /g'");
