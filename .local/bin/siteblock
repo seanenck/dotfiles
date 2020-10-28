@@ -3,12 +3,12 @@ use strict;
 use warnings;
 use DateTime::Cron::Simple;
 
-my $home    = "/home/enck";
-my $configs = "$home/store/personal/config/etc/block/";
-my $tmpdir  = "/tmp/block";
-my $hosts   = "/etc/hosts";
-my $cache   = "$home/.cache/unblock";
-my $max_cnt = 9;
+my $home      = "/home/enck";
+my $configs   = "$home/store/personal/config/etc/block/";
+my $tmpdir    = "/tmp/block";
+my $hosts     = "/etc/hosts";
+my $cache     = "$home/.cache/unblock";
+my $max_delta = 60;
 
 sub get_key {
     my $key = shift @_;
@@ -50,6 +50,12 @@ sub rebuild {
 
 sub today {
     my $date = `date +%j`;
+    chomp $date;
+    return $date;
+}
+
+sub get_now {
+    my $date = `date +%s`;
     chomp $date;
     return $date;
 }
@@ -118,18 +124,21 @@ if ( $command ne "daemon" ) {
 system("mkdir -p $tmpdir");
 system("chmod 777 $tmpdir");
 my $update_file = new_key;
-my $count       = $max_cnt;
-my $now         = today;
+my $day         = today;
+my $current     = get_now;
+my $first       = 1;
 while (1) {
     my $check = today;
-    if ( $count >= $max_cnt ) {
-        if ( $check ne $now ) {
+    my $delta = get_now - $current;
+    if ( $delta >= $max_delta or $first == 1 ) {
+        if ( $check ne $day ) {
             print "day rollover\n";
-            $now = $check;
+            $day = $check;
             block_now;
         }
         unblock( 0, $update_file );
-        $count = 0;
+        $current = get_now;
+        $first = 0;
     }
     if ( -e $update_file ) {
         print "updating hosts\n";
@@ -139,6 +148,5 @@ while (1) {
         system("rm -f $tmpdir/*");
     }
     system("sleep 10");
-    $count = $count + 1;
 }
 
