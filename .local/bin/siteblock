@@ -148,6 +148,6 @@ while (1) {
         my $update_file = new_key;
         system("rm -f $tmpdir/*");
     }
-    system("sleep 10");
+    system("sleep 5");
 }
 
