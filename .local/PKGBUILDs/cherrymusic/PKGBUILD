@@ -1,0 +1,30 @@
+pkgname=cherrymusic-git
+pkgver=20200411
+pkgrel=1
+pkgdesc="A standalone HTML5 (with Flash fallback) music streaming server based on CherryPy and jPlayer. Git devel-branch."
+arch=('any')
+url="http://fomori.org/cherrymusic"
+license=('GPL3')
+depends=('python>=3' 'python-cherrypy>=3' 'sqlite>=3')
+makedepends=('git' 'python')
+optdepends=('lame' 'vorbis-tools' 'flac' 'faad2' 'mpg123' 'opus-tools' 'ffmpeg' 'imagemagick' 'python-unidecode' 'python-gobject' 'python-pillow')
+provides=('cherrymusic')
+conflicts=('cherrymusic')
+options=(!emptydirs)
+source=($pkgname::git+https://github.com/devsnd/cherrymusic.git#branch=devel 'cherrymusic.service')
+sha256sums=('SKIP'
+            '291e1cd2a85511db2dbd16cdf6acfeb5ae986c2c84c9b277a470aab871ddf961')
+
+_mandir=/usr/share/man
+_systemdsfdir=/usr/lib/systemd/system
+
+pkgver() {
+  cd "$srcdir/$pkgname"
+  git log -1 --format="%cd" --date=short | tr -d '-'
+}
+
+package() {
+  cd "$srcdir/$pkgname"
+  python setup.py install --root="$pkgdir/" --optimize=1
+  install -Dm644 "$srcdir/cherrymusic.service" "$pkgdir$_systemdsfdir/cherrymusic.service"
+}
