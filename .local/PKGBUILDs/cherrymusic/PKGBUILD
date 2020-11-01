@@ -5,26 +5,22 @@ pkgdesc="A standalone HTML5 (with Flash fallback) music streaming server based o
 arch=('any')
 url="http://fomori.org/cherrymusic"
 license=('GPL3')
-depends=('python>=3' 'python-cherrypy>=3' 'sqlite>=3')
+depends=('python>=3' 'python-cherrypy>=3' 'sqlite>=3' 'lame')
 makedepends=('git' 'python')
-optdepends=('lame' 'vorbis-tools' 'flac' 'faad2' 'mpg123' 'opus-tools' 'ffmpeg' 'imagemagick' 'python-unidecode' 'python-gobject' 'python-pillow')
-provides=('cherrymusic')
-conflicts=('cherrymusic')
 options=(!emptydirs)
-source=($pkgname::git+https://github.com/devsnd/cherrymusic.git#branch=devel 'cherrymusic.service')
+source=($pkgname::git+https://github.com/devsnd/cherrymusic.git#branch=devel 'cherrymusic.service' 'configpath.patch')
 sha256sums=('SKIP'
-            '291e1cd2a85511db2dbd16cdf6acfeb5ae986c2c84c9b277a470aab871ddf961')
-
-_mandir=/usr/share/man
-_systemdsfdir=/usr/lib/systemd/system
+            '291e1cd2a85511db2dbd16cdf6acfeb5ae986c2c84c9b277a470aab871ddf961'
+            '7c1b6857afc5cd55a0447fece9afeb047c02cd23f84735269fe7a4bde9962edb')
 
 pkgver() {
-  cd "$srcdir/$pkgname"
-  git log -1 --format="%cd" --date=short | tr -d '-'
+    cd "$srcdir/$pkgname"
+    git log -1 --format="%cd" --date=short | tr -d '-'
 }
 
 package() {
-  cd "$srcdir/$pkgname"
-  python setup.py install --root="$pkgdir/" --optimize=1
-  install -Dm644 "$srcdir/cherrymusic.service" "$pkgdir$_systemdsfdir/cherrymusic.service"
+    cd "$srcdir/$pkgname"
+    patch -p1 < $srcdir/configpath.patch
+    python setup.py install --root="$pkgdir/" --optimize=1
+    install -Dm644 "$srcdir/cherrymusic.service" "$pkgdir/usr/lib/systemd/system/cherrymusic.service"
 }

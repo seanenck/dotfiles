@@ -1,0 +1,13 @@
+diff --git a/cherrymusicserver/pathprovider.py b/cherrymusicserver/pathprovider.py
+index 938146c..956516b 100644
+--- a/cherrymusicserver/pathprovider.py
++++ b/cherrymusicserver/pathprovider.py
+@@ -108,7 +108,7 @@ def licenseFile():
+     return os.path.join(basedir, 'COPYING')
+ 
+ def configurationFile():
+-    return os.path.join(getConfigPath(), configFileName)
++    return os.path.join("/etc/", configFileName)
+ 
+ def configurationFileExists():
+     return os.path.exists(configurationFile())
