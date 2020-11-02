@@ -28,7 +28,7 @@ build() {
 
 package_corescripts() {
     pkgdesc="scripts for core systems"
-    depends=('rclone' 'rsync' 'isync' 'sysmon')
+    depends=('rclone' 'rsync' 'isync' 'sysmon' 'nginx')
     local f
     cd $_pkgname/server
     install -d $pkgdir/usr/lib/systemd/system
