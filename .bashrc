@@ -15,7 +15,9 @@ for file in $HOME/.bash_aliases \
             $HOME/.bash_completion \
             /usr/share/bash-completion/bash_completion \
             $HOME/.config/user-dirs.dirs; do
-    . $file
+    if [ -e $file ]; then
+        . $file
+    fi
 done
 
 if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
@@ -65,5 +67,7 @@ export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
 for file in $HOME/.pass/env $HOME/store/personal/config/etc/private.exports; do
-    . $file
+    if [ -e $file ]; then
+        . $file
+    fi
 done
