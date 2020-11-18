@@ -15,12 +15,15 @@ xset b off
 xset b 0 0 0
 xsetroot -solid "#333333"
 $HOME/.local/bin/wsw reload
-$HOME/.local/bin/workspaces mobile
+$HOME/.local/bin/workspaces
 $HOME/.local/bin/volume reset
-trackpoint=$(xinput list | grep "TPPS/2 IBM TrackPoint" | cut -d "=" -f 2 | tr '\t' ' ' | cut -d " " -f 1)
-speed=$(xinput list-props $trackpoint | grep "Accel Speed (" | cut -d "(" -f 2 | cut -d ")" -f 1)
-xinput set-prop $trackpoint $speed 1
-xinput set-prop "Synaptics TM3276-022" "Device Enabled" 0
+has_trackpoint=$(xinput list | grep "TPPS/2 IBM TrackPoint")
+if [ $has_trackpoint -eq 0 ]; then
+    trackpoint=$(xinput list | grep "TPPS/2 IBM TrackPoint" | cut -d "=" -f 2 | tr '\t' ' ' | cut -d " " -f 1)
+    speed=$(xinput list-props $trackpoint | grep "Accel Speed (" | cut -d "(" -f 2 | cut -d ")" -f 1)
+    xinput set-prop $trackpoint $speed 1
+    xinput set-prop "Synaptics TM3276-022" "Device Enabled" 0
+fi
 while [ 1 -eq 1 ]; do
     if pgrep -x dwm > /dev/null; then
         sleep 0.5

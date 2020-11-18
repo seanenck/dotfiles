@@ -2,24 +2,9 @@
 use strict;
 use warnings;
 
-for (`xrandr | grep " connected" | cut -d " " -f 1`) {
-    chomp;
-    system("xrandr --output $_ --off");
-}
-
-system("xrandr --output eDP-1 --mode 2560x1440");
-if (@ARGV) {
-    my $cmd = shift @ARGV;
-    if ( $cmd eq "docked" ) {
-        system("xrandr --output DP-1-1-8 --right-of eDP-1 --mode 2560x1440");
-        system(
-"xrandr --output DP-1-8 --left-of eDP-1 --mode 2560x1440 --rotate right"
-        );
-    }
-}
-system("sleep 0.5");
-system("brightness middle");
-system("sleep 0.5");
-for ( ( "dunst", "dwm", "status", "xautolock" ) ) {
-    system("pkill $_");
+if system('xrandr | grep eDP-1 | grep -q " connected"') == 0 {
+    system("xrandr --output eDP-1 --mode 2560x1440");
+} else {
+    system("xrandr --output DP-1-1-8 --right-of eDP-1 --mode 2560x1440");
+    system("xrandr --output DP-1-8 --left-of eDP-1 --mode 2560x1440 --rotate right");
 }

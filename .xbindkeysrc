@@ -37,12 +37,6 @@
 "brightness down"
   XF86MonBrightnessDown
 
-"workspaces mobile"
-  Mod1+Shift+m
-
-"workspaces docked"
-  Mod1+Shift+o
-
 "locker lock"
   Mod1+Shift+l
 
