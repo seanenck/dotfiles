@@ -2,6 +2,10 @@
 use strict;
 use warnings;
 
+if ( -e $ENV{"HOME"} . "/.cache/nobackup" ) {
+    exit 0;
+}
+
 my $cache = $ENV{"HOME"} . "/.cache/backup/";
 mkdir $cache if !-d $cache;
 my $tmp = "/tmp/backup/";
