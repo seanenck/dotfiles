@@ -121,13 +121,15 @@ if ( $command ne "daemon" ) {
     exit 1;
 }
 
-system("mkdir -p $tmpdir");
-system("chmod 777 $tmpdir");
 my $update_file = new_key;
 my $day         = today;
 my $current     = get_now;
 my $first       = 1;
 while (1) {
+    if ( ! -d $tmpdir ) {
+        system("mkdir -p $tmpdir");
+        system("chmod 777 $tmpdir");
+    }
     my $check = today;
     my $delta = get_now - $current;
     my $roll  = $check ne $day;
