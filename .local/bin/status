@@ -20,34 +20,38 @@ sub create_status() {
         $locked = "|$locked";
     }
     my $vol      = `volume status`;
-    my $bat_stat = "";
-    my $bat      = 0;
-    for ( ( 0, 1 ) ) {
-        my $bat_cur = `acpi | grep "Battery $_:" | cut -d "," -f 2`;
-        chomp $bat_cur;
-        if ($bat_cur) {
-            $bat_cur =~ s/ //g;
-            $bat_cur =~ s/%//g;
-            if ($bat_stat) {
-                $bat_stat = "$bat_stat,";
+    my $bat_text = "";
+    if ( -e "/usr/bin/acpi" ) {
+        my $bat_stat = "";
+        my $bat      = 0;
+        for ( ( 0, 1 ) ) {
+            my $bat_cur = `acpi | grep "Battery $_:" | cut -d "," -f 2`;
+            chomp $bat_cur;
+            if ($bat_cur) {
+                $bat_cur =~ s/ //g;
+                $bat_cur =~ s/%//g;
+                if ($bat_stat) {
+                    $bat_stat = "$bat_stat,";
+                }
+                $bat_stat = "$bat_stat$bat_cur";
+                $bat      = $bat + $bat_cur;
             }
-            $bat_stat = "$bat_stat$bat_cur";
-            $bat      = $bat + $bat_cur;
         }
-    }
-    my $warning = 0;
-    my $charge  = `status charging`;
-    if ( $charge ne "+" ) {
-        if ( $bat < 20 ) {
-            $warning = 1;
-            system("echo 'battery:LOW' > $battery_notice");
+        my $warning = 0;
+        my $charge  = `status charging`;
+        if ( $charge ne "+" ) {
+            if ( $bat < 20 ) {
+                $warning = 1;
+                system("echo 'battery:LOW' > $battery_notice");
+            }
         }
+        system("rm -f $battery_notice") if $warning == 0;
+        $bat_text = "|bat:$bat_stat$charge";
     }
-    system("rm -f $battery_notice") if $warning == 0;
     my $online = system("wsw online") ? "DOWN" : "UP";
     my $addr   = `wsw addr`;
     my $status =
-"$date|$week|$time$locked|disp:$bright|vol:$vol|bat:$bat_stat$charge|$online:$addr";
+"$date|$week|$time$locked|disp:$bright|vol:$vol$bat_text|$online:$addr";
     $status =~ s/\n//g;
     system("xsetroot -name '$status'");
 }
