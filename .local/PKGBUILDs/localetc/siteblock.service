@@ -1,0 +1,8 @@
+[Unit]
+Description=Domain blocking manager
+
+[Service]
+ExecStart=/home/enck/.local/bin/siteblock daemon
+
+[Install]
+WantedBy=multi-user.target
