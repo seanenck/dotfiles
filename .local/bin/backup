@@ -90,7 +90,7 @@ dryrun;
 
 print "\n=> syncing profiles\n";
 system(
-"ssh $server 'find ~/store/Active/Drop/Profiles/ -mindepth 1 -maxdepth 1 -mtime +7 -name '*$host*' -type d -exec rm -rf {} \\;'"
+"ssh $server 'find ~/store/Active/Drop/Profiles -mindepth 1 -maxdepth 1 -mtime +7 -name '*$host*' -type d -exec rm -rf {} \\;'"
 );
 
 my $profile = `date +%Y-%m-%dT%H-%M-%S`;
