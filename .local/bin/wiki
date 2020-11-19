@@ -2,7 +2,9 @@
 use strict;
 use warnings;
 use autodie;
+use Sys::Hostname;
 
+my $host   = hostname;
 my $dir    = $ENV{"HOME"} . "/store/personal/mirror/notebook/";
 my $dirbin = $dir . "bin";
 my $md     = (@ARGV) ? shift @ARGV : "";
@@ -34,6 +36,6 @@ system("ln -s $wiki $dirbin");
 if ( system('wsw status') == 0 ) {
     print "uploading\n";
     system(
-"rsync -avcr --delete-after $dir/ shelf:~/store/Active/Drop/Mirror/notebook | sed 's/^/ ->    /g'"
+"rsync -avcr --delete-after $dir/ shelf:~/store/Active/Drop/Mirror/$host.notebook | sed 's/^/ ->    /g'"
     );
 }
