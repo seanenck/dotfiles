@@ -1,0 +1,8 @@
+[Unit]
+Description=Check git status
+
+[Path]
+PathChanged=/var/cache/etcgit
+
+[Install]
+WantedBy=default.target

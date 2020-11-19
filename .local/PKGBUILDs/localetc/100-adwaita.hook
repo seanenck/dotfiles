@@ -1,0 +1,9 @@
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = adwaita-icon-theme
+
+[Action]
+Description = Updating adwaita icon
+When = PostTransaction
+Exec = /usr/bin/cp /etc/pacman.d/hooks/index.theme /usr/share/icons/default/index.theme

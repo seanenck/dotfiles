@@ -1,0 +1,5 @@
+#!/bin/bash
+sysmon --pack > /dev/null 2>&1
+FILE=/home/enck/.cache/backup/$(date +%Y-%m-%d-%H-%M-%S).$HOSTNAME.backup.tar.gz
+cp $(find /opt/backup -type f | sort -r | head -n 1) $FILE
+chown enck:enck $FILE

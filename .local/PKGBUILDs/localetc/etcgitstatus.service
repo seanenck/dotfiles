@@ -1,0 +1,7 @@
+[Unit]
+Description=Git etc monitor
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/sleep 45
+ExecStart=/usr/bin/git -C /etc/ status
