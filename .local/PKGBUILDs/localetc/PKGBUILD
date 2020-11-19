@@ -12,8 +12,10 @@ source=("100-adwaita.hook"
         ".gitignore"
         "index.theme"
         "wsw.service"
+        "siteblock.service"
         "post-commit.git")
 md5sums=("SKIP"
+         "SKIP"
          "SKIP"
          "SKIP"
          "SKIP"
@@ -38,7 +40,7 @@ package() {
     mkdir -p $pkgdir/etc/skel
     install -Dm755 post-commit.git $pkgdir/etc/skel/
     mkdir -p $pkgdir/usr/lib/systemd/system
-    for f in etcgitstatus.path etcgitstatus.service wsw.service; do
+    for f in etcgitstatus.path etcgitstatus.service wsw.service siteblock.service; do
         install -Dm644 $f $pkgdir/usr/lib/systemd/system/$f
     done
 }
