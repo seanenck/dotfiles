@@ -11,13 +11,17 @@ use Sys::Hostname;
 my $browser   = "/usr/bin/firefox-developer-edition";
 my $fastmail  = "fastmail";
 my $passwords = "passwords";
+my $host      = hostname;
 
 my %available;
 foreach my $app ( "vlc", "pavucontrol", $fastmail, $passwords, "mumble" ) {
+    if ( $fastmail eq $app ) {
+        if ( $host eq "novel" ) {
+            next
+        }
+    }
     $available{$app} = $app;
 }
-
-my $host = hostname;
 
 my $csv = Text::CSV->new( { sep_char => ',' } );
 open my $DATA, '<', '/home/enck/store/personal/config/etc/urls.csv';
