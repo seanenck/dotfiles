@@ -38,15 +38,17 @@ for my $dir (@dirs) {
 }
 
 my $imap = "$home/store/personal/imap/fastmail";
-for (`find $imap -type d -name new -exec dirname {} \\; | grep -v Trash`) {
-    chomp;
-    my $count = `ls "$_/new/" | wc -l`;
-    chomp $count;
-    if ( $count > 0 ) {
-        my $dname = $_;
-        $dname =~ s#$imap/##g;
-        push @cats,   "mail";
-        push @alerts, "mail:'$dname [$count]'";
+if ( -d $imap ) {
+    for (`find $imap -type d -name new -exec dirname {} \\; | grep -v Trash`) {
+        chomp;
+        my $count = `ls "$_/new/" | wc -l`;
+        chomp $count;
+        if ( $count > 0 ) {
+            my $dname = $_;
+            $dname =~ s#$imap/##g;
+            push @cats,   "mail";
+            push @alerts, "mail:'$dname [$count]'";
+        }
     }
 }
 

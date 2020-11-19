@@ -51,9 +51,11 @@ firefox() {
     disown
 }
 
-fastmail() {
-    /usr/bin/mutt -F ~/.mutt/fastmail.muttrc
-}
+if [ -x /usr/bin/mutt ]; then
+    fastmail() {
+        /usr/bin/mutt -F ~/.mutt/fastmail.muttrc
+    }
+fi
 
 export CHROOT=/opt/chroots/builds
 mkdir -p /dev/shm/schroot/overlay
