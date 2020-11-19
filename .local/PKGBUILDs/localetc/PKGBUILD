@@ -1,7 +1,8 @@
 pkgname=localetc
 pkgver=20201119
-pkgrel=4
+pkgrel=5
 arch=('x86_64')
+depends=("git" "bash")
 license=('MIT')
 source=("100-adwaita.hook"
         "100-systemd-boot.hook"
@@ -34,8 +35,8 @@ package() {
     for f in 100-adwaita.hook 100-systemd-boot.hook 100-target-update.hook index.theme; do
         install -Dm644 $f $pkgdir/etc/pacman.d/hooks/$f
     done
-    mkdir -p $pkgdir/skel
-    install -Dm755 post-commit.git $pkgdir/skel/
+    mkdir -p $pkgdir/etc/skel
+    install -Dm755 post-commit.git $pkgdir/etc/skel/
     mkdir -p $pkgdir/usr/lib/systemd/system
     for f in etcgitstatus.path etcgitstatus.service wsw.service; do
         install -Dm644 $f $pkgdir/usr/lib/systemd/system/$f

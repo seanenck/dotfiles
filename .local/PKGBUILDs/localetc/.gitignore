@@ -27,6 +27,3 @@ systemd/system/*
 !systemd/system/*.path
 !systemd/system/*.timer
 systemd/system/dbus*
-!skel/
-skel/*
-!skel/*.git

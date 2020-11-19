@@ -2,10 +2,6 @@
 use strict;
 use warnings;
 
-if ( -e $ENV{"HOME"} . "/.cache/nobackup" ) {
-    exit 0;
-}
-
 my $cache = $ENV{"HOME"} . "/.cache/backup/";
 mkdir $cache if !-d $cache;
 my $tmp = "/tmp/backup/";
@@ -29,7 +25,7 @@ sub dryrun {
     }
     for ( ( $mirrors, $repo ) ) {
         system(
-"find $_ -type f -printf '%p.%TY-%Tm-%TdT%TH:%TM:%TS\n' | grep -v '${mirrors}notebook' | sort >> $hashes"
+"find $_ -type f -printf '%p.%TY-%Tm-%TdT%TH:%TM:%TS\n' | grep -v '${mirrors}notebook' | grep -v '${mirrors}desktop' | sort >> $hashes"
         );
     }
     system("echo 'backup:required' > $notify")
