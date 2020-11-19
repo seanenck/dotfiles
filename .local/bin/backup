@@ -74,19 +74,21 @@ for (`ls $mirrors`) {
     );
 }
 
-print "\n=> backing up git repos\n";
-my $zippass = `PASSWORD_STORE_DIR=~/.pass/personal pass show keys/zips`;
-chomp $zippass;
-my $commit = `git -C $repo log --format=%h -n 1`;
-chomp $commit;
-my $zipfile = $cache . "private.$commit.7z";
-if ( !-e $zipfile ) {
-    system("find $cache -type f -name '*.7z' -delete");
-    system(
-"7z a -spf -p$zippass $zipfile \$(find $repo -type f | grep -v '\\.git')"
-    );
-    system(
-        "perl ~/.local/lib/inbox.pl --input $zipfile --subject 'private.zip'");
+if ( $host eq "margin" ) {
+    print "\n=> backing up git repos\n";
+    my $zippass = `PASSWORD_STORE_DIR=~/.pass/personal pass show keys/zips`;
+    chomp $zippass;
+    my $commit = `git -C $repo log --format=%h -n 1`;
+    chomp $commit;
+    my $zipfile = $cache . "private.$commit.7z";
+    if ( !-e $zipfile ) {
+        system("find $cache -type f -name '*.7z' -delete");
+        system(
+    "7z a -spf -p$zippass $zipfile \$(find $repo -type f | grep -v '\\.git')"
+        );
+        system(
+            "perl ~/.local/lib/inbox.pl --input $zipfile --subject 'private.zip'");
+    }
 }
 
 system("rm -f $notify $check");
