@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+use Sys::Hostname;
 
 sub muted {
     return system("ponymix is-muted") == 0;
@@ -18,6 +19,12 @@ sub setvol {
     system("ponymix set-volume $vol");
 }
 
+my $host = hostname;
+my $controlled = 1;
+if ( $host ne "margin" ) {
+    $controlled = 0;
+}
+
 my $cmd = "status";
 if (@ARGV) {
     $cmd = shift @ARGV;
@@ -28,6 +35,9 @@ if ( $cmd eq "status" ) {
     exit 0;
 }
 elsif ( $cmd eq "reset" ) {
+    if ( $controlled == 0 ) {
+        exit 0;
+    }
     my $objects = `ponymix list`;
     my @parts   = split( "\n", $objects );
     my $last    = "";
@@ -78,6 +88,9 @@ elsif ( $cmd eq "mute" or $cmd eq "togglemute" ) {
     system("ponymix $action");
 }
 elsif ( $cmd eq "inc" or $cmd eq "dec" ) {
+    if ( $controlled == 0 ) {
+        exit 0;
+    }
     my $cur = current;
     if ( $cmd eq "inc" ) {
         if ( $cur >= 100 ) {
