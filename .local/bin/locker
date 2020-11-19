@@ -39,10 +39,12 @@ sub do_lock {
         $count++;
         if ( !-e $no_zzz ) {
             if ( $count > $timeout ) {
-                system("volume reset");
-                system("status sleep");
-                system("pkill $_") for ( ("vlc") );
-                system("systemctl suspend");
+                if ( -e "/usr/bin/acpi" ) {
+                    system("volume reset");
+                    system("status sleep");
+                    system("pkill $_") for ( ("vlc") );
+                    system("systemctl suspend");
+                }
                 $count = 0;
             }
         }
