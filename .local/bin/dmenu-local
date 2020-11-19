@@ -6,6 +6,7 @@ use Text::CSV;
 use URI::Escape;
 use String::ShellQuote;
 use URI;
+use Sys::Hostname;
 
 my $browser   = "/usr/bin/firefox-developer-edition";
 my $fastmail  = "fastmail";
@@ -16,6 +17,8 @@ foreach my $app ( "vlc", "pavucontrol", $fastmail, $passwords, "mumble" ) {
     $available{$app} = $app;
 }
 
+my $host = hostname;
+
 my $csv = Text::CSV->new( { sep_char => ',' } );
 open my $DATA, '<', '/home/enck/store/personal/config/etc/urls.csv';
 while (<$DATA>) {
@@ -24,12 +27,18 @@ while (<$DATA>) {
         my @fields = $csv->fields();
         my $arg    = $fields[2];
         my $alt    = $fields[3];
+        my $target = $fields[4];
         chomp $arg;
         my @args = split / /, $arg;
         push @args, $fields[1];
         my $use = $browser;
         if ($alt) {
             $use = $alt;
+        }
+        if ( $target ne "*") {
+           if ( $target ne $host ) {
+               next
+           } 
         }
         $available{ $fields[0] } = $use . " " . shell_quote @args;
     }
