@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+use Sys::Hostname;
 
 my $cache = $ENV{"HOME"} . "/.cache/backup/";
 mkdir $cache if !-d $cache;
@@ -14,6 +15,7 @@ my $hashes    = $cache . "hashes";
 my $lasthash  = $hashes . ".prev";
 my $backuplog = $check . ".log";
 my $server    = "shelf";
+my $host      = hostname;
 
 my $mirrors = $ENV{"HOME"} . "/store/personal/mirror/";
 my $repo    = $ENV{"HOME"} . "/store/personal/private/";
@@ -88,12 +90,12 @@ dryrun;
 
 print "\n=> syncing profiles\n";
 system(
-"ssh $server 'find ~/store/Active/Drop/Profiles -mindepth 1 -maxdepth 1 -mtime +7 -type d -exec rm -rf {} \\;'"
+"ssh $server 'find ~/store/Active/Drop/Profiles/ -mindepth 1 -maxdepth 1 -mtime +7 -name '*$host*' -type d -exec rm -rf {} \\;'"
 );
 
 my $profile = `date +%Y-%m-%dT%H-%M-%S`;
 chomp $profile;
-$profile = "~/store/Active/Drop/Profiles/$profile";
+$profile = "~/store/Active/Drop/Profiles/$host.$profile";
 system("ssh $server 'mkdir -p $profile'");
 $profile = "$server:$profile";
 my $timers = $cache . "systemd.timers";
