@@ -1,8 +1,53 @@
-pkgname=localetc
-pkgver=20201119
-pkgrel=6
+pkgname=localdev
+pkgver=20201120
+pkgrel=1
 arch=('x86_64')
-depends=("git" "bash")
+depends=("git"
+         "bash-completion"
+         "firefox-developer-edition"
+         "devtools"
+         "dhclient"
+         "fzf"
+         "ripgrep"
+         "kitty"
+         "namcap"
+         "nftables"
+         "oath-toolkit"
+         "openssh"
+         "p7zip"
+         "pavucontrol"
+         "ponymix"
+         "perl-datetime"
+         "perl-datetime-cron-simple"
+         "perl-email-mime"
+         "perl-string-shellquote"
+         "perl-uri"
+         "perl-tidy"
+         "perl-text-csv"
+         "perl-mime-tools"
+         "schroot"
+         "rsync"
+         "pwgen"
+         "pulseaudio"
+         "sudo"
+         "unzip"
+         "vim"
+         "vim-airline"
+         "xautolock"
+         "xbindkeys"
+         "xdg-user-dirs"
+         "xfsprogs"
+         "xorg-fonts-100dpi"
+         "xorg-fonts-75dpi"
+         "xorg-server"
+         "xorg-xinit"
+         "xorg-xinput"
+         "xorg-xrandr"
+         "zip"
+         "xorg-xsetroot"
+         "i3lock"
+         "keepassxc"
+         "pass")
 license=('MIT')
 source=("100-adwaita.hook"
         "100-systemd-boot.hook"
