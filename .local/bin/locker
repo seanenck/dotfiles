@@ -26,7 +26,6 @@ sub do_lock {
     my $timeout = 300;
     my $charge  = `status charging`;
     if ( $charge eq "+" ) {
-
         # 4 hours
         $timeout = $timeout * 48;
     }
@@ -39,10 +38,15 @@ sub do_lock {
         $count++;
         if ( !-e $no_zzz ) {
             if ( $count > $timeout ) {
+                my $suspend = 1;
                 if ( -e "/usr/bin/acpi" ) {
                     system("volume reset");
                     system("status sleep");
                     system("pkill $_") for ( ("vlc") );
+                } else {
+                    $suspend = $mode;
+                }
+                if ( $suspend == 1 ) {
                     system("systemctl suspend");
                 }
                 $count = 0;
