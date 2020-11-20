@@ -8,7 +8,10 @@
 .local/PKGBUILDs/**/*
 !.local/PKGBUILDs/**/
 !.local/PKGBUILDs/**/PKGBUILD
+!.local/PKGBUILDs/**/auto
 !.local/PKGBUILDs/**/*.patch
+!.local/PKGBUILDs/**/*.service
+!.local/PKGBUILDs/**/*.path
 !.local/PKGBUILDs/**/*.conf
 !.local/PKGBUILDs/**/*.sh
 
