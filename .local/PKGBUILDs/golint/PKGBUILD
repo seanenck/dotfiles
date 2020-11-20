@@ -1,4 +1,4 @@
-pkgname=golint
+pkgname=golint-git
 pkgver=2020.183
 pkgrel=3
 pkgdesc="golang lint"

@@ -1,17 +1,17 @@
-pkgname=kxstitch
+pkgname=kxstitch-git
 pkgver=2.2.0
-pkgrel=3
+pkgrel=1
 pkgdesc="The program that lets you create cross stitch patterns and charts."
 arch=('x86_64')
 depends=('plasma-workspace' 'libmagick')
 makedepends=('cmake' 'doxygen' 'extra-cmake-modules' 'kdoctools')
 url="https://userbase.kde.org/KXStitch"
 license=('GPL')
-source=("https://download.kde.org/stable/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha1sums=('d0bb8ea0bfaf9dd3bd4b89fcc8dd238f7bfe5100')
+source=("https://github.com/KDE/kxstitch")
+sha1sums=('SKIP')
 
 build() {
-    cd "${srcdir}/kxstitch-${pkgver}"
+    cd "$pkgname"
     rm -rf build
     mkdir build
     cd build
@@ -20,8 +20,12 @@ build() {
     make
 }
 
+pkgver() {
+    cd "$pkgname"
+    git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
 
 package() {
-    cd "${srcdir}/kxstitch-${pkgver}/build"
+    cd "$pkgname/build"
     make DESTDIR="${pkgdir}/usr" install
 }
