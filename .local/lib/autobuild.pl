@@ -100,7 +100,7 @@ if ( $push == 1 ) {
     print "repository changed\n";
     for my $target (("voidedtech.com", "shelf.voidedtech.com")) {
         print "-> send to: $target\n";
-        if ( system("rsync -avc --delete-after -e 'ssh -o StrictHostKeyChecking=no -o User=tunnel -o UserKnownHostsFile=/dev/null -i /home/tunnel/.ssh/id_ed25519 -p 6139' $repo/ $target:/opt/pacman") != 0 ){
+        if ( system("rsync -avc --delete-after -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' $repo/ $target:/opt/pacman") != 0 ){
             $copy = 0;
         }
     }
