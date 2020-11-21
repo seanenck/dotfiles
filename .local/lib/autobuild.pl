@@ -47,6 +47,7 @@ for my $pkg (`find $pkgbuilds -name "auto" -type f`) {
         }
     }
     my $old = 1;
+    my $failed = 0;
     if ( $build == 1 ) {
         print "building\n";
         my $path = "$pkgbuilds/$name";
@@ -55,6 +56,7 @@ for my $pkg (`find $pkgbuilds -name "auto" -type f`) {
         );
         if ( $exit != 0 ) {
             print "build failed\n";
+            $failed = 1;
         }
         else {
             $old = 0;
@@ -65,7 +67,9 @@ for my $pkg (`find $pkgbuilds -name "auto" -type f`) {
         print "using previous version in repository\n";
         system("cp $repo/$name* $next");
     }
-    system("mv $current $prev");
+    if ( $failed == 0 ) {
+        system("mv $current $prev");
+    }
 }
 
 for my $pkg (`ls $next | grep "\.zst"`) {
