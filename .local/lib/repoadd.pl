@@ -7,38 +7,9 @@ my $package = shift @ARGV;
 die "no package exists: $package" if !-e $package;
 
 die "not a valid package" if ( not $package =~ m/\.tar\./ );
-my $repo     = $ENV{"HOME"} . "/store/binaries/pacman/";
-my $database = "enckse.db.tar.gz";
+my $basename = `echo $package | rev | cut -d '-' -f 4- | rev`;
 
-system("cp $package $repo");
-system("cd $repo && repo-add $database $package");
-
-my @purge;
-for my $tar (
-`find $repo -type f -name "*.tar.zst" -exec basename {} \\; | rev | cut -d "-" -f 4- | rev | sort -u`
-  )
-{
-    chomp $tar;
-    for my $file (`ls $repo | grep "^$tar-" | sort -r | tail -n +2`) {
-        chomp $file;
-        push @purge, $file;
-    }
-}
-
-if (@purge) {
-    print "purge:\n";
-    for (@purge) {
-        print "  -> $_\n";
-    }
-    print "delete (Y/n)? ";
-    my $line = <STDIN>;
-    $line = lc $line;
-    chomp $line;
-    if ( $line ne "n" ) {
-        for (@purge) {
-            for (@purge) {
-                system("rm -f $repo$_");
-            }
-        }
-    }
-}
+my $drop = "/opt/autobuild/drop";
+chomp $basename;
+system("ssh novel -- find $drop -name '$basename-\*' -delete");
+system("scp $package novel:$drop");
