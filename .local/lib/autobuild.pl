@@ -83,3 +83,29 @@ for my $pkg (`ls $next | grep "\.zst"`) {
 
 system("rm -rf $repo");
 system("mv $next $repo");
+
+my $repo_status = $cache . "/structure";
+my $repo_prev   = $repo_status . ".prev";
+
+system("ls $repo > $repo_status");
+my $push = 1;
+if ( -e $repo_prev ) {
+    if ( system("diff -u $repo_status $repo_prev") == 0 ) {
+        $push = 0;
+    }
+}
+
+my $copy = 1;
+if ( $push == 1 ) {
+    print "repository changed\n";
+    for my $target (("voidedtech.com", "shelf.voidedtech.com")) {
+        print "-> send to: $target\n";
+        if ( system("rsync -avc --delete-after -e 'ssh -o StrictHostKeyChecking=no -o User=tunnel -o UserKnownHostsFile=/dev/null -i /home/tunnel/.ssh/id_ed25519 -p 6139' $repo/ $target:/opt/pacman") != 0 ){
+            $copy = 0;
+        }
+    }
+}
+
+if ( $copy == 1 ) {
+    system("mv $repo_status $repo_prev");
+}
