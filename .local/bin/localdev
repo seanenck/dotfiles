@@ -18,6 +18,6 @@ if ( $command eq "dl" ) {
 elsif ( $command eq "dlbg" ) {
     if ( system("wsw online") == 0 ) {
         system(
-"rsync -avc --delete-after novel.voidedtech.com:/opt/autobuild/repo /opt/pacman | systemd-cat -t localdev");
+"rsync -avc --delete-after novel.voidedtech.com:/opt/autobuild/repo/ /opt/pacman | systemd-cat -t localdev");
     }
 }
