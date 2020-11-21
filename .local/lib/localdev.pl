@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-my $command = shift @ARGV;
+my $command  = shift @ARGV;
 my $script   = $ENV{"HOME"} . "/.local/bin/localdev";
 my $localdev = "/opt/localdev/";
 
@@ -18,6 +18,7 @@ if ( $command eq "dl" ) {
 elsif ( $command eq "dlbg" ) {
     if ( system("wsw online") == 0 ) {
         system(
-"rsync -avc --delete-after novel.voidedtech.com:/opt/autobuild/repo/ /opt/pacman | systemd-cat -t localdev");
+"rsync -avc --delete-after novel.voidedtech.com:/opt/autobuild/repo/ /opt/pacman | systemd-cat -t localdev"
+        );
     }
 }
