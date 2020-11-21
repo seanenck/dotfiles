@@ -5,7 +5,11 @@ use warnings;
 my $home      = "/opt/autobuild";
 my $pkgbuilds = "$home/PKGBUILDs";
 my $cache     = "$home/cache";
+my $repo      = "$home/repo";
+my $next      = "$repo.new";
 
+system("mkdir -p $repo");
+system("mkdir -p $next");
 system("mkdir -p $cache");
 system("rm -rf $pkgbuilds");
 system("rsync -av /home/enck/.local/PKGBUILDs/ $pkgbuilds");
@@ -42,11 +46,33 @@ for my $pkg (`find $pkgbuilds -name "auto" -type f`) {
             $build = 1;
         }
     }
+    my $old = 1;
     if ( $build == 1 ) {
         print "building\n";
-        system(
-"cd $pkgbuilds/$name &&  makechrootpkg -c -n -d /var/cache/pacman/pkg -r /opt/chroots/builds"
+        my $path = "$pkgbuilds/$name";
+        my $exit = system(
+"cd $path &&  makechrootpkg -c -n -d /var/cache/pacman/pkg -r /opt/chroots/builds"
         );
+        if ( $exit != 0 ) {
+            print "build failed\n";
+        }
+        else {
+            $old = 0;
+            system("cd $path && cp *.zst $next");
+        }
+    }
+    if ( $old == 1 ) {
+        print "using previous version in repository\n";
+        system("cp $repo/$name* $next");
     }
     system("mv $current $prev");
 }
+
+for my $pkg (`ls $next | grep "\.zst"`) {
+    chomp $pkg;
+    print $pkg, "\n";
+    system("cd $next && repo-add localdev.db.tar.gz $pkg");
+}
+
+system("rm -rf $repo");
+system("mv $next $repo");
