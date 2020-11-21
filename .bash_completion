@@ -47,9 +47,6 @@ _pkgl() {
             cur=${COMP_WORDS[1]}
             opts=""
             case "$cur" in
-                "binrel")
-                    opts="pacman external"
-                    ;;
                 "repoadd")
                     opts=$(ls | grep ".pkg.tar.zst")
                     ;;

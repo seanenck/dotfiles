@@ -7,6 +7,7 @@ my $pkgbuilds = "$home/PKGBUILDs";
 my $cache     = "$home/cache";
 my $repo      = "$home/repo";
 my $next      = "$repo.new";
+my $drop      = "$home/drop/";
 
 system("mkdir -p $repo");
 system("mkdir -p $next");
@@ -71,6 +72,8 @@ for my $pkg (`find $pkgbuilds -name "auto" -type f`) {
         system("mv $current $prev");
     }
 }
+
+system("cp $drop/*.zst $next");
 
 for my $pkg (`ls $next | grep "\.zst"`) {
     chomp $pkg;
