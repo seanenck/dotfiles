@@ -50,11 +50,5 @@ while [ 1 -eq 1 ]; do
         echo "starting xautolock"
         xautolock -time 5 -locker $HOME/.local/bin/locker &
     fi
-    if pgrep -x localdev > /dev/null; then
-        sleep 0.5
-    else
-        echo "starting localdev"
-        localdev &
-    fi
     sleep 1
 done

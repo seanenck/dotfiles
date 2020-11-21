@@ -7,10 +7,6 @@ my $script   = $ENV{"HOME"} . "/.local/bin/localdev";
 my $localdev = "/opt/localdev/";
 
 if ( !$command ) {
-    while (1) {
-        system("perl $script dl");
-        system("sleep 5");
-    }
     exit 0;
 }
 
@@ -20,18 +16,8 @@ if ( $command eq "dl" ) {
     }
 }
 elsif ( $command eq "dlbg" ) {
-    my $cache = "/tmp/localdev/dl/";
-    system("mkdir -p $cache");
-    my $file = `date +%Y%m%d`;
-    chomp $file;
-    $file = $cache . $file;
-    if ( !-e $file ) {
-        my $dl = $localdev . "dl/";
-        if ( system("wsw online") == 0 ) {
-            system("cd $dl && rm -rf *");
-            system(
-"cd $dl && wget -r --no-parent http://novel.voidedtech.com/repo >> $file 2>&1"
-            );
-        }
+    if ( system("wsw online") == 0 ) {
+        system(
+"rsync -avc --delete-after novel.voidedtech.com:/opt/autobuild/repo /opt/pacman | systemd-cat -t localdev");
     }
 }

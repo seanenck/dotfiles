@@ -73,3 +73,5 @@ for file in $HOME/.pass/env $HOME/store/personal/config/etc/private.exports; do
         . $file
     fi
 done
+
+localdev dl
