@@ -30,7 +30,7 @@ elsif ( $command eq "dlbg" ) {
         if ( system("wsw online") == 0 ) {
             system("cd $dl && rm -rf *");
             system(
-"cd $dl && wget -r --no-parent http://192.168.1.80/repo >> $file 2>&1"
+"cd $dl && wget -r --no-parent http://novel.voidedtech.com/repo >> $file 2>&1"
             );
         }
     }
