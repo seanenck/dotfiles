@@ -1,13 +1,13 @@
 pkgname=(voidedskel sysmon corescripts enckse-extras labsite)
 _pkgname=coretools
 _home=home
-pkgver=2020.1517.3200
+pkgver=2020.1517.3202
 pkgrel=1
 url="https://cgit.voidedtech.com/coretools/"
 arch=('x86_64')
 license=('MIT')
 _giturl="git+git://cgit.voidedtech.com/"
-makedepends=("git" "go" "go-bindata" "golint")
+makedepends=("git" "go" "go-bindata" "golint-git")
 source=("$_pkgname::${_giturl}$_pkgname"
         "$_home::${_giturl}$_home")
 md5sums=('SKIP' 'SKIP')
