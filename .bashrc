@@ -74,4 +74,4 @@ for file in $HOME/.pass/env $HOME/store/personal/config/etc/private.exports; do
     fi
 done
 
-localdev dl
+perl ~/.local/lib/localdev.pl dl
