@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 my $command  = shift @ARGV;
-my $script   = $ENV{"HOME"} . "/.local/bin/localdev";
+my $script   = $ENV{"HOME"} . "/.local/lib/localdev.pl";
 my $localdev = "/opt/localdev/";
 
 if ( !$command ) {
