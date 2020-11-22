@@ -8,6 +8,7 @@ my $cache     = "$home/cache";
 my $repo      = "$home/repo";
 my $next      = "$repo.new";
 my $drop      = "$home/drop/";
+my $errored   = 0;
 
 system("mkdir -p $repo");
 system("mkdir -p $next");
@@ -38,6 +39,7 @@ for my $pkg (`find $pkgbuilds -name "auto" -type f`) {
       )
     {
         print "unable to read remote\n";
+        $errored = 1;
         next;
     }
     my $build = 1;
@@ -57,7 +59,8 @@ for my $pkg (`find $pkgbuilds -name "auto" -type f`) {
         );
         if ( $exit != 0 ) {
             print "build failed\n";
-            $failed = 1;
+            $errored = 1;
+            $failed  = 1;
         }
         else {
             $old = 0;
@@ -106,11 +109,17 @@ if ( $push == 1 ) {
             ) != 0
           )
         {
-            $copy = 0;
+            $errored = 1;
+            $copy    = 0;
         }
     }
 }
 
 if ( $copy == 1 ) {
     system("mv $repo_status $repo_prev");
+}
+
+if ( $errored != 0 ) {
+    print "autobuild errors found\n";
+    exit 1;
 }
