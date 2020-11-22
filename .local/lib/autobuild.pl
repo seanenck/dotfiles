@@ -40,6 +40,16 @@ for my $pkg (`find $pkgbuilds -name "auto" -type f`) {
         $errored = 1;
         next;
     }
+
+    my $dep = `echo $pkg | cut -d '/' -f 1-5`;
+    chomp $dep;
+    $dep = $dep . '/' . 'deps';
+    if ( -e $dep ) {
+        my $dep_pkgs = `cat $dep`;
+        chomp $dep_pkgs;
+        system("pacman -Si $dep_pkgs >> $current");
+    }
+
     my $build = 1;
     if ( -e $prev ) {
         $build = 0;
