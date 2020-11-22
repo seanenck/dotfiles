@@ -1,7 +1,7 @@
 pkgname=dwm-git
 _pkgname=dwm
 _majorminor=6.2
-pkgver=6.2.1700
+pkgver=20201122.1811
 pkgrel=1
 pkgdesc="A dynamic window manager for X"
 url="https://cgit.voidedtech.com/external/dwm/"
@@ -14,9 +14,8 @@ conflicts=('dwm')
 source=("$_pkgname::git+git://cgit.voidedtech.com/external/dwm")
 md5sums=('SKIP')
 
-pkgver(){
-    cd $_pkgname
-    echo $_majorminor.$(git rev-list --count enckse)
+pkgver() {
+    date +%Y%m%d.%H%M
 }
 
 build() {

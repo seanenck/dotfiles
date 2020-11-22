@@ -1,6 +1,6 @@
 pkgname=kxstitch-git
 _pkgname=kxstitch
-pkgver=v2.2.0.r48.g2342645
+pkgver=20201122.1811
 pkgrel=1
 pkgdesc="The program that lets you create cross stitch patterns and charts."
 arch=('x86_64')
@@ -23,8 +23,7 @@ build() {
 }
 
 pkgver() {
-    cd "$_pkgname"
-    git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+    date +%Y%m%d.%H%M
 }
 
 package() {
