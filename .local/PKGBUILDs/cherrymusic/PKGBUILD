@@ -5,7 +5,7 @@ pkgdesc="A standalone HTML5 (with Flash fallback) music streaming server based o
 arch=('any')
 url="http://fomori.org/cherrymusic"
 license=('GPL3')
-depends=('python>=3' 'python-cherrypy>=3' 'sqlite>=3' 'lame')
+depends=('python' 'python-cherrypy' 'sqlite' 'lame')
 makedepends=('git' 'python')
 options=(!emptydirs)
 source=($pkgname::git+https://github.com/devsnd/cherrymusic.git#branch=devel 'cherrymusic.service' 'configpath.patch')
