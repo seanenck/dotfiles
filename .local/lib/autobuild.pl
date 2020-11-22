@@ -13,8 +13,6 @@ my $errored   = 0;
 system("mkdir -p $repo");
 system("mkdir -p $next");
 system("mkdir -p $cache");
-system("rm -rf $pkgbuilds");
-system("rsync -av /home/enck/.local/PKGBUILDs/ $pkgbuilds");
 
 for my $pkg (`find $pkgbuilds -name "auto" -type f`) {
     chomp $pkg;
