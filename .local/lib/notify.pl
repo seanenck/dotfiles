@@ -70,7 +70,7 @@ if ( $packages > 10 ) {
 
 my $kernel = 1;
 
-for ( ( "linux", "linux-lts" ) ) {
+for ( ( "linux" ) ) {
     if ( `uname -r | sed "s/-arch/.arch/g;s/-lts//g"` eq
         `pacman -Qi $_ | grep Version | cut -d ":" -f 2 | sed "s/ //g"` )
     {
