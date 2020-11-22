@@ -1,6 +1,6 @@
 pkgname=eltorito
 pkgver=20181201
-pkgrel=2
+pkgrel=3
 pkgdesc="el torito image extractor"
 url="https://cgit.voidedtech.com/labsite/"
 arch=('x86_64')
