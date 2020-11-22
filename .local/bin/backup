@@ -57,7 +57,8 @@ if (@ARGV) {
 
 die "backup system unavailable"
   if system(
-    "ssh -o BatchMode=yes -o ConnectTimeout=5 $server echo is-online > /dev/null");
+"ssh -o BatchMode=yes -o ConnectTimeout=5 $server echo is-online > /dev/null"
+  );
 
 print "\n=> cleaning up cache\n";
 system("find $cache -type f -mtime +30 -exec rm {} \\;");
@@ -84,10 +85,11 @@ if ( $host eq "margin" ) {
     if ( !-e $zipfile ) {
         system("find $cache -type f -name '*.7z' -delete");
         system(
-    "7z a -spf -p$zippass $zipfile \$(find $repo -type f | grep -v '\\.git')"
+"7z a -spf -p$zippass $zipfile \$(find $repo -type f | grep -v '\\.git')"
         );
         system(
-            "perl ~/.local/lib/inbox.pl --input $zipfile --subject 'private.zip'");
+"perl ~/.local/lib/inbox.pl --input $zipfile --subject 'private.zip'"
+        );
     }
 }
 

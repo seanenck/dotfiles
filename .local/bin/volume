@@ -19,7 +19,7 @@ sub setvol {
     system("ponymix set-volume $vol");
 }
 
-my $host = hostname;
+my $host       = hostname;
 my $controlled = 1;
 if ( $host ne "margin" ) {
     $controlled = 0;

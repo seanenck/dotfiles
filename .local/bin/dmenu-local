@@ -17,7 +17,7 @@ my %available;
 foreach my $app ( "vlc", "pavucontrol", $fastmail, $passwords, "mumble" ) {
     if ( $fastmail eq $app ) {
         if ( $host eq "novel" ) {
-            next
+            next;
         }
     }
     $available{$app} = $app;
@@ -36,13 +36,14 @@ while (<$DATA>) {
         my @args = split / /, $arg;
         push @args, $fields[1];
         my $use = $browser;
+
         if ($alt) {
             $use = $alt;
         }
-        if ( $target ne "*") {
-           if ( $target ne $host ) {
-               next
-           } 
+        if ( $target ne "*" ) {
+            if ( $target ne $host ) {
+                next;
+            }
         }
         $available{ $fields[0] } = $use . " " . shell_quote @args;
     }

@@ -51,7 +51,7 @@ sub create_status() {
     my $online = system("wsw online") ? "DOWN" : "UP";
     my $addr   = `wsw addr`;
     my $status =
-"$date|$week|$time$locked|disp:$bright|vol:$vol$bat_text|$online:$addr";
+      "$date|$week|$time$locked|disp:$bright|vol:$vol$bat_text|$online:$addr";
     $status =~ s/\n//g;
     system("xsetroot -name '$status'");
 }

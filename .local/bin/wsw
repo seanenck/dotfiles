@@ -55,8 +55,8 @@ if (@ARGV) {
               `cat $config | head -n 1 | grep "^#" | cut -d " " -f 2`;
             chomp $interface;
             if ($interface) {
-                $driver = "-D wired" if ( $interface =~ /^e/ );
-                $config = ""         if ( `cat $config | wc -l` < 2 );
+                $driver  = "-D wired" if ( $interface =~ /^e/ );
+                $config  = ""         if ( `cat $config | wc -l` < 2 );
                 $profile = $ask;
             }
             else {

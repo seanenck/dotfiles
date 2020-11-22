@@ -26,6 +26,7 @@ sub do_lock {
     my $timeout = 300;
     my $charge  = `status charging`;
     if ( $charge eq "+" ) {
+
         # 4 hours
         $timeout = $timeout * 48;
     }
@@ -43,7 +44,8 @@ sub do_lock {
                     system("volume reset");
                     system("status sleep");
                     system("pkill $_") for ( ("vlc") );
-                } else {
+                }
+                else {
                     $suspend = $mode;
                 }
                 if ( $suspend == 1 ) {
