@@ -47,7 +47,7 @@ for my $pkg (`find $pkgbuilds -name "auto" -type f`) {
             $build = 1;
         }
     }
-    my $old = 1;
+    my $old    = 1;
     my $failed = 0;
     if ( $build == 1 ) {
         print "building\n";
@@ -98,9 +98,14 @@ if ( -e $repo_prev ) {
 my $copy = 1;
 if ( $push == 1 ) {
     print "repository changed\n";
-    for my $target (("voidedtech.com", "shelf.voidedtech.com")) {
+    for my $target ( ( "voidedtech.com", "shelf.voidedtech.com" ) ) {
         print "-> send to: $target\n";
-        if ( system("rsync -avc --delete-after -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' $repo/ $target:/opt/pacman") != 0 ){
+        if (
+            system(
+"rsync -avc --delete-after -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' $repo/ $target:/opt/pacman"
+            ) != 0
+          )
+        {
             $copy = 0;
         }
     }
