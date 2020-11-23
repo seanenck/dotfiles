@@ -92,14 +92,6 @@ _pcm() {
 
 complete -F _pcm pcm
 
-_bundle() {
-    local cur
-    cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "rpm deb clean" -- $cur) )
-}
-
-complete -F _bundle bundle
-
 _siteblock() {
     local cur opts
     cur=${COMP_WORDS[COMP_CWORD]}
