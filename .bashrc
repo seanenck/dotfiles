@@ -74,4 +74,10 @@ for file in $HOME/.pass/env $HOME/store/personal/config/etc/private.exports; do
     fi
 done
 
+if [ -x /usr/bin/ncmpc ]; then
+    ncmpc() {
+        /usr/bin/ncmpc --host shelf
+    }
+fi
+
 perl ~/.local/lib/localdev.pl dl

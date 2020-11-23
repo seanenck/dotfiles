@@ -1,5 +1,5 @@
 pkgname=localdev
-pkgver=20201120
+pkgver=20201123
 pkgrel=1
 arch=('x86_64')
 depends=("git"
@@ -49,6 +49,7 @@ depends=("git"
          "xorg-xsetroot"
          "i3lock"
          "keepassxc"
+         "ncmpc"
          "pass")
 license=('MIT')
 source=("100-adwaita.hook"
