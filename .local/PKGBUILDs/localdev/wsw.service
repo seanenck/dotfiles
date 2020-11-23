@@ -1,8 +1,0 @@
-[Unit]
-Description=wsw monitor
-
-[Service]
-ExecStart=/home/enck/.local/bin/wsw daemon
-
-[Install]
-WantedBy=multi-user.target
