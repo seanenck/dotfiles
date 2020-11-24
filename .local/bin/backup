@@ -14,7 +14,7 @@ my $notify    = $ENV{"NOTIFY_MESSAGES"} . "/backup";
 my $hashes    = $cache . "hashes";
 my $lasthash  = $hashes . ".prev";
 my $backuplog = $check . ".log";
-my $server    = "shelf";
+my $server    = $ENV{"SERVER"};
 my $host      = hostname;
 
 my $mirrors = $ENV{"HOME"} . "/store/personal/mirror/";

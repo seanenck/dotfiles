@@ -27,6 +27,7 @@ fi
 
 export DESKTOP=novel
 export LAPTOP=margin
+export SERVER=shelf
 
 export TERM=xterm
 export PAGER=less
@@ -79,7 +80,7 @@ done
 
 if [ -x /usr/bin/ncmpc ]; then
     ncmpc() {
-        /usr/bin/ncmpc --host shelf
+        /usr/bin/ncmpc --host $SERVER
     }
 fi
 
