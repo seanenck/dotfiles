@@ -16,7 +16,7 @@ my $host      = hostname;
 my %available;
 foreach my $app ( "vlc", "pavucontrol", $fastmail, $passwords, "mumble" ) {
     if ( $fastmail eq $app ) {
-        if ( $host eq "novel" ) {
+        if ( $ENV{"IS_DESKTOP"} ) {
             next;
         }
     }

@@ -25,6 +25,9 @@ if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
     exit
 fi
 
+export DESKTOP=novel
+export LAPTOP=margin
+
 export TERM=xterm
 export PAGER=less
 export BROWSER=firefox-developer-edition

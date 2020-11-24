@@ -21,7 +21,7 @@ sub setvol {
 
 my $host       = hostname;
 my $controlled = 1;
-if ( $host ne "margin" ) {
+if ( $ENV{"IS_DESKTOP"} ) {
     $controlled = 0;
 }
 
