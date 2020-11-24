@@ -61,7 +61,6 @@ if [ -x /usr/bin/mutt ]; then
     }
 fi
 
-export CHROOT=/opt/chroots/builds
 mkdir -p /dev/shm/schroot/overlay
 
 unset SSH_AGENT_PID
