@@ -16,6 +16,12 @@ xset b 0 0 0
 xsetroot -solid "#333333"
 $HOME/.local/bin/wsw reload
 $HOME/.local/bin/workspaces
+if [ -z "$IS_DESKTOP" ]; then
+    xrandr --output eDP-1 --mode 2560x1440
+else
+    xrandr --output DP-2-8 --mode 2560x1440
+    xrandr --output DP-2-1-8 --right-of DP-2-8 --mode 2560x1440 --rotate right
+fi
 $HOME/.local/bin/volume reset
 xinput list | grep -q "TPPS/2 IBM TrackPoint"
 if [ $? -eq 0 ]; then

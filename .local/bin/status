@@ -58,19 +58,7 @@ sub create_status() {
 
 if (@ARGV) {
     my $command = $ARGV[0];
-    if ( $command eq "displays" ) {
-        my $display_cache = $home . "/.cache/displays";
-        my $prev_cache    = $display_cache . ".prev";
-        system("xrandr | grep ' connected' | cut -d ' ' -f 1 > $display_cache");
-        system("touch $prev_cache");
-        my $cmp = compare( $display_cache, $prev_cache );
-        move $display_cache, $prev_cache;
-        if ( $cmp != 0 ) {
-            my $workspace = `cat $prev_cache | wc -l` > 1 ? " docked" : "";
-            system("workspaces$workspace");
-        }
-    }
-    elsif ( $command eq "charging" ) {
+    if ( $command eq "charging" ) {
         my $charge = "-";
         if ( `cat /sys/class/power_supply/AC/online` == "1" ) {
             $charge = "+";
@@ -145,6 +133,5 @@ while (1) {
         system("status cleanup &");
         $cnt = 0;
     }
-    system("status displays &");
     sleep 5;
 }
