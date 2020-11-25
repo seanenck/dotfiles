@@ -16,9 +16,17 @@ if ( $command eq "dl" ) {
     }
 }
 elsif ( $command eq "dlbg" ) {
+    my $tmpfile = "/tmp/localdev/";
+    system("mkdir -p $tmpfile");
     if ( system("wsw online") == 0 ) {
+        $tmpfile = $tmpfile . `date +%Y%m%d.%H`;
+        chomp $tmpfile;
+        if ( -e $tmpfile ) {
+            exit 0;
+        }
         system(
-"rsync -avc --delete-after rsync://" . $ENV{"DESKTOP"} . ".voidedtech.com/repo/ $localdev 2>&1 | systemd-cat -t localdev"
+"rsync -avc --delete-after voidedtech.com:/opt/pacman/ $localdev 2>&1 | systemd-cat -t localdev"
         );
+        system("touch $tmpfile");
     }
 }
