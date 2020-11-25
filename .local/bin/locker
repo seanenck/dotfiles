@@ -33,12 +33,13 @@ sub do_lock {
     if ( $mode == 1 ) {
         $count = $timeout + 1;
     }
+    my $can_suspend = 1;
     while (1) {
         last if ( system("pgrep -x i3lock > /dev/null") != 0 );
         sleep 1;
         $count++;
         if ( !-e $no_zzz ) {
-            if ( $count > $timeout ) {
+            if ( $count > $timeout and $can_suspend > 0 ) {
                 my $suspend = 1;
                 if ( -e "/usr/bin/acpi" ) {
                     system("volume reset");
@@ -50,6 +51,7 @@ sub do_lock {
                 }
                 if ( $suspend == 1 ) {
                     system("systemctl suspend");
+                    $can_suspend = 0;
                 }
                 $count = 0;
             }
