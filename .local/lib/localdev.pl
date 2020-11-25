@@ -25,7 +25,7 @@ elsif ( $command eq "dlbg" ) {
             exit 0;
         }
         system(
-"rsync -avc --delete-after rsync://" . $ENV{"DESKTOP"} . ".voidedtech.com/repo/ $localdev 2>&1 | systemd-cat -t localdev"
+"rsync -avc --delete-after voidedtech.com:/opt/pacman/ $localdev 2>&1 | systemd-cat -t localdev"
         );
         system("touch $tmpfile");
     }
