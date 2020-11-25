@@ -7,7 +7,7 @@ use File::Copy qw(move);
 my $id       = 1000;
 my $home     = $ENV{"HOME"};
 my $messages = $ENV{"NOTIFY_MESSAGES"} . "/";
-my @dirs     = ( $home . "/.git", "/etc/.git" );
+my @dirs     = ( $home . "/.git", "/etc/.git" "/etc/personal/.git" );
 for ( "workspace", "store" ) {
     my $found = `find $home/$_/ -maxdepth 3 -type d -name ".git" | tr '\n' ' '`;
     chomp $found;
