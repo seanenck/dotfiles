@@ -82,5 +82,3 @@ if [ -x /usr/bin/ncmpc ]; then
         /usr/bin/ncmpc --host $SERVER
     }
 fi
-
-perl ~/.local/lib/localdev.pl dl
