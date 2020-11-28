@@ -60,12 +60,20 @@ for (`pcm orphans`) {
     push @alerts, "orphan:$_";
 }
 
-my $packages =
-`du -h /var/cache/pacman/pkg | tr '\t' ' ' | cut -d " " -f 1 | grep "G" | sed "s/G//g" | cut -d "." -f 1`;
-chomp $packages;
-if ( $packages > 10 ) {
-    push @cats,   "pkgcache";
-    push @alerts, "pkgcache: $packages(G)";
+my $cache_cat = 0;
+for my $cache (("/var/cache/pacman/pkg", "/srv/http/pacman-cache")) {
+    if ( -d $cache ) {
+        my $packages =
+        `du -h $cache | tr '\t' ' ' | cut -d " " -f 1 | grep "G" | sed "s/G//g" | cut -d "." -f 1`;
+        chomp $packages;
+        if ( $packages > 10 ) {
+            if ( $cache_cat == 0 ) {
+                push @cats,   "pkgcache";
+                $cache_cat = 1;
+            }
+            push @alerts, "pkgcache: $packages(G)";
+        }
+    }
 }
 
 my $kernel = 1;
