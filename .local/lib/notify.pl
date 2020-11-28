@@ -64,7 +64,7 @@ my $cache_cat = 0;
 for my $cache (("/var/cache/pacman/pkg", "/srv/http/pacman-cache")) {
     if ( -d $cache ) {
         my $packages =
-        `du -h $cache | tr '\t' ' ' | cut -d " " -f 1 | grep "G" | sed "s/G//g" | cut -d "." -f 1`;
+        `du -h $cache | tail -n 1 | tr '\t' ' ' | cut -d " " -f 1 | grep "G" | sed "s/G//g" | cut -d "." -f 1`;
         chomp $packages;
         if ( $packages ) {
             if ( $packages > 10 ) {
