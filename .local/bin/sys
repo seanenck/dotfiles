@@ -25,9 +25,6 @@ elsif ( $cmd eq "autoclip" ) {
 "source ~/store/personal/config/etc/private.exports && PASSWORD_STORE_DIR=/home/enck/.pass/personal pass -c \$AUTOCLIP > /dev/null"
     );
 }
-elsif ( $cmd eq "chroots" ) {
-    system("pkgl syschroots @ARGV");
-}
 elsif ( $cmd eq "history" ) {
     my $hist = "/tmp/history";
     my $bash = "~/.bash_history";
