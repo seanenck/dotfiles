@@ -22,9 +22,6 @@
     stack_duplicates = true
     hide_duplicate_count = true
     show_indicators = false
-    ### Icons ###
-    # Align icons left/right/off
-    icon_position = off
 
     ### History ###
     sticky_history = no
