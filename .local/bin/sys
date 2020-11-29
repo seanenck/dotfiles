@@ -38,6 +38,9 @@ elsif ( $cmd eq "autoclip" ) {
 "source ~/store/personal/config/etc/private.exports && PASSWORD_STORE_DIR=/home/enck/.pass/personal pass -c \$AUTOCLIP > /dev/null"
     );
 }
+elsif ( $cmd eq "lock" or $cmd eq "sleep" or $cmd eq "locking" or $cmd eq "locked" ) {
+    system("perl ~/.local/lib/locker.pl $cmd");
+}
 elsif ( $cmd eq "history" ) {
     my $hist = "/tmp/history";
     my $bash = "~/.bash_history";

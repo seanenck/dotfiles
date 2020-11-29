@@ -37,11 +37,11 @@
 "sys dimmer"
   XF86MonBrightnessDown
 
-"locker lock"
+"sys lock"
   Mod1+Shift+l
 
-"locker sleep"
+"sys sleep"
   Mod1+Shift+s
 
-"locker toggle"
+"sys locking"
   Mod1+Shift+x

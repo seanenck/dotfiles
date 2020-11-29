@@ -71,7 +71,7 @@ if ( $command eq "lock" ) {
 elsif ( $command eq "sleep" ) {
     do_lock(1);
 }
-elsif ( $command eq "status" ) {
+elsif ( $command eq "locked" ) {
     if ( -e $no_zzz ) {
         print "NO_SLEEP";
     }
@@ -79,7 +79,7 @@ elsif ( $command eq "status" ) {
         print "UNLOCKED";
     }
 }
-elsif ( $command eq "toggle" ) {
+elsif ( $command eq "locking" ) {
     system("pkill status");
     if ( -e $no_zzz ) {
         unlink $no_zzz;
