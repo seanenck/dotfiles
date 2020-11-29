@@ -50,11 +50,11 @@ while [ 1 -eq 1 ]; do
         echo "starting status"
         status &
     fi
-    if pgrep -x xautolock > /dev/null; then
+    if pgrep -x locking > /dev/null; then
         sleep 0.5
     else
-        echo "starting xautolock"
-        xautolock -time 5 -locker "i3lock -c 333333" &
+        echo "starting locking"
+        locking &
     fi
     sleep 1
 done
