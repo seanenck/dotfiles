@@ -22,6 +22,8 @@
     stack_duplicates = true
     hide_duplicate_count = true
     show_indicators = false
+    icon_position = off
+    icon_path = /usr/share/icons/Adwaita/16x16/legacy/
 
     ### History ###
     sticky_history = no
@@ -47,7 +49,7 @@
     timeout = 10
 
 [urgency_normal]
-    background = "#285577"
+    background = "#363636"
     foreground = "#ffffff"
     timeout = 10
 
