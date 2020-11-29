@@ -22,7 +22,10 @@ if [ -x /usr/bin/ncmpc ]; then
     }
 fi
 
-alias mail="sys mail"
+if [ -z "$IS_DESKTOP" ]; then
+    alias mail="sys mail"
+fi
+
 for f in vlc mutt mumble $BROWSER; do
     alias $f="echo disabled in bash"
 done
