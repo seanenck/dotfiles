@@ -1,10 +1,10 @@
 #!/usr/bin/perl
 
-my $tmp    = $ENV{"HOME"} . "/.cache/lock.";
-my $sleep  = $ENV{"HOME"} . "/.cache/sleepnow";
-my $unlock = $tmp . "lock";
-my $awake  = $tmp . "sleep";
-my $cmd    = "";
+my $tmp       = $ENV{"HOME"} . "/.cache/lock.";
+my $sleep     = $ENV{"HOME"} . "/.cache/sleepnow";
+my $unlock    = $tmp . "lock";
+my $awake     = $tmp . "sleep";
+my $cmd       = "";
 my $can_sleep = 1;
 if ( $ENV{"IS_DESKTOP"} ) {
     $can_sleep = 0;
@@ -18,47 +18,53 @@ if (@ARGV) {
 
 if ( $cmd eq "lock" ) {
     system("xautolock -locknow");
-} elsif ( $cmd eq "toggle" ) {
+}
+elsif ( $cmd eq "toggle" ) {
     if ( -e $unlock ) {
         system("xautolock -disable");
         system("rm -f $unlock");
-        if ( $can_sleep ) {
-            system("touch $awake")
+        if ($can_sleep) {
+            system("touch $awake");
         }
-    } else {
+    }
+    else {
         system("xautolock -enable");
         if ( -e $awake ) {
             system("rm -f $awake");
-        } else {
+        }
+        else {
             system("rm -f $tmp*");
             system("touch $unlock");
         }
     }
-} elsif ( $cmd eq "status" ) {
+}
+elsif ( $cmd eq "status" ) {
     if ( -e $unlock ) {
         print "NOLOCK";
-    } else {
-        if ( -e $awake) {
-            if ( $can_sleep ) {
+    }
+    else {
+        if ( -e $awake ) {
+            if ($can_sleep) {
                 print "NOSLEEP";
             }
         }
     }
-} elsif ( $cmd eq "sleep" ) {
+}
+elsif ( $cmd eq "sleep" ) {
     system("xautolock -locknow");
-    if ( $can_sleep ) {
+    if ($can_sleep) {
         system("touch $sleep");
     }
 }
 
-if ( $cmd ) {
+if ($cmd) {
     exit 0;
 }
 
 system("rm -f $tmp*");
 my $was_locked = 0;
 my $sleep_time = 0;
-my $suspend = "";
+my $suspend    = "";
 while (1) {
     if ( system("pgrep xautolock > /dev/null") != 0 ) {
         system('xautolock -time 5 -locker "i3lock -c 333333"');
@@ -70,18 +76,25 @@ while (1) {
             chomp $sleep_time;
         }
         my $delta = 0;
-        if ( $can_suspend and ! -e $awake ) {
-            if ( $suspend ) {
-                if ( system("journalctl -b 0 --since '$suspend' | grep -q 'suspend exit'") == 0 ) {
-                    $suspend = "";
+        if ( $can_suspend and !-e $awake ) {
+            if ($suspend) {
+                if (
+                    system(
+"journalctl -b 0 --since '$suspend' | grep -q 'suspend exit'"
+                    ) == 0
+                  )
+                {
+                    $suspend    = "";
                     $sleep_time = `date +%s`;
                     chomp $sleep_time;
                 }
-            } else {
+            }
+            else {
                 if ( -e $sleep ) {
                     $delta = $sleep_timeout + 1;
                     system("rm -f $sleep");
-                } else {
+                }
+                else {
                     my $now = `date +%s`;
                     chomp $now;
                     my $delta = $now - $sleep_time;
@@ -96,7 +109,8 @@ while (1) {
             }
         }
         $was_locked = 1;
-    } else {
+    }
+    else {
         if ( $was_locked == 1 ) {
             system("sys rebright");
             system("xset -display :0 dpms force on");
