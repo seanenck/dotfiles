@@ -15,7 +15,7 @@ sub do_lock {
         return;
     }
     return if system("pgrep -x i3lock > /dev/null") == 0;
-    system("brightness low");
+    system("sys dim");
     system("sleep 0.1");
 
     system("i3lock -c 333333");
@@ -58,7 +58,7 @@ sub do_lock {
         }
     }
 
-    system("brightness middle");
+    system("sys rebright");
     system("xset -display :0 dpms force on");
 }
 

@@ -3,6 +3,19 @@ use strict;
 use warnings;
 use autodie;
 
+my $light_reset = "rebright";
+my $light_brighter = "brighter";
+my $light_dimmer = "dimmer";
+my $light_dim = "dim";
+my $light_bright = "bright";
+
+sub current_brightness {
+    my $value =
+`xrandr --current --verbose | grep Brightness | cut -d ":" -f 2 | head -n 1 | awk '{ print \$1 * 100 }'`;
+    chomp $value;
+    return 0 + $value;
+}
+
 my $cmd;
 if (@ARGV) {
     $cmd = shift @ARGV;
@@ -48,6 +61,31 @@ elsif ( $cmd eq "history" ) {
         print $fh $_, "\n";
     }
     system("mv $hist $bash");
+}
+elsif ( $cmd eq "brightness" ) {
+    print current_brightness;
+} 
+elsif ( $cmd eq "$light_reset" or $cmd eq "$light_brighter" or $cmd eq "$light_dimmer" or $cmd eq "$light_dim" or $cmd eq "$light_bright" ) {
+    if ( $cmd eq "$light_brighter" or $cmd eq "$light_dimmer" ) {
+        my $cur  = current_brightness;
+        my $mode = "$light_reset";
+        if ( $cmd eq "$light_brighter" ) {
+            $mode = "$light_bright" if $cur >= 50;
+        }
+        else {
+            $mode = "$light_dim" if $cur <= 95;
+        }
+        system("sys $mode");
+        exit 0;
+    }
+    my $value = "0.9";
+    $value = "0.3" if ( $cmd eq "$light_dim" );
+    $value = "1.0" if ( $cmd eq "$light_bright" );
+
+    for ( (`xrandr | grep " connected" | cut -d " " -f 1`) ) {
+        chomp;
+        system("xrandr --output $_ --brightness $value");
+    }
 }
 else {
     print "unknown command";

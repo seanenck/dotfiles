@@ -31,10 +31,10 @@
 "volume togglevoice"
   XF86AudioMicMute
 
-"brightness up"
+"sys brighter"
   XF86MonBrightnessUp
 
-"brightness down"
+"sys dimmer"
   XF86MonBrightnessDown
 
 "locker lock"
