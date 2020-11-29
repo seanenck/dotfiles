@@ -54,7 +54,7 @@ while [ 1 -eq 1 ]; do
         sleep 0.5
     else
         echo "starting xautolock"
-        xautolock -time 5 -locker $HOME/.local/lib/locker.pl &
+        xautolock -time 5 -locker "i3lock -c 333333" &
     fi
     sleep 1
 done
