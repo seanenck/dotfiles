@@ -3,11 +3,11 @@ use strict;
 use warnings;
 use autodie;
 
-my $light_reset = "rebright";
+my $light_reset    = "rebright";
 my $light_brighter = "brighter";
-my $light_dimmer = "dimmer";
-my $light_dim = "dim";
-my $light_bright = "bright";
+my $light_dimmer   = "dimmer";
+my $light_dim      = "dim";
+my $light_bright   = "bright";
 
 sub current_brightness {
     my $value =
@@ -38,7 +38,11 @@ elsif ( $cmd eq "autoclip" ) {
 "source ~/store/personal/config/etc/private.exports && PASSWORD_STORE_DIR=/home/enck/.pass/personal pass -c \$AUTOCLIP > /dev/null"
     );
 }
-elsif ( $cmd eq "lock" or $cmd eq "sleep" or $cmd eq "locking" or $cmd eq "locked" ) {
+elsif ($cmd eq "lock"
+    or $cmd eq "sleep"
+    or $cmd eq "locking"
+    or $cmd eq "locked" )
+{
     system("perl ~/.local/lib/locker.pl $cmd");
 }
 elsif ( $cmd eq "history" ) {
@@ -67,8 +71,13 @@ elsif ( $cmd eq "history" ) {
 }
 elsif ( $cmd eq "brightness" ) {
     print current_brightness;
-} 
-elsif ( $cmd eq "$light_reset" or $cmd eq "$light_brighter" or $cmd eq "$light_dimmer" or $cmd eq "$light_dim" or $cmd eq "$light_bright" ) {
+}
+elsif ($cmd eq "$light_reset"
+    or $cmd eq "$light_brighter"
+    or $cmd eq "$light_dimmer"
+    or $cmd eq "$light_dim"
+    or $cmd eq "$light_bright" )
+{
     if ( $cmd eq "$light_brighter" or $cmd eq "$light_dimmer" ) {
         my $cur  = current_brightness;
         my $mode = "$light_reset";

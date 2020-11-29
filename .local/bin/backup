@@ -75,7 +75,7 @@ for (`ls $mirrors`) {
     );
 }
 
-if ( ! $ENV{"IS_DESKTOP"} ) {
+if ( !$ENV{"IS_DESKTOP"} ) {
     print "\n=> backing up git repos\n";
     my $zippass = `PASSWORD_STORE_DIR=~/.pass/personal pass show keys/zips`;
     chomp $zippass;
