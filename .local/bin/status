@@ -19,7 +19,7 @@ sub create_status() {
     if ($locked) {
         $locked = "|$locked";
     }
-    my $vol      = `volume status`;
+    my $vol      = `sys volume-status`;
     my $bat_text = "";
     if ( -e "/usr/bin/acpi" ) {
         my $bat_stat = "";

@@ -22,7 +22,7 @@ else
     xrandr --output DP-2-8 --mode 2560x1440
     xrandr --output DP-2-1-8 --right-of DP-2-8 --mode 2560x1440 --rotate right
 fi
-$HOME/.local/bin/volume reset
+$HOME/.local/bin/sys volume-reset
 xinput list | grep -q "TPPS/2 IBM TrackPoint"
 if [ $? -eq 0 ]; then
     trackpoint=$(xinput list | grep "TPPS/2 IBM TrackPoint" | cut -d "=" -f 2 | tr '\t' ' ' | cut -d " " -f 1)
@@ -54,7 +54,7 @@ while [ 1 -eq 1 ]; do
         sleep 0.5
     else
         echo "starting xautolock"
-        xautolock -time 5 -locker $HOME/.local/bin/locker &
+        xautolock -time 5 -locker $HOME/.local/lib/locker.pl &
     fi
     sleep 1
 done

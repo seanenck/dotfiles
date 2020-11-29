@@ -19,17 +19,14 @@
 "status toggle"
   Mod1+Shift+h
 
-"volume inc"
+"sys volume-inc"
   XF86AudioRaiseVolume
 
-"volume dec"
+"sys volume-dec"
   XF86AudioLowerVolume
 
-"volume togglemute"
+"sys volume-togglemute"
   XF86AudioMute
-
-"volume togglevoice"
-  XF86AudioMicMute
 
 "sys brighter"
   XF86MonBrightnessUp

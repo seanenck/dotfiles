@@ -99,6 +99,10 @@ elsif ($cmd eq "$light_reset"
         system("xrandr --output $_ --brightness $value");
     }
 }
+elsif ( rindex($cmd, "volume-", 0) == 0 ) {
+    $cmd =~ s/volume-//g;
+    system("perl ~/.local/lib/volume.pl $cmd");
+}
 else {
     print "unknown command";
 }

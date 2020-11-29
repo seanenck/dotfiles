@@ -42,7 +42,7 @@ sub do_lock {
             if ( $count > $timeout and $can_suspend > 0 ) {
                 my $suspend = 1;
                 if ( -e "/usr/bin/acpi" ) {
-                    system("volume reset");
+                    system("sys volume-reset");
                     system("status sleep");
                     system("pkill $_") for ( ("vlc") );
                 }
