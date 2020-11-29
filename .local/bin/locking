@@ -20,20 +20,20 @@ if ( $cmd eq "lock" ) {
     system("xautolock -locknow");
 }
 elsif ( $cmd eq "toggle" ) {
+    system("xautolock -enable");
     if ( -e $unlock ) {
-        system("xautolock -disable");
         system("rm -f $unlock");
         if ($can_sleep) {
             system("touch $awake");
         }
     }
     else {
-        system("xautolock -enable");
         if ( -e $awake ) {
             system("rm -f $awake");
         }
         else {
             system("rm -f $tmp*");
+            system("xautolock -disable");
             system("touch $unlock");
         }
     }
@@ -53,7 +53,9 @@ elsif ( $cmd eq "status" ) {
 elsif ( $cmd eq "sleep" ) {
     system("xautolock -locknow");
     if ($can_sleep) {
-        system("touch $sleep");
+        if ( ! -e $unlock and ! -e $awake ) {
+            system("touch $sleep");
+        }
     }
 }
 
@@ -75,9 +77,10 @@ while (1) {
             system("sys dim");
             $sleep_time = `date +%s`;
             chomp $sleep_time;
+            print
         }
         my $delta = 0;
-        if ( $can_suspend and !-e $awake ) {
+        if ( $can_sleep and !-e $awake ) {
             if ($suspend) {
                 if (
                     system(
