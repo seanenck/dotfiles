@@ -61,14 +61,3 @@ _sys() {
 }
 
 complete -F _sys sys
-
-_pcm() {
-    local cur opts
-    cur=${COMP_WORDS[COMP_CWORD]}
-    if [ $COMP_CWORD -eq 1 ]; then
-        opts="files contains packages orphans"
-        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-    fi
-}
-
-complete -F _pcm pcm

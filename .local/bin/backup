@@ -111,7 +111,7 @@ system("systemctl list-timers > $timers");
 my $units = $cache . "systemd.units";
 system("systemctl list-units > $units");
 my $packages = $cache . "packages";
-system("pcm packages > $packages");
+system("pacman -Qqe > $packages");
 
 for ( ( "~/.mozilla", "~/.bash_history", $packages, $timers, $units ) ) {
     my $target = `basename $_  | sed "s/^\\.//g"`;

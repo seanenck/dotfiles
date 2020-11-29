@@ -53,7 +53,7 @@ if ( -d $imap ) {
 }
 
 system("backup status");
-for (`pcm orphans`) {
+for (`pacman -Qqdt`) {
     chomp;
     next if !$_;
     push @cats,   "orphan";
