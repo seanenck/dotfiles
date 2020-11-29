@@ -14,30 +14,6 @@ _wiki() {
     COMPREPLY=( $(compgen -W "$opts" -- $cur) )
 }
 
-_pkgl() {
-    local cur opts
-    cur=${COMP_WORDS[COMP_CWORD]}
-    if [ $COMP_CWORD -eq 1 ]; then
-        opts=$(pkgl help)
-        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-    else
-        if [ $COMP_CWORD -eq 2 ]; then
-            cur=${COMP_WORDS[1]}
-            opts=""
-            case "$cur" in
-                "repoadd")
-                    opts=$(ls | grep ".pkg.tar.zst")
-                    ;;
-                *)
-                    ;;
-            esac
-            if [ ! -z "$opts" ]; then
-                 COMPREPLY=( $(compgen -W "$opts" -- ${COMP_WORDS[COMP_CWORD]}) )
-            fi
-        fi
-    fi
-}
-
 _backup() {
     local cur
     cur=${COMP_WORDS[COMP_CWORD]}
@@ -62,5 +38,4 @@ if [ $? -eq 0 ]; then
     complete -F _backup backup
     complete -F _totp totp
     complete -F _wiki wiki
-    complete -F _pkgl pkgl
 fi
