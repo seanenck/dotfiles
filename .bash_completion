@@ -6,7 +6,6 @@ _totp() {
     COMPREPLY=( $(compgen -W "$opts" -- $cur) )
 }
 
-complete -F _totp totp
 
 _wiki() {
     local cur opts
@@ -14,8 +13,6 @@ _wiki() {
     opts=$(find ~/store/personal/mirror/notebook -type f -name "*.md" | sed "s#/home/enck/store/personal/mirror/notebook/##g")
     COMPREPLY=( $(compgen -W "$opts" -- $cur) )
 }
-
-complete -F _wiki wiki
 
 _pkgl() {
     local cur opts
@@ -41,23 +38,29 @@ _pkgl() {
     fi
 }
 
-complete -F _pkgl pkgl
-
 _backup() {
     local cur
     cur=${COMP_WORDS[COMP_CWORD]}
     COMPREPLY=( $(compgen -W "status clear" -- $cur) )
 }
 
-complete -F _backup backup
-
 _sys() {
     local cur opts
     cur=${COMP_WORDS[COMP_CWORD]}
     if [ $COMP_CWORD -eq 1 ]; then
-        opts="mail history"
+        opts="history"
+        if [ -z "$IS_DESKTOP" ]; then
+            opts="$opts mail"
+        fi
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     fi
 }
 
-complete -F _sys sys
+echo "$PATH" | grep -q "/home/enck"
+if [ $? -eq 0 ]; then
+    complete -F _sys sys
+    complete -F _backup backup
+    complete -F _totp totp
+    complete -F _wiki wiki
+    complete -F _pkgl pkgl
+fi
