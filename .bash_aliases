@@ -15,3 +15,31 @@ random_caps() {
     done
     echo "$res"
 }
+
+if [ -x /usr/bin/ncmpc ]; then
+    ncmpc() {
+        /usr/bin/ncmpc --host $SERVER
+    }
+fi
+
+alias mail="sys mail"
+for f in vlc mutt mumble $BROWSER; do
+    alias $f="echo disabled in bash"
+done
+
+firefox() {
+    /usr/bin/$BROWSER "$@" &
+    disown
+}
+
+if [ -x /usr/bin/mutt ]; then
+    fastmail() {
+        /usr/bin/mutt -F ~/.mutt/fastmail.muttrc
+    }
+fi
+
+if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
+    for f in $(ls ~/.local/bin); do
+        alias $f="echo '$f not available in schroot'"
+    done
+fi

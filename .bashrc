@@ -7,6 +7,16 @@
 
 . /etc/voidedtech/bash/bashrc
 
+export DESKTOP=novel
+export LAPTOP=margin
+export SERVER=shelf
+export TERM=xterm
+export PAGER=less
+export BROWSER=firefox-developer-edition
+export GOPATH="$HOME/.cache/go"
+export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
+
+
 # check the window size after each command
 shopt -s checkwinsize
 
@@ -25,40 +35,12 @@ if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
     exit
 fi
 
-export DESKTOP=novel
-export LAPTOP=margin
-export SERVER=shelf
-
-export TERM=xterm
-export PAGER=less
-export BROWSER=firefox-developer-edition
-export GOPATH="$HOME/.cache/go"
-export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
-    for f in $(ls ~/.local/bin); do
-        alias $f="echo '$f not available in schroot'"
-    done
     PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
     if [ ! -z "$SSH_AUTH_SOCK" ]; then
         export SSH_AUTH_SOCK="$SSH_AUTH_SOCK"
     fi
     return
-fi
-
-alias mail="sys mail"
-for f in vlc mutt mumble $BROWSER; do
-    alias $f="echo disabled in bash"
-done
-
-firefox() {
-    /usr/bin/$BROWSER "$@" &
-    disown
-}
-
-if [ -x /usr/bin/mutt ]; then
-    fastmail() {
-        /usr/bin/mutt -F ~/.mutt/fastmail.muttrc
-    }
 fi
 
 mkdir -p /dev/shm/schroot/overlay
@@ -76,9 +58,3 @@ for file in $HOME/.pass/env $HOME/store/personal/config/etc/private.exports; do
         . $file
     fi
 done
-
-if [ -x /usr/bin/ncmpc ]; then
-    ncmpc() {
-        /usr/bin/ncmpc --host $SERVER
-    }
-fi
