@@ -8,25 +8,6 @@ _totp() {
 
 complete -F _totp totp
 
-_wsw() {
-    local opts cur
-    if [ $COMP_CWORD -eq 1 ]; then
-        cur=${COMP_WORDS[COMP_CWORD]}
-        opts=$(wsw help)
-        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-    else
-        if [ $COMP_CWORD -eq 2 ]; then
-            cur=${COMP_WORDS[1]}
-            if [[ "$cur" == "change" ]]; then
-                opts=$(wsw list)
-                COMPREPLY=( $(compgen -W "$opts" -- ${COMP_WORDS[COMP_CWORD]}) )
-            fi
-        fi
-    fi
-}
-
-complete -F _wsw wsw
-
 _wiki() {
     local cur opts
     cur=${COMP_WORDS[COMP_CWORD]}
@@ -91,14 +72,3 @@ _pcm() {
 }
 
 complete -F _pcm pcm
-
-_siteblock() {
-    local cur opts
-    cur=${COMP_WORDS[COMP_CWORD]}
-    if [ $COMP_CWORD -eq 1 ]; then
-        opts="enable disable status"
-        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-    fi
-}
-
-complete -F _siteblock siteblock
