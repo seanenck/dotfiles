@@ -121,6 +121,7 @@ while (1) {
         if ( $was_locked == 1 ) {
             system("sys rebright");
             system("xset -display :0 dpms force on");
+            exit 0;
         }
         $suspend    = "";
         $was_locked = 0;
