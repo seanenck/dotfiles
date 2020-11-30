@@ -15,10 +15,6 @@ sub create_status() {
     my $week   = `date +%a | tr '[:lower:]' '[:upper:]'`;
     my $time   = `date +%H:%M`;
     my $bright = `sys brightness`;
-    my $locked = `locking status`;
-    if ($locked) {
-        $locked = "|$locked";
-    }
     my $vol      = `sys volume-status`;
     my $bat_text = "";
     if ( -e "/usr/bin/acpi" ) {
@@ -51,7 +47,7 @@ sub create_status() {
     my $online = system("wsw online") ? "DOWN" : "UP";
     my $addr   = `wsw addr`;
     my $status =
-      "$date|$week|$time$locked|disp:$bright|vol:$vol$bat_text|$online:$addr";
+      "$date|$week|$time|disp:$bright|vol:$vol$bat_text|$online:$addr";
     $status =~ s/\n//g;
     system("xsetroot -name '$status'");
 }
