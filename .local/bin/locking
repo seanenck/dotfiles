@@ -122,6 +122,7 @@ while (1) {
             system("sys rebright");
             system("xset -display :0 dpms force on");
         }
+        $suspend    = "";
         $was_locked = 0;
     }
     system("sleep 0.5");

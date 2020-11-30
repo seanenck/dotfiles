@@ -14,8 +14,7 @@ fi
 xset b off
 xset b 0 0 0
 xsetroot -solid "#333333"
-$HOME/.local/bin/wsw reload
-$HOME/.local/bin/workspaces
+wsw reload
 if [ -z "$IS_DESKTOP" ]; then
     xrandr --output eDP-1 --mode 2560x1440
 else
