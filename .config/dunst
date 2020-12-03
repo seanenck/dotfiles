@@ -1,5 +1,5 @@
 [global]
-    follow = mouse
+    monitor = 0
     geometry = "250x0-5-30"
     indicate_hidden = true
     transparency = 0
