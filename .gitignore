@@ -3,6 +3,7 @@
 .local/*
 !.local/bin/
 !.local/lib/
+!.local/git/
 
 *.pyc
 __pycache__

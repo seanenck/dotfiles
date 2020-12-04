@@ -1,0 +1,11 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+if ( system("wsw online") == 0 )
+{
+    if ( system("git remote get-url origin | grep -q voidedtech.com") == 0 )
+    {
+        system("pkgl trigger | systemd-cat -t postcommit");
+    }
+}

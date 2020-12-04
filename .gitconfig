@@ -4,7 +4,7 @@
     editor = vim
     autocrlf = input
 [init]
-    templatedir = ~/.config/git/templates
+    templatedir = ~/.local/git
 [filter "lfs"]
     process = git-lfs filter-process
     required = true
