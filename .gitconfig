@@ -3,6 +3,8 @@
 [core]
     editor = vim
     autocrlf = input
+[init]
+    templatedir = ~/.config/git/templates
 [filter "lfs"]
     process = git-lfs filter-process
     required = true
