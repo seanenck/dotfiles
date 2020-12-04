@@ -121,8 +121,5 @@ for ( ( "~/.mozilla", "~/.bash_history", $packages, $timers, $units ) ) {
 }
 
 print "\n=> sending backups\n";
-if ( system("exit \$(ls $cache | grep backup.tar.gz | wc -l)") ) {
-    system("scp $cache*.backup.tar.gz $server:~/store/Active/Drop/Profiles/");
-    system("rm -f $cache*.backup.tar.gz");
-}
+system("rsync -avr /opt/backup/ $server:~/store/Active/Drop/Profiles/");
 clean;
