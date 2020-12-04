@@ -29,7 +29,7 @@ if ($cmd) {
 my $was_locked = 0;
 while (1) {
     if ( system("pgrep xautolock > /dev/null") != 0 ) {
-        system('xautolock -time 15 -locker "i3lock -c 333333"');
+        system('xautolock -time 15 -locker "i3lock -c 333333" &');
     }
     if ( system("pgrep i3lock > /dev/null") == 0 ) {
         if ( $was_locked == 0 ) {
