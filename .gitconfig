@@ -37,3 +37,5 @@
     name = Sean Enck
     email = enckse@voidedtech.com
     signingKey = 031E9E4B09CFD8D3F0ED35025109CDF607B5BB04
+[help]
+    format = man
