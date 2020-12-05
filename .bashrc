@@ -16,7 +16,6 @@ export BROWSER=firefox-developer-edition
 export GOPATH="$HOME/.cache/go"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 
-
 # check the window size after each command
 shopt -s checkwinsize
 
@@ -52,6 +51,14 @@ fi
 
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
+
+BACKUP_HISTORY="$HOME/.cache/history/"
+mkdir -p $BACKUP_HISTORY
+BACKUP_HISTORY_FILE="${BACKUP_HISTORY}$(date +%Y%m%d).bash_history"
+if [ ! -e $BACKUP_HISTORY_FILE ]; then
+    cp ~/.bash_history $BACKUP_HISTORY_FILE
+    find $BACKUP_HISTORY -type f -mtime +7 -delete
+fi
 
 for file in $HOME/.pass/env $HOME/store/personal/config/etc/private.exports; do
     if [ -e $file ]; then

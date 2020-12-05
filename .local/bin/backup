@@ -96,24 +96,9 @@ if ( !$ENV{"IS_DESKTOP"} ) {
 system("rm -f $notify $check");
 dryrun;
 
-print "\n=> syncing profiles\n";
+print "\n=> sending backups\n";
 system(
 "ssh $server 'find ~/store/Active/Drop/Profiles -mindepth 1 -maxdepth 1 -mtime +7 -name '*$host*' -type d -exec rm -rf {} \\;'"
 );
-
-my $profile = `date +%Y-%m-%dT%H-%M-%S`;
-chomp $profile;
-$profile = "~/store/Active/Drop/Profiles/$host.$profile";
-system("ssh $server 'mkdir -p $profile'");
-$profile = "$server:$profile";
-
-for ( ( "~/.mozilla", "~/.bash_history" ) ) {
-    my $target = `basename $_  | sed "s/^\\.//g"`;
-    chomp $target;
-    print("    -> sending $_ to $profile/$target\n");
-    system("rsync -ar $_ $profile/$target | sed 's/^/$target ->    /g'");
-}
-
-print "\n=> sending backups\n";
 system("rsync -avr /opt/backup/ $server:~/store/Active/Drop/Profiles/");
 clean;
