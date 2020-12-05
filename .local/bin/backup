@@ -96,5 +96,5 @@ if ( !$ENV{"IS_DESKTOP"} ) {
 system("rm -f $notify $check");
 dryrun;
 
-system("rsync -av /opt/backup/ $server:/opt/backup/");
+system("rsync -av /var/cache/voidedtech/backup/ $server:/var/cache/voidedtech/backup/");
 clean;
