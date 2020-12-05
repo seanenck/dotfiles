@@ -26,9 +26,14 @@ if [ -z "$IS_DESKTOP" ]; then
     alias mail="sys mail"
 fi
 
-for f in vlc mutt mumble $BROWSER; do
+for f in mutt mumble $BROWSER; do
     alias $f="echo disabled in bash"
 done
+
+vlc() {
+    /usr/bin/vlc "$@" &
+    disown
+}
 
 firefox() {
     /usr/bin/$BROWSER "$@" &
