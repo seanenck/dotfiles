@@ -4,7 +4,7 @@
     editor = vim
     autocrlf = input
 [init]
-    templatedir = ~/.local/git
+    templateDir = ~/.local/git
 [filter "lfs"]
     process = git-lfs filter-process
     required = true
@@ -31,6 +31,7 @@
     short = true
     branch = true
     showStash = true
+    showUntrackedFiles = all
 [tag]
     gpgSign = true
 [user]
