@@ -11,10 +11,10 @@ my $home           = $ENV{"HOME"};
 my $battery_notice = $ENV{"NOTIFY_MESSAGES"} . "/battery";
 
 sub create_status() {
-    my $date   = `date +%Y-%m-%d`;
-    my $week   = `date +%a | tr '[:lower:]' '[:upper:]'`;
-    my $time   = `date +%H:%M`;
-    my $bright = `sys brightness`;
+    my $date     = `date +%Y-%m-%d`;
+    my $week     = `date +%a | tr '[:lower:]' '[:upper:]'`;
+    my $time     = `date +%H:%M`;
+    my $bright   = `sys brightness`;
     my $vol      = `sys volume-status`;
     my $bat_text = "";
     if ( -e "/usr/bin/acpi" ) {
