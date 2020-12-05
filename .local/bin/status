@@ -9,6 +9,7 @@ my $bat_path       = "/sys/class/power_supply/BAT";
 my $no_status      = "/tmp/nostatus";
 my $home           = $ENV{"HOME"};
 my $battery_notice = $ENV{"NOTIFY_MESSAGES"} . "/battery";
+my $history_root   = "$home/.cache/history/";
 
 sub create_status() {
     my $date     = `date +%Y-%m-%d`;
@@ -103,16 +104,25 @@ if (@ARGV) {
         create_status;
     }
     elsif ( $command eq "cleanup" ) {
-        my $cleanup = `date +%Y-%m-%d`;
-        chomp $cleanup;
+        my $cleanup_date = `date +%Y-%m-%d`;
+        chomp $cleanup_date;
         my $cleanup_dir = "/tmp/cleanup/";
         if ( !-d $cleanup_dir ) {
             mkdir $cleanup_dir;
         }
-        $cleanup = $cleanup_dir . $cleanup;
+        my $cleanup = $cleanup_dir . $cleanup_date;
         exit if -e $cleanup;
         for ( ( "undo", "swap", "backup" ) ) {
             system("find $home/.vim/$_/ -type f -mtime +1 -exec rm {} \\;");
+        }
+        my $history_dir = "$history_root$cleanup_date";
+        system("mkdir -p $history_dir");
+        system("rsync -ar $home/.mozilla/ $history_dir/mozilla");
+        system("cp .bash_history $history_dir/bash_history");
+        my $cnt = 0;
+        for my $cleanup (`ls $history_root | sort -r`) {
+            $cnt++;
+            system("rm -rf $history_root$cleanup") if ( $cnt > 3 );
         }
         system("touch $cleanup");
     }

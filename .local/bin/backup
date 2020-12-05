@@ -96,9 +96,5 @@ if ( !$ENV{"IS_DESKTOP"} ) {
 system("rm -f $notify $check");
 dryrun;
 
-print "\n=> sending backups\n";
-system(
-"ssh $server 'find ~/store/Active/Drop/Profiles -mindepth 1 -maxdepth 1 -mtime +7 -name '*$host*' -type d -exec rm -rf {} \\;'"
-);
-system("rsync -avr /opt/backup/ $server:~/store/Active/Drop/Profiles/");
+system("rsync -av /opt/backup/ $server:/opt/backup/");
 clean;
