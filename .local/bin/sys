@@ -65,6 +65,24 @@ elsif ( $cmd eq "history" ) {
 elsif ( $cmd eq "brightness" ) {
     print current_brightness;
 }
+elsif ( $cmd eq "browser" ) {
+    my $target = shift @ARGV;
+    my $error = "no target";
+    if ( $target ) {
+        $error = "browser not available";
+        my $browser = $ENV{"BROWSER"};
+        my $pgrep = `pgrep -f $browser`;
+        chomp $pgrep;
+        if ( $pgrep ) {
+            system("$browser $target");
+            $error = "";
+        }
+    }
+    if ( $error ) {
+        print "unable to open system browser: $error\n";
+        exit 1;
+    }
+}
 elsif ($cmd eq "$light_reset"
     or $cmd eq "$light_brighter"
     or $cmd eq "$light_dimmer"
