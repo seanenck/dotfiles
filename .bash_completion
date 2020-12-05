@@ -1,12 +1,4 @@
 #!/bin/bash
-_totp() {
-    local opts cur
-    opts=$(totp list)
-    cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-}
-
-
 _wiki() {
     local cur opts
     cur=${COMP_WORDS[COMP_CWORD]}
@@ -36,6 +28,5 @@ echo "$PATH" | grep -q "/home/enck"
 if [ $? -eq 0 ]; then
     complete -F _sys sys
     complete -F _backup backup
-    complete -F _totp totp
     complete -F _wiki wiki
 fi
