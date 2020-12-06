@@ -27,7 +27,7 @@ sub dryrun {
     }
     for ( ( $mirrors, $repo ) ) {
         system(
-"find $_ -type f -printf '%p.%TY-%Tm-%TdT%TH:%TM:%TS\n' | sort >> $hashes"
+"find $_ -type f -printf '%p.%TY-%Tm-%TdT%TH:%TM:%TS\n' | grep -v '${mirrors}notebook' | sort >> $hashes"
         );
     }
     system("echo 'backup:required' > $notify")
