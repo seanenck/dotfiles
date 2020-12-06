@@ -113,7 +113,10 @@ if (@ARGV) {
         my $cleanup = $cleanup_dir . $cleanup_date;
         exit if -e $cleanup;
         for ( ( "undo", "swap", "backup" ) ) {
-            system("find $home/.vim/$_/ -type f -mtime +1 -exec rm {} \\;");
+            my $vim_dir = "$home/.vim/$_/";
+            if ( -d $vim_dir ) {
+                system("find $vim_dir -type f -mtime +1 -exec rm {} \\;");
+            }
         }
         my $history_dir = "$history_root$cleanup_date";
         system("mkdir -p $history_dir");
@@ -150,7 +153,7 @@ while (1) {
         system("status notify &");
         system("status mail &");
         system("status cleanup &");
-        system("status wii &");
+        system("status wiki &");
         $cnt = 0;
     }
     sleep 5;

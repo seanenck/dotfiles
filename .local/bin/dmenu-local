@@ -75,6 +75,7 @@ if ( $stdout eq $fastmail ) {
 
 if ( $stdout eq $wiki ) {
     system( "zim" );
+    exit;
 }
 
 if ( $stdout eq $passwords ) {
