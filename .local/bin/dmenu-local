@@ -12,9 +12,10 @@ my $browser   = "/usr/bin/firefox-developer-edition";
 my $fastmail  = "fastmail";
 my $passwords = "passwords";
 my $host      = hostname;
+my $wiki      = "wiki";
 
 my %available;
-foreach my $app ( "vlc", "pavucontrol", $fastmail, $passwords, "mumble" ) {
+foreach my $app ( "vlc", "pavucontrol", $fastmail, $passwords, "mumble", "wiki" ) {
     if ( $fastmail eq $app ) {
         if ( $ENV{"IS_DESKTOP"} ) {
             next;
@@ -70,6 +71,10 @@ if ( $stdout eq $fastmail ) {
     );
     system( "cd /home/enck/downloads && " . shell_quote @localcmd );
     exit;
+}
+
+if ( $stdout eq $wiki ) {
+    system( "zim" );
 }
 
 if ( $stdout eq $passwords ) {

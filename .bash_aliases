@@ -26,7 +26,7 @@ if [ -z "$IS_DESKTOP" ]; then
     alias mail="sys mail"
 fi
 
-for f in mutt mumble $BROWSER; do
+for f in mutt mumble $BROWSER zim; do
     alias $f="echo disabled in bash"
 done
 

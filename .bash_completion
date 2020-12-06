@@ -1,10 +1,4 @@
 #!/bin/bash
-_wiki() {
-    local cur opts
-    cur=${COMP_WORDS[COMP_CWORD]}
-    opts=$(find ~/store/personal/mirror/notebook -type f -name "*.md" | sed "s#/home/enck/store/personal/mirror/notebook/##g")
-    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-}
 
 _backup() {
     local cur
@@ -28,5 +22,4 @@ echo "$PATH" | grep -q "/home/enck"
 if [ $? -eq 0 ]; then
     complete -F _sys sys
     complete -F _backup backup
-    complete -F _wiki wiki
 fi
