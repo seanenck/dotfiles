@@ -4,6 +4,13 @@
 !.local/bin/
 !.local/lib/
 !.local/git/
+!.config/
+.config/*
+!.config/systemd
+.config/systemd/*
+!.config/systemd/user
+.config/systemd/user/*
+!.config/systemd/user/*.service
 
 *.pyc
 __pycache__
