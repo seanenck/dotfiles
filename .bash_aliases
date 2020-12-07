@@ -26,7 +26,7 @@ if [ -z "$IS_DESKTOP" ]; then
     alias mail="sys mail"
 fi
 
-for f in mutt mumble $BROWSER zim; do
+for f in mutt mumble $BROWSER zim fastmail; do
     alias $f="echo disabled in bash"
 done
 
@@ -39,15 +39,3 @@ firefox() {
     /usr/bin/$BROWSER "$@" &
     disown
 }
-
-if [ -x /usr/bin/mutt ]; then
-    fastmail() {
-        /usr/bin/mutt -F ~/.mutt/fastmail.muttrc
-    }
-fi
-
-if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
-    for f in $(ls ~/.local/bin); do
-        alias $f="echo '$f not available in schroot'"
-    done
-fi
