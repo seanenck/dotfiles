@@ -7,14 +7,7 @@
 
 . /etc/voidedtech/bash/bashrc
 
-export DESKTOP=novel
-export LAPTOP=margin
-export SERVER=shelf
-export TERM=xterm
-export PAGER=less
-export BROWSER=firefox-developer-edition
-export GOPATH="$HOME/.cache/go"
-export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
+source ~/.variables
 
 # check the window size after each command
 shopt -s checkwinsize
