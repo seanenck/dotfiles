@@ -1,7 +1,6 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-use Sys::Hostname;
 
 my $cache = $ENV{"HOME"} . "/.cache/backup/";
 mkdir $cache if !-d $cache;
@@ -14,7 +13,6 @@ my $hashes    = $cache . "hashes";
 my $lasthash  = $hashes . ".prev";
 my $backuplog = $check . ".log";
 my $server    = $ENV{"SERVER"};
-my $host      = hostname;
 
 my $mirrors = $ENV{"HOME"} . "/store/personal/mirror/";
 my $repo    = $ENV{"HOME"} . "/store/personal/private/";
@@ -25,9 +23,11 @@ sub dryrun {
         return;
     }
     for ( ( $mirrors, $repo ) ) {
-        system(
+        if ( -d $_ ) {
+            system(
 "find $_ -type f -printf '%p.%TY-%Tm-%TdT%TH:%TM:%TS\n' | sort >> $hashes"
-        );
+            );
+        }
     }
     system("notify-send -t 60000 'backup required'")
       if system("diff -u $hashes $lasthash > $backuplog") != 0;
@@ -57,16 +57,14 @@ die "backup system unavailable"
 print "\n=> cleaning up cache\n";
 system("find $cache -type f -mtime +30 -exec rm {} \\;");
 
-print "backing up mirrors\n";
-for (`ls $mirrors`) {
-    chomp;
-    my $prefix = "";
-    if ( $_ eq "notebook" ) {
-        $prefix = ".$host";
+if ( -d $mirrors ) {
+    print "backing up mirrors\n";
+    for (`ls $mirrors`) {
+        chomp;
+        system(
+    "rsync -avcr --delete-after $mirrors/$_/ $server:~/store/Active/Drop/Mirror/$_ | sed 's/^/$_ ->    /g'"
+        );
     }
-    system(
-"rsync -avcr --delete-after $mirrors/$_/ $server:~/store/Active/Drop/Mirror/$prefix$_ | sed 's/^/$_ ->    /g'"
-    );
 }
 
 if ( !$ENV{"IS_DESKTOP"} ) {

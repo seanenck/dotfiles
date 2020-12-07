@@ -6,7 +6,7 @@ use File::Copy qw(move);
 
 my $id       = 1000;
 my $home     = $ENV{"HOME"};
-my @dirs     = ( $home . "/.git", "/etc/.git", "/etc/personal/.git" );
+my @dirs     = ( $home . "/.git", "/etc/.git", "/etc/personal/.git", $home . "/store/personal/notebook/.git" );
 for ( "workspace", "store" ) {
     my $found = `find $home/$_/ -maxdepth 3 -type d -name ".git" | tr '\n' ' '`;
     chomp $found;
