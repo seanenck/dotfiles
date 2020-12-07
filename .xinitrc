@@ -21,7 +21,6 @@ else
     xrandr --output DP-2-8 --mode 2560x1440
     xrandr --output DP-2-1-8 --right-of DP-2-8 --mode 2560x1440 --rotate right
 fi
-$HOME/.local/bin/sys volume-reset
 xinput list | grep -q "TPPS/2 IBM TrackPoint"
 if [ $? -eq 0 ]; then
     trackpoint=$(xinput list | grep "TPPS/2 IBM TrackPoint" | cut -d "=" -f 2 | tr '\t' ' ' | cut -d " " -f 1)

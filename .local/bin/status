@@ -16,7 +16,6 @@ sub create_status() {
     my $week     = `date +%a | tr '[:lower:]' '[:upper:]'`;
     my $time     = `date +%H:%M`;
     my $bright   = `sys brightness`;
-    my $vol      = `sys volume-status`;
     my $bat_text = "";
     if ( -e "/usr/bin/acpi" ) {
         my $bat_stat = "";
