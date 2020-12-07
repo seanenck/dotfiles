@@ -10,7 +10,6 @@ mkdir $tmp if !-d $tmp;
 my $check = `date +%Y-%m-%d.%H`;
 chomp $check;
 $check = $tmp . $check;
-my $notify    = $ENV{"NOTIFY_MESSAGES"} . "/backup";
 my $hashes    = $cache . "hashes";
 my $lasthash  = $hashes . ".prev";
 my $backuplog = $check . ".log";
@@ -30,13 +29,9 @@ sub dryrun {
 "find $_ -type f -printf '%p.%TY-%Tm-%TdT%TH:%TM:%TS\n' | sort >> $hashes"
         );
     }
-    system("echo 'backup:required' > $notify")
+    system("notify-send -t 60000 'backup required'")
       if system("diff -u $hashes $lasthash > $backuplog") != 0;
     system("mv $hashes $lasthash");
-}
-
-sub clean {
-    system("rm -f $notify");
 }
 
 if (@ARGV) {
@@ -47,7 +42,6 @@ if (@ARGV) {
         exit 0;
     }
     elsif ( $mode eq "clear" ) {
-        clean;
         exit 0;
     }
     else {
@@ -93,8 +87,7 @@ if ( !$ENV{"IS_DESKTOP"} ) {
     }
 }
 
-system("rm -f $notify $check");
+system("rm -f $check");
 dryrun;
 
 system("rsync -av /var/cache/voidedtech/backup/ $server:/var/cache/voidedtech/backup/");
-clean;
