@@ -6,7 +6,6 @@ use File::Copy qw(move);
 
 my $id       = 1000;
 my $home     = $ENV{"HOME"};
-my $messages = $ENV{"NOTIFY_MESSAGES"} . "/";
 my @dirs     = ( $home . "/.git", "/etc/.git", "/etc/personal/.git" );
 for ( "workspace", "store" ) {
     my $found = `find $home/$_/ -maxdepth 3 -type d -name ".git" | tr '\n' ' '`;
@@ -93,16 +92,6 @@ if ( $kernel == 1 ) {
     push @alerts, "kernel:linux: kernel";
 }
 
-for my $file (`ls $messages`) {
-    my $notice = `cat $messages$file`;
-    chomp $notice;
-    for my $line ( split( "\n", $notice ) ) {
-        my @category = split( ":", $line );
-        push @cats,   $category[0];
-        push @alerts, $line;
-    }
-}
-
 if ( @alerts == 0 ) {
     system("dunstify -C $id");
     exit 0;
@@ -123,10 +112,11 @@ for my $cat (@cats) {
     }
     $text = $text . "$cat:\n";
     my @remainders;
+    my $idx = 0;
     for my $alert (@alerts) {
         if ( $alert =~ /^$cat:/ ) {
             my $msg = $alert =~ s/^$cat://g;
-            $text = $text . "  $alert\n";
+            $text = $text . "└  $alert\n";
             next;
         }
         push @remainders, $alert;

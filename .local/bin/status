@@ -8,7 +8,6 @@ use autodie;
 my $bat_path       = "/sys/class/power_supply/BAT";
 my $no_status      = "/tmp/nostatus";
 my $home           = $ENV{"HOME"};
-my $battery_notice = $ENV{"NOTIFY_MESSAGES"} . "/battery";
 my $history_root   = "$home/.cache/history/";
 
 if (@ARGV) {
