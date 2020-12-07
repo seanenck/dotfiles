@@ -22,16 +22,6 @@ for file in $HOME/.bash_aliases \
     fi
 done
 
-if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
-    PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
-    if [ ! -z "$SSH_AUTH_SOCK" ]; then
-        export SSH_AUTH_SOCK="$SSH_AUTH_SOCK"
-    fi
-    return
-fi
-
-mkdir -p /dev/shm/schroot/overlay
-
 unset SSH_AGENT_PID
 if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
     export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
