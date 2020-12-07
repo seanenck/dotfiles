@@ -16,17 +16,11 @@ random_caps() {
     echo "$res"
 }
 
-if [ -x /usr/bin/ncmpc ]; then
-    ncmpc() {
-        /usr/bin/ncmpc --host $SERVER
-    }
-fi
-
 if [ -z "$IS_DESKTOP" ]; then
     alias mail="sys mail"
 fi
 
-for f in mutt mumble $BROWSER zim fastmail; do
+for f in mutt mumble $BROWSER zim; do
     alias $f="echo disabled in bash"
 done
 
