@@ -11,70 +11,9 @@ my $home           = $ENV{"HOME"};
 my $battery_notice = $ENV{"NOTIFY_MESSAGES"} . "/battery";
 my $history_root   = "$home/.cache/history/";
 
-sub create_status() {
-    my $date     = `date +%Y-%m-%d`;
-    my $week     = `date +%a | tr '[:lower:]' '[:upper:]'`;
-    my $time     = `date +%H:%M`;
-    my $bright   = `sys brightness`;
-    my $bat_text = "";
-    if ( -e "/usr/bin/acpi" ) {
-        my $bat_stat = "";
-        my $bat      = 0;
-        for ( ( 0, 1 ) ) {
-            my $bat_cur = `acpi | grep "Battery $_:" | cut -d "," -f 2`;
-            chomp $bat_cur;
-            if ($bat_cur) {
-                $bat_cur =~ s/ //g;
-                $bat_cur =~ s/%//g;
-                if ($bat_stat) {
-                    $bat_stat = "$bat_stat,";
-                }
-                $bat_stat = "$bat_stat$bat_cur";
-                $bat      = $bat + $bat_cur;
-            }
-        }
-        my $warning = 0;
-        my $charge  = `status charging`;
-        if ( $charge ne "+" ) {
-            if ( $bat < 20 ) {
-                $warning = 1;
-                system("echo 'battery:LOW' > $battery_notice");
-            }
-        }
-        system("rm -f $battery_notice") if $warning == 0;
-        $bat_text = "|bat:$bat_stat$charge";
-    }
-    my $online = system("wsw online") ? "DOWN" : "UP";
-    my $addr   = `wsw addr`;
-    my $status =
-      "$date|$week|$time|disp:$bright|vol:$vol$bat_text|$online:$addr";
-    $status =~ s/\n//g;
-    system("xsetroot -name '$status'");
-}
-
 if (@ARGV) {
     my $command = $ARGV[0];
-    if ( $command eq "charging" ) {
-        my $charge = "-";
-        if ( `cat /sys/class/power_supply/AC/online` == "1" ) {
-            $charge = "+";
-        }
-        print $charge;
-    }
-    elsif ( $command eq "toggle" || $command eq "sleep" ) {
-        my $change = "on";
-        if ( -e "$no_status" || $command eq "sleep" ) {
-            system("rm -f $no_status");
-        }
-        else {
-            $change = "off";
-            system("touch $no_status");
-        }
-        if ( $command ne "sleep" ) {
-            system("notify-send -t 5000 'notifications: $change'");
-        }
-    }
-    elsif ( $command eq "mail" ) {
+    if ( $command eq "mail" ) {
         exit if system("wsw online");
         exit if system("wsw status") != 0;
         my $mail_files = "/tmp/mail";
@@ -98,9 +37,6 @@ if (@ARGV) {
         if ( not -e $no_status ) {
             system("perl $home/.local/lib/notify.pl");
         }
-    }
-    elsif ( $command eq "line" ) {
-        create_status;
     }
     elsif ( $command eq "cleanup" ) {
         my $cleanup_date = `date +%Y-%m-%d`;
@@ -146,7 +82,6 @@ if (@ARGV) {
 
 my $cnt = 1;
 while (1) {
-    system("status line");
     $cnt++;
     if ( $cnt >= 5 ) {
         system("status notify &");
