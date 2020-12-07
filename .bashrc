@@ -29,11 +29,6 @@ for file in $HOME/.bash_aliases \
     fi
 done
 
-if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
-    exec startx $HOME/.xinitrc 2>&1 | systemd-cat -t "xinit"
-    exit
-fi
-
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
     PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
     if [ ! -z "$SSH_AUTH_SOCK" ]; then
