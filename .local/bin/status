@@ -6,14 +6,15 @@ use File::Copy qw(move);
 use autodie;
 
 my $home         = $ENV{"HOME"};
-my $status       = "$home/.local/bin/status";
+my $bin          = "$home/.local/bin/";
+my $status       = "$bin/status";
+my $sys          = "$bin/sys";
 my $history_root = "$home/.cache/history/";
 
 if (@ARGV) {
     my $command = $ARGV[0];
     if ( $command eq "mail" ) {
-        exit if system("wsw online");
-        exit if system("wsw status") != 0;
+        exit if system("$sys online");
         my $mail_files = "/tmp/mail";
         if ( !-d $mail_files ) {
             mkdir $mail_files;

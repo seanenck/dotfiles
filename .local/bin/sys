@@ -66,6 +66,9 @@ elsif ( $cmd eq "browser" ) {
         print "unable to open system browser: $error\n";
         exit 1;
     }
+} elsif ( $cmd eq "online" ) {
+    my $exit = system("ping -c1 -w5 voidedtech.com > /dev/null 2>&1") == 0 ? 0 : 1;
+    exit $exit;
 }
 else {
     print "unknown command";

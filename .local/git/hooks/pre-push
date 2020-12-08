@@ -2,7 +2,8 @@
 use strict;
 use warnings;
 
-if ( system("wsw online") == 0 ) {
+my $home = $ENV{"HOME"}
+if ( system("$home/.local/bin/sys online") == 0 ) {
     if ( system("git remote get-url origin | grep -q voidedtech.com") == 0 ) {
         system("pkgl trigger 2>&1 | systemd-cat -t postcommit");
     }
