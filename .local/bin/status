@@ -5,10 +5,9 @@ use File::Compare;
 use File::Copy qw(move);
 use autodie;
 
-my $bat_path       = "/sys/class/power_supply/BAT";
-my $no_status      = "/tmp/nostatus";
-my $home           = $ENV{"HOME"};
-my $history_root   = "$home/.cache/history/";
+my $home         = $ENV{"HOME"};
+my $status       = "$home/.local/bin/status";
+my $history_root = "$home/.cache/history/";
 
 if (@ARGV) {
     my $command = $ARGV[0];
@@ -33,9 +32,7 @@ if (@ARGV) {
         system("touch $mail_files");
     }
     elsif ( $command eq "notify" ) {
-        if ( not -e $no_status ) {
-            system("perl $home/.local/lib/notify.pl");
-        }
+        system("perl $home/.local/lib/notify.pl");
     }
     elsif ( $command eq "cleanup" ) {
         my $cleanup_date = `date +%Y-%m-%d`;
@@ -67,7 +64,7 @@ if (@ARGV) {
         my $wiki = "$home/.cache/wiki/";
         my $hash = "${wiki}hash";
         my $prev = $hash . ".prev";
-        my $note = "$home/store/personal/mirror/notebook";
+        my $note = "$home/store/personal/notebook";
         system("mkdir -p $wiki");
         system("find $note -type f -exec md5sum {} \\; > $hash");
         if ( -e $prev ) {
@@ -83,10 +80,10 @@ my $cnt = 1;
 while (1) {
     $cnt++;
     if ( $cnt >= 5 ) {
-        system("status notify &");
-        system("status mail &");
-        system("status cleanup &");
-        system("status wiki &");
+        system("$status notify &");
+        system("$status mail &");
+        system("$status cleanup &");
+        system("$status wiki &");
         $cnt = 0;
     }
     sleep 5;

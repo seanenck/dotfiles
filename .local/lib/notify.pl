@@ -52,11 +52,14 @@ if ( -d $imap ) {
 }
 
 system("backup status");
-for (`pacman -Qqdt`) {
-    chomp;
-    next if !$_;
-    push @cats,   "orphan";
-    push @alerts, "orphan:$_";
+
+for my $pacman (("qdt", "m")) {
+    for (`pacman -Q$pacman`) {
+        chomp;
+        next if !$_;
+        push @cats,   "orphan";
+        push @alerts, "orphan:$_";
+    }
 }
 
 my $cache_cat = 0;
