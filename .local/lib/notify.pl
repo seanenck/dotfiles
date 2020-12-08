@@ -98,6 +98,6 @@ if ( $kernel == 1 ) {
 }
 
 $cnt = 2200;
-if ( system("backup status") != 0 ) {
+if ( system("/home/enck/.local/bin/backup status") != 0 ) {
     notify $cnt, "backup: required";
 }
