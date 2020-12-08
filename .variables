@@ -1,6 +1,6 @@
 #!/bin/bash
 export DESKTOP=novel
-export LAPTOP=margin
+export LAPTOP=story
 export SERVER=shelf
 export TERM=xterm
 export PAGER=less
