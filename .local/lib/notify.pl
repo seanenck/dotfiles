@@ -41,7 +41,7 @@ for my $dir (@dirs) {
     }
 }
 
-$cnt = 2000;
+$cnt = 1100;
 my $imap = "$home/store/personal/imap/fastmail";
 if ( -d $imap ) {
     for (`find $imap -type d -name new -exec dirname {} \\; | grep -v Trash`) {
@@ -57,7 +57,7 @@ if ( -d $imap ) {
     }
 }
 
-$cnt = 3000;
+$cnt = 1200;
 for my $pacman (("qdt", "m")) {
     $cnt += 100;
     for (`pacman -Q$pacman`) {
@@ -68,7 +68,7 @@ for my $pacman (("qdt", "m")) {
     }
 }
 
-$cnt = 4000;
+$cnt = 2000;
 for my $cache ( ( "/var/cache/pacman/pkg", "/srv/http/pacman-cache" ) ) {
     $cnt++;
     if ( -d $cache ) {
@@ -92,9 +92,12 @@ for ( ("linux") ) {
     }
 }
 
-$cnt = 5000;
+$cnt = 2100;
 if ( $kernel == 1 ) {
     notify $cnt, "kernel: linux";
 }
 
-system("backup status");
+$cnt = 2200;
+if ( system("backup status") != 0 ) {
+    notify $cnt, "backup: required";
+}

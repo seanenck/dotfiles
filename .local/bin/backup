@@ -13,6 +13,7 @@ my $hashes    = $cache . "hashes";
 my $lasthash  = $hashes . ".prev";
 my $backuplog = $check . ".log";
 my $server    = $ENV{"SERVER"};
+my $notice    = $tmp . "notify";
 
 my $mirrors = $ENV{"HOME"} . "/store/personal/mirror/";
 my $repo    = $ENV{"HOME"} . "/store/personal/private/";
@@ -29,7 +30,7 @@ sub dryrun {
             );
         }
     }
-    system("notify-send -t 60000 'backup required'")
+    system("touch $notice")
       if system("diff -u $hashes $lasthash > $backuplog") != 0;
     system("mv $hashes $lasthash");
 }
@@ -37,6 +38,7 @@ sub dryrun {
 if (@ARGV) {
     my $mode = shift @ARGV;
     if ( $mode eq "status" ) {
+        exit 1 if ( -e $notice );
         dryrun;
         system("touch $check");
         exit 0;
@@ -88,4 +90,5 @@ if ( !$ENV{"IS_DESKTOP"} ) {
 system("rm -f $check");
 dryrun;
 
+system("rm -f $notice");
 system("rsync -av /var/cache/voidedtech/backup/ $server:/var/cache/voidedtech/backup/");
