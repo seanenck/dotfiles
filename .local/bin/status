@@ -29,7 +29,7 @@ if (@ARGV) {
             exit;
         }
         exit if -e "$mail_files";
-        system("sys mail");
+        system("$sys mail");
         system("touch $mail_files");
     }
     elsif ( $command eq "notify" ) {
