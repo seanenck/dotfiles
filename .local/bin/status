@@ -64,7 +64,7 @@ if (@ARGV) {
         system("touch $cleanup");
     }
     elsif ( $command eq "backup" ) {
-        system("perl ${lib}backup.pl | systemd-cat -t backup");
+        system("source ~/.variables && perl ${lib}backup.pl | systemd-cat -t backup");
     }
     elsif ( $command eq "wiki" ) {
         my $wiki = "$home/.cache/wiki/";
