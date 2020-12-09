@@ -23,7 +23,7 @@ if ( -d $mirrors ) {
     for (`ls $mirrors`) {
         chomp;
         system(
-    "rsync -avcr --delete-after $mirrors/$_/ rsync://$server:~/mirror/$_ | sed 's/^/$_ ->    /g'"
+    "rsync -avcr --delete-after $mirrors/$_/ rsync://$server/mirror/$_/"
         );
     }
 }
