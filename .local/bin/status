@@ -8,7 +8,6 @@ use autodie;
 my $home         = $ENV{"HOME"};
 my $local        = "$home/.local/";
 my $bin          = "${local}bin/";
-my $lib          = "${local}lib/";
 my $status       = "$bin/status";
 my $sys          = "$bin/sys";
 my $history_root = "$home/.cache/history/";
@@ -35,7 +34,7 @@ if (@ARGV) {
         system("touch $mail_files");
     }
     elsif ( $command eq "notify" ) {
-        system("perl ${lib}notify.pl");
+        system("perl ${bin}notify.pl");
     }
     elsif ( $command eq "cleanup" ) {
         my $cleanup_date = `date +%Y-%m-%d`;
@@ -64,7 +63,7 @@ if (@ARGV) {
         system("touch $cleanup");
     }
     elsif ( $command eq "backup" ) {
-        system("source ~/.variables && perl ${lib}backup.pl | systemd-cat -t backup");
+        system("source ~/.variables && perl ${bin}backup.pl | systemd-cat -t backup");
     }
     elsif ( $command eq "wiki" ) {
         my $wiki = "$home/.cache/wiki/";

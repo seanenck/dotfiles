@@ -2,7 +2,6 @@
 !.local/
 .local/*
 !.local/bin/
-!.local/lib/
 !.local/git/
 !.config/
 .config/*
