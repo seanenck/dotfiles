@@ -1,6 +1,6 @@
 [Desktop Entry]
 Comment=
-Exec=/home/enck/.local/lib/music.sh
+Exec=/home/enck/.local/bin/music.sh
 Icon=audacity
 Name=Music
 NoDisplay=false
