@@ -6,7 +6,9 @@ use File::Copy qw(move);
 use autodie;
 
 my $home         = $ENV{"HOME"};
-my $bin          = "$home/.local/bin/";
+my $local        = "$home/.local/";
+my $bin          = "${local}bin/";
+my $lib          = "${local}lib/";
 my $status       = "$bin/status";
 my $sys          = "$bin/sys";
 my $history_root = "$home/.cache/history/";
@@ -33,7 +35,7 @@ if (@ARGV) {
         system("touch $mail_files");
     }
     elsif ( $command eq "notify" ) {
-        system("perl $home/.local/lib/notify.pl");
+        system("perl ${lib}notify.pl");
     }
     elsif ( $command eq "cleanup" ) {
         my $cleanup_date = `date +%Y-%m-%d`;
@@ -61,6 +63,9 @@ if (@ARGV) {
         }
         system("touch $cleanup");
     }
+    elsif ( $command eq "backup" ) {
+        system("perl ${lib}backup.pl | systemd-cat -t backup");
+    }
     elsif ( $command eq "wiki" ) {
         my $wiki = "$home/.cache/wiki/";
         my $hash = "${wiki}hash";
@@ -85,6 +90,7 @@ while (1) {
         system("$status mail &");
         system("$status cleanup &");
         system("$status wiki &");
+        system("$status backup &");
         $cnt = 0;
     }
     sleep 5;
