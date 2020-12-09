@@ -26,7 +26,7 @@ sub dryrun {
     for ( ( $mirrors, $repo ) ) {
         if ( -d $_ ) {
             system(
-"find $_ -type f -printf '%p.%TY-%Tm-%TdT%TH:%TM:%TS\n' | sort >> $hashes"
+"find $_ -type f -printf '%p.%TY-%Tm-%TdT%TH:%TM:%TS\n' | grep -v gnupg | sort >> $hashes"
             );
         }
     }
