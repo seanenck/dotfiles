@@ -15,7 +15,6 @@ for ( "workspace", "store" ) {
 sub notify {
     my $id   = shift @_;
     my $text = shift @_;
-    system("dunstify -C $id");
     $text =~ s/:/\n└/g;
     system("dunstify -r $id -t 30000 '$text'");
 }

@@ -23,6 +23,9 @@ if ( $cmd eq "mail" ) {
 elsif ( $cmd eq "fastmail" or $cmd eq "music" ) {
     system("/bin/bash ~/.local/bin/$cmd.sh");
 }
+elsif ( $cmd eq "status" ) {
+    system("perl ~/.local/bin/status.pl");
+}
 elsif ( $cmd eq "autoclip" ) {
     system(
 "source ~/store/personal/config/etc/private.exports && PASSWORD_STORE_DIR=/home/enck/.pass/personal pass -c \$AUTOCLIP > /dev/null"

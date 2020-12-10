@@ -2,7 +2,7 @@
 Description=Locally status
 
 [Service]
-ExecStart=/home/enck/.local/bin/status
+ExecStart=/home/enck/.local/bin/sys status
 
 [Install]
 WantedBy=default.target
