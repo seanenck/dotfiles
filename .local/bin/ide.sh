@@ -13,7 +13,7 @@ else
     if [ ! -z "$1" ]; then
         if [[ "$1" == "start" ]]; then
             touch $IDE_FILE
-            kitty --start-as=maximized --title=ide
+            kitty --detach --start-as=maximized --title=ide
         fi
     fi
 fi
