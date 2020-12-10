@@ -69,7 +69,7 @@ elsif ( $cmd eq "browser" ) {
         }
     }
     if ( $error ) {
-        print "unable to open system browser: $error\n";
+        print "==========\nunable to open system browser: $error\n==========\n\n";
         exit 1;
     }
 } elsif ( $cmd eq "online" ) {
