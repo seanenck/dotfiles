@@ -24,6 +24,10 @@ for f in mutt mumble $BROWSER zim; do
     alias $f="echo disabled in bash"
 done
 
+for f in $(ls ~/.local/bin/ | grep "\.sh"); do
+    alias $f="echo not available in bash"
+done
+
 vlc() {
     /usr/bin/vlc "$@" &
     disown
