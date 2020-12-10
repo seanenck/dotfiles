@@ -1,6 +1,6 @@
 [Desktop Entry]
 Comment=
-Exec=/home/enck/.local/bin/fastmail.sh
+Exec=/home/enck/.local/bin/sys fastmail
 Icon=kube-mail
 Name=Fastmail
 NoDisplay=false
