@@ -1,0 +1,13 @@
+[Desktop Entry]
+Comment=
+Exec=/bin/bash /home/enck/.local/bin/ide.sh start
+Icon=kdevelop
+Name=IDE
+NoDisplay=false
+Path[$e]=
+StartupNotify=true
+Terminal=1
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=
