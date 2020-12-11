@@ -1,6 +1,6 @@
 [Desktop Entry]
 Comment=
-Exec=/bin/bash /home/enck/.local/bin/cluster.sh
+Exec=/bin/bash /home/enck/.local/bin/cluster.sh start
 Icon=computer
 Name=Cluster
 NoDisplay=false

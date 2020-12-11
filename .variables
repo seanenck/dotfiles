@@ -7,4 +7,5 @@ export PAGER=less
 export BROWSER=firefox-developer-edition
 export GOPATH="$HOME/.cache/go"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
-export IDE_FILE=/tmp/is_ide
+export KITTY_IDE_FILE=/tmp/is_ide
+export KITTY_CLUSTER_FILE=/tmp/is_cluster

@@ -6,13 +6,13 @@ _config () {
 }
 
 source ~/.variables
-if [ -e $IDE_FILE ]; then
-    rm $IDE_FILE
+if [ -e $KITTY_IDE_FILE ]; then
+    rm -f $KITTY_IDE_FILE
     _config > /dev/null
 else
     if [ ! -z "$1" ]; then
         if [[ "$1" == "start" ]]; then
-            touch $IDE_FILE
+            touch $KITTY_IDE_FILE
             kitty --detach --start-as=maximized --title=ide
         fi
     fi
