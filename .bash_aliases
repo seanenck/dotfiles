@@ -16,9 +16,7 @@ random_caps() {
     echo "$res"
 }
 
-if [ -z "$IS_DESKTOP" ]; then
-    alias mail="sys mail"
-fi
+alias mail="sys mail"
 
 for f in mutt mumble $BROWSER zim; do
     alias $f="echo disabled in bash"

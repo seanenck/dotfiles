@@ -10,10 +10,7 @@ _sys() {
     local cur opts
     cur=${COMP_WORDS[COMP_CWORD]}
     if [ $COMP_CWORD -eq 1 ]; then
-        opts="history"
-        if [ -z "$IS_DESKTOP" ]; then
-            opts="$opts mail"
-        fi
+        opts="history mail"
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     fi
 }
@@ -21,5 +18,4 @@ _sys() {
 echo "$PATH" | grep -q "/home/enck"
 if [ $? -eq 0 ]; then
     complete -F _sys sys
-    complete -F _backup backup
 fi
