@@ -6,8 +6,11 @@ _config () {
         vars="$vars --env=$i"
     done
     kitty @ goto-layout grid
-    for i in $(seq 1 7); do
-        kitty @ launch $vars ssh cluster$i
+    for i in $(seq 0 7); do
+        if [ $i -eq 6 ]; then
+            continue
+        fi
+        kitty @ launch $vars ssh cluster$i.voidedtech.com
     done
 }
 
