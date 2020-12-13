@@ -55,12 +55,6 @@ elsif ( $cmd eq "history" ) {
     }
     system("mv $hist $bash");
 }
-elsif ( $cmd eq "cluster" ) {
-    system("bash ~/.local/bin/cluster.sh start");
-}
-elsif ( $cmd eq "sshcluster" ) {
-    system("source ~/.variables && ssh " . $ENV{"KITTY_CLUSTER"} . ".voidedtech.com");
-}
 elsif ( $cmd eq "browser" ) {
     my $target = shift @ARGV;
     my $error = "no target";

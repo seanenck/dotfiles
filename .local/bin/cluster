@@ -1,0 +1,39 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+my @nodes  = ( 0, 1, 2, 3, 4, 5, 7 );
+my $script = "~/.local/bin/cluster.pl";
+my $arg    = "start";
+
+if (@ARGV) {
+    $arg = shift @ARGV;
+}
+
+if ( $arg eq "start" or $arg eq "run" ) {
+    my $cmds = join( " ", @ARGV );
+    system(
+"kitty --detach --start-as=maximized --title=cluster -- $script attach $cmds"
+    );
+}
+elsif ( $arg eq "attach" ) {
+    system("kitty @ goto-layout grid");
+    my $cmds = join( " ", @ARGV );
+    for my $node (@nodes) {
+        system(
+            "kitty @ launch --keep-focus $script ssh $node $cmds > /dev/null");
+    }
+    system("kitty @ close-window");
+}
+elsif ( $arg eq "ssh" ) {
+    my $node = shift @ARGV;
+    my $cmd  = join( " ", @ARGV );
+    if ($cmd) {
+        $cmd = "-- $cmd";
+    }
+    system("source ~/.variables && ssh cluster$node.voidedtech.com $cmd");
+    if ($cmd) {
+        print("\n\n\n");
+        system('read -p "ENTER to exit"');
+    }
+}

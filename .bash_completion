@@ -1,21 +1,22 @@
 #!/bin/bash
 
-_backup() {
-    local cur
-    cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "status clear" -- $cur) )
-}
-
 _sys() {
     local cur opts
     cur=${COMP_WORDS[COMP_CWORD]}
     if [ $COMP_CWORD -eq 1 ]; then
-        opts="history mail cluster"
+        opts="history mail"
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     fi
 }
 
-echo "$PATH" | grep -q "/home/enck"
-if [ $? -eq 0 ]; then
-    complete -F _sys sys
-fi
+_cluster() {
+    local cur opts
+    cur=${COMP_WORDS[COMP_CWORD]}
+    if [ $COMP_CWORD -eq 1 ]; then
+        opts="start run"
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    fi
+}
+
+complete -F _cluster cluster
+complete -F _sys sys
