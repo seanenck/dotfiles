@@ -1,16 +1,12 @@
 #!/bin/bash
 _config () {
-    local vars i
-    vars=""
-    for i in $(cat ~/.variables | grep "^export " | cut -d " " -f 2-); do
-        vars="$vars --env=$i"
-    done
+    local i
     kitty @ goto-layout grid
     for i in $(seq 0 7); do
         if [ $i -eq 6 ]; then
             continue
         fi
-        kitty @ launch $vars ssh cluster$i.voidedtech.com
+        kitty @ launch --env KITTY_CLUSTER="cluster$i" ~/.local/bin/sys sshcluster 
     done
 }
 
@@ -20,9 +16,12 @@ if [ -e $KITTY_CLUSTER_FILE ]; then
     _config > /dev/null
 else
     if [ ! -z "$1" ]; then
-        if [[ "$1" == "start" ]]; then
-            touch $KITTY_CLUSTER_FILE
-            kitty --detach --start-as=maximized --title=cluster
-        fi
+        echo "$1" > /tmp/action
+        case "$1" in
+            "start")
+                touch $KITTY_CLUSTER_FILE
+                kitty --detach --start-as=maximized --title=cluster
+                ;;
+        esac
     fi
 fi
