@@ -55,6 +55,9 @@ elsif ( $cmd eq "history" ) {
     }
     system("mv $hist $bash");
 }
+elsif ( $cmd eq "cluster" ) {
+    system("bash ~/.local/bin/cluster.sh start");
+}
 elsif ( $cmd eq "browser" ) {
     my $target = shift @ARGV;
     my $error = "no target";
