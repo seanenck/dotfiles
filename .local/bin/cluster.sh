@@ -6,8 +6,9 @@ _config () {
         if [ $i -eq 6 ]; then
             continue
         fi
-        kitty @ launch --env KITTY_CLUSTER="cluster$i" ~/.local/bin/sys sshcluster 
+        kitty @ launch --keep-focus --env KITTY_CLUSTER="cluster$i" ~/.local/bin/sys sshcluster 
     done
+    kitty @ close-window
 }
 
 source ~/.variables
