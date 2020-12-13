@@ -2,6 +2,7 @@
 export DESKTOP=novel
 export LAPTOP=story
 export SERVER=shelf
+export MUSIC=cluster2.voidedtech.com
 export TERM=xterm
 export PAGER=less
 export BROWSER=firefox-developer-edition
