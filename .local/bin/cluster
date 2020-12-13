@@ -28,9 +28,6 @@ elsif ( $arg eq "attach" ) {
 elsif ( $arg eq "productivity") {
     system("$script ssh 1");
 }
-elsif ( $arg eq "music" ) {
-    system("$script ssh 2");
-}
 elsif ( $arg eq "ssh" ) {
     my $node = shift @ARGV;
     my $cmd  = join( " ", @ARGV );
@@ -44,5 +41,5 @@ elsif ( $arg eq "ssh" ) {
     }
 }
 elsif ( $arg eq "help" ) {
-    print "run start productivity music";
+    print "run start productivity";
 }
