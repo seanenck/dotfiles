@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 my @nodes  = ( 0, 1, 2, 3, 4, 5, 7 );
-my $script = "~/.local/bin/cluster.pl";
+my $script = "~/.local/bin/cluster";
 my $arg    = "start";
 
 if (@ARGV) {
