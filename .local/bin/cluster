@@ -25,6 +25,9 @@ elsif ( $arg eq "attach" ) {
     }
     system("kitty @ close-window");
 }
+elsif ( $arg eq "productivity") {
+    system("$script ssh 1");
+}
 elsif ( $arg eq "ssh" ) {
     my $node = shift @ARGV;
     my $cmd  = join( " ", @ARGV );
@@ -36,4 +39,7 @@ elsif ( $arg eq "ssh" ) {
         print("\n\n\n");
         system('read -p "ENTER to exit"');
     }
+}
+elsif ( $arg eq "help" ) {
+    print "run start productivity";
 }
