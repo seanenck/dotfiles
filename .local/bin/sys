@@ -15,6 +15,7 @@ if ( $cmd eq "mail" ) {
         exit 0 if system("pgrep -x mbsync > /dev/null") == 0;
         my $mbsync = "/tmp/mbsync";
         mkdir $mbsync if ( !-d $mbsync );
+        system("notify-send -t 5000 'checking mail'");
         for ( ( "mbsync -a", "notmuch new" ) ) {
             system("$_ | systemd-cat -t 'mbsync'");
         }
