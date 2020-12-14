@@ -116,3 +116,7 @@ try
     nmap <C-w> :bp <BAR> bd #<CR>
 catch
 endtry
+
+let NERDTreeShowHidden=1
+nnoremap <C-o> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
