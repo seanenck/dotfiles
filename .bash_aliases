@@ -1,5 +1,3 @@
-alias clip="xclip -selection 'clip-board'"
-
 random_caps() {
     local n c res
     local s="$@"
