@@ -16,7 +16,7 @@ sub notify {
     my $id   = shift @_;
     my $text = shift @_;
     $text =~ s/:/\n└/g;
-    system("dunstify -r $id -t 30000 '$text'");
+    system("dunstify -r $id -t 45000 '$text'");
 }
 
 my $cnt = 1000;
