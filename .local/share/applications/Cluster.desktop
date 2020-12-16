@@ -1,8 +1,8 @@
 [Desktop Entry]
 Comment=
-Exec=/bin/bash /home/enck/.local/bin/applications.sh ide
-Icon=kdevelop
-Name=IDE
+Exec=/bin/bash /home/enck/.local/bin/applications.sh cluster
+Icon=computer
+Name=Cluster
 NoDisplay=false
 Path[$e]=
 StartupNotify=true
