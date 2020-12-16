@@ -1,6 +1,6 @@
 [Desktop Entry]
 Comment=
-Exec=/home/enck/.local/bin/sys music
+Exec=/bin/bash /home/enck/.local/bin/applications.sh music
 Icon=audacity
 Name=Music
 NoDisplay=false

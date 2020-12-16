@@ -28,6 +28,7 @@ if [[ "$action" == "" ]]; then
     exit 0
 fi
 
+cmd=""
 case $action in
     "ide")
         touch $KITTY_IDE
@@ -35,11 +36,17 @@ case $action in
     "cluster")
         touch $KITTY_CLUSTER
         ;;
+    "fastmail")
+        cmd="-d=$HOME/downloads /usr/bin/mutt -F $HOME/.mutt/fastmail.muttrc"
+        ;;
+    "music")
+        cmd="/usr/bin/ncmpc --host $SERVER"
+        ;;
     *)
         action=""
         ;;
 esac
 
 if [ ! -z "$action" ]; then
-    kitty --detach --start-as=maximized --title=$action
+    kitty --detach --start-as=maximized --title=$action $cmd
 fi
