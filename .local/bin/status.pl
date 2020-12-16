@@ -15,23 +15,25 @@ my $history_root = "$home/.cache/history/";
 if (@ARGV) {
     my $command = $ARGV[0];
     if ( $command eq "mail" ) {
-        exit if system("$sys online");
-        my $mail_files = "/tmp/mail";
-        if ( !-d $mail_files ) {
-            mkdir $mail_files;
-        }
+        exit if ( system("$sys online") != 0);
+        my $mail_dir = "/tmp/mail";
+        mkdir $mail_dir if ! -d $mail_dir;
         my $time = `date +%Y-%m-%d-%H-`;
         chomp $time;
         $time .= `date +%M` >= 30 ? "30" : "00";
-        $mail_files = $mail_files . "/$time";
-
-        unless ( system("pgrep -x mutt > /dev/null") ) {
-            system("rm -f $mail_files");
+        my $mail_file = $mail_dir . "/$time";
+        my $mutt = $mail_dir . "/mutt";
+        if ( system("pgrep -x mutt > /dev/null") == 0 ) {
+            system("touch $mutt");
             exit;
         }
-        exit if -e "$mail_files";
+        if ( -e $mutt ) {
+            system("rm -f $mutt $mail_file");
+        }
+
+        exit if -e "$mail_file";
         system("$sys mail");
-        system("touch $mail_files");
+        system("touch $mail_file");
     }
     elsif ( $command eq "notify" ) {
         system("perl ${bin}notify.pl");
@@ -84,13 +86,13 @@ if (@ARGV) {
 my $cnt = 1;
 while (1) {
     $cnt++;
-    if ( $cnt >= 5 ) {
+    if ( $cnt >= 30 ) {
         system("$status notify &");
-        system("$status mail &");
         system("$status cleanup &");
         system("$status wiki &");
         system("$status backup &");
         $cnt = 0;
     }
-    sleep 5;
+    system("$status mail &");
+    sleep 1;
 }
