@@ -37,6 +37,7 @@ case $action in
         touch $KITTY_CLUSTER
         ;;
     "fastmail")
+        $HOME/.local/bin/sys mail
         cmd="-d=$HOME/downloads /usr/bin/mutt -F $HOME/.mutt/fastmail.muttrc"
         ;;
     "music")
