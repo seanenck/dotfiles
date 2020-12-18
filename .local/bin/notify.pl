@@ -4,8 +4,11 @@ use strict;
 use File::Compare;
 use File::Copy qw(move);
 
-my $home     = $ENV{"HOME"};
-my @dirs     = ( $home . "/.git", "/etc/.git", "/etc/personal/.git", $home . "/store/personal/notebook/.git" );
+my $home = $ENV{"HOME"};
+my @dirs = (
+    $home . "/.git",
+    "/etc/.git", "/etc/personal/.git", $home . "/store/personal/notebook/.git"
+);
 for ( "workspace", "store" ) {
     my $found = `find $home/$_/ -maxdepth 3 -type d -name ".git" | tr '\n' ' '`;
     chomp $found;
@@ -57,7 +60,7 @@ if ( -d $imap ) {
 }
 
 $cnt = 1200;
-for my $pacman (("qdt", "m")) {
+for my $pacman ( ( "qdt", "m" ) ) {
     $cnt += 100;
     for (`pacman -Q$pacman`) {
         $cnt++;

@@ -55,23 +55,26 @@ elsif ( $cmd eq "history" ) {
 }
 elsif ( $cmd eq "browser" ) {
     my $target = shift @ARGV;
-    my $error = "no target";
-    if ( $target ) {
+    my $error  = "no target";
+    if ($target) {
         $error = "browser not available";
         my $browser = $ENV{"BROWSER"};
-        my $pgrep = `pgrep -f $browser`;
+        my $pgrep   = `pgrep -f $browser`;
         chomp $pgrep;
-        if ( $pgrep ) {
+        if ($pgrep) {
             system("$browser $target");
             $error = "";
         }
     }
-    if ( $error ) {
-        print "==========\nunable to open system browser: $error\n==========\n\n";
+    if ($error) {
+        print
+          "==========\nunable to open system browser: $error\n==========\n\n";
         exit 1;
     }
-} elsif ( $cmd eq "online" ) {
-    my $exit = system("ping -c1 -w5 voidedtech.com > /dev/null 2>&1") == 0 ? 0 : 1;
+}
+elsif ( $cmd eq "online" ) {
+    my $exit =
+      system("ping -c1 -w5 voidedtech.com > /dev/null 2>&1") == 0 ? 0 : 1;
     exit $exit;
 }
 else {

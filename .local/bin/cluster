@@ -8,14 +8,14 @@ my $arg    = "start";
 
 my %mapping;
 $mapping{"productivity"} = 1;
-$mapping{"webutils"} = 2;
-$mapping{"irc"} = 3;
+$mapping{"webutils"}     = 2;
+$mapping{"irc"}          = 3;
 
 if (@ARGV) {
     $arg = shift @ARGV;
 }
 
-if ( exists($mapping{$arg})) {
+if ( exists( $mapping{$arg} ) ) {
     system("$script ssh $mapping{$arg}");
     exit 0;
 }
@@ -35,7 +35,7 @@ elsif ( $arg eq "attach" ) {
     }
     system("kitty @ close-window");
 }
-elsif ( $arg eq "productivity") {
+elsif ( $arg eq "productivity" ) {
     system("$script ssh 1");
 }
 elsif ( $arg eq "webutils" ) {
@@ -55,5 +55,5 @@ elsif ( $arg eq "ssh" ) {
 }
 elsif ( $arg eq "help" ) {
     my @apps = keys %mapping;
-    print "run start " . join(" ", @apps);
+    print "run start " . join( " ", @apps );
 }

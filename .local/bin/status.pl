@@ -15,14 +15,15 @@ my $history_root = "$home/.cache/history/";
 if (@ARGV) {
     my $command = $ARGV[0];
     if ( $command eq "mail" ) {
-        exit if ( system("$sys online") != 0);
+        exit if ( system("$sys online") != 0 );
         my $mail_dir = "/tmp/mail";
-        mkdir $mail_dir if ! -d $mail_dir;
+        mkdir $mail_dir if !-d $mail_dir;
         my $time = `date +%Y-%m-%d-%H-`;
         chomp $time;
         $time .= `date +%M` >= 30 ? "30" : "00";
         my $mail_file = $mail_dir . "/$time";
-        my $mutt = $mail_dir . "/mutt";
+        my $mutt      = $mail_dir . "/mutt";
+
         if ( system("pgrep -x mutt > /dev/null") == 0 ) {
             system("touch $mutt");
             exit;
@@ -65,7 +66,9 @@ if (@ARGV) {
         system("touch $cleanup");
     }
     elsif ( $command eq "backup" ) {
-        system("source ~/.variables && perl ${bin}backup.pl | systemd-cat -t backup");
+        system(
+"source ~/.variables && perl ${bin}backup.pl | systemd-cat -t backup"
+        );
     }
     elsif ( $command eq "wiki" ) {
         my $wiki = "$home/.cache/wiki/";
@@ -78,7 +81,9 @@ if (@ARGV) {
             exit 0 if ( system("diff -u $prev $hash") == 0 );
         }
         system("mv $hash $prev");
-        system("zim --export $note --output $wiki/notebook/ --overwrite --index-page index");
+        system(
+"zim --export $note --output $wiki/notebook/ --overwrite --index-page index"
+        );
     }
     exit;
 }
