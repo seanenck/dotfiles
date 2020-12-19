@@ -28,8 +28,11 @@ if ( $arg eq "start" ) {
     );
 }
 elsif ( $arg eq "ready" ) {
-    system("clear");
-    print "finding idle node\n";
+    if ( system("~/.local/bin/sys online") != 0 ) {
+        print "unavailable\n";
+        exit 1;
+    }
+    print "\nfinding idle node\n";
     my $idle = -1; 
     my $data = "";
     for my $node (@nodes) {
