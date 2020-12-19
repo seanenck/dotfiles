@@ -32,15 +32,42 @@ if ( $arg eq "start" ) {
 }
 elsif ( $arg eq "ready" ) {
     $ENV{$ENV_NO_WAIT} = $IS_TRUE;
-    my $idle  = -1;
-    my $ready = 100;
+    my $idle   = -1;
+    my $tmpdir = "/tmp/cluster/";
+    mkdir $tmpdir if ! -d $tmpdir;
+    system("rm -f $tmpdir*");
     print "finding idle node\n";
+    my @readings;
     for my $node (@nodes) {
-        my $cpu = `$script ssh $node arm-cpu` + 0;
-        if ( $cpu < $ready ) {
-            $idle  = $node;
-            $ready = $cpu;
+        my $tmpcpu   = $tmpdir . "$node";
+        my $readycpu = $tmpcpu . ".ready"; 
+        system("($script ssh $node arm-cpu | sed 's/\$/ $node\\n/g' > $tmpcpu && mv $tmpcpu $readycpu) &");
+        push @readings, $readycpu;
+    }
+    my $count = 0;
+    my @next = @readings;
+    while (1) {
+        my @wait;
+        for my $file (@next) {
+            if ( ! -s $file ) {
+                push @wait, $file;
+            }
         }
+        @next = @wait;
+        if ( scalar(@next) > 0 ) {
+            if ( $count > 6 ) {
+                last;
+            }
+            system("sleep 0.5");
+        } else {
+            last;
+        }
+        $count++;
+    }
+    my $option = `cat $tmpdir/* | sort | head -n 1`;
+    chomp $option;
+    if ( $option ) {
+        $idle = `echo $option | cut -d " " -f 2` + 0;
     }
     if ( $idle < 0 ) {
         die "no idle node found";
