@@ -2,6 +2,9 @@
 use strict;
 use warnings;
 
+my $IS_TRUE     = "true";
+my $ENV_NO_WAIT = "CLUSTER_NO_WAIT";
+
 my @nodes  = ( 0, 1, 2, 3, 4, 5, 7 );
 my $script = "~/.local/bin/cluster";
 my $arg    = "start";
@@ -21,11 +24,28 @@ if ( exists( $mapping{$arg} ) ) {
     exit 0;
 }
 
-if ( $arg eq "start" or $arg eq "run" ) {
+if ( $arg eq "start" ) {
     my $cmds = join( " ", @ARGV );
     system(
 "kitty --detach --start-as=maximized --title=cluster -- $script attach $cmds"
     );
+}
+elsif ( $arg eq "ready" ) {
+    $ENV{$ENV_NO_WAIT} = $IS_TRUE;
+    my $idle  = -1;
+    my $ready = 100;
+    print "finding idle node\n";
+    for my $node (@nodes) {
+        my $cpu = `$script ssh $node arm-cpu` + 0;
+        if ( $cpu < $ready ) {
+            $idle  = $node;
+            $ready = $cpu;
+        }
+    }
+    if ( $idle < 0 ) {
+        die "no idle node found";
+    }
+    system("$script ssh $idle");
 }
 elsif ( $arg eq "attach" ) {
     system("kitty @ goto-layout grid");
@@ -48,13 +68,18 @@ elsif ( $arg eq "ssh" ) {
     if ($cmd) {
         $cmd = "-- $cmd";
     }
+    my $no_wait = $ENV{$ENV_NO_WAIT};
+    my $wait = 1;
+    if ( $no_wait and $no_wait eq $IS_TRUE ) {
+        $wait = 0;
+    }
     system("source ~/.variables && ssh cluster$node.voidedtech.com $cmd");
-    if ($cmd) {
+    if ( $wait == 1 and $cmd) {
         print("\n\n\n");
         system('read -p "ENTER to exit"');
     }
 }
 elsif ( $arg eq "help" ) {
     my @apps = keys %mapping;
-    print "run start " . join( " ", @apps );
+    print "start ready " . join( " ", @apps );
 }
