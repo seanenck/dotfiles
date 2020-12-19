@@ -2,9 +2,6 @@
 use strict;
 use warnings;
 
-my $IS_TRUE     = "true";
-my $ENV_NO_WAIT = "CLUSTER_NO_WAIT";
-
 my @nodes  = ( 0, 1, 2, 3, 4, 5, 7 );
 my $script = "~/.local/bin/cluster";
 my $arg    = "start";
@@ -31,43 +28,22 @@ if ( $arg eq "start" ) {
     );
 }
 elsif ( $arg eq "ready" ) {
-    $ENV{$ENV_NO_WAIT} = $IS_TRUE;
-    my $idle   = -1;
-    my $tmpdir = "/tmp/cluster/";
-    mkdir $tmpdir if ! -d $tmpdir;
-    system("rm -f $tmpdir*");
+    system("clear");
     print "finding idle node\n";
-    my @readings;
+    my $idle = -1; 
+    my $data = "";
     for my $node (@nodes) {
-        my $tmpcpu   = $tmpdir . "$node";
-        my $readycpu = $tmpcpu . ".ready"; 
-        system("($script ssh $node arm-cpu | sed 's/\$/ $node\\n/g' > $tmpcpu && mv $tmpcpu $readycpu) &");
-        push @readings, $readycpu;
-    }
-    my $count = 0;
-    my @next = @readings;
-    while (1) {
-        my @wait;
-        for my $file (@next) {
-            if ( ! -s $file ) {
-                push @wait, $file;
-            }
-        }
-        @next = @wait;
-        if ( scalar(@next) > 0 ) {
-            if ( $count > 6 ) {
-                last;
-            }
-            system("sleep 0.5");
-        } else {
+        my $data = `curl -s http://cluster$node.voidedtech.com:8888/status | grep -E "^(rat|date),"`;
+        chomp $data;
+        if ( $data ) {
+            my $date = `echo '$data' | grep '^date,' | cut -d ',' -f 2 | sed 's/^/  -> /g'`;
+            chomp $date;
+            my $low = `echo '$data' | grep '^rat,' | sed 's/,/ /g' | sort -k 2 -n | head -n 1 | cut -d ' ' -f 3 | cut -d '.' -f 1 | sed 's/cluster//g'`;
+            chomp $low;
+            $idle = $low + 0;
+            print "$date\n  -> source: $node\n  -> node: $idle\n";
             last;
         }
-        $count++;
-    }
-    my $option = `cat $tmpdir/* | sort | head -n 1`;
-    chomp $option;
-    if ( $option ) {
-        $idle = `echo $option | cut -d " " -f 2` + 0;
     }
     if ( $idle < 0 ) {
         die "no idle node found";
@@ -95,13 +71,8 @@ elsif ( $arg eq "ssh" ) {
     if ($cmd) {
         $cmd = "-- $cmd";
     }
-    my $no_wait = $ENV{$ENV_NO_WAIT};
-    my $wait = 1;
-    if ( $no_wait and $no_wait eq $IS_TRUE ) {
-        $wait = 0;
-    }
     system("source ~/.variables && ssh cluster$node.voidedtech.com $cmd");
-    if ( $wait == 1 and $cmd) {
+    if ( $cmd) {
         print("\n\n\n");
         system('read -p "ENTER to exit"');
     }
