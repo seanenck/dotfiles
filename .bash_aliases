@@ -14,8 +14,6 @@ random_caps() {
     echo "$res"
 }
 
-alias mail="sys mail"
-
 for f in mutt mumble $BROWSER zim ncmpc; do
     alias $f="echo disabled in bash"
 done

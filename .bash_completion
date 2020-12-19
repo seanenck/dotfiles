@@ -4,7 +4,7 @@ _sys() {
     local cur opts
     cur=${COMP_WORDS[COMP_CWORD]}
     if [ $COMP_CWORD -eq 1 ]; then
-        opts="history mail"
+        opts="history"
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     fi
 }
