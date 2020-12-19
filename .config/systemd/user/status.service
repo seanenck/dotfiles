@@ -1,5 +1,5 @@
 [Unit]
-Description=Locally status
+Description=Local status
 
 [Service]
 ExecStart=/home/enck/.local/bin/sys status
