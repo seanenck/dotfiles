@@ -31,23 +31,29 @@ elsif ( $arg eq "ready" ) {
         exit 1;
     }
     print "\nfinding idle node\n";
-    my $idle = -1; 
-    my $data = "";
-    my $options = join("\n", @nodes);
+    my $idle    = -1;
+    my $data    = "";
+    my $options = join( "\n", @nodes );
     for my $node (`echo '$options' | shuf`) {
         chomp $node;
-        if ( ! $node ) {
+        if ( !$node ) {
             next;
         }
-        my $data = `curl -s http://cluster$node.voidedtech.com:8888/status | grep -E "^(rat|date),"`;
+        my $data =
+`curl -s http://cluster$node.voidedtech.com:8888/status | grep -E "^(rat|date),"`;
         chomp $data;
-        if ( $data ) {
-            my $date = `echo '$data' | grep '^date,' | cut -d ',' -f 2 | sed 's/^/  -> /g'`;
+        if ($data) {
+            my $date =
+`echo '$data' | grep '^date,' | cut -d ',' -f 2 | sed 's/^/  -> /g'`;
             chomp $date;
-            $data = `echo '$data' | grep '^rat,' | sed 's/,/ /g' | sort -k 2 -n`;
+            $data =
+              `echo '$data' | grep '^rat,' | sed 's/,/ /g' | sort -k 2 -n`;
             chomp $data;
-            system("echo '$data' | awk '{print \"    -> \" \$3 \" (\" \$2 \")\"}'");
-            my $low = `echo '$data' | head -n 1 | cut -d ' ' -f 3 | cut -d '.' -f 1 | sed 's/cluster//g'`;
+            system(
+                "echo '$data' | awk '{print \"    -> \" \$3 \" (\" \$2 \")\"}'"
+            );
+            my $low =
+`echo '$data' | head -n 1 | cut -d ' ' -f 3 | cut -d '.' -f 1 | sed 's/cluster//g'`;
             chomp $low;
             $idle = $low + 0;
             print "$date\n  -> source: $node\n";
@@ -81,7 +87,7 @@ elsif ( $arg eq "ssh" ) {
         $cmd = "-- $cmd";
     }
     system("source ~/.variables && ssh cluster$node.voidedtech.com $cmd");
-    if ( $cmd) {
+    if ($cmd) {
         print("\n\n\n");
         system('read -p "ENTER to exit"');
     }
