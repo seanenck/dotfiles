@@ -9,8 +9,6 @@ my $arg    = "start";
 my %mapping;
 $mapping{"productivity"} = 1;
 $mapping{"webutils"}     = 2;
-$mapping{"irc"}          = 3;
-$mapping{"armdev"}       = 7;
 
 if (@ARGV) {
     $arg = shift @ARGV;
