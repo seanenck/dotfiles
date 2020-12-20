@@ -33,16 +33,24 @@ elsif ( $arg eq "ready" ) {
     print "\nfinding idle node\n";
     my $idle = -1; 
     my $data = "";
-    for my $node (@nodes) {
+    my $options = join("\n", @nodes);
+    for my $node (`echo '$options' | shuf`) {
+        chomp $node;
+        if ( ! $node ) {
+            next;
+        }
         my $data = `curl -s http://cluster$node.voidedtech.com:8888/status | grep -E "^(rat|date),"`;
         chomp $data;
         if ( $data ) {
             my $date = `echo '$data' | grep '^date,' | cut -d ',' -f 2 | sed 's/^/  -> /g'`;
             chomp $date;
-            my $low = `echo '$data' | grep '^rat,' | sed 's/,/ /g' | sort -k 2 -n | head -n 1 | cut -d ' ' -f 3 | cut -d '.' -f 1 | sed 's/cluster//g'`;
+            $data = `echo '$data' | grep '^rat,' | sed 's/,/ /g' | sort -k 2 -n`;
+            chomp $data;
+            system("echo '$data' | awk '{print \"    -> \" \$3 \" (\" \$2 \")\"}'");
+            my $low = `echo '$data' | head -n 1 | cut -d ' ' -f 3 | cut -d '.' -f 1 | sed 's/cluster//g'`;
             chomp $low;
             $idle = $low + 0;
-            print "$date\n  -> source: $node\n  -> node: $idle\n";
+            print "$date\n  -> source: $node\n";
             last;
         }
     }
