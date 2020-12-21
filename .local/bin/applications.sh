@@ -1,12 +1,19 @@
 #!/bin/bash
 KITTY_CLUSTER=/tmp/is_cluster
 KITTY_IDE=/tmp/is_ide
+KITTY_NODE=/tmp/is_node
 
 source ~/.variables
 
 if [ -e $KITTY_CLUSTER ]; then
     rm -f $KITTY_CLUSTER
     perl ~/.local/bin/cluster
+    exit 0
+fi
+
+if [ -e $KITTY_NODE ]; then
+    rm -f $KITTY_NODE
+    perl ~/.local/bin/cluster ready
     exit 0
 fi
 
@@ -35,6 +42,9 @@ case $action in
         ;;
     "cluster")
         touch $KITTY_CLUSTER
+        ;;
+    "node")
+        touch $KITTY_NODE
         ;;
     "fastmail")
         $HOME/.local/bin/sys mail &

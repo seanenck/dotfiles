@@ -1,0 +1,13 @@
+[Desktop Entry]
+Comment=
+Exec=/bin/bash /home/enck/.local/bin/applications.sh node
+Icon=computer
+Name=Node
+NoDisplay=false
+Path[$e]=
+StartupNotify=true
+Terminal=0
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=
