@@ -36,12 +36,14 @@ if [[ "$action" == "" ]]; then
 fi
 
 cmd=""
+screen="maximized"
 case $action in
     "ide")
         touch $KITTY_IDE
         ;;
     "cluster")
         touch $KITTY_CLUSTER
+        screen="minimized"
         ;;
     "node")
         touch $KITTY_NODE
@@ -59,5 +61,5 @@ case $action in
 esac
 
 if [ ! -z "$action" ]; then
-    kitty --detach --start-as=maximized --title=$action $cmd
+    kitty --detach --start-as=$screen --title=$action $cmd
 fi

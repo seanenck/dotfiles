@@ -31,5 +31,5 @@ firefox() {
 for f in $(git -C $HOME ls-files | grep "\.desktop"); do
     cmd=$(cat $f | grep "^Exec=" | cut -d "=" -f 2-)
     name=$(echo "$cmd" | rev | cut -d " " -f 1 | rev)
-    alias $name="$cmd"
+    alias $name.app="$cmd"
 done

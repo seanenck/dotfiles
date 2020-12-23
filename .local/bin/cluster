@@ -24,6 +24,7 @@ if ( $arg eq "start" ) {
     system(
 "kitty --detach --start-as=maximized --title=cluster -- $script attach $cmds"
     );
+    system("kitty @ close-window");
 }
 elsif ( $arg eq "ready" ) {
     if ( system("~/.local/bin/sys online") != 0 ) {
