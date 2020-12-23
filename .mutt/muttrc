@@ -53,8 +53,8 @@ macro index <F8> \
 <enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
 "notmuch: search mail"
 
-macro index \Cv '<enter-command>toggle sidebar_visible<enter><refresh>'
-macro pager \Cv '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
+macro index \Co '<enter-command>toggle sidebar_visible<enter><refresh>'
+macro pager \Co '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
 
 color hdrdefault blue black
 color quoted blue black
