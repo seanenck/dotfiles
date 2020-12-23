@@ -23,6 +23,10 @@ vlc() {
     disown
 }
 
+ide() {
+    bash ~/.local/bin/applications.sh ide
+}
+
 firefox() {
     /usr/bin/$BROWSER "$@" &
     disown
