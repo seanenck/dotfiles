@@ -50,9 +50,20 @@ elsif ( $arg eq "node" ) {
             $data =
               `echo '$data' | grep '^rat,' | sed 's/,/ /g' | sort -k 2 -n`;
             chomp $data;
-            system(
-                "echo '$data' | awk '{print \"    -> \" \$3 \" (\" \$2 \")\"}'"
-            );
+            my $first = 1;
+            for my $n (`echo '$data'`) {
+                chomp $n;
+                if ( ! $n ) {
+                    next;
+                }
+                my $entry = `echo '$n' | awk '{print \"    -> \" \$3 \" (\" \$2 \")\"}'`;
+                chomp $entry;
+                if ( $first == 1 ) {
+                    $entry = "\033[1;31m$entry \033[0m";
+                }
+                print $entry, "\n";
+                $first = 0;
+            }
             my $low =
 `echo '$data' | head -n 1 | cut -d ' ' -f 3 | cut -d '.' -f 1 | sed 's/cluster//g'`;
             chomp $low;
