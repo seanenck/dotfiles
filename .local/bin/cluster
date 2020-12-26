@@ -26,7 +26,7 @@ if ( $arg eq "start" ) {
     );
     system("kitty @ close-window");
 }
-elsif ( $arg eq "ready" ) {
+elsif ( $arg eq "node" ) {
     if ( system("~/.local/bin/sys online") != 0 ) {
         print "unavailable\n";
         exit 1;
@@ -95,5 +95,5 @@ elsif ( $arg eq "ssh" ) {
 }
 elsif ( $arg eq "help" ) {
     my @apps = keys %mapping;
-    print "start ready " . join( " ", @apps );
+    print "start node " . join( " ", @apps );
 }

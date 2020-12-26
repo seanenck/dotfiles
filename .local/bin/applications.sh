@@ -13,7 +13,7 @@ fi
 
 if [ -e $KITTY_NODE ]; then
     rm -f $KITTY_NODE
-    perl ~/.local/bin/cluster ready
+    perl ~/.local/bin/cluster node
     exit 0
 fi
 
