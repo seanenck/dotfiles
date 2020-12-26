@@ -37,3 +37,23 @@ for file in $HOME/.pass/env $HOME/store/personal/config/etc/private.exports; do
         . $file
     fi
 done
+
+_gitpull() {
+    TMP_GIT_PULL=$HOME/.cache/gitpull/
+    mkdir -p $TMP_GIT_PULL
+    TMP_GIT_TODAY=$TMP_GIT_PULL$(date +%Y-%m-%d)
+    if [ ! -e $TMP_GIT_TODAY ]; then
+        rm -f $TMP_GIT_PULL*
+        for f in $GIT_DIRS; do
+            dname=$(dirname $f)
+            remotes=$(git -C $dname remote | wc -l)
+            if [ $remotes -gt 0 ]; then
+                echo "pulling $dname"
+                git -C $dname pull
+            fi
+        done
+        touch $TMP_GIT_TODAY
+    fi
+}
+
+(_gitpull | systemd-cat -t gitpull &) > /dev/null 2>&1
