@@ -39,20 +39,28 @@ for file in $HOME/.pass/env $HOME/store/personal/config/etc/private.exports; do
 done
 
 _gitpull() {
-    TMP_GIT_PULL=$HOME/.cache/gitpull/
-    mkdir -p $TMP_GIT_PULL
-    TMP_GIT_TODAY=$TMP_GIT_PULL$(date +%Y-%m-%d)
-    if [ ! -e $TMP_GIT_TODAY ]; then
-        rm -f $TMP_GIT_PULL*
+    local tmp today valid dname f remotes
+    tmp=$HOME/.cache/gitpull/
+    mkdir -p $tmp
+    today=$tmp$(date +%Y-%m-%d)
+    if [ ! -e $today ]; then
+        rm -f $tmp*
+        valid=1
         for f in $GIT_DIRS; do
             dname=$(dirname $f)
             remotes=$(git -C $dname remote | wc -l)
             if [ $remotes -gt 0 ]; then
                 echo "pulling $dname"
                 git -C $dname pull
+                if [ $? -ne 0 ]; then
+                    valid=0
+                    echo "will retry"
+                fi
             fi
         done
-        touch $TMP_GIT_TODAY
+        if [ $valid -eq 1 ]; then
+            touch $today
+        fi
     fi
 }
 
