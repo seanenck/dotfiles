@@ -67,4 +67,6 @@ _gitpull() {
     fi
 }
 
-(_gitpull | systemd-cat -t gitpull &) > /dev/null 2>&1
+if [ -z "$SSH_CONNECTION" ]; then
+    (_gitpull | systemd-cat -t gitpull &) > /dev/null 2>&1
+fi
