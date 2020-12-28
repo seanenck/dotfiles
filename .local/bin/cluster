@@ -26,7 +26,7 @@ if ( $arg eq "start" ) {
     );
     system("kitty @ close-window");
 }
-elsif ( $arg eq "node" ) {
+elsif ( $arg eq "node" or $arg eq "rate" ) {
     if ( system("~/.local/bin/sys online") != 0 ) {
         print "unavailable\n";
         exit 1;
@@ -72,6 +72,9 @@ elsif ( $arg eq "node" ) {
             last;
         }
     }
+    if ( $arg eq "rate" ) {
+        exit 0;
+    }
     if ( $idle < 0 ) {
         die "no idle node found";
     }
@@ -106,5 +109,5 @@ elsif ( $arg eq "ssh" ) {
 }
 elsif ( $arg eq "help" ) {
     my @apps = keys %mapping;
-    print "start node " . join( " ", @apps );
+    print "start node rate " . join( " ", @apps );
 }
