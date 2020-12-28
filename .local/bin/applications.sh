@@ -52,9 +52,6 @@ case $action in
         $HOME/.local/bin/sys mail &
         cmd="-d=$HOME/downloads /usr/bin/mutt -F $HOME/.mutt/fastmail.muttrc"
         ;;
-    "music")
-        cmd="/usr/bin/ncmpc --host $SERVER"
-        ;;
     *)
         action=""
         ;;

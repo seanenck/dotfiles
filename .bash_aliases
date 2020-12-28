@@ -14,7 +14,7 @@ random_caps() {
     echo "$res"
 }
 
-for f in mutt mumble $BROWSER zim ncmpc; do
+for f in mutt mumble $BROWSER zim; do
     alias $f="echo disabled in bash"
 done
 
