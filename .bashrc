@@ -38,35 +38,6 @@ for file in $HOME/.pass/env $HOME/store/personal/config/etc/private.exports; do
     fi
 done
 
-_gitpull() {
-    local tmp today valid dname f remotes
-    tmp=$HOME/.cache/gitpull/
-    mkdir -p $tmp
-    today=$tmp$(date +%Y-%m-%d)
-    if [ ! -e $today ]; then
-        notify-send -t 5000 "pulling git changes"
-        rm -f $tmp*
-        valid=1
-        sleep 5
-        for f in $GIT_DIRS; do
-            dname=$(dirname $f)
-            remotes=$(git -C $dname remote | wc -l)
-            if [ $remotes -gt 0 ]; then
-                echo "pulling $dname"
-                git -C $dname pull
-                if [ $? -ne 0 ]; then
-                    valid=0
-                fi
-            fi
-        done
-        if [ $valid -eq 1 ]; then
-            touch $today
-        else
-            notify-send -t 10000 "unable to pull git changes"
-        fi
-    fi
-}
-
 if [ -z "$SSH_CONNECTION" ]; then
-    (_gitpull | systemd-cat -t gitpull &) > /dev/null 2>&1
+    (lgp | systemd-cat -t gitpull &) > /dev/null 2>&1
 fi
