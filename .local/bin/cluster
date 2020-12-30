@@ -113,6 +113,8 @@ elsif ( $arg eq "cssh" ) {
         $cmd = "$cmd cluster$node.voidedtech.com";
     }
     system("cssh $cmd");
+    system("kitty @ close-window");
+    exit 0;
 }
 elsif ( $arg eq "help" ) {
     my @apps = keys %mapping;
