@@ -2,6 +2,7 @@
 KITTY_CLUSTER=/tmp/is_cluster
 KITTY_IDE=/tmp/is_ide
 KITTY_NODE=/tmp/is_node
+KITTY_CSSH=/tmp/is_cssh
 
 source ~/.variables
 
@@ -9,6 +10,12 @@ if [ -e $KITTY_CLUSTER ]; then
     rm -f $KITTY_CLUSTER
     perl ~/.local/bin/cluster
     exit 0
+fi
+
+if [ -e $KITTY_CSSH ]; then
+    rm -f $KITTY_CSSH
+    perl ~/.local/bin/cluster cssh
+    exit
 fi
 
 if [ -e $KITTY_NODE ]; then
@@ -43,6 +50,10 @@ case $action in
         ;;
     "cluster")
         touch $KITTY_CLUSTER
+        screen="minimized"
+        ;;
+    "cssh")
+        touch $KITTY_CSSH
         screen="minimized"
         ;;
     "node")

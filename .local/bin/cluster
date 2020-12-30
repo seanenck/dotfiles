@@ -107,6 +107,13 @@ elsif ( $arg eq "ssh" ) {
         system('read -p "ENTER to exit"');
     }
 }
+elsif ( $arg eq "cssh" ) {
+    my $cmd = "";
+    for my $node (@nodes) {
+        $cmd = "$cmd cluster$node.voidedtech.com";
+    }
+    system("cssh $cmd");
+}
 elsif ( $arg eq "help" ) {
     my @apps = keys %mapping;
     print "start node rate " . join( " ", @apps );

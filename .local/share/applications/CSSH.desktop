@@ -1,8 +1,8 @@
 [Desktop Entry]
 Comment=
-Exec=/bin/bash /home/enck/.local/bin/applications.sh node
-Icon=gtk3-demo-symbolic.symbolic
-Name=Node
+Exec=/bin/bash /home/enck/.local/bin/applications.sh cssh
+Icon=kdeconnect
+Name=CSSH
 NoDisplay=false
 Path[$e]=
 StartupNotify=true
