@@ -27,8 +27,6 @@ if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
     export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
-bash ~/.local/bin/applications.sh
-
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
@@ -39,5 +37,6 @@ for file in $HOME/.pass/env $HOME/store/personal/config/etc/private.exports; do
 done
 
 if [ -z "$SSH_CONNECTION" ]; then
+    bash ~/.local/bin/applications.sh
     (lgp | systemd-cat -t gitpull &) > /dev/null 2>&1
 fi
