@@ -1,10 +1,10 @@
 set from        = "enckse@voidedtech.com"
 set sendmail    = "/usr/bin/msmtp -a fastmail"
-set folder      = ~/store/personal/imap/fastmail
+set folder      = ~/store/imap/fastmail
 set postponed   = "=Drafts"
 set history_file = "~/.mutt/fastmail.mutthistory"
 macro index,pager d "<save-message>=Trash<enter><enter>" "Trash"
-source ~/store/personal/config/mail/fastmail.muttrc
+source ~/store/config/mail/fastmail.muttrc
 source ~/.mutt/muttrc
 set record = =Sent
 set trash = "=Trash"

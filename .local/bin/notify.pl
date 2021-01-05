@@ -43,7 +43,7 @@ for my $dir (@dirs) {
 }
 
 $cnt = 1100;
-my $imap = "$home/store/personal/imap/fastmail";
+my $imap = "$home/store/imap/fastmail";
 if ( -d $imap ) {
     for (`find $imap -type d -name new -exec dirname {} \\; | grep -v Trash`) {
         chomp;

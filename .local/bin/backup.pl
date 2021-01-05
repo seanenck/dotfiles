@@ -11,7 +11,7 @@ $check = $tmp . $check;
 exit 0 if -e $check;
 
 my $server  = $ENV{"SERVER"};
-my $mirrors = $ENV{"HOME"} . "/store/personal/mirror/";
+my $mirrors = $ENV{"HOME"} . "/store/mirror/";
 
 if ( system("curl -Is http://$server > /dev/null") != 0 ) {
     print "backup system not available\n";

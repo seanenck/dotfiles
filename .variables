@@ -7,4 +7,4 @@ export PAGER=less
 export BROWSER=firefox-developer-edition
 export GOPATH="$HOME/.cache/go"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
-export GIT_DIRS="$HOME/.git /etc/.git /etc/personal/.git $HOME/store/personal/notebook/.git $HOME/store/personal/private/.git"
+export GIT_DIRS="$HOME/.git /etc/.git /etc/personal/.git $HOME/store/notebook/.git $HOME/store/private/.git"
