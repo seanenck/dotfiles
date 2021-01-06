@@ -40,3 +40,7 @@ if [ -z "$SSH_CONNECTION" ]; then
     bash ~/.local/bin/applications.sh
     (lgp | systemd-cat -t gitpull &) > /dev/null 2>&1
 fi
+
+if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
+    PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
+fi
