@@ -61,25 +61,3 @@ lgp() {
         fi
     fi
 }
-
-memory-chroot() {
-    local chroots chroot dir
-    chroots=/dev/shm/chroots
-    if [ -d $chroots ]; then
-        echo "cleaning up old chroots"
-        for chroot in $(ls $chroots); do
-            dir=$chroots/$chroot
-            sudo umount $dir
-            sudo rm -rf $dir
-        done
-    fi
-    chroot=$chroots/$(uuidgen)
-    mkdir -p $chroot
-    sudo pacstrap -c $chroot $@
-    if [ $? -ne 0 ]; then
-        echo "unable to pacstrap"
-        return
-    fi
-    sudo mount --bind $chroot $chroot
-    sudo arch-chroot $chroot
-}
