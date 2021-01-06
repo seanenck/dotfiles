@@ -63,13 +63,16 @@ lgp() {
 }
 
 memory-chroot() {
-    local chroots chroot
+    local chroots chroot dir
     chroots=/dev/shm/chroots
-    echo "cleaning up old chroots"
-    for chroot in $(ls $chroots); do
-        sudo umount $chroots/$chroot
-    done
-    sudo rm -rf $chroots
+    if [ -d $chroots ]; then
+        echo "cleaning up old chroots"
+        for chroot in $(ls $chroots); do
+            dir=$chroots/$chroot
+            sudo umount $dir
+            sudo rm -rf $dir
+        done
+    fi
     chroot=$chroots/$(uuidgen)
     mkdir -p $chroot
     sudo pacstrap -c $chroot $@
