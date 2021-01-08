@@ -28,7 +28,7 @@ firefox() {
     disown
 }
 
-for f in $(git -C $HOME ls-files | grep "\.desktop" | grep -v -E "Node|Cluster"); do
+for f in $(git -C $HOME ls-files | grep "\.desktop"); do
     cmd=$(cat $HOME/$f | grep "^Exec=" | cut -d "=" -f 2-)
     name=$(echo "$cmd" | rev | cut -d " " -f 1 | rev)
     alias $name.app="$cmd"

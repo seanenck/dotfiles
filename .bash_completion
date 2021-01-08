@@ -9,14 +9,4 @@ _sys() {
     fi
 }
 
-_cluster() {
-    local cur opts
-    cur=${COMP_WORDS[COMP_CWORD]}
-    if [ $COMP_CWORD -eq 1 ]; then
-        opts=$(cluster help)
-        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-    fi
-}
-
-complete -F _cluster cluster
 complete -F _sys sys
