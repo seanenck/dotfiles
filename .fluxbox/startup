@@ -10,7 +10,7 @@
 dunst -config $HOME/.config/dunst &
 nm-applet &
 pasystray &
-xautolock -locker "i3lock -c 000000" &
+xautolock -time 5 -locker "i3lock -c 000000" &
 
 cnt=$(xrandr | grep " connected" | wc -l)
 if [ $cnt -eq 2 ]; then
