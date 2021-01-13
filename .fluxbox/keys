@@ -2,7 +2,7 @@
 OnDesktop Mouse1 :HideMenus
 OnDesktop Mouse3 :RootMenu
 
-Super_L :RootMenu
+Mod1 d :RootMenu
 
 # alt + left/right click to move/resize a window
 OnWindow Mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
@@ -23,8 +23,7 @@ Mod1 Tab :NextWindow {groups} (workspace=[current])
 # open a terminal
 Mod1 Return :Exec kitty
 
-# open a dialog to run programs
-Mod1 F2 :Exec fbrun
+Mod1 Shift l :Exec xautolock -locknow
 
 # volume settings, using common keycodes
 # if these don't work, use xev to find out your real keycodes
@@ -35,10 +34,7 @@ XF86AudioMute :Exec ponymix toggle
 # current window commands
 Mod1 Shift q :Close
 Mod1 Shift m :Maximize
-Mod1 Shift s :Exec /home/enck/.local/bin/sys autoclip
-
-# open the window menu
-Mod1 space :WindowMenu
+Mod1 s :Exec /home/enck/.local/bin/sys autoclip
 
 # exit fluxbox
 Mod1 Shift e :Exit
