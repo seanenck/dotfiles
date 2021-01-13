@@ -1,6 +1,6 @@
 [global]
     monitor = 0
-    geometry = "350x0-5+0"
+    geometry = "350x0-15+10"
     indicate_hidden = true
     transparency = 0
     notification_height = 0
