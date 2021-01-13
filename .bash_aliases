@@ -29,8 +29,14 @@ firefox() {
 }
 
 _apps() {
-    local f b
-    for f in $(find $HOME/.local/bin/ $HOME/store/config/etc/hosts/ -name "*.app"); do
+    local f b targets host
+    source ~/.variables
+    targets="$HOME/.local/bin/"
+    cat $HOST_TYPE | grep -q "$DESKTOP"
+    if [ $? -eq 0 ]; then
+        targets="$targets $HOME/store/config/etc/hosts/"
+    fi
+    for f in $(find $targets -name "*.app"); do
         b=$(basename $f)
         alias $b="bash $f"
     done
