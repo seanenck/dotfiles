@@ -41,7 +41,7 @@ for file in $HOME/.pass/env $HOME/store/config/etc/private.exports; do
 done
 
 if [ -z "$SSH_CONNECTION" ]; then
-    source ~/.local/bin/ide.app load
+    source ~/.local/share/applications/ide.app load
 fi
 
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then

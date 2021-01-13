@@ -30,8 +30,8 @@ firefox() {
 
 _apps() {
     local f b targets host
-    targets="$HOME/.local/bin/"
-    for f in $(find $targets -name "*.app"); do
+    targets="$HOME/.local/share/applications"
+    for f in $(ls $HOME/.local/share/applications/*.app); do
         b=$(basename $f)
         alias $b="bash $f"
     done
