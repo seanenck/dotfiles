@@ -9,7 +9,7 @@ fi
 xautolock -time 5 -locker "$HOME/.local/bin/sys xautolock" &
 
 . $HOME/.variables
-host=$(hostnamectl status | grep "Static hostname" | cut -d ":" -f 2 | sed 's/\s*//g')
+host=$(cat $HOST_TYPE)
 if [[ "$host" == "$DESKTOP" ]]; then
     cnt=$(xrandr | grep " connected" | wc -l)
     if [ $cnt -eq 2 ]; then

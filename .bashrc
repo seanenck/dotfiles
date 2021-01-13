@@ -8,6 +8,10 @@
 . /etc/voidedtech/bash/bashrc
 
 source ~/.variables
+if [ ! -e $HOST_TYPE ]; then
+    host=$(hostnamectl status | grep "Static hostname" | cut -d ":" -f 2 | sed 's/\s*//g')
+    echo $host > $HOST_TYPE
+fi
 
 # check the window size after each command
 shopt -s checkwinsize
@@ -37,7 +41,7 @@ for file in $HOME/.pass/env $HOME/store/config/etc/private.exports; do
 done
 
 if [ -z "$SSH_CONNECTION" ]; then
-    bash ~/.local/bin/applications.sh
+    source ~/.local/bin/ide.app load
     (lgp | systemd-cat -t gitpull &) > /dev/null 2>&1
 fi
 

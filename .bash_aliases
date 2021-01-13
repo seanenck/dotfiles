@@ -29,19 +29,11 @@ firefox() {
 }
 
 _apps() {
-    local a name oldifs
-    oldifs=$IFS
-    IFS=$'\n'
-    for a in $(cat ~/.fluxbox/menu | grep "applications.sh" | cut -d "{" -f 2 | cut -d "}" -f 1); do
-        name=$(echo "$a" | rev | cut -d " " -f 1 | rev)
-        alias $name.app="$a"
+    local f b
+    for f in $(find $HOME/.local/bin/ $HOME/store/config/etc/hosts/ -name "*.app"); do
+        b=$(basename $f)
+        alias $b="bash $f"
     done
-    for a in $(cat ~/.fluxbox/usermenu | grep "\[exec\]" | cut -d " " -f 2-); do
-        name=$(echo $a | cut -d " " -f 1 | sed 's/)//g;s/(//g')
-        a=$(echo $a | cut -d "}" -f 1 | cut -d "{" -f 2)
-        alias $name.app="$a"
-    done
-    IFS=$oldifs
 }
 
 _apps
