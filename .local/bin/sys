@@ -29,7 +29,7 @@ elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
     if ( $suspend ) {
         my $host = system('source ~/.variables && hostnamectl status | grep "Static hostname" | grep -q "$LAPTOP"');
         if ( $host != 0 ) {
-            if ( $cmd eq "lock" ) {
+            if ( $cmd eq "suspend" ) {
                 exit 0;
             }
             $suspend = 0;
