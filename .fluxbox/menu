@@ -16,13 +16,10 @@
 #     session.menuFile: ~/.fluxbox/my-menu
 [begin] (fluxbox)
 [encoding] {UTF-8}
-    [exec] (fastmail) {/bin/bash /home/enck/.local/bin/fastmail.app}
     [exec] (firefox) {firefox-developer-edition}
     [exec] (kitty) {kitty}
-    [exec] (ide) {/bin/bash /home/enck/.local/bin/ide.app}
     [exec] (mumble) {mumble}
     [exec] (volume) {pavucontrol}
-    [separator]
     [include](~/.fluxbox/usermenu)
 [submenu] (internals)
       [config] (Configure)
