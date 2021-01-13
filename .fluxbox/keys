@@ -1,0 +1,70 @@
+# click on the desktop to get menus
+OnDesktop Mouse1 :HideMenus
+OnDesktop Mouse3 :RootMenu
+
+# alt + left/right click to move/resize a window
+OnWindow Mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
+OnWindowBorder Move1 :StartMoving
+
+OnTitlebar Double Mouse1 :Maximize
+
+# left click on the titlebar to move the window
+OnTitlebar Mouse1 :MacroCmd {Raise} {Focus} {ActivateTab}
+OnTitlebar Move1  :StartMoving
+
+# right click on the titlebar for a menu of options
+OnTitlebar Mouse3 :WindowMenu
+
+# alt-tab
+Mod1 Tab :NextWindow {groups} (workspace=[current])
+
+# open a terminal
+Mod1 Return :Exec kitty
+
+# open a dialog to run programs
+Mod1 F2 :Exec fbrun
+
+# volume settings, using common keycodes
+# if these don't work, use xev to find out your real keycodes
+176 :Exec amixer sset Master,0 1+
+174 :Exec amixer sset Master,0 1-
+160 :Exec amixer sset Master,0 toggle
+
+# current window commands
+Mod1 Shift q :Close
+Mod1 Shift m :Maximize
+
+# open the window menu
+Mod1 space :WindowMenu
+
+# exit fluxbox
+Mod1 Shift e :Exit
+
+# change to a specific workspace
+Mod1 1 :Workspace 1
+Mod1 2 :Workspace 2
+Mod1 3 :Workspace 3
+Mod1 4 :Workspace 4
+Mod1 5 :Workspace 5
+Mod1 6 :Workspace 6
+Mod1 7 :Workspace 7
+Mod1 8 :Workspace 8
+Mod1 9 :Workspace 9
+
+# send the current window and change to a specific workspace
+Mod1 Shift 1 :SendToWorkspace 1
+Mod1 Shift 2 :SendToWorkspace 2
+Mod1 Shift 3 :SendToWorkspace 3
+Mod1 Shift 4 :SendToWorkspace 4
+Mod1 Shift 5 :SendToWorkspace 5
+Mod1 Shift 6 :SendToWorkspace 6
+Mod1 Shift 7 :SendToWorkspace 7
+Mod1 Shift 8 :SendToWorkspace 8
+Mod1 Shift 9 :SendToWorkspace 9
+
+Mod1 Shift Down :MacroCmd {ResizeTo 100% 50%} {MoveTo 00 00 Bottom}
+Mod1 Shift Up :MacroCmd {ResizeTo 100% 50%} {MoveTo 00 00 Top}
+Mod1 Shift Left :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Left}
+Mod1 Shift Right :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Right}
+
+Mod1 Shift Tab :SendToNextHead 1
