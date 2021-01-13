@@ -21,6 +21,7 @@
     [exec] (kitty) {kitty}
     [exec] (ide) {/bin/bash /home/enck/.local/bin/applications.sh ide}
     [exec] (mumble) {mumble}
+    [exec] (volume) {pavucontrol}
     [separator]
     [include](~/.fluxbox/usermenu)
 [submenu] (internals)
