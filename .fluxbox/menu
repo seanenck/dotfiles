@@ -16,9 +16,14 @@
 #     session.menuFile: ~/.fluxbox/my-menu
 [begin] (Fluxbox-1.3.7)
 [encoding] {UTF-8}
+    [exec] (fastmail) {/bin/bash /home/enck/.local/bin/applications.sh fastmail}
     [exec] (firefox) {firefox-developer-edition}
+    [exec] (kitty) {kitty}
+    [exec] (ide) {/bin/bash /home/enck/.local/bin/applications.sh ide}
+    [exec] (mumble) {mumble}
+    [separator]
     [include](~/.fluxbox/usermenu)
-[submenu] (Fluxbox menu)
+[submenu] (internals)
       [config] (Configure)
 [submenu] (System Styles) {Choose a style...}
       [stylesdir] (/usr/share/fluxbox/styles)

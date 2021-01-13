@@ -28,11 +28,23 @@ firefox() {
     disown
 }
 
-for f in $(git -C $HOME ls-files | grep "\.desktop"); do
-    cmd=$(cat $HOME/$f | grep "^Exec=" | cut -d "=" -f 2-)
-    name=$(echo "$cmd" | rev | cut -d " " -f 1 | rev)
-    alias $name.app="$cmd"
-done
+_apps() {
+    local a name oldifs
+    oldifs=$IFS
+    IFS=$'\n'
+    for a in $(cat ~/.fluxbox/menu | grep "applications.sh" | cut -d "{" -f 2 | cut -d "}" -f 1); do
+        name=$(echo "$a" | rev | cut -d " " -f 1 | rev)
+        alias $name.app="$a"
+    done
+    for a in $(cat ~/.fluxbox/usermenu | grep "\[exec\]" | cut -d " " -f 2-); do
+        name=$(echo $a | cut -d " " -f 1 | sed 's/)//g;s/(//g')
+        a=$(echo $a | cut -d "}" -f 1 | cut -d "{" -f 2)
+        alias $name.app="$a"
+    done
+    IFS=$oldifs
+}
+
+_apps
 
 lgp() {
     tmp=$HOME/.cache/lgp/

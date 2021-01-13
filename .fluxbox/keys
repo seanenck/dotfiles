@@ -2,6 +2,8 @@
 OnDesktop Mouse1 :HideMenus
 OnDesktop Mouse3 :RootMenu
 
+Super_L :RootMenu
+
 # alt + left/right click to move/resize a window
 OnWindow Mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
 OnWindowBorder Move1 :StartMoving
