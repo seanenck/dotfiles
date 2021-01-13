@@ -42,7 +42,6 @@ done
 
 if [ -z "$SSH_CONNECTION" ]; then
     source ~/.local/bin/ide.app load
-    (lgp | systemd-cat -t gitpull &) > /dev/null 2>&1
 fi
 
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
