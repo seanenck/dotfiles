@@ -14,7 +14,7 @@
 # - To prevent any other app from overwriting your menu
 #   you can change the menu name in ~/.fluxbox/init to:
 #     session.menuFile: ~/.fluxbox/my-menu
-[begin] (Fluxbox-1.3.7)
+[begin] (fluxbox)
 [encoding] {UTF-8}
     [exec] (fastmail) {/bin/bash /home/enck/.local/bin/fastmail.app}
     [exec] (firefox) {firefox-developer-edition}
