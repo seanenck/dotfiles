@@ -21,6 +21,27 @@ if ( $cmd eq "mail" ) {
         }
     }
 }
+elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
+    my $suspend = 0;
+    if ( $cmd eq "suspend" or $cmd eq "xautolock" ) {
+        $suspend = 1;
+    }
+    if ( $suspend ) {
+        my $host = system('source ~/.variables && hostnamectl status | grep "Static hostname" | grep -q "$LAPTOP"');
+        if ( $host != 0 ) {
+            if ( $cmd eq "lock" ) {
+                exit 0;
+            }
+            $suspend = 0;
+        }
+    }
+
+    system("i3lock -c 000000");
+    if ( $suspend ) {
+        system("sleep 0.5");
+        system("systemctl suspend");
+    }
+}
 elsif ( $cmd eq "status" ) {
     system("perl ~/.local/bin/status.pl");
 }

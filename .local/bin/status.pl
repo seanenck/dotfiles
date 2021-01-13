@@ -39,6 +39,23 @@ if (@ARGV) {
     elsif ( $command eq "notify" ) {
         system("perl ${bin}notify.pl");
     }
+    elsif ( $command eq "backlight" ) {
+        my $pids  = system("pidof i3lock > /dev/null");
+        my $light = `brightnessctl get` + 0;
+        my $set   = "";
+        if ( $light < 1500 ) {
+            if ( $pids != 0 ) {
+                $set = "50%";
+            }
+        } else {
+            if ( $pids == 0) {
+                $set = "5";
+            }
+        }
+        if ( $set ) {
+            system("brightnessctl set $set > /dev/null");
+        }
+    }
     elsif ( $command eq "cleanup" ) {
         my $cleanup_date = `date +%Y-%m-%d`;
         chomp $cleanup_date;
@@ -98,6 +115,7 @@ while (1) {
         system("$status backup &");
         $cnt = 0;
     }
+    system("$status backlight &");
     system("$status mail &");
     sleep 1;
 }

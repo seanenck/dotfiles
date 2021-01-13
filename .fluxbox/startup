@@ -3,7 +3,10 @@
 dunst -config $HOME/.config/dunst &
 nm-applet &
 pasystray &
-xautolock -time 5 -locker "i3lock -c 000000" &
+if [ -x /usr/bin/cbatticon ]; then
+    cbatticon -l 10 -r 5 &
+fi
+xautolock -time 5 -locker "$HOME/.local/bin/sys xautolock" &
 
 . $HOME/.variables
 host=$(hostnamectl status | grep "Static hostname" | cut -d ":" -f 2 | sed 's/\s*//g')

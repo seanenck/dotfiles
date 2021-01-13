@@ -23,7 +23,8 @@ Mod1 Tab :NextWindow {groups} (workspace=[current])
 # open a terminal
 Mod1 Return :Exec kitty
 
-Mod1 Shift l :Exec xautolock -locknow
+Mod1 Shift l :Exec /home/enck/.local/bin/sys lock
+Mod1 Shift s :Exec /home/enck/.local/bin/sys suspend
 
 # volume settings, using common keycodes
 # if these don't work, use xev to find out your real keycodes
