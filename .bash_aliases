@@ -42,7 +42,6 @@ _apps
 lgp() {
     notify-send -t 5000 "pulling git changes"
     valid=1
-    sleep 5
     for f in $GIT_DIRS; do
         dname=$(dirname $f)
         remotes=$(git -C $dname remote | wc -l)
