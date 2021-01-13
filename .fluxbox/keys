@@ -28,13 +28,14 @@ Mod1 F2 :Exec fbrun
 
 # volume settings, using common keycodes
 # if these don't work, use xev to find out your real keycodes
-176 :Exec amixer sset Master,0 1+
-174 :Exec amixer sset Master,0 1-
-160 :Exec amixer sset Master,0 toggle
+XF86AudioLowerVolume :Exec ponymix decrease 1
+XF86AudioRaiseVolume :Exec ponymix increase 1
+XF86AudioMute :Exec ponymix toggle
 
 # current window commands
 Mod1 Shift q :Close
 Mod1 Shift m :Maximize
+Mod1 Shift s :Exec /home/enck/.local/bin/sys autoclip
 
 # open the window menu
 Mod1 space :WindowMenu
