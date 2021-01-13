@@ -1,20 +1,21 @@
 #!/bin/sh
-#
-# fluxbox startup-script:
-#
-# Lines starting with a '#' are ignored.
-
-# Change your keymap:
-#xmodmap "/home/enck/.Xmodmap"
 
 dunst -config $HOME/.config/dunst &
 nm-applet &
 pasystray &
 xautolock -time 5 -locker "i3lock -c 000000" &
 
-cnt=$(xrandr | grep " connected" | wc -l)
-if [ $cnt -eq 2 ]; then
-    xrandr --output DP-2-1-8 --rotate right --left-of DP-2-8
+. $HOME/.variables
+host=$(hostnamectl status | grep "Static hostname" | cut -d ":" -f 2 | sed 's/\s*//g')
+if [[ "$host" == "$DESKTOP" ]]; then
+    cnt=$(xrandr | grep " connected" | wc -l)
+    if [ $cnt -eq 2 ]; then
+        xrandr --output DP-2-1-8 --rotate right --left-of DP-2-8
+    fi
+else
+    if [[ "$host" == "$LAPTOP" ]]; then
+        xrandr --output eDP-1 --auto --dpi 144 --mode 2560x1440
+    fi
 fi
 
 exec fluxbox -log /home/enck/.fluxbox/log
