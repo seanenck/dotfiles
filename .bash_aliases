@@ -57,3 +57,23 @@ lgp() {
         notify-send -t 10000 "unable to pull git changes"
     fi
 }
+
+motd() {
+    MOTD=$HOME/.cache/motd/
+    if [ ! -d $MOTD ]; then
+        mkdir -p $MOTD
+    fi
+    CURR=${MOTD}curr
+    LAST=${MOTD}prev
+    cat /etc/motd > $CURR
+    if [ -e $LAST ]; then
+        diff -u $LAST $CURR > /dev/null
+        if [ $? -eq 0 ]; then
+            rm -f $CURR
+        fi
+    fi
+    if [ -e $CURR ]; then
+        cat $CURR | sed 's/(NOTICE)/\x1b[31m(NOTICE)\x1b[0m/g'
+        mv $CURR $LAST
+    fi
+}

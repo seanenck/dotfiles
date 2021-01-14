@@ -41,15 +41,7 @@ for file in $HOME/.pass/env $HOME/store/config/etc/private.exports; do
 done
 
 if [ -z "$SSH_CONNECTION" ]; then
-    MOTD=/tmp/motd/
-    if [ ! -d $MOTD ]; then
-        mkdir -p $MOTD
-    fi
-    MOTD=${MOTD}$(date +%Y-%m-%d)
-    if [ ! -e $MOTD ]; then
-        cat /etc/motd | sed 's/(NOTICE)/\x1b[31m(NOTICE)\x1b[0m/g'
-        touch $MOTD
-    fi
+    motd
     source ~/.local/share/applications/ide.app load
 fi
 
