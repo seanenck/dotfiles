@@ -71,3 +71,17 @@ for ( ("linux") ) {
 if ( $kernel == 1 ) {
     notify $cnt, "kernel: linux";
 }
+
+$cnt = 1300;
+for my $desktop (`wmctrl -d | grep -v "\*" | cut -d ' ' -f 1`) {
+    chomp $desktop;
+    if ( !$desktop ) {
+        next;
+    }
+    my $workspace = `wmctrl -l | cut -d ' ' -f 2- | sed 's/^\\s*//g' | grep '^$desktop ' | wc -l` + 0;
+    if ( $workspace > 0 ) {
+        my $number = $desktop + 1;
+        notify $cnt, "W$number [$workspace]";
+        $cnt++;
+    }
+}
