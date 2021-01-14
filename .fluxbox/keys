@@ -69,3 +69,4 @@ Mod1 Shift Left :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Left}
 Mod1 Shift Right :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Right}
 
 Mod1 Shift Tab :SendToNextHead 1
+Mod1 Shift space :Exec /home/enck/.local/bin/sys mouse

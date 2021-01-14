@@ -21,6 +21,21 @@ if ( $cmd eq "mail" ) {
         }
     }
 }
+elsif ( $cmd eq "mouse" ) {
+    my $host = system('source ~/.variables && cat $HOST_TYPE | grep -q "$DESKTOP"');
+    if ( $host != 0 ) {
+        exit 0;
+    }
+    my $position = `xdotool getmouselocation | cut -d ':' -f 2 | cut -d ' ' -f 1` + 0;
+    chomp $position;
+    if ( $position > 1440 ) {
+        system("xdotool mousemove 720 1280");
+    } else {
+        system("xdotool mousemove 2720 720");
+    }
+    print $position, "\n";
+    #    system("xdotool mousemove 0 0");
+}
 elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
     my $suspend = 0;
     if ( $cmd eq "suspend" or $cmd eq "xautolock" ) {
