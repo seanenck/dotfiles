@@ -70,20 +70,6 @@ for my $pacman ( ( "qdt", "m" ) ) {
 }
 
 $cnt = 2000;
-for my $cache ( ( "/var/cache/pacman/pkg", "/srv/http/pacman-cache" ) ) {
-    $cnt++;
-    if ( -d $cache ) {
-        my $packages =
-`du -hs $cache | tr '\t' ' ' | cut -d " " -f 1 | grep "G" | sed "s/G//g" | cut -d "." -f 1`;
-        chomp $packages;
-        if ($packages) {
-            if ( $packages > 10 ) {
-                notify $cnt, "pkgcache: $packages (G)";
-            }
-        }
-    }
-}
-
 my $kernel = 1;
 for ( ("linux") ) {
     if ( `uname -r | sed "s/-arch/.arch/g;s/-lts//g"` eq
@@ -93,7 +79,6 @@ for ( ("linux") ) {
     }
 }
 
-$cnt = 2100;
 if ( $kernel == 1 ) {
     notify $cnt, "kernel: linux";
 }
