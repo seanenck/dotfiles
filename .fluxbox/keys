@@ -18,8 +18,10 @@ OnTitlebar Move1  :StartMoving
 # right click on the titlebar for a menu of options
 OnTitlebar Mouse3 :WindowMenu
 
-# alt-tab
-Mod1 Tab :NextWindow {groups} (workspace=[current])
+Mod1 Up :NextWindow {groups} (head=[mouse]) (workspace=[current])
+Mod1 Right :NextWindow {groups} (head=[mouse]) (workspace=[current])
+Mod1 Down :PrevWindow {groups} (head=[mouse]) (workspace=[current])
+Mod1 Left :PrevWindow {groups} (head=[mouse]) (workspace=[current])
 
 # open a terminal
 Mod1 Return :Exec kitty
@@ -68,5 +70,5 @@ Mod1 Shift Up :MacroCmd {ResizeTo 100% 50%} {MoveTo 00 00 Top}
 Mod1 Shift Left :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Left}
 Mod1 Shift Right :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Right}
 
+Mod1 Tab :Exec /home/enck/.local/bin/sys mouse
 Mod1 Shift Tab :SendToNextHead 1
-Mod1 Shift space :Exec /home/enck/.local/bin/sys mouse
