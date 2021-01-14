@@ -40,17 +40,16 @@ for file in $HOME/.pass/env $HOME/store/config/etc/private.exports; do
     fi
 done
 
-MOTD=$HOME/.cache/motd/
-if [ ! -d $MOTD ]; then
-    mkdir -p $MOTD
-fi
-MOTD=${MOTD}$(date +%Y-%m-%d)
-if [ ! -e $MOTD ]; then
-    cat /etc/motd
-    touch $MOTD
-fi
-
 if [ -z "$SSH_CONNECTION" ]; then
+    MOTD=$HOME/.cache/motd/
+    if [ ! -d $MOTD ]; then
+        mkdir -p $MOTD
+    fi
+    MOTD=${MOTD}$(date +%Y-%m-%d)
+    if [ ! -e $MOTD ]; then
+        cat /etc/motd
+        touch $MOTD
+    fi
     source ~/.local/share/applications/ide.app load
 fi
 
