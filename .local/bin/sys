@@ -29,9 +29,9 @@ elsif ( $cmd eq "mouse" ) {
     my $position = `xdotool getmouselocation | cut -d ':' -f 2 | cut -d ' ' -f 1` + 0;
     chomp $position;
     if ( $position > 1440 ) {
-        system("xdotool mousemove 720 1280");
+        system("xdotool mousemove 720 1000");
     } else {
-        system("xdotool mousemove 2720 720");
+        system("xdotool mousemove 2000 720");
     }
     print $position, "\n";
     #    system("xdotool mousemove 0 0");
