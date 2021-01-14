@@ -36,7 +36,7 @@ elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
         }
     }
 
-    system("i3lock -c 000000");
+    system("i3lock -c 333333");
     if ( $suspend ) {
         system("sleep 0.1");
         system("systemctl suspend");
