@@ -6,7 +6,7 @@ pasystray &
 if [ -x /usr/bin/cbatticon ]; then
     cbatticon -l 10 -r 5 &
 fi
-xautolock -time 5 -locker "$HOME/.local/bin/sys xautolock" &
+xautolock -detectsleep -time 5 -locker "$HOME/.local/bin/sys xautolock" &
 
 . $HOME/.variables
 host=$(cat $HOST_TYPE)
