@@ -13,5 +13,5 @@ fi
 
 if [ -z "$1" ]; then
     touch $KITTY_IDE
-    kitty --start-as=maximized --title=ide
+    kitty --detach --start-as=maximized --title=ide
 fi
