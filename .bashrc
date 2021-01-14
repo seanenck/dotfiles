@@ -41,7 +41,7 @@ for file in $HOME/.pass/env $HOME/store/config/etc/private.exports; do
 done
 
 if [ -z "$SSH_CONNECTION" ]; then
-    MOTD=$HOME/.cache/motd/
+    MOTD=/tmp/motd/
     if [ ! -d $MOTD ]; then
         mkdir -p $MOTD
     fi
