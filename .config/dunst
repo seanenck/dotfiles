@@ -59,6 +59,9 @@
     frame_color = "#ff0000"
     timeout = 0
 
+[nm]
+    appname = "NetworkManager"
+    format = ""
 [pinverify]
     summary = "PIN verified"
     format = ""
