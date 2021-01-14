@@ -22,18 +22,22 @@ if ( $cmd eq "mail" ) {
     }
 }
 elsif ( $cmd eq "mouse" ) {
-    my $host = system('source ~/.variables && cat $HOST_TYPE | grep -q "$DESKTOP"');
+    my $host =
+      system('source ~/.variables && cat $HOST_TYPE | grep -q "$DESKTOP"');
     if ( $host != 0 ) {
         exit 0;
     }
-    my $position = `xdotool getmouselocation | cut -d ':' -f 2 | cut -d ' ' -f 1` + 0;
+    my $position =
+      `xdotool getmouselocation | cut -d ':' -f 2 | cut -d ' ' -f 1` + 0;
     chomp $position;
     if ( $position > 1440 ) {
         system("xdotool mousemove 720 1000");
-    } else {
+    }
+    else {
         system("xdotool mousemove 2000 720");
     }
     print $position, "\n";
+
     #    system("xdotool mousemove 0 0");
 }
 elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
@@ -41,8 +45,9 @@ elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
     if ( $cmd eq "suspend" or $cmd eq "xautolock" ) {
         $suspend = 1;
     }
-    if ( $suspend ) {
-        my $host = system('source ~/.variables && cat $HOST_TYPE | grep -q "$LAPTOP"');
+    if ($suspend) {
+        my $host =
+          system('source ~/.variables && cat $HOST_TYPE | grep -q "$LAPTOP"');
         if ( $host != 0 ) {
             if ( $cmd eq "suspend" ) {
                 exit 0;
@@ -52,7 +57,7 @@ elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
     }
 
     system("i3lock -c 333333");
-    if ( $suspend ) {
+    if ($suspend) {
         system("sleep 0.1");
         system("systemctl suspend");
     }

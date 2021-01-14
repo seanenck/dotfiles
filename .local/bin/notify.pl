@@ -4,7 +4,7 @@ use strict;
 use File::Compare;
 use File::Copy qw(move);
 
-my $home = $ENV{"HOME"};
+my $home    = $ENV{"HOME"};
 my $dir_env = `source $home/.variables && echo \$GIT_DIRS`;
 chomp $dir_env;
 my @dirs = split / /, $dir_env;
@@ -75,10 +75,12 @@ if ( $kernel == 1 ) {
 $cnt = 1300;
 for my $desktop (`wmctrl -d | grep -v "\*" | cut -d ' ' -f 1`) {
     chomp $desktop;
-    if ( $desktop eq "") {
+    if ( $desktop eq "" ) {
         next;
     }
-    my $workspace = `wmctrl -l | cut -d ' ' -f 2- | sed 's/^\\s*//g' | grep '^$desktop ' | wc -l` + 0;
+    my $workspace =
+`wmctrl -l | cut -d ' ' -f 2- | sed 's/^\\s*//g' | grep '^$desktop ' | wc -l`
+      + 0;
     if ( $workspace > 0 ) {
         my $number = $desktop + 1;
         notify $cnt, "W$number [$workspace]";

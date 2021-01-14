@@ -51,12 +51,13 @@ if (@ARGV) {
             if ( $pids != 0 ) {
                 $set = "50%";
             }
-        } else {
-            if ( $pids == 0) {
+        }
+        else {
+            if ( $pids == 0 ) {
                 $set = "5";
             }
         }
-        if ( $set ) {
+        if ($set) {
             system("brightnessctl set $set > /dev/null");
         }
     }
@@ -66,7 +67,7 @@ if (@ARGV) {
         my $prev   = "$curr.prev";
         my $menu   = "~/.fluxbox/usermenu";
         my $apps   = "~/.local/share/applications";
-        system("mkdir -p $rcache") if ! -d $rcache;
+        system("mkdir -p $rcache") if !-d $rcache;
         system("ls $apps/*.app | sort > $curr");
         if ( -e $prev ) {
             if ( system("diff -u $prev $curr") == 0 ) {
