@@ -40,6 +40,10 @@ if (@ARGV) {
         system("perl ${bin}notify.pl");
     }
     elsif ( $command eq "backlight" ) {
+        my $classes = `ls /sys/class/backlight/ | wc -l` + 0;
+        if ( $classes == 0 ) {
+            exit 0;
+        }
         my $pids  = system("pidof i3lock > /dev/null");
         my $light = `brightnessctl get` + 0;
         my $set   = "";
