@@ -47,7 +47,7 @@ if [ -z "$SSH_CONNECTION" ]; then
     fi
     MOTD=${MOTD}$(date +%Y-%m-%d)
     if [ ! -e $MOTD ]; then
-        cat /etc/motd
+        cat /etc/motd | sed 's/(NOTICE)/\x1b[31m(NOTICE)\x1b[0m/g'
         touch $MOTD
     fi
     source ~/.local/share/applications/ide.app load
