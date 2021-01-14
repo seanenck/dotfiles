@@ -61,7 +61,7 @@ if ( -d $imap ) {
 $cnt = 1200;
 my $kernel = 1;
 for ( ("linux") ) {
-    if ( `uname -r | sed "s/-arch/.arch/g;s/-lts//g"` eq
+    if ( `uname -r | sed "s/-arch/.arch/g"` eq
         `pacman -Qi $_ | grep Version | cut -d ":" -f 2 | sed "s/ //g"` )
     {
         $kernel = 0;
