@@ -3,6 +3,7 @@ OnDesktop Mouse1 :HideMenus
 OnDesktop Mouse3 :RootMenu
 
 Mod1 d :RootMenu
+Mod1 Shift r: Reconfig
 
 # alt + left/right click to move/resize a window
 OnWindow Mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
