@@ -59,17 +59,6 @@ if ( -d $imap ) {
 }
 
 $cnt = 1200;
-for my $pacman ( ( "qdt", "m" ) ) {
-    $cnt += 100;
-    for (`pacman -Q$pacman`) {
-        $cnt++;
-        chomp;
-        next if !$_;
-        notify $cnt, "orphan: $_";
-    }
-}
-
-$cnt = 2000;
 my $kernel = 1;
 for ( ("linux") ) {
     if ( `uname -r | sed "s/-arch/.arch/g;s/-lts//g"` eq
