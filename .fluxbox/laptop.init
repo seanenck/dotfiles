@@ -40,7 +40,7 @@ session.screen0.maxIgnoreIncrement:	true
 session.screen0.noFocusWhileTypingDelay:	0
 session.screen0.opaqueMove:	true
 session.screen0.showwindowposition:	false
-session.screen0.focusModel:	ClickFocus
+session.screen0.focusModel:	MouseFocus
 session.screen0.windowMenu:	/home/enck/.fluxbox/windowmenu
 session.screen0.defaultDeco:	NORMAL
 session.screen0.rowPlacementDirection:	LeftToRight
