@@ -30,15 +30,16 @@ elsif ( $cmd eq "mouse" ) {
     my $position =
       `xdotool getmouselocation | cut -d ':' -f 2 | cut -d ' ' -f 1` + 0;
     chomp $position;
+    system("xdotool search . behave %@ mouse-enter windowfocus &");
+    system("sleep 0.1");
     if ( $position > 1440 ) {
         system("xdotool mousemove 720 1000");
     }
     else {
         system("xdotool mousemove 2000 720");
     }
+    system("pkill xdotool");
     print $position, "\n";
-
-    #    system("xdotool mousemove 0 0");
 }
 elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
     my $suspend = 0;
