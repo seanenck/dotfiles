@@ -8,6 +8,7 @@ Mod1 Shift r :Reconfig
 # alt + left/right click to move/resize a window
 OnWindow Mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
 OnWindowBorder Move1 :StartMoving
+OnRightGrip Move1 :StartResizing bottomright 
 
 OnTitlebar Double Mouse1 :Maximize
 
