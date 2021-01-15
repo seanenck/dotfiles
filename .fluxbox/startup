@@ -1,6 +1,5 @@
 #!/bin/sh
 
-tint2 &
 dunst -config $HOME/.config/dunst &
 nm-applet &
 pasystray &
