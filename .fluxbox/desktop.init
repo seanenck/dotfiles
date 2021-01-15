@@ -25,7 +25,7 @@ session.screen0.toolbar.tools:	workspacename, iconbar, systemtray, clock
 session.screen0.toolbar.widthPercent:	25
 session.screen0.toolbar.onhead:	1
 session.screen0.toolbar.autoHide:	false
-session.screen0.toolbar.placement:	BottomCenter
+session.screen0.toolbar.placement:	BottomRight
 session.screen0.toolbar.height:	0
 session.screen0.toolbar.visible:	true
 session.screen0.toolbar.layer:	Dock
