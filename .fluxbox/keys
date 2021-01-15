@@ -71,6 +71,6 @@ Mod1 Shift Up :MacroCmd {ResizeTo 100% 50%} {MoveTo 00 00 Top}
 Mod1 Shift Left :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Left}
 Mod1 Shift Right :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Right}
 
-Mod1 Tab :NextWindow {groups} (workspace=[current])
+Mod1 Tab :NextWindow {groups} (head=[current]) (workspace=[current])
 Mod1 Shift Return :Exec /home/enck/.local/bin/sys mouse
 Mod1 Shift Tab :SendToNextHead 1
