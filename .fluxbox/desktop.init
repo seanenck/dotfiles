@@ -22,7 +22,7 @@ session.screen0.tabs.usePixmap:	true
 session.screen0.tabs.maxOver:	false
 session.screen0.tabs.intitlebar:	true
 session.screen0.toolbar.tools:	workspacename, iconbar, systemtray, clock
-session.screen0.toolbar.widthPercent:	25
+session.screen0.toolbar.widthPercent:	30
 session.screen0.toolbar.onhead:	1
 session.screen0.toolbar.autoHide:	false
 session.screen0.toolbar.placement:	BottomRight
