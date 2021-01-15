@@ -15,14 +15,14 @@ session.screen0.slit.acceptKdeDockapps:	true
 session.screen0.slit.maxOver:	false
 session.screen0.toolbar.layer:	Dock
 session.screen0.toolbar.tools:	workspacename, iconbar,  clock
-session.screen0.toolbar.visible:	false
+session.screen0.toolbar.visible:	true
 session.screen0.toolbar.maxOver:	false
 session.screen0.toolbar.placement:	BottomCenter
 session.screen0.toolbar.alpha:	255
 session.screen0.toolbar.onhead:	1
 session.screen0.toolbar.autoHide:	false
 session.screen0.toolbar.height:	0
-session.screen0.toolbar.widthPercent:	100
+session.screen0.toolbar.widthPercent:	25
 session.screen0.clientMenu.usePixmap:	true
 session.screen0.iconbar.usePixmap:	true
 session.screen0.iconbar.iconTextPadding:	10
