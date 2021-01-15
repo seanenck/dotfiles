@@ -20,6 +20,7 @@
     [exec] (kitty) {kitty}
     [exec] (mumble) {mumble}
     [exec] (volume) {pavucontrol}
+    [exec] (wiki) {zim}
     [include](~/.fluxbox/usermenu)
 [submenu] (internals)
       [config] (Configure)
