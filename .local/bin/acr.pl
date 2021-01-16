@@ -68,6 +68,9 @@ elsif ( $command eq "repoadd" ) {
         my $basename = `echo $package | rev | cut -d '-' -f 4- | rev`;
         chomp $basename;
 
+        if ( system("$ssh test -e $drop$package") == 0 ) {
+            die "$package already deployed";
+        }
         system("$ssh find $drop -name '$basename-\*' -delete");
         system("scp $package $server:$drop");
         system("$ssh 'cd $drop; repo-add localdev.db.tar.gz $package'");
