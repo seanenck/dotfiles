@@ -10,6 +10,7 @@
 !.config/systemd/user
 .config/systemd/user/*
 !.config/systemd/user/*.service
+!.config/systemd/user/*.path
 
 *.pyc
 __pycache__

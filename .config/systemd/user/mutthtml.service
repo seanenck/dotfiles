@@ -1,0 +1,5 @@
+[Unit]
+Description=Open firefox if mutt changes
+
+[Service]
+ExecStart=/usr/bin/firefox-developer-edition /home/enck/.cache/mutt.html
