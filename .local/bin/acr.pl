@@ -73,8 +73,19 @@ elsif ( $command eq "repoadd" ) {
     system("scp $package $server:$drop");
     system("$ssh 'cd $drop; repo-add localdev.db.tar.gz $package'");
 }
+elsif ( $command eq "schroot" ) {
+    die "must NOT run as root" if ( $> == 0 );
+    if ( -d $dev ) {
+        system("mkdir -p /dev/shm/schroot/overlay");
+        system("schroot -c chroot:dev");
+        exit 0;
+    }
+    print "creating chroot: $dev\n";
+    system("sudo mkdir -p $dev");
+    system("sudo pacstrap -c -M $dev/ base-devel vim sudo git voidedskel openssh go go-bindata golint-git rustup ripgrep man man-pages vim-nerdtree vimsym vim-airline bash-completion");
+}
 elsif ( $command eq "help" ) {
-    print "sync makepkg repoadd";
+    print "sync makepkg repoadd schroot";
 }
 else {
     die "unknown command $command";
