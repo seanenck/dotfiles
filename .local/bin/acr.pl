@@ -82,7 +82,7 @@ elsif ( $command eq "schroot" ) {
     }
     header "building ($dev)";
     system("sudo mkdir -p $dev");
-    system("sudo pacstrap -c -M $dev/ base-devel vim sudo git voidedskel openssh go go-bindata golint-git rustup ripgrep man man-pages vim-nerdtree vimsym vim-airline bash-completion");
+    system("sudo pacstrap -c -M $dev/ base-devel vim sudo git baseskel openssh go go-bindata golint-git rustup ripgrep man man-pages vim-nerdtree vimsym vim-airline bash-completion");
 }
 elsif ( $command eq "help" ) {
     print "run sync makepkg repoadd schroot";
