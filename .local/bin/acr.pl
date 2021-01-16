@@ -61,16 +61,17 @@ elsif ( $command eq "sync" or $command eq "run" ) {
 }
 elsif ( $command eq "repoadd" ) {
     die "no package" if ( !@ARGV );
-    my $package = shift @ARGV;
-    die "no package exists: $package" if !-e $package;
+    for my $package (@ARGV) {
+        die "no package exists: $package" if !-e $package;
 
-    die "not a valid package" if ( not $package =~ m/\.tar\./ );
-    my $basename = `echo $package | rev | cut -d '-' -f 4- | rev`;
-    chomp $basename;
+        die "not a valid package" if ( not $package =~ m/\.tar\./ );
+        my $basename = `echo $package | rev | cut -d '-' -f 4- | rev`;
+        chomp $basename;
 
-    system("$ssh find $drop -name '$basename-\*' -delete");
-    system("scp $package $server:$drop");
-    system("$ssh 'cd $drop; repo-add localdev.db.tar.gz $package'");
+        system("$ssh find $drop -name '$basename-\*' -delete");
+        system("scp $package $server:$drop");
+        system("$ssh 'cd $drop; repo-add localdev.db.tar.gz $package'");
+    }
 }
 elsif ( $command eq "schroot" ) {
     die "must NOT run as root" if ( $> == 0 );

@@ -27,7 +27,7 @@ _acr() {
         opts=$(perl ~/.local/bin/acr.pl help)
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     else
-        if [ $COMP_CWORD -eq 2 ]; then
+        if [ $COMP_CWORD -ge 2 ]; then
             cur=${COMP_WORDS[1]}
             opts=""
             case "$cur" in
