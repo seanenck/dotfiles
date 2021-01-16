@@ -123,7 +123,7 @@ if (@ARGV) {
         my $wiki = "$home/.cache/wiki/";
         my $hash = "${wiki}hash";
         my $prev = $hash . ".prev";
-        my $note = "$home/store/notebook";
+        my $note = "$home/store/config/notebook";
         system("mkdir -p $wiki");
         system("find $note -type f -exec md5sum {} \\; > $hash");
         if ( -e $prev ) {
