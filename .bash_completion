@@ -10,3 +10,12 @@ _sys() {
 }
 
 complete -F _sys sys
+
+_totp() {
+    local opts cur
+    opts=$(totp list)
+    cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+}
+
+complete -F _totp totp
