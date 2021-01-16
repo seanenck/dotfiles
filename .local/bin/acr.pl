@@ -35,21 +35,20 @@ if ( $command eq "makepkg" ) {
     die "packaging failed"
       if system("makechrootpkg -c -n -d /var/cache/pacman/pkg -r $build") != 0;
 }
-elsif ( $command eq "sync" ) {
-    my $command = "pacman -Syyu";
+elsif ( $command eq "sync" or $command eq "run" ) {
+    my $run = "pacman -Syyu";
     my $chroot  = 1;
-    if (@ARGV) {
-        $chroot  = 0;
-        $command = join( " ", @ARGV );
-        my $idx = rindex $command, "pacman -Syy", 0;
-        if ( $idx == 0 ) {
-            $chroot = 1;
+    if ( $command eq "run" ) {
+        if (!@ARGV) {
+            die "no run commands given";
         }
+        $chroot  = 0;
+        $run = join( " ", @ARGV );
     }
 
     if ( $chroot == 1 ) {
         header "builds";
-        system("arch-nspawn $build/root $command");
+        system("arch-nspawn $build/root $run");
         print "\n";
     }
 
@@ -58,7 +57,7 @@ elsif ( $command eq "sync" ) {
     }
 
     header "dev";
-    system("sudo schroot -c source:dev -- $command");
+    system("sudo schroot -c source:dev -- $run");
 }
 elsif ( $command eq "repoadd" ) {
     die "no package" if ( !@ARGV );
@@ -80,12 +79,12 @@ elsif ( $command eq "schroot" ) {
         system("schroot -c chroot:dev");
         exit 0;
     }
-    print "creating chroot: $dev\n";
+    header "building ($dev)";
     system("sudo mkdir -p $dev");
     system("sudo pacstrap -c -M $dev/ base-devel vim sudo git voidedskel openssh go go-bindata golint-git rustup ripgrep man man-pages vim-nerdtree vimsym vim-airline bash-completion");
 }
 elsif ( $command eq "help" ) {
-    print "sync makepkg repoadd schroot";
+    print "run sync makepkg repoadd schroot";
 }
 else {
     die "unknown command $command";
