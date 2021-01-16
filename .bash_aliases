@@ -57,3 +57,22 @@ lgp() {
         notify-send -t 10000 "unable to pull git changes"
     fi
 }
+
+memchroot() {
+    local chr
+    chr=/opt/chroots/dev
+    if [ $UID -eq 0 ]; then
+        echo "must not run as root"
+        return
+    fi
+
+    if [ -d $chr ]; then
+        mkdir -p /dev/shm/schroot/overlay
+        schroot -c chroot:dev
+        return
+    fi
+
+    echo "creating chroot: $chr"
+    sudo mkdir -p $chr
+    sudo pacstrap -c -M $chroot/ base-devel vim sudo git voidedskel openssh go go-bindata golint-git rustup ripgrep man man-pages vim-nerdtree vimsym vim-airline bash-completion
+}
