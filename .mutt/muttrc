@@ -4,7 +4,7 @@ set editor = "vim"
 set spoolfile   = "+INBOX"
 unset record
 
-set alias_file  = ~/store/config/etc/mutt.aliases
+set alias_file  = ~/store/config/etc/mail/mutt.aliases
 set sort_alias  = alias
 source $alias_file
 source ~/.mutt/gpg.rc
