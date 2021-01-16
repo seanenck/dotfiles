@@ -19,3 +19,27 @@ _totp() {
 }
 
 complete -F _totp totp
+
+_pkgl() {
+    local opts cur
+    cur=${COMP_WORDS[COMP_CWORD]}
+    if [ $COMP_CWORD -eq 1 ]; then
+        opts=$(perl ~/.local/bin/pkgl.pl help)
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    else
+        if [ $COMP_CWORD -eq 2 ]; then
+            cur=${COMP_WORDS[1]}
+            opts=""
+            case "$cur" in
+                "repoadd")
+                    opts=$(ls | grep ".pkg.tar.zst")
+                    ;;
+            esac
+            if [ ! -z "$opts" ]; then
+                 COMPREPLY=( $(compgen -W "$opts" -- ${COMP_WORDS[COMP_CWORD]}) )
+            fi
+        fi
+    fi
+}
+
+complete -F _pkgl pkgl

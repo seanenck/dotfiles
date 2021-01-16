@@ -76,3 +76,7 @@ memchroot() {
     sudo mkdir -p $chr
     sudo pacstrap -c -M $chroot/ base-devel vim sudo git voidedskel openssh go go-bindata golint-git rustup ripgrep man man-pages vim-nerdtree vimsym vim-airline bash-completion
 }
+
+pkgl() {
+    perl ~/.local/bin/pkgl.pl $@
+}
