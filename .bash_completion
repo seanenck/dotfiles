@@ -20,8 +20,12 @@ _aem() {
             cur=${COMP_WORDS[1]}
             opts=""
             case "$cur" in
-                "repoadd")
-                    opts=$(ls | grep ".pkg.tar.zst")
+                "repo-add")
+                    if [ $COMP_CWORD -eq 2 ]; then
+                        opts="vpr.db.tar.gz apr.db.tar.gz"
+                    else
+                        opts=$(ls | grep ".pkg.tar.zst")
+                    fi
                     ;;
             esac
             if [ ! -z "$opts" ]; then

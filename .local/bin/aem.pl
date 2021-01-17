@@ -10,7 +10,7 @@ my $command    = shift @ARGV;
 my $src        = "/opt/chroots/";
 my $dev        = "${src}dev";
 my $build      = "${src}builds";
-my $drop       = "/opt/vpr/";
+my $root_repo  = "/opt/archlinux/";
 my $server     = "voidedtech.com";
 my $ssh        = "ssh  $server -- ";
 my $build_root = "$build/root";
@@ -73,7 +73,11 @@ elsif ( $command eq "sync" or $command eq "run" ) {
     header "dev";
     system("sudo schroot -c source:dev -- $run");
 }
-elsif ( $command eq "repoadd" ) {
+elsif ( $command eq "repo-add" ) {
+    my $repo = shift @ARGV;
+    die "no repo given" if !$repo;
+    my $drop = "$root_repo$repo/";
+    die "invalid repository" if ( system("$ssh test -d $drop") != 0 );
     die "no package" if ( !@ARGV );
     for my $package (@ARGV) {
         die "no package exists: $package" if !-e $package;
@@ -83,13 +87,10 @@ elsif ( $command eq "repoadd" ) {
         die "not a valid package" if ( not $package =~ m/\.tar\./ );
         my $basename = `echo $package | rev | cut -d '-' -f 4- | rev`;
         chomp $basename;
-
-        if ( system("$ssh test -e $drop$package") == 0 ) {
-            die "$package already deployed";
-        }
+        die "$package already deployed" if ( system("$ssh test -e $drop$package") == 0 );
         system("$ssh find $drop -name '$basename-\*' -delete");
         system("scp $package $sig $server:$drop");
-        system("$ssh 'cd $drop; repo-add vpr.db.tar.gz $package'");
+        system("$ssh 'cd $drop; repo-add $repo $package'");
     }
 }
 elsif ( $command eq "pacstrap" ) {
@@ -124,7 +125,7 @@ elsif ( $command eq "schroot" ) {
     exit 0;
 }
 elsif ( $command eq "help" ) {
-    print "run sync makepkg repoadd schroot pacstrap";
+    print "run sync makepkg repo-add schroot pacstrap";
 }
 else {
     die "unknown command $command";
