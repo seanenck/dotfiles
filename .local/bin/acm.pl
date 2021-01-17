@@ -13,6 +13,8 @@ my $build   = "${src}builds";
 my $drop    = "/var/cache/voidedtech/pacman/";
 my $server  = "voidedtech.com";
 my $ssh     = "ssh  $server -- ";
+my $build_root = "$build/root";
+my $gpg_key = "031E9E4B09CFD8D3F0ED35025109CDF607B5BB04";
 
 sub header {
     print "\n=========\n";
@@ -29,7 +31,7 @@ if ( $command eq "makepkg" ) {
 
     my $makepkg = "/tmp/makepkg.conf";
     system("cat /etc/makepkg.conf \$HOME/.makepkg.conf > $makepkg");
-    system("sudo install -Dm644 $makepkg $build/root/etc/makepkg.conf");
+    system("sudo install -Dm644 $makepkg $build_root/etc/makepkg.conf");
     unlink $makepkg;
 
     die "packaging failed"
@@ -59,7 +61,7 @@ elsif ( $command eq "sync" or $command eq "run" ) {
 
     if ( $chroot == 1 ) {
         header "builds";
-        system("arch-nspawn $build/root $run");
+        system("arch-nspawn $build_root $run");
         print "\n";
     }
 
@@ -89,6 +91,16 @@ elsif ( $command eq "repoadd" ) {
         system("$ssh 'cd $drop; repo-add localdev.db.tar.gz $package'");
     }
 }
+elsif ( $command eq "buildchroot" ) {
+    die "build chroot exists" if -d $build;
+    die "must NOT run as root" if ( $> == 0 );
+    system("sudo mkdir -p $build");
+    system("sudo mkarchroot $build_root base-devel");
+    system("sudo cp /etc/pacman.conf $build_root/etc/pacman.conf");
+    system("sudo arch-nspawn pacman-key --recv-key $gpg_key");
+    system("sudo arch-nspawn pacman-key --lsign-key $gpg_key");
+
+}
 elsif ( $command eq "schroot" ) {
     die "must NOT run as root" if ( $> == 0 );
     if ( -d $dev ) {
@@ -99,9 +111,10 @@ elsif ( $command eq "schroot" ) {
     header "building ($dev)";
     system("sudo mkdir -p $dev");
     system("sudo pacstrap -c -M $dev/ base-devel baseskel go go-bindata golint-git rustup");
+    system("sudo schroot -c source:dev -- pacman-key --lsign-key $gpg_key");
 }
 elsif ( $command eq "help" ) {
-    print "run sync makepkg repoadd schroot";
+    print "run sync makepkg repoadd schroot buildchroot";
 }
 else {
     die "unknown command $command";
