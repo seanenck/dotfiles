@@ -87,8 +87,20 @@ elsif ( $command eq "repo-add" ) {
         die "not a valid package" if ( not $package =~ m/\.tar\./ );
         my $basename = `echo $package | rev | cut -d '-' -f 4- | rev`;
         chomp $basename;
+        my $find = "$ssh find $drop -name '$basename-\*'";
+        my $existing = `$find -print`;
+        chomp $existing;
+        if ( !$existing ) {
+            print "deploy NEW $package to $repo? (y/N)\n";
+            my $yes = <STDIN>;
+            chomp $yes;
+            $yes = lc $yes;
+            if ( $yes ne "y" ) {
+                exit 0;
+            }
+        }
         die "$package already deployed" if ( system("$ssh test -e $drop$package") == 0 );
-        system("$ssh find $drop -name '$basename-\*' -delete");
+        system("$find -delete");
         system("scp $package $sig $server:$drop");
         system("$ssh 'cd $drop; repo-add $repo $package'");
     }
