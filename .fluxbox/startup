@@ -21,4 +21,4 @@ else
     fi
 fi
 
-exec fluxbox -log /home/enck/.fluxbox/log
+exec fluxbox -log /home/enck/.cache/fluxbox.log
