@@ -60,3 +60,8 @@ lgp() {
 aem() {
     perl ~/.local/bin/aem.pl $@
 }
+
+glint() {
+    goimports -l . | sed 's/^/[goimports]    /g'
+    golint ./... | sed 's/^/[golint]       /g'
+}
