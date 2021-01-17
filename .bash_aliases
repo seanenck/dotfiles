@@ -40,7 +40,6 @@ _apps() {
 _apps
 
 lgp() {
-    notify-send -t 5000 "pulling git changes"
     valid=1
     for f in $GIT_DIRS; do
         dname=$(dirname $f)
@@ -54,7 +53,7 @@ lgp() {
         fi
     done
     if [ $valid -ne 1 ]; then
-        notify-send -t 10000 "unable to pull git changes"
+        echo "^^^ failures reported"
     fi
 }
 
