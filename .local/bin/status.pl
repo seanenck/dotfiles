@@ -140,8 +140,10 @@ if (@ARGV) {
 my $cnt = 1;
 while (1) {
     $cnt++;
-    if ( $cnt >= 30 ) {
+    if ( $cnt % 15 == 0 ) {
         system("$status notify &");
+    }
+    if ( $cnt >= 30 ) {
         system("$status cleanup &");
         system("$status wiki &");
         system("$status backup &");
