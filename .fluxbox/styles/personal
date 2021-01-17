@@ -127,11 +127,8 @@ bevelWidth:                          2
 borderWidth:                         2
 handleWidth:                         3
 
-background:                          mod
-background.modX:                     5
-background.modY:                     5
-background.color:                    rgb:52/60/75
-background.colorTo:                  rgb:62/70/85
+background: flat
+background.color: grey20
 
 toolbar.iconbar.focused.font:			sans-10:bold
 toolbar.iconbar.focused.font.effect:	shadow
