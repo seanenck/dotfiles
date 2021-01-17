@@ -21,7 +21,7 @@ sub notify {
     my $cat = shift @_;
     if (@_) {
         my $text = join( "\n└ ", @_ );
-        system("dunstify -r $id -t 45000 '$cat:\n└ $text'");
+        system("dunstify -r $id -t 20000 '$cat:\n└ $text'");
     }
     else {
         system("dunstify -C $id");
