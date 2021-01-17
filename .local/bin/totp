@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-my $pass_home   = '$HOME/.pass/personal';
+my $pass_home   = $ENV{"PASSWORD_STORE_DIR"};
 my $pass_offset = "keys/totp";
 my $pass_dir    = "$pass_home/$pass_offset";
 
