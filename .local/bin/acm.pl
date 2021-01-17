@@ -6,15 +6,15 @@ if ( !@ARGV ) {
     die "subcommand required";
 }
 
-my $command = shift @ARGV;
-my $src     = "/opt/chroots/";
-my $dev     = "${src}dev";
-my $build   = "${src}builds";
-my $drop    = "/opt/vpr/";
-my $server  = "voidedtech.com";
-my $ssh     = "ssh  $server -- ";
+my $command    = shift @ARGV;
+my $src        = "/opt/chroots/";
+my $dev        = "${src}dev";
+my $build      = "${src}builds";
+my $drop       = "/opt/vpr/";
+my $server     = "voidedtech.com";
+my $ssh        = "ssh  $server -- ";
 my $build_root = "$build/root";
-my $gpg_key = "031E9E4B09CFD8D3F0ED35025109CDF607B5BB04";
+my $gpg_key    = "031E9E4B09CFD8D3F0ED35025109CDF607B5BB04";
 
 sub header {
     print "\n=========\n";
@@ -39,9 +39,10 @@ if ( $command eq "makepkg" ) {
     my $packaged = 0;
     for my $package (`ls *.tar.zst`) {
         chomp $package;
-        if ( $package ) {
+        if ($package) {
             print "signing $package\n";
-            die "signing failed: $package" if system("gpg --detach-sign --use-agent $package") != 0;
+            die "signing failed: $package"
+              if system("gpg --detach-sign --use-agent $package") != 0;
             $packaged += 1;
         }
     }
@@ -49,14 +50,14 @@ if ( $command eq "makepkg" ) {
     print " -> $packaged packages built and signed\n";
 }
 elsif ( $command eq "sync" or $command eq "run" ) {
-    my $run = "pacman -Syyu";
-    my $chroot  = 1;
+    my $run    = "pacman -Syyu";
+    my $chroot = 1;
     if ( $command eq "run" ) {
-        if (!@ARGV) {
+        if ( !@ARGV ) {
             die "no run commands given";
         }
-        $chroot  = 0;
-        $run = join( " ", @ARGV );
+        $chroot = 0;
+        $run    = join( " ", @ARGV );
     }
 
     if ( $chroot == 1 ) {
@@ -92,7 +93,7 @@ elsif ( $command eq "repoadd" ) {
     }
 }
 elsif ( $command eq "buildchroot" ) {
-    die "build chroot exists" if -d $build;
+    die "build chroot exists"  if -d $build;
     die "must NOT run as root" if ( $> == 0 );
     system("sudo mkdir -p $build");
     system("sudo mkarchroot $build_root base-devel");
@@ -110,7 +111,9 @@ elsif ( $command eq "schroot" ) {
     }
     header "building ($dev)";
     system("sudo mkdir -p $dev");
-    system("sudo pacstrap -c -M $dev/ base-devel baseskel go go-bindata golint-git rustup");
+    system(
+"sudo pacstrap -c -M $dev/ base-devel baseskel go go-bindata golint-git rustup"
+    );
     system("sudo schroot -c source:dev -- pacman-key --lsign-key $gpg_key");
 }
 elsif ( $command eq "help" ) {
