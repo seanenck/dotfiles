@@ -9,14 +9,13 @@ fi
 xautolock -detectsleep -time 5 -locker "$HOME/.local/bin/sys xautolock" &
 
 . $HOME/.variables
-host=$(cat $HOST_TYPE)
-if [[ "$host" == "$DESKTOP" ]]; then
+if [ -e $IS_DESKTOP ]; then
     cnt=$(xrandr | grep " connected" | wc -l)
     if [ $cnt -eq 2 ]; then
         xrandr --output DP-2-1-8 --rotate right --left-of DP-2-8
     fi
 else
-    if [[ "$host" == "$LAPTOP" ]]; then
+    if [ -e $IS_LAPTOP ]; then
         xrandr --output eDP-1 --auto --dpi 144 --mode 2560x1440
     fi
 fi

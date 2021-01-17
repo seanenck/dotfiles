@@ -7,16 +7,11 @@
 
 . /etc/voidedtech/bash/bashrc
 
-source ~/.variables
-if [ ! -e $HOST_TYPE ]; then
-    host=$(hostnamectl status | grep "Static hostname" | cut -d ":" -f 2 | sed 's/\s*//g')
-    echo $host > $HOST_TYPE
-fi
-
 # check the window size after each command
 shopt -s checkwinsize
 
-for file in $HOME/.bash_aliases \
+for file in $HOME/.variables \
+            $HOME/.bash_aliases \
             /etc/voidedtech/bash/aliases \
             $HOME/.bash_completion \
             /usr/share/bash-completion/bash_completion \
