@@ -8,7 +8,7 @@ use autodie;
 my $home         = $ENV{"HOME"};
 my $local        = "$home/.local/";
 my $bin          = "${local}bin/";
-my $status       = "perl $bin/status.pl ";
+my $status       = "perl ${bin}status.pl ";
 my $sys          = "$bin/sys";
 my $history_root = "$home/.cache/history/";
 
