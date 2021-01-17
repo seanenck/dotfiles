@@ -72,5 +72,5 @@ session.ignoreBorder:	false
 session.styleOverlay:	/home/enck/.fluxbox/overlay
 session.tabPadding:	0
 session.forcePseudoTransparency:	false
-session.styleFile:	/usr/share/fluxbox/styles/Nyz
+session.styleFile:	/usr/share/fluxbox/styles/MerleyKay
 session.autoRaiseDelay:	250
