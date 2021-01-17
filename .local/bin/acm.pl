@@ -23,7 +23,7 @@ sub header {
 if ( $command eq "makepkg" ) {
     die "no PKGBUILD" if !-e "PKGBUILD";
 
-    for ( ( "log", "tar.zst" ) ) {
+    for ( ( "log", "tar.zst", "sig" ) ) {
         system("rm -f *.$_");
     }
 
@@ -34,6 +34,7 @@ if ( $command eq "makepkg" ) {
 
     die "packaging failed"
       if system("makechrootpkg -c -n -d /var/cache/pacman/pkg -r $build") != 0;
+    die "signing failed" if system("gpg --detach-sign --use-agent *.tar.zst") != 0;
 }
 elsif ( $command eq "sync" or $command eq "run" ) {
     my $run = "pacman -Syyu";
@@ -63,6 +64,8 @@ elsif ( $command eq "repoadd" ) {
     die "no package" if ( !@ARGV );
     for my $package (@ARGV) {
         die "no package exists: $package" if !-e $package;
+        my $sig = "$package.sig";
+        die "no signature: $package" if !-e $sig;
 
         die "not a valid package" if ( not $package =~ m/\.tar\./ );
         my $basename = `echo $package | rev | cut -d '-' -f 4- | rev`;
@@ -72,7 +75,7 @@ elsif ( $command eq "repoadd" ) {
             die "$package already deployed";
         }
         system("$ssh find $drop -name '$basename-\*' -delete");
-        system("scp $package $server:$drop");
+        system("scp $package $sig $server:$drop");
         system("$ssh 'cd $drop; repo-add localdev.db.tar.gz $package'");
     }
 }
