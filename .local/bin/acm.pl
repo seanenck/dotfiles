@@ -34,7 +34,17 @@ if ( $command eq "makepkg" ) {
 
     die "packaging failed"
       if system("makechrootpkg -c -n -d /var/cache/pacman/pkg -r $build") != 0;
-    die "signing failed" if system("gpg --detach-sign --use-agent *.tar.zst") != 0;
+    my $packaged = 0;
+    for my $package (`ls *.tar.zst`) {
+        chomp $package;
+        if ( $package ) {
+            print "signing $package\n";
+            die "signing failed: $package" if system("gpg --detach-sign --use-agent $package") != 0;
+            $packaged += 1;
+        }
+    }
+    die "nothing packaged" if $packaged == 0;
+    print " -> $packaged packages built and signed\n";
 }
 elsif ( $command eq "sync" or $command eq "run" ) {
     my $run = "pacman -Syyu";
