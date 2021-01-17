@@ -92,32 +92,39 @@ elsif ( $command eq "repoadd" ) {
         system("$ssh 'cd $drop; repo-add vpr.db.tar.gz $package'");
     }
 }
-elsif ( $command eq "buildchroot" ) {
-    die "build chroot exists"  if -d $build;
+elsif ( $command eq "pacstrap" ) {
     die "must NOT run as root" if ( $> == 0 );
-    system("sudo mkdir -p $build");
-    system("sudo mkarchroot $build_root base-devel");
-    system("sudo cp /etc/pacman.conf $build_root/etc/pacman.conf");
-    system("sudo arch-nspawn pacman-key --recv-key $gpg_key");
-    system("sudo arch-nspawn pacman-key --lsign-key $gpg_key");
+    if ( -d $build ) {
+        print "build chroot exists\n";
+    }
+    else {
+        system("sudo mkdir -p $build");
+        system("sudo mkarchroot $build_root base-devel");
+        system("sudo cp /etc/pacman.conf $build_root/etc/pacman.conf");
+        system("sudo arch-nspawn pacman-key --recv-key $gpg_key");
+        system("sudo arch-nspawn pacman-key --lsign-key $gpg_key");
+    }
+    if ( -d $dev ) {
+        print "dev schroot exists\n";
+    }
+    else {
+        system("sudo mkdir -p $dev");
+        system(
+    "sudo pacstrap -c -M $dev/ base-devel baseskel go go-bindata golint-git rustup"
+        );
+        system("sudo schroot -c source:dev -- pacman-key --lsign-key $gpg_key");
+    }
 
 }
 elsif ( $command eq "schroot" ) {
     die "must NOT run as root" if ( $> == 0 );
-    if ( -d $dev ) {
-        system("mkdir -p /dev/shm/schroot/overlay");
-        system("schroot -c chroot:dev");
-        exit 0;
-    }
-    header "building ($dev)";
-    system("sudo mkdir -p $dev");
-    system(
-"sudo pacstrap -c -M $dev/ base-devel baseskel go go-bindata golint-git rustup"
-    );
-    system("sudo schroot -c source:dev -- pacman-key --lsign-key $gpg_key");
+    die "schroot not defined" if !-d $dev;
+    system("mkdir -p /dev/shm/schroot/overlay");
+    system("schroot -c chroot:dev");
+    exit 0;
 }
 elsif ( $command eq "help" ) {
-    print "run sync makepkg repoadd schroot buildchroot";
+    print "run sync makepkg repoadd schroot pacstrap";
 }
 else {
     die "unknown command $command";
