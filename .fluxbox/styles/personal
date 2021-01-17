@@ -119,8 +119,9 @@ window.tab.borderColor:              black
 window.justify:                      Center
 
 *font: sans-10
+*.color:                       rgb:62/70/85
 
-borderColor:                         rgb:00/00/00
+borderColor:                         rgb:33/33/33
 
 bevelWidth:                          2
 borderWidth:                         2
@@ -135,7 +136,6 @@ background.colorTo:                  rgb:62/70/85
 toolbar.iconbar.focused.font:			sans-10:bold
 toolbar.iconbar.focused.font.effect:	shadow
 toolbar.iconbar.unfocused.font:			sans-10
-toolbar.iconbar.empty:					flat
 toolbar.iconbar.focused.borderWidth:	1
 toolbar.iconbar.focused.borderColor:	#aeaeae
 toolbar.iconbar.focused:				flat
