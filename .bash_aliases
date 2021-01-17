@@ -58,6 +58,6 @@ lgp() {
     fi
 }
 
-acr() {
-    perl ~/.local/bin/acr.pl $@
+acm() {
+    perl ~/.local/bin/acm.pl $@
 }
