@@ -19,8 +19,8 @@ OnTitlebar Move1  :StartMoving
 # right click on the titlebar for a menu of options
 OnTitlebar Mouse3 :WindowMenu
 
-Mod1 Left: Exec /home/enck/.local/bin/sys mouse
-Mod1 Right: Exec /home/enck/.local/bin/sys mouse
+Mod1 Left :Exec /home/enck/.local/bin/sys mouse
+Mod1 Right :Exec /home/enck/.local/bin/sys mouse
 
 Mod1 Tab :NextWindow {groups} (head=[current]) (workspace=[current])
 Mod1 Shift Tab :PrevWindow {groups} (head=[current]) (workspace=[current])
