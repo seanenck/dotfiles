@@ -16,14 +16,13 @@ for ( "workspace", "store" ) {
 
 sub notify {
     my $id   = shift @_;
-    my $text = shift @_;
-    $text =~ s/:/\n└/g;
-    system("dunstify -r $id -t 45000 '$text'");
+    my $cat  = shift @_;
+    my $text = join( "\n└ ", @_ );
+    system("dunstify -r $id -t 45000 '$cat:\n└ $text'");
 }
 
-my $cnt = 1000;
+my @git;
 for my $dir (@dirs) {
-    $cnt++;
     my $dname = `dirname $dir`;
     chomp $dname;
     my $count = 0;
@@ -38,27 +37,33 @@ for my $dir (@dirs) {
     }
     if ( $count > 0 ) {
         $dname =~ s#$home#~#g;
-        notify $cnt, "git: $dname [$count]";
+        push @git, "$dname [$count]";
     }
 }
 
-$cnt = 1100;
+if (@git) {
+    notify 500, "git", @git;
+}
+
+my @mail;
 my $imap = "$home/store/imap/fastmail";
 if ( -d $imap ) {
     for (`find $imap -type d -name new -exec dirname {} \\; | grep -v Trash`) {
         chomp;
-        $cnt++;
         my $count = `ls "$_/new/" | wc -l`;
         chomp $count;
         if ( $count > 0 ) {
             my $dname = $_;
             $dname =~ s#$imap/##g;
-            notify $cnt, "mail: $dname [$count]";
+            push @mail, "$dname [$count]";
         }
     }
 }
 
-$cnt = 1200;
+if (@mail) {
+    notify 501, "mail", join( "\n", @mail );
+}
+
 my $kernel = 1;
 for ( ("linux") ) {
     if ( `uname -r | sed "s/-arch/.arch/g"` eq
@@ -69,10 +74,10 @@ for ( ("linux") ) {
 }
 
 if ( $kernel == 1 ) {
-    notify $cnt, "kernel: linux";
+    notify 502, "kernel", ("old kernel loaded");
 }
 
-$cnt = 1300;
+my @workspaces;
 for my $desktop (`wmctrl -d | grep -v "\*" | cut -d ' ' -f 1`) {
     chomp $desktop;
     if ( $desktop eq "" ) {
@@ -83,7 +88,10 @@ for my $desktop (`wmctrl -d | grep -v "\*" | cut -d ' ' -f 1`) {
       + 0;
     if ( $workspace > 0 ) {
         my $number = $desktop + 1;
-        notify $cnt, "W$number [$workspace]";
-        $cnt++;
+        push @workspaces, "W$number [$workspace]";
     }
+}
+
+if (@workspaces) {
+    notify 503, "workspaces", @workspaces;
 }
