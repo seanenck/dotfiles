@@ -67,9 +67,7 @@ elsif ( $cmd eq "status" ) {
     system("perl ~/.local/bin/status.pl");
 }
 elsif ( $cmd eq "autoclip" ) {
-    system(
-"source ~/store/config/etc/private.exports && PASSWORD_STORE_DIR=/home/enck/.pass/personal pass -c \$AUTOCLIP > /dev/null"
-    );
+    system("pass -c autoclip > /dev/null");
 }
 elsif ( $cmd eq "history" ) {
     my $hist = "/tmp/history";
