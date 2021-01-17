@@ -34,8 +34,6 @@ fi
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
-export PASSWORD_STORE_DIR=$HOME/store/private
-
 for file in $HOME/.pass/env $HOME/store/config/etc/private.exports; do
     if [ -e $file ]; then
         . $file

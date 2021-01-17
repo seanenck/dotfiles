@@ -67,7 +67,7 @@ elsif ( $cmd eq "status" ) {
     system("perl ~/.local/bin/status.pl");
 }
 elsif ( $cmd eq "autoclip" ) {
-    system("pass -c autoclip > /dev/null");
+    system("source ~/.variables && pass -c autoclip > /dev/null");
 }
 elsif ( $cmd eq "history" ) {
     my $hist = "/tmp/history";

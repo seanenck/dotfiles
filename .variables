@@ -5,6 +5,7 @@ export SERVER=shelf
 export TERM=xterm
 export PAGER=less
 export HOST_TYPE=$HOME/.cache/host.type
+export PASSWORD_STORE_DIR=$HOME/store/private
 export BROWSER=firefox-developer-edition
 export GOPATH="$HOME/.cache/go"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
