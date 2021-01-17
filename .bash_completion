@@ -1,16 +1,5 @@
 #!/bin/bash
 
-_sys() {
-    local cur opts
-    cur=${COMP_WORDS[COMP_CWORD]}
-    if [ $COMP_CWORD -eq 1 ]; then
-        opts="history"
-        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-    fi
-}
-
-complete -F _sys sys
-
 _totp() {
     local opts cur
     opts=$(totp list)

@@ -69,30 +69,6 @@ elsif ( $cmd eq "status" ) {
 elsif ( $cmd eq "autoclip" ) {
     system("source ~/.variables && pass -c autoclip > /dev/null");
 }
-elsif ( $cmd eq "history" ) {
-    my $hist = "/tmp/history";
-    my $bash = "~/.bash_history";
-    open( my $fh, '>', $hist );
-    for (`cat $bash | sort -u`) {
-        chomp;
-        my $found = 0;
-        for my $exe (
-            (
-                "cd", "vim", "git",   "rm",  "cp", "mv",
-                "ls", "cat", "mkdir", "man", "firefox"
-            )
-          )
-        {
-            if ( $_ =~ m/^$exe / ) {
-                $found = 1;
-                last;
-            }
-        }
-        next if ( $found == 1 );
-        print $fh $_, "\n";
-    }
-    system("mv $hist $bash");
-}
 elsif ( $cmd eq "online" ) {
     my $exit =
       system("ping -c1 -w5 voidedtech.com > /dev/null 2>&1") == 0 ? 0 : 1;
