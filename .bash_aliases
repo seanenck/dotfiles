@@ -57,6 +57,6 @@ lgp() {
     fi
 }
 
-acm() {
-    perl ~/.local/bin/acm.pl $@
+aem() {
+    perl ~/.local/bin/aem.pl $@
 }

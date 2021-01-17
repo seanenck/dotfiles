@@ -9,11 +9,11 @@ _totp() {
 
 complete -F _totp totp
 
-_acm() {
+_aem() {
     local opts cur
     cur=${COMP_WORDS[COMP_CWORD]}
     if [ $COMP_CWORD -eq 1 ]; then
-        opts=$(perl ~/.local/bin/acm.pl help)
+        opts=$(perl ~/.local/bin/aem.pl help)
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     else
         if [ $COMP_CWORD -ge 2 ]; then
@@ -31,4 +31,4 @@ _acm() {
     fi
 }
 
-complete -F _acm acm
+complete -F _aem aem
