@@ -14,11 +14,18 @@ for ( "workspace", "store" ) {
     push @dirs, split( / /, $found );
 }
 
+my $id = 500;
+
 sub notify {
-    my $id   = shift @_;
-    my $cat  = shift @_;
-    my $text = join( "\n└ ", @_ );
-    system("dunstify -r $id -t 45000 '$cat:\n└ $text'");
+    $id += 1;
+    my $cat = shift @_;
+    if (@_) {
+        my $text = join( "\n└ ", @_ );
+        system("dunstify -r $id -t 45000 '$cat:\n└ $text'");
+    }
+    else {
+        system("dunstify -C $id");
+    }
 }
 
 my @git;
@@ -41,9 +48,7 @@ for my $dir (@dirs) {
     }
 }
 
-if (@git) {
-    notify 500, "git", @git;
-}
+notify "git", @git;
 
 my @mail;
 my $imap = "$home/store/imap/fastmail";
@@ -60,22 +65,16 @@ if ( -d $imap ) {
     }
 }
 
-if (@mail) {
-    notify 501, "mail", join( "\n", @mail );
+notify "mail", @mail;
+
+my @kernel;
+if ( `uname -r | sed "s/-arch/.arch/g"` ne
+    `pacman -Qi linux | grep Version | cut -d ":" -f 2 | sed "s/ //g"` )
+{
+    push @kernel, "old kernel loaded";
 }
 
-my $kernel = 1;
-for ( ("linux") ) {
-    if ( `uname -r | sed "s/-arch/.arch/g"` eq
-        `pacman -Qi $_ | grep Version | cut -d ":" -f 2 | sed "s/ //g"` )
-    {
-        $kernel = 0;
-    }
-}
-
-if ( $kernel == 1 ) {
-    notify 502, "kernel", ("old kernel loaded");
-}
+notify "kernel", @kernel;
 
 my @workspaces;
 for my $desktop (`wmctrl -d | grep -v "\*" | cut -d ' ' -f 1`) {
@@ -92,6 +91,4 @@ for my $desktop (`wmctrl -d | grep -v "\*" | cut -d ' ' -f 1`) {
     }
 }
 
-if (@workspaces) {
-    notify 503, "workspaces", @workspaces;
-}
+notify "workspaces", @workspaces;
