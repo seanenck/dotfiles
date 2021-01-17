@@ -10,7 +10,7 @@ my $command = shift @ARGV;
 my $src     = "/opt/chroots/";
 my $dev     = "${src}dev";
 my $build   = "${src}builds";
-my $drop    = "/opt/localdev/";
+my $drop    = "/opt/local/";
 my $server  = "voidedtech.com";
 my $ssh     = "ssh  $server -- ";
 my $build_root = "$build/root";
@@ -88,7 +88,7 @@ elsif ( $command eq "repoadd" ) {
         }
         system("$ssh find $drop -name '$basename-\*' -delete");
         system("scp $package $sig $server:$drop");
-        system("$ssh 'cd $drop; repo-add localdev.db.tar.gz $package'");
+        system("$ssh 'cd $drop; repo-add local.db.tar.gz $package'");
     }
 }
 elsif ( $command eq "buildchroot" ) {
