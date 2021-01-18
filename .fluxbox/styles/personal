@@ -63,7 +63,7 @@ window.title.unfocus.color:          rgb:60/66/70
 window.title.unfocus.colorTo:        rgb:54/60/68
 
 window.label.focus:                  Flat Gradient Vertical Interlaced
-window.label.focus.color:            #333333
+window.label.focus.color:            #ffffff
 window.label.focus.colorTo:          rgb:56/66/75
 window.label.focus.textColor:        rgb:FF/FF/FF
 window.label.unfocus:                Flat Gradient Vertical
