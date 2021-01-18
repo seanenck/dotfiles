@@ -115,7 +115,7 @@ if (@ARGV) {
         system("touch $cleanup");
     }
     elsif ( $command eq "backup" ) {
-        my $server  = `source $home/.variables && echo \$SERVER`;
+        my $server = `source $home/.variables && echo \$SERVER`;
         chomp $server;
         my $tmp = "/tmp/backup/";
         mkdir $tmp if !-d $tmp;
@@ -124,8 +124,11 @@ if (@ARGV) {
         $check = $tmp . $check;
         exit 0 if -e $check;
         my $target = "rsync://$server/backup";
+
         if ( system("rsync --list-only $target > /dev/null") == 0 ) {
-            system("rsync -av /var/cache/voidedtech/backup/ rsync://$server/backup/");
+            system(
+"rsync -av /var/cache/voidedtech/backup/ rsync://$server/backup/"
+            );
             system("touch $check");
         }
     }
@@ -146,7 +149,6 @@ if (@ARGV) {
     }
     exit;
 }
-
 
 my $display = $ENV{"DISPLAY"};
 
