@@ -5,6 +5,11 @@ use File::Compare;
 use File::Copy qw(move);
 
 my $home    = $ENV{"HOME"};
+my $cache   = "$home/.cache/notify/";
+my $bin     = "$home/.local/bin/";
+my $daily   = `date +%Y%m%d%p`;
+chomp $daily;
+$daily = "${cache}$daily";
 my $dir_env = `source $home/.variables && echo \$GIT_DIRS`;
 chomp $dir_env;
 my @dirs = split / /, $dir_env;
@@ -92,3 +97,32 @@ for my $desktop (`wmctrl -d | grep -v "\*" | cut -d ' ' -f 1`) {
 }
 
 notify "workspaces", @workspaces;
+
+if ( ! -e $daily ) {
+    system("mkdir -p $cache") if ! -d $cache;
+    system("find $cache -type f -mtime +1 -delete");
+    if ( system("${bin}sys online") == 0 ) {
+        my @out;
+        my $success = 0;
+        my $out_of_date = `perl ${bin}aem.pl flagged 2>&1`;
+        if ( $out_of_date ) {
+            if ( $out_of_date =~ m/out-of-date/ ) {
+                my @parts = split("\n", $out_of_date);
+                for my $part (@parts) {
+                    chomp $part;
+                    if ( $part ) {
+                        $part =~ s/out-of-date://g;
+                        push @out, $part;
+                    }
+                }
+                $success = 1;
+            } else {
+                push @out, "failed out-of-date check";
+            }
+        }
+        notify "out-of-date", @out;
+        if ( $success ) {
+            system("touch $daily");
+        }
+    }
+}

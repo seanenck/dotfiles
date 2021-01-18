@@ -14,8 +14,10 @@ my $root_repo  = "/opt/archlinux/";
 my $server     = "voidedtech.com";
 my $ssh        = "ssh  $server -- ";
 my $build_root = "$build/root";
-my $query_base = $ENV{"HOME"} . "/.cache/aem/query";
+my $aem_base   = $ENV{"HOME"} . "/.cache/aem/";
+my $query_base = "${aem_base}query";
 my $gpg_key    = "031E9E4B09CFD8D3F0ED35025109CDF607B5BB04";
+my $query_log  = "${query_base}.log";
 
 die "must NOT run as root" if ( $> == 0 );
 
@@ -143,11 +145,14 @@ elsif ( $command eq "schroot" ) {
     system("schroot -c chroot:dev");
     exit 0;
 }
-elsif ( $command eq "query" ) {
-
-    #    system("sudo pacman -Syy");
+elsif ( $command eq "flagged" ) {
     system("mkdir -p $query_base") if !-d $query_base;
-
+    my $redir = ">> $query_log 2>&1";
+    my $tmp_query = `mktemp`;
+    chomp $tmp_query;
+    system("date +%Y-%m-%dT%H:%M:%S $redir");
+    system("cat $query_log | tail -n 1000 > $tmp_query");
+    system("mv $tmp_query $query_log");
     my %remotes;
     my %filters;
     $remotes{"baseskel"}     = "git://cgit.voidedtech.com/skel";
@@ -159,24 +164,23 @@ elsif ( $command eq "query" ) {
     $remotes{"kxstitch-git"} = "https://github.com/KDE/kxstitch";
     $filters{"voidedtech"}   = "src/";
     my @notices;
-
     for my $package (`pacman -Sl vpr | cut -d " " -f 2`) {
         chomp $package;
         next if !$package;
         if ( !exists $remotes{$package} ) {
             next;
         }
+        system("echo $package $redir");
         my $remote = $remotes{$package};
-        print "$package\n";
         my $remote_base = "$query_base/$package";
         if ( !-d $remote_base ) {
             print "cloning $remote to $remote_base (initialize)\n";
             die "unable to clone"
-              if system("git clone --depth=1 $remote $remote_base") != 0;
+              if system("git clone --depth=1 $remote $remote_base $redir") != 0;
         }
         for my $cmd ( ( "fetch", "pull" ) ) {
             die "git command $cmd failed for $package"
-              if system("git -C $remote_base $cmd") != 0;
+              if system("git -C $remote_base $cmd $redir") != 0;
         }
         my $filter = ".";
         if ( exists( $filters{$package} ) ) {
@@ -190,19 +194,16 @@ elsif ( $command eq "query" ) {
         chomp $vers;
         die "unable to read package version for: $package" if !$vers;
         if ( $vers ne $date ) {
-            if ( !@notices ) {
-                push @notices, "out-of-date:";
-            }
-            push @notices, $package;
+            push @notices, "out-of-date:$package";
         }
     }
     if (@notices) {
-        my $notify = join( "\n└ ", @notices );
-        system("notify-send -t 60000 '$notify'");
+        my $notify = join( "\n", @notices );
+        print $notify, "\n";
     }
 }
 elsif ( $command eq "help" ) {
-    print "run sync makepkg repo-add schroot pacstrap query";
+    print "run sync makepkg repo-add schroot pacstrap flagged";
 }
 else {
     die "unknown command $command";
