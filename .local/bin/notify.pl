@@ -106,6 +106,7 @@ if ( !-e $daily ) {
         my @out;
         my $success     = 0;
         my $out_of_date = `perl ${bin}aem.pl flagged 2>&1`;
+        $success = 1;
         if ($out_of_date) {
             if ( $out_of_date =~ m/out-of-date/ ) {
                 my @parts = split( "\n", $out_of_date );
@@ -116,14 +117,14 @@ if ( !-e $daily ) {
                         push @out, $part;
                     }
                 }
-                $success = 1;
             }
             else {
+                $success = 0;
                 push @out, "failed out-of-date check";
             }
         }
         notify "out-of-date", @out;
-        if ($success) {
+        if ( $success == 1 ) {
             system("touch $daily");
         }
     }
