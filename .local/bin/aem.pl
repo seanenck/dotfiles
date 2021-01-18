@@ -76,7 +76,9 @@ elsif ( $command eq "sync" or $command eq "run" ) {
 elsif ( $command eq "repo-add" ) {
     my $repo = shift @ARGV;
     die "no repo given" if !$repo;
-    my $drop = "$root_repo$repo/";
+    my $repo_name = `echo $repo | cut -d "." -f -1`;
+    chomp $repo_name;
+    my $drop = "$root_repo$repo_name/";
     die "invalid repository" if ( system("$ssh test -d $drop") != 0 );
     die "no package" if ( !@ARGV );
     for my $package (@ARGV) {
