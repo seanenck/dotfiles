@@ -14,29 +14,7 @@ my $history_root = "$home/.cache/history/";
 
 if (@ARGV) {
     my $command = $ARGV[0];
-    if ( $command eq "mail" ) {
-        exit if ( system("$sys online") != 0 );
-        my $mail_dir = "/tmp/mail";
-        mkdir $mail_dir if !-d $mail_dir;
-        my $time = `date +%Y-%m-%d-%H-`;
-        chomp $time;
-        $time .= `date +%M` >= 30 ? "30" : "00";
-        my $mail_file = $mail_dir . "/$time";
-        my $mutt      = $mail_dir . "/mutt";
-
-        if ( system("pgrep -x mutt > /dev/null") == 0 ) {
-            system("touch $mutt");
-            exit;
-        }
-        if ( -e $mutt ) {
-            system("rm -f $mutt $mail_file");
-        }
-
-        exit if -e "$mail_file";
-        system("$sys mail");
-        system("touch $mail_file");
-    }
-    elsif ( $command eq "notify" ) {
+    if ( $command eq "notify" ) {
         system("perl ${bin}notify.pl");
     }
     elsif ( $command eq "backlight" ) {
@@ -170,6 +148,5 @@ while (1) {
         $cnt = 0;
     }
     system("$status backlight &");
-    system("$status mail &");
     sleep 1;
 }
