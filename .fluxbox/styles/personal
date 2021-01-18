@@ -9,7 +9,7 @@ toolbar:                             Raised Gradient Vertical
 toolbar.color:                       rgb:62/70/85
 toolbar.colorTo:                     rgb:56/66/75
 
-toolbar.button:                      Raised Gradient Horizontal Interlaced
+toolbar.button:                      Raised Gradient Horizontal
 toolbar.button.color:                rgb:62/70/85
 toolbar.button.colorTo:              rgb:56/66/75
 toolbar.button.picColor:             rgb:FF/FF/FF
@@ -18,24 +18,24 @@ toolbar.button.pressed:              Sunken Gradient Horizontal
 toolbar.button.pressed.color:        rgb:42/50/65
 toolbar.button.pressed.colorTo:      rgb:36/46/55
 
-toolbar.clock:                       Sunken Gradient Vertical Interlaced
+toolbar.clock:                       Sunken Gradient Vertical
 toolbar.clock.color:                 rgb:62/70/85
 toolbar.clock.colorTo:               rgb:56/66/75
 toolbar.clock.textColor:             rgb:FF/FF/FF
 
-toolbar.label:                       Sunken Gradient Vertical Interlaced
+toolbar.label:                       Sunken Gradient Vertical
 toolbar.label.color:                 rgb:62/70/85
 toolbar.label.colorTo:               rgb:56/66/75
 toolbar.label.textColor:             rgb:FF/FF/FF
 
-toolbar.windowLabel:                 Raised Gradient Vertical Interlaced
+toolbar.windowLabel:                 Raised Gradient Vertical
 toolbar.windowLabel.color:           rgb:62/70/85
 toolbar.windowLabel.colorTo:         rgb:56/66/75
 toolbar.windowLabel.textColor:       rgb:FF/FF/FF
 
 toolbar.justify:                     center
 
-menu.title:                          Raised Gradient Horizontal Interlaced
+menu.title:                          Raised Gradient Horizontal
 menu.title.color:                    rgb:62/66/70
 menu.title.colorTo:                  rgb:56/60/68
 menu.title.textColor:                rgb:E9/E9/E9
@@ -55,14 +55,14 @@ menu.hilite.textColor:               rgb:FF/FF/FF
 menu.bullet:                         Triangle
 menu.bullet.position:                Right
 
-window.title.focus:                  Raised Gradient Vertical Interlaced
+window.title.focus:                  Raised Gradient Vertical
 window.title.focus.color:            #333333
 window.title.focus.colorTo:          #E3E3E3
 window.title.unfocus:                Raised Gradient Vertical
 window.title.unfocus.color:          rgb:60/66/70
 window.title.unfocus.colorTo:        rgb:54/60/68
 
-window.label.focus:                  Flat Gradient Vertical Interlaced
+window.label.focus:                  Flat Gradient Vertical
 window.label.focus.color:            #ffffff
 window.label.focus.colorTo:          rgb:56/66/75
 window.label.focus.textColor:        rgb:FF/FF/FF
@@ -95,7 +95,7 @@ window.handle.unfocus:               Raised Gradient Diagonal
 window.handle.unfocus.color:         rgb:60/66/70
 window.handle.unfocus.colorTo:       rgb:54/60/68
 
-window.grip.focus:                   Raised Gradient Diagonal Interlaced
+window.grip.focus:                   Raised Gradient Diagonal
 window.grip.focus.color:             rgb:9B/9B/9B
 window.grip.focus.colorTo:           rgb:42/42/42
 window.grip.unfocus:                 Raised Gradient Diagonal
