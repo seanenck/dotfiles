@@ -14,11 +14,6 @@ my $dir_env = `source $home/.variables && echo \$GIT_DIRS`;
 chomp $dir_env;
 my @dirs = split / /, $dir_env;
 
-my $display = $ENV{"DISPLAY"};
-if ( !$display ) {
-    exit 0;
-}
-
 for ( "workspace", "store" ) {
     my $found = `find $home/$_/ -maxdepth 3 -type d -name ".git" | tr '\n' ' '`;
     chomp $found;

@@ -137,8 +137,15 @@ if (@ARGV) {
     exit;
 }
 
+
+my $display = $ENV{"DISPLAY"};
+
 my $cnt = 1;
 while (1) {
+    if ( !$display ) {
+        sleep 5;
+        next;
+    }
     $cnt++;
     if ( $cnt % 15 == 0 ) {
         system("$status notify &");
