@@ -14,7 +14,10 @@ my $root_repo  = "/opt/archlinux/";
 my $server     = "voidedtech.com";
 my $ssh        = "ssh  $server -- ";
 my $build_root = "$build/root";
+my $query_base = $ENV{"HOME"} . "/.cache/aem/query";
 my $gpg_key    = "031E9E4B09CFD8D3F0ED35025109CDF607B5BB04";
+
+die "must NOT run as root" if ( $> == 0 );
 
 sub header {
     print "\n=========\n";
@@ -50,6 +53,10 @@ if ( $command eq "makepkg" ) {
     print " -> $packaged packages built and signed\n";
 }
 elsif ( $command eq "sync" or $command eq "run" ) {
+    if ( $command ne "run" ) {
+        header "files";
+        system("sudo pacman -Fy");
+    }
     my $run    = "pacman -Syyu";
     my $chroot = 1;
     if ( $command eq "run" ) {
@@ -62,7 +69,7 @@ elsif ( $command eq "sync" or $command eq "run" ) {
 
     if ( $chroot == 1 ) {
         header "builds";
-        system("arch-nspawn $build_root $run");
+        system("sudo arch-nspawn $build_root $run");
         print "\n";
     }
 
@@ -80,7 +87,7 @@ elsif ( $command eq "repo-add" ) {
     chomp $repo_name;
     my $drop = "$root_repo$repo_name/";
     die "invalid repository" if ( system("$ssh test -d $drop") != 0 );
-    die "no package" if ( !@ARGV );
+    die "no package"         if ( !@ARGV );
     for my $package (@ARGV) {
         die "no package exists: $package" if !-e $package;
         my $sig = "$package.sig";
@@ -89,7 +96,7 @@ elsif ( $command eq "repo-add" ) {
         die "not a valid package" if ( not $package =~ m/\.tar\./ );
         my $basename = `echo $package | rev | cut -d '-' -f 4- | rev`;
         chomp $basename;
-        my $find = "$ssh find $drop -name '$basename-\*'";
+        my $find     = "$ssh find $drop -name '$basename-\*'";
         my $existing = `$find -print`;
         chomp $existing;
         if ( !$existing ) {
@@ -101,14 +108,14 @@ elsif ( $command eq "repo-add" ) {
                 exit 0;
             }
         }
-        die "$package already deployed" if ( system("$ssh test -e $drop$package") == 0 );
+        die "$package already deployed"
+          if ( system("$ssh test -e $drop$package") == 0 );
         system("$find -delete");
         system("scp $package $sig $server:$drop");
         system("$ssh 'cd $drop; repo-add $repo $package'");
     }
 }
 elsif ( $command eq "pacstrap" ) {
-    die "must NOT run as root" if ( $> == 0 );
     if ( -d $build ) {
         print "build chroot exists\n";
     }
@@ -125,21 +132,77 @@ elsif ( $command eq "pacstrap" ) {
     else {
         system("sudo mkdir -p $dev");
         system(
-    "sudo pacstrap -c -M $dev/ base-devel baseskel go go-bindata golint-git rustup"
+"sudo pacstrap -c -M $dev/ base-devel baseskel go go-bindata golint-git rustup"
         );
         system("sudo schroot -c source:dev -- pacman-key --lsign-key $gpg_key");
     }
-
 }
 elsif ( $command eq "schroot" ) {
-    die "must NOT run as root" if ( $> == 0 );
     die "schroot not defined" if !-d $dev;
     system("mkdir -p /dev/shm/schroot/overlay");
     system("schroot -c chroot:dev");
     exit 0;
 }
+elsif ( $command eq "query" ) {
+
+    #    system("sudo pacman -Syy");
+    system("mkdir -p $query_base") if !-d $query_base;
+
+    my %remotes;
+    my %filters;
+    $remotes{"baseskel"}     = "git://cgit.voidedtech.com/skel";
+    $remotes{"devskel"}      = "git://cgit.voidedtech.com/skel";
+    $remotes{"serverskel"}   = "git://cgit.voidedtech.com/skel";
+    $remotes{"corescripts"}  = "git://cgit.voidedtech.com/corescripts";
+    $remotes{"sysmon"}       = "git://cgit.voidedtech.com/sysmon";
+    $remotes{"voidedtech"}   = "git://cgit.voidedtech.com/whoami";
+    $remotes{"kxstitch-git"} = "https://github.com/KDE/kxstitch";
+    $filters{"voidedtech"}   = "src/";
+    my @notices;
+
+    for my $package (`pacman -Sl vpr | cut -d " " -f 2`) {
+        chomp $package;
+        next if !$package;
+        if ( !exists $remotes{$package} ) {
+            next;
+        }
+        my $remote = $remotes{$package};
+        print "$package\n";
+        my $remote_base = "$query_base/$package";
+        if ( !-d $remote_base ) {
+            print "cloning $remote to $remote_base (initialize)\n";
+            die "unable to clone"
+              if system("git clone --depth=1 $remote $remote_base") != 0;
+        }
+        for my $cmd ( ( "fetch", "pull" ) ) {
+            die "git command $cmd failed for $package"
+              if system("git -C $remote_base $cmd") != 0;
+        }
+        my $filter = ".";
+        if ( exists( $filters{$package} ) ) {
+            $filter = $filters{$package};
+        }
+        my $date =
+`git -C $remote_base log -1 --format=%cd --date=format:%Y%m%d.%H%M%S $filter`;
+        chomp $date;
+        my $vers =
+`pacman -Ss $package | grep 'vpr/$package' | cut -d " " -f 2 | rev | cut -d "-" -f 2- | rev`;
+        chomp $vers;
+        die "unable to read package version for: $package" if !$vers;
+        if ( $vers ne $date ) {
+            if ( !@notices ) {
+                push @notices, "out-of-date:";
+            }
+            push @notices, $package;
+        }
+    }
+    if (@notices) {
+        my $notify = join( "\n└ ", @notices );
+        system("notify-send -t 60000 '$notify'");
+    }
+}
 elsif ( $command eq "help" ) {
-    print "run sync makepkg repo-add schroot pacstrap";
+    print "run sync makepkg repo-add schroot pacstrap query";
 }
 else {
     die "unknown command $command";
