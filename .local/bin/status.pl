@@ -115,9 +115,19 @@ if (@ARGV) {
         system("touch $cleanup");
     }
     elsif ( $command eq "backup" ) {
-        system(
-"source ~/.variables && perl ${bin}backup.pl | systemd-cat -t backup"
-        );
+        my $server  = `source $home/.variables && echo \$SERVER`;
+        chomp $server;
+        my $tmp = "/tmp/backup/";
+        mkdir $tmp if !-d $tmp;
+        my $check = `date +%Y-%m-%d.%H`;
+        chomp $check;
+        $check = $tmp . $check;
+        exit 0 if -e $check;
+        my $target = "rsync://$server/backup";
+        if ( system("rsync --list-only $target > /dev/null") == 0 ) {
+            system("rsync -av /var/cache/voidedtech/backup/ rsync://$server/backup/");
+            system("touch $check");
+        }
     }
     elsif ( $command eq "wiki" ) {
         my $wiki = "$home/.cache/wiki/";
