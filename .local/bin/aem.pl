@@ -15,9 +15,9 @@ my $server     = "voidedtech.com";
 my $ssh        = "ssh  $server -- ";
 my $build_root = "$build/root";
 my $aem_base   = $ENV{"HOME"} . "/.cache/aem/";
-my $query_base = "${aem_base}query";
+my $flag_base  = "${aem_base}flagged";
 my $gpg_key    = "031E9E4B09CFD8D3F0ED35025109CDF607B5BB04";
-my $query_log  = "${query_base}.log";
+my $flag_log   = "${flag_base}.log";
 
 die "must NOT run as root" if ( $> == 0 );
 
@@ -146,13 +146,13 @@ elsif ( $command eq "schroot" ) {
     exit 0;
 }
 elsif ( $command eq "flagged" ) {
-    system("mkdir -p $query_base") if !-d $query_base;
-    my $redir = ">> $query_log 2>&1";
-    my $tmp_query = `mktemp`;
-    chomp $tmp_query;
+    system("mkdir -p $flag_base") if !-d $flag_base;
+    my $redir    = ">> $flag_log 2>&1";
+    my $tmp_flag = `mktemp`;
+    chomp $tmp_flag;
     system("date +%Y-%m-%dT%H:%M:%S $redir");
-    system("cat $query_log | tail -n 1000 > $tmp_query");
-    system("mv $tmp_query $query_log");
+    system("cat $flag_log | tail -n 1000 > $tmp_flag");
+    system("mv $tmp_flag $flag_log");
     my %remotes;
     my %filters;
     $remotes{"baseskel"}     = "git://cgit.voidedtech.com/skel";
@@ -164,6 +164,7 @@ elsif ( $command eq "flagged" ) {
     $remotes{"kxstitch-git"} = "https://github.com/KDE/kxstitch";
     $filters{"voidedtech"}   = "src/";
     my @notices;
+
     for my $package (`pacman -Sl vpr | cut -d " " -f 2`) {
         chomp $package;
         next if !$package;
@@ -171,10 +172,9 @@ elsif ( $command eq "flagged" ) {
             next;
         }
         system("echo $package $redir");
-        my $remote = $remotes{$package};
-        my $remote_base = "$query_base/$package";
+        my $remote      = $remotes{$package};
+        my $remote_base = "$flag_base/$package";
         if ( !-d $remote_base ) {
-            print "cloning $remote to $remote_base (initialize)\n";
             die "unable to clone"
               if system("git clone --depth=1 $remote $remote_base $redir") != 0;
         }
