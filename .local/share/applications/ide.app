@@ -12,6 +12,11 @@ if [ -e $KITTY_IDE ]; then
 fi
 
 if [ -z "$1" ]; then
-    touch $KITTY_IDE
-    kitty --detach --start-as=maximized --title=ide
+    env | grep -q KITTY
+    if [ $? -eq 0 ]; then
+        _ide > /dev/null
+    else
+        touch $KITTY_IDE
+        kitty --detach --start-as=maximized --title=ide
+    fi
 fi
