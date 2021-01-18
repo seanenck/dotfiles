@@ -62,6 +62,6 @@ aem() {
 }
 
 glint() {
-    goimports -l . | sed 's/^/[goimports]    /g'
-    golint ./... | sed 's/^/[golint]       /g'
+    goimports -l . | grep -v bindata.go | sed 's/^/[goimports]    /g'
+    revive ./... | sed 's/^/[revive]       /g'
 }
