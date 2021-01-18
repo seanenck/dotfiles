@@ -35,9 +35,6 @@ if (@ARGV) {
     elsif ( $command eq "sync" ) {
         if ( -d $imap ) {
             exit 0 if system("pgrep -x mbsync > /dev/null") == 0;
-            my $mbsync = "/tmp/mbsync";
-            mkdir $mbsync if ( !-d $mbsync );
-            system("notify-send -t 5000 'syncing mail'");
             for ( ( "mbsync -a", "notmuch new" ) ) {
                 system("$_ | systemd-cat -t 'mbsync'");
             }
@@ -46,6 +43,7 @@ if (@ARGV) {
     else {
         die "unknown command";
     }
+    exit 0;
 }
 
 while (1) {
