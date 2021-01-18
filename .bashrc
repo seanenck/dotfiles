@@ -37,7 +37,10 @@ done
 
 if [ -z "$SSH_CONNECTION" ]; then
     motd
-    source ~/.local/share/applications/ide.app load
+    ide=~/.local/apps/enabled/ide.app
+    if [ -e $ide ]; then
+        source $ide load
+    fi
 fi
 
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then

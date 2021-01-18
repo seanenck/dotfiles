@@ -66,7 +66,7 @@ if (@ARGV) {
         my $curr   = "$rcache/current";
         my $prev   = "$curr.prev";
         my $menu   = "~/.fluxbox/usermenu";
-        my $apps   = "~/.local/share/applications";
+        my $apps   = "~/.local/apps/enabled";
         system("mkdir -p $rcache") if !-d $rcache;
         system("ls $apps/*.app | sort > $curr");
         if ( -e $prev ) {
