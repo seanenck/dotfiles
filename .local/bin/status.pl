@@ -107,24 +107,12 @@ if (@ARGV) {
             system(
 "rsync -av /var/cache/voidedtech/backup/ rsync://$server/backup/"
             );
-            system("rsync -av rsync://$server/pull $home/store/config/notebook/bin");
+            system("rsync -av --delete-afte rsync://$server/pull $home/store/config/notebook/bin");
             system("touch $check");
         }
     }
     elsif ( $command eq "wiki" ) {
-        my $wiki = "$home/.cache/wiki/";
-        my $hash = "${wiki}hash";
-        my $prev = $hash . ".prev";
-        my $note = "$home/store/config/notebook";
-        system("mkdir -p $wiki");
-        system("find $note -type f -exec md5sum {} \\; > $hash");
-        if ( -e $prev ) {
-            exit 0 if ( system("diff -u $prev $hash") == 0 );
-        }
-        system("mv $hash $prev");
-        system(
-"zim --export $note --output $wiki/notebook/ --overwrite --index-page index"
-        );
+        system("perl $bin/wiki.pl");
     }
     exit;
 }
