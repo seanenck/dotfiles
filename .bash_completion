@@ -36,3 +36,12 @@ _aem() {
 }
 
 complete -F _aem aem
+
+_wiki() {
+    local opts cur
+    opts=$(find ~/store/config/notebook -name "*.md" -type f | cut -d "/" -f 7-)
+    cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+}
+
+complete -F _wiki wiki

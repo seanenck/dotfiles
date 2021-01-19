@@ -60,6 +60,14 @@ lgp() {
     fi
 }
 
+wiki() {
+    if [ -z "$@" ]; then
+        echo "no files given"
+        return
+    fi
+    vim $(echo $@ | tr ' ' '\n' | sed "s#^#$HOME/store/config/notebook/#g")
+}
+
 aem() {
     perl ~/.local/bin/aem.pl $@
 }
