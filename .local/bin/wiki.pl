@@ -8,12 +8,12 @@ my $dest = "$home/.cache/wiki/";
 my $hash = "${dest}hash";
 my $prev = "${hash}.prev";
 my $date = `date +%Y-%m-%dT%H%M:%S`;
-$dest    = "${dest}notebook/";
+$dest = "${dest}notebook/";
 
-if ( @ARGV ) {
+if (@ARGV) {
     my $cmd = shift @ARGV;
     if ( $cmd eq "ls" ) {
-        system("find $dir -type f -name '*.md' | sed 's#$dir##g'")
+        system("find $dir -type f -name '*.md' | sed 's#$dir##g'");
     }
     elsif ( $cmd eq "edit" ) {
         my $files = "";
@@ -74,11 +74,15 @@ sub build {
         else {
             $links = "$links <a href='$short'>$disp</a>";
         }
+        $links = "$links<br />";
     }
+    $links = "$links<br /><br /><br /><small>$date</small>";
     my $dir_name = `dirname $page`;
     chomp $dir_name;
     system("mkdir -p $dir_name");
-    system("echo '<html><body><div>$links<hr/>' > $page");
+    system(
+"echo '<html><body><div style=\"float: left; width: 15%; height: 100%; padding-right: 20px\">$links</div><div>' > $page"
+    );
     if ( exists( $pages{$page} ) ) {
         my $file = $pages{$page};
         system("python -m markdown -x fenced_code $file >> $page");
@@ -86,7 +90,7 @@ sub build {
     else {
         system("echo '<h4>Wiki</h4>' >> $page");
     }
-    system("echo '<small><hr />$date</small></div></body></html>' >> $page");
+    system("echo '</div></body></html>' >> $page");
 }
 
 build $index_page;
