@@ -21,4 +21,4 @@ if [ ! -z "$1" ]; then
     exit 0
 fi
 
-ssh -t fastmail@$MAILHOST /usr/bin/mutt -F /home/fastmail/.mutt/fastmail.muttrc
+ssh fastmail@$MAILHOST
