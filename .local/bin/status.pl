@@ -107,12 +107,9 @@ if (@ARGV) {
             system(
 "rsync -av /var/cache/voidedtech/backup/ rsync://$server/backup/"
             );
-            system("rsync -av --delete-afte rsync://$server/pull $home/store/config/notebook/bin");
+            system("rsync -av --delete-after rsync://$server/pull $home/.cache/wiki");
             system("touch $check");
         }
-    }
-    elsif ( $command eq "wiki" ) {
-        system("perl $bin/wiki.pl");
     }
     exit;
 }
@@ -131,7 +128,6 @@ while (1) {
     }
     if ( $cnt >= 30 ) {
         system("$status cleanup &");
-        system("$status wiki &");
         system("$status backup &");
         system("$status regen &");
         $cnt = 0;
