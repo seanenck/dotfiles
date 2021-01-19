@@ -14,7 +14,7 @@ random_caps() {
     echo "$res"
 }
 
-for f in mutt mumble $BROWSER zim pavucontrol schroot makepkg repo-add mkarchroot; do
+for f in mutt mumble $BROWSER pavucontrol schroot makepkg repo-add mkarchroot; do
     alias $f="echo disabled in bash"
 done
 
