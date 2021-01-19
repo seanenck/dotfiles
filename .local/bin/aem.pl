@@ -137,6 +137,7 @@ elsif ( $command eq "pacstrap" ) {
 "sudo pacstrap -c -M $dev/ base-devel baseskel go go-bindata golint-git rustup"
         );
         system("sudo schroot -c source:dev -- pacman-key --lsign-key $gpg_key");
+        system("sudo schroot -c source:dev -- locale-gen");
     }
 }
 elsif ( $command eq "schroot" ) {
