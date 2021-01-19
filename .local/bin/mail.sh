@@ -11,15 +11,14 @@ if [ $? -ne 0 ]; then
     exit 0;
 fi
 
-SSHMAIL="fastmail@$MAILHOST"
 IMAP="/home/fastmail/imap/fastmail/"
 if [ ! -z "$1" ]; then
     case $1 in
         "new")
-            ssh $SSHMAIL -- find $IMAP -type f -path '*/new/*' | grep -v Trash | rev | cut -d '/' -f 3- | rev | sort | sed "s#$IMAP##g"
+            curl -s http://$MAILHOST/files/mutt/new.txt
             ;;
     esac
     exit 0
 fi
 
-ssh -t $SSHMAIL /usr/bin/mutt -F /home/fastmail/.mutt/fastmail.muttrc
+ssh -t fastmail@$MAILHOST /usr/bin/mutt -F /home/fastmail/.mutt/fastmail.muttrc
