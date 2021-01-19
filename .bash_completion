@@ -36,12 +36,3 @@ _aem() {
 }
 
 complete -F _aem aem
-
-_wiki() {
-    local opts cur
-    opts=$(perl ~/.local/bin/wiki.pl ls)
-    cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-}
-
-complete -F _wiki wiki

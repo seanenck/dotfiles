@@ -60,14 +60,6 @@ lgp() {
     fi
 }
 
-wiki() {
-    if [ -z "$@" ]; then
-        echo "no files given"
-        return
-    fi
-    perl ~/.local/bin/wiki.pl edit $@
-}
-
 aem() {
     perl ~/.local/bin/aem.pl $@
 }
