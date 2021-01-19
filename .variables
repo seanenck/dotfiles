@@ -8,4 +8,4 @@ export PASSWORD_STORE_DIR=$HOME/store/private/pass
 export BROWSER=firefox-developer-edition
 export GOPATH="$HOME/.cache/go"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
-export GIT_DIRS="$HOME/.git $HOME/store/private/.git $HOME/store/config/.git"
+export GIT_DIRS="$HOME/.git $HOME/store/private/.git"
