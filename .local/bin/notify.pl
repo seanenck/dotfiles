@@ -57,17 +57,22 @@ for my $dir (@dirs) {
 notify "git", @git;
 
 my @mail;
-my $imap = "$home/store/imap/fastmail";
-if ( -d $imap ) {
-    for (`find $imap -type d -name new -exec dirname {} \\; | grep -v Trash`) {
+my $mail_host = "shelf";
+if ( system("ping -c1 -w5 $mail_host > /dev/null 2>&1") == 0 ) {
+    my $imap = "/home/fastmail/imap/fastmail/";
+    my %mail_count;
+    for (`ssh fastmail\@$mail_host -- find $imap -type f -path '*/new/*' | grep -v Trash | rev | cut -d '/' -f 3- | rev | sort`) {
         chomp;
-        my $count = `ls "$_/new/" | wc -l`;
-        chomp $count;
-        if ( $count > 0 ) {
-            my $dname = $_;
-            $dname =~ s#$imap/##g;
-            push @mail, "$dname [$count]";
+        my $dir = $_;
+        $dir =~ s#$imap##g;
+        if ( !exists($mail_count{$dir}) ) {
+            $mail_count{$dir} = 0;
         }
+        $mail_count{$dir} += 1;
+    }
+    for (keys %mail_count) {
+        my $count = $mail_count{$_};
+        push @mail, "$_ [$count]";
     }
 }
 
