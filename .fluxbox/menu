@@ -19,6 +19,7 @@
     [exec] (firefox) {firefox-developer-edition}
     [exec] (kitty) {kitty}
     [exec] (mumble) {mumble}
+    [exec] (passwords) {keepassxc}
     [exec] (volume) {pavucontrol}
     [include](~/.fluxbox/usermenu)
 [submenu] (internals)
