@@ -1,8 +1,0 @@
-[Unit]
-Description=Local mail
-
-[Service]
-ExecStart=/usr/bin/perl /home/enck/.local/bin/mail.pl
-
-[Install]
-WantedBy=default.target

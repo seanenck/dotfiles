@@ -22,9 +22,6 @@
     rebase = false
 [push]
     default = simple
-[sendemail]
-    smtpserver = "/usr/bin/msmtp"
-    smtpencryption = tls
 [status]
     short = true
     branch = true
