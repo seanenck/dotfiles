@@ -62,13 +62,13 @@ my %mail_count;
 for (`bash ~/.local/bin/mail.sh new`) {
     chomp;
     my $dir = $_;
-    if ( !exists($mail_count{$dir}) ) {
+    if ( !exists( $mail_count{$dir} ) ) {
         $mail_count{$dir} = 0;
     }
     $mail_count{$dir} += 1;
 }
 
-for (keys %mail_count) {
+for ( keys %mail_count ) {
     my $count = $mail_count{$_};
     push @mail, "$_ [$count]";
 }

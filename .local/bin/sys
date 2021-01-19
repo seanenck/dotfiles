@@ -11,8 +11,7 @@ if (@ARGV) {
 die "no command" if !$cmd;
 
 if ( $cmd eq "mouse" ) {
-    my $host =
-      system('source ~/.variables && test -e $IS_DESKTOP');
+    my $host = system('source ~/.variables && test -e $IS_DESKTOP');
     if ( $host != 0 ) {
         exit 0;
     }
@@ -36,8 +35,7 @@ elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
         $suspend = 1;
     }
     if ($suspend) {
-        my $host =
-          system('source ~/.variables && test -e $IS_LAPTOP');
+        my $host = system('source ~/.variables && test -e $IS_LAPTOP');
         if ( $host != 0 ) {
             if ( $cmd eq "suspend" ) {
                 exit 0;
