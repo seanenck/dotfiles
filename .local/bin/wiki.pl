@@ -58,7 +58,7 @@ my $index_page = "${dest}index.html";
 my %shorts;
 $shorts{$index_page} = "index";
 for my $page ( keys %pages ) {
-    my $short = `echo $page | rev | cut -d '/' -f 1 | rev | cut -d '.' -f 1`;
+    my $short = `echo $page | sed 's#$dest##g;s#\\.html##g'`;
     chomp $short;
     $shorts{$page} = $short;
 }
@@ -75,10 +75,13 @@ sub build {
             $links = "$links <a href='$short'>$disp</a>";
         }
     }
+    my $dir_name = `dirname $page`;
+    chomp $dir_name;
+    system("mkdir -p $dir_name");
     system("echo '<html><body><div>$links<hr/>' > $page");
     if ( exists( $pages{$page} ) ) {
         my $file = $pages{$page};
-        system("python -m markdown $file >> $page");
+        system("python -m markdown -x fenced_code $file >> $page");
     }
     else {
         system("echo '<h4>Wiki</h4>' >> $page");
