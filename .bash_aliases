@@ -65,7 +65,7 @@ wiki() {
         echo "no files given"
         return
     fi
-    vim $(echo $@ | tr ' ' '\n' | sed "s#^#$HOME/store/config/notebook/#g")
+    perl ~/.local/bin/wiki.pl edit $@
 }
 
 aem() {

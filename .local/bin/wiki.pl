@@ -8,13 +8,37 @@ my $dest = "$home/.cache/wiki/";
 my $hash = "${dest}hash";
 my $prev = "${hash}.prev";
 my $date = `date +%Y-%m-%dT%H%M:%S`;
+$dest    = "${dest}notebook/";
+
+if ( @ARGV ) {
+    my $cmd = shift @ARGV;
+    if ( $cmd eq "ls" ) {
+        system("find $dir -type f -name '*.md' | sed 's#$dir##g'")
+    }
+    elsif ( $cmd eq "edit" ) {
+        my $files = "";
+        for (@ARGV) {
+            my $f = "${dir}$_";
+            if ( -e $f ) {
+                $files = "$files $f";
+            }
+        }
+        if ( !$files ) {
+            die "no files found";
+        }
+        system("vim $files");
+    }
+    else {
+        die "unknown command: $cmd";
+    }
+    exit 0;
+}
 
 system("find $dir -type f -exec md5sum {} \\; > $hash");
 if ( -e $prev ) {
     exit 0 if ( system("diff -u $prev $hash") == 0 );
 }
 
-$dest = "${dest}notebook/";
 system("rm -rf $dest");
 system("mkdir $dest");
 system("mv $hash $prev");
