@@ -42,24 +42,6 @@ _apps() {
 
 _apps
 
-lgp() {
-    valid=1
-    for f in $GIT_DIRS; do
-        dname=$(dirname $f)
-        remotes=$(git -C $dname remote | wc -l)
-        if [ $remotes -gt 0 ]; then
-            echo "pulling $dname"
-            git -C $dname pull
-            if [ $? -ne 0 ]; then
-                valid=0
-            fi
-        fi
-    done
-    if [ $valid -ne 1 ]; then
-        echo "^^^ failures reported"
-    fi
-}
-
 aem() {
     perl ~/.local/bin/aem.pl $@
 }
