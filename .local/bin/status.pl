@@ -101,12 +101,13 @@ if (@ARGV) {
         chomp $check;
         $check = $tmp . $check;
         exit 0 if -e $check;
-        my $target = "rsync://$server/backup";
 
+        my $target = "rsync://$server/backup";
         if ( system("rsync --list-only $target > /dev/null") == 0 ) {
             system(
 "rsync -av /var/cache/voidedtech/backup/ rsync://$server/backup/"
             );
+            system("rsync -av rsync://$server/pull $home/store/config/notebook/bin");
             system("touch $check");
         }
     }

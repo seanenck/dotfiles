@@ -4,7 +4,8 @@ if [ ! -z $SSH_CONNECTION ]; then
     exit 0
 fi
 
-MAILHOST=shelf
+source ~/.variables
+MAILHOST=$SERVER
 ping -c1 -w5 $MAILHOST > /dev/null 2>&1
 if [ $? -ne 0 ]; then
     exit 0;
