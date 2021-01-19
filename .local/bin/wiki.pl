@@ -7,12 +7,16 @@ my $dir  = "$home/store/config/notebook/";
 my $dest = "$home/.cache/wiki/";
 my $hash = "${dest}hash";
 my $prev = "${hash}.prev";
+my $date = `date +%Y-%m-%dT%H%M:%S`;
 
 system("find $dir -type f -exec md5sum {} \\; > $hash");
 if ( -e $prev ) {
     exit 0 if ( system("diff -u $prev $hash") == 0 );
 }
 
+$dest = "${dest}notebook/";
+system("rm -rf $dest");
+system("mkdir $dest");
 system("mv $hash $prev");
 my @index;
 my %pages;
@@ -55,7 +59,7 @@ sub build {
     else {
         system("echo '<h4>Wiki</h4>' >> $page");
     }
-    system("echo '</div></body></html>' >> $page");
+    system("echo '<small><hr />$date</small></div></body></html>' >> $page");
 }
 
 build $index_page;
