@@ -11,7 +11,6 @@ if [ $? -ne 0 ]; then
     exit 0;
 fi
 
-IMAP="/home/fastmail/imap/fastmail/"
 if [ ! -z "$1" ]; then
     case $1 in
         "new")
@@ -21,4 +20,4 @@ if [ ! -z "$1" ]; then
     exit 0
 fi
 
-ssh fastmail@$MAILHOST
+ssh -t $MAILHOST -- tmux attach -t mutt
