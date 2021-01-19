@@ -21,4 +21,5 @@ else
 fi
 
 systemctl --user restart status
+systemctl --user restart mail
 exec fluxbox -log /home/enck/.cache/fluxbox.log
