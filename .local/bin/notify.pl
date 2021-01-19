@@ -3,6 +3,7 @@ use warnings;
 use strict;
 use File::Compare;
 use File::Copy qw(move);
+use List::MoreUtils qw(uniq);
 
 my $home  = $ENV{"HOME"};
 my $cache = "$home/.cache/notify/";
@@ -26,7 +27,8 @@ sub notify {
     $id += 1;
     my $cat = shift @_;
     if (@_) {
-        my $text = join( "\n└ ", @_ );
+        my @notices = uniq @_;
+        my $text = join( "\n└ ", @notices );
         system("dunstify -r $id -t 20000 '$cat:\n└ $text'");
     }
     else {
