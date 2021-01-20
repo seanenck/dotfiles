@@ -3,6 +3,12 @@ use strict;
 use warnings;
 use autodie;
 
+sub lock_notify {
+    my $text = join("", @_);
+    my $msg = uc $text;
+    system("dunstify -r 1000 -t 10000 'LOCK: $msg'");
+}
+
 my $no_lock = "/tmp/no_lock";
 my $cmd;
 if (@ARGV) {
@@ -32,14 +38,16 @@ if ( $cmd eq "mouse" ) {
 }
 elsif ( $cmd eq "togglelock" ) {
     if ( -e $no_lock ) {
+        lock_notify "on";
         unlink $no_lock;
     } else {
+        lock_notify "off";
         system("touch $no_lock");
     }
 }
 elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
     if ( -e $no_lock ) {
-        system("dunstify -r 1000 -t 10000 'LOCK DISABLED'");
+        lock_notify "disabled";
         exit 0;
     }
     my $suspend = 0;
