@@ -3,6 +3,7 @@ export TERM=xterm
 export PAGER=less
 export IS_DESKTOP=$HOME/.cache/is.desktop
 export IS_LAPTOP=$HOME/.cache/is.laptop
+export IS_MAIL=$HOME/.cache/is.mail
 export PASSWORD_STORE_DIR=$HOME/.config/private/pass
 export BROWSER=firefox-developer-edition
 export GOPATH="$HOME/.cache/go"

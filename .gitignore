@@ -3,6 +3,7 @@
 .local/*
 !.local/bin/
 !.local/apps/
+!.local/env/
 .local/apps/*
 !.local/apps/available/
 !.config/
