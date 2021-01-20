@@ -12,7 +12,7 @@ my $dir_env = `source $home/.variables && echo \$GIT_DIRS`;
 chomp $dir_env;
 my @dirs = split / /, $dir_env;
 
-for ( "workspace", "store" ) {
+for ( "workspace" ) {
     my $found = `find $home/$_/ -maxdepth 3 -type d -name ".git" | tr '\n' ' '`;
     chomp $found;
     push @dirs, split( / /, $found );

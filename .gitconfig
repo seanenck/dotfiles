@@ -11,7 +11,7 @@
 [grep]
     lineNumber = true
 [include]
-    path = ~/store/private/etc/gitconfig
+    path = ~/.config/private/etc/gitconfig
 [log]
     date = iso-strict
 [pager]

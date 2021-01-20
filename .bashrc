@@ -29,7 +29,7 @@ fi
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
-for file in $HOME/.pass/env $HOME/store/private/etc/private.exports; do
+for file in $HOME/.pass/env $HOME/.config/private/etc/private.exports; do
     if [ -e $file ]; then
         . $file
     fi
