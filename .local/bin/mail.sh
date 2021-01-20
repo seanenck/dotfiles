@@ -24,5 +24,5 @@ if [ ! -e $START ]; then
     ssh $MAILHOST 2>&1 &
 fi
 
-ssh -t $MAILHOST -- tmux attach -t mutt
+ssh -t $MAILHOST -- perl $HOME/.mutt/mail.pl mutt
 touch $START
