@@ -1,0 +1,5 @@
+[Unit]
+Description=Regenerate app menu
+
+[Service]
+ExecStart=/usr/bin/perl /home/enck/.local/bin/cache.pl regen

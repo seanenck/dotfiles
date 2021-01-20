@@ -1,0 +1,8 @@
+[Unit]
+Description="Regenerate app menu"
+
+[Path]
+PathModified=/home/enck/.local/apps/enabled/
+
+[Install]
+WantedBy=default.target

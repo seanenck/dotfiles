@@ -1,8 +1,0 @@
-[Unit]
-Description="Open firefox on mutt html change"
-
-[Path]
-PathModified=/home/enck/.cache/mutt.html
-
-[Install]
-WantedBy=default.target

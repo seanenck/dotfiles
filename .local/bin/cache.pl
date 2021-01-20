@@ -5,7 +5,8 @@ use File::Compare;
 use File::Copy qw(move);
 use autodie;
 
-my $bin = "perl " . $ENV{"HOME"} . "/.local/bin/cache.pl";
+my $home = $ENV{"HOME"};
+my $bin  = "perl $home/.local/bin/cache.pl";
 
 if (@ARGV) {
     my $command = $ARGV[0];
