@@ -1,19 +1,3 @@
-random_caps() {
-    local n c res
-    local s="$@"
-    for (( i=0; i<${#s}; i++ )); do
-        n=$((1 + RANDOM % 10))
-        n=$(($i%2))
-        c="${s:$i:1}"
-        if [ $n -eq 1 ]; then
-            res="$res"$(echo "$c" | tr '[:lower:]' '[:upper:]')
-        else
-            res="$res$c"
-        fi
-    done
-    echo "$res"
-}
-
 for f in mutt mumble $BROWSER pavucontrol schroot makepkg repo-add mkarchroot; do
     alias $f="echo disabled in bash"
 done
