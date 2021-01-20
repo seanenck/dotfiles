@@ -50,16 +50,8 @@ elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
         system("systemctl suspend");
     }
 }
-elsif ( $cmd eq "status" ) {
-    system("perl ~/.local/bin/status.pl");
-}
 elsif ( $cmd eq "autoclip" ) {
     system("source ~/.variables && pass -c autoclip > /dev/null");
-}
-elsif ( $cmd eq "online" ) {
-    my $exit =
-      system("ping -c1 -w5 voidedtech.com > /dev/null 2>&1") == 0 ? 0 : 1;
-    exit $exit;
 }
 else {
     print "unknown command";

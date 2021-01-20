@@ -5,6 +5,10 @@ if [ ! -z $SSH_CONNECTION ]; then
 fi
 
 source ~/.variables
+if [ ! -e $IS_LOCAL ]; then
+    exit 0
+fi
+
 MAILHOST=$SERVER
 ping -c1 -w5 $MAILHOST > /dev/null 2>&1
 if [ $? -ne 0 ]; then

@@ -1,9 +1,6 @@
 #!/usr/bin/perl
 use warnings;
 use strict;
-use File::Compare;
-use File::Copy qw(move);
-use List::MoreUtils qw(uniq);
 
 my $home  = $ENV{"HOME"};
 my $cache = "$home/.cache/notify/";
@@ -27,8 +24,7 @@ sub notify {
     $id += 1;
     my $cat = shift @_;
     if (@_) {
-        my @notices = uniq @_;
-        my $text = join( "\n└ ", @notices );
+        my $text = join( "\n└ ", @_ );
         system("dunstify -r $id -t 20000 '$cat:\n└ $text'");
     }
     else {
@@ -106,7 +102,7 @@ notify "workspaces", @workspaces;
 if ( !-e $daily ) {
     system("mkdir -p $cache") if !-d $cache;
     system("find $cache -type f -mtime +1 -delete");
-    if ( system("${bin}sys online") == 0 ) {
+    if ( system("source $home/.variables && test -e \$IS_ONLINE") == 0 ) {
         my @out;
         my $success     = 0;
         my $out_of_date = `perl ${bin}aem.pl flagged 2>&1`;

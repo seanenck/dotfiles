@@ -1,46 +1,13 @@
 #!/usr/bin/perl
 use warnings;
 use strict;
-use File::Compare;
-use File::Copy qw(move);
-use autodie;
 
 my $home = $ENV{"HOME"};
 my $bin  = "perl $home/.local/bin/cache.pl";
 
 if (@ARGV) {
     my $command = $ARGV[0];
-    if ( $command eq "hourly" ) {
-        system("$bin cleanup");
-        system("$bin backup");
-    }
-    elsif ( $command eq "regen" ) {
-        my $rcache = "~/.cache/regen";
-        my $curr   = "$rcache/current";
-        my $prev   = "$curr.prev";
-        my $menu   = "~/.fluxbox/usermenu";
-        my $apps   = "~/.local/apps/enabled";
-        system("mkdir -p $rcache") if !-d $rcache;
-        system("ls $apps/*.app | sort > $curr");
-        if ( -e $prev ) {
-            if ( system("diff -u $prev $curr") == 0 ) {
-                exit 0;
-            }
-        }
-        system("echo [separator] > $menu");
-        for my $app (`cat $curr | rev | cut -d '/' -f 1 | rev`) {
-            chomp $app;
-            if ( !$app ) {
-                next;
-            }
-            my $name = `echo $app | cut -d '.' -f 1`;
-            chomp $name;
-            system("echo '[exec] ($name) {/bin/bash $apps/$app}' >> $menu");
-        }
-        system("echo [separator] >> $menu");
-        system("mv $curr $prev");
-    }
-    elsif ( $command eq "cleanup" ) {
+    if ( $command eq "cleanup" ) {
         my $cleanup_date = `date +%Y-%m-%d`;
         chomp $cleanup_date;
         my $cleanup_dir = "/tmp/cleanup/";
@@ -70,11 +37,9 @@ if (@ARGV) {
         system("touch $cleanup");
     }
     elsif ( $command eq "backup" ) {
-        my $server = `source $home/.variables && echo \$SERVER`;
-        chomp $server;
-
-        my $target = "rsync://$server/backup";
-        if ( system("rsync --list-only $target > /dev/null") == 0 ) {
+        if ( system("source $home/.variables && test -e \$IS_LOCAL") == 0 ) {
+            my $server = `source $home/.variables && echo \$SERVER`;
+            chomp $server;
             system(
 "rsync -av /var/cache/voidedtech/backup/ rsync://$server/backup/"
             );
@@ -89,4 +54,5 @@ if (@ARGV) {
     exit 0;
 }
 
-die "command required";
+system("$bin cleanup");
+system("$bin backup");
