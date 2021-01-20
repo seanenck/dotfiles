@@ -21,6 +21,7 @@ Mod1 Shift Tab :PrevWindow {groups} (head=[current]) (workspace=[current])
 Mod1 Return :Exec kitty
 
 Mod1 Shift l :Exec /home/enck/.local/bin/sys lock
+Mod1 Shift h :Exec /home/enck/.local/bin/sys togglelock
 Mod1 Shift s :Exec /home/enck/.local/bin/sys suspend
 
 XF86AudioLowerVolume :Exec ponymix decrease 1

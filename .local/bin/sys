@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use autodie;
 
+my $no_lock = "/tmp/no_lock";
 my $cmd;
 if (@ARGV) {
     $cmd = shift @ARGV;
@@ -29,7 +30,18 @@ if ( $cmd eq "mouse" ) {
     system("pkill xdotool");
     print $position, "\n";
 }
+elsif ( $cmd eq "togglelock" ) {
+    if ( -e $no_lock ) {
+        unlink $no_lock;
+    } else {
+        system("touch $no_lock");
+    }
+}
 elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
+    if ( -e $no_lock ) {
+        system("dunstify -r 1000 -t 10000 'LOCK DISABLED'");
+        exit 0;
+    }
     my $suspend = 0;
     if ( $cmd eq "suspend" or $cmd eq "xautolock" ) {
         $suspend = 1;
