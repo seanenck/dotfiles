@@ -3,4 +3,4 @@ Description=Caching management
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/perl /home/enck/.local/bin/cache.pl hourly
+ExecStart=/home/enck/.local/bin/localsvc.sh cache

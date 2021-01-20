@@ -2,4 +2,4 @@
 Description=Regenerate app menu
 
 [Service]
-ExecStart=/usr/bin/perl /home/enck/.local/bin/cache.pl regen
+ExecStart=/home/enck/.local/bin/localsvc.sh regen
