@@ -1,4 +1,5 @@
 #!/bin/sh
+. $HOME/.variables
 
 dunst -config $HOME/.config/dunst &
 nm-applet &
@@ -8,7 +9,6 @@ if [ -x /usr/bin/cbatticon ]; then
 fi
 xautolock -detectsleep -time 5 -locker "$HOME/.local/bin/sys xautolock" &
 
-. $HOME/.variables
 if [ -e $IS_DESKTOP ]; then
     cnt=$(xrandr | grep " connected" | wc -l)
     if [ $cnt -eq 2 ]; then
