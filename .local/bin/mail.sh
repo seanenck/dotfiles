@@ -19,4 +19,10 @@ if [ ! -z "$1" ]; then
     exit 0
 fi
 
+START=/tmp/start_mail
+if [ ! -e $START ]; then
+    ssh $MAILHOST 2>&1 &
+fi
+
 ssh -t $MAILHOST -- tmux attach -t mutt
+touch $START
