@@ -35,3 +35,7 @@ fi
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
     PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
 fi
+
+if [ -d .mutt ]; then
+    . ~/.mailrc
+fi

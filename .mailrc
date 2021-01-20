@@ -1,0 +1,10 @@
+tmux has-session -t mail > /dev/null 2>&1
+if [ $? != 0 ]; then
+    tmux new-session -d -s mail -- /usr/bin/perl $HOME/.mutt/mail.pl daemon
+fi
+
+git -C .mutt/ status -sb
+
+fastmail.app() {
+    tmux attach -t mutt
+}
