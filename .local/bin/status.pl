@@ -62,9 +62,10 @@ while (1) {
         next;
     }
     $cnt++;
-    if ( $cnt % 15 == 0 ) {
+    if ( $cnt == 20 ) {
         system("$status online &");
         system("$status notify &");
+        $cnt = 0;
     }
     system("$status backlight &");
     sleep 1;
