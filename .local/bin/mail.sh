@@ -10,11 +10,6 @@ if [ ! -e $IS_LOCAL ]; then
 fi
 
 MAILHOST=$SERVER
-ping -c1 -w5 $MAILHOST > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-    exit 0;
-fi
-
 if [ ! -z "$1" ]; then
     case $1 in
         "new")
