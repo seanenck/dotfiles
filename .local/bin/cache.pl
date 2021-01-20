@@ -72,12 +72,6 @@ if (@ARGV) {
     elsif ( $command eq "backup" ) {
         my $server = `source $home/.variables && echo \$SERVER`;
         chomp $server;
-        my $tmp = "/tmp/backup/";
-        mkdir $tmp if !-d $tmp;
-        my $check = `date +%Y-%m-%d.%H`;
-        chomp $check;
-        $check = $tmp . $check;
-        exit 0 if -e $check;
 
         my $target = "rsync://$server/backup";
         if ( system("rsync --list-only $target > /dev/null") == 0 ) {
@@ -87,7 +81,6 @@ if (@ARGV) {
             system(
 "rsync -av --delete-after rsync://$server/pull $home/.cache/wiki"
             );
-            system("touch $check");
         }
     }
     else {
