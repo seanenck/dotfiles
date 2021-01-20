@@ -9,7 +9,7 @@ if [ ! -e $IS_LOCAL ]; then
     exit 0
 fi
 
-MAILHOST=$SERVER
+MAILHOST=$LOCAL_SERVER
 if [ ! -z "$1" ]; then
     case $1 in
         "new")
