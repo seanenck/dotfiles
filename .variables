@@ -7,4 +7,7 @@ export PASSWORD_STORE_DIR=$HOME/.config/private/pass
 export BROWSER=firefox-developer-edition
 export GOPATH="$HOME/.cache/go"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
-source /etc/voidedtech/env/network
+NETWORK=/etc/voidedtech/env/network
+if [ -e $NETWORK ]; then
+    source $NETWORK
+fi

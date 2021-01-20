@@ -2,9 +2,7 @@
 
 for file in $HOME/.variables \
             /etc/voidedtech/bash/bashrc \
-            $HOME/.bash_aliases \
             /etc/voidedtech/bash/aliases \
-            $HOME/.bash_completion \
             $HOME/.config/private/etc/private.exports \
             /usr/share/bash-completion/bash_completion \
             $HOME/.config/user-dirs.dirs; do
@@ -12,6 +10,11 @@ for file in $HOME/.variables \
         . $file
     fi
 done
+
+if [ -e $IS_LAPTOP ] || [ -e $IS_DESKTOP ]; then
+    source $HOME/.dev_aliases
+    source $HOME/.dev_completions
+fi
 
 # check the window size after each command
 shopt -s checkwinsize
