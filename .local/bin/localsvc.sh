@@ -9,4 +9,5 @@ if [ ! -e "$SCRIPT" ]; then
     echo "invalid script: $SCRIPT"
     exit 1
 fi
+source ~/.variables
 perl $SCRIPT

@@ -38,7 +38,7 @@ if (@ARGV) {
     }
     elsif ( $command eq "backup" ) {
         if ( system("source $home/.variables && test -e \$IS_LOCAL") == 0 ) {
-            my $server = `source $home/.variables && echo \$SERVER`;
+            my $server = $ENV{"SERVER"};
             chomp $server;
             system(
 "rsync -av /var/cache/voidedtech/backup/ rsync://$server/backup/"

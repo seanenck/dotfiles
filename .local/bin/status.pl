@@ -14,7 +14,7 @@ if (@ARGV) {
     elsif ( $command eq "online" ) {
         my %checks;
         $checks{"IS_ONLINE"} = "voidedtech.com";
-        $checks{"IS_LOCAL"}  = `source $home/.variables && echo \$SERVER`;
+        $checks{"IS_LOCAL"}  = $ENV{"SERVER"};
         for ( keys %checks ) {
             my $object = $checks{$_};
             chomp $object;
