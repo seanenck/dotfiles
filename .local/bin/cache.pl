@@ -37,7 +37,7 @@ if (@ARGV) {
         system("touch $cleanup");
     }
     elsif ( $command eq "backup" ) {
-        if ( system("source $home/.variables && test -e \$IS_LOCAL") == 0 ) {
+        if ( -e $ENV{"IS_LOCAL"} ) {
             my $server = $ENV{"SERVER"};
             chomp $server;
             system(

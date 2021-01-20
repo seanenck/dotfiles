@@ -100,7 +100,7 @@ notify "workspaces", @workspaces;
 if ( !-e $daily ) {
     system("mkdir -p $cache") if !-d $cache;
     system("find $cache -type f -mtime +1 -delete");
-    if ( system("source $home/.variables && test -e \$IS_ONLINE") == 0 ) {
+    if ( -e $ENV{"IS_ONLINE"} ) {
         my @out;
         my $success     = 0;
         my $out_of_date = `perl ${bin}aem.pl flagged 2>&1`;
