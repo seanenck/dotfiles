@@ -48,7 +48,7 @@ Mod1 Shift Up :MacroCmd {ResizeTo 100% 50%} {MoveTo 00 00 Top}
 Mod1 Shift Left :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Left}
 Mod1 Shift Right :MacroCmd {ResizeTo 50% 100%} {MoveTo 00 00 Right}
 
-Mod1 Left :Exec /home/enck/.local/bin/sys mouse
-Mod1 Right :Exec /home/enck/.local/bin/sys mouse
-Mod1 Shift Return :SendToNextHead 1
+Mod1 Shift Return :Exec /home/enck/.local/bin/sys mouse
+Mod1 Left :SendToNextHead 1
+Mod1 Right :SendToNextHead 1
 Mod1 Shift space :ArrangeWindowsStackRight
