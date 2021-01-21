@@ -1,6 +1,11 @@
+MAIL_APP=$HOME/.mutt/mail.pl
+if [ ! -e $MAIL_APP ]; then
+    install -Dm644 $HOME/.local/apps/available/mutt.app $MAIL_APP
+fi
+
 tmux has-session -t mail > /dev/null 2>&1
 if [ $? != 0 ]; then
-    tmux new-session -d -s mail -- /usr/bin/perl $HOME/.mutt/mail.pl daemon
+    tmux new-session -d -s mail -- /usr/bin/perl $MAIL_APP daemon
 fi
 
 git -C .mutt/ status -sb
