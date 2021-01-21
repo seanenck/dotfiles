@@ -12,12 +12,10 @@ fi
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
+source ~/.local/env/dev_aliases
 if [ -z "$SSH_CONNECTION" ]; then
-    motd
-    ide=~/.local/lib/ide.app
-    if [ -e $ide ]; then
-        source $ide load
-    fi
+    source ~/.local/lib/ide.app load
+    source ~/.local/env/dev_x_aliases
 fi
 
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then

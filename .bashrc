@@ -15,9 +15,7 @@ done
 shopt -s checkwinsize
 
 if [ $IS_DEV -eq 1 ]; then
-    for f in dev_aliases dev_completions devrc; do
-        source ~/.local/env/$f
-    done
+    source ~/.local/env/devrc
 fi
 
 if [ -e $IS_MAIL ]; then
@@ -25,3 +23,5 @@ if [ -e $IS_MAIL ]; then
         source $f
     done
 fi
+
+motd

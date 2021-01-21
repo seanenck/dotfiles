@@ -1,0 +1,34 @@
+#!/bin/bash
+
+vlc() {
+    /usr/bin/vlc "$@" &
+    disown
+}
+
+firefox() {
+    /usr/bin/$BROWSER "$@" &
+    disown
+}
+
+_apps() {
+    local f b targets host
+    targets="$HOME/.local/apps"
+    if [ ! -d $targets ]; then
+        mkdir -p $targets
+    fi
+    for f in $(ls $targets/*.app); do
+        b=$(basename $f)
+        alias $b="bash $f"
+    done
+}
+
+_apps
+
+_totp() {
+    local opts cur
+    opts=$(totp list)
+    cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+}
+
+complete -F _totp totp

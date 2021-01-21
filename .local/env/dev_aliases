@@ -4,30 +4,6 @@ for f in mutt mumble $BROWSER pavucontrol schroot makepkg repo-add mkarchroot; d
     alias $f="echo disabled in bash"
 done
 
-vlc() {
-    /usr/bin/vlc "$@" &
-    disown
-}
-
-firefox() {
-    /usr/bin/$BROWSER "$@" &
-    disown
-}
-
-_apps() {
-    local f b targets host
-    targets="$HOME/.local/apps"
-    if [ ! -d $targets ]; then
-        mkdir -p $targets
-    fi
-    for f in $(ls $targets/*.app); do
-        b=$(basename $f)
-        alias $b="bash $f"
-    done
-}
-
-_apps
-
 aem() {
     perl ~/.local/lib/aem.pl $@
 }
@@ -44,3 +20,31 @@ glint() {
     goimports -l . | grep -v bindata.go | sed 's/^/[goimports]    /g'
     revive ./... | sed 's/^/[revive]       /g'
 }
+
+_aem() {
+    local opts cur
+    cur=${COMP_WORDS[COMP_CWORD]}
+    if [ $COMP_CWORD -eq 1 ]; then
+        opts=$(perl ~/.local/lib/aem.pl help)
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    else
+        if [ $COMP_CWORD -ge 2 ]; then
+            cur=${COMP_WORDS[1]}
+            opts=""
+            case "$cur" in
+                "repo-add")
+                    if [ $COMP_CWORD -eq 2 ]; then
+                        opts="vpr.db.tar.gz apr.db.tar.gz"
+                    else
+                        opts=$(ls | grep ".pkg.tar.zst")
+                    fi
+                    ;;
+            esac
+            if [ ! -z "$opts" ]; then
+                 COMPREPLY=( $(compgen -W "$opts" -- ${COMP_WORDS[COMP_CWORD]}) )
+            fi
+        fi
+    fi
+}
+
+complete -F _aem aem
