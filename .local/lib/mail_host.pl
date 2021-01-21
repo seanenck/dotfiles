@@ -10,7 +10,6 @@ my $mutt      = "$home/store/active/hosted/files/mutt/";
 
 my $mail_dir     = "/tmp/muttsync";
 my $mutt_session = "mutt";
-my $start_mutt   = "/tmp/.startmutt";
 
 if (@ARGV) {
     my $command = $ARGV[0];
@@ -47,19 +46,6 @@ if (@ARGV) {
             }
         }
     }
-    elsif ( $command eq "mutt" ) {
-        if ( system("tmux has-session -t $mutt_session > /dev/null 2>&1") != 0 )
-        {
-            system("touch $start_mutt");
-            while (1) {
-                if ( -e $start_mutt ) {
-                    next;
-                }
-                last;
-            }
-        }
-        system("tmux attach -t $mutt_session");
-    }
     else {
         die "unknown command";
     }
@@ -88,14 +74,6 @@ install "msmtprc",        "$home/.", "600";
 
 my $count = 0;
 while (1) {
-    if ( -e $start_mutt ) {
-        system("pkill mutt");
-        system(
-"tmux new-session -d -s $mutt_session -- /usr/bin/mutt -F $home/.mutt/fastmail.muttrc"
-        );
-        unlink $start_mutt;
-    }
-
     system("find $mutt -type f -exec chmod 644 {} \\;");
     if ( $count >= 60 ) {
         system("$script poll");

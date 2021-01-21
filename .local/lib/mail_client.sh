@@ -19,10 +19,5 @@ if [ ! -z "$1" ]; then
     exit 0
 fi
 
-START=/tmp/start_mail
-if [ ! -e $START ]; then
-    ssh $MAILHOST 2>&1 &
-fi
-
+ssh $MAILHOST 2>&1 &
 ssh -t $MAILHOST -- perl $HOME/.mutt/mail.pl mutt
-touch $START
