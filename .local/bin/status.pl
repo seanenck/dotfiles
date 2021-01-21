@@ -9,7 +9,7 @@ my $status = "perl ${bin}status.pl ";
 if (@ARGV) {
     my $command = $ARGV[0];
     if ( $command eq "notify" ) {
-        system("perl ${bin}notify.pl");
+        system("perl $home/.local/mods/notify.pl");
     }
     elsif ( $command eq "backlight" ) {
         my $classes = `ls /sys/class/backlight/ | wc -l` + 0;
@@ -38,14 +38,15 @@ if (@ARGV) {
 
 my $display = $ENV{"DISPLAY"};
 
-my $cnt = 1;
+my $max = 15;
+my $cnt = $max + 1;
 while (1) {
     if ( !$display ) {
         sleep 5;
         next;
     }
     $cnt++;
-    if ( $cnt == 15 ) {
+    if ( $cnt == $max ) {
         system("$status notify &");
         $cnt = 0;
     }
