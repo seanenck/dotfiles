@@ -46,7 +46,7 @@ while (1) {
         next;
     }
     $cnt++;
-    if ( $cnt == $max ) {
+    if ( $cnt >= $max ) {
         system("$status notify &");
         $cnt = 0;
     }
