@@ -20,4 +20,4 @@ if [ ! -z "$1" ]; then
 fi
 
 ssh $MAILHOST 2>&1 &
-ssh -t $MAILHOST -- perl $HOME/.mutt/mail.pl mutt
+ssh -t $MAILHOST -- tmux attach -t $MUTT_SESSION
