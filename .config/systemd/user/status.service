@@ -1,5 +1,6 @@
 [Unit]
 Description=Local status
+PartOf=graphical-session.target
 
 [Service]
 ExecStart=/home/enck/.local/bin/localsvc.sh status

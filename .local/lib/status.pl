@@ -36,15 +36,9 @@ if (@ARGV) {
     exit;
 }
 
-my $display = $ENV{"DISPLAY"};
-
 my $max = 15;
 my $cnt = $max + 1;
 while (1) {
-    if ( !$display ) {
-        sleep 5;
-        next;
-    }
     $cnt++;
     if ( $cnt >= $max ) {
         system("$status notify &");
