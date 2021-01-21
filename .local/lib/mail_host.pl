@@ -8,13 +8,13 @@ my $script    = "perl ${mutt_home}mail.pl";
 my $imap      = "$home/.mutt/maildir/fastmail/";
 my $mutt      = "$home/store/active/hosted/files/mutt/";
 
+my $mail_dir     = "/tmp/muttsync";
 my $mutt_session = "mutt";
 my $start_mutt   = "/tmp/.startmutt";
 
 if (@ARGV) {
     my $command = $ARGV[0];
     if ( $command eq "poll" ) {
-        my $mail_dir = "/tmp/muttsync";
         mkdir $mail_dir if !-d $mail_dir;
         my $time = `date +%Y-%m-%d-%H-`;
         chomp $time;
@@ -35,7 +35,9 @@ if (@ARGV) {
         print "syncing mail via polling $time\n";
         system("$script sync");
         system("touch $mail_file");
-        system("find $mutt -type f -mmin +60 -delete");
+        for ( ( $mutt, $mail_dir ) ) {
+            system("find $_ -type f -mmin +60 -delete");
+        }
     }
     elsif ( $command eq "sync" ) {
         if ( -d $imap ) {
