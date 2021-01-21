@@ -4,7 +4,7 @@ if [ -z "$SCRIPT" ]; then
     echo "script required"
     exit 1
 fi
-SCRIPT="$HOME/.local/bin/$SCRIPT.pl"
+SCRIPT="$HOME/.local/lib/$SCRIPT.pl"
 if [ ! -e "$SCRIPT" ]; then
     echo "invalid script: $SCRIPT"
     exit 1

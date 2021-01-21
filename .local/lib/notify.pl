@@ -4,7 +4,7 @@ use strict;
 
 my $home  = $ENV{"HOME"};
 my $cache = "$home/.cache/notify/";
-my $bin   = "$home/.local/bin/";
+my $lib   = "$home/.local/lib/";
 my $daily = `date +%Y%m%d%p`;
 chomp $daily;
 $daily = "${cache}$daily";
@@ -55,7 +55,7 @@ notify "git", @git;
 my @mail;
 
 my %mail_count;
-for (`bash ~/.local/bin/mail.sh new`) {
+for (`bash ${lib}mail.sh new`) {
     chomp;
     my $dir = $_;
     if ( !exists( $mail_count{$dir} ) ) {
@@ -103,7 +103,7 @@ if ( !-e $daily ) {
     if ( -e $ENV{"IS_ONLINE"} ) {
         my @out;
         my $success     = 0;
-        my $out_of_date = `perl ${bin}aem.pl flagged 2>&1`;
+        my $out_of_date = `perl ${lib}aem.pl flagged 2>&1`;
         $success = 1;
         if ($out_of_date) {
             if ( $out_of_date =~ m/out-of-date/ ) {

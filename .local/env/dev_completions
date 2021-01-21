@@ -13,7 +13,7 @@ _aem() {
     local opts cur
     cur=${COMP_WORDS[COMP_CWORD]}
     if [ $COMP_CWORD -eq 1 ]; then
-        opts=$(perl ~/.local/bin/aem.pl help)
+        opts=$(perl ~/.local/lib/aem.pl help)
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     else
         if [ $COMP_CWORD -ge 2 ]; then

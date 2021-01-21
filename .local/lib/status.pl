@@ -3,13 +3,13 @@ use warnings;
 use strict;
 
 my $home   = $ENV{"HOME"};
-my $bin    = "$home/.local/bin/";
-my $status = "perl ${bin}status.pl ";
+my $lib    = "$home/.local/lib/";
+my $status = "perl ${lib}status.pl ";
 
 if (@ARGV) {
     my $command = $ARGV[0];
     if ( $command eq "notify" ) {
-        system("perl $home/.local/lib/notify.pl");
+        system("perl ${lib}notify.pl");
     }
     elsif ( $command eq "backlight" ) {
         my $classes = `ls /sys/class/backlight/ | wc -l` + 0;

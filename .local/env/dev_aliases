@@ -27,7 +27,7 @@ _apps() {
 _apps
 
 aem() {
-    perl ~/.local/bin/aem.pl $@
+    perl ~/.local/lib/aem.pl $@
 }
 
 glint() {
