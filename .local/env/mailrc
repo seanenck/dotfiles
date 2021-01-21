@@ -10,8 +10,8 @@ if [ ! -h $MAIL_APP ]; then
 fi
 
 if [ -e $START_MUTT ]; then
-    mutt -F $HOME/.mutt/fastmail.muttrc
     rm -f $START_MUTT
+    mutt -F $HOME/.mutt/fastmail.muttrc
     exit 0
 fi
 
