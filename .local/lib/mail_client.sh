@@ -19,5 +19,9 @@ if [ ! -z "$1" ]; then
     exit 0
 fi
 
-ssh $MAILHOST 2>&1 &
+START=/tmp/.startmutt
+if [ ! -e $START ]; then
+    ssh $MAILHOST 2>&1 &
+    touch $START
+fi
 ssh -t $MAILHOST -- tmux attach -t $MUTT_SESSION

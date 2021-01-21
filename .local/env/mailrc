@@ -9,9 +9,10 @@ if [ ! -h $MAIL_APP ]; then
     ln -s $HOME/.local/lib/mail_host.pl $MAIL_APP
 fi
 
-tmux has-session -t $MUTT_SESSION > /dev/null 2>&1
+MUTT_SESSION=muttmail
+tmux has-session -t $MUTT_SESSION >/dev/null 2>&1
 if [ $? -ne 0 ]; then
-    tmux new-session -d -s $MUTT_SESSION -- /usr/bin/mutt -F $HOME/.mutt/fastmail.muttrc
+    tmux new-session -d -s $MUTT_SESSION -- /usr/bin/perl $MAIL_APP mutt-daemon
 fi
 
 git -C .mutt/ status -sb
