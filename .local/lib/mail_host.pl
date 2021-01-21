@@ -32,6 +32,7 @@ if (@ARGV) {
         $time = "$time$add_minute";
         my $mail_file = $mail_dir . "/$time";
         exit if -e "$mail_file";
+        print "syncing mail via polling $time\n";
         system("$script sync");
         system("touch $mail_file");
         system("find $mutt -type f -mmin +60 -delete");
@@ -56,10 +57,6 @@ if (@ARGV) {
             }
         }
         system("tmux attach -t $mutt_session");
-    }
-    elsif ( $command eq "daemon" ) {
-        system("$script 2>&1 | systemd-cat -t muttmail");
-        exit 0;
     }
     else {
         die "unknown command";
