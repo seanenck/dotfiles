@@ -1,0 +1,8 @@
+[Unit]
+Description=Mail host service
+
+[Service]
+ExecStart=/home/enck/.local/bin/localsvc.sh mail_host
+
+[Install]
+WantedBy=default.target
