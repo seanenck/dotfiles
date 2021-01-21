@@ -16,6 +16,12 @@ shopt -s checkwinsize
 
 if [ $IS_DEV -eq 1 ]; then
     source ~/.local/env/devrc
+else
+    hook=~/.git/hooks/pre-commit
+    if [ ! -e $hook ]; then
+        cp ~/.local/lib/no-commit.sh $hook
+        chmod u+x $hook
+    fi
 fi
 
 if [ -e $IS_MAIL ]; then
