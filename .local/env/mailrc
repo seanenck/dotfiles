@@ -6,7 +6,7 @@ fi
 
 MAIL_APP=$HOME/.mutt/mail.pl
 if [ ! -h $MAIL_APP ]; then
-    ln -s $HOME/.local/.lib/mail_host.pl $MAIL_APP
+    ln -s $HOME/.local/lib/mail_host.pl $MAIL_APP
 fi
 
 git -C .mutt/ status -sb
