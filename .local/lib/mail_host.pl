@@ -40,10 +40,15 @@ if (@ARGV) {
         }
     }
     elsif ( $command eq "mutt-client" ) {
-        if ( system("tmux has-session -t $mutt_session > /dev/null 2>&1") != 0 )
-        {
-            system("touch $start_mutt");
-            sleep 3;
+        my $wait = 1;
+        while ($wait == 1) {
+            if ( system("tmux has-session -t $mutt_session > /dev/null 2>&1") != 0 )
+            {
+                system("touch $start_mutt");
+                sleep 1;
+                next;
+            }
+            $wait = 0;
         }
         system("tmux attach -t $mutt_session");
     }

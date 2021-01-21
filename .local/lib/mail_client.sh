@@ -24,4 +24,4 @@ if [ ! -e $START ]; then
     ssh $MAILHOST 2>&1 &
     touch $START
 fi
-ssh -t $MAILHOST -- tmux attach -t $MUTT_SESSION
+ssh -t $MAILHOST -- /usr/bin/perl $HOME/.mutt/mail.pl mutt-client
