@@ -14,7 +14,7 @@ firefox() {
 
 _apps() {
     local f b targets host
-    targets="$HOME/.local/apps/enabled"
+    targets="$HOME/.local/apps"
     if [ ! -d $targets ]; then
         mkdir -p $targets
     fi

@@ -2,7 +2,7 @@
 Description="Regenerate app menu"
 
 [Path]
-PathModified=/home/enck/.local/apps/enabled/
+PathModified=/home/enck/.local/apps/
 
 [Install]
 WantedBy=default.target

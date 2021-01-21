@@ -2,10 +2,8 @@
 !.local/
 .local/*
 !.local/bin/
-!.local/apps/
+!.local/mods/
 !.local/env/
-.local/apps/*
-!.local/apps/available/
 !.config/
 .config/*
 !.config/systemd
