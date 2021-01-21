@@ -9,7 +9,7 @@
 [grep]
     lineNumber = true
 [include]
-    path = ~/.config/private/etc/gitconfig
+    path = ~/.local/private/etc/gitconfig
     path = ~/.config/gitconfig
 [log]
     date = iso-strict

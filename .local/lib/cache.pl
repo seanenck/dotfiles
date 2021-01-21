@@ -3,7 +3,7 @@ use warnings;
 use strict;
 
 my $home = $ENV{"HOME"};
-my $bin  = "perl $home/.local/bin/cache.pl";
+my $bin  = "perl $home/.local/lib/cache.pl";
 
 if (@ARGV) {
     my $command = $ARGV[0];

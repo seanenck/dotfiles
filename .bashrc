@@ -3,7 +3,7 @@
 for file in $HOME/.variables \
             /etc/voidedtech/bash/bashrc \
             /etc/voidedtech/bash/aliases \
-            $HOME/.config/private/etc/private.exports \
+            $HOME/.local/private/etc/env \
             /usr/share/bash-completion/bash_completion \
             $HOME/.config/user-dirs.dirs; do
     if [ -e $file ]; then
