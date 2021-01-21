@@ -2,7 +2,7 @@
 !.local/
 .local/*
 !.local/bin/
-!.local/mods/
+!.local/lib/
 !.local/env/
 !.config/
 .config/*

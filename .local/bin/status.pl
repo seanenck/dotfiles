@@ -9,7 +9,7 @@ my $status = "perl ${bin}status.pl ";
 if (@ARGV) {
     my $command = $ARGV[0];
     if ( $command eq "notify" ) {
-        system("perl $home/.local/mods/notify.pl");
+        system("perl $home/.local/lib/notify.pl");
     }
     elsif ( $command eq "backlight" ) {
         my $classes = `ls /sys/class/backlight/ | wc -l` + 0;

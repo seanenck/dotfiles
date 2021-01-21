@@ -12,7 +12,7 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 
 if [ -z "$SSH_CONNECTION" ]; then
     motd
-    ide=~/.local/mods/ide.app
+    ide=~/.local/lib/ide.app
     if [ -e $ide ]; then
         source $ide load
     fi

@@ -1,6 +1,6 @@
 MAIL_APP=$HOME/.mutt/mail.pl
 if [ ! -e $MAIL_APP ]; then
-    install -Dm644 $HOME/.local/mods/mail.pl $MAIL_APP
+    install -Dm644 $HOME/.local/lib/mail.pl $MAIL_APP
 fi
 
 tmux has-session -t mail > /dev/null 2>&1
