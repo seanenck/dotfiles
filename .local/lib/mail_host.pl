@@ -41,8 +41,10 @@ if (@ARGV) {
     }
     elsif ( $command eq "mutt-client" ) {
         my $wait = 1;
-        while ($wait == 1) {
-            if ( system("tmux has-session -t $mutt_session > /dev/null 2>&1") != 0 )
+        while ( $wait == 1 ) {
+            if (
+                system("tmux has-session -t $mutt_session > /dev/null 2>&1") !=
+                0 )
             {
                 system("touch $start_mutt");
                 sleep 1;
