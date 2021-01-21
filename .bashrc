@@ -15,8 +15,8 @@ done
 shopt -s checkwinsize
 
 if [ -e $IS_LAPTOP ] || [ -e $IS_DESKTOP ]; then
-    for f in $(ls $HOME/.local/env/dev*); do
-        source $f
+    for f in dev_aliases dev_completions devrc; do
+        source ~/.local/env/$f
     done
 fi
 

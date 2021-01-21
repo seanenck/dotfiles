@@ -14,6 +14,9 @@ if [ -z "$SSH_CONNECTION" ]; then
     fi
 fi
 
+if [ ! -e ~/.config/gitconfig ]; then
+    ln -sf ~/.local/env/dev_gitconfig ~/.config/gitconfig
+fi
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
     PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
 fi
