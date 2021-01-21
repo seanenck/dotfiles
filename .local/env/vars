@@ -9,7 +9,10 @@ if [ -e $IS_LAPTOP ] || [ -e $IS_DESKTOP ]; then
     export PASSWORD_STORE_DIR=$HOME/.local/private/pass
     export BROWSER=firefox-developer-edition
     export GOPATH="$HOME/.cache/go"
-    source /etc/voidedtech/env/network
+    NET=/etc/voidedtech/env/network
+    if [ -e $NET ]; then
+        source /etc/voidedtech/env/network
+    fi
     export IS_DEV=1
 else
     export IS_DEV=0

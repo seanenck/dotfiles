@@ -1,8 +1,24 @@
 [[ $- != *i* ]] && return
 
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth:erasedups
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=-1
+HISTFILESIZE=-1
+
+export VISUAL=vim
+export EDITOR="$VISUAL"
+export LESSHISTFILE=$HOME/.cache/lesshst
+
+PS1='[\u@\h \W]\$ '
+
 for file in $HOME/.local/env/vars \
-            /etc/voidedtech/bash/bashrc \
-            /etc/voidedtech/bash/aliases \
+            $HOME/.bash_aliases \
             $HOME/.local/private/etc/env \
             /usr/share/bash-completion/bash_completion \
             $HOME/.config/user-dirs.dirs; do
