@@ -1,5 +1,5 @@
 #!/bin/sh
-. $HOME/.variables
+. $HOME/.local/env/vars
 
 dunst -config $HOME/.config/dunst &
 nm-applet &

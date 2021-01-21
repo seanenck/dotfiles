@@ -1,6 +1,6 @@
 [[ $- != *i* ]] && return
 
-for file in $HOME/.variables \
+for file in $HOME/.local/env/vars \
             /etc/voidedtech/bash/bashrc \
             /etc/voidedtech/bash/aliases \
             $HOME/.local/private/etc/env \

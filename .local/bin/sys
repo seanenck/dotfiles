@@ -69,7 +69,7 @@ elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
     }
 }
 elsif ( $cmd eq "autoclip" ) {
-    system("source ~/.variables && pass -c autoclip > /dev/null");
+    system("source ~/.local/env/vars && pass -c autoclip > /dev/null");
 }
 else {
     print "unknown command";

@@ -4,7 +4,7 @@ if [ ! -z $SSH_CONNECTION ]; then
     exit 0
 fi
 
-source ~/.variables
+source ~/.local/env/vars
 if [ ! -e $IS_LOCAL ]; then
     exit 0
 fi
