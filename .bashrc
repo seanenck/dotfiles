@@ -14,7 +14,7 @@ done
 # check the window size after each command
 shopt -s checkwinsize
 
-if [ -e $IS_LAPTOP ] || [ -e $IS_DESKTOP ]; then
+if [ $IS_DEV -eq 1 ]; then
     for f in dev_aliases dev_completions devrc; do
         source ~/.local/env/$f
     done
