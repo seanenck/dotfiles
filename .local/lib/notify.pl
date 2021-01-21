@@ -8,9 +8,9 @@ my $lib   = "$home/.local/lib/";
 my $daily = `date +%Y%m%d%p`;
 chomp $daily;
 $daily = "${cache}$daily";
-my @dirs = ("$home/.git", "$home/.local/private/.git");
+my @dirs = ( "$home/.git", "$home/.local/private/.git" );
 
-for ( "workspace" ) {
+for ("workspace") {
     my $found = `find $home/$_/ -maxdepth 3 -type d -name ".git" | tr '\n' ' '`;
     chomp $found;
     push @dirs, split( / /, $found );

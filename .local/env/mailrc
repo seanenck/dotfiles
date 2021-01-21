@@ -1,3 +1,5 @@
+#!/bin/bash
+
 MAIL_APP=$HOME/.mutt/mail.pl
 if [ ! -e $MAIL_APP ]; then
     install -Dm644 $HOME/.local/lib/mail_host.pl $MAIL_APP

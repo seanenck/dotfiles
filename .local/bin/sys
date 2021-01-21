@@ -4,8 +4,8 @@ use warnings;
 use autodie;
 
 sub lock_notify {
-    my $text = join("", @_);
-    my $msg = uc $text;
+    my $text = join( "", @_ );
+    my $msg  = uc $text;
     system("dunstify -r 1000 -t 10000 'LOCK: $msg'");
 }
 
@@ -18,7 +18,7 @@ if (@ARGV) {
 die "no command" if !$cmd;
 
 if ( $cmd eq "mouse" ) {
-    if ( ! -e $ENV{"IS_DESKTOP"} ) {
+    if ( !-e $ENV{"IS_DESKTOP"} ) {
         exit 0;
     }
     my $position =
@@ -39,7 +39,8 @@ elsif ( $cmd eq "togglelock" ) {
     if ( -e $no_lock ) {
         lock_notify "on";
         unlink $no_lock;
-    } else {
+    }
+    else {
         lock_notify "off";
         system("touch $no_lock");
     }
@@ -54,7 +55,7 @@ elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
         $suspend = 1;
     }
     if ($suspend) {
-        if ( ! -e $ENV{"IS_LAPTOP"} ) {
+        if ( !-e $ENV{"IS_LAPTOP"} ) {
             if ( $cmd eq "suspend" ) {
                 exit 0;
             }
