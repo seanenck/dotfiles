@@ -19,5 +19,5 @@ if [ ! -z "$1" ]; then
     exit 0
 fi
 
-ssh $MAILHOST 2>&1 &
-ssh -t $MAILHOST -- /usr/bin/perl $HOME/.mutt/mail.pl mutt-client
+ssh $MAILHOST -- touch $START_MUTT
+ssh $MAILHOST

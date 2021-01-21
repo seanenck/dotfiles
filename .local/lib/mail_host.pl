@@ -9,8 +9,6 @@ my $imap      = "$home/.mutt/maildir/fastmail/";
 my $mutt      = "$home/store/active/hosted/files/mutt/";
 
 my $mail_dir     = "/tmp/muttsync";
-my $mutt_session = "muttsess";
-my $start_mutt   = "$mail_dir/start";
 
 if (@ARGV) {
     my $command = $ARGV[0];
@@ -37,32 +35,6 @@ if (@ARGV) {
         system("touch $mail_file");
         for ( ( $mutt, $mail_dir ) ) {
             system("find $_ -type f -mmin +60 -delete");
-        }
-    }
-    elsif ( $command eq "mutt-client" ) {
-        my $wait = 1;
-        while ( $wait == 1 ) {
-            if (
-                system("tmux has-session -t $mutt_session > /dev/null 2>&1") !=
-                0 )
-            {
-                system("touch $start_mutt");
-                sleep 1;
-                next;
-            }
-            $wait = 0;
-        }
-        system("tmux attach -t $mutt_session");
-    }
-    elsif ( $command eq "mutt-daemon" ) {
-        while (1) {
-            if ( -e $start_mutt ) {
-                system(
-"tmux new-session -d -s $mutt_session -- /usr/bin/mutt -F ${mutt_home}fastmail.muttrc"
-                );
-                unlink $start_mutt;
-            }
-            sleep 1;
         }
     }
     elsif ( $command eq "sync" ) {
