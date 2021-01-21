@@ -1,13 +1,12 @@
 #!/bin/bash
 
-MAIL_APP=$HOME/.mutt/mail.pl
-if [ ! -e $MAIL_APP ]; then
-    install -Dm644 $HOME/.local/lib/mail_host.pl $MAIL_APP
+if [ ! -e /var/lib/systemd/linger/enck ]; then
+    echo "sudo loginctl enable-linger"
 fi
 
-tmux has-session -t mail > /dev/null 2>&1
-if [ $? != 0 ]; then
-    tmux new-session -d -s mail -- /usr/bin/perl $MAIL_APP daemon
+MAIL_APP=$HOME/.mutt/mail.pl
+if [ ! -h $MAIL_APP ]; then
+    ln -s $HOME/.local/.lib/mail_host.pl $MAIL_APP
 fi
 
 git -C .mutt/ status -sb
