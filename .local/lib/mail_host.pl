@@ -12,7 +12,7 @@ my $mail_dir  = "$home/.local/tmp/muttsync";
 if (@ARGV) {
     my $command = $ARGV[0];
     if ( $command eq "poll" ) {
-        mkdir $mail_dir if !-d $mail_dir;
+        system("mkdir -p $mail_dir") if !-d $mail_dir;
         my $time = `date +%Y-%m-%d-%H-`;
         chomp $time;
         my $minute     = `date +%M` + 0;
