@@ -84,7 +84,8 @@ while (1) {
             print "mutt session started\n";
             $saw_mutt = 1;
         }
-    } else {
+    }
+    else {
         if ( $has_mutt != 0 ) {
             print "mutt session ended\n";
             system("$script sync");

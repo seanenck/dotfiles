@@ -10,6 +10,7 @@ my $menu   = "$home/.fluxbox/usermenu";
 my $apps   = "$home/.local/apps";
 system("mkdir -p $rcache") if !-d $rcache;
 system("ls $apps/*.app | sort > $curr");
+
 if ( -e $prev ) {
     if ( system("diff -u $prev $curr") == 0 ) {
         exit 0;
