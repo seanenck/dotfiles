@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ ! -z $SSH_CONNECTION ]; then
+if [ ! -z "$SSH_CONNECTION" ]; then
     echo "do not run from ssh"
     exit 0
 fi

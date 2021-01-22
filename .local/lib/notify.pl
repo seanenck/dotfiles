@@ -3,7 +3,7 @@ use warnings;
 use strict;
 
 my $home  = $ENV{"HOME"};
-my $cache = "$home/.cache/notify/";
+my $cache = "$home/.local/tmp/notify/";
 my $lib   = "$home/.local/lib/";
 my $daily = `date +%Y%m%d%p`;
 chomp $daily;

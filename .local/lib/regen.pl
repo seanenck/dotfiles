@@ -2,7 +2,7 @@
 use warnings;
 use strict;
 
-my $rcache = "~/.cache/regen";
+my $rcache = "~/.local/tmp/regen";
 my $curr   = "$rcache/current";
 my $prev   = "$curr.prev";
 my $menu   = "~/.fluxbox/usermenu";

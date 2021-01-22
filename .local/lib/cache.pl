@@ -22,7 +22,7 @@ if (@ARGV) {
                 system("find $vim_dir -type f -mtime +1 -exec rm {} \\;");
             }
         }
-        my $history_root = "$home/.cache/history/";
+        my $history_root = "$home/.local/var/history/";
         my $history_dir  = "$history_root$cleanup_date";
         system("mkdir -p $history_dir");
         system("rsync -ar $home/.mozilla/ $history_dir/mozilla");
@@ -44,7 +44,7 @@ if (@ARGV) {
 "rsync -av /var/cache/voidedtech/backup/ rsync://$server/backup/"
             );
             system(
-"rsync -av --delete-after rsync://$server/pull $home/.cache/wiki"
+"rsync -av --delete-after rsync://$server/pull $home/.local/var/wiki"
             );
         }
     }
