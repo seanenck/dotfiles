@@ -71,12 +71,24 @@ install "mail.vim",       "$home/.vim/ftplugin/";
 install "mbsyncrc",       "$home/.";
 install "msmtprc",        "$home/.", "600";
 
-my $count = 0;
+my $count    = 0;
+my $saw_mutt = 0;
 while (1) {
     system("find $mutt -type f -exec chmod 644 {} \\;");
     if ( $count >= 60 ) {
         system("$script poll");
         $count = 0;
+    }
+    my $has_mutt = system("pidof mutt");
+    if ( $saw_mutt == 0 ) {
+        if ( $has_mutt == 0 ) {
+            $saw_mutt = 1;
+        }
+    } else {
+        if ( $has_mutt != 0 ) {
+            system("$script sync");
+            $saw_mutt = 0;
+        }
     }
     $count += 1;
     sleep 1;
