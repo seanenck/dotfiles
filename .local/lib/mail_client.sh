@@ -1,11 +1,14 @@
 #!/bin/bash
 if [ ! -z "$SSH_CONNECTION" ]; then
     echo "do not run from ssh"
+    sleep 5
     exit 0
 fi
 
 source ~/.local/env/vars
 if [ ! -e $IS_LOCAL ]; then
+    echo "local server unavailable?"
+    sleep 5
     exit 0
 fi
 
