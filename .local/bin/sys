@@ -9,7 +9,8 @@ sub lock_notify {
     system("dunstify -r 1000 -t 10000 'LOCK: $msg'");
 }
 
-my $no_lock = "/tmp/no_lock";
+my $home    = $ENV{"HOME"};
+my $no_lock = "$home/.local/tmp/no_lock";
 my $cmd;
 if (@ARGV) {
     $cmd = shift @ARGV;
@@ -70,7 +71,7 @@ elsif ( $cmd eq "lock" or $cmd eq "suspend" or $cmd eq "xautolock" ) {
     }
 }
 elsif ( $cmd eq "autoclip" ) {
-    system("source ~/.local/env/vars && pass -c autoclip > /dev/null");
+    system("source $home/.local/env/vars && pass -c autoclip > /dev/null");
 }
 else {
     print "unknown command";

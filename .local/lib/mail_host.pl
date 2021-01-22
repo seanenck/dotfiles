@@ -7,8 +7,7 @@ my $mutt_home = "$home/.mutt/";
 my $script    = "perl ${mutt_home}mail.pl";
 my $imap      = "$home/.mutt/maildir/fastmail/";
 my $mutt      = "$home/store/active/hosted/files/mutt/";
-
-my $mail_dir     = "/tmp/muttsync";
+my $mail_dir  = "$home/.local/tmp/muttsync";
 
 if (@ARGV) {
     my $command = $ARGV[0];

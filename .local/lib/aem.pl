@@ -14,7 +14,8 @@ my $root_repo  = "/opt/archlinux/";
 my $server     = $ENV{"REMOTE_SERVER"};
 my $ssh        = "ssh  $server -- ";
 my $build_root = "$build/root";
-my $aem_base   = $ENV{"HOME"} . "/.local/var/aem/";
+my $home       = $ENV{"HOME"};
+my $aem_base   = "$home/.local/var/aem/";
 my $flag_base  = "${aem_base}flagged";
 my $gpg_key    = "031E9E4B09CFD8D3F0ED35025109CDF607B5BB04";
 my $flag_log   = "${flag_base}.log";
@@ -34,8 +35,8 @@ if ( $command eq "makepkg" ) {
         system("rm -f *.$_");
     }
 
-    my $makepkg = "/tmp/makepkg.conf";
-    system("cat /etc/makepkg.conf \$HOME/.makepkg.conf > $makepkg");
+    my $makepkg = "$home/.local/tmp/makepkg.conf";
+    system("cat /etc/makepkg.conf $home/.makepkg.conf > $makepkg");
     system("sudo install -Dm644 $makepkg $build_root/etc/makepkg.conf");
     unlink $makepkg;
 

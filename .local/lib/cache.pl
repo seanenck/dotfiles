@@ -10,7 +10,7 @@ if (@ARGV) {
     if ( $command eq "cleanup" ) {
         my $cleanup_date = `date +%Y-%m-%d`;
         chomp $cleanup_date;
-        my $cleanup_dir = "/tmp/cleanup/";
+        my $cleanup_dir = "$home/.local/tmp/cleanup/";
         if ( !-d $cleanup_dir ) {
             mkdir $cleanup_dir;
         }
@@ -19,7 +19,7 @@ if (@ARGV) {
         for ( ( "undo", "swap", "backup" ) ) {
             my $vim_dir = "$home/.vim/$_/";
             if ( -d $vim_dir ) {
-                system("find $vim_dir -type f -mtime +1 -exec rm {} \\;");
+                system("find $vim_dir -type f -mtime +1 -delete");
             }
         }
         my $history_root = "$home/.local/var/history/";

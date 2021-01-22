@@ -27,6 +27,11 @@ for file in $HOME/.local/env/vars \
     fi
 done
 
+LOCALTMP=$HOME/.local/tmp
+if [ -d $LOCALTMP ]; then
+    find $LOCALTMP -type f -mtime +1 -delete
+fi
+
 # check the window size after each command
 shopt -s checkwinsize
 

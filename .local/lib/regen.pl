@@ -2,11 +2,12 @@
 use warnings;
 use strict;
 
-my $rcache = "~/.local/tmp/regen";
+my $home   = $ENV{"HOME"};
+my $rcache = "$home/.local/tmp/regen";
 my $curr   = "$rcache/current";
 my $prev   = "$curr.prev";
-my $menu   = "~/.fluxbox/usermenu";
-my $apps   = "~/.local/apps";
+my $menu   = "$home/.fluxbox/usermenu";
+my $apps   = "$home/.local/apps";
 system("mkdir -p $rcache") if !-d $rcache;
 system("ls $apps/*.app | sort > $curr");
 if ( -e $prev ) {

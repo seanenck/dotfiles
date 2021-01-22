@@ -10,7 +10,7 @@
     lineNumber = true
 [include]
     path = ~/.local/private/etc/gitconfig
-    path = ~/.config/gitconfig
+    path = ~/.local/var/gitconfig
 [log]
     date = iso-strict
 [pager]

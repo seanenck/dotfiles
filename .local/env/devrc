@@ -1,7 +1,8 @@
 #!/bin/bash
 
-if [ ! -e ~/.config/gitconfig ]; then
-    ln -sf ~/.local/env/dev.gitconfig ~/.config/gitconfig
+GITCONF=$HOME/.local/var/gitconfig
+if [ ! -e $GITCONF ]; then
+    ln -sf ~/.local/env/dev.gitconfig $GITCONF
 fi
 
 unset SSH_AGENT_PID
