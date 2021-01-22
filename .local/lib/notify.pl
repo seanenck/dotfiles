@@ -55,7 +55,7 @@ notify "git", @git;
 my @mail;
 
 my %mail_count;
-for (`bash ${lib}mail_client.sh new | grep '^mail:'`) {
+for (`bash ${lib}mail_client.sh new | grep '^mail:' | cut -d ':' -f 2-`) {
     chomp;
     my $dir = $_;
     if ( !exists( $mail_count{$dir} ) ) {
