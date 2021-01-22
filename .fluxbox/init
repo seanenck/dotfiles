@@ -56,7 +56,7 @@ session.screen0.windowMenu:	/home/enck/.fluxbox/windowmenu
 session.screen0.tabFocusModel:	ClickToTabFocus
 session.screen0.defaultDeco:	NORMAL
 session.screen0.workspaces:	4
-session.screen0.strftimeFormat:	%Y-%m-%d %H:%M
+session.screen0.strftimeFormat:	%Y-%m-%d %H:%M:%S
 session.styleFile:	/home/enck/.fluxbox/styles/personal
 session.ignoreBorder:	false
 session.appsFile:	/home/enck/.fluxbox/apps
