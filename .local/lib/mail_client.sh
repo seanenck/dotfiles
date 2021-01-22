@@ -2,21 +2,21 @@
 if [ ! -z "$SSH_CONNECTION" ]; then
     echo "do not run from ssh"
     sleep 5
-    exit 0
+    exit 1
 fi
 
 source ~/.local/env/vars
 if [ ! -e $IS_LOCAL ]; then
     echo "local server unavailable?"
     sleep 5
-    exit 0
+    exit 1
 fi
 
 MAILHOST=$LOCAL_SERVER
 if [ ! -z "$1" ]; then
     case $1 in
         "new")
-            curl -s http://$MAILHOST/files/mutt/new.txt
+            curl -s http://$MAILHOST/files/mutt/new.txt | sed 's/^/mail:/g'
             ;;
     esac
     exit 0
