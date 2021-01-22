@@ -27,9 +27,13 @@ for file in $HOME/.local/env/vars \
     fi
 done
 
-LOCALTMP=$HOME/.local/tmp
+LOCALTMP=$HOME/.local/tmp/
 if [ -d $LOCALTMP ]; then
-    find $LOCALTMP -type f -mtime +1 -delete
+    LOCALTMPD=$LOCALTMP.$(date +%Y%m%d)
+    if [ ! -e $LOCALTMPD ]; then
+        find $LOCALTMP -type f -mtime +1 -delete
+        touch $LOCALTMPD
+    fi
 fi
 
 # check the window size after each command
