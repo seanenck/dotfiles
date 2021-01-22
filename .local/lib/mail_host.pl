@@ -79,13 +79,15 @@ while (1) {
         system("$script poll");
         $count = 0;
     }
-    my $has_mutt = system("pidof mutt");
+    my $has_mutt = system("pidof mutt >/dev/null");
     if ( $saw_mutt == 0 ) {
         if ( $has_mutt == 0 ) {
+            print "mutt session started\n";
             $saw_mutt = 1;
         }
     } else {
         if ( $has_mutt != 0 ) {
+            print "mutt session ended\n";
             system("$script sync");
             $saw_mutt = 0;
         }
