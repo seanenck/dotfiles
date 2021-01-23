@@ -125,9 +125,9 @@ elsif ( $command eq "pacstrap" ) {
     else {
         system("sudo mkdir -p $build");
         system("sudo mkarchroot $build_root base-devel");
+        system("sudo arch-nspawn $build_root pacman-key --recv-key $gpg_key");
+        system("sudo arch-nspawn $build_root pacman-key --lsign-key $gpg_key");
         system("sudo cp /etc/pacman.conf $build_root/etc/pacman.conf");
-        system("sudo arch-nspawn pacman-key --recv-key $gpg_key");
-        system("sudo arch-nspawn pacman-key --lsign-key $gpg_key");
     }
     if ( -d $dev ) {
         print "dev schroot exists\n";
@@ -135,10 +135,11 @@ elsif ( $command eq "pacstrap" ) {
     else {
         system("sudo mkdir -p $dev");
         system(
-"sudo pacstrap -c -M $dev/ base-devel baseskel go go-bindata golint-git rustup"
+"sudo pacstrap -c -M $dev/ base-devel go go-bindata revive rustup"
         );
         system("sudo schroot -c source:dev -- pacman-key --lsign-key $gpg_key");
         system("sudo schroot -c source:dev -- locale-gen");
+        system("sudo schroot -c source:dev -- pacman -S baseskel");
     }
 }
 elsif ( $command eq "schroot" ) {
