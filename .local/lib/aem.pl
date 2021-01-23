@@ -125,7 +125,7 @@ elsif ( $command eq "pacstrap" ) {
     else {
         system("sudo mkdir -p $build");
         system("sudo mkarchroot $build_root base-devel");
-        system("sudo arch-nspawn $build_root pacman-key --recv-key $gpg_key");
+        system("sudo arch-nspawn $build_root pacman-key --recv-keys $gpg_key");
         system("sudo arch-nspawn $build_root pacman-key --lsign-key $gpg_key");
         system("sudo cp /etc/pacman.conf $build_root/etc/pacman.conf");
     }
@@ -135,11 +135,18 @@ elsif ( $command eq "pacstrap" ) {
     else {
         system("sudo mkdir -p $dev");
         system(
-"sudo pacstrap -c -M $dev/ base-devel go go-bindata revive rustup"
-        );
-        system("sudo schroot -c source:dev -- pacman-key --lsign-key $gpg_key");
-        system("sudo schroot -c source:dev -- locale-gen");
-        system("sudo schroot -c source:dev -- pacman -S baseskel");
+            "sudo pacstrap -c -M $dev/ base-devel go go-bindata revive rustup");
+        for my $subcmd (
+            (
+                "pacman-key --recv-keys $gpg_key",
+                "pacman-key --lsign-key $gpg_key",
+                "locale-gen",
+                "pacman -S baseskel"
+            )
+          )
+        {
+            system("sudo schroot -c source:dev -- $subcmd");
+        }
     }
 }
 elsif ( $command eq "schroot" ) {
