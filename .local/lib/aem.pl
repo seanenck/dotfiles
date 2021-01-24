@@ -19,6 +19,7 @@ my $aem_base   = "$home/.local/var/aem/";
 my $flag_base  = "${aem_base}flagged";
 my $gpg_key    = "031E9E4B09CFD8D3F0ED35025109CDF607B5BB04";
 my $flag_log   = "${flag_base}.log";
+my $self       = "perl $home/.local/lib/aem.pl";
 
 die "must NOT run as root" if ( $> == 0 );
 
@@ -48,12 +49,20 @@ if ( $command eq "makepkg" ) {
         if ($package) {
             print "signing $package\n";
             die "signing failed: $package"
-              if system("gpg --detach-sign --use-agent $package") != 0;
+              if system("$self detach-sign $package") != 0;
             $packaged += 1;
         }
     }
     die "nothing packaged" if $packaged == 0;
     print " -> $packaged packages built and signed\n";
+}
+elsif ( $command eq "detach-sign" ) {
+    my $input = shift @ARGV;
+    die "no input given" if !-e $input;
+    if ( system("gpg --detach-sign --use-agent $input") != 0 ) {
+        print "signing failed: $input\n";
+        exit 1;
+    }
 }
 elsif ( $command eq "sync" or $command eq "run" ) {
     if ( $command ne "run" ) {
@@ -213,7 +222,7 @@ elsif ( $command eq "flagged" ) {
     }
 }
 elsif ( $command eq "help" ) {
-    print "run sync makepkg repo-add schroot pacstrap flagged";
+    print "run sync makepkg repo-add schroot pacstrap flagged detach-sign";
 }
 else {
     die "unknown command $command";

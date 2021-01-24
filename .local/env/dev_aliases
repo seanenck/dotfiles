@@ -39,6 +39,11 @@ _aem() {
                         opts=$(ls | grep ".pkg.tar.zst")
                     fi
                     ;;
+                "detach-sign")
+                    if [ $COMP_CWORD -eq 2 ]; then
+                        opts=$(ls | grep ".pkg.tar.zst")
+                    fi
+                    ;;
             esac
             if [ ! -z "$opts" ]; then
                  COMPREPLY=( $(compgen -W "$opts" -- ${COMP_WORDS[COMP_CWORD]}) )
