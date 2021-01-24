@@ -183,7 +183,7 @@ elsif ( $command eq "flagged" ) {
     $remotes{"kxstitch-git"} = "https://github.com/KDE/kxstitch";
     $filters{"voidedtech"}   = "src/";
 
-    for my $base ( ("base", "dev", "server" )) {
+    for my $base ( ( "base", "dev", "server" ) ) {
         $filters{"${base}skel"} = "$base/";
     }
 
@@ -198,7 +198,7 @@ elsif ( $command eq "flagged" ) {
         }
         system("echo $package $redir");
         my $remote      = $remotes{$package};
-        my @remote_obj  = split("/", $remote);
+        my @remote_obj  = split( "/", $remote );
         my $remote_base = "$flag_base/$remote_obj[-1]";
         if ( !-d $remote_base ) {
             die "unable to clone"
