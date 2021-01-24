@@ -27,6 +27,11 @@ for file in $HOME/.local/env/vars \
     fi
 done
 
+if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
+    exec startx $HOME/.xinitrc 2>&1 | systemd-cat -t "xinit"
+    exit
+fi
+
 LOCALTMP=$HOME/.local/tmp/
 if [ -d $LOCALTMP ]; then
     LOCALTMPD=$LOCALTMP.$(date +%Y%m%d)
