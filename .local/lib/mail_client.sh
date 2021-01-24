@@ -16,7 +16,7 @@ MAILHOST=$LOCAL_SERVER
 if [ ! -z "$1" ]; then
     case $1 in
         "new")
-            curl -s http://$MAILHOST/files/mutt/new.txt | sed 's/^/mail:/g'
+            curl -s http://$MAILHOST/files/messages/new.txt | sed 's/^/mail:/g'
             ;;
     esac
     exit 0
