@@ -2,7 +2,7 @@ OnDesktop Mouse1 :HideMenus
 OnDesktop Mouse3 :RootMenu
 
 Mod1 d :RootMenu
-Mod1 Shift r :Reconfig
+Mod1 Shift r :Exit
 
 OnWindow Mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
 OnWindowBorder Move1 :StartMoving
@@ -32,7 +32,7 @@ Mod1 Shift q :Close
 Mod1 Shift m :Maximize
 Mod1 s :Exec /home/enck/.local/bin/sys autoclip
 
-Mod1 Shift e :Exit
+Mod1 Shift e :Exec pkill xinit
 
 Mod1 1 :Workspace 1
 Mod1 2 :Workspace 2
