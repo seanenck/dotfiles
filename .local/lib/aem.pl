@@ -189,6 +189,7 @@ elsif ( $command eq "flagged" ) {
 
     my @notices;
 
+    my %done;
     for my $package (`pacman -Sl vpr | cut -d " " -f 2`) {
         chomp $package;
         next if !$package;
@@ -197,14 +198,18 @@ elsif ( $command eq "flagged" ) {
         }
         system("echo $package $redir");
         my $remote      = $remotes{$package};
-        my $remote_base = "$flag_base/$package";
+        my @remote_obj  = split("/", $remote);
+        my $remote_base = "$flag_base/$remote_obj[-1]";
         if ( !-d $remote_base ) {
             die "unable to clone"
               if system("git clone --depth=1 $remote $remote_base $redir") != 0;
         }
-        for my $cmd ( ( "fetch", "pull" ) ) {
-            die "git command $cmd failed for $package"
-              if system("git -C $remote_base $cmd $redir") != 0;
+        if ( !exists( $done{$remote_base} ) ) {
+            for my $cmd ( ( "fetch", "pull" ) ) {
+                die "git command $cmd failed for $package"
+                  if system("git -C $remote_base $cmd $redir") != 0;
+            }
+            $done{$remote_base} = $remote_base;
         }
         my $filter = ".";
         if ( exists( $filters{$package} ) ) {
