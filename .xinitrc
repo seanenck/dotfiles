@@ -1,3 +1,6 @@
 #!/bin/sh
 xrdb -merge $HOME/.Xresources
-startfluxbox
+while [ 1 ]; do
+    startfluxbox
+    sleep 1
+done

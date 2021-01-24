@@ -27,9 +27,11 @@ for file in $HOME/.local/env/vars \
     fi
 done
 
-if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
-    exec startx $HOME/.xinitrc 2>&1 | systemd-cat -t "xinit"
-    exit
+if [ -x /usr/bin/fluxbox ]; then
+    if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
+        exec startx $HOME/.xinitrc 2>&1 | systemd-cat -t "xinit"
+        exit
+    fi
 fi
 
 LOCALTMP=$HOME/.local/tmp/
