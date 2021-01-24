@@ -182,6 +182,11 @@ elsif ( $command eq "flagged" ) {
     $remotes{"voidedtech"}   = "git://cgit.voidedtech.com/whoami";
     $remotes{"kxstitch-git"} = "https://github.com/KDE/kxstitch";
     $filters{"voidedtech"}   = "src/";
+
+    for my $base ( ("base", "dev", "server" )) {
+        $filters{"${base}skel"} = "$base/";
+    }
+
     my @notices;
 
     for my $package (`pacman -Sl vpr | cut -d " " -f 2`) {
@@ -212,7 +217,8 @@ elsif ( $command eq "flagged" ) {
 `pacman -Ss $package | grep 'vpr/$package' | cut -d " " -f 2 | rev | cut -d "-" -f 2- | rev`;
         chomp $vers;
         die "unable to read package version for: $package" if !$vers;
-        if ( $vers ne $date ) {
+        my $compare = $vers cmp $date;
+        if ( $compare < 0 ) {
             push @notices, "out-of-date:$package";
         }
     }
