@@ -1,12 +1,17 @@
 #!/bin/sh
 . $HOME/.local/env/vars
 
+pkill dunst
 dunst -config $HOME/.config/dunst &
+pkill nm-applet
 nm-applet &
+pkill pasystray
 pasystray &
 if [ -x /usr/bin/cbatticon ]; then
+    pkill cbatticon
     cbatticon -l 10 -r 5 &
 fi
+pkill xautolock
 xautolock -detectsleep -time 5 -locker "$HOME/.local/bin/sys xautolock" &
 
 if [ -e $IS_DESKTOP ]; then
