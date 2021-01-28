@@ -86,12 +86,17 @@ for my $desktop (`wmctrl -d | grep -v "\*" | cut -d ' ' -f 1`) {
     if ( $desktop eq "" ) {
         next;
     }
-    my $workspace =
-`wmctrl -l | cut -d ' ' -f 2- | sed 's/^\\s*//g' | grep '^$desktop ' | wc -l`
-      + 0;
-    if ( $workspace > 0 ) {
+    my $apps =
+`wmctrl -l -p | cut -d ' ' -f 2- | sed 's/^\\s*//g' | grep '^$desktop ' | cut -d " " -f 2`;
+    chomp $apps;
+    if ($apps) {
         my $number = $desktop + 1;
-        push @workspaces, "W$number [$workspace]";
+        for my $app ( split( "\n", $apps ) ) {
+            my $cmdline =
+              `cat /proc/$app/cmdline | rev | cut -d '/' -f 1 | rev`;
+            chomp $cmdline;
+            push @workspaces, "W$number - $cmdline";
+        }
     }
 }
 
