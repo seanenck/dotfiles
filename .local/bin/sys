@@ -19,6 +19,10 @@ if (@ARGV) {
 die "no command" if !$cmd;
 
 if ( $cmd eq "mouse" ) {
+    my $cnt = `xrandr | grep " connected" | wc -l` + 0;
+    if ( $cnt < 2 ) {
+        exit 0;
+    }
     my $threshold = 2560;
     my $left      = "1280 720";
     my $right     = "3520 540";
