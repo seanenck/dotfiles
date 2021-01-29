@@ -17,7 +17,7 @@ xautolock -detectsleep -time 5 -locker "$HOME/.local/bin/sys xautolock" &
 if [ -e $IS_DESKTOP ]; then
     cnt=$(xrandr | grep " connected" | wc -l)
     if [ $cnt -eq 2 ]; then
-        xrandr --output DP-2-1-8 --rotate right --left-of DP-2-8
+        xrandr --output DP-2 --rotate right --left-of DP-1
     fi
 else
     if [ -e $IS_LAPTOP ]; then
