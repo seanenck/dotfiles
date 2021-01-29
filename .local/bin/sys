@@ -19,19 +19,25 @@ if (@ARGV) {
 die "no command" if !$cmd;
 
 if ( $cmd eq "mouse" ) {
-    if ( !-e $ENV{"IS_DESKTOP"} ) {
-        exit 0;
+    my $threshold = 2560;
+    my $left      = "1280 720";
+    my $right     = "3520 540";
+    if ( -e $ENV{"IS_DESKTOP"} ) {
+        $threshold = 1440;
+        $left      = "720 1000";
+        $right     = "2000 720";
     }
     my $position =
       `xdotool getmouselocation | cut -d ':' -f 2 | cut -d ' ' -f 1` + 0;
     chomp $position;
     system("xdotool search . behave %@ mouse-enter windowfocus &");
     system("sleep 0.1");
-    if ( $position > 1440 ) {
-        system("xdotool mousemove 720 1000");
+    if ( $position > $threshold ) {
+        system("xdotool mousemove $left");
     }
     else {
-        system("xdotool mousemove 2000 720");
+        print "HERE\n";
+        system("xdotool mousemove $right");
     }
     system("pkill xdotool");
     print $position, "\n";
