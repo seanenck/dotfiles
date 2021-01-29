@@ -11,14 +11,18 @@ my $containers =
 `find $dir -type f -name "*.Dockerfile" -exec basename {} \\; | sed 's/\.Dockerfile//g'`;
 
 if ( !@ARGV ) {
-    print "clean $containers";
+    print "clean purge $containers";
     exit 0;
 }
 
 my $cmd = shift @ARGV;
 
-if ( $cmd eq "clean" ) {
+if ( $cmd eq "clean" or $cmd eq "purge" ) {
     system("podman ps -a -q | xargs podman rm");
+    if ( $cmd eq "purge" ) {
+        system("podman image list --quiet | xargs podman image rm --force");
+        system("rm -rf $cache");
+    }
     exit 0;
 }
 
@@ -35,7 +39,6 @@ if ( -e $prev ) {
         $must_build = 0;
     }
 }
-system("mv $hash $prev");
 
 my $tag  = "$cmd";
 my $run  = "";
@@ -51,7 +54,7 @@ elsif ( $cmd eq "imagemagick" ) {
     die "no sub-commands given" if !$sub;
     $run = "$sub";
 }
-elsif ( $cmd eq "pyxstitch") {
+elsif ( $cmd eq "pyxstitch" ) {
     my $sub = join( " ", @ARGV );
     die "no sub-commands given" if !$sub;
     $run = "pyxstitch $sub";
@@ -71,5 +74,6 @@ $run = "$opts $tag $run";
 if ( $must_build > 0 ) {
     die "unable to build" if system("podman build --tag $tag -f $file") != 0;
 }
+system("mv $hash $prev");
 
 system("podman run $run");
