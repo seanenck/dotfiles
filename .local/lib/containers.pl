@@ -4,9 +4,10 @@ use warnings;
 
 my $dir = $ENV{"HOME"} . "/.local/containers/";
 
-my $containers = `find $dir -type f -name "*.Dockerfile" -exec basename {} \\; | sed 's/\.Dockerfile//g'`;
+my $containers =
+`find $dir -type f -name "*.Dockerfile" -exec basename {} \\; | sed 's/\.Dockerfile//g'`;
 
-if (!@ARGV) {
+if ( !@ARGV ) {
     print "clean $containers";
     exit 0;
 }
@@ -28,6 +29,11 @@ if ( $cmd eq "youtube-dl" ) {
     my $target = shift @ARGV;
     die "no target URL given" if !$target;
     $run = "$run '$target'";
+}
+elsif ( $cmd eq "imagemagick" ) {
+    my $sub = join( " ", @ARGV );
+    die "no sub-commands given" if !$sub;
+    $run = "--volume=/home/enck/downloads:/build $tag $sub";
 }
 
 die "unknown command: $cmd" if !$run;
