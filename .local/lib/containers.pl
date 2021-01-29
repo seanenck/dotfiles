@@ -22,10 +22,11 @@ if ( $cmd eq "clean" ) {
 my $file = "${dir}$cmd.Dockerfile";
 die "unknown container: $cmd" if !-e $file;
 
-my $tag = "$cmd";
-my $run = "";
+my $tag  = "$cmd";
+my $run  = "";
+my $opts = "--volume=/home/enck/downloads:/build";
 if ( $cmd eq "youtube-dl" ) {
-    $run = "--volume=/home/enck/downloads:/build $tag youtube-dl";
+    $run = "youtube-dl";
     my $target = shift @ARGV;
     die "no target URL given" if !$target;
     $run = "$run '$target'";
@@ -33,10 +34,19 @@ if ( $cmd eq "youtube-dl" ) {
 elsif ( $cmd eq "imagemagick" ) {
     my $sub = join( " ", @ARGV );
     die "no sub-commands given" if !$sub;
-    $run = "--volume=/home/enck/downloads:/build $tag $sub";
+    $run = "$sub";
+}
+elsif ( $cmd eq "eltorito" ) {
+    my $src  = shift @ARGV;
+    my $dest = shift @ARGV;
+    die "source/dest required" if !$src or !$dest;
+    $run = "eltorito $src $dest";
+}
+else {
+    die "unknown command: $cmd";
 }
 
-die "unknown command: $cmd" if !$run;
+$run = "$opts $tag $run";
 
 die "unable to build" if system("podman build --tag $tag -f $file") != 0;
 
