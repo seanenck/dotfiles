@@ -42,7 +42,7 @@ if ( -e $prev ) {
 
 my $tag  = "$cmd";
 my $run  = "";
-my $opts = "--volume=/home/enck/downloads:/build";
+my $opts = "--volume=/home/enck/downloads:/workdir";
 if ( $cmd eq "youtube-dl" ) {
     $run = "youtube-dl";
     my $target = shift @ARGV;
