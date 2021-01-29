@@ -2,6 +2,11 @@
 use warnings;
 use strict;
 
+my $disp = $ENV{"DISPLAY"};
+if ( !$disp ) {
+    exit 0;
+}
+
 my $home  = $ENV{"HOME"};
 my $cache = "$home/.local/tmp/notify/";
 my $lib   = "$home/.local/lib/";
