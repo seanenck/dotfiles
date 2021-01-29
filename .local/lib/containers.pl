@@ -51,6 +51,11 @@ elsif ( $cmd eq "imagemagick" ) {
     die "no sub-commands given" if !$sub;
     $run = "$sub";
 }
+elsif ( $cmd eq "pyxstitch") {
+    my $sub = join( " ", @ARGV );
+    die "no sub-commands given" if !$sub;
+    $run = "pyxstitch $sub";
+}
 elsif ( $cmd eq "eltorito" ) {
     my $src  = shift @ARGV;
     my $dest = shift @ARGV;
