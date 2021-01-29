@@ -8,6 +8,10 @@ aem() {
     perl ~/.local/lib/aem.pl $@
 }
 
+container() {
+    perl ~/.local/lib/containers.pl $@
+}
+
 pltidy() {
     local f
     for f in $(git grep "#\!/usr/bin/perl" | cut -d ":" -f 1 | sort); do
@@ -53,3 +57,14 @@ _aem() {
 }
 
 complete -F _aem aem
+
+_container() {
+    local opts cur
+    cur=${COMP_WORDS[COMP_CWORD]}
+    if [ $COMP_CWORD -eq 1 ]; then
+        opts=$(perl ~/.local/lib/containers.pl)
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    fi
+}
+
+complete -F _container container
