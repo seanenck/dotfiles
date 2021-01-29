@@ -65,6 +65,11 @@ elsif ( $cmd eq "eltorito" ) {
     die "source/dest required" if !$src or !$dest;
     $run = "eltorito $src $dest";
 }
+elsif ( $cmd eq "kxstitch" ) {
+    my $display = $ENV{"DISPLAY"};
+    $opts = "$opts -ti -e DISPLAY=$display -v /tmp/.X11-unix:/tmp/.X11-unix";
+    $run  = "kxstitch";
+}
 else {
     die "unknown command: $cmd";
 }
