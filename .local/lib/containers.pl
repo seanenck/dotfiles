@@ -2,7 +2,10 @@
 use strict;
 use warnings;
 
-my $dir = $ENV{"HOME"} . "/.local/containers/";
+my $home  = $ENV{"HOME"} . "/.local/";
+my $dir   = "${home}containers/";
+my $cache = "${home}tmp/containers/";
+system("mkdir -p $cache") if !-d $cache;
 
 my $containers =
 `find $dir -type f -name "*.Dockerfile" -exec basename {} \\; | sed 's/\.Dockerfile//g'`;
@@ -21,6 +24,18 @@ if ( $cmd eq "clean" ) {
 
 my $file = "${dir}$cmd.Dockerfile";
 die "unknown container: $cmd" if !-e $file;
+
+my $hash = "${cache}$cmd";
+my $prev = "$hash.prev";
+system("sha256sum $file > $hash");
+my $must_build = 1;
+if ( -e $prev ) {
+    if ( system("diff -u $hash $prev > /dev/null") == 0 ) {
+        print "no rebuild required\n";
+        $must_build = 0;
+    }
+}
+system("mv $hash $prev");
 
 my $tag  = "$cmd";
 my $run  = "";
@@ -48,6 +63,8 @@ else {
 
 $run = "$opts $tag $run";
 
-die "unable to build" if system("podman build --tag $tag -f $file") != 0;
+if ( $must_build > 0 ) {
+    die "unable to build" if system("podman build --tag $tag -f $file") != 0;
+}
 
 system("podman run $run");
