@@ -49,6 +49,12 @@ if ( $cmd eq "youtube-dl" ) {
     die "no target URL given" if !$target;
     $run = "$run '$target'";
 }
+if ( $cmd eq "unoconv" ) {
+    $run = "unoconv";
+    my $target = shift @ARGV;
+    die "no target file given" if !$target;
+    $run = "$run $target";
+}
 elsif ( $cmd eq "imagemagick" ) {
     my $sub = join( " ", @ARGV );
     die "no sub-commands given" if !$sub;

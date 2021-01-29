@@ -174,13 +174,13 @@ elsif ( $command eq "flagged" ) {
     system("mv $tmp_flag $flag_log");
     my %remotes;
     my %filters;
-    $remotes{"baseskel"}     = "git://cgit.voidedtech.com/skel";
-    $remotes{"devskel"}      = "git://cgit.voidedtech.com/skel";
-    $remotes{"serverskel"}   = "git://cgit.voidedtech.com/skel";
-    $remotes{"corescripts"}  = "git://cgit.voidedtech.com/corescripts";
-    $remotes{"sysmon"}       = "git://cgit.voidedtech.com/sysmon";
-    $remotes{"voidedtech"}   = "git://cgit.voidedtech.com/whoami";
-    $filters{"voidedtech"}   = "src/";
+    $remotes{"baseskel"}    = "git://cgit.voidedtech.com/skel";
+    $remotes{"devskel"}     = "git://cgit.voidedtech.com/skel";
+    $remotes{"serverskel"}  = "git://cgit.voidedtech.com/skel";
+    $remotes{"corescripts"} = "git://cgit.voidedtech.com/corescripts";
+    $remotes{"sysmon"}      = "git://cgit.voidedtech.com/sysmon";
+    $remotes{"voidedtech"}  = "git://cgit.voidedtech.com/whoami";
+    $filters{"voidedtech"}  = "src/";
 
     for my $base ( ( "base", "dev", "server" ) ) {
         $filters{"${base}skel"} = "$base/";
