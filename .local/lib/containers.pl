@@ -76,4 +76,4 @@ if ( $must_build > 0 ) {
 }
 system("mv $hash $prev");
 
-system("podman run $run");
+system("podman run --rm $run");
