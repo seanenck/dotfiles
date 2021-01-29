@@ -180,7 +180,6 @@ elsif ( $command eq "flagged" ) {
     $remotes{"corescripts"}  = "git://cgit.voidedtech.com/corescripts";
     $remotes{"sysmon"}       = "git://cgit.voidedtech.com/sysmon";
     $remotes{"voidedtech"}   = "git://cgit.voidedtech.com/whoami";
-    $remotes{"kxstitch-git"} = "https://github.com/KDE/kxstitch";
     $filters{"voidedtech"}   = "src/";
 
     for my $base ( ( "base", "dev", "server" ) ) {
