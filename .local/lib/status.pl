@@ -46,21 +46,24 @@ while (1) {
         exit 0;
     }
     if ( -e $ENV{"IS_LAPTOP"} ) {
-        if ( system("pidof hikari-unlocker > /dev/null") == 0 ) {
-            if ( -e $lock ) {
-                my $now = `find $lock -cmin +5`;
-                chomp $now;
-                if ($now) {
-                    system("touch $susp");
+        if ( -e $lock or -e $susp ) {
+            sleep 1;
+            if ( system("pidof hikari-unlocker > /dev/null") == 0 ) {
+                if ( -e $lock ) {
+                    my $now = `find $lock -cmin +5`;
+                    chomp $now;
+                    if ($now) {
+                        system("touch $susp");
+                    }
+                }
+                if ( -e $susp ) {
+                    sleep 1;
+                    system("systemctl suspend");
                 }
             }
-            if ( -e $susp ) {
-                sleep 1;
-                system("systemctl suspend");
-            }
+            unlink $susp if -e $susp;
+            unlink $lock if -e $lock;
         }
-        unlink $susp if -e $susp;
-        unlink $lock if -e $lock;
     }
     if ( $cnt >= $max ) {
         system("$status notify &");
