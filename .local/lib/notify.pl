@@ -86,22 +86,18 @@ if ( `uname -r | sed "s/-arch/.arch/g"` ne
 notify "kernel", @kernel;
 
 my @workspaces;
-for my $desktop (`wmctrl -d | grep -v "\*" | cut -d ' ' -f 1`) {
-    chomp $desktop;
-    if ( $desktop eq "" ) {
+for my $app (`perl $home/.local/lib/apps.pl | tr ' ' '\\n' | sort`) {
+    chomp $app;
+    if (!$app ) {
         next;
     }
-    my $apps =
-`wmctrl -l -p | cut -d ' ' -f 2- | sed 's/^\\s*//g' | grep '^$desktop ' | cut -d " " -f 2`;
-    chomp $apps;
-    if ($apps) {
-        my $number = $desktop + 1;
-        for my $app ( split( "\n", $apps ) ) {
-            my $cmdline =
-              `cat /proc/$app/cmdline | rev | cut -d '/' -f 1 | rev`;
-            chomp $cmdline;
-            push @workspaces, "W$number - $cmdline";
-        }
+    my $cmd = "pidof $app";
+    if ( $app ne "firefox" ) {
+        $cmd = "$cmd | tr ' ' '\\n'";
+    }
+    my $cnt = `$cmd | wc -l` + 0;
+    if ( $cnt > 0 ) {
+        push @workspaces, "$app [$cnt]";
     }
 }
 
