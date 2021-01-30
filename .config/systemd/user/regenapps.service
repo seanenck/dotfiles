@@ -1,5 +1,0 @@
-[Unit]
-Description=Regenerate app menu
-
-[Service]
-ExecStart=/home/enck/.local/bin/localsvc.sh regen
