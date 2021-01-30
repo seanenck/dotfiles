@@ -40,7 +40,7 @@ if [ -x /usr/bin/hikari ]; then
     if [ -e $IS_DESKTOP ]; then
         USE="$USE desktop"
     fi
-    rm $CONF
+    rm -f $CONF
     for f in $(echo $USE); do
         cat $HOME/.config/hikari/$f.conf >> $CONF
     done
