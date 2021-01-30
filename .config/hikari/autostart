@@ -1,3 +1,4 @@
+pkill perl
 waybar &
 mako &
 ~/.local/bin/localsvc.sh status &
