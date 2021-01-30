@@ -1,8 +1,0 @@
-[Unit]
-Description=Local status
-
-[Service]
-ExecStart=/home/enck/.local/bin/localsvc.sh status
-
-[Install]
-WantedBy=default.target
