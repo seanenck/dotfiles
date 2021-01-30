@@ -1,7 +1,7 @@
 #!/bin/bash
 export MOZ_ENABLE_WAYLAND=1
 while [ 1 -eq 1 ]; do
-    CONF=$HOME/.config/hikari/hikari.conf
+    CONF=$HOME/.cache/.hikari.conf
     USE="template"
     if [ -e $IS_LAPTOP ]; then
         USE="$USE laptop"
