@@ -32,6 +32,7 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 if [ -x /usr/bin/hikari ]; then
+    export MOZ_ENABLE_WAYLAND=1
     CONF=$HOME/.config/hikari/hikari.conf
     USE="template"
     if [ -e $IS_LAPTOP ]; then
