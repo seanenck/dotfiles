@@ -1,6 +1,8 @@
 #!/bin/bash
 export MOZ_ENABLE_WAYLAND=1
-while [ 1 -eq 1 ]; do
+TRIGGER="$HOME/.cache/.hikari"
+rm -f $TRIGGER
+while [ ! -e $TRIGGER ]; do
     CONF=$HOME/.cache/.hikari.conf
     USE="template"
     if [ -e $IS_LAPTOP ]; then
