@@ -122,6 +122,8 @@ if ( -e $prev ) {
 }
 system("cp $last $prev");
 system("makoctl dismiss --all");
-my $notices = `cat $last`;
-chomp $notices;
-system("dunstify -r 1000 -t 20000 '$notices'");
+if ( -s $last ) {
+    my $notices = `cat $last`;
+    chomp $notices;
+    system("dunstify -r 1000 -t 20000 '$notices'");
+}
