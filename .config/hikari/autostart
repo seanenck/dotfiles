@@ -1,2 +1,3 @@
 waybar &
 mako &
+perl ~/.local/lib/status.pl &

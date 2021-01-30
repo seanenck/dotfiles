@@ -2,7 +2,7 @@
 use warnings;
 use strict;
 
-my $disp = $ENV{"DISPLAY"};
+my $disp = $ENV{"WAYLAND_DISPLAY"};
 if ( !$disp ) {
     exit 0;
 }

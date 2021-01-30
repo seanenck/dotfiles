@@ -26,7 +26,6 @@ if (@ARGV) {
         my $history_dir  = "$history_root$cleanup_date";
         system("mkdir -p $history_dir");
         system("rsync -ar $home/.mozilla/ $history_dir/mozilla");
-        system("rsync -ar $home/.fluxbox/ $history_dir/fluxbox");
         system("cp .bash_history $history_dir/bash_history");
         my $cnt = 0;
 
