@@ -27,6 +27,10 @@ for file in $HOME/.local/env/vars \
     fi
 done
 
+if [ -z $DISPLAY ] && [ "$(tty)" == "/dev/tty1" ]; then
+    exec hikari -c $HOME/.config/hikari/hikari.conf > $HOME/.cache/hikari.log
+    exit
+fi
 if [ -x /usr/bin/fluxbox ]; then
     if [[ ! $DISPLAY && XDG_VTNR -eq 1 ]]; then
         exec startx $HOME/.xinitrc 2>&1 | systemd-cat -t "xinit"
