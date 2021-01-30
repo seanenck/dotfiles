@@ -7,6 +7,7 @@ if ( !$disp ) {
     exit 0;
 }
 
+system("makoctl dismiss --all");
 my $home  = $ENV{"HOME"};
 my $cache = "$home/.local/tmp/notify/";
 my $lib   = "$home/.local/lib/";
