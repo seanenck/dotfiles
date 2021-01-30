@@ -1,0 +1,6 @@
+style "font"
+{
+font_name = "Corbel 16"
+}
+widget_class "*" style "font"
+gtk-font-name = "Corbel 16" 
