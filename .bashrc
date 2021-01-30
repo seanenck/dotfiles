@@ -32,21 +32,8 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 if [ -x /usr/bin/hikari ]; then
-    export MOZ_ENABLE_WAYLAND=1
-    CONF=$HOME/.config/hikari/hikari.conf
-    USE="template"
-    if [ -e $IS_LAPTOP ]; then
-        USE="$USE laptop"
-    fi
-    if [ -e $IS_DESKTOP ]; then
-        USE="$USE desktop"
-    fi
-    rm -f $CONF
-    for f in $(echo $USE); do
-        cat $HOME/.config/hikari/$f.conf >> $CONF
-    done
     if [ -z $DISPLAY ] && [ "$(tty)" == "/dev/tty1" ]; then
-        exec hikari -c $CONF > $HOME/.cache/hikari.log
+        bash ~/.local/lib/hikari.sh
         exit
     fi
 fi
