@@ -31,7 +31,7 @@ done
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
-if [ -x /usr/bin/fluxbox ]; then
+if [ -x /usr/bin/hikari ]; then
     if [ -z $DISPLAY ] && [ "$(tty)" == "/dev/tty1" ]; then
         exec hikari -c $HOME/.config/hikari/hikari.conf > $HOME/.cache/hikari.log
         exit
