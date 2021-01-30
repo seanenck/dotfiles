@@ -16,7 +16,7 @@ if (@ARGV) {
         if ( $classes == 0 ) {
             exit 0;
         }
-        my $pids  = system("pidof i3lock > /dev/null");
+        my $pids  = system("pidof hikari-unlocker > /dev/null");
         my $light = `brightnessctl get` + 0;
         my $set   = "";
         if ( $light < 1500 ) {
