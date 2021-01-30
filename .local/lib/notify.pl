@@ -109,6 +109,13 @@ if ( !-e $daily ) {
         }
         notify "out-of-date", @out;
         if ( $success == 1 ) {
+            my $tag = `curl -s https://hub.darcs.net/raichoo/hikari/changes | grep TAG | head -n 1 | cut -d '>' -f 2 | cut -d '<' -f 1 | cut -d ' ' -f 2`;
+            chomp $tag;
+            my $vers = `pacman -Ss hikari | head -n 1 | cut -d " " -f 2 | cut -d "-" -f 1`;
+            chomp $vers;
+            if ( $tag ne $vers ) {
+                notify "hikari", "version";
+            }
             system("touch $daily");
         }
     }
