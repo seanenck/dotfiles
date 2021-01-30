@@ -6,3 +6,4 @@ border-radius=10
 anchor=top-right
 height=1000
 layer=background
+ignore-timeout=1

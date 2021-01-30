@@ -24,7 +24,7 @@ for ("workspace") {
 
 my $last = "${cache}notices.category";
 my $prev = "$last.prev";
-open(my $fh, ">", $last);
+open( my $fh, ">", $last );
 
 sub notify {
     my $cat = shift @_;
@@ -87,7 +87,7 @@ notify "kernel", @kernel;
 my @workspaces;
 for my $app (`perl $home/.local/lib/apps.pl | tr ' ' '\\n' | sort`) {
     chomp $app;
-    if (!$app ) {
+    if ( !$app ) {
         next;
     }
     my $cmd = "pidof $app";
