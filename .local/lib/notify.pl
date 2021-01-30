@@ -84,24 +84,6 @@ if ( `uname -r | sed "s/-arch/.arch/g"` ne
 
 notify "kernel", @kernel;
 
-my @workspaces;
-for my $app (`perl $home/.local/lib/apps.pl | tr ' ' '\\n' | sort`) {
-    chomp $app;
-    if ( !$app ) {
-        next;
-    }
-    my $cmd = "pidof $app";
-    if ( $app ne "firefox" ) {
-        $cmd = "$cmd | tr ' ' '\\n'";
-    }
-    my $cnt = `$cmd | wc -l` + 0;
-    if ( $cnt > 0 ) {
-        push @workspaces, "$app [$cnt]";
-    }
-}
-
-notify "workspaces", @workspaces;
-
 if ( !-e $daily ) {
     system("find $cache -type f -mtime +1 -delete");
     if ( -e $ENV{"IS_ONLINE"} ) {
