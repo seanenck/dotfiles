@@ -1,4 +1,5 @@
 pkill perl
 waybar &
 mako &
+rm -f ~/.local/tmp/notify/notices.*
 ~/.local/bin/localsvc.sh status &

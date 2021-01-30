@@ -36,12 +36,24 @@ if (@ARGV) {
     exit;
 }
 
-my $max = 15;
-my $cnt = $max + 1;
+my $max   = 15;
+my $cnt   = $max + 1;
+my $sleep = 0;
 while (1) {
     $cnt++;
     if ( !$ENV{"WAYLAND_DISPLAY"} ) {
         exit 0;
+    }
+    if ( -e $ENV{"IS_LAPTOP"} ) {
+        if ( system("pidof hikari-unlocker > /dev/null") == 0 ) {
+            $sleep += 1;
+            if ( $sleep > 300 ) {
+                system("systemctl suspend");
+            }
+        }
+        else {
+            $sleep = 0;
+        }
     }
     if ( $cnt >= $max ) {
         system("$status notify &");
