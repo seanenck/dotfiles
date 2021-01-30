@@ -7,7 +7,6 @@ if ( !$disp ) {
     exit 0;
 }
 
-system("makoctl dismiss --all");
 my $home  = $ENV{"HOME"};
 my $cache = "$home/.local/tmp/notify/";
 my $lib   = "$home/.local/lib/";
@@ -15,6 +14,7 @@ my $daily = `date +%Y%m%d%p`;
 chomp $daily;
 $daily = "${cache}$daily";
 my @dirs = ( "$home/.git", "$home/.local/private/.git" );
+system("mkdir -p $cache") if !-d $cache;
 
 for ("workspace") {
     my $found = `find $home/$_/ -maxdepth 3 -type d -name ".git" | tr '\n' ' '`;
@@ -22,17 +22,15 @@ for ("workspace") {
     push @dirs, split( / /, $found );
 }
 
-my $id = 500;
+my $last = "${cache}notices.category";
+my $prev = "$last.prev";
+open(my $fh, ">", $last);
 
 sub notify {
-    $id += 1;
     my $cat = shift @_;
     if (@_) {
         my $text = join( "\n└ ", @_ );
-        system("dunstify -r $id -t 20000 '$cat:\n└ $text'");
-    }
-    else {
-        system("dunstify -C $id");
+        print $fh "$cat:\n└ $text\n";
     }
 }
 
@@ -105,7 +103,6 @@ for my $app (`perl $home/.local/lib/apps.pl | tr ' ' '\\n' | sort`) {
 notify "workspaces", @workspaces;
 
 if ( !-e $daily ) {
-    system("mkdir -p $cache") if !-d $cache;
     system("find $cache -type f -mtime +1 -delete");
     if ( -e $ENV{"IS_ONLINE"} ) {
         my @out;
@@ -134,3 +131,15 @@ if ( !-e $daily ) {
         }
     }
 }
+
+close($fh);
+if ( -e $prev ) {
+    if ( system("diff -u $prev $last > /dev/null") == 0 ) {
+        exit 0;
+    }
+}
+system("cp $last $prev");
+system("makoctl dismiss --all");
+my $notices = `cat $last`;
+chomp $notices;
+system("dunstify -r 1000 -t 20000 '$notices'");
