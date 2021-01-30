@@ -40,6 +40,9 @@ my $max = 15;
 my $cnt = $max + 1;
 while (1) {
     $cnt++;
+    if (!$ENV{"WAYLAND_DISPLAY"}) {
+        exit 0;
+    }
     if ( $cnt >= $max ) {
         system("$status notify &");
         $cnt = 0;
