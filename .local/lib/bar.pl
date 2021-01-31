@@ -31,13 +31,6 @@ if ( $cmd eq "apps" ) {
     @list = sort @list;
     print join( " ", @list );
 }
-elsif ( $cmd eq "sheet" ) {
-    my $sheet = "1";
-    my $tmp   = "/tmp/.hikari.sheet";
-    $sheet = `cat $tmp` if -e $tmp;
-    chomp $sheet;
-    print "$sheet";
-}
 elsif ( $cmd eq "sync" ) {
     my $daily = `date +%Y%m%d%p`;
     chomp $daily;

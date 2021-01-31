@@ -35,17 +35,10 @@ window#waybar.hidden {
 #tray,
 #mode,
 #idle_inhibitor,
-#custom-sync,
-#custom-sheets {
+#custom-sync {
     padding: 0 10px;
     margin: 0 4px;
     color: #ffffff;
-}
-
-#custom-sheets {
-    background: black;
-    color: white;
-    padding: 10px;
 }
 
 #custom-sync {
