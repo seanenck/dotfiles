@@ -81,11 +81,25 @@ if ( `uname -r | sed "s/-arch/.arch/g"` ne
 notify "kernel", @kernel;
 
 close($fh);
-if ( -e $prev ) {
-    if ( system("diff -u $prev $last > /dev/null") == 0 ) {
-        exit 0;
+
+my $listing = `makoctl list | tr '\\n' ' ' | sed 's/\\s*//g'`;
+chomp $listing;
+my $force = 0;
+
+if ( $listing eq '{"type":"aa{sv}","data":[[]]}' ) {
+    if ( -s $last ) {
+        $force = 1;
     }
 }
+
+if ( $force == 0 ) {
+    if ( -e $prev ) {
+        if ( system("diff -u $prev $last > /dev/null") == 0 ) {
+            exit 0;
+        }
+    }
+}
+
 system("cp $last $prev");
 system("makoctl dismiss --all");
 if ( -s $last ) {
