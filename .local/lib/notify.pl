@@ -53,6 +53,24 @@ for my $dir (@dirs) {
 
 notify "git", @git;
 
+my @mail;
+my %mail_count;
+for (`bash ${lib}mail_client.sh new | grep '^mail:' | cut -d ':' -f 2-`) {
+    chomp;
+    my $dir = $_;
+    if ( !exists( $mail_count{$dir} ) ) {
+        $mail_count{$dir} = 0;
+    }
+    $mail_count{$dir} += 1;
+}
+
+for ( keys %mail_count ) {
+    my $count = $mail_count{$_};
+    push @mail, "$_ [$count]";
+}
+
+notify "mail", @mail;
+
 my @kernel;
 if ( `uname -r | sed "s/-arch/.arch/g"` ne
     `pacman -Qi linux | grep Version | cut -d ":" -f 2 | sed "s/ //g"` )
