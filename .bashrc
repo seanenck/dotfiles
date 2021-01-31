@@ -33,7 +33,8 @@ if [ -d "$HOME/.local/bin" ] ; then
 fi
 if [ -x /usr/bin/hikari ]; then
     if [ -z $DISPLAY ] && [ "$(tty)" == "/dev/tty1" ]; then
-        bash ~/.local/lib/hikari.sh
+        export MOZ_ENABLE_WAYLAND=1
+        perl ~/.local/lib/hikari.pl start
         exit
     fi
 fi
