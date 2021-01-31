@@ -5,7 +5,7 @@ use warnings;
 my $home    = $ENV{"HOME"};
 my $trigger = $home . "/.cache/.hikari.trigger";
 my $config  = $home . "/.cache/.hikari.conf";
-if (!@ARGV) {
+if ( !@ARGV ) {
     die "command required";
 }
 
@@ -28,13 +28,15 @@ sub reconfigure {
 
 if ( $cmd eq "start" ) {
     system("rm -f $trigger");
-    while ( ! -e $trigger ) {
+    while ( !-e $trigger ) {
         reconfigure;
         system("rm -f /tmp/.hikari.*");
         system("hikari -c $config > $home/.cache/hikari.log 2>&1");
     }
-} elsif ( $cmd eq "reconfigure" ) {
+}
+elsif ( $cmd eq "reconfigure" ) {
     reconfigure;
-} elsif ( $cmd eq "kill" ) {
+}
+elsif ( $cmd eq "kill" ) {
     system("touch $trigger");
 }
