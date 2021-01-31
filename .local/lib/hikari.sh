@@ -7,7 +7,6 @@ if [ -z "$CMD" ]; then
     exit 1
 fi
 
-TRIGGER="$HOME/.cache/.hikari.trigger"
 CONF="$HOME/.cache/.hikari.conf"
 
 _reconfig() {
@@ -27,19 +26,13 @@ _reconfig() {
 
 case $CMD in
     "start")
-        rm -f $TRIGGER
-        while [ ! -e $TRIGGER ]; do
-            _reconfig
-            rm -f /tmp/.hikari.*
-            hikari -c $CONF 2>&1 | systemd-cat -t hikari
-        done
+        _reconfig
+        rm -f /tmp/.hikari.*
+        hikari -c $CONF 2>&1 | systemd-cat -t hikari
         ;;
     "reconfigure")
         _reconfig
         ;; 
-    "kill")
-        touch $TRIGGER
-        ;;
     *)
         echo "unknown command: $CMD"
         exit 1
