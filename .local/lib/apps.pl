@@ -3,6 +3,13 @@ use strict;
 use warnings;
 
 my $apps = "firefox kitty pavucontrol mumble keepassxc vlc";
+if (@ARGV) {
+    my $cmd = shift @ARGV;
+    if ( $cmd eq "list" ) {
+        print "$apps";
+        exit 0;
+    }
+}
 
 my %local;
 for (`find $ENV{"HOME"}/.local/apps -type l`) {
@@ -15,7 +22,7 @@ for (`find $ENV{"HOME"}/.local/apps -type l`) {
     }
 }
 
-my $count  = `echo $apps | tr ' ' '\\n' | wc -l` + 1;
+my $count = `echo $apps | tr ' ' '\\n' | wc -l` + 1;
 my $chosen =
 `echo $apps | tr ' ' '\\n' | sed 's/firefox/firefox-developer-edition/g' | wofi --show dmenu -W 15% -L $count -i --style=\$HOME/.config/wofi/style.css`;
 chomp $chosen;

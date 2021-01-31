@@ -10,10 +10,7 @@ if ( !$disp ) {
 my $home  = $ENV{"HOME"};
 my $cache = "$home/.local/tmp/notify/";
 my $lib   = "$home/.local/lib/";
-my $daily = `date +%Y%m%d%p`;
-chomp $daily;
-$daily = "${cache}$daily";
-my @dirs = ( "$home/.git", "$home/.local/private/.git" );
+my @dirs  = ( "$home/.git", "$home/.local/private/.git" );
 system("mkdir -p $cache") if !-d $cache;
 
 for ("workspace") {
@@ -56,25 +53,6 @@ for my $dir (@dirs) {
 
 notify "git", @git;
 
-my @mail;
-
-my %mail_count;
-for (`bash ${lib}mail_client.sh new | grep '^mail:' | cut -d ':' -f 2-`) {
-    chomp;
-    my $dir = $_;
-    if ( !exists( $mail_count{$dir} ) ) {
-        $mail_count{$dir} = 0;
-    }
-    $mail_count{$dir} += 1;
-}
-
-for ( keys %mail_count ) {
-    my $count = $mail_count{$_};
-    push @mail, "$_ [$count]";
-}
-
-notify "mail", @mail;
-
 my @kernel;
 if ( `uname -r | sed "s/-arch/.arch/g"` ne
     `pacman -Qi linux | grep Version | cut -d ":" -f 2 | sed "s/ //g"` )
@@ -83,45 +61,6 @@ if ( `uname -r | sed "s/-arch/.arch/g"` ne
 }
 
 notify "kernel", @kernel;
-
-if ( !-e $daily ) {
-    system("find $cache -type f -mtime +1 -delete");
-    if ( -e $ENV{"IS_ONLINE"} ) {
-        my @out;
-        my $success     = 0;
-        my $out_of_date = `perl ${lib}aem.pl flagged 2>&1`;
-        $success = 1;
-        if ($out_of_date) {
-            if ( $out_of_date =~ m/out-of-date/ ) {
-                my @parts = split( "\n", $out_of_date );
-                for my $part (@parts) {
-                    chomp $part;
-                    if ($part) {
-                        $part =~ s/out-of-date://g;
-                        push @out, $part;
-                    }
-                }
-            }
-            else {
-                $success = 0;
-                push @out, "failed out-of-date check";
-            }
-        }
-        notify "out-of-date", @out;
-        if ( $success == 1 ) {
-            my $tag =
-`curl -s https://hub.darcs.net/raichoo/hikari/changes | grep TAG | head -n 1 | cut -d '>' -f 2 | cut -d '<' -f 1 | cut -d ' ' -f 2`;
-            chomp $tag;
-            my $vers =
-`pacman -Ss hikari | head -n 1 | cut -d " " -f 2 | cut -d "-" -f 1`;
-            chomp $vers;
-            if ( $tag ne $vers ) {
-                notify "hikari", "version";
-            }
-            system("touch $daily");
-        }
-    }
-}
 
 close($fh);
 if ( -e $prev ) {

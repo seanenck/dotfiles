@@ -1,31 +1,10 @@
 {
-    // "layer": "top", // Waybar at top layer
     "position": "bottom", // Waybar position (top|bottom|left|right)
     "height": 50, // Waybar height (to be removed for auto height)
-    // "width": 1280, // Waybar width
-    // Choose the order of the modules
-    "modules-left": [],
-    "modules-center": [],
-    "modules-right": ["pulseaudio", "network", "battery", "battery#bat2", "clock", "tray"],
-    // Modules configuration
-    // "sway/workspaces": {
-    //     "disable-scroll": true,
-    //     "all-outputs": true,
-    //     "format": "{name}: {icon}",
-    //     "format-icons": {
-    //         "1": "",
-    //         "2": "",
-    //         "3": "",
-    //         "4": "",
-    //         "5": "",
-    //         "urgent": "",
-    //         "focused": "",
-    //         "default": ""
-    //     }
-    // },
+    "modules-left": ["custom/mail", "custom/sync"],
+    "modules-center": ["custom/apps"],
+    "modules-right": ["pulseaudio", "network", "battery", "clock"],
     "clock": {
-        // "timezone": "America/New_York",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format": "{:%Y-%m-%d %H:%M}"
     },
     "battery": {
@@ -42,9 +21,6 @@
         // "format-full": "",
         "format-icons": ["", "", "", "", ""]
     },
-    "battery#bat2": {
-        "bat": "BAT2"
-    },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
         "format-wifi": "{essid} ({signalStrength}%) ",
@@ -52,6 +28,25 @@
         "format-linked": "{ifname} (No IP) ",
         "format-disconnected": "Disconnected ⚠",
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
+    },
+    "custom/sync": {
+        "tooltip": false,
+        "format": "{}",
+        "interval": 30,
+        "on-click": "rm -f ~/.local/tmp/bar/*",
+        "exec": "perl ~/.local/lib/bar.pl sync"
+    },
+    "custom/apps": {
+        "tooltip": false,
+        "format": "{}",
+        "interval": 5,
+        "exec": "perl ~/.local/lib/bar.pl apps"
+    },
+    "custom/mail": {
+        "tooltip": false,
+        "format": "{}",
+        "interval": 30,
+        "exec": "perl ~/.local/lib/bar.pl mail"
     },
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
