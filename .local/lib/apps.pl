@@ -4,17 +4,6 @@ use warnings;
 
 my $apps = "firefox kitty pavucontrol mumble keepassxc vlc";
 
-if ( !@ARGV ) {
-    print "$apps";
-    exit 0;
-}
-
-my $cmd = shift @ARGV;
-if ( $cmd ne "wofi" ) {
-    print "unknown command\n";
-    exit 0;
-}
-
 my %local;
 for (`find $ENV{"HOME"}/.local/apps -type l`) {
     chomp;
@@ -25,8 +14,10 @@ for (`find $ENV{"HOME"}/.local/apps -type l`) {
         $apps = "$apps $name";
     }
 }
+
+my $count  = `echo $apps | tr ' ' '\\n' | wc -l` + 0;
 my $chosen =
-`echo $apps | tr ' ' '\\n' | sed 's/firefox/firefox-developer-edition/g' | wofi --show dmenu -i --style=\$HOME/.config/wofi/style.css`;
+`echo $apps | tr ' ' '\\n' | sed 's/firefox/firefox-developer-edition/g' | wofi --show dmenu -W 15% -L $count -i --style=\$HOME/.config/wofi/style.css`;
 chomp $chosen;
 if ( !$chosen ) {
     exit 0;
