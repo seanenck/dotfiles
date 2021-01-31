@@ -34,7 +34,7 @@ fi
 if [ -x /usr/bin/hikari ]; then
     if [ -z $DISPLAY ] && [ "$(tty)" == "/dev/tty1" ]; then
         export MOZ_ENABLE_WAYLAND=1
-        perl ~/.local/lib/hikari.pl start
+        bash ~/.local/lib/hikari.sh start
         exit
     fi
 fi
