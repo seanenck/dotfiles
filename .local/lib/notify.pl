@@ -103,7 +103,5 @@ if ( $force == 0 ) {
 system("cp $last $prev");
 system("makoctl dismiss --all");
 if ( -s $last ) {
-    my $notices = `cat $last`;
-    chomp $notices;
-    system("dunstify -r 1000 -t 20000 '$notices'");
+    system('notify-send "$(cat ' . $last . ' | grep -v \"^$\")"');
 }
