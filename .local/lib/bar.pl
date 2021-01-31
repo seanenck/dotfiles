@@ -11,26 +11,7 @@ die "no args given" if !@ARGV;
 
 my $cmd = shift @ARGV;
 
-if ( $cmd eq "mail" ) {
-    my @mail;
-    my %mail_count;
-    for (`bash ${lib}mail_client.sh new | grep '^mail:' | cut -d ':' -f 2-`) {
-        chomp;
-        my $dir = $_;
-        if ( !exists( $mail_count{$dir} ) ) {
-            $mail_count{$dir} = 0;
-        }
-        $mail_count{$dir} += 1;
-    }
-
-    for ( keys %mail_count ) {
-        my $count = $mail_count{$_};
-        push @mail, "$_ [$count]";
-    }
-    @mail = sort @mail;
-    print join( ", ", @mail );
-}
-elsif ( $cmd eq "apps" ) {
+if ( $cmd eq "apps" ) {
     my $apps = `perl $lib/apps.pl list`;
     chomp $apps;
     my @list;
@@ -52,7 +33,7 @@ elsif ( $cmd eq "apps" ) {
 }
 elsif ( $cmd eq "sheet" ) {
     my $sheet = "1";
-    my $tmp = "/tmp/.hikari.sheet";
+    my $tmp   = "/tmp/.hikari.sheet";
     $sheet = `cat $tmp` if -e $tmp;
     chomp $sheet;
     print "$sheet";

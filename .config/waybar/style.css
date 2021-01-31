@@ -35,10 +35,8 @@ window#waybar.hidden {
 #tray,
 #mode,
 #idle_inhibitor,
-#custom-mail,
 #custom-sync,
-#custom-sheets,
-#mpd {
+#custom-sheets {
     padding: 0 10px;
     margin: 0 4px;
     color: #ffffff;
@@ -52,11 +50,6 @@ window#waybar.hidden {
 
 #custom-sync {
     background: red;
-    color: #fff;
-}
-
-#custom-mail {
-    background: darkblue;
     color: #fff;
 }
 
