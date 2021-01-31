@@ -1,7 +1,7 @@
 {
     "position": "bottom", // Waybar position (top|bottom|left|right)
     "height": 50, // Waybar height (to be removed for auto height)
-    "modules-left": ["custom/mail", "custom/sync"],
+    "modules-left": ["custom/sheets", "custom/mail", "custom/sync"],
     "modules-center": ["custom/apps"],
     "modules-right": ["pulseaudio", "network", "battery", "clock"],
     "clock": {
@@ -36,6 +36,12 @@
         "interval": 30,
         "on-click": "rm -f ~/.local/tmp/bar/*",
         "exec": "perl ~/.local/lib/bar.pl sync"
+    },
+    "custom/sheets": {
+        "tooltip": false,
+        "format": "[{}]",
+        "interval": 1,
+        "exec": "perl ~/.local/lib/bar.pl sheet"
     },
     "custom/apps": {
         "tooltip": false,
