@@ -5,5 +5,5 @@ width=500
 border-radius=10
 anchor=top-right
 height=1000
-layer=top
+layer=bottom
 ignore-timeout=1
