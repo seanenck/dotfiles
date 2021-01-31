@@ -28,7 +28,7 @@ case $CMD in
     "start")
         _reconfig
         rm -f /tmp/.hikari.*
-        hikari -c $CONF 2>&1 | systemd-cat -t hikari
+        hikari -c $CONF > $HOME/.cache/hikari.log 2>&1
         ;;
     "reconfigure")
         _reconfig
