@@ -5,7 +5,7 @@ use strict;
 my $home  = $ENV{"HOME"};
 my $cache = "$home/.local/tmp/bar/";
 my $lib   = "$home/.local/lib/";
-system("mkdir -p $cache") if ! -d $cache;
+system("mkdir -p $cache") if !-d $cache;
 
 die "no args given" if !@ARGV;
 
@@ -28,13 +28,13 @@ if ( $cmd eq "mail" ) {
         push @mail, "$_ [$count]";
     }
     @mail = sort @mail;
-    print join(", ", @mail);
+    print join( ", ", @mail );
 }
 elsif ( $cmd eq "apps" ) {
     my $apps = `perl $lib/apps.pl list`;
     chomp $apps;
     my @list;
-    for my $app ( split(" ", $apps) ) {
+    for my $app ( split( " ", $apps ) ) {
         chomp $app;
         if ( !$app ) {
             next;
@@ -48,7 +48,7 @@ elsif ( $cmd eq "apps" ) {
         }
     }
     @list = sort @list;
-    print join(" ", @list);
+    print join( " ", @list );
 }
 elsif ( $cmd eq "sync" ) {
     my $daily = `date +%Y%m%d%p`;
@@ -82,14 +82,14 @@ elsif ( $cmd eq "sync" ) {
 `curl -s https://hub.darcs.net/raichoo/hikari/changes | grep TAG | head -n 1 | cut -d '>' -f 2 | cut -d '<' -f 1 | cut -d ' ' -f 2`;
         chomp $tag;
         my $vers =
-`pacman -Ss hikari | head -n 1 | cut -d " " -f 2 | cut -d "-" -f 1`;
+          `pacman -Ss hikari | head -n 1 | cut -d " " -f 2 | cut -d "-" -f 1`;
         chomp $vers;
         if ( $tag ne $vers ) {
             push @out, "hikari version change";
         }
-        $data = join(" ", @out);
-        open(my $fh, ">", $daily);
-        print $fh join(" ", $data);
+        $data = join( " ", @out );
+        open( my $fh, ">", $daily );
+        print $fh join( " ", $data );
         close($fh);
     }
 }
