@@ -39,7 +39,7 @@
     "custom/apps": {
         "tooltip": false,
         "format": "{}",
-        "interval": 5,
+        "interval": 1,
         "exec": "perl ~/.local/lib/bar.pl apps"
     },
     "custom/mail": {
