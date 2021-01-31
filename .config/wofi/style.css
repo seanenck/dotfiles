@@ -1,8 +1,17 @@
 window {
 margin: 5px;
 border: 2px solid white;
-background: grey;
+background: lightblue;
 font-family: Roboto, Helvetica, Arial, sans-serif;
 font-size: 30px;
 }
 
+#input {
+margin: 5px;
+}
+
+#inner-box {
+margin: 20px;
+border: 2px solid black;
+padding: 10px;
+}
