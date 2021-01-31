@@ -24,7 +24,7 @@ for (`find $ENV{"HOME"}/.local/apps -type l`) {
 
 my $count = `echo $apps | tr ' ' '\\n' | wc -l` + 1;
 my $chosen =
-`echo $apps | tr ' ' '\\n' | sed 's/firefox/firefox-developer-edition/g' | wofi --show dmenu -W 15% -L $count -i --style=\$HOME/.config/wofi/style.css`;
+`echo $apps | tr ' ' '\\n' | sed 's/firefox/firefox-developer-edition/g' | wofi --show dmenu -W 20% -L $count -i --style=\$HOME/.config/wofi/style.css`;
 chomp $chosen;
 if ( !$chosen ) {
     exit 0;
