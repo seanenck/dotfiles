@@ -15,5 +15,5 @@ while [ ! -e $TRIGGER ]; do
     for f in $(echo $USE); do
         cat $HOME/.config/hikari/$f.conf >> $CONF
     done
-        hikari -c $CONF > $HOME/.cache/hikari.log
+    hikari -c $CONF > $HOME/.cache/hikari.log 2>&1
 done
