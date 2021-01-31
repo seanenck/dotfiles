@@ -20,7 +20,7 @@ pltidy() {
     done
 }
 
-darcsmirror() {
+_darcsmirror() {
     if [ ! -x /usr/bin/darcs ]; then
         echo "darcs not found"
         return
@@ -42,6 +42,11 @@ darcsmirror() {
     touch $tmpdir/to/git.marks
     cd $tmpdir/from && darcs convert export --read-marks darcs.marks --write-marks darcs.marks | (cd ../to && git fast-import --import-marks=git.marks --export-marks=git.marks)
     rm $tmpdir/to/git.marks
+    echo "done: $tmpdir"
+}
+
+mirror-hikari() {
+    _darcsmirror https://hub.darcs.net/raichoo/hikari enckse:hikari-mirror
 }
 
 glint() {
