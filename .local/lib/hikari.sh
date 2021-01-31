@@ -31,7 +31,7 @@ case $CMD in
         while [ ! -e $TRIGGER ]; do
             _reconfig
             rm -f /tmp/.hikari.*
-            hikari -c $CONF 2>&1 | systemd-cat hikari
+            hikari -c $CONF 2>&1 | systemd-cat -t hikari
         done
         ;;
     "reconfigure")
