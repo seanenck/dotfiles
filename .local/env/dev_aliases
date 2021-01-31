@@ -20,6 +20,30 @@ pltidy() {
     done
 }
 
+darcsmirror() {
+    if [ ! -x /usr/bin/darcs ]; then
+        echo "darcs not found"
+        return
+    fi
+    from=$1
+    to=$2
+    if [ -z "$to" ]; then
+        echo "no destination given"
+        return
+    fi
+    if [ -z "$from" ]; then
+        echo "no source given"
+        return
+    fi
+    local tmpdir
+    tmpdir=$(mktemp -d)
+    cd $tmpdir && darcs clone $from from
+    cd $tmpdir && git clone $to to
+    touch $tmpdir/to/git.marks
+    cd $tmpdir/from && darcs convert export --read-marks darcs.marks --write-marks darcs.marks | (cd ../to && git fast-import --import-marks=git.marks --export-marks=git.marks)
+    rm $tmpdir/to/git.marks
+}
+
 glint() {
     goimports -l . | grep -v bindata.go | sed 's/^/[goimports]    /g'
     revive ./... | sed 's/^/[revive]       /g'

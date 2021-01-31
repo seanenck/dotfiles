@@ -16,7 +16,7 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 source ~/.local/env/dev_aliases
 if [ -z "$SSH_CONNECTION" ]; then
     source ~/.local/lib/ide.app load
-    source ~/.local/env/dev_x_aliases
+    source ~/.local/env/dev_disp_aliases
 fi
 
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
