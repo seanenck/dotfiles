@@ -18,7 +18,6 @@ my $home       = $ENV{"HOME"};
 my $aem_base   = "$home/.local/var/aem/";
 my $flag_base  = "${aem_base}flagged";
 my $gpg_key    = "031E9E4B09CFD8D3F0ED35025109CDF607B5BB04";
-my $flag_log   = "${flag_base}.log";
 my $self       = "perl $home/.local/lib/aem.pl";
 
 die "must NOT run as root" if ( $> == 0 );
@@ -166,12 +165,10 @@ elsif ( $command eq "schroot" ) {
 }
 elsif ( $command eq "flagged" ) {
     system("mkdir -p $flag_base") if !-d $flag_base;
-    my $redir    = ">> $flag_log 2>&1";
+    my $redir    = "2>&1 | systemd-cat -t aem-flagged";
     my $tmp_flag = `mktemp`;
     chomp $tmp_flag;
     system("date +%Y-%m-%dT%H:%M:%S $redir");
-    system("cat $flag_log | tail -n 1000 > $tmp_flag");
-    system("mv $tmp_flag $flag_log");
     my %remotes;
     my %filters;
     $remotes{"baseskel"}    = "git://cgit.voidedtech.com/skel";
