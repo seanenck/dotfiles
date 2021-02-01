@@ -51,8 +51,8 @@ elsif ( $cmd eq "sync" ) {
                 my @parts = split( "\n", $out_of_date );
                 for my $part (@parts) {
                     chomp $part;
+                    $part =~ s/out-of-date://g;
                     if ($part) {
-                        $part =~ s/out-of-date://g;
                         push @out, $part;
                     }
                 }
