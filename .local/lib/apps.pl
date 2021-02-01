@@ -38,8 +38,13 @@ if ( exists( $local{$chosen} ) ) {
 }
 
 for (@app_list) {
-    if ($_ == $chosen) {
+    if ($_ eq $chosen) {
         system("$chosen");
         exit 0;
     }
 }
+
+$chosen =~ s/'/\\'/g;
+print $chosen, "\n";
+my $quoted = `python -c "import urllib.parse; print(urllib.parse.quote('$chosen'))"`;
+system($ENV{"BROWSER"} . " https://duckduckgo.com?q=$quoted");
