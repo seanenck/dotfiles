@@ -177,10 +177,8 @@ elsif ( $command eq "flagged" ) {
     $remotes{"corescripts"} = "git://cgit.voidedtech.com/corescripts";
     $remotes{"sysmon"}      = "git://cgit.voidedtech.com/sysmon";
     $remotes{"voidedtech"}  = "git://cgit.voidedtech.com/whoami";
-    $remotes{"libucl-git"}  = "https://github.com/vstakhov/libucl";
     $remotes{"pass-git"}    = "https://git.zx2c4.com/password-store";
     $filters{"voidedtech"}  = "src/";
-    $filters{"libucl-git"}  = ".";
 
     for my $base ( ( "base", "dev", "server" ) ) {
         $filters{"${base}skel"} = "$base/";
