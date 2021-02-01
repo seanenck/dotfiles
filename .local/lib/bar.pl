@@ -45,7 +45,6 @@ elsif ( $cmd eq "sync" ) {
         my @out;
         my $success     = 0;
         my $out_of_date = `perl ${lib}aem.pl flagged 2>&1`;
-        print "out-of-date: $out_of_date\n";
         if ($out_of_date) {
             if ( $out_of_date =~ m/out-of-date/ ) {
                 my @parts = split( "\n", $out_of_date );
@@ -72,7 +71,6 @@ elsif ( $cmd eq "sync" ) {
             push @out, "hikari version change $tag $vers";
         }
         open( my $tag_file, ">", $last_vers );
-        print "hikari: $tag, $vers\n";
         print $tag_file $tag;
         $data = join( " ", @out );
         open( my $fh, ">", $daily );
