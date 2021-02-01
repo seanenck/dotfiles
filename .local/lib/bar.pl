@@ -60,18 +60,6 @@ elsif ( $cmd eq "sync" ) {
                 push @out, "failed out-of-date check";
             }
         }
-        my $tag =
-`curl -s https://hub.darcs.net/raichoo/hikari/changes | grep TAG | head -n 1 | cut -d '>' -f 2 | cut -d '<' -f 1 | cut -d ' ' -f 2`;
-        chomp $tag;
-        my $last_vers = "${cache}hikari.tag";
-        system("touch $last_vers");
-        my $vers = `cat $last_vers`;
-        chomp $vers;
-        if ( $tag ne $vers ) {
-            push @out, "hikari version change $tag $vers";
-        }
-        open( my $tag_file, ">", $last_vers );
-        print $tag_file $tag;
         $data = join( " ", @out );
         open( my $fh, ">", $daily );
         print $fh join( " ", $data );

@@ -1,8 +1,8 @@
 {
     "position": "bottom", // Waybar position (top|bottom|left|right)
-    "height": 50, // Waybar height (to be removed for auto height)
-    "modules-left": ["custom/sync"],
-    "modules-center": ["custom/apps"],
+    "height": 40, // Waybar height (to be removed for auto height)
+    "modules-left": ["custom/sync", "sway/workspaces"],
+    "modules-center": ["sway/window"],
     "modules-right": ["pulseaudio", "network", "battery", "clock"],
     "clock": {
         "format": "{:%Y-%m-%d %H:%M}"

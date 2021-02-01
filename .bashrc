@@ -31,10 +31,10 @@ done
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
-if [ -x /usr/bin/hikari ]; then
+if [ -x /usr/bin/sway ]; then
     if [ -z $DISPLAY ] && [ "$(tty)" == "/dev/tty1" ]; then
         export MOZ_ENABLE_WAYLAND=1
-        bash ~/.local/lib/hikari.sh start
+        sway | systemd-cat -t sway
         exit
     fi
 fi
