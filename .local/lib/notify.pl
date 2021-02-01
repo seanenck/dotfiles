@@ -103,5 +103,5 @@ if ( $force == 0 ) {
 system("cp $last $prev");
 system("makoctl dismiss --all");
 if ( -s $last ) {
-    system('notify-send "$(cat ' . $last . ' | grep -v \"^$\")"');
+    system( 'notify-send "$(cat ' . $last . ' | grep -v \"^$\")"' );
 }

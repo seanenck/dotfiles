@@ -22,9 +22,9 @@ for (`find $ENV{"HOME"}/.local/apps -type l`) {
     }
 }
 
-my $count = `echo $apps | tr ' ' '\\n' | wc -l` + 1;
-my @app_list = split(" ", $apps);
-my $app_text = join("\n", @app_list);
+my $count    = `echo $apps | tr ' ' '\\n' | wc -l` + 1;
+my @app_list = split( " ", $apps );
+my $app_text = join( "\n", @app_list );
 my $chosen =
 `echo '$app_text' | sed 's/firefox/firefox-developer-edition/g' | wofi --show dmenu -W 20% -L $count -i --style=\$HOME/.config/wofi/style.css`;
 chomp $chosen;
@@ -38,7 +38,7 @@ if ( exists( $local{$chosen} ) ) {
 }
 
 for (@app_list) {
-    if ($_ eq $chosen) {
+    if ( $_ eq $chosen ) {
         system("$chosen");
         exit 0;
     }
@@ -46,5 +46,6 @@ for (@app_list) {
 
 $chosen =~ s/'/\\'/g;
 print $chosen, "\n";
-my $quoted = `python -c "import urllib.parse; print(urllib.parse.quote('$chosen'))"`;
-system($ENV{"BROWSER"} . " https://duckduckgo.com?q=$quoted");
+my $quoted =
+  `python -c "import urllib.parse; print(urllib.parse.quote('$chosen'))"`;
+system( $ENV{"BROWSER"} . " https://duckduckgo.com?q=$quoted" );
