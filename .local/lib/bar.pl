@@ -15,7 +15,8 @@ if ( $cmd eq "apps" ) {
     my $apps = `perl $lib/apps.pl list`;
     chomp $apps;
     my @list;
-    for my $app ( split( " ", $apps ) ) {
+    my @all = sort split( " ", $apps );
+    for my $app (@all) {
         chomp $app;
         if ( !$app ) {
             next;
