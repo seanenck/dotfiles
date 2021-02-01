@@ -44,6 +44,7 @@ elsif ( $cmd eq "sync" ) {
         my @out;
         my $success     = 0;
         my $out_of_date = `perl ${lib}aem.pl flagged 2>&1`;
+        print "out-of-date: $out_of_date\n";
         if ($out_of_date) {
             if ( $out_of_date =~ m/out-of-date/ ) {
                 my @parts = split( "\n", $out_of_date );
@@ -62,12 +63,16 @@ elsif ( $cmd eq "sync" ) {
         my $tag =
 `curl -s https://hub.darcs.net/raichoo/hikari/changes | grep TAG | head -n 1 | cut -d '>' -f 2 | cut -d '<' -f 1 | cut -d ' ' -f 2`;
         chomp $tag;
-        my $vers =
-          `pacman -Ss hikari | head -n 1 | cut -d " " -f 2 | cut -d "-" -f 1`;
+        my $last_vers = "${cache}hikari.tag";
+        system("touch $last_vers");
+        my $vers = `cat $last_vers`;
         chomp $vers;
         if ( $tag ne $vers ) {
-            push @out, "hikari version change";
+            push @out, "hikari version change $tag $vers";
         }
+        open( my $tag_file, ">", $last_vers );
+        print "hikari: $tag, $vers\n";
+        print $tag_file $tag;
         $data = join( " ", @out );
         open( my $fh, ">", $daily );
         print $fh join( " ", $data );

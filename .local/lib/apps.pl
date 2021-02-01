@@ -22,12 +22,15 @@ for (`find $ENV{"HOME"}/.local/apps -type l`) {
     }
 }
 
+my $browser = $ENV{"BROWSER"};
+$apps =~ s/firefox/$browser/g;
 my $count    = `echo $apps | tr ' ' '\\n' | wc -l` + 1;
 my @app_list = split( " ", $apps );
 my $app_text = join( "\n", @app_list );
 my $chosen =
-`echo '$app_text' | sed 's/firefox/firefox-developer-edition/g' | wofi --show dmenu -W 20% -L $count -i --style=\$HOME/.config/wofi/style.css`;
+`echo '$app_text' | wofi --show dmenu -W 20% -L $count -i --style=\$HOME/.config/wofi/style.css`;
 chomp $chosen;
+
 if ( !$chosen ) {
     exit 0;
 }
