@@ -14,5 +14,8 @@ case $CMD in
         if [ -e $IS_LAPTOP ]; then
             swaymsg output eDP-1 pos 0 0 res 3840x2160
         fi
+        if [ -e $IS_DESKTOP ]; then
+            swaymsg output DP-2 transform 90
+        fi
         ;;
 esac
