@@ -16,7 +16,7 @@ exec bash ~/.local/lib/sway.sh outputs
 exec mako
 exec ~/.local/bin/localsvc.sh status
 
-output * bg #0A0130 solid_color
+output * bg #695939 solid_color
 
 # Start a terminal
 bindsym $mod+Return exec $term
