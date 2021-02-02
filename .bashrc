@@ -44,6 +44,7 @@ if [ -d $LOCALTMP ]; then
     LOCALTMPD=$LOCALTMP.$(date +%Y%m%d)
     if [ ! -e $LOCALTMPD ]; then
         find $LOCALTMP -type f -mtime +1 -delete
+        find $LOCALTMP -type d -empty -delete
         touch $LOCALTMPD
     fi
 fi
