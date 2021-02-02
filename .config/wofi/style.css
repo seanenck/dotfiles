@@ -1,12 +1,14 @@
 window {
 margin: 5px;
 border: 2px solid white;
-background: lightblue;
+background: black;
 font-family: Roboto, Helvetica, Arial, sans-serif;
+color: white;
 }
 
 #input {
 margin: 2px;
+background: #c0c0c0;
 }
 
 #inner-box {
