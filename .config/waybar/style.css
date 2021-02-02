@@ -41,6 +41,10 @@ window#waybar.hidden {
     color: #ffffff;
 }
 
+#workspaces {
+    background-color: white;
+}
+
 #custom-sync {
     background: red;
     color: #fff;
