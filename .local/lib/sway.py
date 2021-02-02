@@ -100,7 +100,6 @@ def _fullscreen(i3, to_width, to_height, offset_width, offset_height):
 
 
 def _command(obj, command):
-    print(command)
     for i in obj.command(command):
         if not i.success:
             print(i.error)
