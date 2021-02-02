@@ -44,6 +44,8 @@ def main():
                 args.resize_rate)
     elif args.mode in ["move-left", "move-right", "move-up", "move-down"]:
         _move(i3, args.mode.replace("move-", ""))
+    elif args.mode == "kill":
+        _quit_reset(i3)
 
 
 def _positional_compare(mode):
@@ -98,6 +100,14 @@ def _move(i3, mode):
         _command(focused, "move {}".format(mode))
 
 
+def _quit_reset(i3):
+    focused = i3.get_tree().find_focused()
+    if focused:
+        _command(focused, "kill")
+    else:
+        _reset(i3, True)
+
+
 def _workspace_focus(i3):
     focused = i3.get_tree().find_focused()
     windows = _get_unfocused(focused)
@@ -145,6 +155,8 @@ def _resize(i3, right, offset_width, offset_height, resize_rate):
 
 def _reset(i3, force):
     focused = i3.get_tree().find_focused()
+    if not focused:
+        return
     windows = [x for x in focused.workspace() if x != focused]
     for w in [focused] + windows:
         _command(w, "floating disable")
