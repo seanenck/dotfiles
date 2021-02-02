@@ -11,9 +11,7 @@ if (@ARGV) {
         my $cleanup_date = `date +%Y-%m-%d`;
         chomp $cleanup_date;
         my $cleanup_dir = "$home/.local/tmp/cleanup/";
-        if ( !-d $cleanup_dir ) {
-            mkdir $cleanup_dir;
-        }
+        mkdir $cleanup_dir if !-d $cleanup_dir;
         my $cleanup = $cleanup_dir . $cleanup_date;
         exit if -e $cleanup;
         for ( ( "undo", "swap", "backup" ) ) {
