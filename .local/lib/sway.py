@@ -58,7 +58,7 @@ def _move(i3, mode):
     if is_floating:
         _command(focused, "move {}".format(mode))
         return
-    windows = [x for x in focused.workspace() if x != focused]
+    windows = [x for x in focused.workspace() if x != focused and x.name]
     if len(windows) == 0:
         return
     fxn = _positional_compare(mode)
@@ -74,8 +74,6 @@ def _move(i3, mode):
         elif mode in ["down", "right"]:
             if w_pos >= focus_pos:
                 can = True
-        print((focus_pos, w_pos))
-    print(can)
     if can:
         _command(focused, "move {}".format(mode))
 
@@ -147,9 +145,11 @@ def _fullscreen(i3, to_width, to_height, offset_width, offset_height):
 
 
 def _command(obj, command):
+    error = False
     for i in obj.command(command):
         if not i.success:
-            print(i.error)
+            error = True
+    return error
 
 
 def _set_master(i3, to_width, to_height, offset_width, offset_height, root_call):
