@@ -179,7 +179,13 @@ def _reset(i3, force):
     if not focused:
         return
     windows = [x for x in focused.workspace() if x != focused]
+    split_mode = "splith"
     for w in [focused] + windows:
+        if split_mode == "splitv":
+            split_mode = "splith"
+        else:
+            split_mode = "splitv"
+        i3.command(split_mode)
         _set_floating(w, False)
         if force and not w.name:
             _command(w, "kill")
