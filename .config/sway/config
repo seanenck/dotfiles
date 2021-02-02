@@ -30,7 +30,9 @@ bindsym $mod+Shift+l exec swaylock -c 000000
 
 # Start your launcher
 bindsym $mod+d exec $menu
-bindsym $mod+F1 exec ponymix toggle
+bindsym XF86AudioMute exec ponymix toggle
+bindsym XF86AudioRaiseVolume exec ponymix increase 5%
+bindsym XF86AudioLowerVolume exec ponymix decrease 5%
 
 # Reload the configuration file
 bindsym $mod+Shift+r reload
@@ -47,15 +49,15 @@ bindsym $mod+Shift+v exec bash ~/.local/lib/sway.sh outputs
 bindsym $mod+Tab exec python ~/.local/lib/sway.py workspace-focus
 bindsym $mod+Shift+Return exec python ~/.local/lib/sway.py move-focus
 
-bindsym $mod+Left move left
-bindsym $mod+Down move down
-bindsym $mod+Up move up
-bindsym $mod+Right move right
+bindsym $mod+Shift+Left exec python ~/.local/lib/sway.py move-left
+bindsym $mod+Shift+Down exec python ~/.local/lib/sway.py move-down
+bindsym $mod+Shift+Up exec python ~/.local/lib/sway.py move-up
+bindsym $mod+Shift+Right exec python ~/.local/lib/sway.py move-right
 
-bindsym $mod+Shift+Left exec python ~/.local/lib/sway.py resize-left
-bindsym $mod+Shift+Right exec python ~/.local/lib/sway.py resize-right
-bindsym $mod+Shift+Up resize grow height 10
-bindsym $mod+Shift+Down resize shrink height 10
+bindsym $mod+Left exec python ~/.local/lib/sway.py resize-left
+bindsym $mod+Right exec python ~/.local/lib/sway.py resize-right
+bindsym $mod+Up resize grow height 10
+bindsym $mod+Down resize shrink height 10
 
 # Switch to workspace
 bindsym $mod+1 workspace number 1

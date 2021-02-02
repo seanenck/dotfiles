@@ -1,5 +1,4 @@
 from i3ipc import Connection, Event
-import time
 import argparse
 
 
@@ -30,7 +29,55 @@ def main():
         _resize(i3, True, args.screen_offset_width, args.screen_offset_height, args.resize_rate)
     elif args.mode == "resize-left":
         _resize(i3, False, args.screen_offset_width, args.screen_offset_height, args.resize_rate)
+    elif args.mode in ["move-left", "move-right", "move-up", "move-down"]:
+        _move(i3, args.mode.replace("move-", ""))
 
+
+def _positional_compare(mode):
+    if mode == "up":
+        def _top(o):
+            return o.rect.y
+        return _top
+    elif mode == "down":
+        def _bottom(o):
+            return o.rect.y + o.rect.height
+        return _bottom
+    elif mode == "left":
+        def _left(o):
+            return o.rect.x
+        return _left
+    elif mode == "right":
+        def _right(o):
+            return o.rect.x + o.rect.width
+        return _right    
+
+
+def _move(i3, mode):
+    focused = i3.get_tree().find_focused()
+    is_floating = focused.type == "floating_con"
+    if is_floating:
+        _command(focused, "move {}".format(mode))
+        return
+    windows = [x for x in focused.workspace() if x != focused]
+    if len(windows) == 0:
+        return
+    fxn = _positional_compare(mode)
+    focus_pos = fxn(focused)
+    can = False
+    for w in windows:
+        if can:
+            break
+        w_pos = fxn(w)
+        if mode in ["up", "left"]:
+            if w_pos <= focus_pos:
+                can = True
+        elif mode in ["down", "right"]:
+            if w_pos >= focus_pos:
+                can = True
+        print((focus_pos, w_pos))
+    print(can)
+    if can:
+        _command(focused, "move {}".format(mode))
 
 def _workspace_focus(i3):
     focused = i3.get_tree().find_focused()
