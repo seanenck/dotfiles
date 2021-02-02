@@ -15,7 +15,7 @@ exec swayidle -w \
 
 exec $swaysh outputs 
 exec mako
-exec ~/.local/bin/localsvc.sh status
+exec ~/.local/lib/localsvc.sh status
 
 output * bg #695939 solid_color
 

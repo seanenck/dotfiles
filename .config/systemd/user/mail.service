@@ -2,7 +2,7 @@
 Description=Mail host service
 
 [Service]
-ExecStart=/home/enck/.local/bin/localsvc.sh mail_host
+ExecStart=/home/enck/.local/lib/localsvc.sh mail_host
 
 [Install]
 WantedBy=default.target

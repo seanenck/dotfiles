@@ -28,9 +28,6 @@ for file in $HOME/.local/env/vars \
 done
 
 . /etc/profile
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
 if [ -x /usr/bin/sway ]; then
     if [ -z $DISPLAY ] && [ "$(tty)" == "/dev/tty1" ]; then
         export MOZ_ENABLE_WAYLAND=1

@@ -1,7 +1,6 @@
 /*
 !.local/
 .local/*
-!.local/bin/
 !.local/lib/
 !.local/env/
 !.local/containers/

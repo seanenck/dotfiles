@@ -3,4 +3,4 @@ Description=Caching management
 
 [Service]
 Type=oneshot
-ExecStart=/home/enck/.local/bin/localsvc.sh cache
+ExecStart=/home/enck/.local/lib/localsvc.sh cache

@@ -10,6 +10,10 @@ firefox() {
     disown
 }
 
+totp() {
+    perl ~/.local/lib/totp.pl $@
+}
+
 _apps() {
     local f b targets host
     targets="$HOME/.local/apps"
@@ -26,7 +30,7 @@ _apps
 
 _totp() {
     local opts cur
-    opts=$(totp list)
+    opts=$(perl ~/.local/lib/totp.pl list)
     cur=${COMP_WORDS[COMP_CWORD]}
     COMPREPLY=( $(compgen -W "$opts" -- $cur) )
 }
