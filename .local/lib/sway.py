@@ -13,6 +13,7 @@ def main():
     parser.add_argument("-screen-offset-width", type=int, default=5)
     parser.add_argument("-master-scale-width", type=float, default=0.65)
     parser.add_argument("-master-scale-height", type=float, default=0.95)
+    parser.add_argument("-master-scale-minimum", type=float, default=0.5)
     parser.add_argument("-resize-rate", type=int, default=50)
     args = parser.parse_args()
     i3 = Connection()
@@ -27,9 +28,9 @@ def main():
         _set_master(i3,
                     args.master_scale_width,
                     args.master_scale_height,
+                    args.master_scale_minimum,
                     args.screen_offset_width,
-                    args.screen_offset_height,
-                    True)
+                    args.screen_offset_height)
     elif args.mode == "move-focus":
         _move_focus(i3)
     elif args.mode in ["reset", "reset-all"]:
@@ -194,7 +195,7 @@ def _command(obj, command):
     return error
 
 
-def _set_master(i3, to_width, to_height, offset_width, offset_height, nest):
+def _set_master(i3, to_width, to_height, minimum, offset_width, offset_height):
     focused = i3.get_tree().find_focused()
     windows = _get_unfocused(focused)
     if len(windows) == 0:
@@ -202,10 +203,12 @@ def _set_master(i3, to_width, to_height, offset_width, offset_height, nest):
     active = _get_active_output(i3)
     if active.rect.width < active.rect.height:
         return
-    if nest:
+    if minimum is not None:
         if focused.type == "floating_con":
             w = focused.rect.width / active.rect.width
-            _set_master(i3, w, to_height, offset_width, offset_height, False)
+            if w < minimum:
+                w = minimum
+            _set_master(i3, w, to_height, None, offset_width, offset_height)
             return
     w = int(active.rect.width * to_width)
     h = int(active.rect.height * to_height)
