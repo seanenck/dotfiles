@@ -4,6 +4,8 @@ set $term kitty
 
 set $menu perl ~/.local/lib/apps.pl
 
+set $swaypy python ~/.local/lib/sway.py
+
 gaps outer 5px
 gaps inner 5px
 
@@ -41,24 +43,24 @@ bindsym $mod+Shift+r reload
 # Exit sway (logs you out of your Wayland session)
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 
-bindsym $mod+Shift+p exec python ~/.local/lib/sway.py fullscreen
-bindsym $mod+Shift+o exec python ~/.local/lib/sway.py master
-bindsym $mod+Shift+i exec python ~/.local/lib/sway.py reset
-bindsym $mod+Shift+k exec python ~/.local/lib/sway.py reset
+bindsym $mod+Shift+p exec $swaypy fullscreen
+bindsym $mod+Shift+o exec $swaypy master
+bindsym $mod+Shift+i exec $swaypy reset
+bindsym $mod+Shift+k exec $swaypy reset-all
 
 bindsym $mod+Shift+v exec bash ~/.local/lib/sway.sh outputs
 
-bindsym $mod+Tab exec python ~/.local/lib/sway.py workspace-focus
-bindsym $mod+Shift+Tab exec python ~/.local/lib/sway.py move-focus
+bindsym $mod+Tab exec $swaypy workspace-focus
+bindsym $mod+Shift+Tab exec $swaypy move-focus
 bindsym $mod+Shift+Return focus output right
 
-bindsym $mod+Shift+Left exec python ~/.local/lib/sway.py move-left
-bindsym $mod+Shift+Down exec python ~/.local/lib/sway.py move-down
-bindsym $mod+Shift+Up exec python ~/.local/lib/sway.py move-up
-bindsym $mod+Shift+Right exec python ~/.local/lib/sway.py move-right
+bindsym $mod+Shift+Left exec $swaypy move-left
+bindsym $mod+Shift+Down exec $swaypy move-down
+bindsym $mod+Shift+Up exec $swaypy move-up
+bindsym $mod+Shift+Right exec $swaypy move-right
 
-bindsym $mod+Left exec python ~/.local/lib/sway.py resize-left
-bindsym $mod+Right exec python ~/.local/lib/sway.py resize-right
+bindsym $mod+Left exec $swaypy resize-left
+bindsym $mod+Right exec $swaypy resize-right
 bindsym $mod+Up resize grow height 10
 bindsym $mod+Down resize shrink height 10
 
