@@ -160,7 +160,7 @@ def _reset(i3, force):
         return
     windows = [x for x in focused.workspace() if x != focused]
     for w in [focused] + windows:
-        _command(w, "floating disable")
+        _set_floating(w, False)
         if force and not w.name:
             _command(w, "kill")
 
@@ -174,14 +174,14 @@ def _move_focus(i3):
 def _fullscreen(i3, to_width, to_height, offset_width, offset_height):
     focused = i3.get_tree().find_focused()
     if _is_floating(focused):
-        _command(focused, "floating disable")
+        _set_floating(focused, False)
         return
     active = _get_active_output(i3)
     w = int(active.rect.width * to_width)
     h = int(active.rect.height * to_height)
     mv_width = active.rect.x + offset_width
     mv_height = active.rect.y + offset_height
-    _command(focused, "floating enable")
+    _set_floating(focused, True)
     _command(focused, "resize set width {} height {}".format(w, h))
     _command(focused, "move absolute position {} {}".format(mv_width,
                                                             mv_height))
@@ -193,6 +193,15 @@ def _command(obj, command):
         if not i.success:
             error = True
     return error
+
+
+def _set_floating(w, floating):
+    if floating:
+        _command(w, "floating enable")
+        _command(w, "border pixel 10")
+    else:
+        _command(w, "floating disable")
+        _command(w, "border normal 2")
 
 
 def _set_master(i3, to_width, to_height, minimum, offset_width, offset_height):
@@ -214,7 +223,7 @@ def _set_master(i3, to_width, to_height, minimum, offset_width, offset_height):
     h = int(active.rect.height * to_height)
     w_offset = active.rect.x + offset_width
     h_offset = active.rect.y + offset_height
-    _command(focused, "floating enable")
+    _set_floating(focused, True)
     _command(focused, "resize set width {} height {}".format(w, h))
     _command(focused, "move absolute position {} {}".format(w_offset,
                                                             h_offset))
@@ -224,7 +233,7 @@ def _set_master(i3, to_width, to_height, minimum, offset_width, offset_height):
     sub_h_offset = sub_h - offset_height
     idx = 0
     for window in windows:
-        _command(window, "floating enable")
+        _set_floating(window, True)
         _command(window,
                  "resize set width {} height {}".format(sub_w, sub_h_offset))
         use_height = offset_height
