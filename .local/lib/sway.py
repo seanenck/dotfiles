@@ -55,6 +55,12 @@ def main():
 def _focus_model_handler(i3, e):
     try:
         focused = i3.get_tree().find_focused()
+        if _is_floating(focused):
+            return
+        windows = _get_unfocused(focused)
+        for w in windows:
+            if _is_floating(w):
+                return
         mode = "splitv"
         if focused.rect.width > focused.rect.height:
             mode = "splith"
@@ -227,7 +233,7 @@ def _set_master(i3, to_width, to_height, minimum, offset_width, offset_height):
     if active.rect.width < active.rect.height:
         return
     if minimum is not None:
-        if focused.type == "floating_con":
+        if _is_floating(focused):
             w = focused.rect.width / active.rect.width
             if w < minimum:
                 w = minimum
