@@ -31,6 +31,7 @@ def main():
     elif args.mode == "resize-left":
         _resize(i3, False, args.screen_offset_width, args.screen_offset_height, args.resize_rate)
 
+
 def _workspace_focus(i3):
     focused = i3.get_tree().find_focused()
     windows = [x for x in focused.workspace() if x != focused]
@@ -50,8 +51,6 @@ def _workspace_focus(i3):
     if len(obj) > 0:
         lowest = sort[obj[0]]
     _command(lowest, "focus")
-
-
 
 def _resize(i3, right, offset_width, offset_height, resize_rate):
     focused = i3.get_tree().find_focused()
@@ -113,6 +112,8 @@ def _set_master(i3, to_width, to_height, offset_width, offset_height, root_call)
     if len(windows) == 0:
         return
     active = [x for x in i3.get_outputs() if x.focused][0]
+    if active.rect.width < active.rect.height:
+        return
     if root_call:
         if focused.type == "floating_con":
             w = focused.rect.width / active.rect.width
