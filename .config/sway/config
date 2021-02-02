@@ -43,6 +43,7 @@ bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. 
 bindsym $mod+Shift+p exec python ~/.local/lib/sway.py fullscreen
 bindsym $mod+Shift+o exec python ~/.local/lib/sway.py master
 bindsym $mod+Shift+i exec python ~/.local/lib/sway.py reset
+bindsym $mod+Shift+k exec python ~/.local/lib/sway.py reset
 
 bindsym $mod+Shift+v exec bash ~/.local/lib/sway.sh outputs
 
