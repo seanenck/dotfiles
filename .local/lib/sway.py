@@ -18,7 +18,10 @@ def main():
     args = parser.parse_args()
     i3 = Connection()
     do_master = False
-    if args.mode == "fullscreen":
+    if args.mode == "focus-model":
+        i3.on(Event.WINDOW_FOCUS, _focus_model_handler)
+        i3.main()
+    elif args.mode == "fullscreen":
         _fullscreen(i3,
                     args.fullscreen_width,
                     args.fullscreen_height,
@@ -47,6 +50,17 @@ def main():
         _move(i3, args.mode.replace("move-", ""))
     elif args.mode == "kill":
         _quit_reset(i3)
+
+
+def _focus_model_handler(i3, e):
+    try:
+        focused = i3.get_tree().find_focused()
+        mode = "splitv"
+        if focused.rect.width > focused.rect.height:
+            mode = "splith"
+        i3.command(mode)
+    except Exception as e:
+        pass
 
 
 def _positional_compare(mode):

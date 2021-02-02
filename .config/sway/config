@@ -13,6 +13,7 @@ exec swayidle -w \
     timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
     before-sleep 'swaylock -f -c 000000'
 
+exec $swaypy focus-model
 exec $swaysh outputs 
 exec mako
 exec ~/.local/lib/localsvc.sh status
