@@ -31,7 +31,7 @@ done
 if [ -x /usr/bin/sway ]; then
     if [ -z $DISPLAY ] && [ "$(tty)" == "/dev/tty1" ]; then
         export MOZ_ENABLE_WAYLAND=1
-        sway > ~/.cache/sway.log
+        sway > ~/.cache/sway.log 2>&1
         exit
     fi
 fi
