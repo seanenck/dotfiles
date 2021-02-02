@@ -102,7 +102,7 @@ def _move(i3, mode):
 
 def _quit_reset(i3):
     focused = i3.get_tree().find_focused()
-    if focused:
+    if len([x for x in focused.workspace()]) != 0:
         _command(focused, "kill")
     else:
         _reset(i3, True)
