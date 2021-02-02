@@ -15,7 +15,8 @@ exec swayidle -w \
 exec mako
 exec ~/.local/bin/localsvc.sh status
 
-output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+output * bg #99eeff solid_color 
+
 # Start a terminal
 bindsym $mod+Return exec $term
 
