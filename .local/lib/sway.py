@@ -1,8 +1,10 @@
+"""Sway management via ipc."""
 from i3ipc import Connection, Event
 import argparse
 
 
 def main():
+    """Program entry."""
     parser = argparse.ArgumentParser()
     parser.add_argument("mode")
     parser.add_argument("-fullscreen-height", type=float, default=0.95)
@@ -16,9 +18,18 @@ def main():
     i3 = Connection()
     do_master = False
     if args.mode == "fullscreen":
-        _fullscreen(i3, args.fullscreen_width, args.fullscreen_height, args.screen_offset_width, args.screen_offset_height)
+        _fullscreen(i3,
+                    args.fullscreen_width,
+                    args.fullscreen_height,
+                    args.screen_offset_width,
+                    args.screen_offset_height)
     elif args.mode == "master" or do_master:
-        _set_master(i3, args.master_scale_width, args.master_scale_height, args.screen_offset_width, args.screen_offset_height, True)
+        _set_master(i3,
+                    args.master_scale_width,
+                    args.master_scale_height,
+                    args.screen_offset_width,
+                    args.screen_offset_height,
+                    True)
     elif args.mode == "move-focus":
         _move_focus(i3)
     elif args.mode in ["reset", "reset-all"]:
@@ -26,7 +37,11 @@ def main():
     elif args.mode == "workspace-focus":
         _workspace_focus(i3)
     elif args.mode in ["resize-right", "resize-left"]:
-        _resize(i3, "right" in args.mode, args.screen_offset_width, args.screen_offset_height, args.resize_rate)
+        _resize(i3,
+                "right" in args.mode,
+                args.screen_offset_width,
+                args.screen_offset_height,
+                args.resize_rate)
     elif args.mode in ["move-left", "move-right", "move-up", "move-down"]:
         _move(i3, args.mode.replace("move-", ""))
 
@@ -47,7 +62,7 @@ def _positional_compare(mode):
     elif mode == "right":
         def _right(o):
             return o.rect.x + o.rect.width
-        return _right    
+        return _right
 
 
 def _is_floating(target):
@@ -82,6 +97,7 @@ def _move(i3, mode):
     if can:
         _command(focused, "move {}".format(mode))
 
+
 def _workspace_focus(i3):
     focused = i3.get_tree().find_focused()
     windows = _get_unfocused(focused)
@@ -106,6 +122,7 @@ def _workspace_focus(i3):
 def _get_active_output(i3):
     return [x for x in i3.get_outputs() if x.focused][0]
 
+
 def _resize(i3, right, offset_width, offset_height, resize_rate):
     focused = i3.get_tree().find_focused()
     if not _is_floating(focused):
@@ -122,7 +139,8 @@ def _resize(i3, right, offset_width, offset_height, resize_rate):
     w_offset = active.rect.x + offset_width
     h_offset = active.rect.y + offset_height
     _command(focused, "resize set width {}".format(w))
-    _command(focused, "move absolute position {} {}".format(w_offset, h_offset))
+    _command(focused, "move absolute position {} {}".format(w_offset,
+                                                            h_offset))
 
 
 def _reset(i3, force):
@@ -148,9 +166,12 @@ def _fullscreen(i3, to_width, to_height, offset_width, offset_height):
     active = _get_active_output(i3)
     w = int(active.rect.width * to_width)
     h = int(active.rect.height * to_height)
+    mv_width = active.rect.x + offset_width
+    mv_height = active.rect.y + offset_height
     _command(focused, "floating enable")
     _command(focused, "resize set width {} height {}".format(w, h))
-    _command(focused, "move absolute position {} {}".format(active.rect.x + offset_width, active.rect.y + offset_height))
+    _command(focused, "move absolute position {} {}".format(mv_width,
+                                                            mv_height))
 
 
 def _command(obj, command):
@@ -161,7 +182,7 @@ def _command(obj, command):
     return error
 
 
-def _set_master(i3, to_width, to_height, offset_width, offset_height, root_call):
+def _set_master(i3, to_width, to_height, offset_width, offset_height, nest):
     focused = i3.get_tree().find_focused()
     windows = _get_unfocused(focused)
     if len(windows) == 0:
@@ -169,7 +190,7 @@ def _set_master(i3, to_width, to_height, offset_width, offset_height, root_call)
     active = _get_active_output(i3)
     if active.rect.width < active.rect.height:
         return
-    if root_call:
+    if nest:
         if focused.type == "floating_con":
             w = focused.rect.width / active.rect.width
             _set_master(i3, w, to_height, offset_width, offset_height, False)
@@ -180,20 +201,26 @@ def _set_master(i3, to_width, to_height, offset_width, offset_height, root_call)
     h_offset = active.rect.y + offset_height
     _command(focused, "floating enable")
     _command(focused, "resize set width {} height {}".format(w, h))
-    _command(focused, "move absolute position {} {}".format(w_offset, h_offset))
+    _command(focused, "move absolute position {} {}".format(w_offset,
+                                                            h_offset))
     # display window minus the master + gaps
     sub_w = active.rect.width - w - (offset_width * 3)
     sub_h = int(h / len(windows))
+    sub_h_offset = sub_h - offset_height
     idx = 0
     for window in windows:
         _command(window, "floating enable")
-        _command(window, "resize set width {} height {}".format(sub_w, sub_h - offset_height))
+        _command(window,
+                 "resize set width {} height {}".format(sub_w, sub_h_offset))
         use_height = offset_height
         if idx == 0:
             use_height = 0
-        _command(window, "move absolute position {} {}".format(w_offset + offset_width + w, use_height + h_offset + sub_h * idx))
+        use_height = use_height + h_offset + (sub_h * idx)
+        use_width = w_offset + offset_width + w
+        _command(window,
+                 "move absolute position {} {}".format(use_width, use_height))
         idx += 1
-    
+
 
 if __name__ == "__main__":
     main()
