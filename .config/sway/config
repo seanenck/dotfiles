@@ -15,7 +15,7 @@ exec swayidle -w \
 exec mako
 exec ~/.local/bin/localsvc.sh status
 
-output * bg #99eeff solid_color 
+output * bg #99bbff solid_color 
 
 # Start a terminal
 bindsym $mod+Return exec $term
