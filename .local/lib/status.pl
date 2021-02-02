@@ -36,8 +36,21 @@ if (@ARGV) {
     exit;
 }
 
-my $max  = 15;
-my $cnt  = $max + 1;
+my $me = "$$";
+for (`pidof perl | tr ' ' '\\n'`) {
+    chomp;
+    if ( $_ eq $me ) {
+        next;
+    }
+    my $cmdline = `cat /proc/$_/cmdline`;
+    chomp $cmdline;
+    if ( $cmdline =~ m/status.pl/ ) {
+        system("kill -1 $_");
+    }
+}
+
+my $max = 15;
+my $cnt = $max + 1;
 while (1) {
     $cnt++;
     if ( !$ENV{"WAYLAND_DISPLAY"} ) {
