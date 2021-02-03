@@ -45,6 +45,7 @@ bindsym $mod+Shift+p exec $swaypy fullscreen
 bindsym $mod+Shift+o exec $swaypy master
 bindsym $mod+Shift+i exec $swaypy reset
 bindsym $mod+Shift+k exec $swaypy reset-all
+bindsym $mod+Shift+j exec $swaypy grid
 
 # workspace/output movement
 bindsym $mod+Tab exec $swaypy workspace-focus

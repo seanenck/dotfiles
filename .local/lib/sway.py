@@ -15,6 +15,7 @@ def main():
     parser.add_argument("-master-scale-height", type=float, default=0.95)
     parser.add_argument("-master-scale-minimum", type=float, default=0.5)
     parser.add_argument("-resize-rate", type=int, default=50)
+    parser.add_argument("-grid-bar", type=int, default=30)
     args = parser.parse_args()
     i3 = Connection()
     do_master = False
@@ -50,6 +51,11 @@ def main():
         _move(i3, args.mode.replace("move-", ""))
     elif args.mode == "kill":
         _quit_reset(i3)
+    elif args.mode == "grid":
+        _grid(i3,
+              args.screen_offset_width,
+              args.screen_offset_height,
+              args.grid_bar)
 
 
 def _focus_model_handler(i3, e):
@@ -94,6 +100,64 @@ def _is_floating(target):
 
 def _get_unfocused(focused):
     return [x for x in focused.workspace() if x != focused and x.name]
+
+
+def _fit_grid(windows,
+              offset_width,
+              offset_height,
+              max_width,
+              max_height,
+              target_width,
+              target_height,
+              dry_run):
+    pos_x = offset_width
+    pos_y = offset_height
+    for w in windows:
+        if pos_x + target_width > max_width:
+            pos_y += target_height + offset_height
+            pos_x = offset_width
+            if dry_run:
+                if pos_y + target_height > max_height:
+                    return False
+        if not dry_run:
+            _set_floating(w, True)
+            _command(w, "resize set width {} height {}".format(target_width,
+                                                               target_height))
+            _command(w, "move absolute position {} {}".format(pos_x, pos_y))
+        pos_x += target_width + offset_width
+    return True
+
+
+def _grid(i3, offset_width, offset_height, bar):
+    active = _get_active_output(i3)
+    if active.rect.height > active.rect.width:
+        return
+    focused = i3.get_tree().find_focused()
+    windows = [focused] + _get_unfocused(focused)
+    active_width = active.rect.width - offset_width - offset_width
+    active_height = active.rect.height - offset_height - offset_height - bar
+    ratio = active_height / active_width
+    use_w = None
+    use_h = None
+
+    def _make_grid(use_width, use_height, dry_run):
+        return _fit_grid(windows,
+                         offset_width,
+                         offset_height,
+                         active_width,
+                         active_height,
+                         use_width,
+                         use_height,
+                         dry_run)
+    for x in reversed(range(0, active_width, 5)):
+        ratio_y = int(x * ratio)
+        if _make_grid(x, ratio_y, True):
+            use_w = x
+            use_h = ratio_y
+            break
+    if use_w is None or use_h is None:
+        return
+    _make_grid(use_w, use_h, False)
 
 
 def _move(i3, mode):
