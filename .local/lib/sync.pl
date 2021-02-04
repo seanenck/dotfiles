@@ -23,20 +23,33 @@ else {
     die "unable to determine sync settings";
 }
 
+my $pulling   = 1;
+my $prev_time = "$sync/time";
+my $hash      = "${sync}hashes";
+my $prev      = "$hash.prev";
+my $recent    = "${sync}recent";
+my $lastmod   = "$recent.prev";
+system("touch $hash $prev $recent $lastmod $prev_time");
+my $curr_timestamp = `date +%s` + 0;
+my $last_timestamp = 0;
+
+if ( -s $prev_time ) {
+    $last_timestamp = `cat $prev_time` + 0;
+}
+system("echo $curr_timestamp > $prev_time");
+my $delta = $curr_timestamp - $last_timestamp;
+if ( $delta < 300 ) {
+    $pulling = 0;
+}
+
 my $from = "${dir}$self";
 die "no sync directory found" if !-d $from;
 
-my $do      = 1;
-my $hash    = "${sync}hashes";
-my $prev    = "$hash.prev";
-my $recent  = "${sync}recent";
-my $lastmod = "$recent.prev";
-my $find    = "find $from -type f -not -name $last";
-system("touch $hash $prev $recent $lastmod");
+my $do   = 1;
+my $find = "find $from -type f -not -name $last";
 system(
 "$find -printf \"%TY-%Tm-%Td %TH:%TM:%TS\n\" | sort -r | head -n 1 > $recent"
 );
-
 if ( system("diff -u $lastmod $recent > /dev/null") == 0 ) {
     $do = 0;
 }
@@ -51,10 +64,16 @@ system("cp $hash $prev");
 
 my $server = "rsync://" . $ENV{"LOCAL_SERVER"} . "/sync/";
 if ( $do == 1 ) {
+    print "push $from\n";
     system("date +%Y-%m-%d-%H-%M-%S > $from/$last");
     system("rsync -avc --delete-after $from/ $server$self");
 }
 
+if ( $pulling == 0 ) {
+    exit 0;
+}
+
+print "pulling $other\n";
 my $other_last = "${sync}$other$last";
 my $other_dir  = "${dir}$other";
 my $other_curr = "$other_dir/$last";
