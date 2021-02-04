@@ -105,5 +105,5 @@ if ( -e $other_last ) {
 
 system("cp $other_curr $other_last");
 if ( $do == 1 ) {
-    system("rsync -avc --delete-after $server/$other/ $dir/$other");
+    system("rsync -avc --delete-after $server/$other/ $other_dir");
 }
