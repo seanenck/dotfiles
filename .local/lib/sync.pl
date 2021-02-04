@@ -26,15 +26,27 @@ else {
 my $from = "${dir}$self";
 die "no sync directory found" if !-d $from;
 
-my $hash = "${sync}hashes";
-my $prev = "$hash.prev";
-system("find $from -type f -not -name $last -exec md5sum {} \\; > $hash");
-my $do = 1;
-if ( -e $prev ) {
+my $do      = 1;
+my $hash    = "${sync}hashes";
+my $prev    = "$hash.prev";
+my $recent  = "${sync}recent";
+my $lastmod = "$recent.prev";
+my $find    = "find $from -type f -not -name $last";
+system("touch $hash $prev $recent $lastmod");
+system(
+"$find -printf \"%TY-%Tm-%Td %TH:%TM:%TS\n\" | sort -r | head -n 1 > $recent"
+);
+
+if ( system("diff -u $lastmod $recent > /dev/null") == 0 ) {
+    $do = 0;
+}
+else {
+    system("$find -exec md5sum {} \\; > $hash");
     if ( system("diff -u $prev $hash > /dev/null") == 0 ) {
         $do = 0;
     }
 }
+system("cp $recent $lastmod");
 system("cp $hash $prev");
 
 my $server = "rsync://" . $ENV{"LOCAL_SERVER"} . "/sync/";

@@ -1,0 +1,6 @@
+[Unit]
+Description=Syncing management
+
+[Service]
+Type=oneshot
+ExecStart=/home/enck/.local/lib/localsvc.sh sync
