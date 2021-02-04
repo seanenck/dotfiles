@@ -44,9 +44,8 @@ my $pulling   = 1;
 my $prev_time = "$sync/time";
 my $hash      = "${sync}hashes";
 my $prev      = "$hash.prev";
-my $recent    = "${sync}recent";
-my $lastmod   = "$recent.prev";
-system("touch $hash $prev $recent $lastmod $prev_time");
+my $lastmod   = "${sync}recent.prev";
+system("touch $hash $prev $lastmod $prev_time");
 my $curr_timestamp = `date +%s` + 0;
 my $last_timestamp = 0;
 
@@ -64,10 +63,14 @@ die "no sync directory found" if !-d $from;
 
 my $do   = 1;
 my $find = "find $from -type f -not -name $last";
-system(
-"$find -printf \"%TY-%Tm-%Td %TH:%TM:%TS\n\" | sort -r | head -n 1 > $recent"
-);
-if ( system("diff -u $lastmod $recent > /dev/null") == 0 ) {
+my $mod_time = `$find -printf \"%TY-%Tm-%Td %TH:%TM:%TS\n\" | sort -r | head -n 1`;
+chomp $mod_time;
+my $prev_mod = "";
+if ( -s $lastmod ) {
+    $prev_mod = `cat $lastmod`;
+    chomp $prev_mod;
+}
+if ( $mod_time eq $prev_mod ) {
     $do = 0;
 }
 else {
@@ -76,7 +79,7 @@ else {
         $do = 0;
     }
 }
-system("cp $recent $lastmod");
+system("echo $mod_time > $lastmod");
 system("cp $hash $prev");
 
 my $server = "rsync://" . $ENV{"LOCAL_SERVER"} . "/sync/";
