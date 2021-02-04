@@ -63,7 +63,8 @@ die "no sync directory found" if !-d $from;
 
 my $do   = 1;
 my $find = "find $from -type f -not -name $last";
-my $mod_time = `$find -printf \"%TY-%Tm-%Td %TH:%TM:%TS\n\" | sort -r | head -n 1`;
+my $mod_time =
+  `$find -printf \"%TY-%Tm-%Td %TH:%TM:%TS\n\" | sort -r | head -n 1`;
 chomp $mod_time;
 my $prev_mod = "";
 if ( -s $lastmod ) {
