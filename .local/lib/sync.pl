@@ -40,11 +40,13 @@ else {
     die "unable to determine sync settings";
 }
 
+my $date_time = `date +%Y%m%d%p`;
+chomp $date_time;
 my $pulling   = 1;
 my $prev_time = "$sync/time";
-my $hash      = "${sync}hashes";
+my $hash      = "${sync}hashes." . $date_time;
 my $prev      = "$hash.prev";
-my $lastmod   = "${sync}recent.prev";
+my $lastmod   = "${sync}lastmod." . $date_time;
 system("touch $hash $prev $lastmod $prev_time");
 my $curr_timestamp = `date +%s` + 0;
 my $last_timestamp = 0;
