@@ -2,8 +2,25 @@
 use strict;
 use warnings;
 
-my $last = ".lastsync";
 my $home = $ENV{"HOME"};
+if (@ARGV) {
+    my $cmd = shift @ARGV;
+    die "invalid command: $cmd" if $cmd ne "run";
+}
+else {
+    my $count = 0;
+    while (1) {
+        if ( $count >= 15 ) {
+            system("perl $home/.local/lib/sync.pl run");
+            $count = 0;
+        }
+        system("sleep 1");
+        $count += 1;
+    }
+    exit 0;
+}
+
+my $last = ".lastsync";
 my $dir  = "$home/sync/";
 my $sync = "$home/.local/tmp/sync/";
 system("mkdir -p $sync") if !-d $sync;
