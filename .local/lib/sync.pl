@@ -22,7 +22,7 @@ else {
 
 my $last = ".lastsync";
 my $dir  = "/opt/sync/";
-my $sync = "$home/.local/tmp/sync/";
+my $sync = "$home/.local/var/sync/";
 system("mkdir -p $sync") if !-d $sync;
 
 my $self;
@@ -48,6 +48,7 @@ my $hash      = "${sync}hashes." . $date_time;
 my $prev      = "$hash.prev";
 my $lastmod   = "${sync}lastmod." . $date_time;
 system("touch $hash $prev $lastmod $prev_time");
+system("find $sync -type f -mtime +1 -delete");
 my $curr_timestamp = `date +%s` + 0;
 my $last_timestamp = 0;
 
