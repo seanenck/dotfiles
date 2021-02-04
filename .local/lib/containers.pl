@@ -20,7 +20,7 @@ my $cmd = shift @ARGV;
 if ( $cmd eq "clean" or $cmd eq "purge" ) {
     system("podman ps -a -q | xargs podman rm");
     if ( $cmd eq "purge" ) {
-        system("podman image list --quiet | xargs podman image rm --force");
+        system("podman image list -a -q | xargs podman image rm --force");
         system("rm -rf $cache");
     }
     exit 0;
