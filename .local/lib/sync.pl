@@ -21,7 +21,7 @@ else {
 }
 
 my $last = ".lastsync";
-my $dir  = "$home/sync/";
+my $dir  = "/opt/sync/";
 my $sync = "$home/.local/tmp/sync/";
 system("mkdir -p $sync") if !-d $sync;
 
@@ -59,7 +59,7 @@ if ( $delta < 300 ) {
     $pulling = 0;
 }
 
-my $from = "${dir}$self";
+my $from = "${dir}outbound";
 die "no sync directory found" if !-d $from;
 
 my $do   = 1;
@@ -92,7 +92,7 @@ if ( $pulling == 0 ) {
 
 print "pulling $other\n";
 my $other_last = "${sync}$other$last";
-my $other_dir  = "${dir}$other";
+my $other_dir  = "${dir}inbound";
 my $other_curr = "$other_dir/$last";
 system("mkdir -p $other_dir") if !-d $other_dir;
 system("rsync -c $server/$other/$last $other_dir");
