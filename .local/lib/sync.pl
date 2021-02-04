@@ -83,14 +83,18 @@ else {
         $do = 0;
     }
 }
-system("echo $mod_time > $lastmod");
-system("cp $hash $prev");
 
 my $server = "rsync://" . $ENV{"LOCAL_SERVER"} . "/sync/";
 if ( $do == 1 ) {
     print "push $from\n";
     system("date +%Y-%m-%d-%H-%M-%S > $from/$last");
-    system("rsync -avc --delete-after $from/ $server$self");
+    if ( system("rsync -avc --delete-after $from/ $server$self") == 0 ) {
+        system("echo $mod_time > $lastmod");
+        system("cp $hash $prev");
+    }
+    else {
+        system("notify-send 'sync: push failed'");
+    }
 }
 
 if ( $pulling == 0 ) {
@@ -102,15 +106,24 @@ my $other_last = "${sync}$other$last";
 my $other_dir  = "${dir}inbound";
 my $other_curr = "$other_dir/$last";
 system("mkdir -p $other_dir") if !-d $other_dir;
-system("rsync -c $server/$other/$last $other_dir");
 $do = 1;
-if ( -e $other_last ) {
-    if ( system("diff -u $other_last $other_curr > /dev/null") == 0 ) {
-        $do = 0;
+if ( system("rsync -c $server/$other/$last $other_dir") == 0 ) {
+    if ( -e $other_last ) {
+        if ( system("diff -u $other_last $other_curr > /dev/null") == 0 ) {
+            $do = 0;
+        }
     }
 }
+else {
+    system("notify-send 'sync: lastsync failed'");
+    $do = 0;
+}
 
-system("cp $other_curr $other_last");
 if ( $do == 1 ) {
-    system("rsync -avc --delete-after $server/$other/ $other_dir");
+    if ( system("rsync -avc --delete-after $server/$other/ $other_dir") == 0 ) {
+        system("cp $other_curr $other_last");
+    }
+    else {
+        system("notify-send 'sync: pull failed'");
+    }
 }
