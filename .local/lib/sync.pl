@@ -58,6 +58,7 @@ if ( $do == 1 ) {
 my $other_last = "${sync}$other$last";
 my $other_dir  = "${dir}$other";
 my $other_curr = "$other_dir/$last";
+system("mkdir -p $other_dir") if !-d $other_dir;
 system("rsync -c $server/$other/$last $other_dir");
 $do = 1;
 if ( -e $other_last ) {
