@@ -2,10 +2,18 @@
 use strict;
 use warnings;
 
-my $home = $ENV{"HOME"};
+my $home  = $ENV{"HOME"};
+my $force = 0;
 if (@ARGV) {
     my $cmd = shift @ARGV;
-    die "invalid command: $cmd" if $cmd ne "run";
+    if ( $cmd eq "run" or $cmd eq "force" ) {
+        if ( $cmd eq "force" ) {
+            $force = 1;
+        }
+    }
+    else {
+        die "invalid command: $cmd" if $cmd ne "run";
+    }
 }
 else {
     my $count = 0;
@@ -26,15 +34,15 @@ my $sync = "$home/.local/var/sync/";
 system("mkdir -p $sync") if !-d $sync;
 
 my $self;
-my $other;
+my @others = ("server");
 if ( -e $ENV{"IS_LAPTOP"} ) {
     exit 0 if !-e $ENV{"IS_LOCAL"};
-    $self  = "laptop";
-    $other = "desktop";
+    $self = "laptop";
+    push @others, "desktop";
 }
 elsif ( -e $ENV{"IS_DESKTOP"} ) {
-    $self  = "desktop";
-    $other = "laptop";
+    $self = "desktop";
+    push @others, "laptop";
 }
 else {
     die "unable to determine sync settings";
@@ -97,33 +105,40 @@ if ( $do == 1 ) {
     }
 }
 
-if ( $pulling == 0 ) {
-    exit 0;
+if ( $force == 0 ) {
+    if ( $pulling == 0 ) {
+        exit 0;
+    }
 }
 
-print "pulling $other\n";
-my $other_last = "${sync}$other$last";
-my $other_dir  = "${dir}inbound";
-my $other_curr = "$other_dir/$last";
-system("mkdir -p $other_dir") if !-d $other_dir;
-$do = 1;
-if ( system("rsync -c $server/$other/$last $other_dir") == 0 ) {
-    if ( -e $other_last ) {
-        if ( system("diff -u $other_last $other_curr > /dev/null") == 0 ) {
-            $do = 0;
+for my $other (@others) {
+    print "pulling $other\n";
+    my $other_last = "${sync}$other$last";
+    my $other_dir  = "${dir}inbound/$other";
+    my $other_curr = "$other_dir/$last";
+    system("mkdir -p $other_dir") if !-d $other_dir;
+    $do = 1;
+    if ( system("rsync -c $server/$other/$last $other_dir") == 0 ) {
+        if ( -e $other_last ) {
+            if ( system("diff -u $other_last $other_curr > /dev/null") == 0 ) {
+                $do = 0;
+            }
         }
     }
-}
-else {
-    system("notify-send 'sync: lastsync failed'");
-    $do = 0;
-}
-
-if ( $do == 1 ) {
-    if ( system("rsync -avc --delete-after $server/$other/ $other_dir") == 0 ) {
-        system("cp $other_curr $other_last");
-    }
     else {
-        system("notify-send 'sync: pull failed'");
+        system("notify-send 'sync: lastsync failed'");
+        $do = 0;
+    }
+
+    if ( $do == 1 ) {
+        if (
+            system("rsync -avc --delete-after $server/$other/ $other_dir") ==
+            0 )
+        {
+            system("cp $other_curr $other_last");
+        }
+        else {
+            system("notify-send 'sync: pull failed'");
+        }
     }
 }

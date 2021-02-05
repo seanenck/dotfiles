@@ -40,9 +40,6 @@ if (@ARGV) {
             system(
 "rsync -av /var/cache/voidedtech/backup/ rsync://$server/backup/"
             );
-            system(
-"rsync -av --delete-after rsync://$server/pull $home/.local/var/wiki"
-            );
         }
     }
     else {
