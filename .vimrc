@@ -109,11 +109,10 @@ filetype plugin on
 set omnifunc=syntaxcomplete#Complete
 :set completeopt=longest,menuone
 
-try
+if executable('gopls')
     let g:go_def_mode='gopls'
     let g:go_info_mode='gopls'
-catch
-endtry
+endif
 
 try
     let g:airline#extensions#tabline#enabled = 1
