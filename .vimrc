@@ -3,6 +3,14 @@ set background=dark
 set nowrap
 set whichwrap=b,s,<,>,[,]
 
+try
+let g:ale_completion_enabled = 1
+let g:ale_sign_column_always = 1
+nmap <silent> <C-H> <Plug>(ale_previous_wrap)
+nmap <silent> <C-J> <Plug>(ale_next_wrap)
+catch
+endtry
+
 function ToggleLine()
     if &colorcolumn == 81
         let &colorcolumn=0
@@ -108,10 +116,14 @@ vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 filetype plugin on
 set omnifunc=syntaxcomplete#Complete
 :set completeopt=longest,menuone
+:inoremap <expr> <Tab> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
+let g:ale_linters = {}
 if executable('gopls')
-    let g:go_def_mode='gopls'
-    let g:go_info_mode='gopls'
+    let g:ale_linters.go = ['gopls', 'revive', 'goimports', 'govet']
+endif
+if executable('pyls')
+    let g:ale_linters.python = ['pyls']
 endif
 
 try
