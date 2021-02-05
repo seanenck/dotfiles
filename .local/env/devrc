@@ -5,6 +5,26 @@ if [ ! -e $GITCONF ]; then
     ln -sf ~/.local/env/dev.gitconfig $GITCONF
 fi
 
+_vimgo() {
+    local vimgo tmpvimgo
+    vimgo=$HOME/.vim/pack/plugins/start/vim-go
+    if [ ! -d $vimgo ]; then
+        echo "setting up vim-go"
+        echo
+        git clone https://github.com/fatih/vim-go.git $vimgo
+    else
+        tmpvimgo=$HOME/.local/tmp/vim-go
+        if [ ! -e $tmpvimgo ]; then
+            git -C $vimgo pull
+            if [ $? -eq 0 ]; then
+                touch $tmpvimgo
+            fi
+        fi
+    fi
+}
+
+(_vimgo 2>&1 | systemd-cat -t vimgogit &)
+
 unset SSH_AGENT_PID
 if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
     export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
