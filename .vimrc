@@ -105,6 +105,16 @@ endif
 
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
+filetype plugin on
+set omnifunc=syntaxcomplete#Complete
+:set completeopt=longest,menuone
+
+try
+    let g:go_def_mode='gopls'
+    let g:go_info_mode='gopls'
+catch
+endtry
+
 try
     let g:airline#extensions#tabline#enabled = 1
     let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
