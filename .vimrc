@@ -120,7 +120,7 @@ if executable('gopls')
     let g:ale_linters.go = ['gopls', 'revive', 'goimports', 'govet']
 endif
 if executable('pyls')
-    let g:ale_linters.python = ['pyls']
+    let g:ale_linters.python = ['pyls', 'pycodestyle', 'pydocstyle']
 endif
 
 try
