@@ -22,7 +22,7 @@ output * bg #695939 solid_color
 
 # lock/sleep
 bindsym $mod+Shift+s exec $swaysh sleep
-bindsym $mod+Shift+l exec swaylock -c 000000
+bindsym $mod+Shift+l exec pkill --signal=SIGUSR1 swayidle
 
 # process creation/removal
 bindsym $mod+Return exec $term
