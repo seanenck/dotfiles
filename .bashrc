@@ -36,16 +36,6 @@ if [ -x /usr/bin/sway ]; then
     fi
 fi
 
-LOCALTMP=$HOME/.local/tmp/
-if [ -d $LOCALTMP ]; then
-    LOCALTMPD=$LOCALTMP.$(date +%Y%m%d)
-    if [ ! -e $LOCALTMPD ]; then
-        find $LOCALTMP -type f -mtime +1 -delete
-        find $LOCALTMP -type d -empty -delete
-        touch $LOCALTMPD
-    fi
-fi
-
 # check the window size after each command
 shopt -s checkwinsize
 
