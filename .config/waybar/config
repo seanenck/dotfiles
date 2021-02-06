@@ -3,7 +3,7 @@
     "height": 40, // Waybar height (to be removed for auto height)
     "modules-left": ["sway/workspaces"],
     "modules-center": ["sway/window"],
-    "modules-right": ["custom/sync", "pulseaudio", "network", "battery", "clock"],
+    "modules-right": ["pulseaudio", "network", "battery", "clock"],
     "clock": {
         "format": "{:%Y-%m-%d %H:%M}"
     },
@@ -29,19 +29,6 @@
         "format-disconnected": "Disconnected ⚠",
         "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
         "on-click": "nm-connection-editor"
-    },
-    "custom/sync": {
-        "tooltip": false,
-        "format": "{}",
-        "interval": 30,
-        "on-click": "rm -f ~/.local/tmp/bar/*",
-        "exec": "perl ~/.local/lib/bar.pl sync"
-    },
-    "custom/apps": {
-        "tooltip": false,
-        "format": "{}",
-        "interval": 1,
-        "exec": "perl ~/.local/lib/bar.pl apps"
     },
     "pulseaudio": {
         "tooltip": false,
