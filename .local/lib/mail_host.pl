@@ -47,7 +47,8 @@ if (@ARGV) {
     else {
         die "unknown command";
     }
-    my $output = "${mutt}new.txt";
+i
+    my $output = "/tmp/mutt.txt";
     system("touch $output");
     system(
 "find $imap -type f -path '*/new/*' | grep -v Trash | rev | cut -d '/' -f 3- | rev | sort | sed 's#$imap##g' > $output"
