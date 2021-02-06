@@ -55,5 +55,5 @@ if [ -e $IS_MAIL ]; then
     done
 fi
 if [ -x /usr/bin/drudge ]; then
-    drudge highlight-motd
+    drudge hmn
 fi

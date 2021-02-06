@@ -6,7 +6,7 @@ my $home = $ENV{"HOME"};
 
 my $cleanup_date = `date +%Y-%m-%d`;
 chomp $cleanup_date;
-chomp ( my $cleanup_dir = `drudge mktemp cleanup`) or die "no cleanup dir";
+chomp ( my $cleanup_dir = `drudge tmp cleanup`) or die "no cleanup dir";
 my $cleanup = "$cleanup_dir/$cleanup_date";
 exit if -e $cleanup;
 for ( ( "undo", "swap", "backup" ) ) {
