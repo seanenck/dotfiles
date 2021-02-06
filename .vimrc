@@ -109,8 +109,7 @@ vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 filetype plugin on
 set omnifunc=syntaxcomplete#Complete
-:set completeopt=longest
-:inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+set completeopt=noinsert
 
 let g:ale_set_highlights = 0
 let g:ale_sign_column_always = 1
