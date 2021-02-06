@@ -47,7 +47,6 @@ if (@ARGV) {
     else {
         die "unknown command";
     }
-i
     my $output = "/tmp/mutt.txt";
     system("touch $output");
     system(
