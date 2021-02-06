@@ -7,7 +7,3 @@ alias grep="rg"
 dirty-memory() {
     watch -n 1 grep -e Dirty: -e Writeback: /proc/meminfo
 }
-
-motd() {
-    cat /etc/motd | grep "NOTICE" | sed 's/(NOTICE)/\x1b[31m(NOTICE)\x1b[0m/g' | sed 's/^\s*/ └ /g'
-}

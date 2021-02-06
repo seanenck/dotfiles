@@ -64,5 +64,6 @@ if [ -e $IS_MAIL ]; then
         source $f
     done
 fi
-
-motd
+if [ -x /usr/bin/drudge ]; then
+    drudge highlight-motd
+fi
