@@ -11,6 +11,8 @@ my $mail_dir  = "$home/.local/tmp/muttsync";
 
 if (@ARGV) {
     my $command = $ARGV[0];
+    my $output = "/tmp/mutt.txt";
+    system("touch $output");
     if ( $command eq "poll" ) {
         system("mkdir -p $mail_dir") if !-d $mail_dir;
         my $time = `date +%Y-%m-%d-%H-`;
@@ -47,8 +49,6 @@ if (@ARGV) {
     else {
         die "unknown command";
     }
-    my $output = "/tmp/mutt.txt";
-    system("touch $output");
     system(
 "find $imap -type f -path '*/new/*' | grep -v Trash | rev | cut -d '/' -f 3- | rev | sort | sed 's#$imap##g' > $output"
     );

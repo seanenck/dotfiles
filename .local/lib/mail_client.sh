@@ -16,7 +16,7 @@ MAILHOST=$LOCAL_SERVER
 if [ ! -z "$1" ]; then
     case $1 in
         "new")
-            drudge ask $MAILHOST mail | sed 's/^/mail:/g'
+            drudge ask $MAILHOST mail | grep -v '^$' | sed 's/^/mail:/g'
             ;;
     esac
     exit 0
