@@ -106,17 +106,7 @@ if ( $do == 1 ) {
     }
 }
 
-my $backups    = "$host/backup/";
-my $has_backup = "${sync}backup." . `date +%Y%m%d%p`;
-chomp $has_backup;
-if ( !-e $has_backup ) {
-    if ( system("rsync -av /var/cache/drudge/backup/ $backups") == 0 ) {
-        system("touch $has_backup");
-    }
-    else {
-        system("notify-send 'sync: backup failed'");
-    }
-}
+system("drudge pbf");
 
 if ( $force == 0 ) {
     if ( $pulling == 0 ) {
