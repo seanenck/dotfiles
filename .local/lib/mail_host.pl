@@ -11,7 +11,7 @@ my $mail_dir  = "$home/.local/tmp/muttsync";
 
 if (@ARGV) {
     my $command = $ARGV[0];
-    my $output = "/tmp/mutt.txt";
+    my $output  = "/tmp/mutt.txt";
     system("touch $output");
     if ( $command eq "poll" ) {
         system("mkdir -p $mail_dir") if !-d $mail_dir;

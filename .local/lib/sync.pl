@@ -28,7 +28,6 @@ else {
     exit 0;
 }
 
-my $last = ".lastsync";
 my $dir  = "/opt/sync/";
 my $sync = "$home/.local/var/sync/";
 system("mkdir -p $sync") if !-d $sync;
@@ -73,7 +72,7 @@ my $from = "${dir}outbound";
 die "no sync directory found" if !-d $from;
 
 my $do   = 1;
-my $find = "find $from -type f -not -name $last";
+my $find = "find $from -type f";
 my $mod_time =
   `$find -printf \"%TY-%Tm-%Td %TH:%TM:%TS\n\" | sort -r | head -n 1`;
 chomp $mod_time;
@@ -96,7 +95,6 @@ my $host   = "rsync://" . $ENV{"LOCAL_SERVER"};
 my $server = "$host/sync/";
 if ( $do == 1 ) {
     print "push $from\n";
-    system("date +%Y-%m-%d-%H-%M-%S > $from/$last");
     if ( system("rsync -avc --delete-after $from/ $server$self") == 0 ) {
         system("echo $mod_time > $lastmod");
         system("cp $hash $prev");
@@ -116,12 +114,17 @@ if ( $force == 0 ) {
 
 for my $other (@others) {
     print "pulling $other\n";
-    my $other_last = "${sync}$other$last";
+    my $other_curr = "${sync}$other.last";
+    my $other_last = "$other_curr.prev";
     my $other_dir  = "${dir}inbound/$other";
-    my $other_curr = "$other_dir/$last";
     system("mkdir -p $other_dir") if !-d $other_dir;
     $do = 1;
-    if ( system("rsync -c $server/$other/$last $other_dir") == 0 ) {
+    if (
+        system(
+"drudge ask $ENV{'LOCAL_SERVER'} sync | grep '^$other' > $other_curr"
+        ) == 0
+      )
+    {
         if ( -e $other_last ) {
             if ( system("diff -u $other_last $other_curr > /dev/null") == 0 ) {
                 $do = 0;
@@ -132,7 +135,6 @@ for my $other (@others) {
         system("notify-send 'sync: lastsync failed ($other)'");
         $do = 0;
     }
-
     if ( $do == 1 ) {
         if (
             system("rsync -avc --delete-after $server/$other/ $other_dir") ==
