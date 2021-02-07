@@ -110,7 +110,7 @@ my $backups    = "$host/backup/";
 my $has_backup = "${sync}backup." . `date +%Y%m%d%p`;
 chomp $has_backup;
 if ( !-e $has_backup ) {
-    if ( system("rsync -av /var/cache/voidedtech/backup/ $backups") == 0 ) {
+    if ( system("rsync -av /var/cache/drudge/backup/ $backups") == 0 ) {
         system("touch $has_backup");
     }
     else {
