@@ -35,7 +35,7 @@ system("mkdir -p $sync") if !-d $sync;
 my $self;
 my @others = ("server");
 if ( -e $ENV{"IS_LAPTOP"} ) {
-    exit 0 if !-e $ENV{"IS_LOCAL"};
+    exit 0 if system("drudge ico local") != 0;
     $self = "laptop";
     push @others, "desktop";
 }
