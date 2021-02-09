@@ -113,6 +113,8 @@ set completeopt=noinsert
 
 let g:ale_set_highlights = 0
 let g:ale_sign_column_always = 1
+nmap <silent> <C-F> <Plug>(ale_find_references)
+nmap <silent> <C-G> <Plug>(ale_go_to_definition)
 nmap <silent> <C-H> <Plug>(ale_previous_wrap)
 nmap <silent> <C-J> <Plug>(ale_next_wrap)
 let g:ale_linters = {}
