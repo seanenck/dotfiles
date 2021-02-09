@@ -3,4 +3,5 @@ Description=Caching management
 
 [Service]
 Type=oneshot
-ExecStart=/home/enck/.local/lib/localsvc.sh cache
+ExecStart=/usr/bin/drudge udb
+ExecStart=/usr/bin/drudge udc
