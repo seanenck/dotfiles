@@ -3,7 +3,7 @@ Description=Caching management
 
 [Timer]
 OnCalendar=hourly
-RandomizedDelaySec=900
+RandomizedDelaySec=300
 Persistent=true
 
 [Install]
