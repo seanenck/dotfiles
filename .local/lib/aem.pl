@@ -11,8 +11,6 @@ my $src        = "/opt/chroots/";
 my $dev        = "${src}dev";
 my $build      = "${src}builds";
 my $root_repo  = "/opt/archlinux/";
-my $server     = $ENV{"REMOTE_SERVER"};
-my $ssh        = "ssh  $server -- ";
 my $build_root = "$build/root";
 my $home       = $ENV{"HOME"};
 my $gpg_key    = "031E9E4B09CFD8D3F0ED35025109CDF607B5BB04";
@@ -27,42 +25,7 @@ sub header {
     print "\n=========\n\n";
 }
 
-if ( $command eq "makepkg" ) {
-    die "no PKGBUILD" if !-e "PKGBUILD";
-
-    for ( ( "log", "tar.zst", "sig" ) ) {
-        system("rm -f *.$_");
-    }
-
-    my $makepkg = "$home/.local/tmp/makepkg.conf";
-    system("cat /etc/makepkg.conf $home/.makepkg.conf > $makepkg");
-    system("sudo install -Dm644 $makepkg $build_root/etc/makepkg.conf");
-    unlink $makepkg;
-
-    die "packaging failed"
-      if system("makechrootpkg -c -n -d /var/cache/pacman/pkg -r $build") != 0;
-    my $packaged = 0;
-    for my $package (`ls *.tar.zst`) {
-        chomp $package;
-        if ($package) {
-            print "signing $package\n";
-            die "signing failed: $package"
-              if system("$self detach-sign $package") != 0;
-            $packaged += 1;
-        }
-    }
-    die "nothing packaged" if $packaged == 0;
-    print " -> $packaged packages built and signed\n";
-}
-elsif ( $command eq "detach-sign" ) {
-    my $input = shift @ARGV;
-    die "no input given" if !-e $input;
-    if ( system("gpg --detach-sign --use-agent $input") != 0 ) {
-        print "signing failed: $input\n";
-        exit 1;
-    }
-}
-elsif ( $command eq "sync" or $command eq "run" ) {
+if ( $command eq "sync" or $command eq "run" ) {
     if ( $command ne "run" ) {
         header "files";
         system("sudo pacman -Fy");
@@ -89,42 +52,6 @@ elsif ( $command eq "sync" or $command eq "run" ) {
 
     header "dev";
     system("sudo schroot -c source:dev -- $run");
-}
-elsif ( $command eq "repo-add" ) {
-    my $repo = shift @ARGV;
-    die "no repo given" if !$repo;
-    my $repo_name = `echo $repo | cut -d "." -f -1`;
-    chomp $repo_name;
-    my $drop = "$root_repo$repo_name/";
-    die "invalid repository" if ( system("$ssh test -d $drop") != 0 );
-    die "no package"         if ( !@ARGV );
-    for my $package (@ARGV) {
-        die "no package exists: $package" if !-e $package;
-        my $sig = "$package.sig";
-        die "no signature: $package" if !-e $sig;
-
-        die "not a valid package" if ( not $package =~ m/\.tar\./ );
-        my $basename = `echo $package | rev | cut -d '-' -f 4- | rev`;
-        chomp $basename;
-        my $find     = "$ssh find $drop -name '$basename-\*'";
-        my $existing = `$find -print`;
-        chomp $existing;
-        if ( !$existing ) {
-            print "deploy NEW $package to $repo? (y/N)\n";
-            my $yes = <STDIN>;
-            chomp $yes;
-            $yes = lc $yes;
-            if ( $yes ne "y" ) {
-                exit 0;
-            }
-        }
-        die "$package already deployed"
-          if ( system("$ssh test -e $drop$package") == 0 );
-        system("$find -delete");
-        system("scp $package $sig $server:$drop");
-        system("$ssh 'cd $drop; repo-add $repo $package'");
-        system("sudo cp $package $pkg_cache");
-    }
 }
 elsif ( $command eq "pacstrap" ) {
     if ( -d $build ) {
@@ -164,7 +91,7 @@ elsif ( $command eq "schroot" ) {
     exit 0;
 }
 elsif ( $command eq "help" ) {
-    print "run sync makepkg repo-add schroot pacstrap detach-sign";
+    print "run sync schroot pacstrap";
 }
 else {
     die "unknown command $command";
