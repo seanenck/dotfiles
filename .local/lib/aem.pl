@@ -17,6 +17,7 @@ my $build_root = "$build/root";
 my $home       = $ENV{"HOME"};
 my $gpg_key    = "031E9E4B09CFD8D3F0ED35025109CDF607B5BB04";
 my $self       = "perl $home/.local/lib/aem.pl";
+my $pac_cache  = "/var/cache/pacman/pkg/";
 
 die "must NOT run as root" if ( $> == 0 );
 
@@ -122,6 +123,7 @@ elsif ( $command eq "repo-add" ) {
         system("$find -delete");
         system("scp $package $sig $server:$drop");
         system("$ssh 'cd $drop; repo-add $repo $package'");
+        system("sudo cp $package $pkg_cache");
     }
 }
 elsif ( $command eq "pacstrap" ) {
