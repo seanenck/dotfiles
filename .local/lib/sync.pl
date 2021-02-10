@@ -112,6 +112,8 @@ if ( $force == 0 ) {
     }
 }
 
+system("drudge arch.pull");
+
 for my $other (@others) {
     print "pulling $other\n";
     my $other_curr = "${sync}$other.last";
