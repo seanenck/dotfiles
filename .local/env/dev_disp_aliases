@@ -10,10 +10,6 @@ firefox() {
     disown
 }
 
-totp() {
-    perl ~/.local/lib/totp.pl $@
-}
-
 _apps() {
     local f b targets host
     targets="$HOME/.local/apps"
