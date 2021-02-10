@@ -27,12 +27,3 @@ _apps() {
 }
 
 _apps
-
-_totp() {
-    local opts cur
-    opts=$(perl ~/.local/lib/totp.pl list)
-    cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-}
-
-complete -F _totp totp
