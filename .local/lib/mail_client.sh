@@ -6,7 +6,7 @@ if [ ! -z "$SSH_CONNECTION" ]; then
 fi
 
 source ~/.local/env/vars
-drudge ico local
+drudge system.online local
 if [ $? -ne 0 ]; then
     echo "local server unavailable?"
     sleep 5

@@ -3,5 +3,5 @@ Description=Caching management
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/drudge udb
-ExecStart=/usr/bin/drudge udc
+ExecStart=/usr/bin/drudge user.dir.backup
+ExecStart=/usr/bin/drudge user.dir.cleanup

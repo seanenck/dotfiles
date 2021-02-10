@@ -35,7 +35,7 @@ system("mkdir -p $sync") if !-d $sync;
 my $self;
 my @others = ("server");
 if ( -e $ENV{"IS_LAPTOP"} ) {
-    exit 0 if system("drudge ico local") != 0;
+    exit 0 if system("drudge system.online local") != 0;
     $self = "laptop";
     push @others, "desktop";
 }
@@ -104,7 +104,7 @@ if ( $do == 1 ) {
     }
 }
 
-system("drudge pbf");
+system("drudge etc.push");
 
 if ( $force == 0 ) {
     if ( $pulling == 0 ) {
