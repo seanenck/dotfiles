@@ -134,7 +134,7 @@ for my $other (@others) {
         }
     }
     else {
-        system("notify-send 'sync: lastsync failed ($other)'");
+        system("notify-send -t 10000 'sync: lastsync failed ($other)'");
         $do = 0;
     }
     if ( $do == 1 ) {
@@ -145,7 +145,7 @@ for my $other (@others) {
             system("cp $other_curr $other_last");
         }
         else {
-            system("notify-send 'sync: pull failed ($other)'");
+            system("notify-send -t 10000 'sync: pull failed ($other)'");
         }
     }
 }
