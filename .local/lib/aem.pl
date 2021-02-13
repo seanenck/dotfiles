@@ -19,28 +19,7 @@ my $pkg_cache  = "/var/cache/pacman/pkg/";
 
 die "must NOT run as root" if ( $> == 0 );
 
-sub header {
-    print "\n=========\n";
-    print shift @_;
-    print "\n=========\n\n";
-}
-
-if ( $command eq "sync" ) {
-    header "files";
-    system("sudo pacman -Fy");
-    my $run    = "pacman -Syyu";
-    header "builds";
-    system("sudo arch-nspawn $build_root $run");
-    print "\n";
-
-    if ( !-d $dev ) {
-        exit 0;
-    }
-
-    header "dev";
-    system("sudo schroot -c source:dev -- $run");
-}
-elsif ( $command eq "pacstrap" ) {
+if ( $command eq "pacstrap" ) {
     if ( -d $build ) {
         print "build chroot exists\n";
     }
@@ -72,7 +51,7 @@ elsif ( $command eq "pacstrap" ) {
     }
 }
 elsif ( $command eq "help" ) {
-    print "sync pacstrap";
+    print "pacstrap";
 }
 else {
     die "unknown command $command";
