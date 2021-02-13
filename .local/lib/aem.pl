@@ -25,26 +25,13 @@ sub header {
     print "\n=========\n\n";
 }
 
-if ( $command eq "sync" or $command eq "run" ) {
-    if ( $command ne "run" ) {
-        header "files";
-        system("sudo pacman -Fy");
-    }
+if ( $command eq "sync" ) {
+    header "files";
+    system("sudo pacman -Fy");
     my $run    = "pacman -Syyu";
-    my $chroot = 1;
-    if ( $command eq "run" ) {
-        if ( !@ARGV ) {
-            die "no run commands given";
-        }
-        $chroot = 0;
-        $run    = join( " ", @ARGV );
-    }
-
-    if ( $chroot == 1 ) {
-        header "builds";
-        system("sudo arch-nspawn $build_root $run");
-        print "\n";
-    }
+    header "builds";
+    system("sudo arch-nspawn $build_root $run");
+    print "\n";
 
     if ( !-d $dev ) {
         exit 0;
@@ -85,7 +72,7 @@ elsif ( $command eq "pacstrap" ) {
     }
 }
 elsif ( $command eq "help" ) {
-    print "run sync pacstrap";
+    print "sync pacstrap";
 }
 else {
     die "unknown command $command";
