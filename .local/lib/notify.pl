@@ -82,6 +82,12 @@ notify "kernel", @kernel;
 
 close($fh);
 
+chomp(my $current_notifications = `makoctl list | tr ':' '\n' | grep app-name | wc -l`);
+$current_notifications = $current_notifications + 0;
+if ( $current_notifications > 5 ) {
+    system("makoctl dismiss --all");
+}
+
 my $listing = `makoctl list | tr '\\n' ' ' | sed 's/\\s*//g'`;
 chomp $listing;
 my $force = 0;
