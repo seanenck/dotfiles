@@ -84,14 +84,8 @@ elsif ( $command eq "pacstrap" ) {
         }
     }
 }
-elsif ( $command eq "schroot" ) {
-    die "schroot not defined" if !-d $dev;
-    system("mkdir -p /dev/shm/schroot/overlay");
-    system("schroot -c chroot:dev");
-    exit 0;
-}
 elsif ( $command eq "help" ) {
-    print "run sync schroot pacstrap";
+    print "run sync pacstrap";
 }
 else {
     die "unknown command $command";
