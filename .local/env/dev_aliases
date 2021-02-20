@@ -4,10 +4,6 @@ for f in mutt mumble $BROWSER pavucontrol schroot makepkg repo-add mkarchroot; d
     alias $f="echo disabled in bash"
 done
 
-container() {
-    perl ~/.local/lib/containers.pl $@
-}
-
 pltidy() {
     local f
     for f in $(git grep "#\!/usr/bin/perl" | cut -d ":" -f 1 | sort); do
@@ -24,14 +20,3 @@ glint() {
         go vet $f | sed 's/^/[govet]        /g'
     done
 }
-
-_container() {
-    local opts cur
-    cur=${COMP_WORDS[COMP_CWORD]}
-    if [ $COMP_CWORD -eq 1 ]; then
-        opts=$(perl ~/.local/lib/containers.pl)
-        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
-    fi
-}
-
-complete -F _container container
