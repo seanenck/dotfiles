@@ -18,7 +18,7 @@ export LESSHISTFILE=$HOME/.cache/lesshst
 PS1='[\u@\h \W]\$ '
 
 for file in $HOME/.local/env/vars \
-            $HOME/.bash_aliases \
+            /etc/voidedtech/skel/bash_aliases \
             $HOME/.local/private/etc/env \
             /usr/share/bash-completion/bash_completion \
             $HOME/.config/user-dirs.dirs; do
