@@ -49,11 +49,6 @@ else
     fi
 fi
 
-if [ -e $IS_MAIL ]; then
-    for f in $(ls $HOME/.local/env/mail*); do
-        source $f
-    done
-fi
 if [ -x /usr/bin/drudge ]; then
     drudge motd.highlight
 fi

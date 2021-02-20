@@ -3,7 +3,6 @@ export TERM=xterm
 export PAGER=less
 export IS_DESKTOP=$HOME/.local/var/is.desktop
 export IS_LAPTOP=$HOME/.local/var/is.laptop
-export IS_MAIL=$HOME/.local/var/is.mail
 export START_MUTT=$HOME/.cache/start.mutt
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 if [ -e $IS_LAPTOP ] || [ -e $IS_DESKTOP ]; then
