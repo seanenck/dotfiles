@@ -1,8 +1,0 @@
-[Unit]
-Description=Syncing management
-
-[Service]
-ExecStart=/home/enck/.local/lib/localsvc.sh sync
-
-[Install]
-WantedBy=default.target
