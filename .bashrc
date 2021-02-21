@@ -37,4 +37,5 @@ shopt -s checkwinsize
 
 if [ -x /usr/bin/drudge ]; then
     drudge motd.highlight
+    drudge update.staged
 fi
