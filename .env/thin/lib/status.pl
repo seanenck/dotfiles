@@ -13,10 +13,11 @@ if (@ARGV) {
     if ( $command eq "sync" ) {
         system("drudge arch.pull");
         system("rsync -avc rsync://shelf/sync $synced");
-        my $cache = "$home/.cache/backup/";
+        chomp( my $cache = `drudge config directories.tmp` );
         chomp( my $today = `date +%Y%m%d%P` );
-        my $backup = $cache . $today . "/";
-        system("mkdir -p $backup") if !-d $backup;
+        my $backup = "$cache/history/$today/";
+        exit 0 if -d $backup;
+        system("mkdir -p $backup");
         for ( ( "$home/.mozilla", "$home/.bash_history" ) ) {
             system("rsync -acv $_ $backup/");
         }
