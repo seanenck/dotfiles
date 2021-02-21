@@ -8,7 +8,18 @@ if [ -x /usr/bin/xhost ]; then
     fi
 fi
 
-ln -sf ~/.env/thin/env.d/gtkrc-2.0 ~/.gtkrc-2.0
+setup-user-env() {
+    local is_setup
+    is_setup=~/.cache/env.setup
+    if [ ! -e $is_setup ]; then
+        ln -sf /etc/voidedtech/skel/vimrc ~/.vimrc
+        ln -sf ~/.env/thin/env.d/gtkrc-2.0 ~/.gtkrc-2.0
+        ln -sf ~/.env/thin/env.d/drudge.conf ~/.drudge.conf
+        touch $is_setup
+    fi
+}
+
+setup-user-env
 
 for f in mutt mumble $BROWSER pavucontrol schroot makepkg repo-add mkarchroot; do
     alias $f="echo disabled in bash"
