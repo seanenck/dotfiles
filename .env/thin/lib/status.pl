@@ -6,6 +6,7 @@ my $home   = $ENV{"HOME"};
 my $lib    = "$home/.env/thin/lib/";
 my $status = "perl ${lib}status.pl ";
 my $synced = "$home/.sync";
+my $etc    = "/var/cache/drudge/backup";
 system("mkdir -p $synced") if !-d $synced;
 
 if (@ARGV) {
@@ -17,7 +18,10 @@ if (@ARGV) {
         chomp( my $today = `date +%Y%m%d%P` );
         my $backup = "$cache/history/$today/";
         exit 0 if -d $backup;
+        chomp( my $name = `ls $etc | sort -r | head -n 1 | cut -d "." -f 1` );
+        system("rsync -avc --delete-after $etc/ rsync://library/backup/$name");
         system("mkdir -p $backup");
+
         for ( ( "$home/.mozilla", "$home/.bash_history" ) ) {
             system("rsync -acv $_ $backup/");
         }
