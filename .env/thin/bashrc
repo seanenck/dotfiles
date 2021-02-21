@@ -1,5 +1,6 @@
 #!/bin/bash
 export BROWSER=firefox-developer-edition
+export PASSWORD_STORE_DIR=~/.private/pass
 source ~/.env/thin/lib/ide.app load
 
 if [ -x /usr/bin/xhost ]; then
