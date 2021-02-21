@@ -1,0 +1,37 @@
+#!/bin/bash
+export BROWSER=firefox-developer-edition
+source ~/.env/thin/lib/ide.app load
+
+if [ -x /usr/bin/xhost ]; then
+    if [ ! -z "$DISPLAY" ]; then
+        xhost +local: > /dev/null
+    fi
+fi
+
+for f in mutt mumble $BROWSER pavucontrol schroot makepkg repo-add mkarchroot; do
+    alias $f="echo disabled in bash"
+done
+
+vlc() {
+    /usr/bin/vlc "$@" &
+    disown
+}
+
+firefox() {
+    /usr/bin/$BROWSER "$@" &
+    disown
+}
+
+_apps() {
+    local f b targets host
+    targets="$HOME/.env/thin/lib/"
+    if [ ! -d $targets ]; then
+        mkdir -p $targets
+    fi
+    for f in $(ls $targets*.app); do
+        b=$(basename $f)
+        alias $b="bash $f"
+    done
+}
+
+_apps
