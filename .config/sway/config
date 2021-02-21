@@ -30,7 +30,6 @@ bindsym $mod+d exec $menu
 bindsym $mod+Shift+q exec $swaypy kill
 
 # speciality keys
-bindsym $mod+s exec bash ~/.env/thin/lib/autoclip.sh
 bindsym XF86AudioMute exec ponymix toggle
 bindsym XF86AudioRaiseVolume exec ponymix increase 5%
 bindsym XF86AudioLowerVolume exec ponymix decrease 5%
