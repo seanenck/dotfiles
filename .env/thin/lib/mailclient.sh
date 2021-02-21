@@ -5,14 +5,6 @@ if [ ! -z "$SSH_CONNECTION" ]; then
     exit 1
 fi
 
-source ~/.local/env/vars
-drudge system.online local
-if [ $? -ne 0 ]; then
-    echo "local server unavailable?"
-    sleep 5
-    exit 1
-fi
-
 MAILHOST=library.voidedtech.com
 if [ ! -z "$1" ]; then
     case $1 in
