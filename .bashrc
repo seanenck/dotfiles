@@ -20,11 +20,12 @@ export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 
 PS1='[\u@\h \W]\$ '
 
-for file in $HOME/.local/env/vars \
+for file in $HOME/.env/bashrc \
             /etc/voidedtech/skel/bash_aliases \
-            $HOME/.local/private/etc/env \
+            $HOME/.private/etc/env \
             /usr/share/bash-completion/bash_completion \
-            $HOME/.config/user-dirs.dirs; do
+            $HOME/.config/user-dirs.dirs \
+            $HOME/.env/machine/bashrc; do
     if [ -e $file ]; then
         . $file
     fi
@@ -41,10 +42,6 @@ fi
 
 # check the window size after each command
 shopt -s checkwinsize
-
-if [ $IS_DEV -eq 1 ]; then
-    source ~/.local/env/devrc
-fi
 
 if [ -x /usr/bin/drudge ]; then
     drudge motd.highlight

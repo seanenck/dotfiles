@@ -8,6 +8,8 @@ if [ -x /usr/bin/xhost ]; then
     fi
 fi
 
+ln -sf ~/.env/thin/env.d/gtkrc-2.0 ~/.gtkrc-2.0
+
 for f in mutt mumble $BROWSER pavucontrol schroot makepkg repo-add mkarchroot; do
     alias $f="echo disabled in bash"
 done

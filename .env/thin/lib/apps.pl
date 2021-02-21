@@ -12,7 +12,7 @@ if (@ARGV) {
 }
 
 my %local;
-for (`find $ENV{"HOME"}/.local/apps -type l`) {
+for (`find $ENV{"HOME"}/.env/thin/lib -type f -name "*.app"`) {
     chomp;
     if ($_) {
         my $name = `basename $_`;

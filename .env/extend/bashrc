@@ -18,7 +18,6 @@ fi
 
 MUTT=$HOME/.mutt
 if [ -d $MUTT ]; then
-    source /etc/voidedtech/skel/env
     if [ -e $START_MUTT ]; then
         rm -f $START_MUTT
         mutt -F $HOME/.mutt/fastmail.muttrc
