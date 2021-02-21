@@ -32,7 +32,8 @@ if (@ARGV) {
         }
     }
     elsif ( $command eq "poll" ) {
-        system("drudge user.mail > $home/.cache/messages");
+        chomp( my $cache = `drudge config directories.tmp` );
+        system("drudge user.mail > $cache/messages");
     }
     elsif ( $command eq "backlight" ) {
         my $classes = `ls /sys/class/backlight/ | wc -l` + 0;
