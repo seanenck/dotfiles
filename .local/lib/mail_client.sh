@@ -13,7 +13,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-MAILHOST=$LOCAL_SERVER
+MAILHOST=library.voidedtech.com
 if [ ! -z "$1" ]; then
     case $1 in
         "new")
