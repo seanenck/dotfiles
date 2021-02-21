@@ -1,5 +1,5 @@
 #!/bin/bash
-KITTY_IDE=$HOME/.local/tmp/is_ide
+KITTY_IDE=$HOME/.cache/drudge/is_ide
 _ide () {
     kitty @ goto-layout splits
     kitty @ launch --location=hsplit

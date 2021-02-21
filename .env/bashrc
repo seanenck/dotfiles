@@ -43,6 +43,6 @@ else
     echo "no .gnupg dir"
 fi
 
-if [ -s ~/.local/tmp/messages ]; then
-    cat ~/.local/tmp/messages
+if [ -s ~/.cache/drudge/messages ]; then
+    cat ~/.cache/drudge/messages
 fi

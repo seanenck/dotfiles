@@ -31,4 +31,4 @@ if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
     PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
 fi
 
-drudge user.mail > ~/.local/tmp/messages
+drudge user.mail > ~/.cache/drudge/messages
