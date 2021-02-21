@@ -41,3 +41,22 @@ if [ -d "$HOME/.gnupg" ]; then
 else
     echo "no .gnupg dir"
 fi
+
+_mail() {
+    local check min
+    ip addr | grep -q "192\.168\.1\."
+    if [ $? -ne 0 ]; then
+        return
+    fi
+
+    check=/tmp/.mail.$(date +%Y%m%d%H)
+    min=$(date +%M | grep -E "(0|5)$")
+    if [ -z "$min" ]; then
+        return
+    fi
+    check=$check.$min
+    drudge user.mail
+    touch $check
+}
+
+_mail
