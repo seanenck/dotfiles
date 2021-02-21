@@ -23,8 +23,6 @@ if [ -d $MUTT ]; then
         mutt -F $HOME/.mutt/fastmail.muttrc
         exit 0
     fi
-
-    git -C .mutt/ status -sb
 else
     echo "no .mutt folder"
 fi
