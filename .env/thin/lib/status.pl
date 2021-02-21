@@ -19,7 +19,7 @@ if (@ARGV) {
         my $backup = "$cache/history/$today/";
         exit 0 if -d $backup;
         chomp( my $name = `ls $etc | sort -r | head -n 1 | cut -d "." -f 1` );
-        system("rsync -avc --delete-after $etc/ rsync://library/backup/$name");
+        system("rsync -avc --delete-after $etc/ rsync://library/etc/$name");
         system("mkdir -p $backup");
 
         for ( ( "$home/.mozilla", "$home/.bash_history" ) ) {
