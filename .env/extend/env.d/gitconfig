@@ -1,0 +1,32 @@
+[core]
+    editor = vim
+    autocrlf = input
+[grep]
+    lineNumber = true
+[include]
+    path = ~/.private/etc/gitconfig
+[log]
+    date = iso-strict
+[pager]
+    log = /usr/share/git/diff-highlight/diff-highlight | less
+    show = /usr/share/git/diff-highlight/diff-highlight | less
+    diff = /usr/share/git/diff-highlight/diff-highlight | less
+[pull]
+    rebase = false
+[push]
+    default = simple
+[status]
+    short = true
+    branch = true
+    showStash = true
+    showUntrackedFiles = all
+[user]
+    name = Sean Enck
+    email = enckse@voidedtech.com
+    signingKey = 031E9E4B09CFD8D3F0ED35025109CDF607B5BB04
+[help]
+    format = man
+[commit]
+    gpgSign = true
+[tag]
+    gpgSign = true

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ ! -e /var/lib/systemd/linger/enck ]; then
+    echo "sudo loginctl enable-linger"
+fi
+
+MUTT=$HOME/.mutt
+if [ -d $MUTT ]; then
+    source /etc/voidedtech/skel/env
+    if [ -e $START_MUTT ]; then
+        rm -f $START_MUTT
+        mutt -F $HOME/.mutt/fastmail.muttrc
+        exit 0
+    fi
+
+    git -C .mutt/ status -sb
+else
+    echo "no .mutt folder"
+fi
