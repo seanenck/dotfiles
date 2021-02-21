@@ -14,6 +14,9 @@ if (@ARGV) {
         system("drudge arch.pull");
         system("rsync -avc rsync://shelf/sync $synced");
     }
+    elsif ( $command eq "poll" ) {
+        system("drudge user.mail > $home/.cache/messages");
+    }
     elsif ( $command eq "backlight" ) {
         my $classes = `ls /sys/class/backlight/ | wc -l` + 0;
         if ( $classes == 0 ) {
@@ -52,6 +55,8 @@ for (`pidof perl | tr ' ' '\\n'`) {
     }
 }
 
+my $poll = 300;
+my $cnt  = $poll;
 chomp( my $now = `date +%H` );
 while (1) {
     if ( !$ENV{"WAYLAND_DISPLAY"} ) {
@@ -61,6 +66,11 @@ while (1) {
     if ( $cur ne $now ) {
         system("$status sync &");
         $now = $cur;
+    }
+    $cnt++;
+    if ( $cnt > $poll ) {
+        system("$status poll &");
+        $cnt = 0;
     }
     system("$status backlight &");
     sleep 1;
