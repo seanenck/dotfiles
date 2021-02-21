@@ -43,6 +43,20 @@ else
     echo "no .gnupg dir"
 fi
 
+_cleanup-dirs() {
+    local f check
+    check=/tmp/.cleanup.$(date +%Y%m%d)
+    if [ -e $check ]; then
+        return
+    fi
+    for f in swap undo backup; do
+        find $HOME/.vim/$f -type f -mtime +1 -delete
+    done
+    touch $check
+}
+
+_cleanup-dirs
+
 if [ -s ~/.cache/drudge/messages ]; then
     cat ~/.cache/drudge/messages
 fi
