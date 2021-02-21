@@ -1,0 +1,1 @@
+export START_MUTT=$HOME/.cache/start.mutt
