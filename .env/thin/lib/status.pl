@@ -5,9 +5,15 @@ use strict;
 my $home   = $ENV{"HOME"};
 my $lib    = "$home/.env/thin/lib/";
 my $status = "perl ${lib}status.pl ";
+my $synced = "$home/.sync";
+system("mkdir -p $synced") if !-d $synced;
 
 if (@ARGV) {
     my $command = $ARGV[0];
+    if ( $command eq "sync" ) {
+        system("drudge arch.pull");
+        system("rsync -avc rsync://shelf/sync $synced");
+    }
     elsif ( $command eq "backlight" ) {
         my $classes = `ls /sys/class/backlight/ | wc -l` + 0;
         if ( $classes == 0 ) {
@@ -46,9 +52,15 @@ for (`pidof perl | tr ' ' '\\n'`) {
     }
 }
 
+chomp( my $now = `date +%H` );
 while (1) {
     if ( !$ENV{"WAYLAND_DISPLAY"} ) {
         exit 0;
+    }
+    chomp( my $cur = `date +%H` );
+    if ( $cur ne $now ) {
+        system("$status sync &");
+        $now = $cur;
     }
     system("$status backlight &");
     sleep 1;
