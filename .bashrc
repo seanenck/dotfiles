@@ -31,6 +31,10 @@ for file in $HOME/.env/bashrc \
     fi
 done
 
+if [ ! -d $HOME/.env/machine ]; then
+    echo "no machine profile set"
+fi
+
 . /etc/profile
 if [ -x /usr/bin/sway ]; then
     if [ -z $DISPLAY ] && [ "$(tty)" == "/dev/tty1" ]; then
