@@ -13,6 +13,22 @@ if (@ARGV) {
     if ( $command eq "sync" ) {
         system("drudge arch.pull");
         system("rsync -avc rsync://shelf/sync $synced");
+        my $cache = "$home/.cache/backup/";
+        chomp( my $today = `date +%Y%m%d%P` );
+        my $backup = $cache . $today . "/";
+        system("mkdir -p $backup") if !-d $backup;
+        for ( ( "$home/.mozilla", "$home/.bash_history" ) ) {
+            system("rsync -acv $_ $backup/");
+        }
+        my $count = 0;
+        for (`ls $cache | sort -r`) {
+            chomp;
+            next if !$_;
+            $count++;
+            if ( $count > 2 ) {
+                system("rm -rf $cache$_");
+            }
+        }
     }
     elsif ( $command eq "poll" ) {
         system("drudge user.mail > $home/.cache/messages");
