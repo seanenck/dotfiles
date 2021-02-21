@@ -3,7 +3,7 @@ use warnings;
 use strict;
 
 my $home   = $ENV{"HOME"};
-my $lib    = "$home/.local/lib/";
+my $lib    = "$home/.env/thin/lib/";
 my $status = "perl ${lib}status.pl ";
 
 if (@ARGV) {

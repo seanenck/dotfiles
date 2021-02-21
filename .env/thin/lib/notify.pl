@@ -9,7 +9,7 @@ if ( !$disp ) {
 
 my $home  = $ENV{"HOME"};
 my $cache = "$home/.local/tmp/notify/";
-my $lib   = "$home/.local/lib/";
+my $lib   = "$home/.env/thin/lib/";
 my @dirs  = ( "$home/.git", "$home/.local/private/.git" );
 system("mkdir -p $cache") if !-d $cache;
 
@@ -55,7 +55,7 @@ notify "git", @git;
 
 my @mail;
 my %mail_count;
-for (`bash ${lib}mail_client.sh new | grep '^mail:' | cut -d ':' -f 2-`) {
+for (`bash ${lib}mailclient.sh new | grep '^mail:' | cut -d ':' -f 2-`) {
     chomp;
     my $dir = $_;
     if ( !exists( $mail_count{$dir} ) ) {

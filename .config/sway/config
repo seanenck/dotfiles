@@ -1,9 +1,9 @@
 set $mod Mod1
 
 set $term kitty
-set $menu perl ~/.local/lib/apps.pl
-set $swaypy python ~/.local/lib/sway.py
-set $swaysh bash ~/.local/lib/sway.sh
+set $menu perl ~/.env/thin/lib/apps.pl
+set $swaypy python ~/.env/thin/lib/sway.py
+set $swaysh bash ~/.env/thin/lib/sway.sh
 
 gaps outer 5px
 gaps inner 5px
@@ -16,7 +16,7 @@ exec swayidle -w \
 exec $swaypy focus-model
 exec $swaysh outputs 
 exec mako
-exec perl ~/.local/lib/status.pl
+exec perl ~/.env/thin/lib/status.pl
 
 output * bg #695939 solid_color
 
@@ -30,7 +30,7 @@ bindsym $mod+d exec $menu
 bindsym $mod+Shift+q exec $swaypy kill
 
 # speciality keys
-bindsym $mod+s exec bash ~/.local/lib/autoclip.sh
+bindsym $mod+s exec bash ~/.env/thin/lib/autoclip.sh
 bindsym XF86AudioMute exec ponymix toggle
 bindsym XF86AudioRaiseVolume exec ponymix increase 5%
 bindsym XF86AudioLowerVolume exec ponymix decrease 5%
