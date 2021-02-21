@@ -14,6 +14,9 @@ HISTFILESIZE=-1
 export VISUAL=vim
 export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
+export TERM=xterm
+export PAGER=less
+export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 
 PS1='[\u@\h \W]\$ '
 
