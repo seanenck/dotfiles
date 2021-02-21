@@ -8,9 +8,6 @@ my $status = "perl ${lib}status.pl ";
 
 if (@ARGV) {
     my $command = $ARGV[0];
-    if ( $command eq "notify" ) {
-        system("perl ${lib}notify.pl");
-    }
     elsif ( $command eq "backlight" ) {
         my $classes = `ls /sys/class/backlight/ | wc -l` + 0;
         if ( $classes == 0 ) {
@@ -49,16 +46,9 @@ for (`pidof perl | tr ' ' '\\n'`) {
     }
 }
 
-my $max = 15;
-my $cnt = $max + 1;
 while (1) {
-    $cnt++;
     if ( !$ENV{"WAYLAND_DISPLAY"} ) {
         exit 0;
-    }
-    if ( $cnt >= $max ) {
-        system("$status notify &");
-        $cnt = 0;
     }
     system("$status backlight &");
     sleep 1;
