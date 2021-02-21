@@ -43,6 +43,6 @@ else
     echo "no .gnupg dir"
 fi
 
-if [ ! -s ~/.cache/messages ]; then
+if [ -s ~/.cache/messages ]; then
     cat ~/.cache/messages
 fi
