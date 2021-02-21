@@ -51,3 +51,16 @@ glint() {
         go vet $f | sed 's/^/[govet]        /g'
     done
 }
+
+setup-user-env() {
+    local is_setup
+    is_setup=~/.cache/env.setup
+    if [ ! -e $is_setup ]; then
+        ln -sf /etc/voidedtech/skel/vimrc ~/.vimrc
+        ln -sf ~/.env/extend/env.d/gitconfig ~/.gitconfig
+        ln -sf ~/.env/extend/env.d/drudge.conf ~/.drudge.conf
+        touch $is_setup
+    fi
+}
+
+setup-user-env
