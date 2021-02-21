@@ -20,6 +20,7 @@ export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 
 PS1='[\u@\h \W]\$ '
 
+. /etc/profile
 for file in $HOME/.env/bashrc \
             /etc/voidedtech/skel/bash_aliases \
             $HOME/.private/etc/env \
@@ -33,15 +34,6 @@ done
 
 if [ ! -d $HOME/.env/machine ]; then
     echo "no machine profile set"
-fi
-
-. /etc/profile
-if [ -x /usr/bin/sway ]; then
-    if [ -z $DISPLAY ] && [ "$(tty)" == "/dev/tty1" ]; then
-        export MOZ_ENABLE_WAYLAND=1
-        sway > ~/.cache/sway.log 2>&1
-        exit
-    fi
 fi
 
 # check the window size after each command
