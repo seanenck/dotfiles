@@ -28,6 +28,7 @@ bindsym $mod+Shift+l exec pkill --signal=SIGUSR1 swayidle
 bindsym $mod+Return exec $term
 bindsym $mod+d exec $menu
 bindsym $mod+Shift+q exec $swaypy kill
+bindsym $mod+s exec bash ~/.env/thin/lib/autoclip.sh
 
 # speciality keys
 bindsym XF86AudioMute exec ponymix toggle

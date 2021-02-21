@@ -1,4 +1,5 @@
-export START_MUTT=$HOME/.cache/start.mutt
+source /etc/voidedtech/skel/env
+export GOPATH="$HOME/.cache/go"
 
 if [ ! -d $HOME/.env/machine ]; then
     echo "no machine profile set"
