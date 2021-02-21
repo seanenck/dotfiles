@@ -32,10 +32,6 @@ for file in $HOME/.env/bashrc \
     fi
 done
 
-if [ ! -d $HOME/.env/machine ]; then
-    echo "no machine profile set"
-fi
-
 # check the window size after each command
 shopt -s checkwinsize
 

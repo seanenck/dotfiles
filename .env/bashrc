@@ -1,3 +1,5 @@
 export START_MUTT=$HOME/.cache/start.mutt
 
-ln -sf /etc/voidedtech/skel/vimrc ~/.vimrc
+if [ ! -d $HOME/.env/machine ]; then
+    echo "no machine profile set"
+fi
