@@ -33,6 +33,7 @@ fi
 
 _services() {
     systemctl --user enable --now drudge-session@mail.service
+    systemctl --user enable --now drudge-session@messaging.service
 }
 
 _services
