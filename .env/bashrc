@@ -56,3 +56,9 @@ _cleanup-dirs() {
 }
 
 _cleanup-dirs
+
+_messaging() {
+    systemctl --user enable drudge-session@messaging.service
+}
+
+_messaging
