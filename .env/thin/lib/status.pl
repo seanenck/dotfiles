@@ -77,7 +77,7 @@ for (`pidof perl | tr ' ' '\\n'`) {
     }
 }
 
-my $poll = 300;
+my $poll = 60;
 my $cnt  = $poll;
 chomp( my $now = `date +%H` );
 while (1) {

@@ -60,19 +60,9 @@ _cleanup-dirs
 _messages() {
     local m
     m=~/.cache/drudge/messages
-    if [ ! -z "$1" ]; then
-        if [[ "$1" == "clear" ]]; then
-            rm -f $m
-        fi
-        return
-    fi
     if [ -s "$m" ]; then
         cat $m
     fi
-}
-
-clear-messages() {
-    _messages clear
 }
 
 _messages
