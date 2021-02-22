@@ -36,3 +36,7 @@ _services() {
 }
 
 _services
+
+echo -e -n "\033[1;31m"
+drudge messaging.reader
+echo -e -n "\033[0m"
