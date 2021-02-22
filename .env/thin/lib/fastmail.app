@@ -6,6 +6,7 @@ if [ -e $IS_MAIL ]; then
     MAILHOST=$(drudge config mutt.host)
     ssh $MAILHOST -- touch $START_MUTT
     ssh $MAILHOST
+    exit 0
 fi
 
 if [ -z "$1" ]; then
