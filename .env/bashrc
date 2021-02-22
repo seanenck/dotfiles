@@ -58,7 +58,7 @@ _cleanup-dirs() {
 _cleanup-dirs
 
 _messages() {
-    systemctl --user enable --now drudge-session@messaging.service
+    systemctl --user enable drudge-session@messaging.service
 }
 
 _messages

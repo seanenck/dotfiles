@@ -32,7 +32,7 @@ if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
 fi
 
 _services() {
-    systemctl --user enable --now drudge-session@mail.service
+    systemctl --user enable drudge-session@mail.service
 }
 
 _services

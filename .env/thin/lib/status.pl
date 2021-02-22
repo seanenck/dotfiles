@@ -7,11 +7,13 @@ my $lib    = "$home/.env/thin/lib/";
 my $status = "perl ${lib}status.pl ";
 my $synced = "$home/.sync";
 my $etc    = "/var/cache/drudge/backup";
+my $no_net = "$home/.cache/offline";
 system("mkdir -p $synced") if !-d $synced;
 
 if (@ARGV) {
     my $command = $ARGV[0];
     if ( $command eq "sync" ) {
+        exit 0 if -e $no_net;
         system("drudge arch.pull");
         system("rsync -avc rsync://shelf/sync $synced");
         chomp( my $cache = `drudge config directories.tmp` );
@@ -36,9 +38,18 @@ if (@ARGV) {
         }
     }
     elsif ( $command eq "poll" ) {
+        system("makoctl dismiss --all");
+        my $act = "start";
+        if ( system("ping -c1 -w5 shelf > /dev/null 2>&1") == 0 ) {
+            unlink $no_net if -e $no_net;
+        } else {
+            $act = "stop";
+            system("touch $no_net");
+        }
+        system('systemctl --user ' . $act . ' drudge-session@messaging');
+        exit 0 if -e $no_net;
         chomp( my $cache = `drudge mktemp polling` ) or die "no tempdir";
         $cache = "$cache/notify";
-        system("makoctl dismiss --all");
         system("drudge messaging.reader > $cache");
         if ( -s $cache ) {
             system('notify-send "$(cat ' . $cache . ' | grep -v \"^$\")"');
