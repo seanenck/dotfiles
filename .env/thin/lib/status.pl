@@ -39,6 +39,7 @@ if (@ARGV) {
         chomp( my $cache = `drudge mktemp polling` ) or die "no tempdir";
         $cache = "$cache/notify";
         system("makoctl dismiss --all");
+        system("drudge messaging.reader > $cache");
         if ( -s $cache ) {
             system('notify-send "$(cat ' . $cache . ' | grep -v \"^$\")"');
         }

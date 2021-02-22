@@ -58,11 +58,7 @@ _cleanup-dirs() {
 _cleanup-dirs
 
 _messages() {
-    local m
-    m=~/.cache/drudge/messages
-    if [ -s "$m" ]; then
-        cat $m
-    fi
+    systemctl --user enable --now drudge-session@messaging.service
 }
 
 _messages
