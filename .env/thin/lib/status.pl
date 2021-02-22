@@ -36,8 +36,12 @@ if (@ARGV) {
         }
     }
     elsif ( $command eq "poll" ) {
-        chomp( my $cache = `drudge config directories.tmp` );
-        system("drudge user.mail > $cache/messages");
+        chomp( my $cache = `drudge mktemp polling` ) or die "no tempdir";
+        $cache = "$cache/notify";
+        system("makoctl dismiss --all");
+        if ( -s $cache ) {
+            system('notify-send "$(cat ' . $cache . ' | grep -v \"^$\")"');
+        }
     }
     elsif ( $command eq "backlight" ) {
         my $classes = `ls /sys/class/backlight/ | wc -l` + 0;
