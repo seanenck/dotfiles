@@ -45,5 +45,3 @@ _services() {
 }
 
 _services
-
-drudge user.mail > ~/.cache/drudge/messages
