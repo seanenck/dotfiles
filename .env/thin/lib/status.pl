@@ -42,18 +42,22 @@ if (@ARGV) {
         my $act = "start";
         if ( system("ping -c1 -w5 shelf > /dev/null 2>&1") == 0 ) {
             unlink $no_net if -e $no_net;
-        } else {
+        }
+        else {
             $act = "stop";
             system("touch $no_net");
         }
-        system('systemctl --user ' . $act . ' drudge-session@messaging');
+        system( 'systemctl --user ' . $act . ' drudge-session@messaging' );
         exit 0 if -e $no_net;
         chomp( my $cache = `drudge mktemp polling` ) or die "no tempdir";
         $cache = "$cache/notify";
         system("drudge messaging.reader > $cache");
         if ( -s $cache ) {
-            system('notify-send "$(cat ' . $cache . ' | grep -v \"^$\")"');
+            system( 'notify-send "$(cat ' . $cache . ' | grep -v \"^$\")"' );
         }
+    }
+    elsif ( $command eq "daemon" ) {
+        system("$status > $home/.cache/status.log 2>&1");
     }
     elsif ( $command eq "backlight" ) {
         my $classes = `ls /sys/class/backlight/ | wc -l` + 0;

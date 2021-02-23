@@ -16,7 +16,7 @@ exec swayidle -w \
 exec $swaypy focus-model
 exec $swaysh outputs 
 exec mako
-exec perl ~/.env/thin/lib/status.pl
+exec perl ~/.env/thin/lib/status.pl daemon
 
 output * bg #695939 solid_color
 
