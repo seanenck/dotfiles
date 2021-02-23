@@ -31,6 +31,10 @@ if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
     PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
 fi
 
+twtui.app() {
+    taskwarrior-tui
+}
+
 _services() {
     systemctl --user enable --now drudge-session@mail.service
     systemctl --user start drudge-session@messaging.service
