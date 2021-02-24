@@ -2,7 +2,7 @@
 KITTY_IDE=$HOME/.cache/drudge/is_ide
 _ide () {
     kitty @ goto-layout splits
-    kitty @ launch --location=hsplit
+    kitty @ launch --cwd=$PWD --location=hsplit
     kitty @ resize-window --axis=vertical -i=-8
 }
 
