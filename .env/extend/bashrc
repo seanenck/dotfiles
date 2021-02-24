@@ -1,43 +1,31 @@
 #!/bin/bash
 
-if [ -d "$HOME/.gnupg" ]; then
-    unset SSH_AGENT_PID
-    if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-        export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+if [ $IS_SCHROOT -eq 0 ]; then
+    if [ ! -e /var/lib/systemd/linger/enck ]; then
+        echo "sudo loginctl enable-linger"
     fi
 
-    export GPG_TTY=$(tty)
-    gpg-connect-agent updatestartuptty /bye >/dev/null
-else
-    echo "no .gnupg dir"
-fi
-
-if [ ! -e /var/lib/systemd/linger/enck ]; then
-    echo "sudo loginctl enable-linger"
-fi
-
-MUTT=$HOME/.mutt
-if [ -d $MUTT ]; then
-    if [ -e $START_MUTT ]; then
-        rm -f $START_MUTT
-        mutt -F $HOME/.mutt/fastmail.muttrc
-        exit 0
+    MUTT=$HOME/.mutt
+    if [ -d $MUTT ]; then
+        if [ -e $START_MUTT ]; then
+            rm -f $START_MUTT
+            mutt -F $HOME/.mutt/fastmail.muttrc
+            exit 0
+        fi
+    else
+        echo "no .mutt folder"
     fi
-else
-    echo "no .mutt folder"
-fi
 
-if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
+    twtui.app() {
+        taskwarrior-tui
+    }
+
+    _services() {
+        systemctl --user enable --now drudge-session@mail.service
+        systemctl --user start drudge-session@messaging.service
+    }
+
+    _services
+else
     PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
 fi
-
-twtui.app() {
-    taskwarrior-tui
-}
-
-_services() {
-    systemctl --user enable --now drudge-session@mail.service
-    systemctl --user start drudge-session@messaging.service
-}
-
-_services

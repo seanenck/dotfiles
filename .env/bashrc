@@ -2,6 +2,13 @@
 source /etc/voidedtech/skel/env
 export GOPATH="$HOME/.cache/go"
 
+IS_SCHROOT=0
+if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
+    IS_SCHROOT=1
+fi
+
+export IS_SCHROOT
+
 if [ ! -d $HOME/.env/machine ]; then
     echo "no machine profile set"
 fi
@@ -31,18 +38,6 @@ glint() {
     done
 }
 
-if [ -d "$HOME/.gnupg" ]; then
-    unset SSH_AGENT_PID
-    if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-        export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-    fi
-
-    export GPG_TTY=$(tty)
-    gpg-connect-agent updatestartuptty /bye >/dev/null
-else
-    echo "no .gnupg dir"
-fi
-
 _cleanup-dirs() {
     local f check
     check=/tmp/.cleanup.$(date +%Y%m%d)
@@ -55,10 +50,23 @@ _cleanup-dirs() {
     touch $check
 }
 
-_cleanup-dirs
-
 _messaging() {
     systemctl --user enable drudge-session@messaging.service
 }
 
-_messaging
+if [ $IS_SCHROOT -eq 0 ]; then
+    if [ -d "$HOME/.gnupg" ]; then
+        unset SSH_AGENT_PID
+        if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+            export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+        fi
+
+        export GPG_TTY=$(tty)
+        gpg-connect-agent updatestartuptty /bye >/dev/null
+    else
+        echo "no .gnupg dir"
+    fi
+
+    _cleanup-dirs
+    _messaging
+fi
