@@ -9,18 +9,6 @@ fi
 
 export IS_SCHROOT
 
-if [ ! -d $HOME/.env/machine ]; then
-    echo "no machine profile set"
-fi
-
-if [ ! -e ~/.vimrc ]; then
-    ln -sf /etc/voidedtech/skel/vimrc ~/.vimrc
-fi
-
-if [ ! -d ~/.gnupg ]; then
-    ln -sf ~/.private/gnupg ~/.gnupg
-fi
-
 pltidy() {
     local f
     for f in $(git grep "#\!/usr/bin/perl" | cut -d ":" -f 1 | sort); do
@@ -38,23 +26,35 @@ glint() {
     done
 }
 
-_cleanup-dirs() {
-    local f check
-    check=/tmp/.cleanup.$(date +%Y%m%d)
-    if [ -e $check ]; then
-        return
-    fi
-    for f in swap undo backup; do
-        find $HOME/.vim/$f -type f -mtime +1 -delete
-    done
-    touch $check
-}
-
-_messaging() {
-    systemctl --user enable drudge-session@messaging.service
-}
-
 if [ $IS_SCHROOT -eq 0 ]; then
+    if [ ! -d $HOME/.env/machine ]; then
+        echo "no machine profile set"
+    fi
+
+    if [ ! -e ~/.vimrc ]; then
+        ln -sf /etc/voidedtech/skel/vimrc ~/.vimrc
+    fi
+
+    if [ ! -d ~/.gnupg ]; then
+        ln -sf ~/.private/gnupg ~/.gnupg
+    fi
+
+    _cleanup-dirs() {
+        local f check
+        check=/tmp/.cleanup.$(date +%Y%m%d)
+        if [ -e $check ]; then
+            return
+        fi
+        for f in swap undo backup; do
+            find $HOME/.vim/$f -type f -mtime +1 -delete
+        done
+        touch $check
+    }
+
+    _messaging() {
+        systemctl --user enable drudge-session@messaging.service
+    }
+
     if [ -d "$HOME/.gnupg" ]; then
         unset SSH_AGENT_PID
         if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
