@@ -26,47 +26,50 @@ glint() {
     done
 }
 
-if [ $IS_SCHROOT -eq 0 ]; then
-    if [ ! -d $HOME/.env/machine ]; then
-        echo "no machine profile set"
-    fi
-
-    if [ ! -e ~/.vimrc ]; then
-        ln -sf /etc/voidedtech/skel/vimrc ~/.vimrc
-    fi
-
-    if [ ! -d ~/.gnupg ]; then
-        ln -sf ~/.private/gnupg ~/.gnupg
-    fi
-
-    _cleanup-dirs() {
-        local f check
-        check=/tmp/.cleanup.$(date +%Y%m%d)
-        if [ -e $check ]; then
-            return
-        fi
-        for f in swap undo backup; do
-            find $HOME/.vim/$f -type f -mtime +1 -delete
-        done
-        touch $check
-    }
-
-    _messaging() {
-        systemctl --user enable drudge-session@messaging.service
-    }
-
-    if [ -d "$HOME/.gnupg" ]; then
-        unset SSH_AGENT_PID
-        if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-            export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-        fi
-
-        export GPG_TTY=$(tty)
-        gpg-connect-agent updatestartuptty /bye >/dev/null
-    else
-        echo "no .gnupg dir"
-    fi
-
-    _cleanup-dirs
-    _messaging
+if [ $IS_SCHROOT -eq 1 ]; then
+    PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
+    return
 fi
+
+if [ ! -d $HOME/.env/machine ]; then
+    echo "no machine profile set"
+fi
+
+if [ ! -e ~/.vimrc ]; then
+    ln -sf /etc/voidedtech/skel/vimrc ~/.vimrc
+fi
+
+if [ ! -d ~/.gnupg ]; then
+    ln -sf ~/.private/gnupg ~/.gnupg
+fi
+
+_cleanup-dirs() {
+    local f check
+    check=/tmp/.cleanup.$(date +%Y%m%d)
+    if [ -e $check ]; then
+        return
+    fi
+    for f in swap undo backup; do
+        find $HOME/.vim/$f -type f -mtime +1 -delete
+    done
+    touch $check
+}
+
+_messaging() {
+    systemctl --user enable drudge-session@messaging.service
+}
+
+if [ -d "$HOME/.gnupg" ]; then
+    unset SSH_AGENT_PID
+    if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+        export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+    fi
+
+    export GPG_TTY=$(tty)
+    gpg-connect-agent updatestartuptty /bye >/dev/null
+else
+    echo "no .gnupg dir"
+fi
+
+_cleanup-dirs
+_messaging
