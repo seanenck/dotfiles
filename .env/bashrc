@@ -31,6 +31,10 @@ if [ $IS_SCHROOT -eq 1 ]; then
     return
 fi
 
+if [ ! -d $HOME/workspace ]; then
+    mkdir -p $HOME/workspace
+fi
+
 if [ ! -d $HOME/.env/machine ]; then
     echo "no machine profile set"
 fi
