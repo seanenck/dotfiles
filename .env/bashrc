@@ -36,10 +36,14 @@ sshkeys() {
         fi
     fi
     linked=$HOME/.env/ssh
+    hostname=$(cat /etc/hostname)
     if [ -d "$linked" ]; then
+        rm -f $linked/$hostname
         if [ $(find $linked/ -type f | wc -l) -gt 0 ]; then
             first=1
-            chmod 600 $linked/*
+            for f in $(find $linked/ -type f); do
+                chmod 600 $f
+            done
             for f in $(find $linked/ -type f -mtime 45); do
                 if [ $first -eq 1 ]; then
                     first=0
@@ -60,15 +64,13 @@ sshkeys() {
             return
         fi
     fi
-    hostname=$(cat /etc/hostname)
     dir=$HOME/.private/ssh/$hostname
     if [ ! -d $dir ]; then
         mkdir -p $dir
     fi
-    rm -f $dir/*
     ln -sf $dir $linked
     for f in systems repos; do
-        ssh-keygen -t ed25519 -N '' -f $dir/$f
+        ssh-keygen -t ed25519 -N '' -f $dir/$f.$(date +%Y%m%d%H%M)
     done
 }
 
