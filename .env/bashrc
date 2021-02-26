@@ -27,7 +27,7 @@ glint() {
 }
 
 sshkeys() {
-    local dir host linked f first cmd check d
+    local host linked f first cmd check d
     check=1
     cmd=$1
     if [ ! -z "$cmd" ]; then
@@ -64,22 +64,21 @@ sshkeys() {
             return
         fi
     fi
-    dir=$HOME/.private/etc/ssh/$hostname
-    if [ ! -d $dir ]; then
-        mkdir -p $dir
-    fi
     if [ ! -d $linked ]; then
         mkdir $linked
     fi
     d=$(date +%Y%m%d%H%M)
-    for f in systems repos; do
+    for f in systems repos tinyssh; do
         ssh-keygen -t ed25519 -N '' -f $linked/$f.$d
         ln -sf $linked/$f.$d $linked/$f
     done
-    for f in $(find $linked/ -type f -name "*.pub"); do
-        d=$(basename $f | cut -d "." -f 1)
-        cat $f > $dir/$d.pub
-    done
+    echo
+    echo
+    echo "============================="
+    echo "pubkeys update required"
+    echo "============================="
+    echo
+    echo
 }
 
 sshkeys check
