@@ -27,7 +27,7 @@ glint() {
 }
 
 sshkeys() {
-    local dir host linked f first cmd check
+    local dir host linked f first cmd check d
     check=1
     cmd=$1
     if [ ! -z "$cmd" ]; then
@@ -35,8 +35,8 @@ sshkeys() {
             check=0
         fi
     fi
-    linked=$HOME/.env/ssh
     hostname=$(cat /etc/hostname)
+    linked=$HOME/.ssh/$hostname
     if [ -d "$linked" ]; then
         rm -f $linked/$hostname
         if [ $(find $linked/ -type f | wc -l) -gt 0 ]; then
@@ -68,10 +68,15 @@ sshkeys() {
     if [ ! -d $dir ]; then
         mkdir -p $dir
     fi
-    ln -sf $dir $linked
+    if [ ! -d $linked ]; then
+        mkdir $linked
+    fi
+    d=$(date +%Y%m%d%H%M)
     for f in systems repos; do
-        ssh-keygen -t ed25519 -N '' -f $dir/$f.$(date +%Y%m%d%H%M)
+        ssh-keygen -t ed25519 -N '' -f $linked/$f.$d
+        ln -sf $linked/$f.$d $linked/$f
     done
+    cp $linked/*.pub $dir
 }
 
 sshkeys check
