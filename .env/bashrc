@@ -71,6 +71,7 @@ sshkeys() {
     for f in systems repos tinyssh; do
         ssh-keygen -t ed25519 -N '' -f $linked/$f.$d
         ln -sf $linked/$f.$d $linked/$f
+        ln -sf $linked/$f.$d.pub $linked/$f.pub
     done
     echo
     echo
