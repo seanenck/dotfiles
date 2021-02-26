@@ -76,7 +76,10 @@ sshkeys() {
         ssh-keygen -t ed25519 -N '' -f $linked/$f.$d
         ln -sf $linked/$f.$d $linked/$f
     done
-    cp $linked/*.pub $dir
+    for f in $(find $linked/ -type f -name "*.pub"); do
+        d=$(basename $f | cut -d "." -f 1)
+        cat $f > $dir/$d.pub
+    done
 }
 
 sshkeys check
