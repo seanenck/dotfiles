@@ -64,7 +64,7 @@ sshkeys() {
             return
         fi
     fi
-    dir=$HOME/.private/ssh/$hostname
+    dir=$HOME/.private/etc/ssh/$hostname
     if [ ! -d $dir ]; then
         mkdir -p $dir
     fi
