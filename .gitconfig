@@ -3,8 +3,6 @@
     autocrlf = input
 [grep]
     lineNumber = true
-[include]
-    path = ~/.private/etc/gitconfig
 [log]
     date = iso-strict
 [pager]
