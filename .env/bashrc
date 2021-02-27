@@ -26,63 +26,7 @@ glint() {
     done
 }
 
-sshkeys() {
-    local host linked f first cmd check d
-    check=1
-    cmd=$1
-    if [ ! -z "$cmd" ]; then
-        if [[ "$cmd" == "check" ]]; then
-            check=0
-        fi
-    fi
-    hostname=$(cat /etc/hostname)
-    linked=$HOME/.ssh/$hostname
-    if [ -d "$linked" ]; then
-        rm -f $linked/$hostname
-        if [ $(find $linked/ -type f | wc -l) -gt 0 ]; then
-            first=1
-            for f in $(find $linked/ -type f); do
-                chmod 600 $f
-            done
-            for f in $(find $linked/ -type f -mtime 45); do
-                if [ $first -eq 1 ]; then
-                    first=0
-                    echo "rotate keys"
-                fi
-                echo "  -> $f"
-            done
-            if [ $first -eq 0 ]; then
-                echo
-                echo "> sshkeys"
-                echo
-            fi
-        fi
-    fi
-    if [ $check -eq 0 ]; then
-        # first time setup allowed
-        if [ -d "$linked" ]; then
-            return
-        fi
-    fi
-    if [ ! -d $linked ]; then
-        mkdir $linked
-    fi
-    d=$(date +%Y%m%d%H%M)
-    for f in systems repos tinyssh; do
-        ssh-keygen -t ed25519 -N '' -f $linked/$f.$d
-        ln -sf $linked/$f.$d $linked/$f
-        ln -sf $linked/$f.$d.pub $linked/$f.pub
-    done
-    echo
-    echo
-    echo "============================="
-    echo "pubkeys update required"
-    echo "============================="
-    echo
-    echo
-}
-
-sshkeys check
+drudge user.sshkeys check
 
 if [ $IS_SCHROOT -eq 1 ]; then
     PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
