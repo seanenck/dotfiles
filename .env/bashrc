@@ -26,12 +26,13 @@ glint() {
     done
 }
 
-drudge user.sshkeys check
 
 if [ $IS_SCHROOT -eq 1 ]; then
     PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
     return
 fi
+
+drudge user.sshkeys check
 
 if [ ! -d $HOME/workspace ]; then
     mkdir -p $HOME/workspace
