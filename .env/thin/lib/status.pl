@@ -41,7 +41,7 @@ if (@ARGV) {
         chomp( my $cache = `drudge mktemp polling` ) or die "no tempdir";
         my $check_name = "check";
         my $checking   = "$cache/$check_name";
-        system("find $checking -type f -name '$check_name' -mmin +1 -delete");
+        system("find $cache -type f -name '$check_name' -mmin +1 -delete");
         if ( !-e $checking ) {
             my $act = "start";
             if ( system("ping -c1 -w5 shelf > /dev/null 2>&1") == 0 ) {
