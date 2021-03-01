@@ -52,7 +52,7 @@ if (@ARGV) {
         $cache = "$cache/notify";
         system("drudge messaging.reader > $cache");
         if ( -s $cache ) {
-            chomp(my $tooltip = `cat $cache | tr '\n' '\r'`);
+            chomp( my $tooltip = `cat $cache | tr '\n' '\r'` );
             print '{"text": "🔔", "tooltip": "' . $tooltip . '"}', "\n";
         }
     }
@@ -97,8 +97,6 @@ for (`pidof perl | tr ' ' '\\n'`) {
     }
 }
 
-my $poll = 60;
-my $cnt  = $poll;
 chomp( my $now = `date +%H` );
 while (1) {
     if ( !$ENV{"WAYLAND_DISPLAY"} ) {
@@ -108,11 +106,6 @@ while (1) {
     if ( $cur ne $now ) {
         system("$status sync &");
         $now = $cur;
-    }
-    $cnt++;
-    if ( $cnt > $poll ) {
-        system("$status poll &");
-        $cnt = 0;
     }
     system("$status backlight &");
     sleep 1;
