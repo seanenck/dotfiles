@@ -3,7 +3,7 @@
     border-radius: 0;
     /* `otf-font-awesome` is required to be installed for icons */
     font-family: Roboto, Helvetica, Arial, sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     min-height: 0;
 }
 
@@ -34,6 +34,7 @@ window#waybar.hidden {
 #pulseaudio,
 #tray,
 #mode,
+#custom-notify,
 #idle_inhibitor,
 #custom-sync {
     padding: 0 10px;
@@ -43,11 +44,6 @@ window#waybar.hidden {
 
 #workspaces {
     background-color: white;
-}
-
-#custom-sync {
-    background: red;
-    color: #fff;
 }
 
 #window,
@@ -113,12 +109,12 @@ label:focus {
 }
 
 #pulseaudio {
-    background-color: #f1c40f;
+    background-color: #90b1b1;
     color: #000000;
 }
 
 #pulseaudio.muted {
-    background-color: #90b1b1;
+    background-color: #ffb3b3;
     color: #2a5c45;
 }
 

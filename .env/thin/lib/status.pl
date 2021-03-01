@@ -38,7 +38,6 @@ if (@ARGV) {
         }
     }
     elsif ( $command eq "poll" ) {
-        system("makoctl dismiss --all");
         my $act = "start";
         if ( system("ping -c1 -w5 shelf > /dev/null 2>&1") == 0 ) {
             unlink $no_net if -e $no_net;
@@ -53,7 +52,8 @@ if (@ARGV) {
         $cache = "$cache/notify";
         system("drudge messaging.reader > $cache");
         if ( -s $cache ) {
-            system( 'notify-send "$(cat ' . $cache . ' | grep -v \"^$\")"' );
+            chomp(my $tooltip = `cat $cache | tr '\n' '\r'`);
+            print '{"text": "🔔", "tooltip": "' . $tooltip . '"}', "\n";
         }
     }
     elsif ( $command eq "daemon" ) {

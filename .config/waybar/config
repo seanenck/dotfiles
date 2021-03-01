@@ -3,7 +3,7 @@
     "height": 40, // Waybar height (to be removed for auto height)
     "modules-left": ["sway/workspaces"],
     "modules-center": ["sway/window"],
-    "modules-right": ["pulseaudio", "network", "battery", "clock"],
+    "modules-right": ["custom/notify", "pulseaudio", "network", "battery", "clock"],
     "clock": {
         "format": "{:%Y-%m-%d %H:%M}"
     },
@@ -20,6 +20,11 @@
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
         "format-icons": ["", "", "", "", ""]
+    },
+    "custom/notify": {
+        "interval": 60,
+        "return-type": "json",
+        "exec": "perl /home/enck/.env/thin/lib/status.pl poll"
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
