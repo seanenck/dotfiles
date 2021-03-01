@@ -52,7 +52,8 @@ if (@ARGV) {
         $cache = "$cache/notify";
         system("drudge messaging.reader > $cache");
         if ( -s $cache ) {
-            chomp( my $tooltip = `cat $cache | tr '\n' '\r'` );
+            chomp( my $tooltip = `cat $cache` );
+            $tooltip =~ s/\n/\\r/g;
             print '{"text": "🔔", "tooltip": "' . $tooltip . '"}', "\n";
         }
     }
