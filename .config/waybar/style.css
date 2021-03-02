@@ -82,6 +82,10 @@ window#waybar.hidden {
     }
 }
 
+#custom-notify{
+    background-color: red;
+}
+
 #battery.critical:not(.charging) {
     background-color: #f53c3c;
     color: #ffffff;
