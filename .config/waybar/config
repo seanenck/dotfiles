@@ -22,7 +22,7 @@
         "format-icons": ["", "", "", "", ""]
     },
     "custom/notify": {
-        "interval": 60,
+        "interval": 20,
         "return-type": "json",
         "exec": "perl /home/enck/.env/thin/lib/status.pl poll"
     },
