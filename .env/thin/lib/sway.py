@@ -20,7 +20,7 @@ def main():
     parser.add_argument("-grid-bar", type=int, default=30)
     parser.add_argument("-laptop-display", default="eDP-1")
     parser.add_argument("-laptop-resolution", default="3840x2160")
-    parser.add_argument("-desktop-secondary", default="DP-2")
+    parser.add_argument("-desktop-secondary", default="DP-5")
     parser.add_argument("-desktop-transform", default="90")
     args = parser.parse_args()
     i3 = Connection()
