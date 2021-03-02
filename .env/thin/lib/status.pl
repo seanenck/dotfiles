@@ -42,7 +42,6 @@ if (@ARGV) {
         }
     }
     elsif ( $command eq "waybar" ) {
-        exit 0 if -e $suppress;
         system("$status poll | grep '^{.*'");
     }
     elsif ( $command eq "suppress" ) {
@@ -51,6 +50,7 @@ if (@ARGV) {
     elsif ( $command eq "poll" ) {
         my $checking = "$cache/${cache_tmp}check";
         system("find $cache -type f -name '$cache_tmp*' -mmin +1 -delete");
+        exit 0 if -e $suppress;
         if ( !-e $checking ) {
             my $act = "start";
             if ( system("ping -c1 -w5 shelf > /dev/null 2>&1") == 0 ) {
