@@ -24,7 +24,8 @@
     "custom/notify": {
         "interval": 20,
         "return-type": "json",
-        "exec": "perl /home/enck/.env/thin/lib/status.pl poll"
+        "exec": "perl /home/enck/.env/thin/lib/status.pl waybar",
+        "on-click": "perl /home/enck/.env/thin/lib/status.pl suppress"
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface

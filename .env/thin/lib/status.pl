@@ -7,8 +7,12 @@ my $lib    = "$home/.env/thin/lib/";
 my $status = "perl ${lib}status.pl ";
 my $synced = "$home/.sync";
 my $etc    = "/var/cache/drudge/backup";
-my $no_net = "$home/.cache/offline";
 system("mkdir -p $synced") if !-d $synced;
+chomp( my $cache = `drudge config directories.tmp` ) or die "no tempdir";
+$cache = "$cache/polling/";
+my $cache_tmp = "cached.";
+my $suppress  = "${cache}${cache_tmp}suppress";
+my $no_net    = "${cache}offline";
 
 if (@ARGV) {
     my $command = $ARGV[0];
@@ -37,11 +41,16 @@ if (@ARGV) {
             }
         }
     }
+    elsif ( $command eq "waybar" ) {
+        exit 0 if -e $suppress;
+        system("$status poll | grep '^{.*'");
+    }
+    elsif ( $command eq "suppress" ) {
+        system("touch $suppress");
+    }
     elsif ( $command eq "poll" ) {
-        chomp( my $cache = `drudge mktemp polling` ) or die "no tempdir";
-        my $check_name = "check";
-        my $checking   = "$cache/$check_name";
-        system("find $cache -type f -name '$check_name' -mmin +1 -delete");
+        my $checking = "$cache/${cache_tmp}check";
+        system("find $cache -type f -name '$cache_tmp*' -mmin +1 -delete");
         if ( !-e $checking ) {
             my $act = "start";
             if ( system("ping -c1 -w5 shelf > /dev/null 2>&1") == 0 ) {
