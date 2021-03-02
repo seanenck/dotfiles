@@ -1,6 +1,8 @@
 """Sway management via ipc."""
 from i3ipc import Connection, Event
 import argparse
+import subprocess
+import os
 
 
 def main():
@@ -16,12 +18,35 @@ def main():
     parser.add_argument("-master-scale-minimum", type=float, default=0.5)
     parser.add_argument("-resize-rate", type=int, default=50)
     parser.add_argument("-grid-bar", type=int, default=30)
+    parser.add_argument("-laptop-display", default="eDP-1")
+    parser.add_argument("-laptop-resolution", default="3840x2160")
+    parser.add_argument("-desktop-secondary", default="DP-2")
+    parser.add_argument("-desktop-transform", default="90")
     args = parser.parse_args()
     i3 = Connection()
     do_master = False
     if args.mode == "focus-model":
         i3.on(Event.WINDOW_FOCUS, _focus_model_handler)
         i3.main()
+    elif args.mode == "sleep":
+        if _is_laptop():
+            subprocess.call(["systemctl", "suspend"])
+    elif args.mode == "displays":
+        if _is_laptop():
+            subprocess.call(["swaymsg",
+                             "output",
+                             args.laptop_display,
+                             "pos",
+                             "0",
+                             "0",
+                             "res",
+                             args.laptop_resolution])
+        else:
+            subprocess.call(["swaymsg",
+                             "output",
+                             args.desktop_secondary,
+                             "transform",
+                             args.desktop_transform])
     elif args.mode == "fullscreen":
         _fullscreen(i3,
                     args.fullscreen_width,
@@ -56,6 +81,10 @@ def main():
               args.screen_offset_width,
               args.screen_offset_height,
               args.grid_bar)
+
+
+def _is_laptop():
+    return os.path.exists("/sys/class/power_supply/BAT0")
 
 
 def _focus_model_handler(i3, e):

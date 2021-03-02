@@ -3,7 +3,6 @@ set $mod Mod1
 set $term kitty
 set $menu perl ~/.env/thin/lib/apps.pl
 set $swaypy python ~/.env/thin/lib/sway.py
-set $swaysh bash ~/.env/thin/lib/sway.sh
 
 gaps outer 5px
 gaps inner 5px
@@ -14,13 +13,13 @@ exec swayidle -w \
     before-sleep 'swaylock -f -c 000000'
 
 exec $swaypy focus-model
-exec $swaysh outputs 
+exec $swaypy displays
 exec perl ~/.env/thin/lib/status.pl daemon
 
 output * bg #695939 solid_color
 
 # lock/sleep
-bindsym $mod+Shift+s exec $swaysh sleep
+bindsym $mod+Shift+s exec $swaypy sleep
 bindsym $mod+Shift+l exec pkill --signal=SIGUSR1 swayidle
 
 # process creation/removal
@@ -36,7 +35,7 @@ bindsym XF86AudioLowerVolume exec ponymix decrease 5%
 
 # sway management
 bindsym $mod+Shift+r reload
-bindsym $mod+Shift+v exec $swaysh outputs
+bindsym $mod+Shift+v exec $swaypy displays
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 
 # view organization
