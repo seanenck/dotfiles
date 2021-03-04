@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-my $apps = "firefox kitty pavucontrol mumble keepassxc vlc";
+my $apps = "firefox kitty pavucontrol mumble vlc";
 if (@ARGV) {
     my $cmd = shift @ARGV;
     if ( $cmd eq "list" ) {
