@@ -46,19 +46,16 @@ if (@ARGV) {
         system("touch $suppress");
     }
     elsif ( $command eq "poll" ) {
-        my $checking = "$cache/${cache_tmp}check";
+        my $checking = "$cache/${caddche_tmp}check";
         system("find $cache -type f -name '$cache_tmp*' -mmin +1 -delete");
         exit 0 if -e $suppress;
         if ( !-e $checking ) {
-            my $act = "start";
             if ( system("ping -c1 -w5 shelf > /dev/null 2>&1") == 0 ) {
                 unlink $no_net if -e $no_net;
             }
             else {
-                $act = "stop";
                 system("touch $no_net");
             }
-            system( 'systemctl --user ' . $act . ' drudge-session@messaging' );
             system("touch $checking");
         }
         exit 0 if -e $no_net;
