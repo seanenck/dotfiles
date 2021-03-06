@@ -20,7 +20,8 @@ if (@ARGV) {
         system("rsync -avc /var/cache/pacman/pkg/ rsync://library/pkgcache");
         chomp( my $cache = `drudge config directories.tmp` );
         chomp( my $today = `date +%Y%m%d%P` );
-        my $backup = "$cache/history/$today/";
+        my $hist   = "$cache/history/";
+        my $backup = "$hist$today/";
         exit 0 if -d $backup;
         chomp( my $name = `ls $etc | sort -r | head -n 1 | cut -d "." -f 1` );
         system("rsync -avc --delete-after $etc/ rsync://library/etc/$name");
@@ -30,12 +31,12 @@ if (@ARGV) {
             system("rsync -acv $_ $backup/");
         }
         my $count = 0;
-        for (`ls $cache | sort -r`) {
+        for (`ls $hist | sort -r`) {
             chomp;
             next if !$_;
             $count++;
-            if ( $count > 2 ) {
-                system("rm -rf $cache$_");
+            if ( $count > 3 ) {
+                system("rm -rf $hist$_");
             }
         }
     }
