@@ -46,7 +46,7 @@ if (@ARGV) {
         system("touch $suppress");
     }
     elsif ( $command eq "poll" ) {
-        my $checking = "$cache/${caddche_tmp}check";
+        my $checking = "$cache/${cache_tmp}check";
         system("find $cache -type f -name '$cache_tmp*' -mmin +1 -delete");
         exit 0 if -e $suppress;
         if ( !-e $checking ) {
