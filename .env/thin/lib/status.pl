@@ -5,9 +5,7 @@ use strict;
 my $home   = $ENV{"HOME"};
 my $lib    = "$home/.env/thin/lib/";
 my $status = "perl ${lib}status.pl ";
-my $synced = "$home/.sync";
 my $etc    = "/var/cache/drudge/backup";
-system("mkdir -p $synced") if !-d $synced;
 chomp( my $cache = `drudge config directories.tmp` ) or die "no tempdir";
 $cache = "$cache/polling/";
 my $cache_tmp = "cached.";
@@ -19,7 +17,6 @@ if (@ARGV) {
     if ( $command eq "sync" ) {
         exit 0 if -e $no_net;
         system("drudge arch.pull");
-        system("rsync -avc rsync://shelf/sync $synced");
         system("rsync -avc /var/cache/pacman/pkg/ rsync://library/pkgcache");
         chomp( my $cache = `drudge config directories.tmp` );
         chomp( my $today = `date +%Y%m%d%P` );
