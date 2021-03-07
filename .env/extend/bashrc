@@ -20,10 +20,6 @@ else
     echo "no .mutt folder"
 fi
 
-twtui.app() {
-    taskwarrior-tui
-}
-
 _services() {
     systemctl --user enable --now drudge-session@mail.service
     systemctl --user start drudge-session@messaging.service
