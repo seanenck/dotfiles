@@ -4,6 +4,7 @@ if [ $IS_SCHROOT -eq 1 ]; then
     return
 fi
 
+export PASSWORD_STORE_DIR=~/.private/pass
 if [ ! -e /var/lib/systemd/linger/enck ]; then
     echo "sudo loginctl enable-linger"
 fi

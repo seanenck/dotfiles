@@ -1,6 +1,5 @@
 #!/bin/bash
 export BROWSER=firefox-developer-edition
-export PASSWORD_STORE_DIR=~/.private/pass
 for f in $(find ~/.env/thin/lib/ -name "*.app"); do
     source $f load
 done
