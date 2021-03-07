@@ -8,6 +8,13 @@ if [ ! -e /var/lib/systemd/linger/enck ]; then
     echo "sudo loginctl enable-linger"
 fi
 
+if [ -d "$HOME/.gnupg" ]; then
+    export GPG_TTY=$(tty)
+    gpg-connect-agent updatestartuptty /bye >/dev/null
+else
+    echo "no .gnupg dir"
+fi
+
 MUTT=$HOME/.mutt
 if [ -d $MUTT ]; then
     if [ -e $START_MUTT ]; then

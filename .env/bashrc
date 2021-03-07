@@ -66,12 +66,5 @@ _messaging() {
     systemctl --user enable drudge-session@messaging.service
 }
 
-if [ -d "$HOME/.gnupg" ]; then
-    export GPG_TTY=$(tty)
-    gpg-connect-agent updatestartuptty /bye >/dev/null
-else
-    echo "no .gnupg dir"
-fi
-
 _cleanup-dirs
 _messaging
