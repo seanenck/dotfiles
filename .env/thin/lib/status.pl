@@ -17,7 +17,6 @@ if (@ARGV) {
     if ( $command eq "sync" ) {
         exit 0 if -e $no_net;
         system("drudge arch.pull");
-        system("rsync -avc /var/cache/pacman/pkg/ rsync://library/pkgcache");
         chomp( my $cache = `drudge config directories.tmp` );
         chomp( my $today = `date +%Y%m%d%P` );
         my $hist   = "$cache/history/";
