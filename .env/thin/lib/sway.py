@@ -20,8 +20,6 @@ def main():
     parser.add_argument("-grid-bar", type=int, default=30)
     parser.add_argument("-laptop-display", default="eDP-1")
     parser.add_argument("-laptop-resolution", default="3840x2160")
-    parser.add_argument("-desktop-secondary", default="DP-5")
-    parser.add_argument("-desktop-transform", default="90")
     args = parser.parse_args()
     i3 = Connection()
     do_master = False
@@ -41,12 +39,6 @@ def main():
                              "0",
                              "res",
                              args.laptop_resolution])
-        else:
-            subprocess.call(["swaymsg",
-                             "output",
-                             args.desktop_secondary,
-                             "transform",
-                             args.desktop_transform])
     elif args.mode == "fullscreen":
         _fullscreen(i3,
                     args.fullscreen_width,
