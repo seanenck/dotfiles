@@ -39,3 +39,5 @@ if [ -x /usr/bin/sway ]; then
         exit
     fi
 fi
+
+cat /etc/motd
