@@ -120,7 +120,7 @@ if [ ! -z "$staged" ]; then
     echo
 fi
 if [ -d ~/.mutt/maildir ]; then
-    staged=$(find ~/.mutt/maildir/ -type f | grep new | xargs -0 dirname | grep -v "Trash/new" | sed 's#/home/enck/.mutt/maildir/fastmail/##g;s#/new##g' | sort | uniq -c | sed 's/^\s*/  /g')
+    staged=$(find ~/.mutt/maildir/ -type f | grep new | rev | cut -d '/' -f 2- | rev | grep -v "Trash/new" | sed 's#/home/enck/.mutt/maildir/fastmail/##g;s#/new##g' | sort | uniq -c | sed 's/^\s*/  /g')
     if [ ! -z "$staged" ]; then
         echo "mail:"
         echo "$staged"
