@@ -82,5 +82,15 @@ fi
 _cleanup-dirs
 _messaging
 
-drudge user.staged
-drudge user.mail
+echo -e -n "\033[1;31m"
+staged=$(drudge user.staged)
+if [ ! -z "$staged" ]; then
+    echo "git:"
+    echo $staged
+fi
+staged=$(drudge user.mail)
+if [ ! -z "$staged" ]; then
+    echo "mail:"
+    echo $staged
+fi
+echo -e -n "\033[0m"
