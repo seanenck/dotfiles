@@ -68,10 +68,6 @@ _cleanup-dirs() {
     touch $check
 }
 
-_messaging() {
-    systemctl --user enable drudge-session@messaging.service
-}
-
 if [ -d "$HOME/.gnupg" ]; then
     export GPG_TTY=$(tty)
     gpg-connect-agent updatestartuptty /bye >/dev/null
@@ -80,7 +76,6 @@ else
 fi
 
 _cleanup-dirs
-_messaging
 
 echo -e -n "\033[1;31m"
 

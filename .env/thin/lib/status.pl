@@ -15,6 +15,19 @@ my $no_net    = "${cache}offline";
 if (@ARGV) {
     my $command = $ARGV[0];
     if ( $command eq "sync" ) {
+        system("mkdir -p $cache");
+        my $checking = "$cache/${cache_tmp}check";
+        system("find $cache -type f -name '$cache_tmp*' -mmin +1 -delete");
+        exit 0 if -e $suppress;
+        if ( !-e $checking ) {
+            if ( system("ping -c1 -w5 shelf > /dev/null 2>&1") == 0 ) {
+                unlink $no_net if -e $no_net;
+            }
+            else {
+                system("touch $no_net");
+            }
+            system("touch $checking");
+        }
         exit 0 if -e $no_net;
         system("drudge arch.pull");
         chomp( my $cache = `drudge config directories.tmp` );
@@ -44,28 +57,6 @@ if (@ARGV) {
     }
     elsif ( $command eq "suppress" ) {
         system("touch $suppress");
-    }
-    elsif ( $command eq "poll" ) {
-        my $checking = "$cache/${cache_tmp}check";
-        system("find $cache -type f -name '$cache_tmp*' -mmin +1 -delete");
-        exit 0 if -e $suppress;
-        if ( !-e $checking ) {
-            if ( system("ping -c1 -w5 shelf > /dev/null 2>&1") == 0 ) {
-                unlink $no_net if -e $no_net;
-            }
-            else {
-                system("touch $no_net");
-            }
-            system("touch $checking");
-        }
-        exit 0 if -e $no_net;
-        $cache = "$cache/notify";
-        system("drudge messaging.reader > $cache");
-        if ( -s $cache ) {
-            chomp( my $tooltip = `cat $cache` );
-            $tooltip =~ s/\n/\\r/g;
-            print '{"text": "🔔", "tooltip": "' . $tooltip . '"}', "\n";
-        }
     }
     elsif ( $command eq "daemon" ) {
         system("$status > $home/.cache/status.log 2>&1");
