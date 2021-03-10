@@ -1,13 +1,19 @@
 #!/bin/bash
-source /etc/voidedtech/skel/env
 export GOPATH="$HOME/.cache/go"
-
 IS_SCHROOT=0
 if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
     IS_SCHROOT=1
 fi
 
 export IS_SCHROOT
+
+if [ -e ~/.bash_private ]; then
+    source ~/.bash_private
+fi
+
+if [ -e ~/.env/machine/bashrc ]; then
+    source ~/.env/machine/bashrc
+fi
 
 pltidy() {
     local f
