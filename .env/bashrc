@@ -83,14 +83,53 @@ _cleanup-dirs
 _messaging
 
 echo -e -n "\033[1;31m"
-staged=$(drudge user.staged)
+
+_git_checks() {
+    git -C $1 update-index -q --refresh
+    git -C $1 diff-index --name-only HEAD --
+    git -C $1 status -sb | grep ahead
+    git -C $1 ls-files --other --exclude-standard
+}
+
+_staged() {
+    local dirs working f cnt
+    dirs="$HOME/"
+    for f in $(ls ~/.private); do
+        working=$HOME/.private/$f/
+        if [ -d $working/.git ]; then
+            dirs="$dirs $working"
+        fi
+    done
+    for f in $(ls ~/workspace); do
+        working=$HOME/workspace/$f
+        if [ -d $working/.git ]; then
+            dirs="$dirs $working"
+        fi
+    done
+    for f in $dirs; do
+        cnt=0
+        working=$(_git_checks $f)
+        if [ ! -z "$working" ]; then
+            cnt=$((cnt+1))
+        fi
+        if [ $cnt -gt 0 ]; then
+            echo "$f [$cnt]"
+        fi
+    done
+}
+
+staged=$(_staged | sed 's#/home/enck/#~/#g;s#^#  #g')
 if [ ! -z "$staged" ]; then
     echo "git:"
-    echo $staged
+    echo "$staged"
+    echo
 fi
-staged=$(drudge user.mail)
-if [ ! -z "$staged" ]; then
-    echo "mail:"
-    echo $staged
+if [ -d ~/.mutt/maildir ]; then
+    staged=$(find ~/.mutt/maildir/ -type f | grep new | xargs -0 dirname | grep -v "Trash/new" | sed 's#/home/enck/.mutt/maildir/fastmail/##g;s#/new##g' | sort | uniq -c | sed 's/^\s*/  /g')
+    if [ ! -z "$staged" ]; then
+        echo "mail:"
+        echo "$staged"
+        echo
+    fi
 fi
 echo -e -n "\033[0m"
