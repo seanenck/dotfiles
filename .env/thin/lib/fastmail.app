@@ -3,9 +3,7 @@ IS_MAIL=$HOME/.cache/drudge/is_mail
 
 if [ -e $IS_MAIL ]; then
     rm -f $IS_MAIL
-    MAILHOST=library
-    ssh $MAILHOST -- touch /home/enck/.cache/start.mutt
-    ssh $MAILHOST
+    mutt -F $HOME/.mutt/fastmail.muttrc
     exit 0
 fi
 
