@@ -114,6 +114,10 @@ _staged() {
     done
 }
 
+mutthtml() {
+    $BROWSER ~/.cache/mutt.html
+}
+
 staged=$(_staged | sed 's#/home/enck/#~/#g;s#^#  #g')
 if [ ! -z "$staged" ]; then
     echo "git:"
