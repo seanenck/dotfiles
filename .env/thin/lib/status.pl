@@ -20,7 +20,7 @@ if (@ARGV) {
         system("find $cache -type f -name '$cache_tmp*' -mmin +1 -delete");
         exit 0 if -e $suppress;
         if ( !-e $checking ) {
-            if ( system("ping -c1 -w5 shelf > /dev/null 2>&1") == 0 ) {
+            if ( system("ping -c1 -w5 bookend > /dev/null 2>&1") == 0 ) {
                 unlink $no_net if -e $no_net;
             }
             else {
