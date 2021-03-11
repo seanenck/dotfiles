@@ -122,15 +122,25 @@ if [ ! -z "$staged" ]; then
 fi
 
 _mbsync() {
-    local p
+    mbsync -a fastmail > /dev/null
+}
+
+_mail() {
+    local p t
+    t=$(date +%Y%m%d%H)
+    t="/tmp/.mail.$t"
+    if [ -e $t ]; then
+        return
+    fi
     p=$(pidof mbsync)
     if [ -z "$p" ]; then
-        mbsync -a fastmail > /dev/null
+        _mbsync &
+        touch $t
     fi
 }
 
 if [ -d ~/.mutt/maildir ]; then
-    _mbsync &
+    _mail
     staged=$(find ~/.mutt/maildir/ -type f | grep new | rev | cut -d '/' -f 2- | rev | grep -v "Trash/new" | sed 's#/home/enck/.mutt/maildir/fastmail/##g;s#/new##g' | sort | uniq -c | sed 's/^\s*/  /g')
     if [ ! -z "$staged" ]; then
         echo "mail:"
