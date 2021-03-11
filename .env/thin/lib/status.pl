@@ -29,7 +29,7 @@ if (@ARGV) {
             system("touch $checking");
         }
         exit 0 if -e $no_net;
-        system("drudge arch.pull");
+        system("mbsync -a fastmail");
         chomp( my $cache = `drudge config directories.tmp` );
         chomp( my $today = `date +%Y%m%d%P` );
         my $hist   = "$cache/history/";
