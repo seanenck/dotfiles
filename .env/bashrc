@@ -11,10 +11,6 @@ if [ -e ~/.bash_private ]; then
     source ~/.bash_private
 fi
 
-if [ -e ~/.env/machine/bashrc ]; then
-    source ~/.env/machine/bashrc
-fi
-
 pltidy() {
     local f
     for f in $(git grep "#\!/usr/bin/perl" | cut -d ":" -f 1 | sort); do
@@ -42,10 +38,6 @@ drudge user.sshkeys check
 
 if [ ! -d $HOME/workspace ]; then
     mkdir -p $HOME/workspace
-fi
-
-if [ ! -d $HOME/.env/machine ]; then
-    echo "no machine profile set"
 fi
 
 if [ ! -e ~/.vimrc ]; then
@@ -134,3 +126,44 @@ if [ -d ~/.mutt/maildir ]; then
     fi
 fi
 echo -e -n "\033[0m"
+
+export BROWSER=firefox-developer-edition
+for f in $(find ~/.env/thin/lib/ -name "*.app"); do
+    source $f load
+done
+
+for f in mumble $BROWSER pavucontrol; do
+    alias $f="echo disabled in bash"
+done
+
+vlc() {
+    /usr/bin/vlc "$@" &
+    disown
+}
+
+firefox() {
+    /usr/bin/$BROWSER "$@" &
+    disown
+}
+
+_apps() {
+    local f b targets host
+    targets="$HOME/.env/thin/lib/"
+    if [ ! -d $targets ]; then
+        mkdir -p $targets
+    fi
+    for f in $(ls $targets*.app); do
+        b=$(basename $f)
+        alias $b="bash $f"
+    done
+}
+
+_apps
+
+if [ -x /usr/bin/sway ]; then
+    if [ -z $DISPLAY ] && [ "$(tty)" == "/dev/tty1" ]; then
+        export MOZ_ENABLE_WAYLAND=1
+        sway > ~/.cache/sway.log 2>&1
+        exit
+    fi
+fi
