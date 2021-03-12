@@ -51,12 +51,6 @@ if (@ARGV) {
             }
         }
     }
-    elsif ( $command eq "waybar" ) {
-        system("$status poll | grep '^{.*'");
-    }
-    elsif ( $command eq "suppress" ) {
-        system("touch $suppress");
-    }
     elsif ( $command eq "daemon" ) {
         system("$status > $home/.cache/status.log 2>&1");
     }
