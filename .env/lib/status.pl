@@ -3,7 +3,7 @@ use warnings;
 use strict;
 
 my $home   = $ENV{"HOME"};
-my $lib    = "$home/.env/thin/lib/";
+my $lib    = "$home/.env/lib/";
 my $status = "perl ${lib}status.pl ";
 my $etc    = "/var/cache/drudge/backup";
 chomp( my $cache = `drudge config directories.tmp` ) or die "no tempdir";

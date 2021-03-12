@@ -1,6 +1,2 @@
 /*
 !.env/
-.env/*
-!.env/bashrc
-!.env/thin/
-!.env/extend/

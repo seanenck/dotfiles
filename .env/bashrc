@@ -128,7 +128,7 @@ fi
 echo -e -n "\033[0m"
 
 export BROWSER=firefox-developer-edition
-for f in $(find ~/.env/thin/lib/ -name "*.app"); do
+for f in $(find ~/.env/lib/ -name "*.app"); do
     source $f load
 done
 
@@ -148,7 +148,7 @@ firefox() {
 
 _apps() {
     local f b targets host
-    targets="$HOME/.env/thin/lib/"
+    targets="$HOME/.env/lib/"
     if [ ! -d $targets ]; then
         mkdir -p $targets
     fi
