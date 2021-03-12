@@ -120,6 +120,10 @@ firefox() {
     disown
 }
 
+pwgen() {
+    python ~/.env/lib/pwgen.py $@
+}
+
 _apps() {
     local f b targets host
     targets="$HOME/.env/lib/"
