@@ -146,6 +146,10 @@ if [ -x /usr/bin/sway ]; then
     fi
 fi
 
+sshkeys() {
+    python ~/.env/lib/sshkeys.py
+}
+
 totp() {
     python ~/.env/lib/totp.py $@
 }
