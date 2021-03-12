@@ -145,3 +145,18 @@ if [ -x /usr/bin/sway ]; then
         exit
     fi
 fi
+
+totp() {
+    python ~/.env/lib/totp.py $@
+}
+
+_totp() {
+    local opts cur
+    cur=${COMP_WORDS[COMP_CWORD]}
+    if [ $COMP_CWORD -eq 1 ]; then
+        opts=$(totp list)
+    fi
+    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+}
+
+complete -F _totp totp
