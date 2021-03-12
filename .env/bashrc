@@ -1,11 +1,5 @@
 #!/bin/bash
 export GOPATH="$HOME/.cache/go"
-IS_SCHROOT=0
-if [ ! -z "$SCHROOT_CHROOT_NAME" ]; then
-    IS_SCHROOT=1
-fi
-
-export IS_SCHROOT
 
 if [ -e ~/.bash_private ]; then
     source ~/.bash_private
@@ -27,26 +21,6 @@ glint() {
         go vet $f | sed 's/^/[govet]        /g'
     done
 }
-
-
-if [ $IS_SCHROOT -eq 1 ]; then
-    PS1='[\u@${SCHROOT_CHROOT_NAME} \W]\$ '
-    return
-fi
-
-drudge user.sshkeys check
-
-if [ ! -d $HOME/workspace ]; then
-    mkdir -p $HOME/workspace
-fi
-
-if [ ! -e ~/.vimrc ]; then
-    ln -sf /etc/voidedtech/skel/vimrc ~/.vimrc
-fi
-
-if [ ! -d ~/.gnupg ]; then
-    ln -sf ~/.private/gnupg ~/.gnupg
-fi
 
 export PASSWORD_STORE_DIR=~/.private/pass
 _cleanup-dirs() {
@@ -70,7 +44,6 @@ fi
 
 _cleanup-dirs
 
-echo -e -n "\033[1;31m"
 
 _git_checks() {
     git -C $1 update-index -q --refresh
@@ -110,6 +83,7 @@ mutthtml() {
     $BROWSER ~/.cache/mutt.html
 }
 
+echo -e -n "\033[1;31m"
 staged=$(_staged | sed 's#/home/enck/#~/#g;s#^#  #g')
 if [ ! -z "$staged" ]; then
     echo "git:"
