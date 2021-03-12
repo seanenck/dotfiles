@@ -1,8 +1,8 @@
 set $mod Mod1
 
 set $term kitty
-set $menu perl ~/.env/thin/lib/apps.pl
-set $swaypy python ~/.env/thin/lib/sway.py
+set $menu perl ~/.env/lib/apps.pl
+set $swaypy python ~/.env/lib/sway.py
 
 gaps outer 5px
 gaps inner 5px
@@ -14,7 +14,7 @@ exec swayidle -w \
 
 exec $swaypy focus-model
 exec $swaypy displays
-exec perl ~/.env/thin/lib/status.pl daemon
+exec perl ~/.env/lib/status.pl daemon
 
 output * bg #695939 solid_color
 
