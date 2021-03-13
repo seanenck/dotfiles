@@ -6,7 +6,7 @@ my $home   = $ENV{"HOME"};
 my $lib    = "$home/.env/lib/";
 my $status = "perl ${lib}status.pl ";
 my $etc    = "/var/cache/drudge/backup";
-chomp( my $cache = `drudge config directories.tmp` ) or die "no tempdir";
+my $cache  = "$home/.cache/drudge/";
 $cache = "$cache/polling/";
 my $cache_tmp = "cached.";
 my $suppress  = "${cache}${cache_tmp}suppress";
@@ -30,7 +30,6 @@ if (@ARGV) {
         }
         exit 0 if -e $no_net;
         system("mbsync -a fastmail");
-        chomp( my $cache = `drudge config directories.tmp` );
         chomp( my $today = `date +%Y%m%d%P` );
         my $hist   = "$cache/history/";
         my $backup = "$hist$today/";
