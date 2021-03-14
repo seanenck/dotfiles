@@ -39,6 +39,23 @@ def main():
                              "0",
                              "res",
                              args.laptop_resolution])
+        else:
+            subprocess.call(["swaymsg",
+                             "output",
+                             "DP-5",
+                             "pos",
+                             "0",
+                             "0",
+                             "res",
+                             "2560x1440"])
+            subprocess.call(["swaymsg",
+                             "output",
+                             "DP-3",
+                             "pos",
+                             "0",
+                             "1440",
+                             "res",
+                             "2560x1440"])
     elif args.mode == "fullscreen":
         _fullscreen(i3,
                     args.fullscreen_width,
