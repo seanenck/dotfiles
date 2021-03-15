@@ -1,0 +1,77 @@
+export GOPATH="$HOME/.cache/go"
+
+glint() {
+    local f
+    goimports -l . | grep -v bindata.go | sed 's/^/[goimports]    /g'
+    revive ./... | sed 's/^/[revive]       /g'
+    for f in $(find . -type f -name "*.go" -exec dirname {} \; | sort -u); do
+        go vet $f | sed 's/^/[govet]        /g'
+    done
+}
+
+_git_checks() {
+    git -C $1 update-index -q --refresh
+    git -C $1 diff-index --name-only HEAD --
+    git -C $1 status -sb | grep ahead
+    git -C $1 ls-files --other --exclude-standard
+}
+
+_staged() {
+    local dirs working f cnt
+    dirs="$HOME/"
+    for f in $(ls ~/.private); do
+        working=$HOME/.private/$f/
+        if [ -d $working/.git ]; then
+            dirs="$dirs $working"
+        fi
+    done
+    for f in $(ls ~/workspace); do
+        working=$HOME/workspace/$f
+        if [ -d $working/.git ]; then
+            dirs="$dirs $working"
+        fi
+    done
+    for f in $dirs; do
+        cnt=0
+        working=$(_git_checks $f)
+        if [ ! -z "$working" ]; then
+            cnt=$((cnt+1))
+        fi
+        if [ $cnt -gt 0 ]; then
+            echo "$f [$cnt]"
+        fi
+    done
+}
+
+echo -e -n "\033[1;31m"
+staged=$(_staged | sed 's#/home/enck/#~/#g;s#^#  #g')
+if [ ! -z "$staged" ]; then
+    echo "git:"
+    echo "$staged"
+    echo
+fi
+
+echo -e -n "\033[0m"
+
+pwgen() {
+    python ~/.bin/pwgen.py $@
+}
+
+sshkeys() {
+    python ~/.bin/sshkeys.py
+}
+
+totp() {
+    python ~/.bin/totp.py $@
+}
+
+_totp() {
+    local opts cur
+    cur=${COMP_WORDS[COMP_CWORD]}
+    if [ $COMP_CWORD -eq 1 ]; then
+        opts=$(totp list)
+    fi
+    COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+}
+
+complete -F _totp totp
