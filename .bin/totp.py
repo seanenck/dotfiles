@@ -25,6 +25,7 @@ def _display(key, store_dir, offset):
     last_second = -1
     running_count = 0
     use_env = {}
+    use_env["PATH"] = os.getenv("PATH")
     use_env["PASSWORD_STORE_DIR"] = store_dir
     totp = os.path.join(offset, key)
     val = _get_output(["pass", "show", totp], env=use_env)

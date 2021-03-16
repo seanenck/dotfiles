@@ -7,4 +7,17 @@ if type brew &>/dev/null; then
   autoload -Uz compinit
   compinit
 fi
+source ~/.personal/zshrc
+pwgen() {
+    python3 ~/.bin/pwgen.py $@
+}
 
+totp() {
+    python3 ~/.bin/totp.py $@
+}
+
+_totp() {
+	compadd $(totp list)
+}
+
+compdef _totp totp
