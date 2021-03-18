@@ -21,3 +21,9 @@ _totp() {
 }
 
 compdef _totp totp
+
+ide () {
+    kitty @ goto-layout splits
+    kitty @ launch --cwd=$PWD --location=hsplit
+    kitty @ resize-window --axis=vertical -i=-8
+}
