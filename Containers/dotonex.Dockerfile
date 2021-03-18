@@ -1,9 +1,9 @@
 FROM golang:latest
 
-# Set working directory 
 WORKDIR /working
 
 COPY . .
 
-RUN ["./configure"]
-CMD ["make"]
+RUN ["./configure", "-cflags=''"]
+RUN ["make", "dotonex", "dotonex-runner", "dotonex-compose"]
+CMD ["make", "check"]
