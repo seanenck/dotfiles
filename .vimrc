@@ -3,8 +3,6 @@ set background=dark
 set nowrap
 set whichwrap=b,s,<,>,[,]
 
-execute pathogen#infect()
-
 function ToggleLine()
     if &colorcolumn == 81
         let &colorcolumn=0
