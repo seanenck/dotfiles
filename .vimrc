@@ -66,13 +66,11 @@ vnoremap <S-Left> <gv
 inoremap <S-Left> <C-o>:<<CR>
 inoremap <S-Right> <C-o>:><CR>
 
-" map to command and insert
-for i in ['', 'i']
-    execute i . "noremap <C-Up> <PageUp>"
-    execute i . "noremap <C-Down> <PageDown>"
-    execute i . "noremap <C-Right> <end>"
-    execute i . "noremap <C-Left> <home>"
-endfor
+noremap <S-Up> <PageUp>
+noremap <S-Down> <PageDown>
+noremap <S-d> <end>
+noremap <S-a> <home>
+noremap <BS> <delete>
 
 set number
 set tabstop=4
@@ -92,8 +90,6 @@ imap <F1> <Nop>
 
 nnoremap <C-e> :call ToggleLine()<CR>
 
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-K> <C-W><C-H>
 nnoremap <C-c> :close<CR>
 nnoremap <C-v> :vsplit<CR>
 
@@ -113,8 +109,8 @@ try
     set hidden
     nmap <C-n> :enew<CR>
     nmap <C-t> :enew<CR>
-    nmap <C-PageUp> :bprevious<CR>
-    nmap <C-PageDown> :bnext<CR>
+    nmap <Tab> :bprevious<CR>
+    nmap <S-Tab> :bnext<CR>
     nmap <C-w> :bp <BAR> bd #<CR>
 catch
 endtry
