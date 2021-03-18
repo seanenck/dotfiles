@@ -8,7 +8,7 @@ if type brew &>/dev/null; then
   compinit
 fi
 
-_vim() {
+_vimsetup() {
     airline=~/.vim/pack/dist/start/vim-airline
     if [ ! -d $airline ]; then
         git clone https://github.com/vim-airline/vim-airline $airline
@@ -26,7 +26,8 @@ _vim() {
     fi
 }
 
-_vim
+_vimsetup
+
 source ~/Git/personal/zshrc
 pwgen() {
     python3 ~/.bin/pwgen.py $@
