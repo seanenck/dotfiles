@@ -66,10 +66,6 @@ vnoremap <S-Left> <gv
 inoremap <S-Left> <C-o>:<<CR>
 inoremap <S-Right> <C-o>:><CR>
 
-noremap <S-Up> <PageUp>
-noremap <S-Down> <PageDown>
-noremap <S-d> <end>
-noremap <S-a> <home>
 noremap <BS> <delete>
 
 set number
