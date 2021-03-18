@@ -1,6 +1,6 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 export GPG_TTY=$(tty)
-export PASSWORD_STORE_DIR=$HOME/.pass
+export PASSWORD_STORE_DIR=$HOME/Git/pass
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 
@@ -27,7 +27,7 @@ _vim() {
 }
 
 _vim
-source ~/.personal/zshrc
+source ~/Git/personal/zshrc
 pwgen() {
     python3 ~/.bin/pwgen.py $@
 }
