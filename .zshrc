@@ -28,6 +28,15 @@ _vimsetup() {
 
 _vimsetup
 
+docker-rm() {
+    for f in $(docker ps --all | grep -v CONTAINER | cut -d " " -f 1); do
+        docker rm --force $f
+    done
+    for f in $(docker images --all --format='{{ .ID }}'); do
+        docker rmi --force $f
+    done
+}
+
 source ~/Git/personal/zshrc
 pwgen() {
     python3 ~/.bin/pwgen.py $@
