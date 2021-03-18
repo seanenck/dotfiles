@@ -51,3 +51,5 @@ _totp() {
 }
 
 compdef _totp totp
+
+alias grep="rg"
