@@ -53,4 +53,4 @@ _totp() {
 compdef _totp totp
 
 alias grep="rg"
-export GOPATH="$HOME/.cache/go"
+export GOPATH="$HOME/Library/Cache/go"

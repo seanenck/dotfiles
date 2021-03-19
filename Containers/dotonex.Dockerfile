@@ -5,5 +5,4 @@ WORKDIR /working
 COPY . .
 
 RUN ["./configure", "-cflags=''"]
-RUN ["make", "dotonex", "dotonex-runner", "dotonex-compose"]
-CMD ["make", "check"]
+CMD ["make", "dotonex", "dotonex-runner", "dotonex-compose", "check"]
