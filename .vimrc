@@ -2,6 +2,7 @@ set noautoindent
 set background=dark
 set nowrap
 set whichwrap=b,s,<,>,[,]
+colo slate
 
 function ToggleLine()
     if &colorcolumn == 81
