@@ -119,14 +119,20 @@ def _daemon():
         count += 1
 
 
-def _handle_tmux(force, stop):
-    has = False
+def _running():
     if subprocess.run([_TMUX,
                        "has-session",
                        "-t",
                        _SESSION],
                       stdout=subprocess.DEVNULL,
                       stderr=subprocess.DEVNULL).returncode == 0:
+        return True
+    return False
+
+
+def _handle_tmux(force, stop):
+    has = False
+    if _running():
         has = True
     if force or stop:
         if has:
@@ -172,6 +178,11 @@ def main():
     print("Restart")
     print("Stop")
     print("Show")
+    print("----")
+    status = "STOPPED"
+    if _running():
+        status = "RUNNING"
+    print("Status: {}".format(status))
     if noop:
         return
     _handle_tmux(force, stop)
