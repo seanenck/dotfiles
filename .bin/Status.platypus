@@ -229,7 +229,7 @@
 	<key>StatusItemIconIsTemplate</key>
 	<true/>
 	<key>StatusItemTitle</key>
-	<string>Status</string>
+	<string>⚠</string>
 	<key>StatusItemUseSystemFont</key>
 	<true/>
 	<key>Suffixes</key>
