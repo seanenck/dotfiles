@@ -14,6 +14,7 @@ _CACHE_DIR = "/Users/enck/Library/Caches/com.voidedtech.Status/"
 _GIT_DIR = "/Users/enck/Git/"
 _TITLE = "title"
 _PAYLOAD = "payload"
+_SHOW_NOW = os.path.join(_CACHE_DIR, "show_now")
 
 
 def _git(repo, args):
@@ -79,31 +80,43 @@ def _daemon():
     import time
     if not os.path.exists(_CACHE_DIR):
         os.makedirs(_CACHE_DIR)
+    threshold = 60
+    count = 0
     while True:
         try:
-            _check_git()
-            for obj in os.listdir(_CACHE_DIR):
-                path = os.path.join(_CACHE_DIR, obj)
-                mtime = os.path.getmtime(path)
-                t = time.time()
-                delta = (t - mtime) / 60 / 60
-                if delta > 1:
-                    content = ""
-                    title = ""
-                    with open(path, "r") as f:
-                        j = json.loads(f.read())
-                        content = j[_PAYLOAD]
-                        title = j[_TITLE]
-                    subprocess.run([_NOTIFY,
-                                    "-title",
-                                    title,
-                                    "-message",
-                                    content])
-                    os.remove(path)
+            show = False
+            if os.path.exists(_SHOW_NOW):
+                show = True
+                os.remove(_SHOW_NOW)
+                count = threshold + 1
+            if count > threshold:
+                _check_git()
+                for obj in os.listdir(_CACHE_DIR):
+                    if obj == _SHOW_NOW:
+                        continue
+                    path = os.path.join(_CACHE_DIR, obj)
+                    mtime = os.path.getmtime(path)
+                    t = time.time()
+                    delta = (t - mtime) / 60 / 60
+                    if delta > 1 or show:
+                        content = ""
+                        title = ""
+                        with open(path, "r") as f:
+                            j = json.loads(f.read())
+                            content = j[_PAYLOAD]
+                            title = j[_TITLE]
+                        subprocess.run([_NOTIFY,
+                                        "-title",
+                                        title,
+                                        "-message",
+                                        content])
+                        os.remove(path)
+            count = 0
         except Exception as e:
             print("error processing")
             print(e)
-        time.sleep(60)
+        time.sleep(1)
+        count += 1
 
 
 def _handle_tmux(force, stop):
@@ -153,8 +166,12 @@ def main():
             force = True
         elif arg == "Stop":
             stop = True
+        elif arg == "Show":
+            with open(_SHOW_NOW, "w") as f:
+                f.write("")
     print("Restart")
     print("Stop")
+    print("Show")
     if noop:
         return
     _handle_tmux(force, stop)
