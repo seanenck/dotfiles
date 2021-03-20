@@ -3,14 +3,17 @@
 import subprocess
 import sys
 import os
+import json
 
 
 _DAEMON = "daemon"
 _SESSION = "statusdaemon"
 _TMUX = "/opt/homebrew/bin/tmux"
 _NOTIFY = "/opt/homebrew/bin/terminal-notifier"
-_CACHE = "/Users/enck/Library/Caches/status.cache"
+_CACHE_DIR = "/Users/enck/Library/Caches/com.voidedtech.Status/"
 _GIT_DIR = "/Users/enck/Git/"
+_TITLE = "title"
+_PAYLOAD = "payload"
 
 
 def _git(repo, args):
@@ -41,8 +44,14 @@ def _git_status(repo):
     return count
 
 
-def _new_status(cat, message):
-    return "{}: {}".format(cat, message)
+def _normalize(cat, string):
+    normalized = cat + "_"
+    for c in string.lower():
+        if (c >= 'a' and c <= 'z') or (c >= '0' and c <= '9'):
+            normalized += c
+        else:
+            normalized += "_"
+    return normalized
 
 
 def _check_git():
@@ -51,44 +60,47 @@ def _check_git():
         dirs += [os.path.join(_GIT_DIR, d)]
     for d in dirs:
         if os.path.exists(os.path.join(d, ".git")):
+            normal = _normalize("git", d)
+            file_path = os.path.join(_CACHE_DIR, normal)
+            exists = os.path.exists(file_path)
             if _git_status(d) > 0:
-                dir_name = os.path.dirname(d)
-                text = _new_status("git", dir_name)
-                yield text
+                if not exists:
+                    with open(file_path, 'w') as f:
+                        j = {}
+                        dir_name = os.path.dirname(d)
+                        j[_TITLE] = "Staged:{}".format(dir_name)
+                        j[_PAYLOAD] = "Commit or push changes"
+                        f.write(json.dumps(j))
+            else:
+                if exists:
+                    os.remove(file_path)
 
 
 def _daemon():
     import time
+    if not os.path.exists(_CACHE_DIR):
+        os.makedirs(_CACHE_DIR)
     while True:
         try:
-            items = []
-            for item in _check_git():
-                items += [item]
-            if len(items) > 0:
-                current = ""
-                if os.path.exists(_CACHE):
-                    with open(_CACHE, "r") as f:
-                        current = f.read().strip()
-                new = "\n".join(sorted(items)).strip()
-                if new != current:
-                    with open(_CACHE, "w") as f:
-                        f.write(new)
-            else:
-                if os.path.exists(_CACHE):
-                    os.remove(_CACHE)
-            if os.path.exists(_CACHE):
-                mtime = os.path.getmtime(_CACHE)
+            _check_git()
+            for obj in os.listdir(_CACHE_DIR):
+                path = os.path.join(_CACHE_DIR, obj)
+                mtime = os.path.getmtime(path)
                 t = time.time()
                 delta = (t - mtime) / 60 / 60
                 if delta > 1:
-                    with open(_CACHE, "r") as f:
-                        content = f.read()
+                    content = ""
+                    title = ""
+                    with open(path, "r") as f:
+                        j = json.loads(f.read())
+                        content = j[_PAYLOAD]
+                        title = j[_TITLE]
                     subprocess.run([_NOTIFY,
                                     "-title",
-                                    "Status",
+                                    title,
                                     "-message",
                                     content])
-                    os.remove(_CACHE)
+                    os.remove(path)
         except Exception as e:
             print("error processing")
             print(e)
