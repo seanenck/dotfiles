@@ -67,8 +67,7 @@ def _check_git():
                 if not exists:
                     with open(file_path, 'w') as f:
                         j = {}
-                        dir_name = os.path.dirname(d)
-                        j[_TITLE] = "Staged:{}".format(dir_name)
+                        j[_TITLE] = "Staged:{}".format(d)
                         j[_PAYLOAD] = "Commit or push changes"
                         f.write(json.dumps(j))
             else:
