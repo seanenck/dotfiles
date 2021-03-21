@@ -52,5 +52,6 @@ _totp() {
 
 compdef _totp totp
 
+alias scp='noglob scp'
 alias grep="rg"
 export GOPATH="$HOME/Library/Caches/go"
