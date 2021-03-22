@@ -1,61 +1,62 @@
-adns
-bdw-gc
-c-ares
-firefox
-gdbm
-gettext
-git
-gmp
-gnu-getopt
-gnupg
-gnutls
-go
-golangci-lint
-guile
-iterm2
-jemalloc
-libassuan
-libev
-libevent
-libffi
-libgcrypt
-libgpg-error
-libidn2
-libksba
-libpng
-libtasn1
-libtool
-libunistring
-libusb
-libxml2
-libxmlsec1
-mpdecimal
-ncurses
-nettle
-nghttp2
-npth
-oath-toolkit
-openssl@1.1
-p11-kit
-pass
-pcre2
-pinentry
-pinentry-mac
-pkg-config
-platypus
-pycodestyle
-python@3.9
-qrencode
-readline
-rectangle
-ripgrep
-signal
-sourcetree
-sqlite
-tcl-tk
-terminal-notifier
-tmux
-tree
-unbound
-utf8proc
-xz
+
+casks: firefox
+casks: iterm2
+casks: platypus
+casks: rectangle
+casks: signal
+casks: sourcetree
+formula: adns
+formula: bdw-gc
+formula: c-ares
+formula: gdbm
+formula: gettext
+formula: git
+formula: gmp
+formula: gnu-getopt
+formula: gnupg
+formula: gnutls
+formula: go
+formula: golangci-lint
+formula: guile
+formula: jemalloc
+formula: libassuan
+formula: libev
+formula: libevent
+formula: libffi
+formula: libgcrypt
+formula: libgpg-error
+formula: libidn2
+formula: libksba
+formula: libpng
+formula: libtasn1
+formula: libtool
+formula: libunistring
+formula: libusb
+formula: libxml2
+formula: libxmlsec1
+formula: mpdecimal
+formula: ncurses
+formula: nettle
+formula: nghttp2
+formula: npth
+formula: oath-toolkit
+formula: openssl@1.1
+formula: p11-kit
+formula: pass
+formula: pcre2
+formula: pinentry
+formula: pinentry-mac
+formula: pkg-config
+formula: pycodestyle
+formula: python@3.9
+formula: qrencode
+formula: readline
+formula: ripgrep
+formula: sqlite
+formula: tcl-tk
+formula: terminal-notifier
+formula: tmux
+formula: tree
+formula: unbound
+formula: utf8proc
+formula: xz
