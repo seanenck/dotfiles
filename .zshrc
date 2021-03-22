@@ -12,6 +12,10 @@ if type brew &>/dev/null; then
   compinit
 fi
 
+brew-backup() {
+    brew list | sort > ~/.bin/brew.list
+}
+
 _vimsetup() {
     airline=~/.vim/pack/dist/start/vim-airline
     if [ ! -d $airline ]; then
