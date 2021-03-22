@@ -1,5 +1,6 @@
 #!/bin/zsh
 for d in ~ $(find ~/Git/ -mindepth 1 -maxdepth 1 -type d); do
+    echo "reconciling: $d"
     git -C $d pull
     if [ $? -eq 0 ]; then
         git -C $d push
