@@ -6,14 +6,11 @@ casks: rectangle
 casks: signal
 casks: sourcetree
 formula: adns
-formula: autoconf
-formula: automake
 formula: bdw-gc
 formula: c-ares
 formula: gdbm
 formula: gettext
 formula: git
-formula: git-gui
 formula: gmp
 formula: gnu-getopt
 formula: gnupg
