@@ -3,7 +3,6 @@ cask: iterm2
 cask: netnewswire
 cask: rectangle
 cask: signal
-cask: sourcetree
 formula: git
 formula: golangci-lint
 formula: oath-toolkit
