@@ -13,10 +13,7 @@ if type brew &>/dev/null; then
 fi
 
 brew-backup() {
-    echo > ~/.bin/brew.list
-    for f in casks formula; do
-        brew list --$f | sort | sed "s/^/$f: /g" >> ~/.bin/brew.list
-    done
+    perl ~/.bin/brew-backup.pl | sort > ~/.bin/brew.list
 }
 
 _vimsetup() {
