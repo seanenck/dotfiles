@@ -1,3 +1,6 @@
 /*
 !Contaners/
+!Library/
+Library/*
+!Library/LaunchAgents/
 !.bin/
