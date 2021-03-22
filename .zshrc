@@ -1,4 +1,8 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
+alias scp='noglob scp'
+alias grep="rg"
+export PATH="$PATH:$HOME/.bin"
+export GOPATH="$HOME/Library/Caches/go"
 export GPG_TTY=$(tty)
 export PASSWORD_STORE_DIR=$HOME/Git/pass
 if type brew &>/dev/null; then
@@ -51,7 +55,3 @@ _totp() {
 }
 
 compdef _totp totp
-
-alias scp='noglob scp'
-alias grep="rg"
-export GOPATH="$HOME/Library/Caches/go"
