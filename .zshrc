@@ -13,7 +13,7 @@ if type brew &>/dev/null; then
 fi
 
 brew-backup() {
-    perl ~/.bin/brew-backup.pl | sort > ~/.bin/brew.list
+    perl ~/.bin/brew-backup.pl | sort > ~/Library/Voidedtech/brew.list
 }
 
 _vimsetup() {
