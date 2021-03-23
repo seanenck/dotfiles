@@ -1,5 +1,6 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 alias scp='noglob scp'
+alias git='noglob git'
 alias grep="rg"
 binaries="$HOME/Library/Voidedtech/Bin"
 export PATH="$PATH:$binaries"
