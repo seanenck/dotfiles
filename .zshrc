@@ -1,7 +1,8 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 alias scp='noglob scp'
 alias grep="rg"
-export PATH="$PATH:$HOME/.bin"
+binaries="$HOME/Library/Voidedtech/Bin"
+export PATH="$PATH:$binaries"
 export GOPATH="$HOME/Library/Caches/go"
 export GPG_TTY=$(tty)
 export PASSWORD_STORE_DIR=$HOME/Git/pass
@@ -13,7 +14,7 @@ if type brew &>/dev/null; then
 fi
 
 brew-backup() {
-    perl ~/.bin/brew-backup.pl | sort > ~/Library/Voidedtech/brew.list
+    perl $binaries/brew-backup.pl | sort > ~/Library/Voidedtech/Config/brew.list
 }
 
 _vimsetup() {
@@ -47,11 +48,11 @@ docker-rm() {
 
 source ~/Git/personal/zshrc
 pwgen() {
-    python3 ~/.bin/pwgen.py $@
+    python3 $binaries/pwgen.py $@
 }
 
 totp() {
-    python3 ~/.bin/totp.py $@
+    python3 $binaries/totp.py $@
 }
 
 _totp() {

@@ -7,7 +7,7 @@
     <key>ProgramArguments</key>
     <array>
         <string>/opt/homebrew/bin/python3</string>
-        <string>/Users/enck/.bin/httpstatus.py</string>
+        <string>/Users/enck/Library/Voidedtech/Bin/httpstatus.py</string>
     </array>
     <key>KeepAlive</key>
     <true/>
