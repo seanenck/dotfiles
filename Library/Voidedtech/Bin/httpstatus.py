@@ -4,10 +4,13 @@ import subprocess
 import http.server
 import socketserver
 import os
+import time
 import email.utils as utils
 
 _PORT = 8000
-_GIT_DIR = "/Users/enck/Git/"
+_HOME = "/Users/enck"
+_GIT_DIR = _HOME + "/Git/"
+_CACHE_DIR = _HOME + "/Library/Caches/com.voidedtech.Status"
 
 
 def _git(repo, args):
@@ -38,19 +41,9 @@ def _git_status(repo):
     return count
 
 
-def _normalize(cat, string):
-    normalized = cat + "_"
-    for c in string.lower():
-        if (c >= 'a' and c <= 'z') or (c >= '0' and c <= '9'):
-            normalized += c
-        else:
-            normalized += "_"
-    return normalized
-
-
 def _check_git():
     dt = utils.formatdate(localtime=True)
-    dirs = ["/Users/enck/"]
+    dirs = [_HOME]
     for d in os.listdir(_GIT_DIR):
         dirs += [os.path.join(_GIT_DIR, d)]
     for d in dirs:
@@ -61,19 +54,39 @@ def _check_git():
 <description>Staged changes: {}</description></item>
 """.format(d, dt, d)
 
+
+def _bundle():
+    cached = os.path.join(_CACHE_DIR, "bundle")
+    if not os.path.exists(cached):
+        os.makedirs(cached)
+    cached = os.path.join(cached, "last")
+    if os.path.exists(cached):
+        mtime = os.path.getmtime(cached)
+        t = time.time()
+        delta = (t - mtime) / 60 / 60 / 24
+        if delta < 1:
+            return
+    subprocess.run(["brew",
+                    "bundle",
+                    "dump"], cwd=_HOME + "/Library/Voidedtech/Config/")
+    with open(cached, "w") as f:
+        f.write("")
+
+
 def main():
     class FeedHandler(http.server.BaseHTTPRequestHandler):
         def do_GET(self):
             self.send_response(200)
             self.send_header('Content-type', 'text/xml')
             self.end_headers()
+            _bundle()
             items = "\n".join(list(_check_git()))
             self.wfile.write(bytes("""<rss version="2.0">
 <channel>
 <title>Local System</title>
 {}
 </channel></rss>""".format(items), "utf-8"))
- 
+
     with socketserver.TCPServer(("", 8000), FeedHandler) as httpd:
         httpd.serve_forever()
 

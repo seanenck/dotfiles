@@ -14,10 +14,6 @@ if type brew &>/dev/null; then
   compinit
 fi
 
-brew-backup() {
-    perl $binaries/brew-backup.pl | sort > ~/Library/Voidedtech/Config/brew.list
-}
-
 _vimsetup() {
     airline=~/.vim/pack/dist/start/vim-airline
     if [ ! -d $airline ]; then
