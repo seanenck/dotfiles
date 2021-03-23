@@ -11,4 +11,3 @@ formula: pinentry-mac
 formula: pycodestyle
 formula: python@3.9
 formula: ripgrep
-formula: terminal-notifier
