@@ -11,6 +11,7 @@ _PORT = 8000
 _HOME = "/Users/enck"
 _GIT_DIR = _HOME + "/Git/"
 _CACHE_DIR = _HOME + "/Library/Caches/com.voidedtech.Status"
+_CONFIG = _HOME + "/Library/Voidedtech/Config"
 
 
 def _git(repo, args):
@@ -66,9 +67,12 @@ def _bundle():
         delta = (t - mtime) / 60 / 60 / 24
         if delta < 1:
             return
+    cfg = os.path.join(_CONFIG, "Brewfile")
+    if os.path.exists(cfg):
+        os.remove(cfg)
     subprocess.run(["brew",
                     "bundle",
-                    "dump"], cwd=_HOME + "/Library/Voidedtech/Config/")
+                    "dump"], cwd=_CONFIG)
     with open(cached, "w") as f:
         f.write("")
 
