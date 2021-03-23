@@ -99,8 +99,8 @@ def main():
             subprocess.run(["python3",
                             _BINARIES + "/httpstatus.py",
                             _DAEMON],
-                            stdout=o,
-                            stderr=e)
+                           stdout=o,
+                           stderr=e)
 
 
 def _wrapper():
