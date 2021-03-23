@@ -11,7 +11,10 @@ _PORT = 8000
 _HOME = "/Users/enck"
 _GIT_DIR = _HOME + "/Git/"
 _CACHE_DIR = _HOME + "/Library/Caches/com.voidedtech.Status"
-_CONFIG = _HOME + "/Library/Voidedtech/Config"
+_LIB = _HOME + "/Library/Voidedtech"
+_CONFIG = _LIB + "/Config"
+_BINARIES = _LIB + "/Bin"
+_DAEMON = "daemon"
 
 
 def _git(repo, args):
@@ -73,11 +76,34 @@ def _bundle():
     subprocess.run(["brew",
                     "bundle",
                     "dump"], cwd=_CONFIG)
+    lines = []
+    with open(cfg, "r") as f:
+        for line in f:
+            lines += [line]
+    with open(cfg, "w") as f:
+        for line in sorted(lines):
+            f.write(line)
     with open(cached, "w") as f:
         f.write("")
 
 
 def main():
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == _DAEMON:
+        _wrapper()
+        return
+    stdout = _CACHE_DIR + "/stdout.log"
+    stderr = _CACHE_DIR + "/stderr.log"
+    with open(stdout, "w") as o:
+        with open(stderr, "w") as e:
+            subprocess.run(["python3",
+                            _BINARIES + "/httpstatus.py",
+                            _DAEMON],
+                            stdout=o,
+                            stderr=e)
+
+
+def _wrapper():
     class FeedHandler(http.server.BaseHTTPRequestHandler):
         def do_GET(self):
             self.send_response(200)
