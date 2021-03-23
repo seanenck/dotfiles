@@ -5,7 +5,7 @@ alias grep="rg"
 binaries="$HOME/Library/Voidedtech/Bin"
 export PATH="$PATH:$binaries"
 export GOPATH="$HOME/Library/Caches/go"
-export GPG_TTY=$(tty)
+
 export PASSWORD_STORE_DIR=$HOME/Git/pass
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
@@ -13,6 +13,9 @@ if type brew &>/dev/null; then
   autoload -Uz compinit
   compinit
 fi
+
+python3 $binaries/gpg-helper.py
+export GPG_TTY=$(tty)
 
 _vimsetup() {
     airline=~/.vim/pack/dist/start/vim-airline
