@@ -37,11 +37,6 @@ _vimsetup() {
 
 _vimsetup
 
-vm() {
-    VM=~/VM/
-    ~/Git/vftool/build/vftool -k $VM/vmlinuz -i $VM/initrd.img -d $VM/disk.img -m 4096 -a "console=hvc0 root=/dev/vda"
-}
-
 source ~/Git/personal/zshrc
 pwgen() {
     python3 $binaries/pwgen.py $@
