@@ -37,28 +37,9 @@ _vimsetup() {
 
 _vimsetup
 
-dckr() {
-    override=0
-    if [ ! -z "$1" ]; then
-        override=1
-        if [[ "$1" == "purge" ]]; then
-            for f in $(docker ps --all | grep -v CONTAINER | cut -d " " -f 1); do
-                docker rm --force $f
-            done
-            for f in $(docker images --all --format='{{ .ID }}'); do
-                docker rmi --force $f
-            done
-        else
-            if [[ "$1" == "instance" ]]; then
-                docker run -it --rm --mount type=bind,source="$(pwd)",target=/workdir ${@:2}
-            else
-                echo "unknown subcommand"
-            fi
-        fi
-    fi
-    if [ $override -eq 0 ]; then
-        docker $@
-    fi
+vm() {
+    VM=~/VM/
+    ~/Git/vftool/build/vftool -k $VM/vmlinuz -i $VM/initrd.img -d $VM/disk.img -m 4096 -a "console=hvc0 root=/dev/vda"
 }
 
 source ~/Git/personal/zshrc
