@@ -5,6 +5,8 @@ alias grep="rg"
 binaries="$HOME/Library/Voidedtech/Bin"
 export PATH="$PATH:$binaries"
 export GOPATH="$HOME/Library/Caches/go"
+export RUSTUP_HOME="$HOME/Library/Caches/rustup"
+export CARGO_HOME="$HOME/Library/Caches/cargo"
 
 export PASSWORD_STORE_DIR=$HOME/Git/pass
 if type brew &>/dev/null; then
