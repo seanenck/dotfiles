@@ -13,7 +13,7 @@ _STDERR = _CACHE + "/stderr"
 def _vm():
     with open(_STDOUT, "w") as o:
         with open(_STDERR, "w") as e:
-            subprocess.run(["/Users/enck/Git/vftool/build/vftool",
+            subprocess.run([_VM + "vftool/build/vftool",
                             "-k",
                             _VM + "vmlinuz",
                             "-i",
