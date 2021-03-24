@@ -38,7 +38,7 @@ _vimsetup() {
 _vimsetup
 
 vm() {
-    python3 ~/Library/Voidedtech/Bin/vm.py
+    python3 ~/Library/Voidedtech/Bin/vm.py $@
 }
 
 brew() {
