@@ -59,34 +59,6 @@ def _check_git():
 """.format(d, dt, d)
 
 
-def _bundle():
-    cached = os.path.join(_CACHE_DIR, "bundle")
-    if not os.path.exists(cached):
-        os.makedirs(cached)
-    cached = os.path.join(cached, "last")
-    if os.path.exists(cached):
-        mtime = os.path.getmtime(cached)
-        t = time.time()
-        delta = (t - mtime) / 60 / 60 / 24
-        if delta < 1:
-            return
-    cfg = os.path.join(_CONFIG, "Brewfile")
-    if os.path.exists(cfg):
-        os.remove(cfg)
-    subprocess.run(["brew",
-                    "bundle",
-                    "dump"], cwd=_CONFIG)
-    lines = []
-    with open(cfg, "r") as f:
-        for line in f:
-            lines += [line]
-    with open(cfg, "w") as f:
-        for line in sorted(lines):
-            f.write(line)
-    with open(cached, "w") as f:
-        f.write("")
-
-
 def main():
     import sys
     if len(sys.argv) > 1 and sys.argv[1] == _DAEMON:
@@ -109,7 +81,6 @@ def _wrapper():
             self.send_response(200)
             self.send_header('Content-type', 'text/xml')
             self.end_headers()
-            _bundle()
             items = "\n".join(list(_check_git()))
             self.wfile.write(bytes("""<rss version="2.0">
 <channel>

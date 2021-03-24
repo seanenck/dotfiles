@@ -37,6 +37,15 @@ _vimsetup() {
 
 _vimsetup
 
+brew() {
+    cfg=~/Library/Voidedtech/Config
+    /opt/homebrew/bin/brew $@
+    rm -f $cfg/Brewfile
+    cwd=$PWD
+    cd $cfg && /opt/homebrew/bin/brew bundle dump
+    cd $cwd
+}
+
 source ~/Git/personal/zshrc
 pwgen() {
     python3 $binaries/pwgen.py $@
