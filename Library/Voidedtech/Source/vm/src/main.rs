@@ -27,6 +27,32 @@ struct Machine {
     mount: MountOptions,
 }
 
+fn watch(pid: u32) {
+    thread::spawn(move || {
+        let duration = time::Duration::from_secs(1);
+        let pid_str = pid.to_string();
+        let mut run = true;
+        while run {
+            thread::sleep(duration);
+            let alive = Command::new("kill").arg("-0").arg(&pid_str).status();
+            match alive {
+                Ok(_) => {},
+                Err(_) => {
+                    match Command::new("killall").arg("vftool").status() {
+                        Ok(_) => {
+
+                        }
+                        Err(e) => {
+                            println!("unable to kill vftool: {}", e);
+                        }
+                    }
+                    run = false
+                }
+            }
+        }
+    });
+}
+
 fn start_vm(tool: String, vm: Machine, can_mount: bool) {
     thread::spawn(move || {
         let mut cmd = Command::new(tool.to_owned());
@@ -202,14 +228,12 @@ fn main() {
             }
         }
     }
+    let pid = std::process::id();
+    watch(pid);
     start_vm(tool.to_owned(), vm, can_mount);
+    let duration = time::Duration::from_secs(10);
+    thread::sleep(duration);
     manage(timeout, tty_file);
-    match Command::new("killall").arg("vftool").status() {
-        Ok(_) => {}
-        Err(e) => {
-            println!("unable to kill vftool: {}", e);
-        }
-    }
 }
 
 fn manage(timeout: u64, tty_file: std::path::PathBuf) {
