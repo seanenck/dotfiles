@@ -14,7 +14,7 @@ export PASSWORD_STORE_DIR=$HOME/Git/pass
 mkdir -p ~/.completions
 fpath=(~/.completions $fpath)
 if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  FPATH=$(/opt/homebrew/bin/brew --prefix)/share/zsh/site-functions:$FPATH
 
   autoload -Uz compinit
   compinit
