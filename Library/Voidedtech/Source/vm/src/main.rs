@@ -3,11 +3,10 @@ use clap::{App, Arg};
 use serde::{Deserialize, Serialize};
 use std::env::current_dir;
 use std::fs;
-use std::io::Read;
 use std::path::Path;
-use std::process::{exit, Command, Stdio};
-use std::sync::mpsc::{channel, Sender};
+use std::process::{exit, Command};
 use std::thread;
+use std::time;
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct MountOptions {
@@ -24,10 +23,11 @@ struct Machine {
     initrd: String,
     disk: String,
     params: String,
+    tty: String,
     mount: MountOptions,
 }
 
-fn start_vm(tool: String, vm: Machine, sender: Sender<String>) {
+fn start_vm(tool: String, vm: Machine) {
     thread::spawn(move || {
         let mut cmd = Command::new(tool.to_owned());
         cmd.arg("-k");
@@ -40,11 +40,19 @@ fn start_vm(tool: String, vm: Machine, sender: Sender<String>) {
         cmd.arg(vm.disk);
         cmd.arg("-a");
         cmd.arg(vm.params);
+        cmd.arg("-y");
+        cmd.arg(vm.tty);
         if vm.mount.enable {
             cmd.arg("-d");
             cmd.arg(vm.mount.file);
         }
         cmd.current_dir(vm.root);
+        match cmd.output() {
+            Ok(_) => {}
+            Err(e) => {
+                println!("unable to run command: {}", e);
+            }
+        }
     });
 }
 
@@ -71,7 +79,7 @@ fn get_cwd() -> Option<String> {
             Ok(s) => {
                 return Some(s);
             }
-            Err(e) => {
+            Err(_) => {
                 println!("unable to read cwd");
             }
         },
@@ -106,7 +114,22 @@ fn main() {
                 .help("root path")
                 .takes_value(true),
         )
+        .arg(
+            Arg::with_name("timeout")
+                .long("timeout")
+                .value_name("TIMEOUT")
+                .help("timeout waiting for tty")
+                .takes_value(true),
+        )
         .get_matches();
+    let timeout_raw = matches.value_of("timeout").unwrap_or("5");
+    let timeout = match timeout_raw.parse::<u64>() {
+        Ok(v) => v,
+        Err(e) => {
+            println!("unable to parse timeout: {}", e);
+            exit(1);
+        }
+    };
     let root = matches.value_of("root").unwrap_or("/Users/enck/VM/");
     let default_cfg = root.to_owned() + "vm.yaml";
     let cfg = matches.value_of("config").unwrap_or(default_cfg.as_str());
@@ -116,8 +139,17 @@ fn main() {
     if machine == None {
         exit(1);
     }
-    let (sender, receiver) = channel::<String>();
     let vm = machine.unwrap();
+    let tty_file = Path::new(&vm.root.to_string()).join(&vm.tty.to_string());
+    if tty_file.exists() {
+        match fs::remove_file(&tty_file) {
+            Ok(_) => {}
+            Err(e) => {
+                println!("unable to remove tty file: {}", e);
+                exit(1);
+            }
+        }
+    }
     if vm.mount.enable {
         let mut dmg = String::new();
         dmg.push_str(&vm.mount.file.to_string());
@@ -158,5 +190,34 @@ fn main() {
             }
         }
     }
-    start_vm(tool.to_owned(), vm, sender);
+    start_vm(tool.to_owned(), vm);
+    manage(timeout, tty_file);
+    match Command::new("killall").arg("vftool").status() {
+        Ok(_) => {}
+        Err(e) => {
+            println!("unable to kill vftool: {}", e);
+        }
+    }
+}
+
+fn manage(timeout: u64, tty_file: std::path::PathBuf) {
+    let duration = time::Duration::from_secs(timeout);
+    thread::sleep(duration);
+    if !tty_file.exists() {
+        println!("tty file not found");
+        return;
+    }
+    match fs::read_to_string(tty_file) {
+        Ok(data) => match Command::new("screen").arg(data.trim()).status() {
+            Ok(_) => {}
+            Err(e) => {
+                println!("unable to attach: {}", e);
+                return;
+            }
+        },
+        Err(e) => {
+            println!("unable to read tty file: {}", e);
+            return;
+        }
+    }
 }
