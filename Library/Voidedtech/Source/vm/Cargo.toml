@@ -3,6 +3,10 @@ name = "vm"
 version = "0.1.0"
 authors = ["Sean Enck <enckse@voidedtech.com>"]
 edition = "2018"
+build = "build.rs"
+
+[build-dependencies]
+clap = "2.33.3"
 
 [dependencies]
 clap = "2.33.3"

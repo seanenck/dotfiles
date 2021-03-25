@@ -1,5 +1,4 @@
 extern crate clap;
-use clap::{App, Arg};
 use serde::{Deserialize, Serialize};
 use std::env::current_dir;
 use std::fs;
@@ -7,6 +6,9 @@ use std::path::Path;
 use std::process::{exit, Command};
 use std::thread;
 use std::time;
+use crate::cli::build_cli;
+
+mod cli;
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct MountOptions {
@@ -98,36 +100,7 @@ fn to_dmg(file_name: &str) -> String {
 }
 
 fn main() {
-    let matches = App::new("vm")
-        .version("1.0")
-        .arg(
-            Arg::with_name("config")
-                .long("config")
-                .value_name("CONFIG")
-                .help("vm configuration file")
-                .takes_value(true),
-        )
-        .arg(
-            Arg::with_name("vm")
-                .long("vm")
-                .value_name("VMPATH")
-                .help("vm root path")
-                .takes_value(true),
-        )
-        .arg(
-            Arg::with_name("timeout")
-                .long("timeout")
-                .value_name("TIMEOUT")
-                .help("timeout waiting for tty")
-                .takes_value(true),
-        )
-        .arg(
-            Arg::with_name("mount")
-                .long("mount")
-                .help("mount the directory")
-                .takes_value(false),
-        )
-        .get_matches();
+    let matches = build_cli().get_matches();
     let timeout_raw = matches.value_of("timeout").unwrap_or("5");
     let timeout = match timeout_raw.parse::<u64>() {
         Ok(v) => v,
