@@ -11,14 +11,8 @@ source $CARGO_HOME/env
 
 export PASSWORD_STORE_DIR=$HOME/Git/pass
 
-mkdir -p ~/.completions
+source ~/.completions/zshrc
 fpath=(~/.completions $fpath)
-if type brew &>/dev/null; then
-  FPATH=$(/opt/homebrew/bin/brew --prefix)/share/zsh/site-functions:$FPATH
-
-  autoload -Uz compinit
-  compinit
-fi
 
 python3 $binaries/gpg-helper.py
 export GPG_TTY=$(tty)
@@ -60,9 +54,3 @@ pwgen() {
 totp() {
     python3 $binaries/totp.py $@
 }
-
-_totp() {
-	compadd $(totp list)
-}
-
-compdef _totp totp
