@@ -1,5 +1,3 @@
-source ~/.zshenv
-
 gpga
 export GPG_TTY=$(tty)
 
