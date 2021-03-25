@@ -1,6 +1,6 @@
 source ~/.zshenv
 
-python3 $binaries/gpg-helper.py
+gpga
 export GPG_TTY=$(tty)
 
 _vimsetup() {
