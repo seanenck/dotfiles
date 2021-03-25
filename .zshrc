@@ -31,9 +31,6 @@ brew() {
 }
 
 source ~/Git/personal/zshrc
-pwgen() {
-    python3 $binaries/pwgen.py $@
-}
 
 totp() {
     python3 $binaries/totp.py $@
