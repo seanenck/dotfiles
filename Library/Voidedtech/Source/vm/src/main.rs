@@ -203,8 +203,6 @@ fn main() {
         }
     }
     start_vm(tool.to_owned(), vm, can_mount);
-    let duration = time::Duration::from_secs(10);
-    thread::sleep(duration);
     manage(timeout, tty_file);
 }
 
