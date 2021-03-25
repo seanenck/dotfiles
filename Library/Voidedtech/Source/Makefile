@@ -1,9 +1,10 @@
-TARGETS := vm
-BIN     := $(HOME)/.bin
+TARGETS  := vm
+EXTERNAL := $(HOME)/Git/vftool/build/vftool
+BIN      := $(HOME)/.bin
 
-.PHONY: $(TARGETS)
+.PHONY: $(TARGETS) $(EXTERNAL)
 
-all: bin $(TARGETS)
+all: bin $(TARGETS) $(EXTERNAL)
 
 bin:
 	mkdir -p $(BIN)
@@ -11,3 +12,6 @@ bin:
 $(TARGETS):
 	cd $@ && cargo build --release
 	install -m755 $@/target/release/$@ $(BIN)/$@
+
+$(EXTERNAL):
+	install -m755 $@ $(BIN)/$(shell basename $@)

@@ -27,9 +27,9 @@ struct Machine {
     mount: MountOptions,
 }
 
-fn start_vm(tool: String, vm: Machine, can_mount: bool) {
+fn start_vm(vm: Machine, can_mount: bool) {
     thread::spawn(move || {
-        let mut cmd = Command::new(tool.to_owned());
+        let mut cmd = Command::new("vftool");
         cmd.arg("-k");
         cmd.arg(vm.kernel);
         cmd.arg("-i");
@@ -108,17 +108,10 @@ fn main() {
                 .takes_value(true),
         )
         .arg(
-            Arg::with_name("vftool")
-                .long("vftool")
-                .value_name("VFTOOL")
-                .help("vftool path")
-                .takes_value(true),
-        )
-        .arg(
-            Arg::with_name("root")
-                .long("root")
-                .value_name("ROOT")
-                .help("root path")
+            Arg::with_name("vm")
+                .long("vm")
+                .value_name("VMPATH")
+                .help("vm root path")
                 .takes_value(true),
         )
         .arg(
@@ -147,8 +140,6 @@ fn main() {
     let root = matches.value_of("root").unwrap_or("/Users/enck/VM/");
     let default_cfg = root.to_owned() + "vm.yaml";
     let cfg = matches.value_of("config").unwrap_or(default_cfg.as_str());
-    let default_tool = root.to_owned() + "vftool/build/vftool";
-    let tool = matches.value_of("vftool").unwrap_or(default_tool.as_str());
     let machine = load_config(cfg);
     if machine == None {
         exit(1);
@@ -165,6 +156,7 @@ fn main() {
         }
     }
     if vm.mount.enable && can_mount {
+        println!("creating mounted image");
         let dmg = to_dmg(&vm.mount.file);
         let path = Path::new(&vm.root.to_string()).join(dmg.as_str());
         if path.exists() {
@@ -202,7 +194,9 @@ fn main() {
             }
         }
     }
-    start_vm(tool.to_owned(), vm, can_mount);
+    println!("starting vftool");
+    start_vm(vm, can_mount);
+    println!("waiting for vftool to come online");
     manage(timeout, tty_file);
 }
 
@@ -213,6 +207,7 @@ fn manage(timeout: u64, tty_file: std::path::PathBuf) {
         println!("tty file not found");
         return;
     }
+    println!("vftool is online");
     match fs::read_to_string(tty_file) {
         Ok(data) => match Command::new("screen").arg(data.trim()).status() {
             Ok(_) => {}
