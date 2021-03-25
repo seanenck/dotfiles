@@ -1,24 +1,4 @@
-eval "$(/opt/homebrew/bin/brew shellenv)"
-alias scp='noglob scp'
-alias git='noglob git'
-alias grep="rg"
-binaries="$HOME/Library/Voidedtech/Bin"
-export GOPATH="$HOME/Library/Caches/go"
-export RUSTUP_HOME="$HOME/Library/Rust/rustup"
-export CARGO_HOME="$HOME/Library/Rust/cargo"
-export PATH="$PATH:$binaries:$HOME/.bin/"
-source $CARGO_HOME/env
-
-export PASSWORD_STORE_DIR=$HOME/Git/pass
-
-mkdir -p ~/.completions
-fpath=(~/.completions $fpath)
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-
-  autoload -Uz compinit
-  compinit
-fi
+source ~/.zshenv
 
 python3 $binaries/gpg-helper.py
 export GPG_TTY=$(tty)
@@ -60,9 +40,3 @@ pwgen() {
 totp() {
     python3 $binaries/totp.py $@
 }
-
-_totp() {
-	compadd $(totp list)
-}
-
-compdef _totp totp
