@@ -1,7 +1,7 @@
 [core]
     editor = vim
     autocrlf = input
-    excludesfile = /Users/enck/Library/Voidedtech/Config/gitignore
+    excludesfile = ~/.config/voidedtech/gitignore
 [grep]
     lineNumber = true
 [log]

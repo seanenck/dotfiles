@@ -3,7 +3,11 @@ __pycache__
 target
 .idea
 .iml
+
+!.config/
+.config/*
+!.config/voidedtech/
+
 !Library/
 Library/*
 !Library/LaunchAgents/
-!Library/Voidedtech/

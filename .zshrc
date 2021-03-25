@@ -24,7 +24,7 @@ _vimsetup() {
 _vimsetup
 
 brew() {
-    cfg=~/Library/Voidedtech/Config
+    cfg=~/.config/
     /opt/homebrew/bin/brew $@
     rm -f $cfg/Brewfile
     cwd=$PWD
