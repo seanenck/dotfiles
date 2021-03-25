@@ -27,6 +27,18 @@ struct Machine {
     mount: MountOptions,
 }
 
+fn start_watch(pid: u32) {
+    thread::spawn(move || {
+        match Command::new("vm").arg("--pid").arg(pid.to_string()).status() {
+            Ok(_) => return,
+            Err(e) => {
+                println!("watch failed: {}", e);
+                return;
+            }
+        }
+    });
+}
+
 fn watch(pid: u32) {
     thread::spawn(move || {
         let duration = time::Duration::from_secs(1);
@@ -160,7 +172,25 @@ fn main() {
                 .help("mount the directory")
                 .takes_value(false),
         )
+        .arg(
+            Arg::with_name("pid")
+                .long("pid")
+                .help("pid to monitor for management")
+                .takes_value(true),
+        )
         .get_matches();
+    let pid_raw = matches.value_of("pid").unwrap_or("");
+    if pid_raw != "" {
+        let pid_watch = match pid_raw.parse::<u32>() {
+            Ok(v) => v,
+            Err(e) => {
+                println!("invalid pid: {}", e);
+                exit(1);
+            }
+        };
+        watch(pid_watch);
+        return;
+    }
     let timeout_raw = matches.value_of("timeout").unwrap_or("5");
     let timeout = match timeout_raw.parse::<u64>() {
         Ok(v) => v,
@@ -229,7 +259,7 @@ fn main() {
         }
     }
     let pid = std::process::id();
-    watch(pid);
+    start_watch(pid);
     start_vm(tool.to_owned(), vm, can_mount);
     let duration = time::Duration::from_secs(10);
     thread::sleep(duration);
