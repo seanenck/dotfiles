@@ -27,7 +27,7 @@ struct Machine {
     mount: MountOptions,
 }
 
-fn start_vm(tool: String, vm: Machine) {
+fn start_vm(tool: String, vm: Machine, can_mount: bool) {
     thread::spawn(move || {
         let mut cmd = Command::new(tool.to_owned());
         cmd.arg("-k");
@@ -42,9 +42,9 @@ fn start_vm(tool: String, vm: Machine) {
         cmd.arg(vm.params);
         cmd.arg("-y");
         cmd.arg(vm.tty);
-        if vm.mount.enable {
+        if vm.mount.enable && can_mount {
             cmd.arg("-d");
-            cmd.arg(vm.mount.file);
+            cmd.arg(to_dmg(&vm.mount.file));
         }
         cmd.current_dir(vm.root);
         match cmd.output() {
@@ -90,6 +90,13 @@ fn get_cwd() -> Option<String> {
     None
 }
 
+fn to_dmg(file_name: &str) -> String {
+    let mut s = String::new();
+    s.push_str(&file_name.to_string());
+    s.push_str(".dmg");
+    s
+}
+
 fn main() {
     let matches = App::new("vm")
         .version("1.0")
@@ -121,6 +128,12 @@ fn main() {
                 .help("timeout waiting for tty")
                 .takes_value(true),
         )
+        .arg(
+            Arg::with_name("mount")
+                .long("mount")
+                .help("mount the directory")
+                .takes_value(false),
+        )
         .get_matches();
     let timeout_raw = matches.value_of("timeout").unwrap_or("5");
     let timeout = match timeout_raw.parse::<u64>() {
@@ -130,6 +143,7 @@ fn main() {
             exit(1);
         }
     };
+    let can_mount = matches.is_present("mount");
     let root = matches.value_of("root").unwrap_or("/Users/enck/VM/");
     let default_cfg = root.to_owned() + "vm.yaml";
     let cfg = matches.value_of("config").unwrap_or(default_cfg.as_str());
@@ -150,10 +164,8 @@ fn main() {
             }
         }
     }
-    if vm.mount.enable {
-        let mut dmg = String::new();
-        dmg.push_str(&vm.mount.file.to_string());
-        dmg.push_str(".dmg");
+    if vm.mount.enable && can_mount {
+        let dmg = to_dmg(&vm.mount.file);
         let path = Path::new(&vm.root.to_string()).join(dmg.as_str());
         if path.exists() {
             match fs::remove_file(path) {
@@ -190,7 +202,7 @@ fn main() {
             }
         }
     }
-    start_vm(tool.to_owned(), vm);
+    start_vm(tool.to_owned(), vm, can_mount);
     manage(timeout, tty_file);
     match Command::new("killall").arg("vftool").status() {
         Ok(_) => {}
