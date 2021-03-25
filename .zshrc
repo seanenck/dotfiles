@@ -10,6 +10,9 @@ export PATH="$PATH:$binaries:$HOME/.bin/"
 source $CARGO_HOME/env
 
 export PASSWORD_STORE_DIR=$HOME/Git/pass
+
+mkdir -p ~/.completions
+fpath=(~/.completions $fpath)
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 

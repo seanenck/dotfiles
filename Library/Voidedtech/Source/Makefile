@@ -1,6 +1,7 @@
 TARGETS  := vm
 EXTERNAL := $(HOME)/Git/vftool/build/vftool
 BIN      := $(HOME)/.bin
+export COMPLETIONS=$(HOME)/.completions/
 
 .PHONY: $(TARGETS) $(EXTERNAL)
 
