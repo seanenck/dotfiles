@@ -31,7 +31,3 @@ brew() {
 }
 
 source ~/Git/personal/zshrc
-
-totp() {
-    python3 $binaries/totp.py $@
-}
