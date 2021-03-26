@@ -9,5 +9,3 @@ export CARGO_HOME="$HOME/.rust/cargo"
 export PATH="$PATH:$binaries:$HOME/.bin/"
 source $CARGO_HOME/env
 export PASSWORD_STORE_DIR=$HOME/Git/pass
-source ~/.completions/zshrc
-fpath=(~/.completions $fpath)
