@@ -1,3 +1,5 @@
+source ~/.completions/zshrc
+
 gpga
 export GPG_TTY=$(tty)
 
