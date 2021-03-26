@@ -1,5 +1,20 @@
 source ~/.completions/zshrc
 
+_motd() {
+    devtools=~/.bin/built
+    echo "==================================================================="
+    echo
+    git -C ~ log -n1 --format="%cd (%h)" | sed 's/^/    home:     /g'
+    if [ -e $devtools ]; then
+        cat $devtools | sed 's/^/    devtools: /g'
+    fi
+    echo
+    echo "==================================================================="
+    echo
+}
+
+_motd
+
 gpga
 export GPG_TTY=$(tty)
 
