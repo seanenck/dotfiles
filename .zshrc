@@ -49,3 +49,4 @@ brew() {
 }
 
 source ~/Git/personal/zshrc
+alias history="cat $HOME/.zsh_history"
