@@ -1,3 +1,4 @@
+eval "$(/opt/homebrew/bin/brew shellenv)"
 source ~/.completions/zshrc
 
 _motd() {
