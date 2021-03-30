@@ -2,6 +2,10 @@
     editor = vim
     autocrlf = input
     excludesfile = ~/.config/voidedtech/gitignore
+[pager]
+    log = ~/.bin/diff-highlight | less
+    show = ~/.bin/diff-highlight | less
+    diff = ~/.bin/diff-highlight | less
 [grep]
     lineNumber = true
 [log]
