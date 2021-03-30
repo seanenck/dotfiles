@@ -36,10 +36,6 @@ _vimsetup() {
     fi
 }
 
-_diffhighlight() {
-    ln -sf $(find /opt/homebrew/Cellar/git -type f -name "diff-highlight" | sort -r | head -n 1) ~/.bin/diff-highlight
-}
-
 brew() {
     cfg=~/.config/voidedtech
     /opt/homebrew/bin/brew $@
@@ -50,7 +46,6 @@ brew() {
 }
 
 _motd
-_diffhighlight
 _vimsetup
 
 source ~/Git/personal/zshrc

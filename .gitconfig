@@ -3,9 +3,9 @@
     autocrlf = input
     excludesfile = ~/.config/voidedtech/gitignore
 [pager]
-    log = ~/.bin/diff-highlight | less
-    show = ~/.bin/diff-highlight | less
-    diff = ~/.bin/diff-highlight | less
+    log = /opt/homebrew/share/git-core/contrib/diff-highlight/diff-highlight | less
+    diff = /opt/homebrew/share/git-core/contrib/diff-highlight/diff-highlight | less
+    show = /opt/homebrew/share/git-core/contrib/diff-highlight/diff-highlight | less
 [grep]
     lineNumber = true
 [log]
