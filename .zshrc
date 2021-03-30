@@ -14,7 +14,6 @@ _motd() {
     echo
 }
 
-_motd
 
 gpga
 export GPG_TTY=$(tty)
@@ -37,7 +36,9 @@ _vimsetup() {
     fi
 }
 
-_vimsetup
+_diffhighlight() {
+    ln -sf $(find /opt/homebrew/Cellar/git -type f -name "diff-highlight" | sort -r | head -n 1) ~/.bin/diff-highlight
+}
 
 brew() {
     cfg=~/.config/voidedtech
@@ -47,6 +48,10 @@ brew() {
     cd $cfg && /opt/homebrew/bin/brew bundle dump
     cd $cwd
 }
+
+_motd
+_diffhighlight
+_vimsetup
 
 source ~/Git/personal/zshrc
 alias history="cat $HOME/.zsh_history"
