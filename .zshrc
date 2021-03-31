@@ -20,8 +20,10 @@ export GPG_TTY=$(tty)
 
 _vimsetup() {
     airline=~/.vim/pack/dist/start/vim-airline
+    cloned=~/Git/vim-airline
     if [ ! -d $airline ]; then
-        git clone https://github.com/vim-airline/vim-airline $airline
+        git clone https://github.com/vim-airline/vim-airline $cloned
+        ln -sf $cloned $airline
     fi
     tmp=~/.vim/tmp
     if [ ! -d $tmp ]; then
