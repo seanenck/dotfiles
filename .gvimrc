@@ -1,1 +1,1 @@
-set guifont=Menlo\ Regular:h16
+set guifont=Menlo\ Regular:h14
