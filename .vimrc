@@ -106,8 +106,8 @@ try
     set hidden
     nmap <C-n> :enew<CR>
     nmap <C-t> :enew<CR>
-    nmap <Tab> :bprevious<CR>
-    nmap <S-Tab> :bnext<CR>
+    nmap <Tab> :bnext<CR>
+    nmap <S-Tab> :bprevious<CR>
     nmap <C-w> :bp <BAR> bd #<CR>
 catch
 endtry
