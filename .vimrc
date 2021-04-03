@@ -1,3 +1,5 @@
+filetype plugin on
+set confirm
 set noautoindent
 set background=dark
 set nowrap
@@ -97,8 +99,6 @@ if filereadable("/etc/vim/vimrc.local")
 endif
 
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-
-filetype plugin on
 
 try
     let g:airline#extensions#tabline#enabled = 1
