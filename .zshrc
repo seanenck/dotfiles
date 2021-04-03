@@ -39,12 +39,19 @@ _vimsetup() {
 }
 
 brew() {
-    cfg=~/.config/voidedtech
+    cache=~/Library/Caches/com.voidedtech.Brew
+    mkdir -p $cache
+    find $cache -mtime +1 -delete
+    cache=$cache/$(date +%Y-%m-%d-%H)
     /opt/homebrew/bin/brew $@
-    rm -f $cfg/Brewfile
-    cwd=$PWD
-    cd $cfg && /opt/homebrew/bin/brew bundle dump
-    cd $cwd
+    if [ ! -e $cache ]; then
+        cfg=~/.config/voidedtech
+        rm -f $cfg/Brewfile
+        cwd=$PWD
+        cd $cfg && /opt/homebrew/bin/brew bundle dump
+        cd $cwd
+        touch $cache
+    fi
 }
 
 _motd
