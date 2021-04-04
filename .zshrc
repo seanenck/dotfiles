@@ -1,6 +1,10 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 source ~/.completions/zshrc
 
+for f in coreutils gnu-tar  gnu-sed gawk findutils; do
+    export PATH="$HOMEBREW_PREFIX/opt/$f/libexec/gnubin:$PATH"
+done
+
 _motd() {
     devtools=~/.bin/built
     echo "==================================================================="
