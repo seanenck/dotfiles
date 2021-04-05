@@ -43,18 +43,15 @@ _vimsetup() {
 }
 
 brew() {
-    cache=~/Library/Caches/com.voidedtech.Brew
-    mkdir -p $cache
-    find $cache -mtime +1 -delete
-    cache=$cache/$(date +%Y-%m-%d-%H)
     /opt/homebrew/bin/brew $@
-    if [ ! -e $cache ]; then
+    if [ ! -z "$1" ]; then
+        if [[ "$1" == "install" ]] || [[ "$1" == "remove" ]]; then
         cfg=~/.config/voidedtech
         rm -f $cfg/Brewfile
         cwd=$PWD
         cd $cfg && /opt/homebrew/bin/brew bundle dump
         cd $cwd
-        touch $cache
+        fi
     fi
 }
 
