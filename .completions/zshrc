@@ -14,9 +14,3 @@ if type brew &>/dev/null; then
     autoload -Uz compinit
     compinit
 fi
-
-_totp() {
-	compadd $(totp list)
-}
-
-compdef _totp totp
