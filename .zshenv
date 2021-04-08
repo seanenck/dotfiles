@@ -7,3 +7,4 @@ export CARGO_HOME="$HOME/.rust/cargo"
 export PATH="$HOME/.bin:$PATH"
 source $CARGO_HOME/env
 export PASSWORD_STORE_DIR=$HOME/Git/pass
+export PASSWORD_STORE_ENABLE_EXTENSIONS=true
