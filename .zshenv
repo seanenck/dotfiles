@@ -6,4 +6,4 @@ export RUSTUP_HOME="$HOME/.rust/rustup"
 export CARGO_HOME="$HOME/.rust/cargo"
 export PATH="$HOME/.bin:$PATH"
 source $CARGO_HOME/env
-export PASSWORD_STORE_DIR=$HOME/Git/pass
+export LOCKBOX_STORE="/Users/enck/Git/passwords"
