@@ -22,7 +22,7 @@
 [user]
     name = Sean Enck
     email = enckse@voidedtech.com
-    signingKey = 031E9E4B09CFD8D3F0ED35025109CDF607B5BB04
+    signingKey = 58C85D8DEA8742AFC981BE793058639FBCC82EE9
 [help]
     format = man
 [commit]
