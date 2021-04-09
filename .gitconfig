@@ -33,3 +33,5 @@
     insteadOf = bookend:
 [url "git@git.voidedtech.com:~/public/"]
     insteadOf = enckse:
+[diff "lb"]
+    textconv = difflb
