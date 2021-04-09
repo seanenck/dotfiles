@@ -7,3 +7,4 @@ export CARGO_HOME="$HOME/.rust/cargo"
 export PATH="$HOME/.bin:$PATH"
 source $CARGO_HOME/env
 export LOCKBOX_STORE="/Users/enck/Git/passwords"
+export LOCKBOX_KEYMODE="macos"
