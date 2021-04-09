@@ -105,7 +105,6 @@ try
     let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
     set hidden
     nmap <C-n> :enew<CR>
-    nmap <C-t> :enew<CR>
     nmap <Tab> :bnext<CR>
     nmap <S-Tab> :bprevious<CR>
     nmap <C-w> :bp <BAR> bd #<CR>
