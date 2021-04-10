@@ -1,5 +1,26 @@
+alias grep="rg"
+export GOPATH="$HOME/Library/Caches/go"
+export RUSTUP_HOME="$HOME/.rust/rustup"
+export CARGO_HOME="$HOME/.rust/cargo"
+export PATH="$HOME/.bin:$PATH"
+source $CARGO_HOME/env
+export LOCKBOX_STORE="/Users/enck/Git/passwords"
+export LOCKBOX_KEYMODE="macos"
+export LOCKBOX_TOTP="keys/totp/"
+
 eval "$(/opt/homebrew/bin/brew shellenv)"
-source ~/.completions/zshrc
+
+_rust-comp() {
+    completions=~/.completions/_rustup
+    if [ ! -e $completions ]; then
+        ~/.rust/cargo/bin/rustup completions bash > $completions
+    fi
+}
+
+_rust-comp
+for f in $(find ~/.completions -type f); do
+    . $f
+done
 
 for f in coreutils gnu-tar  gnu-sed gawk findutils; do
     export PATH="$HOMEBREW_PREFIX/opt/$f/libexec/gnubin:$PATH"
@@ -58,5 +79,4 @@ brew() {
 _motd
 _vimsetup
 
-source ~/Git/personal/zshrc
-alias history="cat $HOME/.zsh_history"
+source ~/Git/personal/bashrc
