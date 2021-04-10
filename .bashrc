@@ -58,20 +58,6 @@ for f in coreutils gnu-tar  gnu-sed gawk findutils; do
     export PATH="$HOMEBREW_PREFIX/opt/$f/libexec/gnubin:$PATH"
 done
 
-_motd() {
-    devtools=~/.bin/built
-    echo "==================================================================="
-    echo
-    git -C ~ log -n1 --format="%cd (%h)" | sed 's/^/    home:     /g'
-    if [ -e $devtools ]; then
-        cat $devtools | sed 's/^/    devtools: /g'
-    fi
-    echo
-    echo "==================================================================="
-    echo
-}
-
-
 gpga
 export GPG_TTY=$(tty)
 
@@ -118,7 +104,6 @@ glint() {
     golangci-lint run
 }
 
-_motd
 _vimsetup
 
 source ~/Git/personal/bashrc
