@@ -43,7 +43,7 @@ export LOCKBOX_TOTP="keys/totp/"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 _rust-comp() {
-    completions=~/.completions/_rustup
+    completions=~/.completions/rustup.bash
     if [ ! -e $completions ]; then
         ~/.rust/cargo/bin/rustup completions bash > $completions
     fi
