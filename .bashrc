@@ -32,7 +32,7 @@ shopt -s checkwinsize
 export GOPATH="$HOME/Library/Caches/go"
 export RUSTUP_HOME="$HOME/.rust/rustup"
 export CARGO_HOME="$HOME/.rust/cargo"
-export PATH="$HOME/.bin:$PATH"
+export PATH="$HOME/.bin:$GOPATH/bin/:$PATH"
 source $CARGO_HOME/env
 export LOCKBOX_STORE="/Users/enck/Git/passwords"
 export LOCKBOX_KEYMODE="macos"
