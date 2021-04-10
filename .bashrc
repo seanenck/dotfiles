@@ -61,27 +61,4 @@ done
 
 gpga
 export GPG_TTY=$(tty)
-
-_vimsetup() {
-    airline=~/.vim/pack/dist/start/vim-airline
-    cloned=~/Git/vim-airline
-    if [ ! -d $airline ]; then
-        git clone https://github.com/vim-airline/vim-airline $cloned
-        ln -sf $cloned $airline
-    fi
-    tmp=~/.vim/tmp
-    if [ ! -d $tmp ]; then
-        mkdir -p $tmp
-    fi
-    tmpfile=$tmp/$(date +%Y%m%d)
-    if [ ! -e $tmpfile ]; then
-        for o in swap tmp undo; do
-            find ~/.vim/$o -type f -mtime +1 -delete
-        done
-        touch $tmpfile
-    fi
-}
-
-_vimsetup
-
 source ~/Git/personal/bashrc
