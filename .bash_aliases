@@ -5,11 +5,15 @@ brew() {
     has=0
     if [ ! -z "$1" ]; then
         has=1
-        if [[ "$1" == "cupgrade" ]]; then
-            echo "updating casks"
-            $bin upgrade $(brew outdated --cask --greedy --quiet)
-            return
-        fi
+        case $1 in
+            "full-upgrade")
+                echo "brew full upgrade"
+                $bin update
+                $bin upgrade
+                $bin upgrade $(brew outdated --cask --greedy --quiet)
+                return
+                ;;
+        esac
     fi
     $bin $@
     if [ $has -eq 1 ]; then
