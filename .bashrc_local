@@ -7,6 +7,12 @@ export LOCKBOX_STORE="/Users/enck/Git/passwords"
 export LOCKBOX_KEYMODE="macos"
 export LOCKBOX_TOTP="keys/totp/"
 
+for f in devtools gnupg passwords personal voidedtech.d; do
+    if [ ! -d ~/Git/$f ]; then
+        echo "-> $f not cloned"
+    fi
+done
+
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 . /opt/homebrew/completions/bash/brew
 eval "$(/opt/homebrew/bin/brew shellenv)"
