@@ -16,6 +16,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 for f in $CARGO_HOME/env \
          $HOMEBREW_REPOSITORY/etc/profile.d/bash_completion.sh \
          $HOMEBREW_REPOSITORY/completions/bash/brew \
+         $HOME/Git/voidedtech.d/skel/bash_aliases \
          $HOME/Git/personal/bashrc \
          $HOME/.bash_aliases; do
     if [ -e $f ]; then
