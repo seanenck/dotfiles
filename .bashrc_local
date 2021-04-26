@@ -18,7 +18,6 @@ done
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 . ~/.bash_aliases
-~/.rust/cargo/bin/rustup completions bash > ~/.completions/rustup.bash
 for f in $(find ~/.completions -type f -name "*.bash"); do
     . $f
 done
