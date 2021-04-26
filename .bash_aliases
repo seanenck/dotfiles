@@ -1,27 +1,15 @@
 #!/bin/bash
 brew() {
-    local has bin
+    local bin
     bin=/opt/homebrew/bin/brew
-    has=0
-    if [ ! -z "$1" ]; then
-        has=1
-        case $1 in
-            "full-upgrade")
-                echo "brew full upgrade"
-                $bin update
-                $bin upgrade
-                $bin upgrade $(brew outdated --cask --greedy --quiet)
-                return
-                ;;
-        esac
-    fi
     $bin $@
-    if [ $has -eq 1 ]; then
+    if [ ! -z "$1" ]; then
         if [[ "$1" == "install" ]] || [[ "$1" == "remove" ]]; then
             cfg=~/.config/voidedtech
             rm -f $cfg/Brewfile
             cwd=$PWD
-            cd $cfg && $bin bundle dump
+            cd $cfg && $bin leaves | sort | sed 's/^/brew: /g' > packages
+            cd $cfg && $bin list --casks | tr ' ' '\n' | sort | sed 's/^/cask: /g' >> packages
             cd $cwd
         fi
     fi
