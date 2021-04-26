@@ -12,18 +12,27 @@ for f in devtools gnupg passwords personal voidedtech.d; do
     fi
 done
 
-. $CARGO_HOME/env
-. /opt/homebrew/etc/profile.d/bash_completion.sh
-. /opt/homebrew/completions/bash/brew
 eval "$(/opt/homebrew/bin/brew shellenv)"
-
-. ~/.bash_aliases
-for f in $(find ~/.completions -type f -name "*.bash"); do
-    . $f
+for f in $CARGO_HOME/env \
+         $HOMEBREW_REPOSITORY/etc/profile.d/bash_completion.sh \
+         $HOMEBREW_REPOSITORY/completions/bash/brew \
+         $HOME/.bash_aliases; do
+    if [ -e $f ]; then
+        . $f
+    fi
 done
 
+if [ -d ~/.completions ]; then
+    for f in $(find ~/.completions -type f -name "*.bash"); do
+        . $f
+    done
+fi
+
 for f in coreutils gnu-tar gnu-sed gawk findutils; do
-    export PATH="$HOMEBREW_PREFIX/opt/$f/libexec/gnubin:$PATH"
+    p="$HOMEBREW_PREFIX/opt/$f/libexec/gnubin"
+    if [ -d $p ]; then
+        export PATH="$p:$PATH"
+    fi
 done
 
 gpga
