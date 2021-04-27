@@ -37,5 +37,9 @@ for f in coreutils gnu-tar gnu-sed gawk findutils; do
     fi
 done
 
+for f in Documents Downloads Public; do
+    find ~/$f -type f | grep -v "\.(localized|DS_Store)"
+done
+
 gpga
 export GPG_TTY=$(tty)
