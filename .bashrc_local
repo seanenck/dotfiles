@@ -38,7 +38,7 @@ for f in coreutils gnu-tar gnu-sed gawk findutils; do
 done
 
 for f in Documents Downloads Public; do
-    find ~/$f -mmin +1 -type f | grep -v "\.(localized|DS_Store)"
+    find ~/$f -mtime +1 -type f | grep -v "\.(localized|DS_Store)"
 done
 
 gpga
