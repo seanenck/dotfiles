@@ -35,5 +35,19 @@ for f in Documents Downloads Public; do
     fi
 done
 
+_nixpkgs() {
+    local packages cnt
+    packages=$HOME/.config/voidedtech/packages
+    cnt=1
+    if [ -e $packages ]; then
+        cnt=$(find $packages -type f -mtime +1 | wc -l)
+    fi
+    if [ $cnt -gt 0 ]; then
+        nix-env -q --xml | grep attrPath | sed 's/.*pname=//' | cut -d ' ' -f 1 | sed 's/"//g' | sort > $packages
+    fi
+}
+
+_nixpkgs &
+
 gpga
 export GPG_TTY=$(tty)
