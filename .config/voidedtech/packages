@@ -17,7 +17,6 @@ brew: rsync
 brew: watch
 cask: firefox
 cask: intellij-idea-ce
-cask: iterm2
 cask: kitty
 cask: rectangle
 cask: signal
