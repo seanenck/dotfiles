@@ -7,5 +7,7 @@
         pkgs.buildPackages.cargo
         pkgs.buildPackages.clippy
         pkgs.buildPackages.libiconv
+        pkgs.buildPackages.goimports
+        pkgs.buildPackages.golint
     ];
 }
