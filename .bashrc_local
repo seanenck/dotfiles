@@ -12,10 +12,10 @@ for f in devtools gnupg passwords personal voidedtech.d; do
     fi
 done
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
 for f in $CARGO_HOME/env \
-         $HOMEBREW_REPOSITORY/etc/profile.d/bash_completion.sh \
-         $HOMEBREW_REPOSITORY/completions/bash/brew \
+         $HOME/.nix-profile/etc/profile.d/nix.sh \
+         $HOME/.nix-profile/share/bash-completion/bash_completion \
+         $HOME/.nix-profile/etc/profile.d/bash_completion.sh \
          $HOME/Git/voidedtech.d/skel/bash_aliases \
          $HOME/Git/personal/bashrc \
          $HOME/.bash_aliases; do
@@ -29,13 +29,6 @@ if [ -d ~/.completions ]; then
         . $f
     done
 fi
-
-for f in coreutils gnu-tar gnu-sed gawk findutils; do
-    p="$HOMEBREW_PREFIX/opt/$f/libexec/gnubin"
-    if [ -d $p ]; then
-        export PATH="$p:$PATH"
-    fi
-done
 
 for f in Documents Downloads Public; do
     c=$(find ~/$f -mtime +1 -type f | grep -v "\.(localized|DS_Store)" | wc -l)
