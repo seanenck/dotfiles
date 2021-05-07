@@ -1,8 +1,0 @@
-brew: golangci-lint
-brew: pycodestyle
-brew: python@3.9
-cask: firefox
-cask: intellij-idea-ce
-cask: kitty
-cask: rectangle
-cask: signal
