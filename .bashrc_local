@@ -49,6 +49,14 @@ _nixpkgs() {
 
 _nixpkgs &
 
+_nixalias() {
+    for f in $(find ~/.config/voidedtech -name "*.nix"); do
+        alias nix-shell-$(basename $f | sed 's/\.nix//g')="nix-shell $f"
+    done
+}
+
+_nixalias
+
 _kitty-installer() {
     python3 ~/.config/voidedtech/kitty-installer.py --headless
 }
