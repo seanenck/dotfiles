@@ -96,7 +96,7 @@ def clean_cache(cache, fname):
             os.remove(os.path.join(cache, x))
 
 
-def download_installer():
+def download_installer(must_install):
     url, size = get_latest_release_data()
     fname = url.rpartition('/')[-1]
     cache = _CACHE
@@ -105,6 +105,8 @@ def download_installer():
     clean_cache(cache, fname)
     dest = os.path.join(cache, fname)
     if os.path.exists(dest) and os.path.getsize(dest) == size:
+        if must_install:
+            return dest
         return None
     if os.path.exists(dest):
         os.remove(dest)
@@ -149,7 +151,7 @@ def main():
                 if not headless:
                     print("recent update performed, '--force' to force upgrade")
                 return
-    installer = download_installer()
+    installer = download_installer(not os.path.exists(state))
     if installer is None:
         if not headless:
             print("no installer action found, already up-to-date")
