@@ -49,5 +49,11 @@ _nixpkgs() {
 
 _nixpkgs &
 
+_kitty-installer() {
+    python3 ~/.config/voidedtech/kitty-installer.py > /dev/null
+}
+
+_kitty-installer
+
 gpga
 export GPG_TTY=$(tty)
