@@ -10,6 +10,7 @@ go
 golangci-lint
 gsed
 pinentry-mac
+python39
 ripgrep
 vim
 watch
