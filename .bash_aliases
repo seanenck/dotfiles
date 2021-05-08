@@ -10,17 +10,3 @@ glint() {
         golangci-lint run
     fi
 }
-
-nix-update() {
-    nix-channel --update
-    nix-env -iA nixpkgs.nix
-}
-
-_nixalias() {
-    for f in $(find ~/.config/voidedtech -name "*.nix"); do
-        alias nix-shell-$(basename $f | sed 's/\.nix//g')="nix-shell $f"
-    done
-}
-
-_nixalias
-

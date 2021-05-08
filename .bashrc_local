@@ -1,9 +1,12 @@
 export GOPATH="$HOME/Library/Caches/go"
 export RUSTUP_HOME="$HOME/.rust/rustup"
-export PATH="$HOME/.bin:$GOPATH/bin/:$PATH"
+export CARGO_HOME="$HOME/.rust/cargo"
+export PATH="$CARGO_HOME/bin:$HOME/.bin:$GOPATH/bin/:$PATH"
+export PATH="/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH"
 export LOCKBOX_STORE="/Users/enck/Git/passwords"
 export LOCKBOX_KEYMODE="macos"
 export LOCKBOX_TOTP="keys/totp/"
+export DISPLAY=:0
 
 for f in devtools gnupg passwords personal voidedtech.d; do
     if [ ! -d ~/Git/$f ]; then
@@ -11,11 +14,10 @@ for f in devtools gnupg passwords personal voidedtech.d; do
     fi
 done
 
-for f in $HOME/.nix-profile/etc/profile.d/nix.sh \
-         $HOME/.nix-profile/share/bash-completion/bash_completion \
-         $HOME/.nix-profile/etc/profile.d/bash_completion.sh \
+for f in /opt/local/share/bash-completion/bash_completion \
          $HOME/Git/voidedtech.d/skel/bash_aliases \
          $HOME/Git/personal/bashrc \
+         $CARGO_HOME/env \
          $HOME/.bash_aliases; do
     if [ -e $f ]; then
         . $f
@@ -28,26 +30,15 @@ if [ -d ~/.completions ]; then
     done
 fi
 
+
+port echo requested | cut -d " " -f 1 > ~/.config/voidedtech/packages
+
 for f in Documents Downloads Public; do
     c=$(find ~/$f -mtime +1 -type f | grep -v "\.(localized|DS_Store)" | wc -l)
     if [ $c -gt 0 ]; then
         echo " -> $f [$c]"
     fi
 done
-
-_nixpkgs() {
-    local packages cnt
-    packages=$HOME/.config/voidedtech/packages
-    cnt=1
-    if [ -e $packages ]; then
-        cnt=$(find $packages -type f -mtime +1 | wc -l)
-    fi
-    if [ $cnt -gt 0 ]; then
-        nix-env -q --xml | grep attrPath | sed 's/.*pname=//' | cut -d ' ' -f 1 | sed 's/"//g' | sort > $packages
-    fi
-}
-
-_nixpkgs &
 
 _kitty-installer() {
     python3 ~/.config/voidedtech/kitty-installer.py --headless
