@@ -6,8 +6,10 @@
         pkgs.buildPackages.go_1_16
         pkgs.buildPackages.cargo
         pkgs.buildPackages.clippy
+        pkgs.buildPackages.rustc
         pkgs.buildPackages.libiconv
         pkgs.buildPackages.goimports
         pkgs.buildPackages.golint
+        pkgs.buildPackages.rustup
     ];
 }
