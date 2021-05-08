@@ -50,7 +50,7 @@ _nixpkgs() {
 _nixpkgs &
 
 _kitty-installer() {
-    python3 ~/.config/voidedtech/kitty-installer.py > /dev/null
+    python3 ~/.config/voidedtech/kitty-installer.py --headless
 }
 
 _kitty-installer

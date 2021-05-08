@@ -36,7 +36,7 @@ def run(*args):
         raise SystemExit(ret)
 
 
-class Reporter:  # {{{
+class Reporter:
 
     def __init__(self, fname):
         self.fname = fname
@@ -49,7 +49,6 @@ class Reporter:  # {{{
             self.last_percent = percent
             print(report, end='')
             sys.stdout.flush()
-# }}}
 
 
 def get_latest_release_data():
@@ -138,13 +137,17 @@ def main():
     state = os.path.join(_CACHE, "success")
     week = str(datetime.datetime.now().isocalendar()[1])
     force = False
+    headless = False
     if len(sys.argv) > 1:
         if sys.argv[1] == "--force":
             force = True
+        elif sys.argv[1] == "--headless":
+            headless = True
     if os.path.exists(state) and not force:
         with open(state, "r") as f:
             if f.read().strip() == week:
-                print("recent update performed, '--force' to force upgrade")
+                if not headless:
+                    print("recent update performed, '--force' to force upgrade")
                 return
     installer = download_installer()
     macos_install(state, week, installer, dest="/Applications")
