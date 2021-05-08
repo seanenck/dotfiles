@@ -105,8 +105,7 @@ def download_installer():
     clean_cache(cache, fname)
     dest = os.path.join(cache, fname)
     if os.path.exists(dest) and os.path.getsize(dest) == size:
-        print('Using previously downloaded', fname)
-        return dest
+        return None
     if os.path.exists(dest):
         os.remove(dest)
     do_download(url, size, dest)
@@ -139,10 +138,11 @@ def main():
     force = False
     headless = False
     if len(sys.argv) > 1:
-        if sys.argv[1] == "--force":
-            force = True
-        elif sys.argv[1] == "--headless":
-            headless = True
+        for obj in sys.argv[1:]:
+            if obj == "--force":
+                force = True
+            elif obj == "--headless":
+                headless = True
     if os.path.exists(state) and not force:
         with open(state, "r") as f:
             if f.read().strip() == week:
@@ -150,6 +150,10 @@ def main():
                     print("recent update performed, '--force' to force upgrade")
                 return
     installer = download_installer()
+    if installer is None:
+        if not headless:
+            print("no installer action found, already up-to-date")
+        return
     macos_install(state, week, installer, dest="/Applications")
 
 
