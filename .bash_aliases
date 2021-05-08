@@ -10,3 +10,8 @@ glint() {
         golangci-lint run
     fi
 }
+
+nix-update() {
+    nix-channel --update
+    nix-env -iA nixpkgs.nix
+}
