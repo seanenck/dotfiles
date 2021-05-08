@@ -151,7 +151,7 @@ def main():
                 if not headless:
                     print("recent update performed, '--force' to force upgrade")
                 return
-    installer = download_installer(not os.path.exists(state))
+    installer = download_installer(not os.path.exists(state) or force)
     if installer is None:
         if not headless:
             print("no installer action found, already up-to-date")
