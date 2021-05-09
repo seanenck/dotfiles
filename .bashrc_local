@@ -51,11 +51,5 @@ for f in Documents Downloads Public; do
     fi
 done
 
-_kitty-installer() {
-    python3 ~/.config/voidedtech/kitty-installer.py --headless
-}
-
-_kitty-installer
-
 gpga
 export GPG_TTY=$(tty)
