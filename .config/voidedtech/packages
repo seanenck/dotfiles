@@ -12,8 +12,8 @@ gopls
 gsed
 pinentry-mac
 py-language-server
-python-language-server_select
 python39
 ripgrep
+rsync
 vim
 watch
