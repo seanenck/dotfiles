@@ -38,7 +38,7 @@ _portpkgs() {
         do=$(find $pkg -mtime +1 | wc -l)
     fi
     if [ $do -gt 0 ]; then
-        port echo requested | sort | cut -d " " -f 1 > $pkg
+        port echo requested | sort | cut -d " " -f 1 | uniq > $pkg
     fi
 }
 
