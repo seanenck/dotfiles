@@ -15,7 +15,7 @@ for f in devtools gnupg passwords personal voidedtech.d; do
 done
 
 for f in /opt/local/share/bash-completion/bash_completion \
-         $HOME/Git/voidedtech.d/skel/bash_aliases \
+         $HOME/Git/construct/common/bash_aliases \
          $HOME/Git/personal/bashrc \
          $CARGO_HOME/env \
          $HOME/.bash_aliases; do
