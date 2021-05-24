@@ -31,7 +31,7 @@
     gpgSign = true
 [url "bookend:/mnt/Storage/repositories/git/"]
     insteadOf = bookend:
-[url "git@git.voidedtech.com:~/public/"]
+[url "enck@git.voidedtech.com:/mnt/git/public/"]
     insteadOf = enckse:
 [diff "lb"]
     textconv = lb diff
