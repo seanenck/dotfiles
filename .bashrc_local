@@ -8,7 +8,7 @@ export LOCKBOX_KEYMODE="macos"
 export LOCKBOX_TOTP="keys/totp/"
 export DISPLAY=:0
 
-for f in devtools gnupg passwords workstations; do
+for f in devtools passwords workstations; do
     if [ ! -d ~/Git/$f ]; then
         echo "-> $f not cloned"
     fi
