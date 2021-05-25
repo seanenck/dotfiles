@@ -8,7 +8,7 @@ export LOCKBOX_KEYMODE="macos"
 export LOCKBOX_TOTP="keys/totp/"
 export DISPLAY=:0
 
-for f in devtools gnupg passwords personal; do
+for f in devtools gnupg passwords workstations; do
     if [ ! -d ~/Git/$f ]; then
         echo "-> $f not cloned"
     fi
@@ -16,7 +16,7 @@ done
 
 for f in /opt/local/share/bash-completion/bash_completion \
          $HOME/.bash_aliases_local \
-         $HOME/Git/personal/bashrc \
+         $HOME/Git/workstations/bashrc \
          $CARGO_HOME/env \
          $HOME/.bash_aliases; do
     if [ -e $f ]; then
