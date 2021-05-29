@@ -53,7 +53,3 @@ done
 
 gpga
 export GPG_TTY=$(tty)
-if [ -z "$ZELLIJ" ]; then
-    zellij
-    exit $?
-fi
