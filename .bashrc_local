@@ -53,3 +53,4 @@ done
 
 gpga
 export GPG_TTY=$(tty)
+git uncommitted
