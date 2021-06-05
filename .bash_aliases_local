@@ -10,3 +10,9 @@ glint() {
         golangci-lint run
     fi
 }
+
+sys-upgrade() {
+    sudo port selfupdate
+    sudo port upgrade outdated
+    rustup update
+}
