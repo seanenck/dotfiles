@@ -30,20 +30,6 @@ if [ -d ~/.completions ]; then
     done
 fi
 
-_portpkgs() {
-    local pkg do
-    pkg=~/.config/voidedtech/packages
-    do=1
-    if [ -e $pkg ]; then
-        do=$(find $pkg -mtime +1 | wc -l)
-    fi
-    if [ $do -gt 0 ]; then
-        port echo requested | sort | cut -d " " -f 1 | uniq > $pkg
-    fi
-}
-
-_portpkgs
-
 for f in Documents Downloads Public; do
     c=$(find ~/$f -mtime +1 -type f | grep -v "\.(localized|DS_Store)" | wc -l)
     if [ $c -gt 0 ]; then
