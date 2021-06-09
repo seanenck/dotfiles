@@ -15,4 +15,6 @@ sys-upgrade() {
     sudo port selfupdate
     sudo port upgrade outdated
     rustup update
+    sudo port uninstall inactive
+    sudo port reclaim
 }
