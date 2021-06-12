@@ -12,10 +12,21 @@ glint() {
 }
 
 sys-upgrade() {
+    echo "-> update ports"
     sudo port selfupdate
     sudo port upgrade outdated
+    echo "-> update rust"
     rustup update
+    echo "-> update kitty"
+    kitty-updater
+    echo "-> cleanup ports"
     sudo port uninstall inactive
     sudo port reclaim
-    kitty-updater
+    echo "-> setup defaults"
+    if [ "$(which python)" == "/usr/bin/python" ]; then
+        sudo port select --set python python39;
+    fi
+    which pycodestyle 2>&1 || sudo port select --set pycodestyle pycodestyle-py39
+    which pydocstyle 2>&1 || sudo port select --set pydocstyle py39-pydocstyle
+    which pyflakes 2>&1 || sudo port select --set pyflakes py39-pyflakes
 }
