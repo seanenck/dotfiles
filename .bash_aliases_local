@@ -17,4 +17,5 @@ sys-upgrade() {
     rustup update
     sudo port uninstall inactive
     sudo port reclaim
+    kitty-updater
 }
