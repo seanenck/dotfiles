@@ -1,3 +1,4 @@
 #!/opt/local/bin/bash
+PATH="/opt/local/bin/:$PATH"
 /Users/enck/.bin/mbsync-local
 sleep 300
