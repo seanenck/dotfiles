@@ -6,6 +6,7 @@ set history_file = "~/.mutt/tmp/mutt.history"
 macro index,pager d "<save-message>=Trash<enter><enter>" "Trash"
 mailboxes +INBOX
 mailboxes +Search
+mailboxes +Trash
 source ~/.mutt/etc/fastmail.rc
 set mbox_type   = Maildir
 set editor = "vim"
