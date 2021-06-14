@@ -5,9 +5,11 @@ set postponed   = "=Drafts"
 set history_file = "~/.mutt/tmp/mutt.history"
 macro index,pager d "<save-message>=Trash<enter><enter>" "Trash"
 mailboxes +INBOX
+mailboxes +Sent
 source ~/.mutt/etc/fastmail.rc
-mailboxes +Search
+mailboxes +Spam
 mailboxes +Trash
+mailboxes +Search
 set mbox_type   = Maildir
 set editor = "vim"
 
