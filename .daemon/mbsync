@@ -1,0 +1,3 @@
+#!/opt/local/bin/bash
+/Users/enck/.bin/mbsync-local
+sleep 300
