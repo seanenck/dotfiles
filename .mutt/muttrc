@@ -15,6 +15,7 @@ set spoolfile   = "+INBOX"
 unset record
 
 set alias_file  = ~/.mutt/etc/aliases
+source ~/.mutt/gpg.rc
 set sort_alias  = alias
 source $alias_file
 
