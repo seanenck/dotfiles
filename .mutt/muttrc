@@ -1,5 +1,5 @@
 set from        = "enckse@voidedtech.com"
-set sendmail    = "/opt/local/bin/msmtp -C ~/.mutt/etc/msmtprc -a fastmail"
+set sendmail    = "/opt/local/bin/msmtp -C /Users/enck/.mutt/etc/msmtprc -a fastmail"
 set folder      = ~/.mutt/maildir
 set postponed   = "=Drafts"
 set history_file = "~/.mutt/tmp/mutt.history"
