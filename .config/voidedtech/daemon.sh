@@ -5,6 +5,7 @@ while [ 1 -eq 1 ]; do
         for f in $(find $DIR -type f); do
             if [ -x $f ]; then
                 $f
+                sleep 1
             fi
         done
     fi
