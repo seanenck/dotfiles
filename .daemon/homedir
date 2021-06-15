@@ -1,0 +1,5 @@
+#!/opt/local/bin/bash
+curl "http://localhost:8910/"
+if [ $? -ne 0 ]; then
+    ~/.bin/homedir &
+fi

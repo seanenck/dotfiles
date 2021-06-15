@@ -8,6 +8,8 @@ target
 .config/*
 !.config/voidedtech/
 
+!.daemon/
+
 !Library/
 Library/*
 !Library/LaunchAgents/
