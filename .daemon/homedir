@@ -1,5 +1,8 @@
 #!/opt/local/bin/bash
-curl "http://localhost:8910/"
-if [ $? -ne 0 ]; then
-    ~/.bin/homedir &
+cnt=$(ps aux | grep homedir | grep -v "grep" | grep "Users/enck/.bin" | wc -l)
+if [ $cnt -eq 0 ]; then
+    curl "http://localhost:8910/"
+    if [ $? -ne 0 ]; then
+        ~/.bin/homedir &
+    fi
 fi
