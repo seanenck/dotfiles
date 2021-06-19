@@ -11,6 +11,13 @@ glint() {
     fi
 }
 
+plint() {
+    local p
+    for p in pycodestyle pydocstyle pyflakes; do
+        $p $(find . -type f -name "*.py") | sed "s/^/$p: /g"
+    done
+}
+
 _vim_plugins() {
     for f in "vim-airline/vim-airline" "dense-analysis/ale"; do
         echo "$f"
