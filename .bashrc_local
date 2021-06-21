@@ -38,7 +38,6 @@ for f in Documents Downloads Public; do
     fi
 done
 
-gpga
 export GPG_TTY=$(tty)
 git uncommitted
 mailcnt=$(find ~/.mutt/maildir -type f -wholename "*/new/*" | grep -v "Trash" | wc -l)

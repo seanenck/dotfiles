@@ -1,0 +1,9 @@
+#!/opt/local/bin/bash
+CACHE=/Users/enck/Library/Caches/com.voidedtech.Gpg/
+mkdir -p $CACHE
+find $CACHE -type f -mtime +2 -delete
+FILE=${CACHE}$(date +%Y-%m-%d)
+if [ ! -e $FILE ]; then
+    killall gpg-agent
+    touch $FILE
+fi
