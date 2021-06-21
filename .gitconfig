@@ -1,7 +1,7 @@
 [core]
     editor = vim
     autocrlf = input
-    excludesfile = ~/.config/voidedtech/gitignore
+    excludesfile = ~/.gitignore_global
 [pager]
     log = /opt/local/share/git/contrib/diff-highlight/diff-highlight | less
     diff = /opt/local/share/git/contrib/diff-highlight/diff-highlight | less
