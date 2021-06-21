@@ -9,6 +9,30 @@ import time
 
 _START_SESS = "start"
 _CONSOLE_SESS = "console"
+_COMPLETIONS = """#!/opt/local/bin/bash
+_vm() {
+    local cur opts
+    cur=${COMP_WORDS[COMP_CWORD]}
+    if [ $COMP_CWORD -eq 1 ]; then
+        opts="start stop status extract attach"
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+    else
+        if [ $COMP_CWORD -ge 2 ]; then
+            opts="--config --session"
+            case ${COMP_WORDS[1]} in
+                "start")
+                    opts="$opts --autoattach --noextract"
+                    ;;
+            esac
+        fi
+        if [ ! -z "$opts" ]; then
+            COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+        fi
+    fi
+}
+
+complete -F _vm -o bashdefault -o default vm
+"""
 
 
 class Object(object):
@@ -212,6 +236,8 @@ def _vm():
         _status(args.session)
     elif cmd == "start":
         _start(vm, args.session, args.noextract, args.autoattach)
+    elif cmd == "completions":
+        print(_COMPLETIONS)
     else:
         raise Exception("unknown command")
 
