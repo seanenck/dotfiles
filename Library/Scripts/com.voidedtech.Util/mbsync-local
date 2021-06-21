@@ -1,0 +1,22 @@
+#!/opt/local/bin/bash
+LOGS=~/.mutt/tmp/
+_truncate() {
+    local f s n
+    for f in mbsync msmtp; do
+        n=${LOGS}$f.log
+        touch $n
+        s=$(stat --printf="%s" $n)
+        if [ $s -gt 1000000 ]; then
+            mv $n $n.prev
+        fi
+    done
+}
+
+_sync() {
+    mkdir -p ~/.mutt/maildir
+    date +"%Y-%m-%dT%H:%M:%S"
+    mbsync --verbose -c ~/.mutt/etc/mbsyncrc -a fastmail 2>&1 | sed 's/^/    /g'
+}
+
+_truncate
+_sync >> $LOGS/mbsync.log 2>&1

@@ -1,0 +1,10 @@
+#!/opt/local/bin/bash
+PATHS=$(ls $HOME/Git/ | sed "s#^#$HOME/Git/#g")
+PATHS="$HOME $PATHS"
+for p in $(echo $PATHS | tr ' ' '\n' | sort); do
+    echo
+    echo "reconciling: $(basename $p)"
+    git -C $p pull
+    git -C $p push
+done
+echo

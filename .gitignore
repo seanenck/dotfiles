@@ -1,8 +1,5 @@
 /*
 __pycache__
-target
-.idea
-.iml
 
 !.config/
 .config/*
@@ -13,3 +10,6 @@ target
 !Library/
 Library/*
 !Library/LaunchAgents/
+!Library/Scripts/
+Library/Scripts/*
+!Library/Scripts/com.voidedtech.Util/

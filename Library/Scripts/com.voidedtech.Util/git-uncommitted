@@ -1,0 +1,26 @@
+#!/opt/local/bin/bash
+PATHS=$(ls $HOME/Git/ | sed "s#^#$HOME/Git/#g")
+PATHS="$HOME $PATHS"
+
+_uncommitted() {
+    git -C $1 update-index -q --refresh
+    git -C $1 diff-index --name-only HEAD --
+    git -C $1 status -sb | grep ahead
+    git -C $1 ls-files --other --exclude-standard
+}
+
+first=1
+for p in $(echo $PATHS | tr ' ' '\n' | sort); do
+    uncommit=$(_uncommitted $p)
+    if [ ! -z "$uncommit" ]; then
+        if [ $first -eq 1 ]; then
+            echo
+            echo "uncommitted:"
+        fi
+        echo "  -> $p"
+        first=0
+    fi
+done
+if [ $first -ne 1 ]; then
+    echo
+fi
