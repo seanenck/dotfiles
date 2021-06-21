@@ -77,5 +77,9 @@ sys-upgrade() {
     which pycodestyle 2>&1 || sudo port select --set pycodestyle pycodestyle-py39
     which pydocstyle 2>&1 || sudo port select --set pydocstyle py39-pydocstyle
     which pyflakes 2>&1 || sudo port select --set pyflakes py39-pyflakes
+    echo "go tools"
+    go get golang.org/x/tools/cmd/goimports
+    go get github.com/mgechev/revive
+    go get github.com/golangci/golangci-lint/cmd/golangci-lint
 }
 fi
