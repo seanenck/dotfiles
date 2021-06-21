@@ -7,6 +7,8 @@ export LOCKBOX_STORE="/Users/enck/Git/passwords"
 export LOCKBOX_KEYMODE="macos"
 export LOCKBOX_TOTP="keys/totp/"
 export DISPLAY=:0
+export DEVELOPMENT_SYSTEM=1
+unset SERVER_SYSTEM
 
 for f in devtools passwords workstations; do
     if [ ! -d ~/Git/$f ]; then
@@ -15,7 +17,6 @@ for f in devtools passwords workstations; do
 done
 
 for f in /opt/local/share/bash-completion/bash_completion \
-         $HOME/.bash_aliases_local \
          $HOME/Git/workstations/bashrc \
          $CARGO_HOME/env \
          $HOME/.bash_aliases; do

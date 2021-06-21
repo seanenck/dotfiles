@@ -19,10 +19,11 @@ export LESSHISTFILE=$HOME/.cache/lesshst
 export TERM=xterm-256color
 export PAGER=less
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
+export SERVER_SYSTEM=1
 
 . /etc/profile
-for file in $HOME/.bash_aliases \
-            $HOME/.bashrc_local \
+for file in $HOME/.bashrc_local \
+            $HOME/.bash_aliases \
             /usr/share/bash-completion/bash_completion; do
     if [ -e $file ]; then
         . $file
