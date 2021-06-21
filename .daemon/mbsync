@@ -2,5 +2,5 @@
 PATH="/opt/local/bin/:$PATH"
 cnt=$(find ~/.mutt/tmp/ -name "mbsync.log" -mmin +5 | wc -l)
 if [ $cnt -gt 0 ]; then
-    /Users/enck/.bin/mbsync-local
+    /Users/enck/Library/Scripts/com.voidedtech.Util/mbsync-local
 fi
