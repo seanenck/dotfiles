@@ -1,7 +1,5 @@
 export GOPATH="$HOME/Library/Caches/go"
-export RUSTUP_HOME="$HOME/.rust/rustup"
-export CARGO_HOME="$HOME/.rust/cargo"
-export PATH="$CARGO_HOME/bin:$HOME/.bin:$GOPATH/bin/:$PATH"
+export PATH="$HOME/.bin:$GOPATH/bin/:$PATH"
 export PATH="/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH"
 export LOCKBOX_STORE="/Users/enck/Git/passwords"
 export LOCKBOX_KEYMODE="macos"
@@ -18,7 +16,6 @@ done
 
 for f in /opt/local/share/bash-completion/bash_completion \
          $HOME/Git/workstations/bashrc \
-         $CARGO_HOME/env \
          $HOME/.bash_aliases; do
     if [ -e $f ]; then
         . $f

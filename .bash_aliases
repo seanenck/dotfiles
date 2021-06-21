@@ -61,8 +61,6 @@ sys-upgrade() {
     echo "-> update ports"
     sudo port selfupdate
     sudo port upgrade outdated
-    echo "-> update rust"
-    rustup update
     echo "-> update kitty"
     kitty-updater
     echo "-> cleanup ports"
