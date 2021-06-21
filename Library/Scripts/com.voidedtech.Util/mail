@@ -1,4 +1,8 @@
 #!/opt/local/bin/bash
 export AUTOMATED=1
 source ~/.bashrc
+mkdir -p ~/.mutt/tmp
+if [ ! -e $HOME/.mutt/etc ]; then
+    ln -sf $HOME/Git/workstations/mail $HOME/.mutt/etc
+fi
 mutt
