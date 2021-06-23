@@ -35,9 +35,13 @@ glint() {
 }
 
 plint() {
-    local p
+    local p files
+    files="$@"
+    if [ -z "$files" ]; then
+        files=$(find . -type f -name "*.py")
+    fi
     for p in pycodestyle pydocstyle pyflakes; do
-        $p $(find . -type f -name "*.py") | sed "s/^/$p: /g"
+        $p $files | sed "s/^/$p: /g"
     done
 }
 

@@ -164,7 +164,7 @@ def _start_vm(vm, session):
     cmd += ["-a", vm.params, "-y", os.path.join(vm.root, vm.tty)]
     if vm.boot.enable:
         cmd += ["-d", vm.boot.file + ".dmg"]
-    p = subprocess.Popen(cmd, cwd=vm.root)
+    subprocess.Popen(cmd, cwd=vm.root)
 
 
 def main():
