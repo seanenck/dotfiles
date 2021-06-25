@@ -81,8 +81,5 @@ sys-upgrade() {
     which pyflakes 2>&1 || sudo port select --set pyflakes py39-pyflakes
     echo "go tools"
     go get golang.org/x/tools/cmd/goimports
-    go get golang.org/x/tools/gopls@latest
-    go get github.com/mgechev/revive
-    go get github.com/golangci/golangci-lint/cmd/golangci-lint
 }
 fi
