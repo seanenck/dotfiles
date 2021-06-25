@@ -12,10 +12,20 @@ _truncate() {
     done
 }
 
+_count() {
+    find ~/.mutt/maildir -type f | grep "/new/" | grep -v Trash | wc -l
+}
+
 _sync() {
+    local prev curr
     mkdir -p ~/.mutt/maildir
     date +"%Y-%m-%dT%H:%M:%S"
+    prev=$(_count)
     mbsync --verbose -c ~/.mutt/etc/mbsyncrc -a fastmail 2>&1 | sed 's/^/    /g'
+    curr=$(_count)
+    if [ $prev -ne $curr ]; then
+        terminal-notifier -title "New Mail" -message "Messages: $curr"
+    fi
 }
 
 _truncate
