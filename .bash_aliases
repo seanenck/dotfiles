@@ -60,6 +60,25 @@ _vim_plugins() {
     done
 }
 
+_git-refs() {
+    local c p curr f
+    c="$HOME/Library/Caches/com.voidedtech.Refs"
+    mkdir -p $c
+    curr="$c/git"
+    p="$curr.prev"
+    for f in $(echo "https://github.com/mgechev/revive" "https://github.com/golang/tools"); do
+        git ls-remote $f | grep "refs/tags" >> $curr
+    done
+    if [ -e $p ]; then
+        diff -u $p $curr
+        if [ $? -ne 0 ]; then
+            echo "git references changed"
+            read
+        fi
+    fi
+    mv $curr $p
+}
+
 sys-upgrade() {
     local f p
     echo "-> update ports"
@@ -79,7 +98,7 @@ sys-upgrade() {
     which pycodestyle 2>&1 || sudo port select --set pycodestyle pycodestyle-py39
     which pydocstyle 2>&1 || sudo port select --set pydocstyle py39-pydocstyle
     which pyflakes 2>&1 || sudo port select --set pyflakes py39-pyflakes
-    echo "go tools"
-    go get golang.org/x/tools/cmd/goimports
+    echo "git references"
+    _git-refs
 }
 fi
