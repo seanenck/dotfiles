@@ -29,7 +29,7 @@ if [ -d ~/.completions ]; then
 fi
 
 for f in Documents Downloads Public; do
-    c=$(find ~/$f -mtime +1 -type f | grep -v "\.(localized|DS_Store)" | wc -l)
+    c=$(find ~/$f -mtime +1 -type f | /usr/bin/grep -v -E "\.(localized|DS_Store)" | wc -l)
     if [ $c -gt 0 ]; then
         echo " -> $f [$c]"
     fi
