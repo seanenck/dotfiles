@@ -78,10 +78,9 @@ _ports() {
 sys-upgrade() {
     local f p
     echo "-> update ports"
+    _ports
     sudo port selfupdate
     sudo port upgrade outdated
-    echo "-> local ports"
-    _ports
     echo "-> update kitty"
     kitty-updater
     echo "-> cleanup ports"
