@@ -61,15 +61,16 @@ _vim_plugins() {
 }
 
 _ports() {
-    local dir b
+    local dir b branches
+    branches=$(echo "isync w3m")
     dir=$HOME/Library/Caches/macports
     if [ ! -d $dir ]; then
         git clone git@github.com:enckse/macports-ports.git $dir
     fi
     git -C $dir remote set-url origin https://github.com/macports/macports-ports
     git -C $dir pull --no-edit origin master
-    git -C $dir switch -C local
-    for b in isync w3m; do
+    git -C $dir switch -C $(echo $branches | sed 's/ /-/g')
+    for b in $branches; do
         git -C $dir merge --no-edit origin/$b
     done
     portindex $dir
