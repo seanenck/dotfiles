@@ -62,7 +62,7 @@ _vim_plugins() {
 
 _ports() {
     local dir b
-    dir=$HOME/Git/macports
+    dir=$HOME/Library/Caches/macports
     if [ ! -d $dir ]; then
         git clone git@github.com:enckse/macports-ports.git $dir
     fi
