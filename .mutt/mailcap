@@ -1,1 +1,1 @@
-text/html; lynx -assume_charset=%{charset} -display_charset=utf-8 -collapse_br_tags -dump %s; nametemplate=%s.html; copiousoutput
+text/html; html2text -width 90 -style pretty; copiousoutput; description=HTML Text
