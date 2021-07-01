@@ -37,7 +37,7 @@ done
 
 export GPG_TTY=$(tty)
 git uncommitted
-mailcnt=$(find ~/.mutt/maildir -type f -wholename "*/new/*" | grep -v "Trash" | wc -l)
+mailcnt=$(find ~/.mutt/maildir -type f -mmin 15 -wholename "*/new/*" | grep -v "Trash" | wc -l)
 if [ $mailcnt -gt 0 ]; then
     echo
     echo "mail: $mailcnt"
