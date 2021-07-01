@@ -60,26 +60,9 @@ _vim_plugins() {
     done
 }
 
-_ports() {
-    local dir b branches
-    branches=$(echo "w3m")
-    dir=$HOME/Library/Caches/macports
-    if [ ! -d $dir ]; then
-        git clone git@github.com:enckse/macports-ports.git $dir
-    fi
-    git -C $dir remote set-url origin https://github.com/macports/macports-ports
-    git -C $dir pull --no-edit origin master
-    git -C $dir switch -C local-$(echo $branches | sed 's/ /-/g')
-    for b in $branches; do
-        git -C $dir merge --no-edit origin/$b
-    done
-    portindex $dir
-}
-
 sys-upgrade() {
     local f p
     echo "-> update ports"
-    _ports
     sudo port selfupdate
     sudo port upgrade outdated
     echo "-> update kitty"
