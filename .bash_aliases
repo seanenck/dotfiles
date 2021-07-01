@@ -40,7 +40,7 @@ plint() {
     if [ -z "$files" ]; then
         files=$(find . -type f -name "*.py")
     fi
-    for p in pycodestyle pydocstyle pyflakes; do
+    for p in pycodestyle pydocstyle flake8; do
         $p $files | sed "s/^/$p: /g"
     done
 }
@@ -95,6 +95,6 @@ sys-upgrade() {
     fi
     which pycodestyle 2>&1 || sudo port select --set pycodestyle pycodestyle-py39
     which pydocstyle 2>&1 || sudo port select --set pydocstyle py39-pydocstyle
-    which pyflakes 2>&1 || sudo port select --set pyflakes py39-pyflakes
+    which flake8 2>&1 || sudo port select --set flake8 flake8-39 
 }
 fi
