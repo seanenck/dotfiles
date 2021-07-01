@@ -97,4 +97,11 @@ sys-upgrade() {
     which pydocstyle 2>&1 || sudo port select --set pydocstyle py39-pydocstyle
     which flake8 2>&1 || sudo port select --set flake8 flake8-39 
 }
+
+podman-cleanup() {
+    local i
+    for i in $(podman images --all --format "{{.ID}}"); do
+        podman rmi --force $i
+    done
+}
 fi
