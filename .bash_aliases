@@ -22,6 +22,7 @@ full-apk-update() {
 fi
 
 if [ ! -z "$DEVELOPMENT_SYSTEM" ]; then
+alias mutt="mail"
 glint() {
     if command -v go &> /dev/null; then
         local f

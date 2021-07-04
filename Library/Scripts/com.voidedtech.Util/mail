@@ -5,4 +5,5 @@ mkdir -p ~/.mutt/tmp
 if [ ! -e $HOME/.mutt/etc ]; then
     ln -sf $HOME/Git/workstations/mail $HOME/.mutt/etc
 fi
+clear
 mutt
