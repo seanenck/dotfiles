@@ -19,6 +19,12 @@ full-apk-update() {
         done
     fi
 }
+
+pruneman() {
+    podman image prune
+    podman container prune
+    podman volume prune
+}
 fi
 
 if [ ! -z "$DEVELOPMENT_SYSTEM" ]; then
