@@ -4,6 +4,12 @@ alias ls='ls --color=auto'
 alias duplicates="fdupes ."
 alias grep="rg"
 
+pruneman() {
+    podman image prune
+    podman container prune
+    podman volume prune
+}
+
 if [ ! -z "$SERVER_SYSTEM" ]; then
 dirty-memory() {
     watch -n 1 grep -e Dirty: -e Writeback: /proc/meminfo
@@ -18,12 +24,6 @@ full-apk-update() {
             lxc-attach -n $f -- apk upgrade
         done
     fi
-}
-
-pruneman() {
-    podman image prune
-    podman container prune
-    podman volume prune
 }
 fi
 
@@ -86,12 +86,5 @@ sys-upgrade() {
     which pycodestyle 2>&1 || sudo port select --set pycodestyle pycodestyle-py39
     which pydocstyle 2>&1 || sudo port select --set pydocstyle py39-pydocstyle
     which flake8 2>&1 || sudo port select --set flake8 flake8-39 
-}
-
-podman-cleanup() {
-    local i
-    for i in $(podman images --all --format "{{.ID}}"); do
-        podman rmi --force $i
-    done
 }
 fi
