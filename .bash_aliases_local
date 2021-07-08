@@ -50,7 +50,9 @@ _vim-plugins() {
 }
 
 _update-tools() {
+    mkdir -p $HOME/.bin
     cd $HOME/Library/Scripts/com.voidedtech.VFTool && make
+    cd $HOME/Library/Scripts/com.voidedtech.Lockbox && make && make install
 }
 
 sys-upgrade() {
