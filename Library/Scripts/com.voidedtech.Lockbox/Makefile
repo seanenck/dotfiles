@@ -13,6 +13,7 @@ install:
 	GOOS=linux GOARCH=amd64 go build -o $(X86) -trimpath -buildmode=pie -mod=readonly -modcacherw cmd/rw/main.go
 	if [[ $(shell cat $(VER)) != $(GIT) ]]; then for f in $(T2L) $(X86); do cp $$f $(LOCKBOX_STORE)/.bin/; done; echo $(GIT) > $(VER); fi
 	for f in $(CMD); do install -m755 $$f $(HOME)/.bin/; done
+	install -Dm644 lb.bash $(HOME)/.completions/lb.bash
 	
 $(CMD): $(shell find . -type f -name "*.go")
 	go build -o $@ $(FLG) cmd/$(shell basename $@ | sed 's/lb-//g')/main.go

@@ -52,9 +52,12 @@ _vim-plugins() {
 _update-tools() {
     local t
     mkdir -p $HOME/.bin
+    mkdir -p $HOME/.completions
     for t in VFTool Lockbox Homedir; do
         cd $HOME/Library/Scripts/com.voidedtech.$t && make && make install
     done
+    golangci-lint completion bash > $HOME/.completions/golangci-lint.bash
+    vm completions > $HOME/.completions/vm.bash
 }
 
 sys-upgrade() {
