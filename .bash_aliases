@@ -14,17 +14,6 @@ if [ ! -z "$SERVER_SYSTEM" ]; then
 dirty-memory() {
     watch -n 1 grep -e Dirty: -e Writeback: /proc/meminfo
 }
-
-full-apk-update() {
-    apk update
-    apk upgrade
-    if [ -x /usr/bin/lxc-ls ]; then
-        for f in $(lxc-ls); do
-            lxc-attach -n $f -- apk update
-            lxc-attach -n $f -- apk upgrade
-        done
-    fi
-}
 fi
 
 if [ ! -z "$DEVELOPMENT_SYSTEM" ]; then
