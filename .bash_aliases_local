@@ -1,6 +1,16 @@
 #!/bin/bash
 alias mutt="mail"
 
+perltidy() {
+    local pt
+    pt=$(find /opt/local/bin/ -type l -name "perltidy-*" | sort -r | head -n 1)
+    if [ -z "$pt" ]; then
+        echo "perltidy not found"
+        return
+    fi
+    $pt $@
+}
+
 glint() {
     if command -v go &> /dev/null; then
         local f
