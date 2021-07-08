@@ -19,7 +19,6 @@ export LESSHISTFILE=$HOME/.cache/lesshst
 export TERM=xterm-256color
 export PAGER=less
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
-export SERVER_SYSTEM=1
 
 . /etc/profile
 for file in $HOME/.bashrc_local \
