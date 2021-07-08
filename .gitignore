@@ -12,7 +12,7 @@ Library/*
 !Library/LaunchAgents/
 !Library/Scripts/
 Library/Scripts/*
-!Library/Scripts/com.voidedtech.Util/
+!Library/Scripts/com.voidedtech.*
 # General
 .DS_Store
 .AppleDouble

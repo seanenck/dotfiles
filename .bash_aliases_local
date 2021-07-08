@@ -54,6 +54,7 @@ sys-upgrade() {
     echo "-> update ports"
     sudo port selfupdate
     sudo port upgrade outdated
+    cd Library/Scripts/com.voidedtech.Ports/ && make
     echo "-> update kitty"
     kitty-updater
     echo "-> cleanup ports"
