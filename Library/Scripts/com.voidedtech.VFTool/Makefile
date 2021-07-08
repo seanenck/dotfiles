@@ -6,4 +6,6 @@ all:
 	git -C $(VFTOOL) pull
 	git -C $(VFTOOL) apply $(PWD)/vftool.patch
 	cd $(VFTOOL) && make
+
+install:
 	install -m755 $(VFTOOL)/build/vftool $(HOME)/.bin/vftool
