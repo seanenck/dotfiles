@@ -26,13 +26,6 @@ if [ -d ~/.completions ]; then
     done
 fi
 
-for f in Documents Downloads Public; do
-    c=$(find ~/$f -mtime +1 -type f | /usr/bin/grep -v -E "\.(localized|DS_Store)" | wc -l)
-    if [ $c -gt 0 ]; then
-        echo " -> $f [$c]"
-    fi
-done
-
 export GPG_TTY=$(tty)
 git uncommitted
 mailcnt=$(find ~/.mutt/maildir -type f -mmin 15 -wholename "*/new/*" | grep -v "Trash" | wc -l)
