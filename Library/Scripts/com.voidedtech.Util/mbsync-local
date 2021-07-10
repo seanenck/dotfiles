@@ -24,7 +24,9 @@ _sync() {
     mbsync --verbose -c ~/.mutt/etc/mbsyncrc -a fastmail 2>&1 | sed 's/^/    /g'
     curr=$(_count)
     if [ $prev -ne $curr ]; then
-        terminal-notifier -title "New Mail" -message "Messages: $curr"
+        if [ $curr -gt 0 ]; then
+            terminal-notifier -title "New Mail" -message "Messages: $curr"
+        fi
     fi
 }
 
