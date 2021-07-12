@@ -19,7 +19,6 @@ msmtp
 perl5
 p5-test-perltidy
 pinentry-mac
-podman
 py-language-server
 python39
 revive
