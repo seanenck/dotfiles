@@ -26,6 +26,16 @@ if [ -d ~/.completions ]; then
     done
 fi
 
+_mbsync_check() {
+    cnt=$(find /Users/enck/.mutt/tmp/ -name "mbsync.log" -mmin +5 | wc -l)
+    if [ $cnt -gt 0 ]; then
+        killall mbsync
+        mbsync-local
+    fi
+}
+
+_mbsync_check
+
 export GPG_TTY=$(tty)
 git uncommitted
 mailcnt=$(find ~/.mutt/maildir -type f -mmin 15 -wholename "*/new/*" | grep -v "Trash" | wc -l)
