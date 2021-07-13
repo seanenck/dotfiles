@@ -1,0 +1,7 @@
+#!/opt/local/bin/bash
+PATH="/opt/local/bin/:$PATH"
+cnt=$(find /Users/enck/.mutt/tmp/ -name "mbsync.log" -mmin +5 | wc -l)
+if [ $cnt -gt 0 ]; then
+    killall mbsync
+    /Users/enck/Library/Scripts/com.voidedtech.Util/mbsync-local
+fi
