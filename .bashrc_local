@@ -34,7 +34,7 @@ _mbsync_check() {
     fi
 }
 
-_mbsync_check
+_mbsync_check >/dev/null 2>&1 &
 
 export GPG_TTY=$(tty)
 git uncommitted
