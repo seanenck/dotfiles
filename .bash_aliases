@@ -11,7 +11,7 @@ pruneman() {
     echo "this will prune all podman extraneous objects"
     echo "make sure any containers of interest ARE RUNNING"
     echo
-    read -p "continue? (Y/n)" y
+    read -p "continue? (Y/n) " y
     echo
     if [[ "$y" == "n" ]]; then
         return
