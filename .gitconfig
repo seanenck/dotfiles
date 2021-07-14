@@ -29,7 +29,7 @@
     gpgSign = true
 [tag]
     gpgSign = true
-[url "library:/mnt/disk1/Storage/repositories/git/"]
+[url "can:/mnt/storage/repositories/git/"]
     insteadOf = local:
 [url "git@git.voidedtech.com:~/public/"]
     insteadOf = enckse:

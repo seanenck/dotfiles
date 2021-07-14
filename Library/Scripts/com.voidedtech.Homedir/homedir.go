@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	url = "http://library.voidedtech.com"
+	url = "http://can.voidedtech.com"
 )
 
 func serverUp() bool {

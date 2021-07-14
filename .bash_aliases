@@ -6,9 +6,9 @@ alias grep="rg"
 
 if [ -x /usr/bin/podman ]; then
 pruneman() {
-        podman image prune
-        podman container prune
-        podman volume prune
+    podman image prune
+    podman container prune
+    podman volume prune
 }
 fi
 
