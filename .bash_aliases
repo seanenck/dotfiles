@@ -6,16 +6,23 @@ alias grep="rg"
 
 if [ -x /usr/bin/podman ]; then
 pruneman() {
-    local y
-    echo
-    echo "this will prune all podman extraneous objects"
-    echo "make sure any containers of interest ARE RUNNING"
-    echo
-    read -p "continue? (Y/n) " y
-    echo
-    if [[ "$y" == "n" ]]; then
-        return
-    fi
+    local path found full act exp
+    found=0
+    for path in /mnt /mnt/data; do
+        full=$path/container.d/
+        if [ -d $full ]; then
+            exp=$(ls $full | wc -l)
+            act=$(podman ps --format="{{ .ID }}" | wc -l)
+            if [ $exp -ne $act ]; then
+                echo "cowardly quitting with mismatch between known and running containers"
+                return
+            fi
+            echo "found necessary containers ($act of $exp)"
+            echo
+            sleep 1
+            break
+        fi
+    done
     podman image prune
     podman container prune
     podman volume prune
