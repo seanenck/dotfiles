@@ -102,10 +102,6 @@ nnoremap <C-v> :vsplit<CR>
 
 let loaded_netrwPlugin = 1
 
-if filereadable("/etc/vim/vimrc.local")
-    source /etc/vim/vimrc.local
-endif
-
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 if os == "Darwin"
