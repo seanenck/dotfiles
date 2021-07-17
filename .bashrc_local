@@ -27,7 +27,7 @@ if [ -d ~/.completions ]; then
 fi
 
 _gpga() {
-    CACHE=/Users/enck/Library/Caches/com.voidedtech.Gpg/
+    CACHE=~/Library/Caches/com.voidedtech.Gpg/
     mkdir -p $CACHE
     find $CACHE -type f -mtime +2 -delete
     FILE=${CACHE}$(date +%Y-%m-%d)
