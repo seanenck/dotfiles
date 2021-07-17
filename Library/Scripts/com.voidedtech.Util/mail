@@ -6,4 +6,8 @@ if [ ! -e $HOME/.mutt/etc ]; then
     ln -sf $HOME/Git/workstations/mail $HOME/.mutt/etc
 fi
 clear
+echo "syncing mail"
+mbsync-local
 mutt
+echo "syncing mail"
+mbsync-local
