@@ -52,7 +52,9 @@ _setup() {
 }
 
 _getlatest() {
-    wget --no-check-certificate -O $SCRIPT "https://cgit.voidedtech.com/dotfiles/plain/Source/com.voidedtech.Macrun/scripts/setup-macrun.sh"
+    local host
+    host=$(cat /proc/cmdline  | tr ' ' '\n' | grep "apkovl=" | cut -d "=" -f 2 | cut -d "/" -f 1,2,3)
+    wget -O $SCRIPT "$host/setup-macrun.sh"
     if [ $? -ne 0 ]; then
         cp /etc/conf.d/setup-macrun $SCRIPT
     fi

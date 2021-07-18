@@ -110,6 +110,9 @@ elsif ($arg eq "tag"
         system("rm -rf $path");
     }
     elsif ( $arg eq "start" or $arg eq "configure" ) {
+        system(
+"cp \$HOME/Source/com.voidedtech.Macrun/scripts/setup-macrun.sh $path"
+        );
         system("screen -D -m -S $name -- bash ${path}start.sh &");
         print "starting...\n";
         my $use_host = "root\@$ips$container";
