@@ -3,6 +3,7 @@ STORE=/var/opt/store
 VIM=$STORE/.vim
 PROFILE=$STORE/.bash
 DOTFILES=$PROFILE/dotfiles
+SCRIPT=/tmp/macrun
 
 _ready() {
     local vimplug
@@ -10,6 +11,7 @@ _ready() {
     setup-timezone -z US/Michigan
     setup-ntp -c chrony
     setup-apkcache /var/cache/apk
+    /etc/init.d/loopback start
     ln -sf $STORE /root/store
     vimplug=/root/.vim/pack/dist/
     mkdir -p $vimplug
@@ -19,7 +21,7 @@ _ready() {
     ln -sf $DOTFILES/.bash_profile /root/.profile
 }
 
-_setupdisks() {
+_setup() {
     local has dir repo
     has=0
     blkid | grep -q "vdb1"
@@ -49,4 +51,16 @@ _setupdisks() {
     git clone https://cgit.voidedtech.com/dotfiles $DOTFILES
 }
 
-_setupdisks
+_getlatest() {
+    wget --no-check-certificate -O $SCRIPT "https://cgit.voidedtech.com/dotfiles/plain/Source/com.voidedtech.Macrun/scripts/setup-macrun.sh"
+    if [ $? -ne 0 ]; then
+        cp /etc/conf.d/setup-macrun $SCRIPT
+    fi
+}
+
+if [ ! -e $SCRIPT ]; then
+    _getlatest
+    bash $SCRIPT
+else
+    _setup
+fi
