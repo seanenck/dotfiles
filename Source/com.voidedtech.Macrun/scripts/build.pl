@@ -122,6 +122,6 @@ system("echo 'source ./env' >> $script_file");
 system(
     "cat \$HOME/Source/com.voidedtech.Macrun/scripts/start.sh >> $script_file");
 
-if ( $starting ) {
+if ($starting) {
     system("macrun start $count");
 }

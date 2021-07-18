@@ -18,7 +18,7 @@ if ( $arg eq "help" ) {
     exit;
 }
 elsif ( $arg eq "ready" ) {
-    push(@ARGV, "start");
+    push( @ARGV, "start" );
     $arg = "build";
 }
 elsif ( $arg eq "halt" or $arg eq "destroy" ) {
