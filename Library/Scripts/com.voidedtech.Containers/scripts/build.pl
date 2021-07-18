@@ -3,8 +3,8 @@ use strict;
 use warnings;
 use autodie;
 
-my $release = "3.14.0";
-my $size    = "1G";
+my $release   = "3.14.0";
+my $size      = "1G";
 my $ip_prefix = "192.168.64.";
 
 my $version = `echo '$release' | rev | cut -d '.' -f 2- | rev`;
@@ -69,22 +69,24 @@ chomp $http_port;
 my $host = "macvm$count";
 
 my %parameters;
-$parameters{"MEMORY"} = "512";
-$parameters{"ISO"} = $iso_name;
+$parameters{"MEMORY"}   = "512";
+$parameters{"ISO"}      = $iso_name;
 $parameters{"HTTPPORT"} = $http_port;
-$parameters{"SSHKEYS"} = "https://cgit.voidedtech.com/dotfiles/plain/.ssh/pubkeys";
-$parameters{"IP"} = "$ip_prefix$count:none:192.168.64.1:255.255.255.0:${host}::none:1.1.1.1";
+$parameters{"SSHKEYS"} =
+  "https://cgit.voidedtech.com/dotfiles/plain/.ssh/pubkeys";
+$parameters{"IP"} =
+  "$ip_prefix$count:none:192.168.64.1:255.255.255.0:${host}::none:1.1.1.1";
 $parameters{"REPO"} = "http://dl-cdn.alpinelinux.org/alpine/v$version/main";
 
 my $param_file = "${path}env";
-open(my $fh, ">", $param_file);
-for my $param (keys %parameters) {
+open( my $fh, ">", $param_file );
+for my $param ( keys %parameters ) {
     my $value = $parameters{$param};
     print $fh "export $param='$value'\n";
 }
 
 my $script_file = "${path}start.sh";
-open(my $sh, ">", $script_file);
+open( my $sh, ">", $script_file );
 print $sh "#!/opt/local/bin/bash\n";
 print $sh "cd $path\n";
 print $sh "source $param_file\n";
@@ -96,7 +98,8 @@ print $sh "_httpserver &\n";
 print $sh "\n";
 print $sh "PARAMS=\"ssh_key=\$SSHKEYS\"\n";
 print $sh "PARAMS=\"\$PARAMS ip=\$IP\"\n";
-print $sh "PARAMS=\"\$PARAMS apkovl=http://${ip_prefix}1:\$HTTPPORT/$apkovl\"\n";
+print $sh
+  "PARAMS=\"\$PARAMS apkovl=http://${ip_prefix}1:\$HTTPPORT/$apkovl\"\n";
 print $sh "PARAMS=\"\$PARAMS alpine_repo=\$REPO\"\n";
 print $sh "\n";
 print $sh "vftool \\\n";
