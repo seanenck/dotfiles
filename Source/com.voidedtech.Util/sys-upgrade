@@ -1,6 +1,8 @@
 #!/bin/bash
-PORT_CACHE=$HOME/Library/Caches/ports
+CACHES=$HOME/Library/Caches/com.voidedtech.Utils/
 PORT_CFG=$HOME/.config/macports/
+PORT_CACHE=${CACHES}ports
+TOOL_CACHE=${CACHES}gittools
 
 _vim-plugins() {
     echo "-> update vim plugins"
@@ -20,13 +22,41 @@ _vim-plugins() {
 
 _update-tools() {
     local t
-    echo "update tooling"
+    echo "-> update tooling"
     mkdir -p $HOME/.bin
     mkdir -p $HOME/.completions
-    for t in VFTool Lockbox Homedir Macrun; do
+    for t in Lockbox Homedir Macrun; do
         cd $HOME/Source/com.voidedtech.$t && make && make install
     done
     golangci-lint completion bash > $HOME/.completions/golangci-lint.bash
+}
+
+_git-setup() {
+    local dir hash prev name cwd
+    name=$(echo $1 | rev | cut -d "/" -f 1 | rev)
+    dir=$TOOL_CACHE/$name
+    if [ ! -d $dir ]; then
+        git clone $1 $dir
+    fi
+    git -C $dir reset --hard
+    git -C $dir pull
+    hash="$TOOL_CACHE/$name.hash"
+    prev="$hash.prev"
+    git -C $dir log -n1 --format=%h > $hash
+    touch $prev
+    diff -u $prev $hash
+    if [ $? -ne 0 ]; then
+        $2 $dir
+        for f in ${@:3}; do
+            install -Dm755 $dir/$f "$HOME/.bin/"
+        done
+    fi
+    mv $hash $prev
+}
+
+_git-tools() {
+    echo "-> update git-based tools"
+    _git-setup "https://github.com/evansm7/vftool" "make -C" "build/vftool"
 }
 
 _ports() {
@@ -75,6 +105,7 @@ sys-upgrade() {
 }
 
 mkdir -p $PORT_CACHE
+mkdir -p $TOOL_CACHE
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     :
 else
