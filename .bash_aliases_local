@@ -53,7 +53,7 @@ _update-tools() {
     local t
     mkdir -p $HOME/.bin
     mkdir -p $HOME/.completions
-    for t in VFTool Lockbox Homedir Containers; do
+    for t in VFTool Lockbox Homedir Macrun; do
         cd $HOME/Library/Scripts/com.voidedtech.$t && make && make install
     done
     golangci-lint completion bash > $HOME/.completions/golangci-lint.bash

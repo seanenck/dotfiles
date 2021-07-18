@@ -71,25 +71,25 @@ my $http_port = `printf 7%03d '$count'`;
 chomp $http_port;
 my $host = "macrun$count";
 
-my %parameters;
-$parameters{"MEMORY"}   = "512";
-$parameters{"ISO"}      = $iso_name;
-$parameters{"HTTPPORT"} = $http_port;
-$parameters{"APKOVL"}   = "http://${ip_prefix}1:\$HTTPPORT/$apkovl";
-$parameters{"ID"}       = $count;
-$parameters{"STORE"}    = "$storage.dmg";
-$parameters{"SSHKEYS"} =
-  "https://cgit.voidedtech.com/dotfiles/plain/.ssh/pubkeys";
-$parameters{"IP"} =
-  "$ip_prefix$count:none:${ip_prefix}1:255.255.255.0:${host}::none:1.1.1.1";
-$parameters{"REPO"} = "http://dl-cdn.alpinelinux.org/alpine/v$version/main";
-
 my $param_file = "${path}env";
 open( my $fh, ">", $param_file );
-for my $param ( keys %parameters ) {
-    my $value = $parameters{$param};
-    print $fh "export $param='$value'\n";
+
+sub add_param {
+    my $key = shift @_;
+    my $val = shift @_;
+    print $fh "export $key=\"$val\"\n";
 }
+
+add_param "MEMORY",   "512";
+add_param "ISO",      $iso_name;
+add_param "HTTPPORT", $http_port;
+add_param "APKOVL",   "http://${ip_prefix}1:\$HTTPPORT/$apkovl";
+add_param "ID",       $count;
+add_param "STORE",    "$storage.dmg";
+add_param "SSHKEYS",  "https://cgit.voidedtech.com/dotfiles/plain/.ssh/pubkeys";
+add_param "IP",
+  "$ip_prefix$count:none:${ip_prefix}1:255.255.255.0:${host}::none:1.1.1.1";
+add_param "REPO", "http://dl-cdn.alpinelinux.org/alpine/v$version/main";
 
 my $dated = `date "+%Y-%m-%dT%H:%M:%S"`;
 chomp $dated;
