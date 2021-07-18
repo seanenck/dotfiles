@@ -1,5 +1,5 @@
 #!/bin/bash
-CACHES=$HOME/Library/Caches/com.voidedtech.Utils/
+CACHES=$HOME/Library/Caches/com.voidedtech.Util/
 PORT_CFG=$HOME/.config/macports/
 PORT_CACHE=${CACHES}ports
 TOOL_CACHE=${CACHES}gittools
