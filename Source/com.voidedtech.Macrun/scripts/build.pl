@@ -102,6 +102,10 @@ add_param "MEMORY",   $mem_size;
 add_param "ISO",      $iso_name;
 add_param "HTTPPORT", $http_port;
 
+my $dated = `date "+%Y-%m-%dT%H:%M:%S"`;
+chomp $dated;
+add_param "RELEASE", "$release ($dated)";
+
 if ($include_apk) {
     add_param "APKOVL", "http://${ip_prefix}1:\$HTTPPORT/$apkovl";
 }
@@ -112,9 +116,6 @@ add_param "IP",
   "$ip_prefix$count:none:${ip_prefix}1:255.255.255.0:${host}::none:1.1.1.1";
 add_param "REPO", "http://dl-cdn.alpinelinux.org/alpine/v$version/main";
 
-my $dated = `date "+%Y-%m-%dT%H:%M:%S"`;
-chomp $dated;
-system("echo '$release ($dated)' > ${path}built");
 my $script_file = "${path}start.sh";
 system("echo '#!/bin/bash' > $script_file");
 system("echo 'cd $path' >> $script_file");
