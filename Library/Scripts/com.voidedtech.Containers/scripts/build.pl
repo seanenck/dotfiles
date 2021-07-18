@@ -16,6 +16,8 @@ my $workdir = "${directory}releases/";
 my $current = "$workdir$release/";
 my $apkovl  = "macvm.apkovl.tar.gz";
 my $apkdir  = "$workdir$apkovl";
+
+# Generate via `lbu package` in an existing vm
 die "no apkovl at $apkdir" if !-e $apkdir;
 
 my $iso =
