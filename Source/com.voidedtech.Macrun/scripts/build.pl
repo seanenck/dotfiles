@@ -66,9 +66,8 @@ while ( $count <= 254 ) {
         system("cp $apkdir $path");
     }
     die "unable to make store"
-      if system(
-"cd $path && dd if=/dev/zero of=$storage bs=$disk_size count=1"
-      ) != 0;
+      if system("cd $path && dd if=/dev/zero of=$storage bs=$disk_size count=1")
+      != 0;
     $made = 1;
     last;
 }
@@ -110,5 +109,4 @@ system("echo '#!/bin/bash' > $script_file");
 system("echo 'cd $path' >> $script_file");
 system("echo 'source ./env' >> $script_file");
 system(
-"cat \$HOME/Source/com.voidedtech.Macrun/scripts/start.sh >> $script_file"
-);
+    "cat \$HOME/Source/com.voidedtech.Macrun/scripts/start.sh >> $script_file");
