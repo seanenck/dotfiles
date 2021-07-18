@@ -27,6 +27,16 @@ elsif ( $arg eq "tag" or $arg eq "purge" or $arg eq "start" or $arg eq "kill" ) 
 
     die "invalid container: $path" if !-d $path;
 
+    if ( $arg eq "tag" ) {
+        die "tag required" if !@ARGV;
+        my $tag = shift @ARGV;
+        if ($tag) {
+            open( my $fh, ">", "${path}tag" );
+            print $fh "$tag\n";
+        }
+        exit;
+    }
+
     my $sessions = `screen -list | grep "macvm$container\\s*" | awk '{print \$1}'`;
     chomp $sessions;
     if ( $arg eq "kill" ) {
