@@ -14,8 +14,12 @@ die "sub command required" if !@ARGV;
 my $arg = shift @ARGV;
 
 if ( $arg eq "help" ) {
-    print "build purge tag start list kill reconfigure halt destroy";
+    print "build purge ready tag start list kill reconfigure halt destroy";
     exit;
+}
+elsif ( $arg eq "ready" ) {
+    push(@ARGV, "start");
+    $arg = "build";
 }
 elsif ( $arg eq "halt" or $arg eq "destroy" ) {
     my $destroy = 0;

@@ -3,6 +3,17 @@ use strict;
 use warnings;
 use autodie;
 
+my $arg;
+my $starting = 0;
+if (@ARGV) {
+    $arg = shift @ARGV;
+    if ( $arg ne "start" ) {
+        print "unknown build sub command: $arg\n";
+        exit 1;
+    }
+    $starting = 1;
+}
+
 my $release   = "3.14.0";
 my $disk_size = "1G";
 my $mem_size  = "2048";
@@ -110,3 +121,7 @@ system("echo 'cd $path' >> $script_file");
 system("echo 'source ./env' >> $script_file");
 system(
     "cat \$HOME/Source/com.voidedtech.Macrun/scripts/start.sh >> $script_file");
+
+if ( $starting ) {
+    system("macrun start $count");
+}
