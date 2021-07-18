@@ -22,8 +22,8 @@ sub print_column {
 }
 
 print "\n";
-print_column "id", "state", "ssh", "tag", "size", "release";
-print_column "--", "-----", "---", "---", "----", "-------";
+print_column "id", "state", "ssh", "tag", "size", "built";
+print_column "--", "-----", "---", "---", "----", "-----";
 
 for my $container (`ls $dir | grep "$ip_prefix"`) {
     chomp $container;
