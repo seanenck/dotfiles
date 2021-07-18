@@ -25,7 +25,7 @@ _vim-plugins() {
 _update-tools() {
     local t
     echo "-> update tooling"
-    for t in Lockbox Homedir Macrun; do
+    for t in Lockbox Macrun; do
         cd $HOME/Source/com.voidedtech.$t && make && make install
     done
     golangci-lint completion bash > $COMPLETIONS/golangci-lint.bash

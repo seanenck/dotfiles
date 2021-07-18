@@ -1,0 +1,43 @@
+#!/opt/local/bin/perl
+use strict;
+use Socket;
+use IO::Socket;
+
+my $server        = new IO::Socket::INET(
+    Proto     => 'tcp',
+    LocalPort => "8910",
+    Listen    => SOMAXCONN,
+    Reuse     => 1
+);
+
+my $url = "http://can.voidedtech.com/";
+
+$server or die "Unable to create server socket: $!";
+
+while ( my $client = $server->accept() ) {
+    $client->autoflush(1);
+    my %request = ();
+    {
+        local $/ = Socket::CRLF;
+        while (<$client>) {
+            chomp;
+            if (/\s*(\w+)\s*([^\s]+)\s*HTTP\/(\d.\d)/) {
+                $request{METHOD}       = uc $1;
+                $request{URL}          = $2;
+            }
+            elsif (/^$/) {
+                last;
+            }
+        }
+    }
+
+    my $redir = "$url";
+    if ( system("curl -s $url > /dev/null 2>&1") != 0 ) {
+        $redir = "https://start.duckduckgo.com";
+    }
+    print $client "HTTP/1.0 303 See Other", Socket::CRLF;
+    print $client "Location: $redir", Socket::CRLF;
+    print $client Socket::CRLF;
+
+    close $client;
+}
