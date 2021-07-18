@@ -2,10 +2,6 @@
 __pycache__
 
 !.config/
-.config/*
-!.config/voidedtech/
-
-!.daemon/
 
 !Library/
 Library/*

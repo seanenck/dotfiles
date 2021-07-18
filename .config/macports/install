@@ -14,8 +14,10 @@ golangci-lint
 gopls
 gsed
 html2text
+isync -bdb
 mairix
 msmtp
+mutt -pop -imap -smtp +gpgme
 perl5
 p5-test-perltidy
 pinentry-mac
