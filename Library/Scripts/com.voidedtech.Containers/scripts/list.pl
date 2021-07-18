@@ -15,7 +15,7 @@ sub print_column {
     my $size    = shift @_;
     my $release = shift @_;
     system(
-"printf '| %3s | %5s | %8s | %10s | %14s | %7s | %28s |\n' '$id' '$stat' '$conn' '$tags' '$ip' '$size' '$release'"
+"printf '| %3s | %5s | %8s | %10s | %14s | %7s | %29s |\n' '$id' '$stat' '$conn' '$tags' '$ip' '$size' '$release'"
     );
 }
 

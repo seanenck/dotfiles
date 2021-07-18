@@ -88,7 +88,7 @@ for my $param ( keys %parameters ) {
     print $fh "export $param='$value'\n";
 }
 
-my $dated = `date "+%Y-%m-%d %H:%M:%S"`;
+my $dated = `date "+%Y-%m-%dT%H:%M:%S"`;
 chomp $dated;
 system("echo '$release ($dated)' > ${path}built");
 my $script_file = "${path}start.sh";
