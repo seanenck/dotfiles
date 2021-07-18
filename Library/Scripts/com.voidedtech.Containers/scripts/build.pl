@@ -72,6 +72,7 @@ my %parameters;
 $parameters{"MEMORY"}   = "512";
 $parameters{"ISO"}      = $iso_name;
 $parameters{"HTTPPORT"} = $http_port;
+$parameters{"ID"}       = $count;
 $parameters{"SSHKEYS"} =
   "https://cgit.voidedtech.com/dotfiles/plain/.ssh/pubkeys";
 $parameters{"IP"} =

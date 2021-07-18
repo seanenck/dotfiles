@@ -41,7 +41,7 @@ while [ 1 -eq 1 ]; do
         continue
     fi
     echo "attaching to $dev"
-    screen -D -m -S macvm.tty.$HTTPPORT $dev
+    screen -D -m -S macvm$ID.tty.$HTTPPORT $dev
     break
 done
 
