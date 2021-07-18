@@ -13,17 +13,17 @@ die "sub command required" if !@ARGV;
 
 my $arg = shift @ARGV;
 
-
 if ( $arg eq "help" ) {
     print "build help purge tag start list kill";
     exit;
 }
-elsif ( $arg eq "tag" or $arg eq "purge" or $arg eq "start" or $arg eq "kill" ) {
+elsif ( $arg eq "tag" or $arg eq "purge" or $arg eq "start" or $arg eq "kill" )
+{
 
     die "container required" if !@ARGV;
 
     my $container = shift @ARGV;
-    my $path = "${dir}192.168.64.$container/";
+    my $path      = "${dir}192.168.64.$container/";
 
     die "invalid container: $path" if !-d $path;
 
@@ -37,10 +37,11 @@ elsif ( $arg eq "tag" or $arg eq "purge" or $arg eq "start" or $arg eq "kill" ) 
         exit;
     }
 
-    my $sessions = `screen -list | grep "macvm$container\\s*" | awk '{print \$1}'`;
+    my $sessions =
+      `screen -list | grep "macvm$container\\s*" | awk '{print \$1}'`;
     chomp $sessions;
     if ( $arg eq "kill" ) {
-        for my $sess (split("\n", $sessions)) {
+        for my $sess ( split( "\n", $sessions ) ) {
             print "killing session object: $sess\n";
             system("screen -X -S $sess quit");
         }
@@ -53,8 +54,9 @@ elsif ( $arg eq "tag" or $arg eq "purge" or $arg eq "start" or $arg eq "kill" ) 
 
     if ( $arg eq "purge" ) {
         system("rm -rf $path");
-    } elsif ( $arg eq "start" ) {
-        system("screen -D -m -S macvm$container -- bash ${path}start.sh &")
+    }
+    elsif ( $arg eq "start" ) {
+        system("screen -D -m -S macvm$container -- bash ${path}start.sh &");
     }
     exit;
 }
