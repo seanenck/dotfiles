@@ -3,6 +3,8 @@ CACHES=$HOME/Library/Caches/com.voidedtech.Utils/
 PORT_CFG=$HOME/.config/macports/
 PORT_CACHE=${CACHES}ports
 TOOL_CACHE=${CACHES}gittools
+BIN=$HOME/.bin
+COMPLETIONS=$HOME/.completions
 
 _vim-plugins() {
     echo "-> update vim plugins"
@@ -23,12 +25,10 @@ _vim-plugins() {
 _update-tools() {
     local t
     echo "-> update tooling"
-    mkdir -p $HOME/.bin
-    mkdir -p $HOME/.completions
     for t in Lockbox Homedir Macrun; do
         cd $HOME/Source/com.voidedtech.$t && make && make install
     done
-    golangci-lint completion bash > $HOME/.completions/golangci-lint.bash
+    golangci-lint completion bash > $COMPLETIONS/golangci-lint.bash
 }
 
 _git-setup() {
@@ -48,7 +48,7 @@ _git-setup() {
     if [ $? -ne 0 ]; then
         $2 $dir
         for f in ${@:3}; do
-            install -Dm755 $dir/$f "$HOME/.bin/"
+            install -Dm755 $dir/$f "$BIN"
         done
     fi
     mv $hash $prev
@@ -106,6 +106,8 @@ sys-upgrade() {
 
 mkdir -p $PORT_CACHE
 mkdir -p $TOOL_CACHE
+mkdir -p $COMPLETIONS
+mkdir -p $BIN
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     :
 else
