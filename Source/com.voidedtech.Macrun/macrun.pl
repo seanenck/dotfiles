@@ -134,6 +134,9 @@ elsif ($arg eq "tag"
         }
         if ( $arg eq "start" ) {
             print "setting up...\n";
+            system(
+"cd \$HOME && tar cJf ${path}settings.tar.xz .vim/pack .bashrc .bash_profile .vimrc .bash_aliases"
+            );
             system("ssh $use_host -- /etc/conf.d/setup-macrun");
         }
         print "ready!\n";

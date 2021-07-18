@@ -1,28 +1,29 @@
 #!/bin/bash
 STORE=/var/opt/store
-VIM=$STORE/.vim
-PROFILE=$STORE/.bash
-DOTFILES=$PROFILE/dotfiles
 SCRIPT=/tmp/macrun
 
+_httphost() {
+    cat /proc/cmdline  | tr ' ' '\n' | grep "apkovl=" | cut -d "=" -f 2 | cut -d "/" -f 1,2,3
+}
+
 _ready() {
-    local vimplug
-    mkdir -p $PROF $VIM
+    local host settings
+    host=$(_httphost)
     setup-timezone -z US/Michigan
     setup-ntp -c chrony
     setup-apkcache /var/cache/apk
     /etc/init.d/loopback start
+    mkdir -p $STORE
     ln -sf $STORE /root/store
-    vimplug=/root/.vim/pack/dist/
-    mkdir -p $vimplug
-    ln -sf $VIM/ ${vimplug}start
-    ln -sf $DOTFILES/.{bashrc,bash_aliases,vimrc} /root/
-    ln -sf $DOTFILES/.bash_profile /root/
-    ln -sf $DOTFILES/.bash_profile /root/.profile
+    settings="settings.tar.xz"
+    wget -O /root/$settings "$host/settings.tar.xz"
+    cwd=$PWD
+    cd /root && tar xf $settings && rm -f $settings
+    cd $cwd
 }
 
 _setup() {
-    local has dir repo
+    local has
     has=0
     blkid | grep -q "vdb1"
     if [ $? -eq 0 ]; then
@@ -36,24 +37,15 @@ _setup() {
     fi
     if [ $has -gt 0 ]; then
         _ready
-        for dir in $(echo "$VIM $PROFILE"); do
-            for repo in $(ls $dir); do
-                echo "updating $repo ($dir)"
-                git -C $dir/$repo pull
-            done
-        done
         return
     fi
     yes | setup-disk -m data /dev/vdb
     _ready
-    git clone https://github.com/vim-airline/vim-airline $VIM/vim-airline
-    git clone https://github.com/dense-analysis/ale $VIM/ale
-    git clone https://cgit.voidedtech.com/dotfiles $DOTFILES
 }
 
 _getlatest() {
     local host
-    host=$(cat /proc/cmdline  | tr ' ' '\n' | grep "apkovl=" | cut -d "=" -f 2 | cut -d "/" -f 1,2,3)
+    host=$(_httphost)
     wget -O $SCRIPT "$host/setup-macrun.sh"
     if [ $? -ne 0 ]; then
         cp /etc/conf.d/setup-macrun $SCRIPT
