@@ -1,7 +1,7 @@
 LOGFILE=container.log
 _httpserver() {
     local pid
-    pid=$(ps aux | grep "http.server" | grep $HTTPPORT | grep -v "grep" | grep -v "rg" | awk '{print $2}')
+    pid=$(ps aux | grep "http.server" | grep $HTTPPORT | grep -v "grep " | grep -v "rg " | awk '{print $2}')
     if [ ! -z "$pid" ]; then
         echo "killing old server $pid"
         kill -9 $pid
