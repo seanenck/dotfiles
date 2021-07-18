@@ -1,0 +1,5 @@
+python python39
+pycodestyle pycodestyle-py39
+pydocstyle py39-pydocstyle
+flake8 flake8-39
+python-language-server py39-pyls
