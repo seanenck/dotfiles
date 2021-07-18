@@ -14,8 +14,33 @@ die "sub command required" if !@ARGV;
 my $arg = shift @ARGV;
 
 if ( $arg eq "help" ) {
-    print "build help purge tag start list kill reconfigure";
+    print "build purge tag start list kill reconfigure halt destroy";
     exit;
+}
+elsif ( $arg eq "halt" or $arg eq "destroy" ) {
+    my $destroy = 0;
+    if ( $arg eq "destroy" ) {
+        $destroy = 1;
+    }
+    print "perform full macrun $arg? (y/N) ";
+    my $input = <STDIN>;
+    chomp $input;
+    $input = lc $input;
+    if ( $input ne "y" ) {
+        exit 1;
+    }
+    for my $container (`ls $dir | grep $ips | cut -d "." -f 4`) {
+        chomp $container;
+        next if !$container;
+        print "halting: $container\n";
+        system("macrun kill $container");
+        if ($destroy) {
+            sleep 1;
+            print "destroying: $container\n";
+            system("macrun purge $container");
+        }
+    }
+    exit 0;
 }
 elsif ($arg eq "tag"
     or $arg eq "purge"
