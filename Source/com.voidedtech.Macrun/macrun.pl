@@ -90,26 +90,6 @@ elsif ($arg eq "tag"
             }
             sleep 3;
         }
-        my $init_file = "$path/init";
-        if ( $arg eq "start" and !-e "$init_file" ) {
-            my $init = 1;
-            if (
-                system(
-                    "ssh $use_host -- 'echo source /root/.bashrc > .profile'")
-                != 0
-              )
-            {
-                $init = 0;
-            }
-            for my $file ( ( ".bashrc", ".vimrc", ".bash_aliases" ) ) {
-                if ( system("scp \$HOME/$file $use_host:~/$file") != 0 ) {
-                    $init = 0;
-                }
-            }
-            if ($init) {
-                system("touch $init_file");
-            }
-        }
         if ( $arg eq "start" ) {
             print "setting up...\n";
             system("ssh $use_host -- /etc/conf.d/setup-macrun");
