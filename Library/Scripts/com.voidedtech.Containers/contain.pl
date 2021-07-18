@@ -37,7 +37,7 @@ elsif ( $arg eq "tag" or $arg eq "purge" or $arg eq "start" or $arg eq "kill" )
         exit;
     }
 
-    my $name     = "macvm$container";
+    my $name     = "macrun$container";
     my $sessions = `screen -list | grep "$name\\s*" | awk '{print \$1}'`;
     chomp $sessions;
     my $vftool =

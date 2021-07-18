@@ -14,7 +14,7 @@ my $directory = $ENV{"CONTAINER_BASE"};
 
 my $workdir = "${directory}releases/";
 my $current = "$workdir$release/";
-my $apkovl  = "macvm.apkovl.tar.gz";
+my $apkovl  = "macrun.apkovl.tar.gz";
 my $apkdir  = "$workdir$apkovl";
 my $storage = "storage";
 
@@ -69,18 +69,19 @@ die "unable to make a new container" if $made == 0;
 
 my $http_port = `printf 7%03d '$count'`;
 chomp $http_port;
-my $host = "macvm$count";
+my $host = "macrun$count";
 
 my %parameters;
 $parameters{"MEMORY"}   = "512";
 $parameters{"ISO"}      = $iso_name;
 $parameters{"HTTPPORT"} = $http_port;
+$parameters{"APKOVL"}   = "http://${ip_prefix}1:$HTTPPORT/$apkovl";
 $parameters{"ID"}       = $count;
 $parameters{"STORE"}    = "$storage.dmg";
 $parameters{"SSHKEYS"} =
   "https://cgit.voidedtech.com/dotfiles/plain/.ssh/pubkeys";
 $parameters{"IP"} =
-  "$ip_prefix$count:none:192.168.64.1:255.255.255.0:${host}::none:1.1.1.1";
+  "$ip_prefix$count:none:${ip_prefix}1:255.255.255.0:${host}::none:1.1.1.1";
 $parameters{"REPO"} = "http://dl-cdn.alpinelinux.org/alpine/v$version/main";
 
 my $param_file = "${path}env";

@@ -14,7 +14,7 @@ sleep 1
 
 PARAMS="ssh_key=$SSHKEYS"
 PARAMS="$PARAMS ip=$IP"
-PARAMS="$PARAMS apkovl=http://192.168.64.1:$HTTPPORT/macvm.apkovl.tar.gz"
+PARAMS="$PARAMS apkovl=$APKOVL"
 PARAMS="$PARAMS alpine_repo=$REPO"
 
 touch $LOGFILE
@@ -42,7 +42,7 @@ while [ 1 -eq 1 ]; do
         continue
     fi
     echo "attaching to $dev"
-    screen -D -m -S macvm$ID.tty.$HTTPPORT $dev
+    screen -D -m -S macrun$ID.tty.$HTTPPORT $dev
     break
 done
 

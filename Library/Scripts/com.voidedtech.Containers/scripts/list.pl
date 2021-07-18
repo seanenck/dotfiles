@@ -39,7 +39,7 @@ for my $container (`ls $dir | grep "$ip_prefix"`) {
         chomp $tags;
     }
     my $status = "down";
-    if ( system("screen -list | grep -q 'macvm$id\\s*'") == 0 ) {
+    if ( system("screen -list | grep -q 'macrun$id\\s*'") == 0 ) {
         $status = "up";
     }
     my $release = `cat $full/built`;
