@@ -16,7 +16,7 @@ if [ ! -z "$IP" ]; then
     PARAMS="$PARAMS ip=$IP"
 fi
 
-if [ ! -z "$APKVOL" ]; then
+if [ ! -z "$APKOVL" ]; then
     PARAMS="$PARAMS apkovl=$APKOVL"
 fi
 
