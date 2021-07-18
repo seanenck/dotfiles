@@ -1,4 +1,10 @@
 #!/bin/bash
+_ready() {
+    setup-timezone -z US/Michigan
+    setup-ntp -c chrony
+    ln -sf $1 /root/store
+}
+
 _setupdisks() {
     local has store prof files
     store=/var/opt/store
@@ -17,19 +23,18 @@ _setupdisks() {
         mount /dev/vdb2 /var
     fi
     if [ $has -gt 0 ]; then
-        setup-timezone -z US/Michigan
-        setup-ntp -c chrony
         echo "source /root/.bashrc" > /root/.profile
         for f in $(echo $files); do
             ln -sf $prof/$f /root/$f
         done
-        ln -sf $store /root/store
+        _ready $store
         return
     fi
     yes | setup-disk -m data /dev/vdb
     for f in $(echo $files); do
         cp /root/$f $prof/$f
     done
+    _ready $store
 }
 
 _setupdisks
