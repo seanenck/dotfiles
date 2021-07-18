@@ -14,17 +14,16 @@ sub print_column {
     my $stat    = shift @_;
     my $conn    = shift @_;
     my $tags    = shift @_;
-    my $ip      = shift @_;
     my $size    = shift @_;
     my $release = shift @_;
     system(
-"printf '| %3s | %5s | %8s | %10s | %14s | %7s | %29s |\n' '$id' '$stat' '$conn' '$tags' '$ip' '$size' '$release' | cut -c-$cols"
+"printf '| %3s | %5s | %19s | %10s | %7s | %29s |\n' '$id' '$stat' '$conn' '$tags' '$size' '$release' | cut -c-$cols"
     );
 }
 
 print "\n";
-print_column "id", "state", "ssh", "tag", "ip", "size", "release";
-print_column "--", "-----", "---", "---", "--", "----", "-------";
+print_column "id", "state", "ssh", "tag", "size", "release";
+print_column "--", "-----", "---", "---", "----", "-------";
 
 for my $container (`ls $dir | grep "$ip_prefix"`) {
     chomp $container;
@@ -47,7 +46,7 @@ for my $container (`ls $dir | grep "$ip_prefix"`) {
     }
     my $release = `cat $full/built`;
     chomp $release;
-    print_column "$id", "$status", "root\@$id", "$tags", "$container", "$size",
+    print_column "$id", "$status", "root\@$container", "$tags", "$size",
       "$release";
 }
 print "\n";

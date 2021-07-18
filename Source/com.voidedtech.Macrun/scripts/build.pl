@@ -19,7 +19,11 @@ my $apkdir  = "$workdir$apkovl";
 my $storage = "storage";
 
 # Generate via `lbu package` in an existing vm
-die "no apkovl at $apkdir" if !-e $apkdir;
+my $include_apk = 0;
+if ( -e $apkdir ) {
+    print "including apk\n";
+    $include_apk = 1;
+}
 
 my $iso =
 "https://dl-cdn.alpinelinux.org/alpine/v$version/releases/aarch64/alpine-standard-$release-aarch64.iso";
@@ -55,7 +59,9 @@ while ( $count <= 254 ) {
     system("mkdir -p $path");
     system("cp $iso_file ${path}$iso_name");
     system("cp ${current}*-lts ${path}");
-    system("cp $apkdir $path");
+    if ($include_apk) {
+        system("cp $apkdir $path");
+    }
     system("mkdir -p ${path}store");
     die "unable to make store"
       if system(
@@ -83,10 +89,13 @@ sub add_param {
 add_param "MEMORY",   "512";
 add_param "ISO",      $iso_name;
 add_param "HTTPPORT", $http_port;
-add_param "APKOVL",   "http://${ip_prefix}1:\$HTTPPORT/$apkovl";
-add_param "ID",       $count;
-add_param "STORE",    "$storage.dmg";
-add_param "SSHKEYS",  "https://cgit.voidedtech.com/dotfiles/plain/.ssh/pubkeys";
+
+if ($include_apk) {
+    add_param "APKOVL", "http://${ip_prefix}1:\$HTTPPORT/$apkovl";
+}
+
+add_param "ID",    $count;
+add_param "STORE", "$storage.dmg";
 add_param "IP",
   "$ip_prefix$count:none:${ip_prefix}1:255.255.255.0:${host}::none:1.1.1.1";
 add_param "REPO", "http://dl-cdn.alpinelinux.org/alpine/v$version/main";

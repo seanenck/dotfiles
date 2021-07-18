@@ -12,10 +12,17 @@ _httpserver() {
 _httpserver &
 sleep 1
 
-PARAMS="ssh_key=$SSHKEYS"
-PARAMS="$PARAMS ip=$IP"
-PARAMS="$PARAMS apkovl=$APKOVL"
-PARAMS="$PARAMS alpine_repo=$REPO"
+if [ ! -z "$IP" ]; then
+    PARAMS="$PARAMS ip=$IP"
+fi
+
+if [ ! -z "$APKVOL" ]; then
+    PARAMS="$PARAMS apkovl=$APKOVL"
+fi
+
+if [ ! -z "$REPO" ]; then
+    PARAMS="$PARAMS alpine_repo=$REPO"
+fi
 
 touch $LOGFILE
 cat $LOGFILE >> log.$(date +%Y-%m-%d)
