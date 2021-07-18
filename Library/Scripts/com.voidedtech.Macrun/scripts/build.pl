@@ -75,7 +75,7 @@ my %parameters;
 $parameters{"MEMORY"}   = "512";
 $parameters{"ISO"}      = $iso_name;
 $parameters{"HTTPPORT"} = $http_port;
-$parameters{"APKOVL"}   = "http://${ip_prefix}1:$HTTPPORT/$apkovl";
+$parameters{"APKOVL"}   = "http://${ip_prefix}1:\$HTTPPORT/$apkovl";
 $parameters{"ID"}       = $count;
 $parameters{"STORE"}    = "$storage.dmg";
 $parameters{"SSHKEYS"} =
@@ -99,5 +99,5 @@ system("echo '#!/bin/bash' > $script_file");
 system("echo 'cd $path' >> $script_file");
 system("echo 'source ./env' >> $script_file");
 system(
-"cat /Users/enck/Library/Scripts/com.voidedtech.Containers/template/start.sh >> $script_file"
+"cat /Users/enck/Library/Scripts/com.voidedtech.Macrun/template/start.sh >> $script_file"
 );

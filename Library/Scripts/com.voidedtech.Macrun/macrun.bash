@@ -1,9 +1,9 @@
 #!/opt/local/bin/bash
-_contain() {
+_macrun() {
     local cur opts
     cur=${COMP_WORDS[COMP_CWORD]}
     if [ $COMP_CWORD -eq 1 ]; then
-        opts=$(contain help)
+        opts=$(macrun help)
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     else
         if [ $COMP_CWORD -eq 2 ]; then
@@ -20,5 +20,4 @@ _contain() {
     fi
 }
 
-complete -F _contain -o bashdefault -o default contain
-
+complete -F _macrun -o bashdefault -o default macrun

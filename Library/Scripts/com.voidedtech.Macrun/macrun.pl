@@ -102,7 +102,7 @@ elsif ( $arg eq "tag" or $arg eq "purge" or $arg eq "start" or $arg eq "kill" )
     exit;
 }
 
-my $script = "${bin}contain-$arg";
+my $script = "${bin}macrun-$arg";
 
 die "invalid contain command: $arg" if !-x $script;
 
