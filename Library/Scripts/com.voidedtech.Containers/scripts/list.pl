@@ -10,18 +10,18 @@ sub print_column {
     my $id      = shift @_;
     my $stat    = shift @_;
     my $conn    = shift @_;
+    my $tags    = shift @_;
     my $ip      = shift @_;
     my $size    = shift @_;
     my $release = shift @_;
-    my $tags    = shift @_;
     system(
-"printf '| %3s | %5s | %8s | %14s | %7s | %7s | %10s |\n' '$id' '$stat' '$conn' '$ip' '$size' '$release' '$tags'"
+"printf '| %3s | %5s | %8s | %10s | %14s | %7s | %28s |\n' '$id' '$stat' '$conn' '$tags' '$ip' '$size' '$release'"
     );
 }
 
 print "\n";
-print_column "id", "state", "ssh", "ip", "size", "release", "tag";
-print_column "--", "-----", "---", "--", "----", "-------", "---";
+print_column "id", "state", "ssh", "tag", "ip", "size", "release";
+print_column "--", "-----", "---", "---", "--", "----", "-------";
 
 for my $container (`ls $dir | grep "$ip_prefix"`) {
     chomp $container;
@@ -42,10 +42,9 @@ for my $container (`ls $dir | grep "$ip_prefix"`) {
     if ( system("screen -list | grep -q 'macvm$id\\s*'") == 0 ) {
         $status = "up";
     }
-    my $release = `cat $full/release`;
+    my $release = `cat $full/built`;
     chomp $release;
-    print_column "$id", "$status", "root\@$id", "$container", "$size",
-      "$release",
-      "$tags";
+    print_column "$id", "$status", "root\@$id", "$tags", "$container", "$size",
+      "$release";
 }
 print "\n";
