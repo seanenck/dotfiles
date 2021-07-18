@@ -71,14 +71,21 @@ elsif ( $arg eq "tag" or $arg eq "purge" or $arg eq "start" or $arg eq "kill" )
         my $init_file = "$path/init";
         if ( !-e "$init_file" ) {
             print "performing first time init...\n";
-            my $use_host = "root\@$container";
+            my $use_host = "root\@$ips$container";
+            my $output   = 0;
             while (
                 system(
 "ssh -o BatchMode=yes -o ConnectTimeout=5 -o PubkeyAuthentication=no -o PasswordAuthentication=no -o KbdInteractiveAuthentication=no -o ChallengeResponseAuthentication=no $use_host 2>&1 | grep 'Permission denied'"
                 ) != 0
               )
             {
-                print "container not ready...\n";
+                if ( $output == 0 ) {
+                    print "container not ready...\n";
+                }
+                $output = $output + 1;
+                if ( $output >= 10 ) {
+                    $output = 0;
+                }
                 sleep 3;
             }
             my $init = 1;
