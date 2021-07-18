@@ -17,7 +17,7 @@ sub create_tar {
     my $path    = shift @_;
     my $tarfile = "${path}settings.tar.xz";
     if ( -e $tarfile ) {
-        print "settings already defined\n";
+        print "settings already defined ($tarfile)\n";
         return;
     }
     my $tempdir = `mktemp -d`;
@@ -34,6 +34,18 @@ sub create_tar {
         system(
 "echo 'install -Dm644 --owner=root --group=root root/$file /root/$file' >> $cfg_file"
         );
+    }
+
+    my $tag_file = "${path}tag";
+    if ( -e $tag_file ) {
+        my $tag = `cat $tag_file`;
+        chomp $tag;
+        print "including $tag settings\n";
+        for my $found (`find \$HOME/.config/macrun/$tag/ -maxdepth 1 -type f`) {
+            chomp $found;
+            next if !$found;
+            system("cat $found >> $cfg_file");
+        }
     }
     system("chmod u+x $cfg_file");
     system("cd $tempdir && tar cJf $tarfile *");
