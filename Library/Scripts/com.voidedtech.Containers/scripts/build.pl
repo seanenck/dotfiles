@@ -72,7 +72,7 @@ my %parameters;
 $parameters{"MEMORY"}   = "512";
 $parameters{"ISO"}      = $iso_name;
 $parameters{"HTTPPORT"} = $http_port;
-$parameters{"SSHKEYS"}  =
+$parameters{"SSHKEYS"} =
   "https://cgit.voidedtech.com/dotfiles/plain/.ssh/pubkeys";
 $parameters{"IP"} =
   "$ip_prefix$count:none:192.168.64.1:255.255.255.0:${host}::none:1.1.1.1";
@@ -89,4 +89,6 @@ my $script_file = "${path}start.sh";
 system("echo '#!/bin/bash' > $script_file");
 system("echo 'cd $path' >> $script_file");
 system("echo 'source ./env' >> $script_file");
-system("cat /Users/enck/Library/Scripts/com.voidedtech.Containers/template/start.sh >> $script_file");
+system(
+"cat /Users/enck/Library/Scripts/com.voidedtech.Containers/template/start.sh >> $script_file"
+);
