@@ -10,8 +10,6 @@ __pycache__
 !Library/
 Library/*
 !Library/LaunchAgents/
-!Library/Scripts/
-Library/Scripts/*
-!Library/Scripts/com.voidedtech.*
+!Source/
 
 bin/

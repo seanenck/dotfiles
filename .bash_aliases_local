@@ -54,7 +54,7 @@ _update-tools() {
     mkdir -p $HOME/.bin
     mkdir -p $HOME/.completions
     for t in VFTool Lockbox Homedir Macrun; do
-        cd $HOME/Library/Scripts/com.voidedtech.$t && make && make install
+        cd $HOME/Source/com.voidedtech.$t && make && make install
     done
     golangci-lint completion bash > $HOME/.completions/golangci-lint.bash
 }
@@ -65,7 +65,7 @@ sys-upgrade() {
     echo "-> update ports"
     sudo port selfupdate
     sudo port upgrade outdated
-    cd $HOME/Library/Scripts/com.voidedtech.Ports/ && make
+    cd $HOME/Source/com.voidedtech.Ports/ && make
     echo "-> update kitty"
     kitty-updater
     echo "-> cleanup ports"

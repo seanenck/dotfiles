@@ -99,5 +99,5 @@ system("echo '#!/bin/bash' > $script_file");
 system("echo 'cd $path' >> $script_file");
 system("echo 'source ./env' >> $script_file");
 system(
-"cat /Users/enck/Library/Scripts/com.voidedtech.Macrun/template/start.sh >> $script_file"
+"cat /Users/enck/Source/com.voidedtech.Macrun/template/start.sh >> $script_file"
 );
