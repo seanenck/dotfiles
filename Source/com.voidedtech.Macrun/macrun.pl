@@ -16,10 +16,6 @@ my $arg = shift @ARGV;
 sub create_tar {
     my $path    = shift @_;
     my $tarfile = "${path}settings.tar.xz";
-    if ( -e $tarfile ) {
-        print "settings already defined ($tarfile)\n";
-        return;
-    }
     my $tempdir = `mktemp -d`;
     chomp $tempdir;
     my $cfg_file = "$tempdir/configure";
@@ -36,17 +32,21 @@ sub create_tar {
         );
     }
 
-    my $tag_file = "${path}tag";
+    my $tag_file   = "${path}tag";
+    my $macrun_cfg = $ENV{"HOME"} . "/.config/macrun/";
     if ( -e $tag_file ) {
         my $tag = `cat $tag_file`;
         chomp $tag;
         print "including $tag settings\n";
-        for my $found (`find \$HOME/.config/macrun/$tag/ -maxdepth 1 -type f`) {
+        for
+          my $found (`find $macrun_cfg$tag/ -maxdepth 1 -type f -name "*.conf"`)
+        {
             chomp $found;
             next if !$found;
             system("cat $found >> $cfg_file");
         }
     }
+    system("cat ${macrun_cfg}macrun.conf >> $cfg_file");
     system("chmod u+x $cfg_file");
     system("cd $tempdir && tar cJf $tarfile *");
     system("rm -rf $tempdir");
@@ -176,7 +176,7 @@ elsif ($arg eq "tag"
             create_tar $path;
             system("ssh $use_host -- /etc/conf.d/setup-macrun");
         }
-        print "ready!\n";
+        print "ready! $use_host\n";
     }
     exit;
 }
