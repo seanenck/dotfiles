@@ -15,6 +15,11 @@ my $arg = shift @ARGV;
 
 sub create_tar {
     my $path    = shift @_;
+    my $tarfile = "${path}settings.tar.xz";
+    if ( -e $tarfile ) {
+        print "settings already defined\n";
+        return;
+    }
     my $tempdir = `mktemp -d`;
     chomp $tempdir;
     my $cfg_file = "$tempdir/configure";
@@ -31,7 +36,8 @@ sub create_tar {
         );
     }
     system("chmod u+x $cfg_file");
-    system("cd $tempdir && tar cJf ${path}settings.tar.xz *");
+    system("cd $tempdir && tar cJf $tarfile *");
+    system("rm -rf $tempdir");
 }
 
 if ( $arg eq "help" ) {
