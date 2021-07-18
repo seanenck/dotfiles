@@ -16,9 +16,9 @@ _ready() {
     mkdir -p $STORE
     ln -sf $STORE /root/store
     settings="settings.tar.xz"
-    wget -O /root/$settings "$host/settings.tar.xz"
+    wget -O /tmp/$settings "$host/settings.tar.xz"
     cwd=$PWD
-    cd /root && tar xf $settings && rm -f $settings
+    cd /tmp && tar xf $settings && ./configure && rm -f $settings
     cd $cwd
 }
 

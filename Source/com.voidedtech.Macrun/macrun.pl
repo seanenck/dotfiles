@@ -13,6 +13,27 @@ die "sub command required" if !@ARGV;
 
 my $arg = shift @ARGV;
 
+sub create_tar {
+    my $path    = shift @_;
+    my $tempdir = `mktemp -d`;
+    chomp $tempdir;
+    my $cfg_file = "$tempdir/configure";
+    system("echo '#!/bin/bash' > $cfg_file");
+    system("mkdir -p $tempdir/root/.vim/");
+    system("cp -r \$HOME/.vim/pack $tempdir/root/.vim/");
+    system("echo 'cp -r root/.vim /root/.vim' >> $cfg_file");
+    system("echo 'chown root:root -R /root/.vim/' >> $cfg_file");
+
+    for my $file ( ".bashrc", ".vimrc", ".bash_profile", ".bash_aliases" ) {
+        system("cp \$HOME/$file $tempdir/root/");
+        system(
+"echo 'install -Dm644 --owner=root --group=root root/$file /root/$file' >> $cfg_file"
+        );
+    }
+    system("chmod u+x $cfg_file");
+    system("cd $tempdir && tar cJf ${path}settings.tar.xz *");
+}
+
 if ( $arg eq "help" ) {
     print
       "build remove new tag start list screen stop configure killall destroy";
@@ -134,9 +155,7 @@ elsif ($arg eq "tag"
         }
         if ( $arg eq "start" ) {
             print "setting up...\n";
-            system(
-"cd \$HOME && tar cJf ${path}settings.tar.xz .vim/pack .bashrc .bash_profile .vimrc .bash_aliases"
-            );
+            create_tar $path;
             system("ssh $use_host -- /etc/conf.d/setup-macrun");
         }
         print "ready!\n";
