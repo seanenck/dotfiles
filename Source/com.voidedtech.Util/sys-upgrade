@@ -101,6 +101,7 @@ sys-upgrade() {
     kitty-updater
     _vim-plugins
     _update-tools
+    _git-tools
     cd $c
 }
 
