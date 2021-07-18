@@ -41,7 +41,7 @@ for my $container (`ls $dir | grep "$ip_prefix"`) {
     if ( system("screen -list | grep -q 'macvm$id\\s*'") == 0 ) {
         $status = "up";
     }
-    print_column "$id", "$status", "root\@macvm.$id", "$container", "$size",
+    print_column "$id", "$status", "root\@$id", "$container", "$size",
       "$tags";
 }
 print "\n";
