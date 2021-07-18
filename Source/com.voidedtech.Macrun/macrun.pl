@@ -14,7 +14,17 @@ die "sub command required" if !@ARGV;
 my $arg = shift @ARGV;
 
 if ( $arg eq "help" ) {
-    print "build remove new tag start list stop configure killall destroy";
+    print
+      "build remove new tag start list screen stop configure killall destroy";
+    exit;
+}
+elsif ( $arg eq "screen" ) {
+    print "\n";
+    print "screens\n=======\n";
+    system(
+        "screen -list | grep macrun | awk '{print \$1}' | sort | sed 's/^/  /g'"
+    );
+    print "\n";
     exit;
 }
 elsif ( $arg eq "new" ) {
