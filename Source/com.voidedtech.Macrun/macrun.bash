@@ -9,7 +9,7 @@ _macrun() {
         if [ $COMP_CWORD -eq 2 ]; then
             opts=""
             case ${COMP_WORDS[1]} in
-                "purge" | "start" | "tag" | "kill")
+                "purge" | "start" | "tag" | "kill" | "reconfigure")
                     opts=$(ls $CONTAINER_BASE | grep "192\.168\.64\." | cut -d "." -f 4)
                     ;;
             esac

@@ -4,7 +4,8 @@ use warnings;
 use autodie;
 
 my $release   = "3.14.0";
-my $size      = "1G";
+my $disk_size = "1G";
+my $mem_size  = "2048";
 my $ip_prefix = "192.168.64.";
 
 my $version = `echo '$release' | rev | cut -d '.' -f 2- | rev`;
@@ -16,9 +17,11 @@ my $workdir = "${directory}releases/";
 my $current = "$workdir$release/";
 my $apkovl  = "macrun.apkovl.tar.gz";
 my $apkdir  = "$workdir$apkovl";
-my $storage = "storage";
+my $storage = "storage.img";
 
 # Generate via `lbu package` in an existing vm
+# lbu add /root/.ssh/authorized_keys
+# lbu add /etc/conf.d/setup-macrun
 my $include_apk = 0;
 if ( -e $apkdir ) {
     print "including apk\n";
@@ -62,10 +65,9 @@ while ( $count <= 254 ) {
     if ($include_apk) {
         system("cp $apkdir $path");
     }
-    system("mkdir -p ${path}store");
     die "unable to make store"
       if system(
-"cd $path && hdiutil create $storage -size $size -srcfolder store/ -fs exFAT -format UDRW"
+"cd $path && dd if=/dev/zero of=$storage bs=$disk_size count=1"
       ) != 0;
     $made = 1;
     last;
@@ -86,7 +88,7 @@ sub add_param {
     print $fh "export $key=\"$val\"\n";
 }
 
-add_param "MEMORY",   "512";
+add_param "MEMORY",   $mem_size;
 add_param "ISO",      $iso_name;
 add_param "HTTPPORT", $http_port;
 
@@ -95,7 +97,7 @@ if ($include_apk) {
 }
 
 add_param "ID",    $count;
-add_param "STORE", "$storage.dmg";
+add_param "STORE", "$storage";
 add_param "IP",
   "$ip_prefix$count:none:${ip_prefix}1:255.255.255.0:${host}::none:1.1.1.1";
 add_param "REPO", "http://dl-cdn.alpinelinux.org/alpine/v$version/main";
@@ -108,5 +110,5 @@ system("echo '#!/bin/bash' > $script_file");
 system("echo 'cd $path' >> $script_file");
 system("echo 'source ./env' >> $script_file");
 system(
-"cat \$HOME/Source/com.voidedtech.Macrun/template/start.sh >> $script_file"
+"cat \$HOME/Source/com.voidedtech.Macrun/scripts/start.sh >> $script_file"
 );

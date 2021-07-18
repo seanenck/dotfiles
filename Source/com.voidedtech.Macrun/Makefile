@@ -8,7 +8,7 @@ $(ISO): $(shell find cmd/ -type f)
 install:
 	install -Dm755 $(ISO) $(HOMEBIN)isox
 	install -Dm755 macrun.pl $(HOMEBIN)macrun
-	for f in $(shell ls scripts/ | cut -d "." -f 1); do install -m755 scripts/$$f.pl $(HOMEBIN)macrun-$$f; done
+	for f in $(shell ls scripts/ | grep "\.pl" | cut -d "." -f 1); do install -m755 scripts/$$f.pl $(HOMEBIN)macrun-$$f; done
 	install -Dm644 macrun.bash $(HOME)/.completions/
 
 clean:

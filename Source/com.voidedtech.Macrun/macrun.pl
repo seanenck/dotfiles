@@ -14,10 +14,14 @@ die "sub command required" if !@ARGV;
 my $arg = shift @ARGV;
 
 if ( $arg eq "help" ) {
-    print "build help purge tag start list kill";
+    print "build help purge tag start list kill reconfigure";
     exit;
 }
-elsif ( $arg eq "tag" or $arg eq "purge" or $arg eq "start" or $arg eq "kill" )
+elsif ($arg eq "tag"
+    or $arg eq "purge"
+    or $arg eq "reconfigure"
+    or $arg eq "start"
+    or $arg eq "kill" )
 {
 
     die "container required" if !@ARGV;
@@ -66,38 +70,39 @@ elsif ( $arg eq "tag" or $arg eq "purge" or $arg eq "start" or $arg eq "kill" )
     if ( $arg eq "purge" ) {
         system("rm -rf $path");
     }
-    elsif ( $arg eq "start" ) {
+    elsif ( $arg eq "start" or $arg eq "reconfigure" ) {
         system("screen -D -m -S $name -- bash ${path}start.sh &");
+        print "starting...\n";
+        my $use_host = "root\@$ips$container";
+        my $output   = 0;
+        while (
+            system(
+"ssh -o BatchMode=yes -o ConnectTimeout=5 -o PubkeyAuthentication=no -o PasswordAuthentication=no -o KbdInteractiveAuthentication=no -o ChallengeResponseAuthentication=no $use_host 2>&1 | grep -q 'Permission denied'"
+            ) != 0
+          )
+        {
+            if ( $output == 0 ) {
+                print "container not ready...\n";
+            }
+            $output = $output + 1;
+            if ( $output >= 10 ) {
+                $output = 0;
+            }
+            sleep 3;
+        }
         my $init_file = "$path/init";
-        if ( !-e "$init_file" ) {
-            print "performing first time init...\n";
-            my $use_host = "root\@$ips$container";
-            my $output   = 0;
-            while (
+        if ( $arg eq "start" and !-e "$init_file" ) {
+            my $init = 1;
+            if (
                 system(
-"ssh -o BatchMode=yes -o ConnectTimeout=5 -o PubkeyAuthentication=no -o PasswordAuthentication=no -o KbdInteractiveAuthentication=no -o ChallengeResponseAuthentication=no $use_host 2>&1 | grep 'Permission denied'"
-                ) != 0
+                    "ssh $use_host -- 'echo source /root/.bashrc > .profile'")
+                != 0
               )
             {
-                if ( $output == 0 ) {
-                    print "container not ready...\n";
-                }
-                $output = $output + 1;
-                if ( $output >= 10 ) {
-                    $output = 0;
-                }
-                sleep 3;
+                $init = 0;
             }
-            my $init = 1;
-            my %inits;
-            $inits{".bashrc"}       = ".bashrc";
-            $inits{".vimrc"}        = ".vimrc";
-            $inits{".bash_aliases"} = ".bash_aliases";
-            $inits{".bash_profile"} = ".profile";
-            for my $file ( keys %inits ) {
-                my $target = $inits{$file};
-                if ( system("scp \$HOME/$file $use_host:~/$target") != 0 )
-                {
+            for my $file ( ( ".bashrc", ".vimrc", ".bash_aliases" ) ) {
+                if ( system("scp \$HOME/$file $use_host:~/$file") != 0 ) {
                     $init = 0;
                 }
             }
@@ -105,6 +110,11 @@ elsif ( $arg eq "tag" or $arg eq "purge" or $arg eq "start" or $arg eq "kill" )
                 system("touch $init_file");
             }
         }
+        if ( $arg eq "start" ) {
+            print "setting up...\n";
+            system("ssh $use_host -- /etc/conf.d/setup-macrun");
+        }
+        print "ready!\n";
     }
     exit;
 }
