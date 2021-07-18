@@ -14,6 +14,11 @@ _macrun() {
                     ;;
             esac
         fi
+        if [ $COMP_CWORD -eq 3 ]; then
+            if [[ "${COMP_WORDS[1]}" == "tag" ]]; then
+                opts=$(ls $HOME/.config/macrun | grep -v "\.conf")
+            fi
+        fi
         if [ ! -z "$opts" ]; then
             COMPREPLY=( $(compgen -W "$opts" -- $cur) )
         fi
