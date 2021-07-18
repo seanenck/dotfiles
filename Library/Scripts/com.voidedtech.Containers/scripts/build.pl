@@ -72,7 +72,7 @@ my %parameters;
 $parameters{"MEMORY"}   = "512";
 $parameters{"ISO"}      = $iso_name;
 $parameters{"HTTPPORT"} = $http_port;
-$parameters{"SSHKEYS"} =
+$parameters{"SSHKEYS"}  =
   "https://cgit.voidedtech.com/dotfiles/plain/.ssh/pubkeys";
 $parameters{"IP"} =
   "$ip_prefix$count:none:192.168.64.1:255.255.255.0:${host}::none:1.1.1.1";
@@ -86,25 +86,7 @@ for my $param ( keys %parameters ) {
 }
 
 my $script_file = "${path}start.sh";
-open( my $sh, ">", $script_file );
-print $sh "#!/opt/local/bin/bash\n";
-print $sh "cd $path\n";
-print $sh "source $param_file\n";
-print $sh "_httpserver() {\n";
-print $sh "  python3 -m http.server \$HTTPPORT --bind 0.0.0.0\n";
-print $sh "}\n";
-print $sh "\n";
-print $sh "_httpserver &\n";
-print $sh "\n";
-print $sh "PARAMS=\"ssh_key=\$SSHKEYS\"\n";
-print $sh "PARAMS=\"\$PARAMS ip=\$IP\"\n";
-print $sh
-  "PARAMS=\"\$PARAMS apkovl=http://${ip_prefix}1:\$HTTPPORT/$apkovl\"\n";
-print $sh "PARAMS=\"\$PARAMS alpine_repo=\$REPO\"\n";
-print $sh "\n";
-print $sh "vftool \\\n";
-print $sh "  -m \$MEMORY \\\n";
-print $sh "  -k vmlinuz-lts \\\n";
-print $sh "  -i initramfs-lts \\\n";
-print $sh "  -d \$ISO \\\n";
-print $sh "  -a \"console=hvc0 modules=loop,squashfs,virtio \$PARAMS\"\n";
+system("echo '#!/bin/bash' > $script_file");
+system("echo 'cd $path' >> $script_file");
+system("echo 'source ./env' >> $script_file");
+system("cat /Users/enck/Library/Scripts/com.voidedtech.Containers/template/start.sh >> $script_file");
