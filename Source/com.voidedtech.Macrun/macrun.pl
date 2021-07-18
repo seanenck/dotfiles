@@ -96,7 +96,7 @@ elsif ( $arg eq "tag" or $arg eq "purge" or $arg eq "start" or $arg eq "kill" )
             $inits{".bash_profile"} = ".profile";
             for my $file ( keys %inits ) {
                 my $target = $inits{$file};
-                if ( system("scp /Users/enck/$file $use_host:~/$target") != 0 )
+                if ( system("scp \$HOME/$file $use_host:~/$target") != 0 )
                 {
                     $init = 0;
                 }

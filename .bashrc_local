@@ -1,7 +1,7 @@
 export GOPATH="$HOME/Library/Caches/go"
 export PATH="$HOME/.bin:$HOME/Source/com.voidedtech.Util:$PATH"
 export PATH="/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH"
-export LOCKBOX_STORE="/Users/enck/Git/passwords"
+export LOCKBOX_STORE="$HOME/Git/passwords"
 export LOCKBOX_KEYMODE="macos"
 export LOCKBOX_TOTP="keys/totp/"
 export CONTAINER_BASE="$HOME/Containers/"
