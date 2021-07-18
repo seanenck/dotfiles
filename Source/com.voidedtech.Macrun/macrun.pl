@@ -14,14 +14,14 @@ die "sub command required" if !@ARGV;
 my $arg = shift @ARGV;
 
 if ( $arg eq "help" ) {
-    print "build purge ready tag start list kill reconfigure halt destroy";
+    print "build remove new tag start list stop configure killall destroy";
     exit;
 }
-elsif ( $arg eq "ready" ) {
+elsif ( $arg eq "new" ) {
     push( @ARGV, "start" );
     $arg = "build";
 }
-elsif ( $arg eq "halt" or $arg eq "destroy" ) {
+elsif ( $arg eq "killall" or $arg eq "destroy" ) {
     my $destroy = 0;
     if ( $arg eq "destroy" ) {
         $destroy = 1;
@@ -37,20 +37,20 @@ elsif ( $arg eq "halt" or $arg eq "destroy" ) {
         chomp $container;
         next if !$container;
         print "halting: $container\n";
-        system("macrun kill $container");
+        system("macrun stop $container");
         if ($destroy) {
             sleep 1;
             print "destroying: $container\n";
-            system("macrun purge $container");
+            system("macrun remove $container");
         }
     }
     exit 0;
 }
 elsif ($arg eq "tag"
-    or $arg eq "purge"
-    or $arg eq "reconfigure"
+    or $arg eq "remove"
+    or $arg eq "configure"
     or $arg eq "start"
-    or $arg eq "kill" )
+    or $arg eq "stop" )
 {
 
     die "container required" if !@ARGV;
@@ -76,7 +76,7 @@ elsif ($arg eq "tag"
     my $vftool =
 `ps aux | grep -v "grep vftool" | grep -v "rg vftool" | grep vftool | grep ":$name:" | awk '{print \$2}'`;
     chomp $vftool;
-    if ( $arg eq "kill" ) {
+    if ( $arg eq "stop" ) {
         for my $sess ( split( "\n", $sessions ) ) {
             print "killing session object: $sess\n";
             system("screen -X -S $sess quit");
@@ -96,10 +96,10 @@ elsif ($arg eq "tag"
         die "found vftool running";
     }
 
-    if ( $arg eq "purge" ) {
+    if ( $arg eq "remove" ) {
         system("rm -rf $path");
     }
-    elsif ( $arg eq "start" or $arg eq "reconfigure" ) {
+    elsif ( $arg eq "start" or $arg eq "configure" ) {
         system("screen -D -m -S $name -- bash ${path}start.sh &");
         print "starting...\n";
         my $use_host = "root\@$ips$container";
