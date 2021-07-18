@@ -27,6 +27,7 @@ vftool \
     -k vmlinuz-lts \
     -i initramfs-lts \
     -d $ISO \
+    -d $STORE \
     -a "console=hvc0 modules=loop,squashfs,virtio $PARAMS" >> $LOGFILE 2>&1 &
 
 vftool_pid=$!

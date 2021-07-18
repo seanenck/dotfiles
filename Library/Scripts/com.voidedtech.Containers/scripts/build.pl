@@ -16,6 +16,7 @@ my $workdir = "${directory}releases/";
 my $current = "$workdir$release/";
 my $apkovl  = "macvm.apkovl.tar.gz";
 my $apkdir  = "$workdir$apkovl";
+my $storage = "storage";
 
 # Generate via `lbu package` in an existing vm
 die "no apkovl at $apkdir" if !-e $apkdir;
@@ -58,7 +59,7 @@ while ( $count <= 254 ) {
     system("mkdir -p ${path}store");
     die "unable to make store"
       if system(
-"cd $path && hdiutil create storage -size $size -srcfolder store/ -fs exFAT -format UDRW"
+"cd $path && hdiutil create $storage -size $size -srcfolder store/ -fs exFAT -format UDRW"
       ) != 0;
     $made = 1;
     last;
@@ -75,6 +76,7 @@ $parameters{"MEMORY"}   = "512";
 $parameters{"ISO"}      = $iso_name;
 $parameters{"HTTPPORT"} = $http_port;
 $parameters{"ID"}       = $count;
+$parameters{"STORE"}    = "$storage.dmg";
 $parameters{"SSHKEYS"} =
   "https://cgit.voidedtech.com/dotfiles/plain/.ssh/pubkeys";
 $parameters{"IP"} =
