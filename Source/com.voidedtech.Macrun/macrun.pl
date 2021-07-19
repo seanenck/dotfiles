@@ -16,6 +16,7 @@ my $arg = shift @ARGV;
 sub create_tar {
     my $path    = shift @_;
     my $tarfile = "${path}settings.tar.xz";
+    system("rm -f $tarfile");
     my $tempdir = `mktemp -d`;
     chomp $tempdir;
     my $cfg_file = "$tempdir/configure";
