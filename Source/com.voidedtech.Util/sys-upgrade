@@ -45,7 +45,15 @@ _remote-setup() {
     touch $prev
     diff -u $prev $hash
     if [ $? -ne 0 ]; then
-        $2 $dir
+        if [ -e "$dir/configure" ]; then
+            cwd=$PWD
+            cd $dir
+            ./configure
+            cd $cwd
+        fi
+        if [ -e "$dir/Makefile" ]; then
+            make -C $dir
+        fi
         for f in ${@:3}; do
             install -Dm755 $dir/$f "$BIN"
         done
@@ -55,8 +63,8 @@ _remote-setup() {
 
 _remote-tools() {
     echo "-> update git-based tools"
-    _remote-setup "https://github.com/evansm7/vftool" "make -C" "build/vftool"
-    _remote-setup "https://cgit.voidedtech.com/lockbox" "make -C" "bin/lb" "bin/lb-diff" "bin/lb-pwgen" "bin/lb-rekey" "bin/lb-rw" "bin/lb-stats" "bin/lb-totp" "bin/lb-bash"
+    _remote-setup "https://github.com/evansm7/vftool" "build/vftool"
+    _remote-setup "https://cgit.voidedtech.com/lockbox" "bin/lb" "bin/lb-diff" "bin/lb-pwgen" "bin/lb-rekey" "bin/lb-rw" "bin/lb-stats" "bin/lb-totp" "bin/lb-bash"
     golangci-lint completion bash > $COMPLETIONS/golangci-lint.bash
     lb bash > $COMPLETIONS/lb.bash
 }
