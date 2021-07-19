@@ -1,8 +1,8 @@
 #!/bin/bash
 PORT_CFG=$HOME/.config/macports/
-PORT_CACHE=${LOCAL_CACHE}ports
-TOOL_CACHE=${LOCAL_CACHE}remotes
-BIN=$HOME/.bin
+PORT_CACHE=${LOCAL_CACHE}/ports
+TOOL_CACHE=${LOCAL_CACHE}/remotes
+BIN=$HOME/.bin/libexec
 COMPLETIONS=$HOME/.completions
 
 _vim-plugins() {
@@ -18,14 +18,6 @@ _vim-plugins() {
             git clone "https://github.com/$f" $p
         fi
         git -C $p pull
-    done
-}
-
-_update-tools() {
-    local t
-    echo "-> update tooling"
-    for t in Macrun; do
-        cd $HOME/Source/com.voidedtech.$t && make && make install
     done
 }
 
@@ -53,7 +45,7 @@ _remote-setup() {
         if [ -e "$dir/Makefile" ]; then
             make -C $dir
         fi
-        for f in ${@:3}; do
+        for f in ${@:2}; do
             install -Dm755 $dir/$f "$BIN"
         done
     fi
