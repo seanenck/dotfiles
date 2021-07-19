@@ -15,7 +15,7 @@ install:
 	for f in $(CMD); do install -m755 $$f $(HOME)/.bin/; done
 	install -Dm644 lb.bash $(HOME)/.completions/lb.bash
 	
-$(CMD): $(shell find . -type f -name "*.go")
+$(CMD): $(shell find . -type f -name "*.go") go.sum go.mod
 	go build -o $@ $(FLG) cmd/$(shell basename $@ | sed 's/lb-//g')/main.go
 
 clean:

@@ -33,3 +33,7 @@ plint() {
         $p $files | sed "s/^/$p: /g"
     done
 }
+
+gomod-update() {
+    go get -u ./...
+}
