@@ -14,7 +14,12 @@ if (@ARGV) {
     $starting = 1;
 }
 
-my $release   = "3.14.0";
+my $release = "3.14.0";
+my $env_rel = $ENV{"MACRUN_RELEASE"};
+if ($env_rel) {
+    $release = $env_rel;
+}
+
 my $disk_size = "1G";
 my $mem_size  = "2048";
 my $ip_prefix = "192.168.64.";
@@ -22,7 +27,7 @@ my $ip_prefix = "192.168.64.";
 my $version = `echo '$release' | rev | cut -d '.' -f 2- | rev`;
 chomp $version;
 
-my $directory = $ENV{"CONTAINER_BASE"};
+my $directory = $ENV{"MACRUN_STORE"};
 
 my $workdir = "${directory}releases/";
 my $current = "$workdir$release/";

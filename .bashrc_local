@@ -4,7 +4,7 @@ export PATH="/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH"
 export LOCKBOX_STORE="$HOME/Git/passwords"
 export LOCKBOX_KEYMODE="macos"
 export LOCKBOX_TOTP="keys/totp/"
-export CONTAINER_BASE="$HOME/Containers/"
+export MACRUN_STORE="$HOME/Containers/"
 export DISPLAY=:0
 
 for f in passwords workstations; do

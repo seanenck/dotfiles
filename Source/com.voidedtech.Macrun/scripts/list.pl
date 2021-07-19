@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use autodie;
 
-my $dir       = $ENV{"CONTAINER_BASE"};
+my $dir       = $ENV{"MACRUN_STORE"};
 my $ip_prefix = "192.168.64.";
 my $cols      = `tput cols`;
 chomp $cols;

@@ -10,7 +10,7 @@ _macrun() {
             opts=""
             case ${COMP_WORDS[1]} in
                 "remove" | "start" | "tag" | "stop" | "configure")
-                    opts=$(ls $CONTAINER_BASE | grep "192\.168\.64\." | cut -d "." -f 4)
+                    opts=$(ls $MACRUN_STORE | grep "192\.168\.64\." | cut -d "." -f 4)
                     ;;
             esac
         fi

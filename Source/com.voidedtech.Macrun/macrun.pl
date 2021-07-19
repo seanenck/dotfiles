@@ -4,10 +4,10 @@ use warnings;
 use autodie;
 
 my $bin = $ENV{"HOME"} . "/.bin/";
-my $dir = $ENV{"CONTAINER_BASE"};
+my $dir = $ENV{"MACRUN_STORE"};
 my $ips = "192.168.64.";
 
-die "no CONTAINER_BASE set" if !$dir or !-d $dir;
+die "no MACRUN_STORE set" if !$dir or !-d $dir;
 
 die "sub command required" if !@ARGV;
 
