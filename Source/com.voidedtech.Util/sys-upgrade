@@ -2,7 +2,7 @@
 CACHES=$HOME/Library/Caches/com.voidedtech.Util/
 PORT_CFG=$HOME/.config/macports/
 PORT_CACHE=${CACHES}ports
-TOOL_CACHE=${CACHES}gittools
+TOOL_CACHE=${CACHES}remotes
 BIN=$HOME/.bin
 COMPLETIONS=$HOME/.completions
 
@@ -30,7 +30,7 @@ _update-tools() {
     done
 }
 
-_git-setup() {
+_remote-setup() {
     local dir hash prev name cwd
     name=$(echo $1 | rev | cut -d "/" -f 1 | rev)
     dir=$TOOL_CACHE/$name
@@ -53,10 +53,10 @@ _git-setup() {
     mv $hash $prev
 }
 
-_git-tools() {
+_remote-tools() {
     echo "-> update git-based tools"
-    _git-setup "https://github.com/evansm7/vftool" "make -C" "build/vftool"
-    _git-setup "https://cgit.voidedtech.com/lockbox" "make -C" "bin/lb" "bin/lb-diff" "bin/lb-pwgen" "bin/lb-rekey" "bin/lb-rw" "bin/lb-stats" "bin/lb-totp" "bin/lb-bash"
+    _remote-setup "https://github.com/evansm7/vftool" "make -C" "build/vftool"
+    _remote-setup "https://cgit.voidedtech.com/lockbox" "make -C" "bin/lb" "bin/lb-diff" "bin/lb-pwgen" "bin/lb-rekey" "bin/lb-rw" "bin/lb-stats" "bin/lb-totp" "bin/lb-bash"
     golangci-lint completion bash > $COMPLETIONS/golangci-lint.bash
     lb bash > $COMPLETIONS/lb.bash
 }
@@ -103,7 +103,7 @@ sys-upgrade() {
     kitty-updater
     _vim-plugins
     _update-tools
-    _git-tools
+    _remote-tools
     cd $c
 }
 
