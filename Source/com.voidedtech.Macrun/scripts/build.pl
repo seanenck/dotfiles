@@ -32,7 +32,7 @@ my $directory = $ENV{"MACRUN_STORE"};
 my $workdir = "${directory}releases/";
 my $current = "$workdir$release/";
 my $apkovl  = "macrun.apkovl.tar.gz";
-my $apkdir  = "$workdir$apkovl";
+my $apkdir  = "$workdir$release.$apkovl";
 my $storage = "storage.img";
 
 # Generate via `lbu package` in an existing vm
@@ -79,7 +79,7 @@ while ( $count <= 254 ) {
     system("cp $iso_file ${path}$iso_name");
     system("cp ${current}*-lts ${path}");
     if ($include_apk) {
-        system("cp $apkdir $path");
+        system("cp $apkdir $path/$apkovl");
     }
     die "unable to make store"
       if system("cd $path && dd if=/dev/zero of=$storage bs=$disk_size count=1")
