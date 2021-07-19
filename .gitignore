@@ -2,10 +2,11 @@
 __pycache__
 
 !.config/
+!.bin/
+.bin/libexec
 
 !Library/
 Library/*
 !Library/LaunchAgents/
-!Source/
 
 bin/
