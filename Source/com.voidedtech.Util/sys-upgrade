@@ -25,10 +25,9 @@ _vim-plugins() {
 _update-tools() {
     local t
     echo "-> update tooling"
-    for t in Lockbox Macrun; do
+    for t in Macrun; do
         cd $HOME/Source/com.voidedtech.$t && make && make install
     done
-    golangci-lint completion bash > $COMPLETIONS/golangci-lint.bash
 }
 
 _git-setup() {
@@ -57,6 +56,9 @@ _git-setup() {
 _git-tools() {
     echo "-> update git-based tools"
     _git-setup "https://github.com/evansm7/vftool" "make -C" "build/vftool"
+    _git-setup "https://cgit.voidedtech.com/lockbox" "make -C" "bin/lb" "bin/lb-diff" "bin/lb-pwgen" "bin/lb-rekey" "bin/lb-rw" "bin/lb-stats" "bin/lb-totp" "bin/lb-bash"
+    golangci-lint completion bash > $COMPLETIONS/golangci-lint.bash
+    lb bash > $COMPLETIONS/lb.bash
 }
 
 _ports() {
