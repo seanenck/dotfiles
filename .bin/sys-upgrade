@@ -1,8 +1,7 @@
 #!/bin/bash
-CACHES=$HOME/Library/Caches/com.voidedtech.System/
 PORT_CFG=$HOME/.config/macports/
-PORT_CACHE=${CACHES}ports
-TOOL_CACHE=${CACHES}remotes
+PORT_CACHE=${LOCAL_CACHE}ports
+TOOL_CACHE=${LOCAL_CACHE}remotes
 BIN=$HOME/.bin
 COMPLETIONS=$HOME/.completions
 
