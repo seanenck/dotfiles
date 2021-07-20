@@ -56,7 +56,9 @@ _remote-tools() {
     echo "-> update git-based tools"
     _remote-setup "https://github.com/evansm7/vftool" "build/vftool"
     _remote-setup "https://cgit.voidedtech.com/lockbox" "bin/lb" "bin/lb-diff" "bin/lb-pwgen" "bin/lb-rekey" "bin/lb-rw" "bin/lb-stats" "bin/lb-totp" "bin/lb-bash"
+    _remote-setup "https://cgit.voidedtech.com/macrun" "bin/vftool" "bin/isox" "bin/macrun"
     golangci-lint completion bash > $COMPLETIONS/golangci-lint.bash
+    macrun bash > $COMPLETIONS/macrun.bash
     lb bash > $COMPLETIONS/lb.bash
 }
 
