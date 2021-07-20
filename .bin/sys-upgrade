@@ -4,6 +4,17 @@ PORT_CACHE=${LOCAL_CACHE}/ports
 TOOL_CACHE=${LOCAL_CACHE}/remotes
 BIN=$HOME/.bin/libexec
 COMPLETIONS=$HOME/.completions
+NO_TOOLS="--no-tools"
+NO_PORTS="--no-ports"
+SYSUP_COMP="# bash completion for sys-upgrade                        -*- shell-script -*-
+
+_sysupgrade() {
+    local cur
+    cur=\${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( \$(compgen -W \"$NO_PORTS $NO_TOOLS\" -- \$cur) )
+}
+
+complete -F _sysupgrade -o bashdefault -o default sys-upgrade"
 
 _vim-plugins() {
     echo "-> update vim plugins"
@@ -90,20 +101,25 @@ _ports() {
     mv $stat $prev
 }
 
-sys-upgrade() {
+_sys-upgrade() {
     local f p c
     c=$PWD
-    echo "-> update ports"
-    sudo port selfupdate
-    sudo port upgrade outdated
-    _ports
-    echo "-> cleanup ports"
-    sudo port uninstall inactive
-    sudo port reclaim
-    echo "-> update kitty"
-    kitty-updater
-    _vim-plugins
-    _remote-tools
+    if [ $1 -eq 1 ]; then
+        echo "-> update ports"
+        sudo port selfupdate
+        sudo port upgrade outdated
+        _ports
+        echo "-> cleanup ports"
+        sudo port uninstall inactive
+        sudo port reclaim
+    fi
+    if [ $2 -eq 1 ]; then
+        echo "-> update kitty"
+        kitty-updater
+        _vim-plugins
+        _remote-tools
+        echo "$SYSUP_COMP" > $COMPLETIONS/sys-upgrade.bash
+    fi
     cd $c
 }
 
@@ -111,8 +127,20 @@ mkdir -p $PORT_CACHE
 mkdir -p $TOOL_CACHE
 mkdir -p $COMPLETIONS
 mkdir -p $BIN
-if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
-    :
-else
-    sys-upgrade
-fi
+do_ports=1
+do_tools=1
+for i in "$@"; do
+    case $i in
+        $NO_TOOLS)
+            do_tools=0
+            shift
+            ;;
+        $NO_PORTS)
+            do_ports=0
+            shift
+            ;;
+        *)
+            ;;
+    esac
+done
+_sys-upgrade $do_ports $do_tools
