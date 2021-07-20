@@ -1,5 +1,6 @@
 #!/bin/bash
 alias mutt="mail"
+alias mbsync="mbsync-local"
 
 perltidy() {
     local pt
