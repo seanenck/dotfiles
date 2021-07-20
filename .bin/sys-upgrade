@@ -103,7 +103,6 @@ sys-upgrade() {
     echo "-> update kitty"
     kitty-updater
     _vim-plugins
-    _update-tools
     _remote-tools
     cd $c
 }
