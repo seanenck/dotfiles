@@ -1,39 +1,6 @@
-#!/bin/bash
+#!/opt/local/bin/bash
 alias mutt="mail"
 alias mbsync="mbsync-local"
-
-perltidy() {
-    local pt
-    pt=$(find /opt/local/bin/ -type l -name "perltidy-*" | sort -r | head -n 1)
-    if [ -z "$pt" ]; then
-        echo "perltidy not found"
-        return
-    fi
-    $pt $@
-}
-
-glint() {
-    if command -v go &> /dev/null; then
-        local f
-        goimports -l . | grep -v bindata.go | sed 's/^/[goimports]    /g'
-        revive ./... | sed 's/^/[revive]       /g'
-        for f in $(find . -type f -name "*.go" -exec dirname {} \; | sort -u); do
-            go vet $f | sed 's/^/[govet]        /g'
-        done
-        golangci-lint run
-    fi
-}
-
-plint() {
-    local p files
-    files="$@"
-    if [ -z "$files" ]; then
-        files=$(find . -type f -name "*.py")
-    fi
-    for p in pycodestyle pydocstyle flake8; do
-        $p $files | sed "s/^/$p: /g"
-    done
-}
 
 gomod-update() {
     go get -u ./...

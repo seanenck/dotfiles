@@ -1,0 +1,8 @@
+#!/opt/local/bin/bash
+files="$@"
+if [ -z "$files" ]; then
+    files=$(find . -type f -name "*.py")
+fi
+for p in pycodestyle pydocstyle flake8; do
+    $p $files | sed "s/^/$p: /g"
+done
