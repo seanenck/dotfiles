@@ -10,10 +10,8 @@ linters:
     - exportloopref
     - forcetypeassert
     - gci
-    - gochecknoinits
     - goconst
     - gocritic
-    - gocyclo
     - godot
     - godox
     - goerr113
@@ -30,7 +28,6 @@ linters:
     - nilerr
     - noctx
     - nolintlint
-    - paralleltest
     - predeclared
     - promlinter
     - revive
@@ -45,3 +42,20 @@ linters:
     - unparam
     - wastedassign
     - whitespace
+
+linters-settings:
+  thelper:
+    # The following configurations enable all checks. It can be omitted because all checks are enabled by default.
+    # You can enable only required checks deleting unnecessary checks.
+    test:
+      first: true
+      name: true
+      begin: false
+    benchmark:
+      first: true
+      name: true
+      begin: true
+    tb:
+      first: true
+      name: true
+      begin: true
