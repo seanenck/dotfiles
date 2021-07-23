@@ -1,4 +1,0 @@
-#!/bin/bash
-export BASHRCLOCALSRC=1
-source /Users/enck/.bashrc_local
-macrun http
