@@ -11,6 +11,8 @@ export MACRUN_HTTP_PORT="12345"
 export DISPLAY=:0
 export LOCAL_CACHE="$HOME/Library/Caches/com.voidedtech.Local"
 
+[ ! -z "$BASHRCLOCALSRC" ] && return
+
 for f in passwords workstations; do
     if [ ! -d ~/Git/$f ]; then
         echo "-> $f not cloned"
