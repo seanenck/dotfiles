@@ -6,7 +6,6 @@ export LOCKBOX_KEYMODE="macos"
 export LOCKBOX_TOTP="keys/totp/"
 export MACRUN_STORE="$HOME/Containers/"
 export MACRUN_CONF="$HOME/.config/macrun/"
-export MACRUN_HTTP_CACHE="$HOME/Library/Caches/com.voidedtech.Macrun/http"
 export MACRUN_HTTP_PORT="12345"
 export DISPLAY=:0
 export LOCAL_CACHE="$HOME/Library/Caches/com.voidedtech.Local"
