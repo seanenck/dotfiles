@@ -4,4 +4,5 @@ alias mbsync="mbsync-local"
 
 gomod-update() {
     go get -u ./...
+    go mod tidy
 }
