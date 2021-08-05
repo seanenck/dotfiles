@@ -1,0 +1,5 @@
+core:
+  store: "/Users/enck/Containers/"
+  httpport: 12345
+distribution:
+  release: "3.14.1"
