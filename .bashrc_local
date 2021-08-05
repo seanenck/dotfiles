@@ -1,7 +1,7 @@
 export GOPATH="$HOME/Library/Caches/go"
 export PATH="$HOME/.bin/libexec:$HOME/.bin:$PATH"
 export PATH="/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH"
-export LOCKBOX_STORE="$HOME/Git/passwords"
+export LOCKBOX_STORE="$HOME/.env/passwords"
 export LOCKBOX_KEYMODE="macos"
 export LOCKBOX_TOTP="keys/totp/"
 export MACRUN_STORE="$HOME/Containers/"
@@ -11,13 +11,13 @@ export DISPLAY=:0
 export LOCAL_CACHE="$HOME/Library/Caches/com.voidedtech.Local"
 
 for f in passwords workstations; do
-    if [ ! -d ~/Git/$f ]; then
+    if [ ! -d ~/.env/$f ]; then
         echo "-> $f not cloned"
     fi
 done
 
 for f in /opt/local/share/bash-completion/bash_completion \
-         $HOME/Git/workstations/bashrc \
+         $HOME/.env/workstations/bashrc \
          $HOME/.bash_aliases_local; do
     if [ -e $f ]; then
         . $f

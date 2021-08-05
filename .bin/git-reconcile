@@ -1,5 +1,5 @@
 #!/opt/local/bin/bash
-PATHS=$(ls $HOME/Git/ | sed "s#^#$HOME/Git/#g")
+PATHS=$(ls $HOME/.env/ | sed "s#^#$HOME/\.env/#g")
 PATHS="$HOME $PATHS"
 for p in $(echo $PATHS | tr ' ' '\n' | sort); do
     echo
