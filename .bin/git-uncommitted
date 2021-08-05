@@ -1,6 +1,8 @@
 #!/opt/local/bin/bash
-PATHS=$(ls $HOME/.env/ | sed "s#^#$HOME/\.env/#g")
-PATHS="$HOME $PATHS"
+PATHS="$HOME"
+for option in ".env" "Workspace"; do
+    PATHS="$PATHS "$(ls $HOME/$option | sed "s#^#$HOME/$option/#g")
+done
 
 _uncommitted() {
     git -C $1 update-index -q --refresh
