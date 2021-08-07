@@ -39,12 +39,12 @@ _gpga() {
 }
 
 _macrun-containers() {
-    macrun list -wrap=false | grep "^|" | tail -n +3
+    macrun list -wrap=false | grep "^|" | grep " up " | tail -n +3
 }
 
 _macrun-running() {
     local running
-    running=$(_macrun-containers | grep " up " | awk '{print $14}' | grep -v "^00d,")
+    running=$(_macrun-containers | awk '{print $14}' | grep -v "^00d,")
     if [ ! -z "$running" ]; then
         echo "macrun:"
         _macrun-containers | awk '{print $2}' | sed 's/^/  -> /g'
