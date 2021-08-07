@@ -39,7 +39,7 @@ _gpga() {
 }
 
 _macrun-containers() {
-    macrun list -wrap=false | grep "^|" | grep " up " | tail -n +3
+    macrun list -wrap=false | grep "^|" | grep " up "
 }
 
 _macrun-running() {
