@@ -38,6 +38,21 @@ _gpga() {
     fi
 }
 
+_macrun-containers() {
+    macrun list -wrap=false | grep "^|" | tail -n +3
+}
+
+_macrun-running() {
+    local running
+    running=$(_macrun-containers | awk '{print $14}' | grep -v "^00d,")
+    if [ ! -z "$running" ]; then
+        echo "macrun:"
+        _macrun-containers | awk '{print $2}' | sed 's/^/  -> /g'
+        echo
+    fi
+}
+
 _gpga
 export GPG_TTY=$(tty)
 git uncommitted
+_macrun-running
