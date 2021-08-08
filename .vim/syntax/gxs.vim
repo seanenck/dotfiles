@@ -6,15 +6,13 @@ if exists("b:current_syntax")
 end
 
 syn match gxsComment '\s*#.*$'
-syn match gxsDirective '\v^(palette|action|mode|pattern|action)' skipwhite
+syn match gxsDirective '\v^(palette|action|mode|pattern|offset)' skipwhite
 syn match gxsOperator '=>'
-syn match gxsStartBlock '{'
-syn match gxsEndBlock '}'
+syn match gxsMode '\<\(commit\|leftedge\|bottomedge\|topedge\|rightedge\|xstitch\|tlbrline\|trblline\|hline\|vline\)\>'
 
 hi link gxsComment Comment
 hi link gxsDirective Identifier
 hi link gxsOperator Statement
-hi link gxsSTartBlock Function
-hi link gxsEndBlock Function
+hi link gxsMode Constant
 
 let b:current_syntax = "gxs"
