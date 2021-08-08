@@ -105,9 +105,11 @@ let loaded_netrwPlugin = 1
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 if os == "Darwin"
+    if has("autocmd")
+        autocmd BufNewFile,BufRead *.gxs setlocal ft=gxs syntax=gxs
+    endif
     set omnifunc=syntaxcomplete#Complete
     set completeopt=noinsert
-
     let g:ale_set_highlights = 0
     let g:ale_sign_column_always = 1
     nmap <silent> <C-F> <Plug>(ale_find_references)
