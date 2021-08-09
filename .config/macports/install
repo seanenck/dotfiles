@@ -4,6 +4,7 @@ coreutils
 curl-ca-bundle
 fdupes
 findutils
+fzf
 gawk
 git
 gnupg2
