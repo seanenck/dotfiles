@@ -99,6 +99,7 @@ nnoremap <C-e> :call ToggleLine()<CR>
 
 nnoremap <C-c> :close<CR>
 nnoremap <C-v> :vsplit<CR>
+nnoremap <C-o> :GFiles<CR>
 
 let loaded_netrwPlugin = 1
 
@@ -119,6 +120,7 @@ if os == "Darwin"
     let g:ale_linters = {}
     let g:ale_linters.go = ['gopls', 'revive', 'goimports', 'govet']
     let g:ale_linters.python = ['pyls', 'pycodestyle', 'flake8', 'pydocstyle']
+    set rtp+=/opt/local/share/fzf/vim
 endif
 
 try
