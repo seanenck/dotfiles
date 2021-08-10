@@ -108,6 +108,7 @@ vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 if os == "Darwin"
     if has("autocmd")
         autocmd BufNewFile,BufRead *.gxs setlocal ft=gxs syntax=gxs
+        autocmd BufNewFile,BufRead *.md setlocal spell
     endif
     set omnifunc=syntaxcomplete#Complete
     set completeopt=noinsert
