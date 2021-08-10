@@ -105,6 +105,11 @@ _sys-upgrade() {
     c=$PWD
     if [ $1 -eq 1 ]; then
         echo "-> update ports"
+        sudo echo "sudo check"
+        if [ $? -ne 0 ]; then
+            echo "no sudo"
+            return
+        fi
         sudo port selfupdate
         sudo port upgrade outdated
         _ports
