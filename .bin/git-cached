@@ -1,0 +1,21 @@
+#!/bin/bash
+CACHE="$LOCAL_CACHE/git-cached"
+if [ -z "$1" ]; then
+    echo "repository required"
+    exit 1
+fi
+echo "$1" | grep -q -E "^(enckse|local):"
+if [ $? -ne 0 ]; then
+    echo "invalid cache request"
+    exit 1
+fi
+mkdir -p $CACHE
+SUB=$CACHE/$(echo "$1" | cut -d ":" -f 1)
+mkdir -p $SUB
+DIR=$SUB/$(echo "$1" | cut -d ":" -f 2)
+if [ -d $DIR ]; then
+    git -C $DIR pull
+else
+    git clone $1 $DIR
+fi
+cp -r $DIR .
