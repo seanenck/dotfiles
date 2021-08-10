@@ -1,4 +1,4 @@
-#!/opt/local/bin/python
+#!/usr/bin/env python
 """Kitty installer/updater."""
 
 from __future__ import (
