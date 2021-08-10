@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo "cp -r root/.vim /root/.vim"
 echo "chown root:root -R /root/.vim/"

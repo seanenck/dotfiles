@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 PORT_CFG=$HOME/.config/macports/
 PORT_CACHE=${LOCAL_CACHE}/ports
 TOOL_CACHE=${LOCAL_CACHE}/remotes

@@ -1,4 +1,4 @@
-#!/opt/local/bin/bash
+#!/usr/bin/env bash
 pt=$(find /opt/local/bin/ -type l -name "perltidy-*" | sort -r | head -n 1)
 if [ -z "$pt" ]; then
     echo "perltidy not found"

@@ -1,4 +1,4 @@
-#!/opt/local/bin/bash
+#!/usr/bin/env bash
 LOGS=~/.mutt/tmp/
 MAILDIR=~/.mutt/maildir
 _truncate() {

@@ -1,4 +1,4 @@
-#!/opt/local/bin/bash
+#!/usr/bin/env bash
 alias mutt="mail"
 alias mbsync="mbsync-local"
 

@@ -1,4 +1,4 @@
-#!/opt/local/bin/bash
+#!/usr/bin/env bash
 PATHS=$(ls $HOME/.env/ | sed "s#^#$HOME/\.env/#g")
 PATHS="$HOME $PATHS"
 for p in $(echo $PATHS | tr ' ' '\n' | sort); do

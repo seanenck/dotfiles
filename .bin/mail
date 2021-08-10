@@ -1,4 +1,4 @@
-#!/opt/local/bin/bash
+#!/usr/bin/env bash
 export AUTOMATED=1
 source ~/.bashrc
 mkdir -p ~/.mutt/tmp

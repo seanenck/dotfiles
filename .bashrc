@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 if [ -z "$AUTOMATED" ]; then
     [[ $- != *i* ]] && return
 fi

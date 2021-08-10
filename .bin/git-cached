@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 CACHE="$LOCAL_CACHE/git-cached"
 if [ -z "$1" ]; then
     echo "repository required"

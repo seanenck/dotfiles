@@ -1,4 +1,4 @@
-#!/opt/local/bin/bash
+#!/usr/bin/env bash
 mairix -f ~/.mutt/etc/mairixrc
 clear
 mairix -f ~/.mutt/etc/mairixrc $@
