@@ -99,7 +99,11 @@ nnoremap <C-e> :call ToggleLine()<CR>
 
 nnoremap <C-c> :close<CR>
 nnoremap <C-v> :vsplit<CR>
-nnoremap <C-o> :GFiles<CR>
+if isdirectory(".git")
+    nnoremap <C-o> :GFiles<CR>
+else
+    nnoremap <C-o> :Files<CR>
+endif
 
 let loaded_netrwPlugin = 1
 
