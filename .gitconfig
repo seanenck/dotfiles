@@ -31,7 +31,7 @@
     gpgSign = true
 [url "can:/mnt/storage/repositories/git/"]
     insteadOf = local:
-[url "git@github.com:enckse/"]
+[url "voidedtech.com:/mnt/data/git/"]
     insteadOf = enckse:
 [diff "lb"]
     textconv = lb diff
