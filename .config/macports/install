@@ -20,7 +20,8 @@ mairix
 msmtp
 mutt -pop -imap -smtp +gpgme
 perl5
-p5-test-perltidy
+p5-perl-critic
+p5-perl-tidy
 pinentry-mac
 py-language-server
 python39

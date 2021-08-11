@@ -6,3 +6,13 @@ gomod-update() {
     go get -u ./...
     go mod tidy
 }
+
+_perl-alias() {
+    pt=$(find /opt/local/bin/ -type l -name "perl$1-*" | sort -r | head -n 1)
+    if [ ! -z "$pt" ]; then
+        alias perl$1=$pt
+    fi
+}
+
+_perl-alias "tidy"
+_perl-alias "critic"
