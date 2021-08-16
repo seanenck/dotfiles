@@ -33,5 +33,7 @@
     insteadOf = local:
 [url "voidedtech.com:/mnt/data/git/"]
     insteadOf = enckse:
+[url "git@github.com:enckse/"]
+    insteadOf = github:
 [diff "lb"]
     textconv = lb diff
