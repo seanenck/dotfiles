@@ -13,7 +13,7 @@ done
 echo "sed -i \"s/system('uname')/'Darwin'/g\" /root/.vimrc"
 echo "sed -i \"s#/opt/local/share/fzf/vim#/usr/share/vim/vimfiles/plugin/fzf.vim#g\" /root/.vimrc"
 
-ping -c1 -W1 can.voidedtech.com >/dev/null 2>&1
+curl -s http://can.voidedtech.com > /dev/null 2>&1
 if [ $? -eq 0 ]; then
     echo 'sed -i "s/dl-cdn.alpinelinux.org/192.168.1.15:9999/g" /etc/apk/repositories'
 fi
