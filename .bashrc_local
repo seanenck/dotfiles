@@ -38,6 +38,19 @@ _gpga() {
     fi
 }
 
+_macrun-running() {
+    local list obj
+    list=$(macrun list | cut -d "|" -f 2,3 | grep " up" | sed 's/^\s*//g' | cut -d " " -f 1)
+    if [ ! -z "$list" ]; then
+        echo "macrun:"
+        for obj in $(echo $list); do
+            echo "  -> $obj"
+        done
+        echo
+    fi
+}
+
 _gpga
 export GPG_TTY=$(tty)
 git uncommitted
+_macrun-running
