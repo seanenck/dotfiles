@@ -13,8 +13,10 @@ done
 echo "sed -i \"s/system('uname')/'Darwin'/g\" /root/.vimrc"
 echo "sed -i \"s#/opt/local/share/fzf/vim#/usr/share/vim/vimfiles/plugin/fzf.vim#g\" /root/.vimrc"
 
+echo 'echo "#@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories'
+
 curl -s http://primary.voidedtech.com > /dev/null 2>&1
 if [ $? -eq 0 ]; then
-    echo 'sed -i "s/dl-cdn.alpinelinux.org/192.168.1.10:9999/g" /etc/apk/repositories'
+    echo 'sed -i "s#dl-cdn.alpinelinux.org/alpine#192.168.1.10:8888#g" /etc/apk/repositories'
 fi
 echo "apk update"
