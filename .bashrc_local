@@ -7,7 +7,7 @@ export LOCKBOX_TOTP="keys/totp/"
 export DISPLAY=:0
 export LOCAL_CACHE="$HOME/Library/Caches/com.voidedtech.Local"
 
-for f in passwords workstations; do
+for f in passwords workstations dotfiles; do
     if [ ! -d ~/.env/$f ]; then
         echo "-> $f not cloned"
     fi
