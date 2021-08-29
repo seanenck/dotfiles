@@ -17,15 +17,12 @@ echo "ehco 'nameserver 1.1.1.1' > /etc/resolv.conf"
 
 echo 'echo > /etc/apk/repositories'
 _produce_repo() {
-    echo "echo '$1http://dl-cdn.alpinelinux.org/alpine/$2' >> /etc/apk/repositories"
+    echo "echo '$1http://$VMR_REMOTE_ADDRESS/alpine/$2' >> /etc/apk/repositories"
 }
 _produce_repo "#" "edge/testing"
-_produce_repo "" "$MACRUN_ALPINE_VERSION/community"
-_produce_repo "" "$MACRUN_ALPINE_VERSION/main"
+_produce_repo "" "$VMR_ALPINE_MAJOR_MINOR/community"
+_produce_repo "" "$VMR_ALPINE_MAJOR_MINOR/main"
 
-if [ $MACRUN_LOCAL -eq 1 ]; then
-    echo "sed -i 's/dl-cdn.alpinelinux.org/$MACRUN_REMOTE/g' /etc/apk/repositories"
-fi
 echo "apk update"
 for f in bash bash-completion docs e2fsprogs fdupes fzf git ripgrep vim fzf-vim; do
     echo "apk add $f"

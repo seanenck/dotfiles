@@ -31,6 +31,10 @@ get_machine_path() {
     echo "$VMR_STORE/$VMR_IP$1"
 }
 
+get_ip() {
+    echo "$VMR_IP$1"
+}
+
 get_number_from_ip() {
     echo "$1" | rev | cut -d "/" -f 1 | rev | sed "s#$VMR_IP##g"
 }
@@ -43,9 +47,10 @@ get_machine_name() {
     local name
     name=$(get_number_from_ip "$1")
     name=$(printf "%03s" $name)
-    echo "vmr$name"
+    echo "$VMR_NAMES$name"
 }
 
+export -f get_ip
 export -f get_machine_path
 export -f get_number_from_ip
 export -f get_machine_name
@@ -53,6 +58,7 @@ export -f get_ip_from_path
 export -f log_error
 export -f get_next_machine
 
+export VMR_NAMES="vmr"
 export VMR_IP="192.168.64."
 export VMR_GATEWAY="${VMR_IP}1"
 export VMR_NETMASK="255.255.255.0"
@@ -78,3 +84,5 @@ export VMR_VMLINUZ="vmlinuz-lts"
 export VMR_INITRAM="initramfs-lts"
 export VMR_START_SH="start.sh"
 export VMR_NAME_SH="name"
+export VMR_CONFIGS="$HOME/.config/vmr/"
+export VMR_TAG="tag"
