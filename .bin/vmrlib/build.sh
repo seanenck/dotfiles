@@ -3,7 +3,8 @@ machine=$(get_next_machine)
 name=$(get_machine_name $machine)
 echo "building $machine"
 mkdir -p $machine
-ip="$(get_ip_from_path $machine):none:$VMR_GATEWAY:$VMR_NETMASK:$name::none:$VMR_DNS"
+ipaddr=$(get_ip_from_path $machine)
+ip="$ipaddr:none:$VMR_GATEWAY:$VMR_NETMASK:$name::none:$VMR_DNS"
 
 _build_env() {
     echo "#!/usr/bin/env bash"
@@ -15,6 +16,9 @@ VMLINUZ='$VMR_CURRENT_STORE/$VMR_VMLINUZ'
 INITRAMFS='$VMR_CURRENT_STORE/$VMR_INITRAM'
 ISO='$VMR_CURRENT_STORE/$VMR_BOOT_ISO'
 ROOT='$machine'
+
+cd $machine
+
 EOF
     cat $VMRLIB/lib.start.sh
 }
@@ -23,3 +27,8 @@ start_sh=$machine/$VMR_START_SH
 _build_env > $start_sh
 chmod u+x $start_sh
 echo $name > $machine/$VMR_NAME_SH
+if [ ! -z "$@" ]; then
+    if [[ "$1" == "-start" ]]; then
+        $VMRLIB/start.sh $(get_number_from_ip $ipaddr) ${@:2}
+    fi
+fi

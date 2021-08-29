@@ -27,17 +27,27 @@ get_next_machine() {
     exit 1
 }
 
+get_machine_path() {
+    echo "$VMR_STORE/$VMR_IP$1"
+}
+
+get_number_from_ip() {
+    echo "$1" | rev | cut -d "/" -f 1 | rev | sed "s#$VMR_IP##g"
+}
+
 get_ip_from_path() {
     echo "$1" | rev | cut -d "/" -f 1 | rev
 }
 
 get_machine_name() {
     local name
-    name=$(echo $1 | rev | cut -d "/" -f 1 | rev | sed "s#$VMR_IP##g")
+    name=$(get_number_from_ip "$1")
     name=$(printf "%03s" $name)
     echo "vmr$name"
 }
 
+export -f get_machine_path
+export -f get_number_from_ip
 export -f get_machine_name
 export -f get_ip_from_path
 export -f log_error

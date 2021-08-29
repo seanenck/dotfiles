@@ -15,4 +15,4 @@ fi
 
 source $VMRLIB/env
 $VMRLIB/config.sh
-$COMMAND $@
+$COMMAND ${@:2}
