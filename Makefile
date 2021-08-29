@@ -1,5 +1,4 @@
-#TARGETS := $(shell find . -maxdepth 1 -type d | cut -d "/" -f 2)
-TARGETS := git vim bash config go macOS mutt
+TARGETS := $(shell find . -mindepth 1 -maxdepth 1 -type d | grep -v "\.git" | cut -d "/" -f 2 | sort)
 
 .PHONY: $(TARGETS)
 
