@@ -2,7 +2,7 @@
 PORT_CFG=$HOME/.config/macports/
 PORT_CACHE=${LOCAL_CACHE}/ports
 TOOL_CACHE=${LOCAL_CACHE}/remotes
-BIN=$HOME/.bin/libexec
+BIN=$HOME/.bin
 COMPLETIONS=$HOME/.completions
 NO_TOOLS="--no-tools"
 NO_PORTS="--no-ports"
