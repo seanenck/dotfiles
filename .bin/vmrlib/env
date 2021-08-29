@@ -50,6 +50,14 @@ get_machine_name() {
     echo "$VMR_NAMES$name"
 }
 
+get_machines() {
+    local f
+    for f in $(ls $VMR_STORE | grep "$VMR_IP"); do
+        echo $VMR_STORE/$f
+    done
+}
+
+export -f get_machines
 export -f get_ip
 export -f get_machine_path
 export -f get_number_from_ip
