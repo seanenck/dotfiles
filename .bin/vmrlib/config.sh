@@ -25,6 +25,7 @@ _iso() {
     cp $unpack/boot/initramfs_lts. $VMR_CURRENT_STORE/$VMR_INITRAM
     cd $VMR_CURRENT_STORE
     gzip -d $VMR_CURRENT_STORE/*.gz
+    rm -rf $unpack
 }
 
 if [[ "$(_need_download)" == "no" ]]; then
