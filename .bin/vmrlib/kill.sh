@@ -4,6 +4,14 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
+if [[ "$1" == "--all" ]]; then
+    for f in $(get_machines); do
+        number=$(get_number_from_ip $(get_ip_from_path $f))
+        $VMRLIB/kill.sh $number
+    done
+    exit 0
+fi
+
 path=$(get_machine_path $1)
 echo "$path"
 if [ ! -d $path ]; then
