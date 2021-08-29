@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
 
-echo "cp -r root/.vim /root/.vim"
-echo "chown root:root -R /root/.vim/"
-
 mkdir -p root/.vim/
 cp -r $HOME/.vim/pack/ root/.vim/
 
+echo "if [ ! -e /root/.init ]; then"
+echo "    cp -r root/.vim /root/.vim"
+echo "    chown root:root -R /root/.vim/"
 for f in .bashrc .bash_aliases .vimrc .bash_profile; do
     cp $HOME/$f root/$f
-    echo "install -Dm644 --owner=root --group=root root/$f /root/$f"
+    echo "    install -Dm644 --owner=root --group=root root/$f /root/$f"
 done
-echo "sed -i \"s/system('uname')/'Darwin'/g\" /root/.vimrc"
-echo "sed -i \"s#/opt/local/share/fzf/vim#/usr/share/vim/vimfiles/plugin/fzf.vim#g\" /root/.vimrc"
+echo "    sed -i \"s/system('uname')/'Darwin'/g\" /root/.vimrc"
+echo "    sed -i \"s#/opt/local/share/fzf/vim#/usr/share/vim/vimfiles/plugin/fzf.vim#g\" /root/.vimrc"
+echo "    touch /root/.init"
+echo "fi"
 
 echo "echo 'nameserver 1.1.1.1' > /etc/resolv.conf"
 
