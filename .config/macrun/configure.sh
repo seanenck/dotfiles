@@ -27,10 +27,9 @@ if [ $MACRUN_LOCAL -eq 1 ]; then
     echo "sed -i 's/dl-cdn.alpinelinux.org/$MACRUN_REMOTE/g' /etc/apk/repositories"
 fi
 echo "apk update"
-for f in bash bash-completion docs e2fsprogs fdupes fzf fzf-vim git ripgrep vim; do
+for f in bash bash-completion docs e2fsprogs fdupes fzf git ripgrep vim fzf-vim; do
     echo "apk add $f"
 done
-echo "apk fix"
 
 echo 'sed -i "s#/bin/ash#/bin/bash#g" /etc/passwd'
 echo "echo 'root:root' | chpasswd"
