@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 STORE=/var/opt/root
+SETTINGS="settings.tar.xz"
+CONFIGURE="configure"
 
 _getip() {
     ip addr | grep "inet" | grep "192.168.64." | awk '{print $2}' | cut -d "/" -f 1 
@@ -17,10 +19,10 @@ _ready() {
         cp -r /root /var/opt
     fi
     mount --bind $STORE /root
-    settings="settings.tar.xz"
     cwd=$PWD
-    cd /tmp && tar xf $settings && ./configure && rm -f $settings
+    cd /tmp && tar xf $SETTINGS && ./$CONFIGURE
     cd $cwd
+    rm -f /tmp/$SETTINGS /tmp/$CONFIGURE /tmp/setup.sh /tmp/bootstrap.sh
 }
 
 _setup() {
