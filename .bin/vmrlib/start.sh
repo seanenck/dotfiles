@@ -75,7 +75,7 @@ _configure() {
     $VMR_CONFIGS/configure.sh
     if [ ! -z "$from" ]; then
         for f in $(find $from -type f | sort); do
-            $f
+            bash $f
         done
     fi
     tar cJf $settings .

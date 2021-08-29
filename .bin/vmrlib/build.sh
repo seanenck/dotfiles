@@ -27,7 +27,7 @@ start_sh=$machine/$VMR_START_SH
 _build_env > $start_sh
 chmod u+x $start_sh
 echo $name > $machine/$VMR_NAME_SH
-if [ ! -z "$@" ]; then
+if [ ! -z "$1" ]; then
     if [[ "$1" == "-start" ]]; then
         $VMRLIB/start.sh $(get_number_from_ip $ipaddr) ${@:2}
     fi
