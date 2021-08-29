@@ -63,7 +63,7 @@ while [ 1 -eq 1 ]; do
         echo "machine up..."
         break
     fi
-    sleep 3
+    sleep 1
 done
 
 

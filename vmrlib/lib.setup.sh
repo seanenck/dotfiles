@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-STORE=/var/opt/store
+STORE=/var/opt/root
 
 _getip() {
     ip addr | grep "inet" | grep "192.168.64." | awk '{print $2}' | cut -d "/" -f 1 
@@ -13,8 +13,10 @@ _ready() {
     setup-ntp -c chrony
     setup-apkcache /var/cache/apk
     /etc/init.d/loopback start
-    mkdir -p $STORE
-    ln -sf $STORE /root/store
+    if [ ! -d $STORE ]; then
+        cp -r /root /var/opt
+    fi
+    mount --bind $STORE /root
     settings="settings.tar.xz"
     cwd=$PWD
     cd /tmp && tar xf $settings && ./configure && rm -f $settings
