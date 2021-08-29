@@ -13,11 +13,24 @@ done
 echo "sed -i \"s/system('uname')/'Darwin'/g\" /root/.vimrc"
 echo "sed -i \"s#/opt/local/share/fzf/vim#/usr/share/vim/vimfiles/plugin/fzf.vim#g\" /root/.vimrc"
 
-echo 'echo "#@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories'
+echo "ehco 'nameserver 1.1.1.1' > /etc/resolv.conf"
 
-curl -s http://netctl.voidedtech.com > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-    echo 'sed -i "s/dl-cdn.alpinelinux.org/192.168.1.1:8888/g" /etc/apk/repositories'
+echo 'echo > /etc/apk/repositories'
+_produce_repo() {
+    echo "echo '$1http://dl-cdn.alpinelinux.org/alpine/$2' >> /etc/apk/repositories"
+}
+_produce_repo "#" "edge/testing"
+_produce_repo "" "$MACRUN_ALPINE_VERSION/community"
+_produce_repo "" "$MACRUN_ALPINE_VERSION/main"
+
+if [ $MACRUN_LOCAL -eq 1 ]; then
+    echo "sed -i 's/dl-cdn.alpinelinux.org/$MACRUN_REMOTE/g' /etc/apk/repositories"
 fi
 echo "apk update"
+for f in bash bash-completion docs e2fsprogs fdupes fzf fzf-vim git ripgrep vim; do
+    echo "apk add $f"
+done
 echo "apk fix"
+
+echo 'sed -i "s#/bin/ash#/bin/bash#g" /etc/passwd'
+echo "echo 'root:root' | chpasswd"
