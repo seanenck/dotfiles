@@ -1,5 +1,6 @@
 export GOPATH="$HOME/Library/Caches/go"
-export PATH="$HOME/.env/dotfiles/bin:$HOME/.bin:$PATH"
+export DOTFILES="$HOME/.env/dotfiles"
+export PATH="$DOTFILES/bin:$HOME/.bin:$PATH"
 export PATH="/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH"
 export LOCKBOX_STORE="$HOME/.env/passwords"
 export LOCKBOX_KEYMODE="macos"
