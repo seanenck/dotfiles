@@ -38,28 +38,6 @@ _gpga() {
     fi
 }
 
-_macrun-running() {
-    local list obj
-    list=$(macrun list | cut -d "|" -f 2,3 | grep " up" | sed 's/^\s*//g' | cut -d " " -f 1)
-    if [ ! -z "$list" ]; then
-        echo "macrun:"
-        for obj in $(echo $list); do
-            echo "  -> $obj"
-        done
-        echo
-    fi
-}
-
-_macrun_repo() {
-    for f in en0 en1; do
-        ipconfig getifaddr $f 2>/dev/null | grep -q "192.168.1."
-        if [ $? -eq 0 ]; then
-            echo "192.168.1.1:8888"
-            return
-        fi
-    done
-}
-
 _gpga
 export GPG_TTY=$(tty)
 git uncommitted
