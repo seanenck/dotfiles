@@ -19,7 +19,7 @@ echo 'echo > /etc/apk/repositories'
 _produce_repo() {
     echo "echo '$1http://$VMR_REMOTE_ADDRESS/alpine/$2' >> /etc/apk/repositories"
 }
-_produce_repo "#" "edge/testing"
+_produce_repo "#@testing " "edge/testing"
 _produce_repo "" "$VMR_ALPINE_MAJOR_MINOR/community"
 _produce_repo "" "$VMR_ALPINE_MAJOR_MINOR/main"
 

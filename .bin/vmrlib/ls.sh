@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
 _row() {
-    printf "%20s | %6s | %8s | %10s\n" $1 $2 $3 $4
+    printf "%20s | %6s | %6s | %10s\n" $1 $2 $3 $4
 }
 
 _output() {
     local name up tag ip ssh
     ip=$(get_ip_from_path $1)
     name=$(get_machine_name $ip)
-    screen -list | grep -q $name
     up="down"
+    screen -list | grep -q $name
     if [ $? -eq 0 ]; then
         up="up"
     fi
