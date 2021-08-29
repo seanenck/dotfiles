@@ -20,7 +20,7 @@ _iso() {
     rm -rf $unpack
     mkdir -p $unpack
     go get
-    go run iso.go $VMR_CURRENT_STORE/$VMR_BOOT_ISO $unpack
+    go run iso.go -src $VMR_CURRENT_STORE/$VMR_BOOT_ISO -dst $unpack
     cp $unpack/boot/vmlinuz_lts. $VMR_CURRENT_STORE/$VMR_VMLINUZ.gz
     cp $unpack/boot/initramfs_lts. $VMR_CURRENT_STORE/$VMR_INITRAM
     cd $VMR_CURRENT_STORE

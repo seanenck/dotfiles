@@ -1,85 +1,85 @@
 package main
 
 import (
+	"errors"
+	"flag"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 
-	"github.com/docopt/docopt-go"
 	"github.com/hooklift/iso9660"
 )
 
-// Version holds the CLI version and is set in compilation time.
-var Version string
+type (
+	errorISO struct {
+		message string
+	}
+)
+
+func (e *errorISO) Error() string {
+	return e.message
+}
 
 func main() {
-	usage := `ISO9660 extractor.
-Usage:
-  iso9660 <image-path> <destination-path>
-  iso9660 -h | --help
-  iso9660 --version
-`
-
-	args, err := docopt.Parse(usage, nil, true, Version, false)
-	if err != nil {
-		panic(err)
+	source := flag.String("src", "", "source file")
+	dest := flag.String("dst", "", "destination dir")
+	flag.Parse()
+	if err := extract(*source, *dest); err != nil {
+		message := fmt.Sprintf("failed to extract: %v", err)
+		panic(message)
 	}
+}
 
-	file, err := os.Open(args["<image-path>"].(string))
+func extract(image, dest string) error {
+	file, err := os.Open(image)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	r, err := iso9660.NewReader(file)
 	if err != nil {
-		panic(err)
-	}
-
-	destPath := args["<destination-path>"].(string)
-	if destPath == "" {
-		destPath = "."
+		return err
 	}
 
 	for {
 		f, err := r.Next()
-		if err == io.EOF {
+		if errors.Is(err, io.EOF) {
 			break
 		}
 
 		if err != nil {
-			panic(err)
+			return err
 		}
 
-		fp := filepath.Join(destPath, f.Name())
+		fp := filepath.Join(dest, f.Name())
 		if f.IsDir() {
 			if err := os.MkdirAll(fp, f.Mode()); err != nil {
-				panic(err)
+				return err
 			}
 			continue
 		}
 
 		parentDir, _ := filepath.Split(fp)
 		if err := os.MkdirAll(parentDir, f.Mode()); err != nil {
-			panic(err)
+			return err
 		}
 
-		fmt.Printf("Extracting %s...\n", fp)
-
-		freader := f.Sys().(io.Reader)
+		freader, ok := f.Sys().(io.Reader)
+		if !ok {
+			return &errorISO{"unable to get io.Reader"}
+		}
 		ff, err := os.OpenFile(fp, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, f.Mode())
 		if err != nil {
-			panic(err)
+			return err
 		}
-
-		_, err = io.Copy(ff, freader)
-
-		cerr := ff.Close() // With or without an error from Copy, we want to attempt Close.
-
-		if err != nil { // Panic with Copy's err.
-			panic(err)
-		} else if cerr != nil {
-			panic(cerr)
+		if _, err = io.Copy(ff, freader); err != nil {
+			_ = ff.Close()
+			return err
+		}
+		if err := ff.Close(); err != nil {
+			return err
 		}
 	}
+	return nil
 }
