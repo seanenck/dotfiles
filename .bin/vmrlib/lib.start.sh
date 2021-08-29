@@ -2,11 +2,17 @@
 MEMORY=2048
 DISK=1
 
+if [ -e $TAGFILE ]; then
+    TAGFILE=$CONFIGS/$(cat $TAGFILE)/env
+    if [ -e $TAGFILE ]; then
+        source $TAGFILE
+    fi
+fi
+
 STORAGE="$ROOT/storage.img"
 if [ ! -e $STORAGE ]; then
     dd if=/dev/zero of=$STORAGE bs=1G count=$DISK
 fi
-
 
 PARAMS="ip=$IP ssh_key=\"$SSH_KEY\" alpine_repo=$REPO"
 

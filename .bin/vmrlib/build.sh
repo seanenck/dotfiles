@@ -16,6 +16,8 @@ VMLINUZ='$VMR_CURRENT_STORE/$VMR_VMLINUZ'
 INITRAMFS='$VMR_CURRENT_STORE/$VMR_INITRAM'
 ISO='$VMR_CURRENT_STORE/$VMR_BOOT_ISO'
 ROOT='$machine'
+TAGFILE='$machine/$VMR_TAG'
+CONFIGS='$VMR_CONFIGS'
 
 cd $machine
 
@@ -28,7 +30,7 @@ _build_env > $start_sh
 chmod u+x $start_sh
 echo $name > $machine/$VMR_NAME_SH
 if [ ! -z "$1" ]; then
-    if [[ "$1" == "-start" ]]; then
+    if [[ "$1" == "--start" ]]; then
         $VMRLIB/start.sh $(get_number_from_ip $ipaddr) ${@:2}
     fi
 fi

@@ -13,7 +13,7 @@ done
 echo "sed -i \"s/system('uname')/'Darwin'/g\" /root/.vimrc"
 echo "sed -i \"s#/opt/local/share/fzf/vim#/usr/share/vim/vimfiles/plugin/fzf.vim#g\" /root/.vimrc"
 
-echo "ehco 'nameserver 1.1.1.1' > /etc/resolv.conf"
+echo "echo 'nameserver 1.1.1.1' > /etc/resolv.conf"
 
 echo 'echo > /etc/apk/repositories'
 _produce_repo() {

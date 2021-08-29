@@ -38,6 +38,22 @@ _gpga() {
     fi
 }
 
+_vmrlist() {
+    local f has
+    has=""
+    for f in $(vmr ls | grep " up " | awk '{print $3}'); do
+        if [ -z "$has" ]; then
+            has="yes"
+            echo "vmr:"
+        fi
+        echo "  -> $f"
+    done
+    if [ ! -z "$has" ]; then
+        echo
+    fi
+}
+
 _gpga
 export GPG_TTY=$(tty)
 git uncommitted
+_vmrlist

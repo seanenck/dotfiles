@@ -18,6 +18,32 @@ if [ $? -eq 0 ]; then
     exit 1
 fi
 
+from=""
+tagfile=$path/$VMR_TAG
+if [ ! -z "$2" ]; then
+    if [[ "$2" != "--from" ]]; then
+        echo "invalid start parameter"
+        exit 1
+    fi
+    if [ -z "$3" ]; then
+        echo "--from requires argument"
+        exit 1
+    fi
+    if [ -e $tagfile ]; then
+        echo "machine already tagged"
+    else
+        from="$3"
+        echo "$from" > $tagfile
+    fi
+fi
+if [ -e $tagfile ]; then
+    from=$VMR_CONFIGS/$(cat $tagfile)
+    if [ ! -d "$from" ]; then
+        echo "invalid 'from' template, not found"
+        exit 1
+    fi
+fi
+
 ip=$(get_ip $1)
 screen -d -m -S $name -- $path/$VMR_START_SH
 
@@ -40,31 +66,6 @@ while [ 1 -eq 1 ]; do
     sleep 3
 done
 
-from=""
-tagfile=$path/$VMR_TAG
-if [ ! -z "$2" ]; then
-    if [[ "$2" != "-from" ]]; then
-        echo "invalid start parameter"
-        exit 1
-    fi
-    if [ -z "$3" ]; then
-        echo "-from requires argument"
-        exit 1
-    fi
-    if [ -e $tagfile ]; then
-        echo "machine already tagged"
-    else
-        from="$3"
-        echo "$from" > $tagfile
-    fi
-fi
-if [ -e $tagfile ]; then
-    from=$VMR_CONFIGS/$(cat $tagfile)
-    if [ ! -d "$from" ]; then
-        echo "invalid 'from' template, not found"
-        exit 1
-    fi
-fi
 
 settings=$path/settings.tar.xz
 _configure() {

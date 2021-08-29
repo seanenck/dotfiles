@@ -13,14 +13,14 @@ _vmr() {
         if [[ "$word" == "build" ]]; then
             for opt in ${COMP_WORDS[@]}; do
                 case $opt in
-                    "-start")
+                    "--start")
                         has_start=1
                         break
                         ;;
                 esac
             done
             if [ $has_start -eq 0 ]; then
-                opts="-start"
+                opts="--start"
             fi
         else
             if [ $COMP_CWORD -eq 2 ]; then
@@ -38,12 +38,12 @@ _vmr() {
         fi
         if [ $has_start -eq 1 ]; then
             for opt in ${COMP_WORDS[@]}; do
-                if [[ "$opt" == "-from" ]]; then
+                if [[ "$opt" == "--from" ]]; then
                     opts=$(ls $VMR_CONFIGS/ | grep -v "configure.sh")
                 fi
             done
             if [ -z "$opts" ]; then
-                opts="-from "
+                opts="--from "
             fi
         fi
         if [ ! -z "$opts" ]; then

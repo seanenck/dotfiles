@@ -17,13 +17,13 @@ _output() {
     if [ -e $1/$VMR_TAG ]; then
         tag=$(cat $1/$VMR_TAG)
     fi
-    echo
-    _row "ssh" "name" "state" "tag"
-    _row "---" "----" "-----" "---"
     _row "root@$ip" "$name" "$up" "$tag"
-    echo
 }
 
+echo
+_row "ssh" "name" "state" "tag"
+_row "---" "----" "-----" "---"
 for m in $(get_machines); do
     _output $m
 done
+echo
