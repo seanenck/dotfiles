@@ -6,7 +6,6 @@ export LOCKBOX_KEYMODE="macos"
 export LOCKBOX_TOTP="keys/totp/"
 export DISPLAY=:0
 export LOCAL_CACHE="$HOME/Library/Caches/com.voidedtech.Local"
-export MACRUN_SSH_KEY=$HOME/.ssh/systems.pub
 
 for f in passwords workstations; do
     if [ ! -d ~/.env/$f ]; then
@@ -61,16 +60,6 @@ _macrun_repo() {
     done
 }
 
-export MACRUN_ALPINE_VERSION="v3.14"
-export MACRUN_REMOTE=$(_macrun_repo)
-export MACRUN_LOCAL=1
-if [ -z "$MACRUN_REMOTE" ]; then
-    MACRUN_REMOTE="dl-cdn.alpinelinux.org"
-    MACRUN_LOCAL=0
-fi
-export MACRUN_REPO="http://"$(_macrun_repo)"/alpine/$MACRUN_ALPINE_VERSION/main"
-
 _gpga
 export GPG_TTY=$(tty)
 git uncommitted
-_macrun-running

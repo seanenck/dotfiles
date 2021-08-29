@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+COMMAND="$1"
+export VMRLIB="$HOME/.bin/vmrlib"
+
+if [ -z "$COMMAND" ]; then
+    echo "sub command required"
+    exit 1
+fi
+
+COMMAND="$VMRLIB/$COMMAND.sh"
+if [ ! -x $COMMAND ]; then
+    echo "invalid sub command"
+    exit 1
+fi
+
+source $VMRLIB/env
+$VMRLIB/config.sh
+$COMMAND $@

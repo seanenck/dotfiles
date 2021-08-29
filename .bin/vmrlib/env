@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+_get_remote_addr() {
+    local f
+    for f in en0 en1; do
+        ipconfig getifaddr $f 2>/dev/null | grep -q "192.168.1."
+        if [ $? -eq 0 ]; then
+            echo "192.168.1.1:8888"
+            return
+        fi
+    done
+}
+
+log_error() {
+    >&2 >&2 echo "$@"
+}
+
+get_next_machine() {
+    local f path
+    for f in $(seq 2 1 254); do
+        path=$VMR_STORE/$VMR_IP$f
+        if [ ! -d $path ]; then
+            echo "$path"
+            return
+        fi
+    done
+    log_error "unable to find unique machine"
+    exit 1
+}
+
+get_ip_from_path() {
+    echo "$1" | rev | cut -d "/" -f 1 | rev
+}
+
+get_machine_name() {
+    local name
+    name=$(echo $1 | rev | cut -d "/" -f 1 | rev | sed "s#$VMR_IP##g")
+    name=$(printf "%03s" $name)
+    echo "vmr$name"
+}
+
+export -f get_machine_name
+export -f get_ip_from_path
+export -f log_error
+export -f get_next_machine
+
+export VMR_IP="192.168.64."
+export VMR_GATEWAY="${VMR_IP}1"
+export VMR_NETMASK="255.255.255.0"
+export VMR_STORE="$HOME/VMs"
+export VMR_STORE_RESOURCES="$VMR_STORE/Store"
+export VMR_SSH_KEY="$HOME/.ssh/systems.pub"
+export VMR_ALPINE_CDN="dl-cdn.alpinelinux.org"
+export VMR_ALPINE_VERSION="3.14.2"
+export VMR_ALPINE_MAJOR_MINOR="v$(echo $VMR_ALPINE_VERSION | cut -d "." -f 1,2)"
+export VMR_REMOTE_ADDRESS=$(_get_remote_addr)
+export VMR_REMOTE_IS_LOCAL=1
+if [ -z "$VMR_REMOTE_ADDRESS" ]; then
+    VMR_REMOTE_ADDRESS="$VMR_ALPINE_CDN"
+    VMR_REMOTE_IS_LOCAL=0
+fi
+export VMR_REMOTE_REPO="http://$VMR_REMOTE_ADDRESS/alpine/$VMR_ALPINE_MAJOR_MINOR/main"
+export VMR_PACKAGES=(bash bash-completion docs e2fsprogs fdupes fzf git ripgrep vim fzf-vim)
+export VMR_DNS="1.1.1.1"
+export VMR_ISO_URL="https://dl-cdn.alpinelinux.org/alpine/$VMR_ALPINE_MAJOR_MINOR/releases/aarch64/alpine-standard-$VMR_ALPINE_VERSION-aarch64.iso"
+export VMR_CURRENT_STORE="$VMR_STORE_RESOURCES/$VMR_ALPINE_VERSION"
+export VMR_BOOT_ISO="boot.iso"
+export VMR_VMLINUZ="vmlinuz-lts"
+export VMR_INITRAM="initramfs-lts"
+export VMR_START_SH="start.sh"
+export VMR_NAME_SH="name"
