@@ -73,15 +73,17 @@ _remote-tools() {
 }
 
 _ports() {
-    local port stat prev script oldifs name target
+    local port stat prev script oldifs name target ports
     stat=$PORT_CACHE/last
     prev=$stat.prev
     echo "-> install/configure ports"
     oldifs=$IFS
     IFS=$'\n'
+    ports=""
     for port in $(cat ${PORT_CFG}install); do
-        echo "sudo port install $port" >> $stat
+        ports="$ports $port"
     done
+    echo "sudo port install $ports" >> $stat
     for port in $(cat ${PORT_CFG}select); do
         name=$(echo $port | cut -d " " -f 1)
         target=$(echo $port | cut -d " " -f 2)
