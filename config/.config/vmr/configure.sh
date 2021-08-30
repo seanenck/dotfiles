@@ -1,20 +1,30 @@
 #!/usr/bin/env bash
 
-mkdir -p root/.vim/
-cp -r $HOME/.vim/pack/ root/.vim/
+PACK_FILES=1
+if [ ! -z "$VMR_DISK_INIT" ]; then
+    if [ $VMR_DISK_INIT -eq 1 ]; then
+        PACK_FILES=0
+    fi
+fi
 
-echo "if [ ! -e /root/.init ]; then"
-echo "    cp -r root/.vim /root/.vim"
-echo "    chown root:root -R /root/.vim/"
-for f in .bashrc .bash_aliases .vimrc .bash_profile; do
-    cp $HOME/$f root/$f
-    echo "    install -Dm644 --owner=root --group=root root/$f /root/$f"
-done
-echo "    sed -i \"s/system('uname')/'Darwin'/g\" /root/.vimrc"
-echo "    touch /root/.init"
-echo "fi"
+date +"%Y-%m-%dT%H:%M:%S" > last-updated
+if [ $PACK_FILES -eq 1 ]; then
+    mkdir -p root/.vim/
+    cp -r $HOME/.vim/pack/ root/.vim/
 
-echo "echo 'nameserver 1.1.1.1' > /etc/resolv.conf"
+    echo "if [ ! -e /root/.last-updated ]; then"
+    echo "    cp -r root/.vim /root/.vim"
+    echo "    chown root:root -R /root/.vim/"
+    for f in .bashrc .bash_aliases .vimrc .bash_profile; do
+        cp $HOME/$f root/$f
+        echo "    install -Dm644 --owner=root --group=root root/$f /root/$f"
+    done
+    echo "    sed -i \"s/system('uname')/'Darwin'/g\" /root/.vimrc"
+    echo "    cp last-updated /root/.last-updated"
+    echo "fi"
+fi
+
+echo "echo 'nameserver $VMR_DNS' > /etc/resolv.conf"
 
 echo 'echo > /etc/apk/repositories'
 _produce_repo() {

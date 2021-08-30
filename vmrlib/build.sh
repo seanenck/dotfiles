@@ -18,6 +18,7 @@ ISO='$VMR_CURRENT_STORE/$VMR_BOOT_ISO'
 ROOT='$machine'
 TAGFILE='$machine/$VMR_TAG'
 CONFIGS='$VMR_CONFIGS'
+IMAGE='$VMR_IMG_NAME'
 
 cd $machine
 

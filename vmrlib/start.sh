@@ -66,13 +66,18 @@ while [ 1 -eq 1 ]; do
     sleep 1
 done
 
-
 settings=$path/settings.tar.xz
 _configure() {
-    local f tmpdir cwd
+    local f tmpdir cwd diskinit
     cwd=$PWD
     tmpdir=$(mktemp -d)
     cd $tmpdir
+    diskinit=0
+    file $path/$VMR_IMG_NAME | grep -q "DOS/MBR"
+    if [ $? -eq 0 ]; then
+        diskinit=1
+    fi
+    export VMR_DISK_INIT=$diskinit
     $VMR_CONFIGS/configure.sh
     if [ ! -z "$from" ]; then
         for f in $(find $from -type f | sort); do

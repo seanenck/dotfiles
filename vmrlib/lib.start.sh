@@ -9,7 +9,7 @@ if [ -e $TAGFILE ]; then
     fi
 fi
 
-STORAGE="$ROOT/storage.img"
+STORAGE="$ROOT/$IMAGE"
 if [ ! -e $STORAGE ]; then
     dd if=/dev/zero of=$STORAGE bs=1G count=$DISK
 fi
