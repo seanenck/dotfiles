@@ -18,7 +18,6 @@ _motd() {
 _ready() {
     local ip
     ip=$(_getip | cut -d "." -f 4 | sed 's/^/vmr-/g')
-    _motd $ip > /etc/motd
     hostname $ip
     setup-timezone -z US/Michigan
     setup-apkcache /var/cache/apk
@@ -29,6 +28,7 @@ _ready() {
         cp -r /root /var/opt
     fi
     mount --bind $STORE /root
+    _motd $ip > /etc/motd
     cwd=$PWD
     cd /tmp && tar xf $SETTINGS && ./$CONFIGURE
     cd $cwd
