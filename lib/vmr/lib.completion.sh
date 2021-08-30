@@ -1,7 +1,7 @@
 # bash completion for vmr                        -*- shell-script -*-
 
 _vmr() {
-    source $DOTFILES/vmrlib/env
+    source $DOTFILES/lib/vmr/env
     local cur opts word opt has_start state
     cur=${COMP_WORDS[COMP_CWORD]}
     if [ $COMP_CWORD -eq 1 ]; then
