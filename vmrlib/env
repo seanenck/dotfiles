@@ -83,7 +83,6 @@ if [ -z "$VMR_REMOTE_ADDRESS" ]; then
     VMR_REMOTE_IS_LOCAL=0
 fi
 export VMR_REMOTE_REPO="http://$VMR_REMOTE_ADDRESS/alpine/$VMR_ALPINE_MAJOR_MINOR/main"
-export VMR_PACKAGES=(bash bash-completion docs e2fsprogs fdupes fzf git ripgrep vim fzf-vim)
 export VMR_DNS="1.1.1.1"
 export VMR_ISO_URL="https://dl-cdn.alpinelinux.org/alpine/$VMR_ALPINE_MAJOR_MINOR/releases/aarch64/alpine-standard-$VMR_ALPINE_VERSION-aarch64.iso"
 export VMR_CURRENT_STORE="$VMR_STORE_RESOURCES/$VMR_ALPINE_VERSION"

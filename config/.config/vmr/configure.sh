@@ -11,7 +11,6 @@ for f in .bashrc .bash_aliases .vimrc .bash_profile; do
     echo "    install -Dm644 --owner=root --group=root root/$f /root/$f"
 done
 echo "    sed -i \"s/system('uname')/'Darwin'/g\" /root/.vimrc"
-echo "    sed -i \"s#/opt/local/share/fzf/vim#/usr/share/vim/vimfiles/plugin/fzf.vim#g\" /root/.vimrc"
 echo "    touch /root/.init"
 echo "fi"
 
@@ -26,9 +25,7 @@ _produce_repo "" "$VMR_ALPINE_MAJOR_MINOR/community"
 _produce_repo "" "$VMR_ALPINE_MAJOR_MINOR/main"
 
 echo "apk update"
-for f in bash bash-completion docs e2fsprogs fdupes fzf git ripgrep vim fzf-vim; do
-    echo "apk add $f"
-done
+echo "apk add bash bash-completion docs e2fsprogs fdupes git ripgrep vim"
 
 echo 'sed -i "s#/bin/ash#/bin/bash#g" /etc/passwd'
 echo "echo 'root:root' | chpasswd"

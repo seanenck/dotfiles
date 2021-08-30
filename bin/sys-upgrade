@@ -18,7 +18,7 @@ complete -F _sysupgrade -o bashdefault -o default sys-upgrade"
 
 _vim-plugins() {
     echo "-> update vim plugins"
-    for f in "vim-airline/vim-airline" "dense-analysis/ale" "junegunn/fzf.vim"; do
+    for f in "vim-airline/vim-airline" "dense-analysis/ale"; do
         echo "$f"
         p="$HOME/.vim/pack/dist/start/"
         if [ ! -d $p ]; then

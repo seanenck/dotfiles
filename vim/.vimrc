@@ -99,11 +99,6 @@ nnoremap <C-e> :call ToggleLine()<CR>
 
 nnoremap <C-c> :close<CR>
 nnoremap <C-v> :vsplit<CR>
-if isdirectory(".git")
-    nnoremap <F4> :GFiles<CR>
-else
-    nnoremap <F4> :Files<CR>
-endif
 
 let loaded_netrwPlugin = 1
 
@@ -125,8 +120,6 @@ if os == "Darwin"
     let g:ale_linters = {}
     let g:ale_linters.go = ['gopls', 'revive', 'goimports', 'govet']
     let g:ale_linters.python = ['pyls', 'pycodestyle', 'flake8', 'pydocstyle']
-    set rtp+=/opt/local/share/fzf/vim
-    let g:fzf_preview_window = []
 endif
 
 try
