@@ -2,7 +2,7 @@
 
 _vmr() {
     source $DOTFILES/vmrlib/env
-    local cur opts word opt has_start
+    local cur opts word opt has_start state
     cur=${COMP_WORDS[COMP_CWORD]}
     if [ $COMP_CWORD -eq 1 ]; then
         opts=$(echo rm ls start build kill)
@@ -25,9 +25,15 @@ _vmr() {
         else
             if [ $COMP_CWORD -eq 2 ]; then
                 if [[ "$word" == "start" ]] || [[ "$word" == "rm" ]] || [[ "$word" == "kill" ]]; then
-                    opts=$(ls $VMR_STORE | grep $VMR_IP | cut -d "." -f 4)
+                    state="up"
+                    if [[ "$word" == "start" ]]; then
+                        state="down"
+                    fi
+                    opts=$(vmr ls | grep " $state " | awk '{print $1}' | cut -d "." -f 4)
                     if [[ "$word" != "start" ]]; then
-                        opts="$opts --all"
+                        if [ ! -z "$opts" ]; then
+                            opts="$opts --all"
+                        fi
                     fi
                 fi
             else
