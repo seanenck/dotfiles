@@ -77,10 +77,8 @@ export VMR_ALPINE_CDN="dl-cdn.alpinelinux.org"
 export VMR_ALPINE_VERSION="3.14.2"
 export VMR_ALPINE_MAJOR_MINOR="v$(echo $VMR_ALPINE_VERSION | cut -d "." -f 1,2)"
 export VMR_REMOTE_ADDRESS=$(_get_remote_addr)
-export VMR_REMOTE_IS_LOCAL=1
 if [ -z "$VMR_REMOTE_ADDRESS" ]; then
     VMR_REMOTE_ADDRESS="$VMR_ALPINE_CDN"
-    VMR_REMOTE_IS_LOCAL=0
 fi
 export VMR_REMOTE_REPO="http://$VMR_REMOTE_ADDRESS/alpine/$VMR_ALPINE_MAJOR_MINOR/main"
 export VMR_DNS="1.1.1.1"
