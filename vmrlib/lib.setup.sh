@@ -12,8 +12,9 @@ _ready() {
     ip=$(_getip)
     hostname $(echo $ip | cut -d "." -f 4 | sed 's/^/vmr-/g')
     setup-timezone -z US/Michigan
-    setup-ntp -c chrony
     setup-apkcache /var/cache/apk
+    apk add --quiet chrony acf-core
+    /etc/init.d/chronyd start
     /etc/init.d/loopback start
     if [ ! -d $STORE ]; then
         cp -r /root /var/opt
