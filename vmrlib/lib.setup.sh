@@ -7,10 +7,19 @@ _getip() {
     ip addr | grep "inet" | grep "192.168.64." | awk '{print $2}' | cut -d "/" -f 1 
 }
 
+_motd() {
+    echo
+    echo "vmr"
+    echo "  name: $1"
+    echo "  date: "$(date +%Y-%m-%dT%H:%M:%S)
+    echo
+}
+
 _ready() {
-    local settings ip
-    ip=$(_getip)
-    hostname $(echo $ip | cut -d "." -f 4 | sed 's/^/vmr-/g')
+    local ip
+    ip=$(_getip | cut -d "." -f 4 | sed 's/^/vmr-/g')
+    _motd $ip > /etc/motd
+    hostname $ip
     setup-timezone -z US/Michigan
     setup-apkcache /var/cache/apk
     apk add --quiet chrony acf-core
