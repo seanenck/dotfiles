@@ -26,10 +26,15 @@ _vmr() {
             if [ $COMP_CWORD -eq 2 ]; then
                 if [[ "$word" == "start" ]] || [[ "$word" == "rm" ]] || [[ "$word" == "kill" ]]; then
                     state="up"
-                    if [[ "$word" == "start" ]]; then
-                        state="down"
-                    fi
-                    opts=$(vmr ls | grep " $state " | awk '{print $1}' | cut -d "." -f 4)
+                    case "$word" in
+                        "start")
+                            state="down"
+                            ;;
+                        "rm")
+                            state=""
+                            ;;
+                    esac
+                    opts=$(vmr ls | tail -n +4 | grep " $state " | awk '{print $1}' | cut -d "." -f 4)
                     if [[ "$word" != "start" ]]; then
                         if [ ! -z "$opts" ]; then
                             opts="$opts --all"
