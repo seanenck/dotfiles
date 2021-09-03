@@ -10,7 +10,7 @@ my $server = new IO::Socket::INET(
     Reuse     => 1
 );
 
-my $url = "http://primary.voidedtech.com/";
+my $url = "http://center.voidedtech.com/";
 
 $server or die "Unable to create server socket: $!";
 
