@@ -119,7 +119,7 @@ if os == "Darwin"
     nmap <silent> <C-J> <Plug>(ale_next_wrap)
     let g:ale_linters = {}
     let g:ale_linters.go = ['gopls', 'revive', 'goimports', 'govet']
-    let g:ale_linters.python = ['pyls', 'pycodestyle', 'flake8', 'pydocstyle']
+    let g:ale_linters.python = ['pylsp', 'pycodestyle', 'flake8', 'pydocstyle']
 endif
 
 try
