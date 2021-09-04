@@ -5,6 +5,9 @@ for option in ".env" "Workspace"; do
 done
 
 _uncommitted() {
+    if [ ! -d "$1/.git" ]; then
+        return
+    fi
     git -C $1 update-index -q --refresh
     git -C $1 diff-index --name-only HEAD --
     git -C $1 status -sb | grep ahead
