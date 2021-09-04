@@ -5,7 +5,12 @@ for option in ".env" "Workspace"; do
 done
 
 _uncommitted() {
+    local origin
     if [ ! -d "$1/.git" ]; then
+        return
+    fi
+    origin=$(git -C $1 remote show)
+    if [ -z "$origin" ]; then
         return
     fi
     git -C $1 update-index -q --refresh
