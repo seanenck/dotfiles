@@ -7,6 +7,10 @@ gomod-update() {
     go mod tidy
 }
 
+list-repos() {
+    curl https://voidedtech.com/repos.txt
+}
+
 _perl-alias() {
     pt=$(find /opt/local/bin/ -type l -name "perl$1-*" | sort -r | head -n 1)
     if [ ! -z "$pt" ]; then
