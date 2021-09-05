@@ -20,8 +20,6 @@ isync -bdb
 mairix
 msmtp
 mutt -pop -imap -smtp +gpgme
-p5-perl-critic
-p5-perl-tidy
 perl5
 pinentry-mac
 py39-codestyle
