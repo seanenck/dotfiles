@@ -1,43 +1,39 @@
-#!/usr/bin/env perl
-use strict;
-use Socket;
-use IO::Socket;
+#!/usr/bin/python3
+"""Handles authentication for redirection."""
+import http.server
+import socketserver
+import urllib.request
 
-my $server = new IO::Socket::INET(
-    Proto     => 'tcp',
-    LocalPort => "8910",
-    Listen    => SOMAXCONN,
-    Reuse     => 1
-);
+_PORT = 8910
 
-my $url = "http://center.voidedtech.com/";
+_REMOTE = "https://start.duckduckgo.com"
+_LOCAL = "http://center.voidedtech.com"
 
-$server or die "Unable to create server socket: $!";
 
-while ( my $client = $server->accept() ) {
-    $client->autoflush(1);
-    my %request = ();
-    {
-        local $/ = Socket::CRLF;
-        while (<$client>) {
-            chomp;
-            if (/\s*(\w+)\s*([^\s]+)\s*HTTP\/(\d.\d)/) {
-                $request{METHOD} = uc $1;
-                $request{URL}    = $2;
-            }
-            elsif (/^$/) {
-                last;
-            }
-        }
-    }
+class redirHandler(http.server.BaseHTTPRequestHandler):
+    """Handles dynamic redirection."""
 
-    my $redir = "$url";
-    if ( system("curl -s $url > /dev/null 2>&1") != 0 ) {
-        $redir = "https://start.duckduckgo.com";
-    }
-    print $client "HTTP/1.0 303 See Other", Socket::CRLF;
-    print $client "Location: $redir",       Socket::CRLF;
-    print $client Socket::CRLF;
+    def do_GET(self):
+        """Inherit documentation."""
+        url = _REMOTE
+        try:
+            with urllib.request.urlopen(_LOCAL):
+                pass
+            url = _LOCAL
+        except Exception:
+            pass
 
-    close $client;
-}
+        self.send_response(303)
+        self.send_header("Location", url)
+        self.send_header("Content-Type", "text/html")
+        self.end_headers()
+
+
+def main():
+    """Program entry."""
+    with socketserver.TCPServer(("", _PORT), redirHandler) as httpd:
+        httpd.serve_forever()
+
+
+if __name__ == "__main__":
+    main()
