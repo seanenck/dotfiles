@@ -4,7 +4,7 @@ _get_remote_addr() {
     for f in en0 en1; do
         ipconfig getifaddr $f 2>/dev/null | grep -q "192.168.1."
         if [ $? -eq 0 ]; then
-            echo "192.168.1.10/apkcache"
+            echo "192.168.1.1/apkcache"
             return
         fi
     done
