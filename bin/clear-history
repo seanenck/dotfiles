@@ -28,12 +28,14 @@ def main():
     if not os.path.exists(history):
         return
     lines = []
+    has = 0
     duplicates = 0
     ignored = 0
     with open(history, "r") as f:
         for line in f:
             if not line:
                 continue
+            has += 1
             if line in lines:
                 duplicates += 1
                 continue
@@ -55,7 +57,8 @@ def main():
     print("results:")
     for result in [("duplicates", duplicates),
                    ("filtered", ignored),
-                   ("entries", entries)]:
+                   ("old entries", has),
+                   ("new entries", entries)]:
         print("  {:8} {}".format(result[1], result[0]))
     print("")
 
