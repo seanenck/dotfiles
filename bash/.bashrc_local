@@ -1,6 +1,7 @@
 export GOPATH="$HOME/Library/Caches/go"
 export DOTFILES="$HOME/.env/dotfiles"
-export PATH="$DOTFILES/bin:$HOME/.fs/usr/local/bin:$PATH"
+export LOCAL_FS="$HOME/.fs"
+export PATH="$DOTFILES/bin:$LOCAL_FS/usr/local/bin:$PATH"
 export PATH="/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH"
 export LOCKBOX_STORE="$HOME/.env/passwords"
 export LOCKBOX_KEYMODE="macos"
@@ -22,11 +23,15 @@ for f in /opt/local/share/bash-completion/bash_completion \
     fi
 done
 
-if [ -d ~/.completions ]; then
-    for f in $(find ~/.completions -type f -name "*.bash"); do
-        . $f
-    done
-fi
+_localcomp() {
+    local c f
+    c=$LOCAL_FS/usr/local/share/bash-completion
+    if [ -d "$c" ]; then
+        for f in $(find $c -type f); do
+            source $f
+        done
+    fi
+}
 
 _gpga() {
     CACHE=$LOCAL_CACHE/gpg/
@@ -54,6 +59,7 @@ _vmrlist() {
     fi
 }
 
+_localcomp
 _gpga
 export GPG_TTY=$(tty)
 git uncommitted
