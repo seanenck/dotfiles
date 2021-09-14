@@ -24,6 +24,7 @@ set realname    = "Sean Enck"
 set sort_aux    = reverse-last-date-received
 set sort        = threads
 set sort_re
+set header_cache = "~/.mutt/tmp/headers/"
 
 save-hook . '=INBOX'
 

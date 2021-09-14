@@ -19,7 +19,7 @@ html2text
 isync -bdb
 mairix
 msmtp
-mutt -pop -imap -smtp +gpgme
+mutt -pop -imap -smtp +gpgme +lmdb
 perl5
 pinentry-mac
 py39-codestyle
