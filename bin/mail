@@ -1,13 +1,31 @@
 #!/opt/local/bin/bash
 export AUTOMATED=1
 source ~/.bashrc
+MAILDIR=$HOME/.mutt/maildir/
 mkdir -p ~/.mutt/tmp
 if [ ! -e $HOME/.mutt/etc ]; then
     ln -sf $HOME/.env/workstations/mail $HOME/.mutt/etc
 fi
+
+_syncmail() {
+    echo "syncing mail"
+    mbsync-local
+}
+
+COUNT=$(find ~/.mutt/tmp/mbsync.log -mmin -5 | wc -l)
+if [ $COUNT -eq 0 ]; then
+    _syncmail
+fi
+
 clear
-echo "syncing mail"
-mbsync-local
+NOW=$(date +%s)
 mutt
-echo "syncing mail"
-mbsync-local
+DONE=$(date +%s)
+DELTA=$((DONE-NOW))
+DELTA=$(echo $DELTA | awk '{print $1/60}' | cut -d "." -f 1)
+if [ $DELTA -gt 0 ]; then
+    COUNT=$(find ~/.mutt/maildir -type f -mmin -5 | grep -v "\.(uidvalidity|mbsyncstate)")
+    if [ $COUNT -gt 0 ]; then
+        _syncmail
+    fi
+fi
