@@ -17,6 +17,22 @@ if [ ! -z "$1" ]; then
         "sync")
             SYNCING=1
             ;;
+        "bash")
+            cat << EOF
+# bash completion for mail                        -*- shell-script -*-
+
+_mail() {
+    local cur
+    cur=\${COMP_WORDS[COMP_CWORD]}
+    if [ \$COMP_CWORD -eq 1 ]; then
+        COMPREPLY=( \$(compgen -W "sync" -- \$cur) )
+    fi
+}
+
+complete -F _mail -o bashdefault -o default mail
+EOF
+            exit 0
+            ;;
         *)
             echo "unknown command: $1"
             exit 1
