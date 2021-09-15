@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 alias mutt="mail"
-alias mbsync="mbsync-local"
+alias mbsync=""
 
 gomod-update() {
     go get -u ./...

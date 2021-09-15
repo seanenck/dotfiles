@@ -23,6 +23,8 @@ for f in /opt/local/share/bash-completion/bash_completion \
     fi
 done
 
+[[ ! -z "$AUTOMATED" ]] && [[ $AUTOMATED -eq 1 ]] && return
+
 _localcomp() {
     local c f
     c=$LOCAL_FS/usr/local/share/bash-completion

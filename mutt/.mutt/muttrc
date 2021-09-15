@@ -54,9 +54,9 @@ bind index,pager B sidebar-toggle-visible
 
 macro index,pager \Cp "<sidebar-prev><sidebar-open>"
 macro index,pager \Cn "<sidebar-next><sidebar-open>"
-macro index,pager <f5> "<enter-command>unset wait\_key<enter><shell-escape>mbsync-local &<enter><enter-command>set wait\_key<enter>" "Refresh"
+macro index,pager <f5> "<enter-command>unset wait\_key<enter><shell-escape>mail sync &<enter><enter-command>set wait\_key<enter>" "Refresh"
 macro attach 'V' "<enter-command>unset wait\_key<enter><pipe-entry>cat > ~/.mutt/tmp/mail.html && open ~/.mutt/tmp/mail.html<enter><enter-command>set wait_key<enter>"
-macro generic <f8> "<shell-escape>mail-search " "search"
+macro generic <f8> "<shell-escape>mail search " "search"
 
 macro index \Co '<enter-command>toggle sidebar_visible<enter><refresh>'
 macro pager \Co '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
