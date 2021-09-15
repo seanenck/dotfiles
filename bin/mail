@@ -27,7 +27,7 @@ fi
 _truncate() {
     local f s n
     for f in mbsync msmtp; do
-        n=${MUTTTMP}$f.log
+        n=${MUTTTMP}/$f.log
         touch $n
         s=$(stat --printf="%s" $n)
         if [ $s -gt 1000000 ]; then
