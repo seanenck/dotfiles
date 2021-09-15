@@ -9,14 +9,14 @@ export LOCKBOX_TOTP="keys/totp/"
 export DISPLAY=:0
 export LOCAL_CACHE="$HOME/Library/Caches/com.voidedtech.Local"
 
-for f in passwords workstations; do
+for f in passwords machines/workstations; do
     if [ ! -d ~/.env/$f ]; then
         echo "-> $f not cloned"
     fi
 done
 
 for f in /opt/local/share/bash-completion/bash_completion \
-         $HOME/.env/workstations/bashrc \
+         $HOME/.env/machines/workstations/bashrc \
          $HOME/.bash_aliases_local; do
     if [ -e $f ]; then
         . $f
