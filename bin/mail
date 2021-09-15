@@ -80,7 +80,7 @@ _hashmail() {
 }
 
 clear
-COUNT=$(find $MB_LOG -mmin -5 | wc -l)
+COUNT=$(find $MB_LOG -mmin -1 | wc -l)
 if [ $COUNT -eq 0 ]; then
     _sync
 fi
