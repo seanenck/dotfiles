@@ -4,6 +4,7 @@ set noautoindent
 set background=dark
 set nowrap
 set whichwrap=b,s,<,>,[,]
+set termwinkey=<C-t>
 set termwinsize=15x0
 let &g:directory=$HOME . '/.vim'
 let aledir = expand(&g:directory . '/pack/dist/start/ale//')
