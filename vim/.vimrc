@@ -5,8 +5,9 @@ set background=dark
 set nowrap
 set whichwrap=b,s,<,>,[,]
 set termwinsize=15x0
-let os = substitute(system('uname'), "\n", "", "")
-if os == "Darwin"
+let &g:directory=$HOME . '/.vim'
+let aledir = expand(&g:directory . '/pack/dist/start/ale//')
+if isdirectory(aledir)
     let g:ale_completion_enabled = 1
 endif
 
@@ -61,7 +62,6 @@ if has("autocmd")
     augroup END
 endif
 
-let &g:directory=$HOME . '/.vim'
 let &g:undodir=&g:directory . '/undo//'
 let &g:backupdir=&g:directory . '/backup//'
 let &g:directory=&g:directory . '/swap//'
@@ -86,6 +86,7 @@ vnoremap <S-Left> <gv
 inoremap <S-Left> <C-o>:<<CR>
 inoremap <S-Right> <C-o>:><CR>
 
+let os = substitute(system('uname'), "\n", "", "")
 if os == "Darwin"
     set backspace=2
     noremap <BS> <delete>
@@ -122,6 +123,9 @@ if os == "Darwin"
         autocmd BufNewFile,BufRead *.gxs setlocal ft=gxs syntax=gxs
         autocmd BufNewFile,BufRead *.md setlocal spell
     endif
+endif
+
+if isdirectory(aledir)
     set omnifunc=syntaxcomplete#Complete
     set completeopt=noinsert
     let g:ale_set_highlights = 0
