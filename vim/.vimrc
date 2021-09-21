@@ -7,6 +7,7 @@ set whichwrap=b,s,<,>,[,]
 set termwinsize=15x0
 let &g:directory=$HOME . '/.vim'
 let aledir = expand(&g:directory . '/pack/dist/start/ale//')
+let airlinedir = expand(&g:directory . '/pack/dist/start/vim-airline//')
 if isdirectory(aledir)
     let g:ale_completion_enabled = 1
 endif
@@ -139,7 +140,7 @@ if isdirectory(aledir)
     let g:ale_linters.python = ['pylsp', 'pycodestyle', 'flake8', 'pydocstyle']
 endif
 
-try
+if isdirectory(airlinedir)    
     let g:airline#extensions#tabline#enabled = 1
     let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
     set hidden
@@ -147,5 +148,4 @@ try
     nmap <Tab> :bnext<CR>
     nmap <S-Tab> :bprevious<CR>
     nmap <C-w> :bp <BAR> bd #<CR>
-catch
-endtry
+endif
