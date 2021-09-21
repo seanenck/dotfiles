@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-_ide () {
-    kitty @ goto-layout splits
-    kitty @ launch --location=hsplit --cwd=$PWD
-    kitty @ resize-window --axis=vertical -i=-8
-}
-
-_ide > /dev/null

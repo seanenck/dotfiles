@@ -4,6 +4,7 @@ set noautoindent
 set background=dark
 set nowrap
 set whichwrap=b,s,<,>,[,]
+set termwinsize=15x0
 let os = substitute(system('uname'), "\n", "", "")
 if os == "Darwin"
     let g:ale_completion_enabled = 1
@@ -19,6 +20,15 @@ function ToggleLine()
         let &colorcolumn=join(range(81,81),",")
     endif
 endfunction
+
+func NewTerminal()
+    let bufs=filter(range(1, bufnr('$')), 'bufexists(v:val) && '.
+                                      \'getbufvar(v:val, "&buftype") == "terminal"')
+    if empty(bufs)
+        :botright terminal
+    endif
+endfunction
+
 
 call ToggleLine()
 if has('mouse')
@@ -103,6 +113,7 @@ nnoremap <C-v> :vsplit<CR>
 let loaded_netrwPlugin = 1
 
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+nnoremap <C-t> :call NewTerminal()<CR>
 
 if os == "Darwin"
     if has("autocmd")
