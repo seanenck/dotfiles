@@ -19,7 +19,6 @@ if [ $PACK_FILES -eq 1 ]; then
         cp $HOME/$f root/$f
         echo "    install -Dm644 --owner=root --group=root root/$f /root/$f"
     done
-    echo "    sed -i \"s/system('uname')/'Darwin'/g\" /root/.vimrc"
     echo "    cp last-updated /root/.last-updated"
     echo "fi"
 fi

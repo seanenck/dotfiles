@@ -88,11 +88,8 @@ vnoremap <S-Left> <gv
 inoremap <S-Left> <C-o>:<<CR>
 inoremap <S-Right> <C-o>:><CR>
 
-let os = substitute(system('uname'), "\n", "", "")
-if os == "Darwin"
-    set backspace=2
-    noremap <BS> <delete>
-endif
+set backspace=2
+noremap <BS> <delete>
 
 set number
 set tabstop=4
