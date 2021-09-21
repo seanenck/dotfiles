@@ -26,6 +26,8 @@ func NewTerminal()
                                       \'getbufvar(v:val, "&buftype") == "terminal"')
     if empty(bufs)
         :botright terminal
+    else
+        :call win_gotoid(get(win_findbuf(bufs[0]), 0))
     endif
 endfunction
 
