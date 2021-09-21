@@ -99,6 +99,8 @@ set tabstop=4
 set expandtab
 if has("autocmd")
     autocmd Filetype go setlocal noexpandtab
+    autocmd BufNewFile,BufRead *.gxs setlocal ft=gxs syntax=gxs
+    autocmd BufNewFile,BufRead *.md setlocal spell
 endif
 
 set shiftwidth=4
@@ -119,13 +121,6 @@ let loaded_netrwPlugin = 1
 
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 nnoremap <C-t> :call NewTerminal()<CR>
-
-if os == "Darwin"
-    if has("autocmd")
-        autocmd BufNewFile,BufRead *.gxs setlocal ft=gxs syntax=gxs
-        autocmd BufNewFile,BufRead *.md setlocal spell
-    endif
-endif
 
 if isdirectory(aledir)
     set omnifunc=syntaxcomplete#Complete
