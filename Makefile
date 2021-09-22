@@ -7,7 +7,7 @@ default:
 
 mac: $(TARGETS)
 
-tty: bash vim tmux
+tty: bash vim tmux git
 
 $(TARGETS):
 	stow --target=$(HOME) $@
