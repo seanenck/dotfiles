@@ -85,8 +85,7 @@ endif
 
 set viminfo+=n$HOME/.vim/viminfo
 if exists(machinedir)
-    set backspace=2
-    noremap <BS> <delete>
+    source machinedir
 endif
 
 set number
