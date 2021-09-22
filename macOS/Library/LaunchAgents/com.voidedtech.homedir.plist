@@ -6,7 +6,7 @@
     <string>com.voidedtech.homedir</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/enck/.env/dotfiles/bin/homedir</string>
+        <string>/Users/enck/.env/dotfiles/bin/darwin/homedir</string>
     </array>
     <key>KeepAlive</key>
     <true/>
