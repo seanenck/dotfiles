@@ -1,13 +1,16 @@
 TARGETS := bash kitty macports vmr git go macOS mutt vim tmux
 
-.PHONY: $(TARGETS)
+.PHONY: $(TARGETS) machine
 
 default:
 	$(error please select a target to build)
 
-mac: $(TARGETS)
+machine:
+	cd machine/$(shell uname -s | tr '[:upper:]' '[:lower:]') && stow --target $(HOME) .
 
-tty: bash vim tmux git
+mac: $(TARGETS) machine
+
+tty: bash vim tmux git machine
 
 $(TARGETS):
 	stow --target=$(HOME) $@

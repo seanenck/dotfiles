@@ -1,0 +1,4 @@
+[pager]
+    log = /opt/local/share/git/contrib/diff-highlight/diff-highlight | less
+    diff = /opt/local/share/git/contrib/diff-highlight/diff-highlight | less
+    show = /opt/local/share/git/contrib/diff-highlight/diff-highlight | less

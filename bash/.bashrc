@@ -23,7 +23,7 @@ export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 
 . /etc/profile
 for file in $HOME/.bashrc_local \
-            $HOME/.bash/$(uname -s | tr '[:upper:]' '[:lower:]')/bashrc \
+            $HOME/.machine/bashrc \
             $HOME/.bash_aliases \
             /usr/share/bash-completion/bash_completion; do
     if [ -e $file ]; then

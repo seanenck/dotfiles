@@ -2,10 +2,7 @@
     editor = vim
     autocrlf = input
     excludesfile = ~/.gitignore_global
-[pager]
-    log = /opt/local/share/git/contrib/diff-highlight/diff-highlight | less
-    diff = /opt/local/share/git/contrib/diff-highlight/diff-highlight | less
-    show = /opt/local/share/git/contrib/diff-highlight/diff-highlight | less
+    include = ~/.machine/gitconfig
 [grep]
     lineNumber = true
 [log]
