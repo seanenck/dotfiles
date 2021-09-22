@@ -1,8 +1,9 @@
+[include]
+    path = ~/.machine/gitconfig
 [core]
     editor = vim
     autocrlf = input
     excludesfile = ~/.gitignore_global
-    include = ~/.machine/gitconfig
 [grep]
     lineNumber = true
 [log]
