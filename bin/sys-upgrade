@@ -16,22 +16,6 @@ _sysupgrade() {
 
 complete -F _sysupgrade -o bashdefault -o default sys-upgrade"
 
-_vim-plugins() {
-    echo "-> update vim plugins"
-    for f in "vim-airline/vim-airline" "dense-analysis/ale"; do
-        echo "$f"
-        p="$HOME/.vim/pack/dist/start/"
-        if [ ! -d $p ]; then
-            mkdir -p $p
-        fi
-        p="$p"$(echo $f | cut -d "/" -f 2)
-        if [ ! -d $p ]; then
-            git clone "https://github.com/$f" $p
-        fi
-        git -C $p pull
-    done
-}
-
 _remote-setup() {
     local dir hash prev name cwd usrlocal
     usrlocal="$BIN/usr/local/bin/"
@@ -127,7 +111,7 @@ _sys-upgrade() {
     if [ $2 -eq 1 ]; then
         echo "-> update kitty"
         kitty-updater
-        _vim-plugins
+        vim-plugin-upgrade
         _remote-tools
         echo "$SYSUP_COMP" > $COMPLETIONS/sys-upgrade.bash
     fi
