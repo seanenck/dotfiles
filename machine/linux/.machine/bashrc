@@ -34,5 +34,9 @@ export GPG=TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye > /dev/null
 
 if [[ -z $TMUX ]]; then
-    exec tmux new-session -A -s localsession
+    tmux_session="sshsession"
+    if [ -z "$SSH_CONNECTION" ]; then
+        tmux_session="localsession"
+    fi
+    exec tmux new-session -A -s $tmux_session
 fi
