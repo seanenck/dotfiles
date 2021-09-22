@@ -1,0 +1,2 @@
+export DOTFILES="$HOME/.env/dotfiles"
+export PATH="$DOTFILES/bin:$PATH"

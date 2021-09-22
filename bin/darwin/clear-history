@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+"""Cleanup history."""
+import os
+
+
+_SKIP = ["cd",
+         "git",
+         "mkdir",
+         "goimports",
+         "history",
+         "go get",
+         "lb",
+         "ls",
+         "cp",
+         "grep",
+         "make",
+         "rmdir",
+         "scp",
+         "sudo port install",
+         "sudo port uninstall",
+         "source",
+         "bash",
+         "mv",
+         "rm",
+         "man",
+         "port search",
+         "perl",
+         "macrun",
+         "vim",
+         "vmr"]
+
+
+def main():
+    """Program entry."""
+    history = os.path.join(os.environ["HOME"], ".bash_history")
+    if not os.path.exists(history):
+        return
+    lines = []
+    has = 0
+    duplicates = 0
+    ignored = 0
+    with open(history, "r") as f:
+        for line in f:
+            if not line:
+                continue
+            has += 1
+            if line in lines:
+                duplicates += 1
+                continue
+            ignore = False
+            for skip in _SKIP:
+                if line.startswith("{} ".format(skip)):
+                    ignore = True
+                    break
+            if ignore:
+                ignored += 1
+                continue
+            lines.append(line)
+    entries = 0
+    with open(history, "w") as f:
+        for line in lines:
+            f.write(line)
+            entries += 1
+    print("")
+    print("results:")
+    for result in [("duplicates", duplicates),
+                   ("filtered", ignored),
+                   ("old entries", has),
+                   ("new entries", entries)]:
+        print("  {:8} {}".format(result[1], result[0]))
+    print("")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,94 @@
+#!/opt/local/bin/bash
+SYNCING=0
+MAILDIR=~/.mutt/maildir
+MUTTTMP=~/.mutt/tmp
+CUR_HASH=$MUTTTMP/maildir.files
+NEW_HASH=$CUR_HASH.next
+MB_LOG="$MUTTTMP/mbsync.log"
+
+if [ ! -z "$1" ]; then
+    case "$1" in
+        "search")
+            mairix -f ~/.mutt/etc/mairixrc
+            clear
+            mairix -f ~/.mutt/etc/mairixrc ${@:2}
+            exit 0
+            ;;
+        "sync")
+            SYNCING=1
+            ;;
+        "bash")
+            cat << EOF
+# bash completion for mail                        -*- shell-script -*-
+
+_mail() {
+    local cur
+    cur=\${COMP_WORDS[COMP_CWORD]}
+    if [ \$COMP_CWORD -eq 1 ]; then
+        COMPREPLY=( \$(compgen -W "sync" -- \$cur) )
+    fi
+}
+
+complete -F _mail -o bashdefault -o default mail
+EOF
+            exit 0
+            ;;
+        *)
+            echo "unknown command: $1"
+            exit 1
+            ;;
+    esac
+fi
+
+_truncate() {
+    local f s n
+    for f in mbsync msmtp; do
+        n=${MUTTTMP}/$f.log
+        touch $n
+        s=$(stat --printf="%s" $n)
+        if [ $s -gt 1000000 ]; then
+            mv $n $n.prev
+        fi
+    done
+}
+
+mkdir -p $MUTTTMP
+mkdir -p $MAILDIR
+
+export AUTOMATED=1
+source ~/.bashrc
+
+_mbsync() {
+    date +"%Y-%m-%dT%H:%M:%S"
+    mbsync --verbose -c ~/.mutt/etc/mbsyncrc -a fastmail 2>&1 | sed 's/^/    /g'
+}
+
+_sync() {
+    echo "syncing mail"
+    _truncate
+    _mbsync >> $MB_LOG 2>&1
+}
+
+if [ $SYNCING -eq 1 ]; then
+    _sync > /dev/null 2>&1
+    sleep 10
+    exit 0
+fi
+
+_hashmail() {
+    find $MAILDIR -type f | sort
+}
+
+clear
+COUNT=$(find $MB_LOG -mmin -1 | wc -l)
+if [ $COUNT -eq 0 ]; then
+    _sync
+fi
+
+_hashmail > $CUR_HASH
+mutt
+_hashmail > $NEW_HASH
+diff -u $CUR_HASH $NEW_HASH
+if [ $? -ne 0 ]; then
+    _sync
+fi
