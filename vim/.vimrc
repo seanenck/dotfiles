@@ -9,6 +9,7 @@ set termwinsize=15x0
 let &g:directory=$HOME . '/.vim'
 let aledir = expand(&g:directory . '/pack/dist/start/ale//')
 let airlinedir = expand(&g:directory . '/pack/dist/start/vim-airline//')
+let machinedir = expand($HOME . './machine/vimrc')
 if isdirectory(aledir)
     let g:ale_completion_enabled = 1
 endif
@@ -83,13 +84,10 @@ if has('persistent_undo')
 endif
 
 set viminfo+=n$HOME/.vim/viminfo
-vnoremap <S-Right> >gv
-vnoremap <S-Left> <gv
-inoremap <S-Left> <C-o>:<<CR>
-inoremap <S-Right> <C-o>:><CR>
-
-set backspace=2
-noremap <BS> <delete>
+if exists(machinedir)
+    set backspace=2
+    noremap <BS> <delete>
+endif
 
 set number
 set tabstop=4
