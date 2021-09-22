@@ -28,6 +28,9 @@ machine() {
     _lxc-dev $@
 }
 
+export GPG=TTY=$(tty)
+gpg-connect-agent updatestartuptty /bye > /dev/null
+
 if [[ -z $TMUX ]]; then
     exec tmux new-session -A -s localsession
 fi
