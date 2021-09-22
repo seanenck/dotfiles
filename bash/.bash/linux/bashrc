@@ -1,1 +1,33 @@
 export GOPATH="$HOME/.cache/go"
+#!/bin/bash
+
+sys-upgrade() {
+    local lxc lxcpath lxcwork file
+    vim-plugin-upgrade
+    for lxc in $(sudo lxc-ls); do
+        lxcpath="/var/lib/lxc/$lxc/rootfs/"
+        lxcwork="${lxcpath}root/"
+        for file in .bashrc .vimrc .profile .bash_aliases .tmux.conf; do
+            sudo cp $HOME/$file ${lxcwork}$file
+        done
+        lxcwork="${lxcwork}.vim/pack"
+        sudo mkdir -p $lxcwork
+        sudo rsync -avc --delete-after $HOME/.vim/pack/ "$lxcwork"
+    done
+}
+
+_lxc-dev() {
+    sudo lxc-ls --running | grep -q "$1"
+    if [ $? -ne 0 ]; then
+        sudo lxc-start -n $1
+    fi
+    sudo lxc-attach -n $1
+}
+
+machine() {
+    _lxc-dev $@
+}
+
+if [[ -z $TMUX ]]; then
+    exec tmux new-session -A -s localsession
+fi
