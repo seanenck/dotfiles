@@ -36,5 +36,6 @@ revive
 ripgrep
 rsync
 stow
+tmux
 vim
 watch
