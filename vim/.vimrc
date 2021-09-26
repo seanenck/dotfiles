@@ -25,17 +25,6 @@ function ToggleLine()
     endif
 endfunction
 
-func NewTerminal()
-    let bufs=filter(range(1, bufnr('$')), 'bufexists(v:val) && '.
-                                      \'getbufvar(v:val, "&buftype") == "terminal"')
-    if empty(bufs)
-        :botright terminal
-    else
-        :call win_gotoid(get(win_findbuf(bufs[0]), 0))
-    endif
-endfunction
-
-
 call ToggleLine()
 if has('mouse')
     set mouse=a
@@ -84,6 +73,11 @@ if has('persistent_undo')
 endif
 
 set viminfo+=n$HOME/.vim/viminfo
+vnoremap <C-i> >gv
+vnoremap <C-u> <gv
+inoremap <C-i> <C-o>:><CR>
+inoremap <C-u> <C-o>:<<CR>
+
 if filereadable(machinedir)
     exec 'source' machinedir
 endif
@@ -114,7 +108,6 @@ nnoremap <C-v> :vsplit<CR>
 let loaded_netrwPlugin = 1
 
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-nnoremap <C-t> :call NewTerminal()<CR>
 
 if isdirectory(aledir)
     set omnifunc=syntaxcomplete#Complete
