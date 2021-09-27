@@ -9,12 +9,8 @@ fi
 
 date +"%Y-%m-%dT%H:%M:%S" > last-updated
 if [ $PACK_FILES -eq 1 ]; then
-    mkdir -p root/.vim/
-    cp -r $HOME/.vim/pack/ root/.vim/
 
     echo "if [ ! -e /root/.last-updated ]; then"
-    echo "    cp -r root/.vim /root/.vim"
-    echo "    chown root:root -R /root/.vim/"
     for f in .bashrc .bash_aliases .vimrc .bash_profile; do
         cp $HOME/$f root/$f
         echo "    install -Dm644 --owner=root --group=root root/$f /root/$f"

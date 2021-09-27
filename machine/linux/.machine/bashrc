@@ -3,7 +3,6 @@ export GOPATH="$HOME/.cache/go"
 
 sys-upgrade() {
     local lxc lxcpath lxcwork file lxcuser
-    vim-plugin-upgrade
     for lxc in $(sudo lxc-ls); do
         lxcpath="/var/lib/lxc/$lxc/rootfs/"
         for lxcuser in "root" "home/enck"; do
@@ -11,9 +10,6 @@ sys-upgrade() {
             for file in .bashrc .vimrc .profile .bash_aliases .tmux.conf; do
                 sudo cp $HOME/$file ${lxcwork}$file
             done
-            lxcwork="${lxcwork}.vim/pack"
-            sudo mkdir -p $lxcwork
-            sudo rsync -avc --delete-after $HOME/.vim/pack/ "$lxcwork"
         done
     done
 }

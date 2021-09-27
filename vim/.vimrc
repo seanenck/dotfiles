@@ -4,15 +4,8 @@ set noautoindent
 set background=dark
 set nowrap
 set whichwrap=b,s,<,>,[,]
-set termwinkey=<C-t>
-set termwinsize=15x0
 let &g:directory=$HOME . '/.vim'
-let aledir = expand(&g:directory . '/pack/dist/start/ale//')
-let airlinedir = expand(&g:directory . '/pack/dist/start/vim-airline//')
 let machinedir = expand($HOME . '/.machine/vimrc')
-if isdirectory(aledir)
-    let g:ale_completion_enabled = 1
-endif
 
 colo slate
 
@@ -108,27 +101,3 @@ nnoremap <C-v> :vsplit<CR>
 let loaded_netrwPlugin = 1
 
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-
-if isdirectory(aledir)
-    set omnifunc=syntaxcomplete#Complete
-    set completeopt=noinsert
-    let g:ale_set_highlights = 0
-    let g:ale_sign_column_always = 1
-    nmap <silent> <C-F> <Plug>(ale_find_references)
-    nmap <silent> <C-G> <Plug>(ale_go_to_definition)
-    nmap <silent> <C-H> <Plug>(ale_previous_wrap)
-    nmap <silent> <C-J> <Plug>(ale_next_wrap)
-    let g:ale_linters = {}
-    let g:ale_linters.go = ['gopls', 'revive', 'goimports', 'govet']
-    let g:ale_linters.python = ['pylsp', 'pycodestyle', 'flake8', 'pydocstyle']
-endif
-
-if isdirectory(airlinedir)    
-    let g:airline#extensions#tabline#enabled = 1
-    let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-    set hidden
-    nmap <C-n> :enew<CR>
-    nmap <Tab> :bnext<CR>
-    nmap <S-Tab> :bprevious<CR>
-    nmap <C-w> :bp <BAR> bd #<CR>
-endif

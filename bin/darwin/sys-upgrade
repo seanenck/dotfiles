@@ -111,7 +111,6 @@ _sys-upgrade() {
     if [ $2 -eq 1 ]; then
         echo "-> update kitty"
         kitty-updater
-        vim-plugin-upgrade
         _remote-tools
         echo "$SYSUP_COMP" > $COMPLETIONS/sys-upgrade.bash
     fi
