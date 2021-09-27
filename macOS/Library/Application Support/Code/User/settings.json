@@ -1,0 +1,10 @@
+{
+    "editor.dragAndDrop": false,
+    "editor.emptySelectionClipboard": false,
+    "github.gitAuthentication": false,
+    "git.enabled": false,
+    "telemetry.enableCrashReporter": false,
+    "telemetry.enableTelemetry": false,
+    "workbench.activityBar.visible": false,
+    "go.toolsManagement.autoUpdate": true
+}
