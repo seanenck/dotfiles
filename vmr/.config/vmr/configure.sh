@@ -9,6 +9,7 @@ fi
 
 date +"%Y-%m-%dT%H:%M:%S" > last-updated
 if [ $PACK_FILES -eq 1 ]; then
+    mkdir -p root/
 
     echo "if [ ! -e /root/.last-updated ]; then"
     for f in .bashrc .bash_aliases .vimrc .bash_profile; do
