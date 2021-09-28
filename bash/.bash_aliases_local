@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-alias mutt="mail"
-alias mbsync=""
-
 gomod-update() {
     go get -u ./...
     go mod tidy

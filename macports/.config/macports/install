@@ -14,11 +14,6 @@ go
 go-tools
 golangci-lint
 gsed
-html2text
-isync -bdb
-mairix
-msmtp
-mutt -pop -imap -smtp +gpgme +lmdb
 perl5
 pinentry-mac
 py39-codestyle
