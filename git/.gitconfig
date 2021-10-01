@@ -33,5 +33,3 @@
     insteadOf = enckse:
 [url "git@github.com:enckse/"]
     insteadOf = github:
-[diff "lb"]
-    textconv = lb diff

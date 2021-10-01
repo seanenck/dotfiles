@@ -2,13 +2,10 @@ export GOPATH="$HOME/Library/Caches/go"
 export LOCAL_FS="$HOME/.fs"
 export PATH="$DOTFILES/bin/$(uname -s | tr '[:upper:]' '[:lower:]'):$LOCAL_FS/usr/local/bin:$PATH"
 export PATH="/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH"
-export LOCKBOX_STORE="$HOME/.env/passwords"
-export LOCKBOX_KEYMODE="macos"
-export LOCKBOX_TOTP="keys/totp/"
 export DISPLAY=:0
 export LOCAL_CACHE="$HOME/Library/Caches/com.voidedtech.Local"
 
-for f in passwords machines/workstations; do
+for f in keepassxc machines/workstations; do
     if [ ! -d ~/.env/$f ]; then
         echo "-> $f not cloned"
     fi
