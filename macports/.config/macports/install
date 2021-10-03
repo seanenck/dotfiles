@@ -14,6 +14,8 @@ go
 go-tools
 golangci-lint
 gsed
+isync -bdb
+msmtprc
 perl5
 pinentry-mac
 py39-codestyle
