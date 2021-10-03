@@ -15,6 +15,7 @@ go-tools
 golangci-lint
 gsed
 isync -bdb
+mairix
 msmtprc
 perl5
 pinentry-mac
