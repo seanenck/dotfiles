@@ -68,8 +68,6 @@ endif
 set viminfo+=n$HOME/.vim/viminfo
 vnoremap <C-i> >gv
 vnoremap <C-u> <gv
-inoremap <C-i> <C-o>:><CR>
-inoremap <C-u> <C-o>:<<CR>
 
 if filereadable(machinedir)
     exec 'source' machinedir
