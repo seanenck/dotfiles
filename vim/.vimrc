@@ -93,7 +93,6 @@ imap <F1> <Nop>
 
 nnoremap <C-e> :call ToggleLine()<CR>
 
-nnoremap <C-c> :close<CR>
 nnoremap <C-v> :vsplit<CR>
 
 let loaded_netrwPlugin = 1
