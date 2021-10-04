@@ -4,7 +4,6 @@ MAIL=~/.mail/
 LOGFILE=${MAIL}sync.$(date +%Y-%m-%d).log
 MAILDIR=${MAIL}maildir
 MAIRIX=${ETC}mairix
-touch $LOGFILE
 
 _syncnow() {
     mbsync -V -c ${ETC}mbsyncrc -a
@@ -43,7 +42,12 @@ if [ ! -z "$CMD" ]; then
 fi
 
 clear
-CNT=$(find $LOGFILE -type f -mmin -1 | wc -l)
+
+if [ -e $LOGFILE ]; then
+    CNT=$(find $LOGFILE -type f -mmin -1 | wc -l)
+else
+    CNT=0
+fi
 if [ $CNT -eq 0 ]; then
     _echosync
 fi
