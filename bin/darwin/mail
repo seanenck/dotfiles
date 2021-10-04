@@ -1,4 +1,8 @@
 #!/bin/bash
+# create a Mutt.app via Automator:
+# AppleScript:
+# `do shell script "open /Users/enck/.env/dotfiles/bin/darwin/mail"`
+
 ETC=~/.env/machines/workstations/mail/
 MAIL=~/.mail/
 LOGFILE=${MAIL}sync.$(date +%Y-%m-%d).log
