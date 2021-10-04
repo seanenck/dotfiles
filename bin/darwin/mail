@@ -19,7 +19,7 @@ _sync() {
 }
 
 _contents() {
-    find ${MAIL}maildir -type f | grep "/(cur|new|tmp)/"
+    find ${MAIL}maildir -type f | /opt/local/bin/rg "/(cur|new|tmp)/"
 }
 
 CMD=$1
