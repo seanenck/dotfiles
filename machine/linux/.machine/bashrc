@@ -10,6 +10,9 @@ sys-upgrade() {
             for file in .bashrc .vimrc .profile .bash_aliases .tmux.conf; do
                 sudo cp $HOME/$file ${lxcwork}$file
             done
+            lxcwork="${lxcwork}.vim/pack"
+            sudo mkdir -p $lxcwork
+            sudo rsync -avc --delete-after $HOME/.vim/pack/ "$lxcwork"
         done
     done
 }

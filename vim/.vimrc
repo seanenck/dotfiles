@@ -4,8 +4,10 @@ set noautoindent
 set background=dark
 set nowrap
 set whichwrap=b,s,<,>,[,]
-let &g:directory=$HOME . '/.vim'
 let machinedir = expand($HOME . '/.machine/vimrc')
+if filereadable(machinedir)
+    exec 'source' machinedir
+endif
 
 colo slate
 
@@ -47,6 +49,7 @@ if has("autocmd")
     augroup END
 endif
 
+let &g:directory=$HOME . '/.vim'
 let &g:undodir=&g:directory . '/undo//'
 let &g:backupdir=&g:directory . '/backup//'
 let &g:directory=&g:directory . '/swap//'
@@ -68,10 +71,6 @@ endif
 set viminfo+=n$HOME/.vim/viminfo
 vnoremap <C-i> >gv
 vnoremap <C-u> <gv
-
-if filereadable(machinedir)
-    exec 'source' machinedir
-endif
 
 set number
 set tabstop=4
