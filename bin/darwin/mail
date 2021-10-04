@@ -52,3 +52,4 @@ diff -u $CONTENTS $NEXT
 if [ $? -ne 0 ]; then
     _sync
 fi
+osascript -e "quit app \"Terminal\""
