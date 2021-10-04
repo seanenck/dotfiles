@@ -14,8 +14,12 @@ _syncnow() {
 _sync() {
     local dt
     dt=$(date +%Y-%m-%dT%H:%M:%S)
-    echo "syncing mail..."
     _syncnow 2>&1 | sed "s/^/$dt /g" > $LOGFILE
+}
+
+_echosync() {
+    echo "syncing mail..."
+    _sync
 }
 
 _contents() {
@@ -41,7 +45,7 @@ fi
 clear
 CNT=$(find $LOGFILE -type f -mmin -1 | wc -l)
 if [ $CNT -eq 0 ]; then
-    _sync
+    _echosync
 fi
 CONTENTS=${MAIL}mail.state
 NEXT=$CONTENTS.delta
@@ -50,6 +54,6 @@ mutt -F ${ETC}muttrc
 _contents > $NEXT
 diff -u $CONTENTS $NEXT
 if [ $? -ne 0 ]; then
-    _sync
+    _echosync
 fi
 osascript -e "quit app \"Terminal\""
