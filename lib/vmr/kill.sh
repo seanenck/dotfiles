@@ -9,6 +9,7 @@ if [[ "$1" == "--all" ]]; then
         number=$(get_number_from_ip $(get_ip_from_path $f))
         $VMRLIB/kill.sh $number
     done
+    killall vftool
     exit 0
 fi
 
