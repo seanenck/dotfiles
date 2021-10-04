@@ -5,6 +5,12 @@ LOGFILE=${MAIL}sync.$(date +%Y-%m-%d).log
 MAILDIR=${MAIL}maildir
 MAIRIX=${ETC}mairix
 
+env | grep -q KITTY
+if [ $? -eq 0 ]; then
+    echo "do not run from kitty"
+    exit 1
+fi
+
 _syncnow() {
     mbsync -V -c ${ETC}mbsyncrc -a
     mairix -f ${MAIRIX}
