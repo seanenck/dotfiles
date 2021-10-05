@@ -57,16 +57,19 @@ if has("autocmd")
     autocmd Filetype go setlocal noexpandtab
 endif
 
-set viminfo+=n$HOME/.vim/viminfo
-function SetupVimDir(dir)
-    let path = $HOME . '/.vim/' . a:dir . '//'
-    if ! isdirectory(expand(path))
-        call mkdir(expand(path), 'p', 0700)
+set viminfo+=n$HOME/.vimi/viminfo
+let &g:directory=$HOME . '/.vim'
+let &g:undodir=&g:directory . '/undo//'
+let &g:backupdir=&g:directory . '/backup//'
+let &g:directory=&g:directory . '/swap//'
+function SetupVimDir(path)
+    if ! isdirectory(expand(a:path))
+        call mkdir(expand(a:path), 'p', 0700)
     endif
 endfunction
-call SetupVimDir('undo')
-call SetupVimDir('swap')
-call SetupVimDir('backup')
+call SetupVimDir(&g:directory)
+call SetupVimDir(&g:undodir)
+call SetupVimDir(&g:backupdir)
 
 if has('persistent_undo')
     set undofile
