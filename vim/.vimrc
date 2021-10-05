@@ -32,6 +32,13 @@ if &t_Co > 2 || has("gui_running")
     set hlsearch
 endif
 
+set number
+set tabstop=4
+set expandtab
+set shiftwidth=4
+set foldmethod=indent
+set foldlevelstart=99
+
 if has("autocmd")
     filetype plugin indent on
 
@@ -47,8 +54,10 @@ if has("autocmd")
         \ endif
 
     augroup END
+    autocmd Filetype go setlocal noexpandtab
 endif
 
+set viminfo+=n$HOME/.vim/viminfo
 let &g:directory=$HOME . '/.vim'
 let &g:undodir=&g:directory . '/undo//'
 let &g:backupdir=&g:directory . '/backup//'
@@ -68,22 +77,8 @@ if has('persistent_undo')
     set undolevels=5000
 endif
 
-set viminfo+=n$HOME/.vim/viminfo
 vnoremap <C-i> >gv
 vnoremap <C-u> <gv
-
-set number
-set tabstop=4
-set expandtab
-if has("autocmd")
-    autocmd Filetype go setlocal noexpandtab
-    autocmd BufNewFile,BufRead *.gxs setlocal ft=gxs syntax=gxs
-    autocmd BufNewFile,BufRead *.md setlocal spell
-endif
-
-set shiftwidth=4
-set foldmethod=indent
-set foldlevelstart=99
 
 for i in ['q', '<F1>']
     execute "map " . i . " <Nop>"
@@ -91,7 +86,6 @@ endfor
 imap <F1> <Nop>
 
 nnoremap <C-e> :call ToggleLine()<CR>
-
 nnoremap <C-v> :vsplit<CR>
 
 let loaded_netrwPlugin = 1

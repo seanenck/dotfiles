@@ -1,5 +1,9 @@
 set backspace=2
 noremap <BS> <delete>
+if has("autocmd")
+    autocmd BufNewFile,BufRead *.gxs setlocal ft=gxs syntax=gxs
+    autocmd BufNewFile,BufRead *.md setlocal spell
+endif
 let g:ale_completion_enabled = 1
 set omnifunc=syntaxcomplete#Complete
 set completeopt=noinsert
