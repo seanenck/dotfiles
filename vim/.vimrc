@@ -58,19 +58,15 @@ if has("autocmd")
 endif
 
 set viminfo+=n$HOME/.vim/viminfo
-let &g:directory=$HOME . '/.vim'
-let &g:undodir=&g:directory . '/undo//'
-let &g:backupdir=&g:directory . '/backup//'
-let &g:directory=&g:directory . '/swap//'
-if ! isdirectory(expand(&g:directory))
-    silent! call mkdir(expand(&g:directory), 'p', 0700)
-endif
-if ! isdirectory(expand(&g:backupdir))
-    silent! call mkdir(expand(&g:backupdir), 'p', 0700)
-endif
-if ! isdirectory(expand(&g:undodir))
-    silent! call mkdir(expand(&g:undodir), 'p', 0700)
-endif
+function SetupVimDir(dir)
+    let path = $HOME . '/.vim/' . a:dir . '//'
+    if ! isdirectory(expand(path))
+        call mkdir(expand(path), 'p', 0700)
+    endif
+endfunction
+call SetupVimDir('undo')
+call SetupVimDir('swap')
+call SetupVimDir('backup')
 
 if has('persistent_undo')
     set undofile
