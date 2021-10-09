@@ -47,7 +47,7 @@ _gpga() {
 _vmrlist() {
     local f has
     has=""
-    for f in $(vmr ls | grep " up " | awk '{print $3}'); do
+    for f in $(vmr up); do
         if [ -z "$has" ]; then
             has="yes"
             echo "vmr:"
