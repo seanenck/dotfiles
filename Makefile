@@ -12,5 +12,7 @@ mac: $(TARGETS) machine
 
 tty: bash vim tmux git machine
 
+minimal: bash vim tmux
+
 $(TARGETS):
 	stow --target=$(HOME) $@
