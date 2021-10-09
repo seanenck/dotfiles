@@ -262,7 +262,7 @@ case "$COMMAND" in
         ls $DIRECTORY | grep -v "$RSRC"
         ;;
     "up")
-        screen -list | grep "$SCREENPREFIX" | awk '{print $1}' | cut -d "." -f 2-
+        screen -list | grep "$SCREENPREFIX" | awk '{print $1}' | cut -d "." -f 2- | sed "s#$SCREENPREFIX##g"
         ;;
     "rm")
         _kill
