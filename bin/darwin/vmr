@@ -1,18 +1,279 @@
-#!/usr/bin/env bash
+#!/bin/bash
+DIRECTORY="$HOME/VMs"
+RSRC="Resources"
+NAME=""
+STORE="$DIRECTORY/$RSRC"
+FEDORA_ISO="https://download.fedoraproject.org/pub/fedora/linux/releases/34/Server/aarch64/iso/Fedora-Server-dvd-aarch64-34-1.2.iso"
+FEDORA_CBI="https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/aarch64/images/Fedora-Cloud-Base-34-1.2.aarch64.raw.xz"
+SCREENPREFIX="vmr-"
+MOUNT_ISO="/Volumes/FedoraISO"
+RAW_IMG="image.raw"
+VMLINUZ="vmlinuz"
+INITRD="initrd.img"
+SCRIPTS="$DOTFILES/lib/vmr/"
+STARTUP="start.sh"
+SYSCFG="lib.syscfg.network"
+
+if [ -z "$1" ]; then
+    echo "command required"
+    exit 1
+fi
+
+_setup() {
+    local iso raw vmlinuz initrd
+    iso=$STORE/store.iso
+    raw=$STORE/$RAW_IMG
+    vmlinuz=$STORE/$VMLINUZ
+    initrd=$STORE/$INITRD
+    mkdir -p $STORE
+    if [ ! -e $iso ]; then
+        curl -L "$FEDORA_ISO" > $iso
+    fi
+    if [ ! -e $raw ]; then
+        curl -L "$FEDORA_CBI" > $raw.xz
+        (cd $STORE && xz -d *.raw.xz) 
+    fi
+    if [ ! -e $vmlinuz ]; then
+        _attach-now
+        (cd $STORE && cp $MOUNT_ISO/images/pxeboot/vmlinuz $vmlinuz.gz)
+        (cd $STORE && gzip -d $vmlinuz.gz)
+        chmod 644 $vmlinuz
+    fi
+    if [ ! -e $initrd ]; then
+        _attach-now
+        (cd $STORE && cp $MOUNT_ISO/images/pxeboot/initrd.img $initrd)
+        chmod 644 $initrd
+    fi
+}
+
+_detach-now() {
+    if [ -d "$MOUNT_ISO" ]; then
+        hdiutil detach $MOUNT_ISO
+    fi
+}
+
+_attach-now() {
+    hdiutil attach $iso -mountpoint $MOUNT_ISO
+}
+
+_clean-name() {
+    echo "$@" | tr -cd '[:alnum:]._-'
+}
+
+_kill() {
+    local tty pid
+    _is-machine
+    tty=$(screen -list 2>&1 | grep "$SCREENPREFIX$NAME" | awk '{print $1}')
+    if [ ! -z "$tty" ]; then
+        screen -X -S $tty quit
+    fi
+    for pid in $(ps aux | grep vftool | grep "$DIRECTORY/$NAME/" | awk '{print $2}'); do
+        kill -9 $pid
+    done
+}
+
+_is-machine() {
+    local dir
+    dir=$DIRECTORY/$NAME
+    if [ ! -d "$dir" ]; then
+        echo "invalid machine"
+        exit 1
+    fi
+}
+
+_rm() {
+    _is-machine
+    rm -rf "$DIRECTORY/$NAME"
+}
+
+_metadata() {
+    echo "instance-id: $NAME-$(date +%Y.%m.%d.%H.%M.%S)"
+    echo "local-hostname: $NAME"
+}
+
+_userdata() {
+    echo "#cloud-config"
+    echo "password: fedora"
+    echo "chpasswd: { expire: False }"
+    echo
+    echo "ssh_authorized_keys:"
+    echo "  - $(cat ~/.ssh/systems.pub)"
+}
+
+_ready() {
+    ssh -o BatchMode=yes -o ConnectTimeout=5 -o PubkeyAuthentication=no -o PasswordAuthentication=no -o KbdInteractiveAuthentication=no -o ChallengeResponseAuthentication=no $1 2>&1 | grep -q "Permission denied"
+    if [ $? -eq 0 ]; then
+        echo "yes"
+    else
+        echo "no"
+    fi
+}
+
+_start() {
+    local tty cnt isready ip dir
+    _is-machine
+    tty=$SCREENPREFIX$NAME
+    cnt=$(screen -list 2>&1 | grep "$SCREENPREFIX$NAME" | awk '{print $1}' | wc -l)
+    if [ $cnt -gt 0 ]; then
+        echo "machine started"
+        return
+    fi
+    dir=$DIRECTORY/$NAME
+    screen -d -m -S "$tty" -- bash $dir/$STARTUP
+    _waitup
+    echo
+    echo
+    echo "ready:"
+    echo "  $(_getssh)"
+    echo
+}
+
+_sshfetch() {
+    scp $1:/boot/$(ssh $1 -- ls /boot | grep "$2" | sort -r | head -n 1) $DIRECTORY/$NAME/$3
+}
+
+_update() {
+    local sship dir firsttime
+    dir=$DIRECTORY/$NAME
+    firsttime=$dir/.cloud-init
+    _waitup
+    sship=$(_getssh)
+    if [ ! -e $firsttime ]; then
+        ssh $sship -- "sudo touch /etc/cloud/cloud-init.disabled"
+        scp $dir/$SYSCFG $sship:~/$SYSCFG
+        ssh $sship -- "sudo install -Dm644 $SYSCFG /etc/sysconfig/network-scripts/ifcfg-Wired_connection_1"
+        ssh $sship -- "sudo set-timezone America/Detroit"
+        ssh $sship -- "rm $SYSCFG"
+        touch $firsttime
+    fi
+    ssh $sship -- "sudo dnf -y update"
+    _sshfetch $sship "vmlinuz" "vmlinuz.gz"
+    rm -f $dir/$VMLINUZ
+    (cd $dir && gzip -d vmlinuz.gz)
+    ssh $sship -- 'sudo chmod ga+r /boot/initram*'
+    _sshfetch $sship "initramfs" "initrd.img"
+}
+
+_getssh() {
+    local sship
+    sship="fedora@192.168.64."$(ls $DIRECTORY/$NAME/ip.* | rev | cut -d "." -f 1 | rev)
+    echo "$sship"
+}
+
+_waitup() {
+    local sship isready
+    isready="no"
+    sship=$(_getssh)
+    while [[ "$isready" == "no" ]]; do
+        echo "machine not ready..."
+        sleep 1
+        isready=$(_ready "$sship")
+    done
+    echo "machine ready"
+}
+
+_new() {
+    local name dir file cfgs ipaddr ipfile ip cnt
+    if [ -z "$NAME" ]; then
+        echo "name required"
+        exit 1
+    fi
+    name=$(_clean-name "$NAME")
+    if [[ "$name" != "$NAME" ]]; then
+        echo "invalid name: $NAME"
+        exit 1
+    fi
+    dir=$DIRECTORY/$name
+    if [ -d $dir ]; then
+        echo "machine exists"
+        exit 1
+    fi
+    mkdir -p $dir
+    for file in $VMLINUZ $INITRD; do
+        echo "copying: $file"
+        cp $STORE/$file $dir/$file
+    done
+    cfgs=$dir/configs
+    mkdir -p $cfgs
+    _metadata > $cfgs/meta-data
+    _userdata > $cfgs/user-data
+    (cd $dir && hdiutil makehybrid -o init.iso -joliet -iso -default-volume-name cidata configs/)
+    for ip in $(seq 2 254); do
+        cnt=$(find $DIRECTORY -name "ip.$ip" | wc -l)
+        if [ $cnt -eq 0 ]; then
+            ipaddr=$ip
+            touch $dir/ip.$ip
+            break
+        fi
+    done
+    if [ -z "$ipaddr" ]; then
+        echo "unable to assign ip"
+        exit 1
+    fi
+    cat $SCRIPTS/lib.start.sh | sed "s#{IP}#$ipaddr#g;s#{NAME}#$NAME#g;s#{STORAGE}#$dir#g;s#{RESOURCES}#$STORE#g" > $dir/$STARTUP
+    cat $SCRIPTS/$SYSCFG | sed "s#{IP}#$ipaddr#g;s#{NAME}#$NAME#g" > $dir/$SYSCFG
+    _start
+    _update
+    _kill
+}
+
+FIRST=1
 COMMAND="$1"
-export VMRLIB="$DOTFILES/lib/vmr"
+for arg in "$@"; do
+    if [ $FIRST -eq 1 ]; then
+        FIRST=0
+        shift
+        continue
+    fi
+    case "$arg" in
+        "--name")
+            shift
+            NAME="$1"
+            shift
+            ;;
+    esac
+done
 
-if [ -z "$COMMAND" ]; then
-    echo "sub command required"
-    exit 1
+if [[ "$COMMAND" == "completions" ]]; then
+    cat $SCRIPTS/lib.completions.bash | sed "s#{STORAGE}#$DIRECTORY#g;s#{RESOURCES}#$RSRC#g"
+    exit 0
 fi
 
-COMMAND="$VMRLIB/$COMMAND.sh"
-if [ ! -x $COMMAND ]; then
-    echo "invalid sub command"
-    exit 1
+if [[ "$COMMAND" != "ls" ]] && [[ "$COMMAND" != "up" ]]; then
+    if [ -z "$NAME" ]; then
+        echo "no machine name given"
+        exit 1
+    fi
+
+    _setup
 fi
 
-source $VMRLIB/env
-$VMRLIB/config.sh
-$COMMAND ${@:2}
+case "$COMMAND" in
+    "new")
+        _new
+        ;;
+    "start")
+        _start
+        ;;
+    "kill")
+        _kill
+        ;;
+    "ls")
+        ls $DIRECTORY | grep -v "$RSRC"
+        ;;
+    "up")
+        screen -list | grep "$SCREENPREFIX" | awk '{print $1}' | cut -d "." -f 2-
+        ;;
+    "rm")
+        _kill
+        _rm
+        ;;
+    "update")
+        _start
+        _update
+        ;;
+    *)
+        echo "unknown command: $COMMAND"
+        exit 1
+        ;;
+esac

@@ -1,29 +1,31 @@
+#!/usr/bin/env bash
+MEMORY=4096
+DISK=20
+IP="ip=192.168.64.{IP}::192.168.64.1:255.255.255.0:{NAME}::none nameserver=192.168.1.1"
+VMLINUZ="{STORAGE}/vmlinuz"
+INITRD="{STORAGE}/initrd.img"
+ISO="{STORAGE}/init.iso"
 
-MEMORY=2048
-DISK=1
-
-if [ -e $TAGFILE ]; then
-    TAGFILE=$CONFIGS/$(cat $TAGFILE)/env
-    if [ -e $TAGFILE ]; then
-        source $TAGFILE
-    fi
+if [ -e "{STORAGE}/.cloud-init" ]; then
+    IP=""
 fi
 
-STORAGE="$ROOT/$IMAGE"
+chmod 644 $INITRD
+chmod 644 $VMLINUZ
+STORAGE="{STORAGE}/disk.img"
 if [ ! -e $STORAGE ]; then
-    dd if=/dev/zero of=$STORAGE bs=1G count=$DISK
+    cp "{RESOURCES}/image.raw" $STORAGE
+    truncate -s ${DISK}G $STORAGE
 fi
-
-PARAMS="ip=$IP ssh_key=\"$SSH_KEY\" alpine_repo=$REPO"
 
 vftool \
     -m $MEMORY \
     -k $VMLINUZ \
-    -i $INITRAMFS \
-    -d $ISO \
+    -i $INITRD \
     -d $STORAGE \
+    -d $ISO \
     -t 0 \
-    -a "console=hvc0 modules=loop,squashfs,virtio $PARAMS" &
+    -a "console=hvc0 $IP root=/dev/vda2" &
 
 vftool_pid=$!
 echo "vftool started $vftool_pid"
