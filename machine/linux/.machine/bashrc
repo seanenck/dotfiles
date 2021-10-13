@@ -17,6 +17,10 @@ sys-upgrade() {
     done
 }
 
+dirty-memory() {
+    watch -n 1 grep -e Dirty: -e Writeback: /proc/meminfo
+}
+
 _lxc-dev() {
     sudo lxc-ls --running | grep -q "$1"
     if [ $? -ne 0 ]; then
