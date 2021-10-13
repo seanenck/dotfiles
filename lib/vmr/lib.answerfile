@@ -1,0 +1,17 @@
+KEYMAPOPTS="us us"
+HOSTNAMEOPTS="-n {NAME}"
+INTERFACESOPTS="
+auto eth0
+iface eth0 inet static
+        address 192.168.64.{IP}
+        netmask 255.255.255.0
+"
+DNSOPTS="-d voidedtech.com 1.1.1.1 9.9.9.9"
+TIMEZONEOPTS="-z US/Michigan"
+PROXYOPTS="none"
+APKREPOSOPTS="-r"
+SSHDOPTS="-c openssh"
+NTPOPTS="-c chrony"
+DISKOPTS="none"
+LBUOPTS=""
+APKCACHEOPTS=""
