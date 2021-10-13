@@ -1,20 +1,16 @@
 #!/usr/bin/env bash
-MEMORY=4096
-DISK=20
-IP="ip=192.168.64.{IP}::192.168.64.1:255.255.255.0:{NAME}::none nameserver=192.168.1.1"
+MEMORY=2048
+DISK=10
+IP="ip=192.168.64.{IP}:none:192.168.64.1:255.255.255.0:{NAME}::none:1.1.1.1:9.9.9.9"
 VMLINUZ="{STORAGE}/vmlinuz"
 INITRD="{STORAGE}/initrd.img"
-ISO="{STORAGE}/init.iso"
-
-if [ -e "{STORAGE}/.cloud-init" ]; then
-    IP=""
-fi
+ISO="{RESOURCES}/init.iso"
 
 chmod 644 $INITRD
 chmod 644 $VMLINUZ
 STORAGE="{STORAGE}/disk.img"
 if [ ! -e $STORAGE ]; then
-    cp "{RESOURCES}/image.raw" $STORAGE
+    touch $STORAGE
     truncate -s ${DISK}G $STORAGE
 fi
 
@@ -22,10 +18,10 @@ vftool \
     -m $MEMORY \
     -k $VMLINUZ \
     -i $INITRD \
-    -d $STORAGE \
     -d $ISO \
+    -d $STORAGE \
     -t 0 \
-    -a "console=hvc0 $IP root=/dev/vda2" &
+    -a "console=hvc0 modules=loop,squashfs,virtio $IP ssh_key='$(cat $HOME/.ssh/systems.pub)'" &
 
 vftool_pid=$!
 echo "vftool started $vftool_pid"

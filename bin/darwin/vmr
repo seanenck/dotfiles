@@ -3,16 +3,14 @@ DIRECTORY="$HOME/VMs"
 RSRC="Resources"
 NAME=""
 STORE="$DIRECTORY/$RSRC"
-FEDORA_ISO="https://download.fedoraproject.org/pub/fedora/linux/releases/34/Server/aarch64/iso/Fedora-Server-dvd-aarch64-34-1.2.iso"
-FEDORA_CBI="https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/aarch64/images/Fedora-Cloud-Base-34-1.2.aarch64.raw.xz"
+DL_ISO="https://dl-cdn.alpinelinux.org/alpine/v3.14/releases/aarch64/alpine-standard-3.14.2-aarch64.iso"
 SCREENPREFIX="vmr-"
-MOUNT_ISO="/Volumes/FedoraISO"
-RAW_IMG="image.raw"
+MOUNT_ISO="$STORE/iso"
 VMLINUZ="vmlinuz"
 INITRD="initrd.img"
 SCRIPTS="$DOTFILES/lib/vmr/"
 STARTUP="start.sh"
-SYSCFG="lib.syscfg.network"
+INIT="init-alpine"
 
 if [ -z "$1" ]; then
     echo "command required"
@@ -20,40 +18,39 @@ if [ -z "$1" ]; then
 fi
 
 _setup() {
-    local iso raw vmlinuz initrd
-    iso=$STORE/store.iso
-    raw=$STORE/$RAW_IMG
+    local iso vmlinuz initrd
+    iso=$STORE/init.iso
     vmlinuz=$STORE/$VMLINUZ
     initrd=$STORE/$INITRD
     mkdir -p $STORE
     if [ ! -e $iso ]; then
-        curl -L "$FEDORA_ISO" > $iso
-    fi
-    if [ ! -e $raw ]; then
-        curl -L "$FEDORA_CBI" > $raw.xz
-        (cd $STORE && xz -d *.raw.xz) 
+        curl -L "$DL_ISO" > $iso
     fi
     if [ ! -e $vmlinuz ]; then
-        _attach-now
-        (cd $STORE && cp $MOUNT_ISO/images/pxeboot/vmlinuz $vmlinuz.gz)
+        _attach-now $iso
+        (cd $STORE && cp $MOUNT_ISO/boot/vmlinuz_lts. $vmlinuz.gz)
         (cd $STORE && gzip -d $vmlinuz.gz)
         chmod 644 $vmlinuz
     fi
     if [ ! -e $initrd ]; then
-        _attach-now
-        (cd $STORE && cp $MOUNT_ISO/images/pxeboot/initrd.img $initrd)
+        _attach-now $iso
+        (cd $STORE && cp $MOUNT_ISO/boot/initramfs_lts. $initrd)
         chmod 644 $initrd
     fi
+    _detach-now
 }
 
 _detach-now() {
     if [ -d "$MOUNT_ISO" ]; then
-        hdiutil detach $MOUNT_ISO
+        rm -rf "$MOUNT_ISO"
     fi
 }
 
 _attach-now() {
-    hdiutil attach $iso -mountpoint $MOUNT_ISO
+    if [ ! -d "$MOUNT_ISO" ]; then
+        mkdir -p $MOUNT_ISO
+        (cd $SCRIPTS && go run iso.go -src $1 -dst $MOUNT_ISO)
+    fi
 }
 
 _clean-name() {
@@ -62,7 +59,7 @@ _clean-name() {
 
 _kill() {
     local tty pid
-    _is-machine
+    _is-machine 
     tty=$(screen -list 2>&1 | grep "$SCREENPREFIX$NAME" | awk '{print $1}')
     if [ ! -z "$tty" ]; then
         screen -X -S $tty quit
@@ -86,20 +83,6 @@ _rm() {
     rm -rf "$DIRECTORY/$NAME"
 }
 
-_metadata() {
-    echo "instance-id: $NAME-$(date +%Y.%m.%d.%H.%M.%S)"
-    echo "local-hostname: $NAME"
-}
-
-_userdata() {
-    echo "#cloud-config"
-    echo "password: fedora"
-    echo "chpasswd: { expire: False }"
-    echo
-    echo "ssh_authorized_keys:"
-    echo "  - $(cat ~/.ssh/systems.pub)"
-}
-
 _ready() {
     ssh -o BatchMode=yes -o ConnectTimeout=5 -o PubkeyAuthentication=no -o PasswordAuthentication=no -o KbdInteractiveAuthentication=no -o ChallengeResponseAuthentication=no $1 2>&1 | grep -q "Permission denied"
     if [ $? -eq 0 ]; then
@@ -121,42 +104,19 @@ _start() {
     dir=$DIRECTORY/$NAME
     screen -d -m -S "$tty" -- bash $dir/$STARTUP
     _waitup
+    ip=$(_getssh)
+    scp $dir/$INIT $ip:/sbin/$INIT
+    ssh $ip -- /bin/ash /sbin/$INIT
     echo
     echo
     echo "ready:"
-    echo "  $(_getssh)"
+    echo "  ssh $ip"
     echo
-}
-
-_sshfetch() {
-    scp $1:/boot/$(ssh $1 -- ls /boot | grep "$2" | sort -r | head -n 1) $DIRECTORY/$NAME/$3
-}
-
-_update() {
-    local sship dir firsttime
-    dir=$DIRECTORY/$NAME
-    firsttime=$dir/.cloud-init
-    _waitup
-    sship=$(_getssh)
-    if [ ! -e $firsttime ]; then
-        ssh $sship -- "sudo touch /etc/cloud/cloud-init.disabled"
-        scp $dir/$SYSCFG $sship:~/$SYSCFG
-        ssh $sship -- "sudo install -Dm644 $SYSCFG /etc/sysconfig/network-scripts/ifcfg-Wired_connection_1"
-        ssh $sship -- "sudo set-timezone America/Detroit"
-        ssh $sship -- "rm $SYSCFG"
-        touch $firsttime
-    fi
-    ssh $sship -- "sudo dnf -y update"
-    _sshfetch $sship "vmlinuz" "vmlinuz.gz"
-    rm -f $dir/$VMLINUZ
-    (cd $dir && gzip -d vmlinuz.gz)
-    ssh $sship -- 'sudo chmod ga+r /boot/initram*'
-    _sshfetch $sship "initramfs" "initrd.img"
 }
 
 _getssh() {
     local sship
-    sship="fedora@192.168.64."$(ls $DIRECTORY/$NAME/ip.* | rev | cut -d "." -f 1 | rev)
+    sship="root@192.168.64."$(ls $DIRECTORY/$NAME/ip.* | rev | cut -d "." -f 1 | rev)
     echo "$sship"
 }
 
@@ -193,11 +153,6 @@ _new() {
         echo "copying: $file"
         cp $STORE/$file $dir/$file
     done
-    cfgs=$dir/configs
-    mkdir -p $cfgs
-    _metadata > $cfgs/meta-data
-    _userdata > $cfgs/user-data
-    (cd $dir && hdiutil makehybrid -o init.iso -joliet -iso -default-volume-name cidata configs/)
     for ip in $(seq 2 254); do
         cnt=$(find $DIRECTORY -name "ip.$ip" | wc -l)
         if [ $cnt -eq 0 ]; then
@@ -211,10 +166,8 @@ _new() {
         exit 1
     fi
     cat $SCRIPTS/lib.start.sh | sed "s#{IP}#$ipaddr#g;s#{NAME}#$NAME#g;s#{STORAGE}#$dir#g;s#{RESOURCES}#$STORE#g" > $dir/$STARTUP
-    cat $SCRIPTS/$SYSCFG | sed "s#{IP}#$ipaddr#g;s#{NAME}#$NAME#g" > $dir/$SYSCFG
+    cat $SCRIPTS/lib.init-alpine.sh | sed "s#{NAME}#$NAME#g" > $dir/$INIT
     _start
-    _update
-    _kill
 }
 
 FIRST=1
@@ -267,10 +220,6 @@ case "$COMMAND" in
     "rm")
         _kill
         _rm
-        ;;
-    "update")
-        _start
-        _update
         ;;
     *)
         echo "unknown command: $COMMAND"
