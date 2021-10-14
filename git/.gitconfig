@@ -27,7 +27,7 @@
     gpgSign = true
 [tag]
     gpgSign = true
-[url "offcenter:/mnt/storage/repositories/git/"]
+[url "center:/mnt/storage/repositories/git/"]
     insteadOf = local:
 [url "voidedtech.com:/mnt/data/git/"]
     insteadOf = enckse:
