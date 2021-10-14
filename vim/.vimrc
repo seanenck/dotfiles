@@ -57,7 +57,7 @@ if has("autocmd")
     autocmd Filetype go setlocal noexpandtab
 endif
 
-set viminfo+=n$HOME/.vimi/viminfo
+set viminfo+=n$HOME/.vim/viminfo
 let &g:directory=$HOME . '/.vim'
 let &g:undodir=&g:directory . '/undo//'
 let &g:backupdir=&g:directory . '/backup//'
