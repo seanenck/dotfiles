@@ -19,7 +19,7 @@ fi
 
 _setup() {
     local iso vmlinuz initrd
-    iso=$STORE/init.iso
+    iso=$STORE/alpine.iso
     vmlinuz=$STORE/$VMLINUZ
     initrd=$STORE/$INITRD
     mkdir -p $STORE

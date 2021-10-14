@@ -4,7 +4,7 @@ DISK=10
 IP="ip=192.168.64.{IP}:none:192.168.64.1:255.255.255.0:{NAME}::none:1.1.1.1:9.9.9.9"
 VMLINUZ="{STORAGE}/vmlinuz"
 INITRD="{STORAGE}/initrd.img"
-ISO="{RESOURCES}/init.iso"
+ISO="{RESOURCES}/alpine.iso"
 
 chmod 644 $INITRD
 chmod 644 $VMLINUZ
