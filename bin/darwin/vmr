@@ -10,7 +10,7 @@ VMLINUZ="vmlinuz"
 INITRD="initrd.img"
 SCRIPTS="$DOTFILES/lib/vmr/"
 STARTUP="start.sh"
-INIT="init-alpine"
+INIT="machine.cfg"
 
 if [ -z "$1" ]; then
     echo "command required"
