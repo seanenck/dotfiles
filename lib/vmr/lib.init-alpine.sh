@@ -4,6 +4,7 @@ echo "http://dl-cdn.alpinelinux.org/alpine/v3.14/main" > /etc/apk/repositories
 echo "http://dl-cdn.alpinelinux.org/alpine/v3.14/community" >> /etc/apk/repositories
 setup-timezone -z US/Michigan
 setup-hostname {NAME}
+setup-ntp -c chrony
 blkid | grep -q "vdb"
 if [ $? -ne 0 ]; then
     printf "y\n" | setup-disk -m data /dev/vdb
