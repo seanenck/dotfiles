@@ -13,8 +13,11 @@ fi
 swapon /dev/vdb1
 /etc/init.d/swap start
 mkdir -p /var/cache/root
+mkdir -p /var/cache/apkcache
+mkdir -p /etc/apk/cache
 cp -r /root/.ssh /var/cache/root/
 mount --bind /var/cache/root /root
+mount --bind /var/cache/apkcache /etc/apk/cache
 echo > /etc/motd
 hostname {NAME}
 apk add bash bash-completion docs git make
