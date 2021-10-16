@@ -1,7 +1,7 @@
 # bash completion for vmr                        -*- shell-script -*-
 
 _vmr() {
-    local cur opts has_name has_else
+    local cur opts has_name has_else machines m
     has_name=0
     has_else=0
     cur=${COMP_WORDS[COMP_CWORD]}
@@ -27,9 +27,27 @@ _vmr() {
             if [ $has_name -eq 0 ]; then
                 opts="--name"
             else
-                if [[ "$word" != "new" ]]; then
+                if [[ "$word" == "kill" ]]; then
                     if [ $has_else -eq 0 ]; then
-                        opts=$(ls {STORAGE} | grep -v {RESOURCES})
+                        opts=$(vmr up)
+                    fi
+                else
+                    if [[ "$word" != "new" ]]; then
+                        if [ $has_else -eq 0 ]; then
+                            machines=""
+                            for m in $(vmr ls); do
+                                case "$word" in
+                                    "start")
+                                        vmr up | grep -q "^$m\$"
+                                        if [ $? -eq 0 ]; then
+                                            continue
+                                        fi
+                                        ;;
+                                esac
+                                machines="$machines $m"
+                            done
+                            opts="$machines"
+                        fi
                     fi
                 fi
             fi
