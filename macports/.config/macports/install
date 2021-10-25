@@ -22,9 +22,9 @@ msmtp
 mutt -pop -imap -smtp +gpgme +lmdb
 perl5
 pinentry-mac
-py39-codestyle
-py39-docstyle
-py39-flake8
+py310-codestyle
+py310-docstyle
+py310-flake8
 py39-python-lsp-server
 pycodestyle_select
 pydocstyle_select
