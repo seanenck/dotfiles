@@ -25,19 +25,19 @@ _remote-setup() {
     if [ ! -d "$dir" ]; then
         git clone "$1" "$dir"
     fi
-    git -C $dir reset --hard
-    git -C $dir pull
+    git -C "$dir" reset --hard
+    git -C "$dir" pull
     hash="$TOOL_CACHE/$name.hash"
     prev="$hash.prev"
-    git -C $dir log -n1 --format=%h > $hash
-    touch $prev
-    diff -u $prev $hash
+    git -C "$dir" log -n1 --format=%h > "$hash"
+    touch "$prev"
+    diff -u "$prev" "$hash"
     if [ $? -ne 0 ]; then
         if [ -e "$dir/configure" ]; then
             cwd=$PWD
-            cd $dir
+            cd "$dir" || exit 1
             ./configure
-            cd $cwd
+            cd "$cwd" || exit 1
         fi
         if [ -e "$dir/Makefile" ]; then
             make -C "$dir"
@@ -55,7 +55,7 @@ _remote-setup() {
             fi
         fi
         if [ -z "$2" ]; then
-            make -C "$dir" install DESTDIR=$BIN
+            make -C "$dir" install DESTDIR="$BIN"
         else
             for f in ${@:2}; do
                 install -Dm755 "$dir/$f" "$usrlocal"
@@ -85,27 +85,27 @@ _ports() {
     for port in $(cat "${PORT_CFG}install"); do
         ports="$ports $port"
     done
-    echo "sudo port install $ports" >> $stat
+    echo "sudo port install $ports" >> "$stat"
     for port in $(cat ${PORT_CFG}select); do
-        name=$(echo $port | cut -d " " -f 1)
-        target=$(echo $port | cut -d " " -f 2)
-        echo "sudo port select --set $name $target" >> $stat
+        name=$(echo "$port" | cut -d " " -f 1)
+        target=$(echo "$port" | cut -d " " -f 2)
+        echo "sudo port select --set $name $target" >> "$stat"
     done
     IFS=$oldifs
-    chmod u+x $stat
+    chmod u+x "$stat"
     if [ "$(which python)" == "/usr/bin/python" ]; then
-        rm $prev
+        rm "$prev"
     fi
-    touch $prev
-    diff -u $prev $stat
+    touch "$prev"
+    diff -u "$prev" "$stat"
     if [ $? -ne 0 ]; then
         $stat
     fi
-    mv $stat $prev
+    mv "$stat" "$prev"
 }
 
 _sys-upgrade() {
-    local f p c
+    local f c
     c=$PWD
     if [ $1 -eq 1 ]; then
         echo "-> update ports"
@@ -126,24 +126,21 @@ _sys-upgrade() {
         kitty-updater
         vim-plugin-upgrade
         _remote-tools
-        echo "$SYSUP_COMP" > $COMPLETIONS/sys-upgrade.bash
+        echo "$SYSUP_COMP" > "$COMPLETIONS/sys-upgrade.bash"
     fi
-    cd $c
+    cd "$c" || exit 1
 }
 
-mkdir -p $PORT_CACHE
-mkdir -p $TOOL_CACHE
-mkdir -p $COMPLETIONS
-mkdir -p $BIN
+mkdir -p "$PORT_CACHE" "$TOOL_CACHE" "$COMPLETIONS" "$BIN"
 do_ports=1
 do_tools=1
 for i in "$@"; do
     case $i in
-        $NO_TOOLS)
+        "$NO_TOOLS")
             do_tools=0
             shift
             ;;
-        $NO_PORTS)
+        "$NO_PORTS")
             do_ports=0
             shift
             ;;
