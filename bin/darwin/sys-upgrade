@@ -81,13 +81,13 @@ _ports() {
     ports=""
     while IFS= read -r port; do
         ports="$ports $port"
-    done
+    done < "${PORT_CFG}install"
     echo "sudo port install $ports" >> "$stat"
     while IFS= read -r port; do
         name=$(echo "$port" | cut -d " " -f 1)
         target=$(echo "$port" | cut -d " " -f 2)
         echo "sudo port select --set $name $target" >> "$stat"
-    done
+    done < "${PORT_CFG}select"
     chmod u+x "$stat"
     if [ "$(which python)" == "/usr/bin/python" ]; then
         rm "$prev"
