@@ -1,0 +1,6 @@
+#!/opt/local/bin/bash
+ARGS="$@"
+if [ -z "$ARGS" ]; then
+    ARGS=$(find . -type f -name "*.sh")
+fi
+shellcheck $ARGS
