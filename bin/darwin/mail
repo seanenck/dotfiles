@@ -8,8 +8,7 @@ MAIL=~/.mail/
 LOGFILE=${MAIL}sync.$(date +%Y-%m-%d).log
 MAIRIX=${ETC}mairix
 
-env | grep -q KITTY
-if [ $? -eq 0 ]; then
+if env | grep -q KITTY; then
     echo "do not run from kitty"
     exit 1
 fi
@@ -65,8 +64,7 @@ NEXT=$CONTENTS.delta
 _contents > $CONTENTS
 mutt -F ${ETC}muttrc
 _contents > $NEXT
-diff -u $CONTENTS $NEXT
-if [ $? -ne 0 ]; then
+if ! diff -u $CONTENTS $NEXT; then
     _echosync
 fi
 osascript -e "quit app \"Terminal\""
