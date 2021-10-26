@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 PACK_FILES=1
-if [ ! -z "$VMR_DISK_INIT" ]; then
-    if [ $VMR_DISK_INIT -eq 1 ]; then
+if [ -n "$VMR_DISK_INIT" ]; then
+    if [ "$VMR_DISK_INIT" -eq 1 ]; then
         PACK_FILES=0
     fi
 fi
@@ -13,7 +13,7 @@ if [ $PACK_FILES -eq 1 ]; then
 
     echo "if [ ! -e /root/.last-updated ]; then"
     for f in .bashrc .bash_aliases .vimrc .bash_profile; do
-        cp $HOME/$f root/$f
+        cp "$HOME/$f" "root/$f"
         echo "    install -Dm644 --owner=root --group=root root/$f /root/$f"
     done
     echo "    cp last-updated /root/.last-updated"

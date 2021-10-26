@@ -48,7 +48,7 @@ _detach-now() {
 
 _attach-now() {
     if [ ! -d "$MOUNT_ISO" ]; then
-        mkdir -p $MOUNT_ISO
+        mkdir -p "$MOUNT_ISO"
         (cd $SCRIPTS && go run iso.go -src $1 -dst $MOUNT_ISO)
     fi
 }
@@ -61,11 +61,11 @@ _kill() {
     local tty pid
     _is-machine 
     tty=$(screen -list 2>&1 | grep "$SCREENPREFIX$NAME" | awk '{print $1}')
-    if [ ! -z "$tty" ]; then
+    if [ -n "$tty" ]; then
         screen -X -S $tty quit
     fi
     for pid in $(ps aux | grep vftool | grep "$DIRECTORY/$NAME/" | awk '{print $2}'); do
-        kill -9 $pid
+        kill -9 "$pid"
     done
 }
 

@@ -36,6 +36,7 @@ python_select
 revive
 ripgrep
 rsync
+shellcheck
 stow
 tmux
 vim
