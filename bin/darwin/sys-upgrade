@@ -31,8 +31,7 @@ _remote-setup() {
     prev="$hash.prev"
     git -C "$dir" log -n1 --format=%h > "$hash"
     touch "$prev"
-    diff -u "$prev" "$hash"
-    if [ $? -ne 0 ]; then
+    if ! diff -u "$prev" "$hash"; then
         if [ -e "$dir/configure" ]; then
             cwd=$PWD
             cd "$dir" || exit 1
@@ -57,7 +56,7 @@ _remote-setup() {
         if [ -z "$2" ]; then
             make -C "$dir" install DESTDIR="$BIN"
         else
-            for f in ${@:2}; do
+            for f in "${@:2}"; do
                 install -Dm755 "$dir/$f" "$usrlocal"
             done
         fi
@@ -75,30 +74,26 @@ _remote-tools() {
 }
 
 _ports() {
-    local port stat prev oldifs name target ports
+    local port stat prev name target ports
     stat=$PORT_CACHE/last
     prev=$stat.prev
     echo "-> install/configure ports"
-    oldifs=$IFS
-    IFS=$'\n'
     ports=""
-    for port in $(cat "${PORT_CFG}install"); do
+    while IFS= read -r port; do
         ports="$ports $port"
     done
     echo "sudo port install $ports" >> "$stat"
-    for port in $(cat ${PORT_CFG}select); do
+    while IFS= read -r port; do
         name=$(echo "$port" | cut -d " " -f 1)
         target=$(echo "$port" | cut -d " " -f 2)
         echo "sudo port select --set $name $target" >> "$stat"
     done
-    IFS=$oldifs
     chmod u+x "$stat"
     if [ "$(which python)" == "/usr/bin/python" ]; then
         rm "$prev"
     fi
     touch "$prev"
-    diff -u "$prev" "$stat"
-    if [ $? -ne 0 ]; then
+    if ! diff -u "$prev" "$stat"; then
         $stat
     fi
     mv "$stat" "$prev"
@@ -107,10 +102,9 @@ _ports() {
 _sys-upgrade() {
     local f c
     c=$PWD
-    if [ $1 -eq 1 ]; then
+    if [ "$1" -eq 1 ]; then
         echo "-> update ports"
-        sudo echo "sudo check"
-        if [ $? -ne 0 ]; then
+        if ! sudo echo "sudo check"; then
             echo "no sudo"
             return
         fi
@@ -121,7 +115,7 @@ _sys-upgrade() {
         sudo port uninstall inactive
         sudo port reclaim
     fi
-    if [ $2 -eq 1 ]; then
+    if [ "$2" -eq 1 ]; then
         echo "-> update kitty"
         kitty-updater
         vim-plugin-upgrade
