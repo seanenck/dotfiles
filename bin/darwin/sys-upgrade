@@ -19,11 +19,11 @@ complete -F _sysupgrade -o bashdefault -o default sys-upgrade"
 _remote-setup() {
     local dir hash prev name cwd usrlocal
     usrlocal="$BIN/usr/local/bin/"
-    mkdir -p $usrlocal
-    name=$(echo $1 | rev | cut -d "/" -f 1 | rev)
-    dir=$TOOL_CACHE/$name
-    if [ ! -d $dir ]; then
-        git clone $1 $dir
+    mkdir -p "$usrlocal"
+    name=$(echo "$1" | rev | cut -d "/" -f 1 | rev)
+    dir="$TOOL_CACHE/$name"
+    if [ ! -d "$dir" ]; then
+        git clone "$1" "$dir"
     fi
     git -C $dir reset --hard
     git -C $dir pull
@@ -39,12 +39,12 @@ _remote-setup() {
             ./configure
             cd $cwd
         fi
-        if [ -e $dir/Makefile ]; then
-            make -C $dir
+        if [ -e "$dir/Makefile" ]; then
+            make -C "$dir"
         else
-            if [ -e $dir/meson.build ]; then
-                (cd $dir && meson setup build)
-                ninja -C $dir/build
+            if [ -e "$dir/meson.build" ]; then
+                (cd "$dir" && meson setup build)
+                ninja -C "$dir/build"
             else
                 echo
                 echo "$dir"
@@ -55,34 +55,34 @@ _remote-setup() {
             fi
         fi
         if [ -z "$2" ]; then
-            make -C $dir install DESTDIR=$BIN
+            make -C "$dir" install DESTDIR=$BIN
         else
             for f in ${@:2}; do
-                install -Dm755 $dir/$f "$usrlocal"
+                install -Dm755 "$dir/$f" "$usrlocal"
             done
         fi
     fi
-    mv $hash $prev
+    mv "$hash" "$prev"
 }
 
 _remote-tools() {
     echo "-> update git-based tools"
     _remote-setup "https://voidedtech.com/git/lockbox" "build/lb" "build/lb-diff" "build/lb-pwgen" "build/lb-rekey" "build/lb-rw" "build/lb-stats" "build/lb-totp" "build/lb-bash"
     _remote-setup "https://github.com/evansm7/vftool" "build/vftool"
-    golangci-lint completion bash > $COMPLETIONS/golangci-lint.bash
-    vmr completions > $COMPLETIONS/vmr.bash
-    lb bash > $COMPLETIONS/lb.bash
+    golangci-lint completion bash > "$COMPLETIONS/golangci-lint.bash"
+    vmr completions > "$COMPLETIONS/vmr.bash"
+    lb bash > "$COMPLETIONS/lb.bash"
 }
 
 _ports() {
-    local port stat prev script oldifs name target ports
+    local port stat prev oldifs name target ports
     stat=$PORT_CACHE/last
     prev=$stat.prev
     echo "-> install/configure ports"
     oldifs=$IFS
     IFS=$'\n'
     ports=""
-    for port in $(cat ${PORT_CFG}install); do
+    for port in $(cat "${PORT_CFG}install"); do
         ports="$ports $port"
     done
     echo "sudo port install $ports" >> $stat
