@@ -27,8 +27,8 @@ for file in $HOME/.bashrc_local \
             $HOME/.bash_aliases \
             $HOME/.machine/bash_aliases \
             /usr/share/bash-completion/bash_completion; do
-    if [ -e $file ]; then
-        . $file
+    if [ -e "$file" ]; then
+        . "$file"
     fi
 done
 
@@ -36,8 +36,8 @@ PS1='[\u@\h \W]\$ '
 
 for f in .vim/undo .vim/swap .vim/backup; do
     h=$HOME/$f
-    if [ -d $h ]; then
-        find $h -type f -mtime +1 -delete
+    if [ -d "$h" ]; then
+        find "$h" -type f -mtime +1 -delete
     fi
 done
 
