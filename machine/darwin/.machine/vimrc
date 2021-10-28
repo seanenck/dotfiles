@@ -47,9 +47,15 @@ function! NextBufferTab()
     bnext
   endif
 endfunction
+autocmd BufEnter *
+  \ if &buftype == 'terminal' |
+  \   if winbufnr(2) == -1 |
+  \     quit! |
+  \   endif |
+  \ endif
 
 set hidden
 nmap <C-n> :enew<CR>
 nmap <Tab> :call NextBufferTab()<CR>
 nmap <S-Tab> :call PrevBufferTab()<CR>
-nmap <C-w> :bp <BAR> bd #<CR>
+nmap <C-w> :call PrevBufferTab() <BAR> bd #<CR>
