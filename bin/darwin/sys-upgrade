@@ -68,6 +68,7 @@ _remote-tools() {
     echo "-> update git-based tools"
     _remote-setup "https://voidedtech.com/git/lockbox" "build/lb" "build/lb-diff" "build/lb-pwgen" "build/lb-rekey" "build/lb-rw" "build/lb-stats" "build/lb-totp" "build/lb-bash"
     _remote-setup "https://github.com/evansm7/vftool" "build/vftool"
+    rustup update
     golangci-lint completion bash > "$COMPLETIONS/golangci-lint.bash"
     vmr completions > "$COMPLETIONS/vmr.bash"
     lb bash > "$COMPLETIONS/lb.bash"
