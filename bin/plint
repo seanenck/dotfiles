@@ -8,5 +8,7 @@ if [ -z "$files" ]; then
     exit 1
 fi
 for p in pycodestyle pydocstyle flake8; do
-    "$p" "$files" | sed "s/^/$p: /g"
+    for f in $files; do
+        "$p" "$f" | sed "s/^/$p: /g"
+    done
 done
