@@ -1,7 +1,7 @@
 export GOPATH="$HOME/Library/Caches/go"
 export LOCAL_FS="$HOME/.fs"
 export PATH="$DOTFILES/bin/$(uname -s | tr '[:upper:]' '[:lower:]'):$LOCAL_FS/usr/local/bin:$PATH"
-export PATH="/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH"
+export PATH="/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH:$HOME/.cargo/bin"
 export LOCKBOX_STORE="$HOME/.env/passwords"
 export LOCKBOX_KEYMODE="command"
 export LOCKBOX_TOTP="keys/totp/"
@@ -14,6 +14,7 @@ for f in passwords machines/workstations; do
     fi
 done
 
+source $(rustc --print sysroot)/etc/bash_completion.d/cargo
 for f in /opt/local/share/bash-completion/bash_completion \
          $HOME/.env/machines/workstations/bashrc; do
     if [ -e $f ]; then

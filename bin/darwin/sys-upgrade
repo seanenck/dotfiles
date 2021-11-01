@@ -71,6 +71,7 @@ _remote-tools() {
     golangci-lint completion bash > "$COMPLETIONS/golangci-lint.bash"
     vmr completions > "$COMPLETIONS/vmr.bash"
     lb bash > "$COMPLETIONS/lb.bash"
+    rustup completions bash > "$COMPLETIONS/rustup.bash"
 }
 
 _ports() {
