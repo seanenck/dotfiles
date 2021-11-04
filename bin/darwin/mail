@@ -7,6 +7,7 @@ ETC=~/.env/machines/workstations/mail/
 MAIL=~/.mail/
 LOGFILE=${MAIL}sync.$(date +%Y-%m-%d).log
 MAIRIX=${ETC}mairix
+SCREEN_NAME="mail-quit"
 
 if env | grep -q KITTY; then
     echo "do not run from kitty"
@@ -77,7 +78,9 @@ fi
 CONTENTS=${MAIL}mail.state
 NEXT=$CONTENTS.delta
 _contents > $CONTENTS
-screen -dmS "mail-quit" bash "$0" quit
+if ! screen -list 2>&1 | grep -q $SCREEN_NAME; then
+    screen -dmS "$SCREEN_NAME" bash "$0" quit
+fi
 mutt -F ${ETC}muttrc
 _contents > $NEXT
 if ! diff -u $CONTENTS $NEXT; then
