@@ -33,9 +33,24 @@ _contents() {
     find ${MAIL}maildir -type f | /opt/local/bin/rg "/(cur|new|tmp)/"
 }
 
+_quit() {
+    sleep 3
+    while : ; do
+        if pgrep mutt > /dev/null; then
+            sleep 1
+            continue
+        fi
+        break
+    done
+    osascript -e "quit app \"Terminal\""
+}
+
 CMD=$1
 if [ -n "$CMD" ]; then
     case "$CMD" in
+        "quit")
+            _quit
+            ;;
         "sync")
             _sync
             ;;
@@ -62,9 +77,9 @@ fi
 CONTENTS=${MAIL}mail.state
 NEXT=$CONTENTS.delta
 _contents > $CONTENTS
+screen -dmS "mail-quit" bash "$0" quit
 mutt -F ${ETC}muttrc
 _contents > $NEXT
 if ! diff -u $CONTENTS $NEXT; then
     _echosync
 fi
-osascript -e "quit app \"Terminal\""
