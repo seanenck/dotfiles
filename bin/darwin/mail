@@ -41,6 +41,10 @@ _quit() {
             sleep 1
             continue
         fi
+        if pgrep isync > /dev/null; then
+            sleep 1
+            continue
+        fi
         break
     done
     osascript -e "quit app \"Terminal\""
