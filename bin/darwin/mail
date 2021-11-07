@@ -14,6 +14,7 @@ if env | grep -q KITTY; then
     exit 1
 fi
 
+mkdir -p $MAIL
 _syncnow() {
     mbsync -V -c ${ETC}mbsyncrc -a
     mairix -f ${MAIRIX}
