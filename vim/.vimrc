@@ -78,6 +78,12 @@ endif
 
 vnoremap <C-i> >gv
 vnoremap <C-u> <gv
+inoremap <C-u> <PageUp>
+inoremap <C-d> <PageDown>
+inoremap <C-h> <left>
+inoremap <C-j> <up>
+inoremap <C-k> <down>
+inoremap <C-l> <right>
 
 for i in ['q', '<F1>']
     execute "map " . i . " <Nop>"
