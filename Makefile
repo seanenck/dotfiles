@@ -8,7 +8,12 @@ default:
 machine:
 	cd machine/$(shell uname -s | tr '[:upper:]' '[:lower:]') && stow --target $(HOME) .
 
-mac: $(TARGETS) machine
+setup:
+	mkdir -p $(HOME)/.ssh
+	mkdir -p $(HOME)/.mail
+	mkdir -p $(HOME)/.vim
+
+mac: setup $(TARGETS) machine
 
 tty: bash vim tmux git machine
 
