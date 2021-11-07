@@ -68,12 +68,9 @@ _remote-tools() {
     echo "-> update git-based tools"
     _remote-setup "https://voidedtech.com/git/lockbox" "build/lb" "build/lb-diff" "build/lb-pwgen" "build/lb-rekey" "build/lb-rw" "build/lb-stats" "build/lb-totp" "build/lb-bash"
     _remote-setup "https://github.com/evansm7/vftool" "build/vftool"
-    rustup update
-    cp $(rustc --print sysroot)/etc/bash_completion.d/cargo "$COMPLETIONS/cargo.bash"
     golangci-lint completion bash > "$COMPLETIONS/golangci-lint.bash"
     vmr completions > "$COMPLETIONS/vmr.bash"
     lb bash > "$COMPLETIONS/lb.bash"
-    rustup completions bash > "$COMPLETIONS/rustup.bash"
 }
 
 _ports() {

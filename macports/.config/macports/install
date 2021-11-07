@@ -17,9 +17,12 @@ gopls
 gsed
 html2text
 isync -bdb
+knock
 mairix
+meson
 msmtp
 mutt -pop -imap -smtp +gpgme +lmdb
+ninja
 perl5
 pinentry-mac
 py310-codestyle
