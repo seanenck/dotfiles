@@ -1,28 +1,54 @@
 #!/usr/bin/env bash
+STARTDATE="2021-11-09"
+YEAR=$(date +%Y)
 MBLAZE=$HOME/.mblaze
 SEQ=$MBLAZE/seq
-INBOX=$HOME/.mail/maildir/INBOX
-MSG="$1"
+MAIL=$HOME/.mail/
+MAILDIR=${MAIL}maildir/
+MAILTMP=${MAIL}mailtmp/
 export PAGER=cat
-mkdir -p "$MBLAZE"
-if [ -z "$MSG" ]; then
+mkdir -p "$MBLAZE" "$MAILTMP"
+
+_cleanid() {
+    mscan -I -f "$1" "$2" | sed -E 's/[^[:alnum:]]+/-/g' | tr '[:upper:]' '[:lower:]' | sed 's/-$//g'
+}
+
+
+_process() {
+    local sub id
+    sub="${MAILDIR}$1"
+    echo "processing: $1"
+    if [ ! -d "$sub" ]; then
+        echo "unable to find subdir: $1"
+        return
+    fi
     rm -f "$SEQ"
-    find "$INBOX" -type f | grep -E "/(cur|new|tmp)/" | mseq -S
-fi
-if [ ! -s "$SEQ" ]; then
-    echo "no messages found"
-    exit 1
-fi
-if [ -z "$MSG" ]; then
-    mscan
-    exit 0
-fi
-MAX=$(wc -l < "$SEQ")
-if [ "$MSG" -gt "$MAX" ]; then
-    echo "invalid message, > $MAX"
-    exit 1
-fi
-FILENAME=$(date +"%Y.%m.%d.%H.%M.%S").$(mscan -f "%s" "$MSG" | sed -E 's/[^[:alnum:]]+/-/g' | tr '[:upper:]' '[:lower:]').msg
-RAW=$(mscan -f "%R" "$MSG")
-TARGET="center:/home/enck/store/home/filing/$(date +%Y)/mail/"
-scp "$RAW" "$TARGET/$FILENAME"
+    find "$sub" -type f -newermt "$STARTDATE" -mtime -30 | grep -E "/(cur|new|tmp)/" | mseq -S
+    if [ ! -s "$SEQ" ]; then
+        echo "no messages..."
+        return
+    fi
+    for id in $(mscan -f "%n"); do
+        subj=$(_cleanid "%19d.%s.%I" "$id").msg
+        target=${MAILTMP}$1
+        if [ ! -d "$target" ]; then
+            mkdir -p "$target"
+        fi
+        target="$target/$subj"
+        if [ -e "$target" ]; then
+            # IF a message was identifier the same but contents different...it's skipped
+            continue
+        fi
+        cp "$(mscan -f "%R" "$id")" "$target"
+    done
+}
+
+_run() {
+    local d
+    for d in $(echo "$MAIL_BACKUPS"); do
+        _process "$d"
+    done
+    rsync -avc "$MAILTMP" center:/home/enck/store/home/archival/mail
+}
+
+_run
