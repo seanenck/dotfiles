@@ -33,8 +33,8 @@ pycodestyle_select
 pydocstyle_select
 pyflakes_select
 python-lsp-server_select
-python39
 python310
+python39
 python_select
 revive
 ripgrep
