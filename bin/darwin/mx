@@ -34,7 +34,7 @@ _process() {
         if [ ! -d "$target" ]; then
             mkdir -p "$target"
         fi
-        target="$target/$subj"
+        target="$target/$YEAR/$subj"
         if [ -e "$target" ]; then
             # IF a message was identifier the same but contents different...it's skipped
             continue
