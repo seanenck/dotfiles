@@ -8,13 +8,14 @@ MAIL=~/.mail/
 LOGFILE=${MAIL}sync.$(date +%Y-%m-%d).log
 MAIRIX=${ETC}mairix
 SCREEN_NAME="mail-quit"
+MAILDIR=${MAIL}maildir
 
 if env | grep -q KITTY; then
     echo "do not run from kitty"
     exit 1
 fi
 
-mkdir -p $MAIL
+mkdir -p ${MAILDIR}/Search/{new,cur,tmp}
 _syncnow() {
     mbsync -V -c ${ETC}mbsyncrc -a
     mairix -f ${MAIRIX}
@@ -32,7 +33,7 @@ _echosync() {
 }
 
 _contents() {
-    find ${MAIL}maildir -type f | /opt/local/bin/rg "/(cur|new|tmp)/"
+    find ${MAILDIR} -type f | /opt/local/bin/rg "/(cur|new|tmp)/"
 }
 
 _quit() {
