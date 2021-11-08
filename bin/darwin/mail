@@ -43,6 +43,7 @@ _quit() {
             sleep 1
             continue
         fi
+        sleep 3
         if pgrep isync > /dev/null; then
             sleep 1
             continue
@@ -90,5 +91,6 @@ fi
 mutt -F ${ETC}muttrc
 _contents > $NEXT
 if ! diff -u $CONTENTS $NEXT; then
+    mx
     _echosync
 fi
