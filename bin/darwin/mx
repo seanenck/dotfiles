@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+MBLAZE=$HOME/.mblaze
+SEQ=$MBLAZE/seq
+INBOX=$HOME/.mail/maildir/INBOX
+MSG="$1"
+export PAGER=cat
+mkdir -p "$MBLAZE"
+if [ -z "$MSG" ]; then
+    rm -f "$SEQ"
+    find "$INBOX" -type f | grep -E "/(cur|new|tmp)/" | mseq -S
+fi
+if [ ! -s "$SEQ" ]; then
+    echo "no messages found"
+    exit 1
+fi
+if [ -z "$MSG" ]; then
+    mscan
+    exit 0
+fi
+MAX=$(wc -l < "$SEQ")
+if [ "$MSG" -gt "$MAX" ]; then
+    echo "invalid message, > $MAX"
+    exit 1
+fi
+FILENAME=$(date +"%Y.%m.%d.%H.%M.%S").$(mscan -f "%s" "$MSG" | sed -E 's/[^[:alnum:]]+/-/g' | tr '[:upper:]' '[:lower:]').msg
+RAW=$(mscan -f "%R" "$MSG")
+TARGET="center:/home/enck/store/home/filing/$(date +%Y)/mail/"
+scp "$RAW" "$TARGET/$FILENAME"
