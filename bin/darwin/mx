@@ -24,5 +24,5 @@ if [ "$MSG" -gt "$MAX" ]; then
 fi
 FILENAME=$(date +"%Y.%m.%d.%H.%M.%S").$(mscan -f "%s" "$MSG" | sed -E 's/[^[:alnum:]]+/-/g' | tr '[:upper:]' '[:lower:]').msg
 RAW=$(mscan -f "%R" "$MSG")
-TARGET="center:/home/enck/store/home/filing/$(date +%Y)/mail/store/"
+TARGET="center:/home/enck/store/home/filing/$(date +%Y)/mail/"
 scp "$RAW" "$TARGET/$FILENAME"
