@@ -9,6 +9,7 @@ LOGFILE=${MAIL}sync.$(date +%Y-%m-%d).log
 MAIRIX=${ETC}mairix
 SCREEN_NAME="mail-quit"
 MAILDIR=${MAIL}maildir
+PIDFILE=${MAIL}pidfile
 
 if env | grep -q KITTY; then
     echo "do not run from kitty"
@@ -37,21 +38,15 @@ _contents() {
 }
 
 _quit() {
-    sleep 3
+    local pid
+    sleep 1
     while : ; do
-        if pgrep mutt > /dev/null; then
-            sleep 1
-            continue
-        fi
-        sleep 1
-        if ps aux | grep mx | grep -q bash; then
-            sleep 1
-            continue
-        fi
-        sleep 1
-        if pgrep isync > /dev/null; then
-            sleep 1
-            continue
+        if [ -e $PIDFILE ]; then
+            pid=$(cat $PIDFILE)
+            if ps -p "$pid" > /dev/null; then
+                sleep 1
+                continue
+            fi
         fi
         break
     done
@@ -90,6 +85,7 @@ fi
 CONTENTS=${MAIL}mail.state
 NEXT=$CONTENTS.delta
 _contents > $CONTENTS
+echo $$ > $PIDFILE
 if ! screen -list 2>&1 | grep -q $SCREEN_NAME; then
     screen -dmS "$SCREEN_NAME" bash "$0" quit
 fi
