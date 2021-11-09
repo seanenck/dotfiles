@@ -43,7 +43,12 @@ _quit() {
             sleep 1
             continue
         fi
-        sleep 3
+        sleep 1
+        if ps aux | grep mx | grep -q bash; then
+            sleep 1
+            continue
+        fi
+        sleep 1
         if pgrep isync > /dev/null; then
             sleep 1
             continue
