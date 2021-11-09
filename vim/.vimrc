@@ -76,10 +76,6 @@ if has('persistent_undo')
     set undolevels=5000
 endif
 
-vnoremap <C-i> >gv
-vnoremap <C-u> <gv
-inoremap <C-u> <PageUp>
-inoremap <C-d> <PageDown>
 inoremap <C-h> <left>
 inoremap <C-j> <up>
 inoremap <C-k> <down>
