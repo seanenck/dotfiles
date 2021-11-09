@@ -38,6 +38,7 @@ set expandtab
 set shiftwidth=4
 set foldmethod=indent
 set foldlevelstart=99
+set virtualedit=onemore
 
 if has("autocmd")
     filetype plugin indent on
