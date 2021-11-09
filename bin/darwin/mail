@@ -43,12 +43,10 @@ _quit() {
     while : ; do
         if [ -e $PIDFILE ]; then
             pid=$(cat $PIDFILE)
-            if ps -p "$pid" > /dev/null; then
-                sleep 1
-                continue
+            if ! ps -p "$pid" > /dev/null; then
+                break 
             fi
         fi
-        break
     done
     osascript -e "quit app \"Terminal\""
 }
