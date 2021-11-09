@@ -92,4 +92,5 @@ _contents > $NEXT
 if ! diff -u $CONTENTS $NEXT; then
     mx
     _echosync
+    sleep 3
 fi
