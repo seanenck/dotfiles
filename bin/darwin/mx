@@ -30,11 +30,11 @@ _process() {
     fi
     for id in $(mscan -f "%n"); do
         subj=$(_cleanid "%19d.%s.%I" "$id").msg
-        target=${MAILTMP}$1
+        target=${MAILTMP}$1/$YEAR/
         if [ ! -d "$target" ]; then
             mkdir -p "$target"
         fi
-        target="$target/$YEAR/$subj"
+        target="$target$subj"
         if [ -e "$target" ]; then
             # IF a message was identifier the same but contents different...it's skipped
             continue
