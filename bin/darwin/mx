@@ -13,7 +13,6 @@ _cleanid() {
     mscan -I -f "$1" "$2" | sed -E 's/[^[:alnum:]]+/-/g' | tr '[:upper:]' '[:lower:]' | sed 's/-$//g'
 }
 
-
 _process() {
     local sub id
     sub="${MAILDIR}$1"
