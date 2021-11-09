@@ -76,11 +76,6 @@ if has('persistent_undo')
     set undolevels=5000
 endif
 
-inoremap <C-h> <left>
-inoremap <C-j> <up>
-inoremap <C-k> <down>
-inoremap <C-l> <right>
-
 for i in ['q', '<F1>']
     execute "map " . i . " <Nop>"
 endfor
