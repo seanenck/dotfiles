@@ -10,7 +10,7 @@ export PAGER=cat
 mkdir -p "$MBLAZE" "$MAILTMP"
 
 _cleanid() {
-    mscan -I -f "$1" "$2" | sed -E 's/[^[:alnum:]]+/-/g' | tr '[:upper:]' '[:lower:]' | sed 's/-$//g'
+    mscan -I -f "%$1" "$2" | sed -E 's/[^[:alnum:]]+/-/g' | tr '[:upper:]' '[:lower:]' | sed 's/-$//g' | cut -c-$3
 }
 
 _process() {
@@ -28,12 +28,15 @@ _process() {
         return
     fi
     for id in $(mscan -f "%n"); do
-        subj=$(_cleanid "%19d.%s.%I" "$id").msg
+        dt=$(_cleanid "19d" "$id" "20")
+        subj=$(_cleanid "s" "$id" "50")
+        msgid=$(_cleanid "s%I" "$id" "100000")
+        msgid=$(echo "$msgid" | sha256sum | cut -d " " -f 1 | cut -c-7)
         target=${MAILTMP}$1/$YEAR/
         if [ ! -d "$target" ]; then
             mkdir -p "$target"
         fi
-        target="$target$subj"
+        target="$target$dt.$subj.$msgid.msg"
         if [ -e "$target" ]; then
             # IF a message was identifier the same but contents different...it's skipped
             continue
