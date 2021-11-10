@@ -90,7 +90,6 @@ fi
 mutt -F ${ETC}muttrc
 _contents > $NEXT
 if ! diff -u $CONTENTS $NEXT; then
-    mx
     _echosync
     sleep 3
 fi
