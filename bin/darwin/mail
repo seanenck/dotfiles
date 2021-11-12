@@ -6,7 +6,6 @@
 ETC=~/.env/machines/workstations/mail/
 MAIL=~/.mail/
 LOGFILE=${MAIL}sync.$(date +%Y-%m-%d).log
-MAIRIX=${ETC}mairix
 SCREEN_NAME="mail-quit"
 MAILDIR=${MAIL}maildir
 PIDFILE=${MAIL}pidfile
@@ -19,7 +18,6 @@ fi
 mkdir -p ${MAILDIR}/Search/{new,cur,tmp}
 _syncnow() {
     mbsync -V -c ${ETC}mbsyncrc -a
-    mairix -f ${MAIRIX}
 }
 
 _sync() {
@@ -59,9 +57,6 @@ if [ -n "$CMD" ]; then
             ;;
         "sync")
             _sync
-            ;;
-        "search")
-            mairix -f $MAIRIX ${@:2}
             ;;
         *)
             echo "unknown command; $CMD"
