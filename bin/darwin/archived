@@ -24,10 +24,16 @@ _archival() {
 
 _completions() {
     echo "_archived() {
-    local cur
+    local cur files f
     cur=\${COMP_WORDS[COMP_CWORD]}
     if [ \$COMP_CWORD -eq 1 ]; then
-        COMPREPLY=( \$(compgen -W 'search' -- \$cur) )
+        COMPREPLY=( \$(compgen -W 'search show' -- \$cur) )
+    else
+        files=\"\"
+        for f in \$(find $ARCHIVE/Search/cur/ -type l -exec readlink {} \\;); do
+            files=\"\$f \$files\"
+        done
+        COMPREPLY=( \$(compgen -W '\$files' -- \$cur) )
     fi
 }
 
@@ -55,6 +61,17 @@ if [ -n "$CMD" ]; then
             fi
             mairix -f "$MAIRIX_FILE" "${@:2}"
             _display "$ARCHIVE/Search" -type l
+            ;;
+        "show")
+            if [ -z "$2" ]; then
+                echo "file required..."
+                exit 1
+            fi
+            if [ ! -e "$2" ]; then
+                echo "invalid file"
+                exit 1
+            fi
+            mshow "$2"
             ;;
         *)
             echo "unknown command..."
