@@ -9,6 +9,7 @@ mkdir -p $MBLAZE
 _archival() {
     local f d
     mkdir -p $ARCHIVE
+    _completions > $HOME/.fs/usr/local/share/bash-completion/archived.bash
     echo "base=$ARCHIVE" > $MAIRIX_FILE
     echo "mfolder=Search" >> $MAIRIX_FILE
     echo "database=${MAIL}mairix.db" >> $MAIRIX_FILE
@@ -19,6 +20,18 @@ _archival() {
         echo "maildir=$(echo $d | sed "s#$ARCHIVE/##g")" >> $MAIRIX_FILE
     done
     mairix -f $MAIRIX_FILE
+}
+
+_completions() {
+    echo "_archived() {
+    local cur
+    cur=\${COMP_WORDS[COMP_CWORD]}
+    if [ \$COMP_CWORD -eq 1 ]; then
+        COMPREPLY=( \$(compgen -W 'search' -- \$cur) )
+    fi
+}
+
+complete -F _archived -o bashdefault -o default archived"
 }
 
 _display() {
