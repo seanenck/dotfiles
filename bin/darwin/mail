@@ -1,7 +1,4 @@
 #!/bin/bash
-# create a Mutt.app via Automator:
-# AppleScript:
-# `do shell script "open /Users/enck/.env/dotfiles/bin/darwin/mail"`
 
 ETC=~/.env/machines/workstations/mail/
 MAIL=~/.mail/
@@ -15,7 +12,6 @@ if env | grep -q KITTY; then
     exit 1
 fi
 
-mkdir -p ${MAILDIR}/Search/{new,cur,tmp}
 _syncnow() {
     mbsync -V -c ${ETC}mbsyncrc -a
 }
@@ -88,3 +84,4 @@ if ! diff -u $CONTENTS $NEXT; then
     _echosync
     sleep 3
 fi
+find $MAIL -type f -name "*.log" -mtime +5 -delete
