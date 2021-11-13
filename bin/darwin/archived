@@ -1,0 +1,19 @@
+#!/bin/bash
+MBLAZE="$HOME/.mblaze"
+MAIL=~/.mail/
+ARCHIVE="${MAIL}archive"
+mkdir -p $MBLAZE
+
+_archival() {
+    local f d
+    mkdir -p $ARCHIVE
+    rsync -avc center:store/home/archival/mail/ $ARCHIVE
+    for f in $(find $ARCHIVE -type d -name "cur"); do
+        d=$(dirname $f)
+        mkdir -p $d/{tmp,new}
+    done
+}
+
+_archival
+find $ARCHIVE -mtime -10 -type f | mseq -S
+msort -rd | mscan -I
