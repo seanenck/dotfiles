@@ -18,6 +18,7 @@ gsed
 html2text
 isync -bdb
 knock
+mairix
 meson
 msmtp
 mutt -pop -imap -smtp +gpgme +lmdb

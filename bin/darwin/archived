@@ -2,18 +2,51 @@
 MBLAZE="$HOME/.mblaze"
 MAIL=~/.mail/
 ARCHIVE="${MAIL}archive"
+MAIRIX_FILE="${MAIL}mairix"
+SEQ=$MBLAZE/seq
 mkdir -p $MBLAZE
 
 _archival() {
     local f d
     mkdir -p $ARCHIVE
+    echo "base=$ARCHIVE" > $MAIRIX_FILE
+    echo "mfolder=Search" >> $MAIRIX_FILE
+    echo "database=${MAIL}mairix.db" >> $MAIRIX_FILE
     rsync -avc center:store/home/archival/mail/ $ARCHIVE
-    for f in $(find $ARCHIVE -type d -name "cur"); do
+    for f in $(find $ARCHIVE -type d -name "cur" | grep -v "Search"); do
         d=$(dirname $f)
         mkdir -p $d/{tmp,new}
+        echo "maildir=$(echo $d | sed "s#$ARCHIVE/##g")" >> $MAIRIX_FILE
     done
+    mairix -f $MAIRIX_FILE
+}
+
+_display() {
+    rm -f $SEQ
+    find $1 ${@:2} | mseq -S
+    if [ ! -s "$SEQ" ]; then
+        echo "no records found"
+        return
+    fi
+    msort -rd | mscan -I
 }
 
 _archival
-find $ARCHIVE -mtime -10 -type f | mseq -S
-msort -rd | mscan -I
+CMD="$1"
+if [ -n "$CMD" ]; then
+    case "$CMD" in
+        "search")
+            if [ -z "$2" ]; then
+                echo "search term required..."
+                exit 1
+            fi
+            mairix -f "$MAIRIX_FILE" "${@:2}"
+            _display "$ARCHIVE/Search" -type l
+            ;;
+        *)
+            echo "unknown command..."
+            exit 1
+    esac
+    exit 0
+fi
+_display $ARCHIVE -type f -mtime -10
