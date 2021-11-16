@@ -16,12 +16,10 @@ golangci-lint
 gopls
 gsed
 html2text
-isync -bdb
 knock
 mairix
 meson
-msmtp
-mutt -pop -smtp +gpgme +lmdb
+mutt -pop +sasl +gpgme +lmdb
 ninja
 perl5
 pinentry-mac
