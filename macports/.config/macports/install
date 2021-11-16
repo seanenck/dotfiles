@@ -21,7 +21,7 @@ knock
 mairix
 meson
 msmtp
-mutt -pop -imap -smtp +gpgme +lmdb
+mutt -pop -smtp +gpgme +lmdb
 ninja
 perl5
 pinentry-mac
