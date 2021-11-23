@@ -1,4 +1,4 @@
-TARGETS := bash kitty macports git go vim tmux
+TARGETS := bash kitty macports git go vim
 
 .PHONY: $(TARGETS) machine
 
@@ -15,9 +15,7 @@ setup:
 
 mac: setup $(TARGETS) machine
 
-tty: bash vim tmux git machine
-
-minimal: bash vim tmux
+minimal: bash vim
 
 $(TARGETS):
 	stow --target=$(HOME) $@
