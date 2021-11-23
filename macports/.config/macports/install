@@ -40,4 +40,3 @@ rsync
 shellcheck
 stow
 vim
-watch
