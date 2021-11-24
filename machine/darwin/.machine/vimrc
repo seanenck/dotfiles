@@ -18,7 +18,7 @@ func NewTerminal()
 endfunction
 
 nnoremap <C-t> :call NewTerminal()<CR>
-
+inoremap kj <Esc>
 let g:ale_completion_enabled = 1
 set omnifunc=syntaxcomplete#Complete
 set completeopt=noinsert
