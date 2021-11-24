@@ -2,8 +2,9 @@
 DIRECTORY="$HOME/VMs"
 RSRC="Resources"
 NAME=""
+VERSION="3.15"
 STORE="$DIRECTORY/$RSRC"
-DL_ISO="https://dl-cdn.alpinelinux.org/alpine/v3.14/releases/aarch64/alpine-standard-3.14.2-aarch64.iso"
+DL_ISO="https://dl-cdn.alpinelinux.org/alpine/v3.15/releases/aarch64/alpine-standard-$VERSION.0-aarch64.iso"
 SCREENPREFIX="vmr-"
 MOUNT_ISO="$STORE/iso"
 VMLINUZ="vmlinuz"
@@ -18,8 +19,14 @@ if [ -z "$1" ]; then
 fi
 
 _setup() {
-    local iso vmlinuz initrd
+    local iso vmlinuz initrd versfile
     iso=$STORE/alpine.iso
+    versfile=$STORE/$VERSION
+    if [ ! -e "$versfile" ]; then
+        if [ -d "$STORE" ]; then
+            rm -rf "${STORE}"
+        fi
+    fi
     vmlinuz=$STORE/$VMLINUZ
     initrd=$STORE/$INITRD
     mkdir -p "$STORE"
@@ -37,6 +44,7 @@ _setup() {
         (cd "$STORE" && cp "$MOUNT_ISO/boot/initramfs_lts." "$initrd")
         chmod 644 "$initrd"
     fi
+    touch $versfile
     _detach-now
 }
 
@@ -165,7 +173,7 @@ _new() {
         exit 1
     fi
     sed "s#{IP}#$ipaddr#g;s#{NAME}#$NAME#g;s#{STORAGE}#$dir#g;s#{RESOURCES}#$STORE#g" "$SCRIPTS/lib.start.sh" > "$dir/$STARTUP"
-    sed "s#{NAME}#$NAME#g" "$SCRIPTS/lib.init-alpine.sh" > "$dir/$INIT"
+    sed "s#{NAME}#$NAME#g;s#{VERS}#$VERSION#g" "$SCRIPTS/lib.init-alpine.sh" > "$dir/$INIT"
     _start
 }
 

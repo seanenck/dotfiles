@@ -1,7 +1,7 @@
 #!/bin/ash
 echo "root:root" | chpasswd
-echo "http://dl-cdn.alpinelinux.org/alpine/v3.14/main" > /etc/apk/repositories
-echo "http://dl-cdn.alpinelinux.org/alpine/v3.14/community" >> /etc/apk/repositories
+echo "http://dl-cdn.alpinelinux.org/alpine/v{VERS}/main" > /etc/apk/repositories
+echo "http://dl-cdn.alpinelinux.org/alpine/v{VERS}/community" >> /etc/apk/repositories
 setup-timezone -z US/Michigan
 setup-hostname {NAME}
 setup-ntp -c chrony
