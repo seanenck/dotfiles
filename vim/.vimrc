@@ -85,6 +85,15 @@ imap <F1> <Nop>
 nnoremap <C-e> :call ToggleLine()<CR>
 nnoremap <C-v> :vsplit<CR>
 
+noremap! <Up> <Nop>
+noremap! <Down> <Nop>
+noremap! <Left> <Nop>
+noremap! <Right> <Nop>
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+
 let loaded_netrwPlugin = 1
 
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
