@@ -44,9 +44,6 @@ if [ ! -e $ARCHIVELOG ]; then
     archived
     touch $ARCHIVELOG
 fi
-CONTENTS=${MAIL}mail.state
-NEXT=$CONTENTS.delta
-_contents > $CONTENTS
 echo $$ > $PIDFILE
 if ! screen -list 2>&1 | grep -q $SCREEN_NAME; then
     screen -dmS "$SCREEN_NAME" bash "$0" quit
