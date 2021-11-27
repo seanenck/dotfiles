@@ -39,5 +39,5 @@ ripgrep
 rsync
 shellcheck
 stow
+tmux
 vim
-watch
