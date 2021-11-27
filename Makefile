@@ -1,4 +1,4 @@
-TARGETS := bash kitty macports git go vim
+TARGETS := bash kitty macports git go vim tmux
 
 .PHONY: $(TARGETS) machine
 
