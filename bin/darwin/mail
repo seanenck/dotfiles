@@ -4,7 +4,6 @@ ETC=~/.env/machines/workstations/mail/
 MAIL=~/.mail/
 SCREEN_NAME="mail-quit"
 PIDFILE=${MAIL}pidfile
-ARCHIVELOG=${MAIL}archive.$(date +%Y-%m-%d).log
 
 if env | grep -q KITTY; then
     echo "do not run from kitty"
@@ -40,10 +39,6 @@ fi
 
 clear
 
-if [ ! -e $ARCHIVELOG ]; then
-    archived
-    touch $ARCHIVELOG
-fi
 echo $$ > $PIDFILE
 if ! screen -list 2>&1 | grep -q $SCREEN_NAME; then
     screen -dmS "$SCREEN_NAME" bash "$0" quit
