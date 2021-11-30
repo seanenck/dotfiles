@@ -1,0 +1,16 @@
+export GOPATH="$HOME/.cache/go"
+export PATH="$DOTFILES/bin:$DOTFILES/bin/$(uname -s | tr '[:upper:]' '[:lower:]')"
+export LOCKBOX_STORE="$HOME/.env/passwords"
+export LOCKBOX_KEYMODE="command"
+export LOCKBOX_TOTP="keys/totp/"
+export DISPLAY=:0
+
+for f in /usr/share/bash-completion/bash_completion \
+         $HOME/.env/machines/workstations/bashrc; do
+    if [ -e $f ]; then
+        . $f
+    fi
+done
+
+export GPG_TTY=$(tty)
+git uncommitted
