@@ -79,7 +79,6 @@ function ToggleLine()
     endif
 endfunction
 
-call ToggleLine()
 if has('mouse')
     set mouse=a
 endif

@@ -1,5 +1,5 @@
 export GOPATH="$HOME/.cache/go"
-export PATH="$DOTFILES/bin:$DOTFILES/bin/$(uname -s | tr '[:upper:]' '[:lower:]'):$PATH"
+export PATH="$DOTFILES/bin:$DOTFILES/bin/$(uname -s | tr '[:upper:]' '[:lower:]'):$GOPATH/bin:$PATH"
 export LOCKBOX_STORE="$HOME/.env/passwords"
 export LOCKBOX_KEYMODE="command"
 export LOCKBOX_TOTP="keys/totp/"
@@ -11,6 +11,20 @@ for f in /usr/share/bash-completion/bash_completion \
         . $f
     fi
 done
+
+sys-upgrade() {
+    local lintci linturl
+    linturl=github.com/golangci/golangci-lint
+    vim-plugin-upgrade
+    go install github.com/mgechev/revive@latest
+    go install golang.org/x/tools/...@latest
+    lintci=$(git ls-remote --tags --sort=v:refname https://$linturl | tail -n 1 | awk '{print $2}' | cut -d '/' -f 3)
+    if [ -z "$lintci" ]; then
+        echo "unable to read golangci lint version"
+        return
+    fi
+    go install $linturl/cmd/golangci-lint@$lintci
+}
 
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
