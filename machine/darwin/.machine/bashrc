@@ -15,7 +15,7 @@ for f in passwords machines/workstations; do
 done
 
 for f in /opt/local/share/bash-completion/bash_completion \
-         $HOME/.env/machines/workstations/bashrc; do
+         $HOME/.env/machines/workstations/bashrc.darwin; do
     if [ -e $f ]; then
         . $f
     fi
