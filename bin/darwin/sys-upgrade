@@ -70,7 +70,6 @@ _remote-tools() {
     _remote-setup "https://github.com/evansm7/vftool" "build/vftool"
     _remote-setup "https://github.com/leahneukirchen/mblaze.git"
     golangci-lint completion bash > "$COMPLETIONS/golangci-lint.bash"
-    vmr completions > "$COMPLETIONS/vmr.bash"
     lb bash > "$COMPLETIONS/lb.bash"
 }
 
