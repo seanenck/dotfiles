@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 PATHS=""
 for option in ".env" "Workspace"; do
-    PATHS="$PATHS "$(find "$HOME/$option" -mindepth 1 -maxdepth 1 -type d)
+    if [ -d "$HOME/$option" ]; then
+        PATHS="$PATHS "$(find "$HOME/$option" -mindepth 1 -maxdepth 1 -type d)
+    fi
 done
 
 _uncommitted() {
