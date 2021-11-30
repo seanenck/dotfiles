@@ -1,0 +1,16 @@
+#!/bin/bash
+ENVS="$HOME/.env"
+
+_sync() {
+    local f p
+    for f in $(ls $ENVS); do
+        p="$ENVS/$f"
+        echo "-> $p" | sed "s#$HOME/##g"
+        git -C "$p" pull
+        echo
+    done
+}
+
+
+echo "sync:"
+_sync 2>&1 | sed 's/^/    /g'
