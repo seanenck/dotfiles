@@ -12,7 +12,7 @@ setup:
 	mkdir -p $(HOME)/.ssh
 	mkdir -p $(HOME)/.vim
 
-mac: setup $(TARGETS) machine
+mac: setup minimal bash kitty macports git tmux machine
 	mkdir -p $(HOME)/.mail
 
 terminal: setup minimal tmux go git machine

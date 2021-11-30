@@ -1,5 +1,1 @@
 python python310
-pycodestyle pycodestyle-py310
-pydocstyle py310-pydocstyle
-flake8 flake8-310
-python-lsp-server py39-pylsp
