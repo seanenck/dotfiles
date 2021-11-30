@@ -17,7 +17,6 @@ gopls
 gsed
 html2text
 knock
-mairix
 meson
 mutt -pop +sasl +gpgme +lmdb
 ninja
