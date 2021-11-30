@@ -10,12 +10,14 @@ machine:
 
 setup:
 	mkdir -p $(HOME)/.ssh
-	mkdir -p $(HOME)/.mail
 	mkdir -p $(HOME)/.vim
 
 mac: setup $(TARGETS) machine
+	mkdir -p $(HOME)/.mail
 
-minimal: bash vim
+terminal: setup minimal tmux go git
+
+minimal: bash vim 
 
 $(TARGETS):
 	stow --target=$(HOME) $@
