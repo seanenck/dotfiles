@@ -15,7 +15,7 @@ setup:
 mac: setup $(TARGETS) machine
 	mkdir -p $(HOME)/.mail
 
-terminal: setup minimal tmux go git
+terminal: setup minimal tmux go git machine
 
 minimal: bash vim 
 
