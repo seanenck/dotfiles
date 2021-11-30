@@ -1,5 +1,5 @@
 export GOPATH="$HOME/.cache/go"
-export PATH="$DOTFILES/bin:$DOTFILES/bin/$(uname -s | tr '[:upper:]' '[:lower:]')"
+export PATH="$DOTFILES/bin:$DOTFILES/bin/$(uname -s | tr '[:upper:]' '[:lower:]'):$PATH"
 export LOCKBOX_STORE="$HOME/.env/passwords"
 export LOCKBOX_KEYMODE="command"
 export LOCKBOX_TOTP="keys/totp/"
