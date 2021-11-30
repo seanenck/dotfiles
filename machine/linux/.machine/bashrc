@@ -18,6 +18,7 @@ sys-upgrade() {
     vim-plugin-upgrade
     go install github.com/mgechev/revive@latest
     go install golang.org/x/tools/...@latest
+    go install golang.org/x/tools/gopls@latest
     lintci=$(git ls-remote --tags --sort=v:refname https://$linturl | tail -n 1 | awk '{print $2}' | cut -d '/' -f 3)
     if [ -z "$lintci" ]; then
         echo "unable to read golangci lint version"
