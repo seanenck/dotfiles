@@ -13,4 +13,5 @@ for f in /usr/share/bash-completion/bash_completion \
 done
 
 export GPG_TTY=$(tty)
+gpg-connect-agent updatestartuptty /bye >/dev/null
 git uncommitted
