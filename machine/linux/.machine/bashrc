@@ -6,7 +6,7 @@ export LOCKBOX_TOTP="keys/totp/"
 export DISPLAY=:0
 
 for f in /usr/share/bash-completion/bash_completion \
-         $HOME/.env/machines/workstations/bashrc.linux; do
+         $HOME/.env/workstations/bashrc.linux; do
     if [ -e $f ]; then
         . $f
     fi
