@@ -68,6 +68,7 @@ _remote-tools() {
     echo "-> update git-based tools"
     _remote-setup "https://voidedtech.com/git/lockbox" "build/lb" "build/lb-diff" "build/lb-pwgen" "build/lb-rekey" "build/lb-rw" "build/lb-totp" "build/lb-bash"
     lb bash > "$COMPLETIONS/lb.bash"
+    unlockme bash > "$COMPLETIONS/unlockme.bash"
 }
 
 _ports() {
