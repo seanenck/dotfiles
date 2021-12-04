@@ -4,8 +4,10 @@ export LOCKBOX_STORE="$HOME/.env/passwords"
 export LOCKBOX_KEYMODE="command"
 export LOCKBOX_TOTP="keys/totp/"
 export DISPLAY=:0
+COMPLETE=$LOCAL_FS/bash.completions
 
 for f in /usr/share/bash-completion/bash_completion \
+         $COMPLETE \
          $HOME/.env/workstations/bashrc.linux; do
     if [ -e $f ]; then
         . $f
@@ -30,10 +32,12 @@ _lbinst() {
         install -Dm755 $f $fs
     done
     cd $cwd
+    lb bash >> $COMPLETE
 }
 
 sys-upgrade() {
     local lintci linturl
+    rm -f $COMPLETE
     linturl=github.com/golangci/golangci-lint
     vim-plugin-upgrade
     go install github.com/mgechev/revive@latest
