@@ -7,8 +7,7 @@ export DISPLAY=:0
 COMPLETE=$LOCAL_FS/bash.completions
 
 for f in /usr/share/bash-completion/bash_completion \
-         $COMPLETE \
-         $HOME/.env/workstations/bashrc.linux; do
+         $COMPLETE; do
     if [ -e $f ]; then
         . $f
     fi

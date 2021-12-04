@@ -3,12 +3,7 @@ export PATH="/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH"
 export DISPLAY=:0
 export LOCAL_CACHE="$HOME/Library/Caches/com.voidedtech.Local"
 
-for f in /opt/local/share/bash-completion/bash_completion \
-         $HOME/.env/workstations/bashrc.darwin; do
-    if [ -e $f ]; then
-        . $f
-    fi
-done
+source /opt/local/share/bash-completion/bash_completion
 
 _localcomp() {
     local c f
