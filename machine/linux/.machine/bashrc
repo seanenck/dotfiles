@@ -1,5 +1,5 @@
 export GOPATH="$HOME/.cache/go"
-export PATH="$DOTFILES/bin:$DOTFILES/bin/$(uname -s | tr '[:upper:]' '[:lower:]'):$GOPATH/bin:$PATH"
+export PATH="$GOPATH/bin:$PATH"
 export LOCKBOX_STORE="$HOME/.env/passwords"
 export LOCKBOX_KEYMODE="command"
 export LOCKBOX_TOTP="keys/totp/"
@@ -11,6 +11,26 @@ for f in /usr/share/bash-completion/bash_completion \
         . $f
     fi
 done
+
+_lbinst() {
+    local cache cwd f
+    cache="$HOME/.cache/lb"
+    if [ ! -d "$cache" ]; then
+        git clone https://voidedtech.com/git/lockbox $cache
+    fi
+    git -C $cache pull
+    cwd=$PWD
+    cd $cache
+    rm -rf build
+    meson build
+    ninja -C build
+    fs="$LOCAL_FS/usr/local/bin/"
+    mkdir -p $fs
+    for f in $(ls build/lb*); do
+        install -Dm755 $f $fs
+    done
+    cd $cwd
+}
 
 sys-upgrade() {
     local lintci linturl
@@ -25,6 +45,7 @@ sys-upgrade() {
         return
     fi
     go install $linturl/cmd/golangci-lint@$lintci
+    _lbinst
 }
 
 export GPG_TTY=$(tty)
