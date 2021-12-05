@@ -9,13 +9,10 @@ gawk
 git
 gnupg2
 gnutar
-go
 gsed
 html2text
 knock
-meson
 mutt -pop +sasl +gpgme +lmdb
-ninja
 perl5
 pinentry-mac
 python310
