@@ -65,8 +65,11 @@ _remote-setup() {
 }
 
 _remote-tools() {
+    local dir
+    dir=$LOCAL_FS/usr/local/bin/
+    rm -f ${dir}lb*
     echo "-> update remote tools..."
-    scp development:/var/cache/autobuilder/lockbox-macos/build/lb* $LOCAL_FS/usr/local/bin/
+    scp development:/var/cache/autobuilder/lockbox-macos/build/lb* $dir
     lb bash > "$COMPLETIONS/lb.bash"
 }
 
