@@ -49,7 +49,6 @@ sys-upgrade() {
     fi
     go install $linturl/cmd/golangci-lint@$lintci
     _lbinst
-    unlockme bash >> $COMPLETE
 }
 
 export GPG_TTY=$(tty)
