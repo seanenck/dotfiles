@@ -37,6 +37,7 @@ _lbinst() {
 sys-upgrade() {
     local lintci linturl
     rm -f $COMPLETE
+    git resync
     linturl=github.com/golangci/golangci-lint
     vim-plugin-upgrade
     go install github.com/mgechev/revive@latest
