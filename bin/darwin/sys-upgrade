@@ -16,54 +16,6 @@ _sysupgrade() {
 
 complete -F _sysupgrade -o bashdefault -o default sys-upgrade"
 
-_remote-setup() {
-    local dir hash prev name cwd usrlocal
-    usrlocal="$BIN/usr/local/bin/"
-    mkdir -p "$usrlocal"
-    name=$(echo "$1" | rev | cut -d "/" -f 1 | rev)
-    dir="$TOOL_CACHE/$name"
-    if [ ! -d "$dir" ]; then
-        git clone "$1" "$dir"
-    fi
-    git -C "$dir" reset --hard
-    git -C "$dir" pull
-    hash="$TOOL_CACHE/$name.hash"
-    prev="$hash.prev"
-    git -C "$dir" log -n1 --format=%h > "$hash"
-    touch "$prev"
-    if ! diff -u "$prev" "$hash"; then
-        if [ -e "$dir/configure" ]; then
-            cwd=$PWD
-            cd "$dir" || exit 1
-            ./configure
-            cd "$cwd" || exit 1
-        fi
-        if [ -e "$dir/Makefile" ] || [ -e "$dir/GNUmakefile" ]; then
-            make -C "$dir"
-        else
-            if [ -e "$dir/meson.build" ]; then
-                (cd "$dir" && meson setup build)
-                ninja -C "$dir/build"
-            else
-                echo
-                echo "$dir"
-                echo "-> unknown build type"
-                echo
-                echo
-                return
-            fi
-        fi
-        if [ -z "$2" ]; then
-            make -C "$dir" install DESTDIR="$BIN"
-        else
-            for f in "${@:2}"; do
-                install -Dm755 "$dir/$f" "$usrlocal"
-            done
-        fi
-    fi
-    mv "$hash" "$prev"
-}
-
 _remote-tools() {
     local dir
     dir=$LOCAL_FS/usr/local/bin/
@@ -102,6 +54,7 @@ _ports() {
 _sys-upgrade() {
     local f c
     c=$PWD
+    git resync
     if [ "$1" -eq 1 ]; then
         echo "-> update ports"
         if ! sudo echo "sudo check"; then
