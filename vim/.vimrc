@@ -92,6 +92,14 @@ noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
+noremap! <S-Up> <Nop>
+noremap! <S-Down> <Nop>
+noremap! <S-Left> <Nop>
+noremap! <S-Right> <Nop>
+noremap <S-Up> <Nop>
+noremap <S-Down> <Nop>
+noremap <S-Left> <Nop>
+noremap <S-Right> <Nop>
 
 let loaded_netrwPlugin = 1
 
