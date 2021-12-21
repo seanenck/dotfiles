@@ -9,6 +9,10 @@ if filereadable(machinedir)
     exec 'source' machinedir
 endif
 
+if has("mouse_sgr")
+    set ttymouse=sgr
+endif
+
 colo slate
 
 function ToggleLine()
