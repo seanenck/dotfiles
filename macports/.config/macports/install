@@ -12,7 +12,6 @@ gnutar
 gsed
 html2text
 knock
-mutt -pop +sasl +gpgme +lmdb
 perl5
 pinentry-mac
 python310
