@@ -4,6 +4,7 @@ export DISPLAY=:0
 export LOCAL_CACHE="$HOME/Library/Caches/com.voidedtech.Local"
 
 source /opt/local/share/bash-completion/bash_completion
+source /Applications/kitty.app/Contents/Resources/kitty/shell-integration/bash/kitty.bash
 
 _localcomp() {
     local c f
