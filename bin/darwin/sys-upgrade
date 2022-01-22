@@ -19,6 +19,7 @@ complete -F _sysupgrade -o bashdefault -o default sys-upgrade"
 _remote-tools() {
     local dir
     dir=$LOCAL_FS/usr/local/bin/
+    mkdir -p $dir
     rm -f ${dir}lb*
     echo "-> update remote tools..."
     scp development:/var/cache/autobuilder/lockbox-macos/build/lb* $dir
