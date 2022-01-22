@@ -13,7 +13,6 @@ setup:
 	mkdir -p $(HOME)/.vim
 
 mac: setup minimal bash kitty macports git tmux machine
-	mkdir -p $(HOME)/.mail
 
 terminal: setup minimal tmux go git machine
 
