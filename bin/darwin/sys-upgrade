@@ -16,14 +16,25 @@ _sysupgrade() {
 
 complete -F _sysupgrade -o bashdefault -o default sys-upgrade"
 
+_vftool-setup() {
+    local d
+    d="$TOOL_CACHE/vftool"
+    if [ ! -d "$d" ]; then
+        git clone https://github.com/evansm7/vftool $d
+    fi
+    git -C $d pull
+    (cd $d && make && install -Dm755 build/vftool $1/vftool)
+}
+
 _remote-tools() {
     local dir
     dir=$LOCAL_FS/usr/local/bin/
     mkdir -p $dir
     rm -f ${dir}lb*
     echo "-> update remote tools..."
+    _vftool-setup "$dir"
     scp development:/var/cache/autobuilder/lockbox-macos/build/lb* $dir
-    vmr bash > "$COMLETIONS/vmr.bash"
+    vmr bash > "$COMPLETIONS/vmr.bash"
     lb bash > "$COMPLETIONS/lb.bash"
 }
 
