@@ -26,7 +26,8 @@ _SKIP = ["cd",
          "port search",
          "perl",
          "macrun",
-         "vim"]
+         "vim",
+         "vmr"]
 
 
 def main():

@@ -27,7 +27,23 @@ _gpga() {
     fi
 }
 
+_vmrlist() {
+    local f has
+    has=""
+    for f in $(vmr up); do
+        if [ -z "$has" ]; then
+            has="yes"
+            echo "vmr:"
+        fi
+        echo "  -> $f"
+    done
+    if [ ! -z "$has" ]; then
+        echo
+    fi
+}
+
 _localcomp
 _gpga
 export GPG_TTY=$(tty)
 git uncommitted
+_vmrlist
