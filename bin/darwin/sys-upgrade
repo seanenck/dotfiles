@@ -23,6 +23,7 @@ _remote-tools() {
     rm -f ${dir}lb*
     echo "-> update remote tools..."
     scp development:/var/cache/autobuilder/lockbox-macos/build/lb* $dir
+    vmr bash > "$COMLETIONS/vmr.bash"
     lb bash > "$COMPLETIONS/lb.bash"
 }
 

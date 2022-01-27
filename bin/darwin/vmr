@@ -194,7 +194,7 @@ for arg in "$@"; do
     esac
 done
 
-if [[ "$COMMAND" == "completions" ]]; then
+if [[ "$COMMAND" == "bash" ]]; then
     sed "s#{STORAGE}#$DIRECTORY#g;s#{RESOURCES}#$RSRC#g" "$SCRIPTS/lib.completions.bash"
     exit 0
 fi
