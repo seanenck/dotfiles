@@ -13,6 +13,7 @@ SCRIPTS="$DOTFILES/lib/vmr/"
 STARTUP="start.sh"
 INIT="machine.cfg"
 IPPREFIX="192.168.64."
+SSHHOST="vmr."
 
 if [ -z "$1" ]; then
     echo "command required"
@@ -90,6 +91,7 @@ _is-machine() {
 _rm() {
     _is-machine
     rm -rf "${DIRECTORY:?}/$NAME"
+    _sshcfg
 }
 
 _ready() {
@@ -100,11 +102,23 @@ _ready() {
     fi
 }
 
+_sshcommon() {
+    echo "    User root"
+    echo "    IdentityFile ~/.ssh/systems"
+    echo "    UserKnownHostsFile /dev/null"
+    echo "    StrictHostKeyChecking no"
+}
+
 _sshconfig() {
-    local f bname
+    local f
+    echo "Match host $IPPREFIX*"
+    _sshcommon
+    echo
     for f in $(find $DIRECTORY -type f -name "ip.*" | rev | cut -d "/" -f 2 | rev); do
-        echo "Host $f"
+        echo "Host $SSHHOST$f"
         echo "    HostName $IPPREFIX$(ls $DIRECTORY/$f/ip.* | cut -d "." -f 2)"
+        _sshcommon
+        echo ""
     done
 }
 
@@ -123,11 +137,10 @@ _start() {
     ip=$(_getssh)
     scp "$dir/$INIT" "$ip:/sbin/$INIT"
     ssh "$ip" -- /bin/ash "/sbin/$INIT"
-    _sshconfig > $STORE/ssh.config
     echo
     echo
     echo "ready:"
-    echo "  ssh $ip"
+    echo "  ssh $SSHHOST$NAME"
     echo
 }
 
@@ -147,6 +160,10 @@ _waitup() {
         isready=$(_ready "$sship")
     done
     echo "machine ready"
+}
+
+_sshcfg() {
+    _sshconfig > $STORE/ssh.config
 }
 
 _new() {
@@ -184,6 +201,7 @@ _new() {
     fi
     sed "s#{IP}#$ipaddr#g;s#{NAME}#$NAME#g;s#{STORAGE}#$dir#g;s#{RESOURCES}#$STORE#g" "$SCRIPTS/lib.start.sh" > "$dir/$STARTUP"
     sed "s#{NAME}#$NAME#g;s#{VERS}#$VERSION#g" "$SCRIPTS/lib.init-alpine.sh" > "$dir/$INIT"
+    _sshcfg
     _start
 }
 
