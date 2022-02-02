@@ -12,6 +12,7 @@ INITRD="initrd.img"
 SCRIPTS="$DOTFILES/lib/vmr/"
 STARTUP="start.sh"
 INIT="machine.cfg"
+IPPREFIX="192.168.64."
 
 if [ -z "$1" ]; then
     echo "command required"
@@ -99,6 +100,14 @@ _ready() {
     fi
 }
 
+_sshconfig() {
+    local f bname
+    for f in $(find $DIRECTORY -type f -name "ip.*" | rev | cut -d "/" -f 2 | rev); do
+        echo "Host $f"
+        echo "    HostName $IPPREFIX$(ls $DIRECTORY/$f/ip.* | cut -d "." -f 2)"
+    done
+}
+
 _start() {
     local tty cnt isready ip dir
     _is-machine
@@ -114,6 +123,7 @@ _start() {
     ip=$(_getssh)
     scp "$dir/$INIT" "$ip:/sbin/$INIT"
     ssh "$ip" -- /bin/ash "/sbin/$INIT"
+    _sshconfig > $STORE/ssh.config
     echo
     echo
     echo "ready:"
@@ -123,7 +133,7 @@ _start() {
 
 _getssh() {
     local sship
-    sship="root@192.168.64."$(ls $DIRECTORY/$NAME/ip.* | rev | cut -d "." -f 1 | rev)
+    sship="root@$IPPREFIX"$(ls $DIRECTORY/$NAME/ip.* | rev | cut -d "." -f 1 | rev)
     echo "$sship"
 }
 
