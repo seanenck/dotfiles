@@ -10,12 +10,16 @@ git
 gnupg2
 gnutar
 go
+go-tools
+golangci-lint
+gopls
 gsed
 knock
 perl5
 pinentry-mac
 python310
 python_select
+revive
 ripgrep
 rsync
 stow

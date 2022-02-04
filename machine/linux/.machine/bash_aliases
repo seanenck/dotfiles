@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-gomod-update() {
-    go get -u ./...
-    go mod tidy
-}
-
-list-repos() {
-    curl https://voidedtech.com/repos.txt
-}
