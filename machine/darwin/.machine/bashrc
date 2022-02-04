@@ -30,7 +30,7 @@ _gpga() {
 _vmrlist() {
     local f has
     has=""
-    for f in $(vmr up); do
+    for f in $(vmr up 2>/dev/null); do
         if [ -z "$has" ]; then
             has="yes"
             echo "vmr:"

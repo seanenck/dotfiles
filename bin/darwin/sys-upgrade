@@ -33,7 +33,7 @@ _lbtool-setup() {
         git clone https://voidedtech.com/git/lockbox $d
     fi
     git -C $d pull
-    (cd $d && meson build && ninja -C build)
+    (cd $d && meson build && ninja -C build && cp build/lb* $1/)
 }
 
 _remote-tools() {
