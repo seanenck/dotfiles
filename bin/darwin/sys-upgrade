@@ -32,6 +32,7 @@ _remote-tools() {
     mkdir -p $dir
     rm -f ${dir}lb*
     echo "-> update remote tools..."
+    vim-plugin-upgrade
     _vftool-setup "$dir"
     scp development:/var/cache/autobuilder/lockbox-macos/build/lb* $dir
     vmr bash > "$COMPLETIONS/vmr.bash"
