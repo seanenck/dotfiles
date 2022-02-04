@@ -124,7 +124,7 @@ _sshconfig() {
 }
 
 _start() {
-    local tty cnt isready ip dir
+    local tty cnt isready ip dir prep
     _is-machine
     tty=$SCREENPREFIX$NAME
     cnt=$(screen -list 2>&1 | grep "$SCREENPREFIX$NAME" | awk '{print $1}' | wc -l)
@@ -138,6 +138,10 @@ _start() {
     ip=$(_getssh)
     scp "$dir/$INIT" "$ip:/sbin/$INIT"
     ssh "$ip" -- /bin/ash "/sbin/$INIT"
+    prep=$dir/prepare.cfg
+    if [ -e $prep ]; then
+        bash $prep $ip
+    fi
     echo
     echo
     echo "ready:"
