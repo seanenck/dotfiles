@@ -1,1 +1,6 @@
 python python310
+python-lsp-server py310-pylsp
+pyflakes py310-pyflakes
+pycodestyle pycodestyle-py310
+pydocstyle py310-pydocstyle
+pylint pylint310
