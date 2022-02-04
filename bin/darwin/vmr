@@ -16,6 +16,11 @@ IPPREFIX="192.168.64."
 ISO_FILE="$STORE/alpine.iso"
 SSHHOST="vmr."
 
+if [ ! -d "$DIRECTORY" ]; then
+    echo "vmr not ready, make $DIRECTORY to start"
+    exit 1
+fi
+
 if [ -z "$1" ]; then
     echo "command required"
     exit 1
