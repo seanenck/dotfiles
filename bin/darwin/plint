@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+files="$*"
+if [ -z "$files" ]; then
+    files=$(find . -type f -name "*.py")
+fi
+if [ -z "$files" ]; then
+    echo "no files"
+    exit 1
+fi
+for p in pycodestyle pydocstyle flake8; do
+    for f in $files; do
+        "$p" "$f" | sed "s/^/$p: /g"
+    done
+done
