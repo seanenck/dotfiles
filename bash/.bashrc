@@ -33,9 +33,9 @@ done
 
 PREFERPS1="\u@\h \W"
 if [ -z "$SSH_CONNECTION" ]; then
-    PS1='['$PREFERPS1']'
+    PS1='['$PREFERPS1']$ '
 else
-    PS1='('$PREFERPS1')'
+    PS1='('$PREFERPS1')> '
 fi
 
 for f in .vim/undo .vim/swap .vim/backup; do
