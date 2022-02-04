@@ -13,6 +13,7 @@ SCRIPTS="$DOTFILES/lib/vmr/"
 STARTUP="start.sh"
 INIT="machine.cfg"
 IPPREFIX="192.168.64."
+ISO_FILE="$STORE/alpine.iso"
 SSHHOST="vmr."
 
 if [ -z "$1" ]; then
@@ -22,7 +23,7 @@ fi
 
 _setup() {
     local iso vmlinuz initrd versfile
-    iso=$STORE/alpine.iso
+    iso=$ISO_FILE
     versfile=$STORE/$VERSION
     if [ ! -e "$versfile" ]; then
         if [ -d "$STORE" ]; then
@@ -201,6 +202,7 @@ _new() {
     fi
     sed "s#{IP}#$ipaddr#g;s#{NAME}#$NAME#g;s#{STORAGE}#$dir#g;s#{RESOURCES}#$STORE#g" "$SCRIPTS/lib.start.sh" > "$dir/$STARTUP"
     sed "s#{NAME}#$NAME#g;s#{VERS}#$VERSION#g" "$SCRIPTS/lib.init-alpine.sh" > "$dir/$INIT"
+    cp $ISO_FILE $dir/
     _sshcfg
     _start
 }
