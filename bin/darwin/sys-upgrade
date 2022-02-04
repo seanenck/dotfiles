@@ -26,15 +26,24 @@ _vftool-setup() {
     (cd $d && make && install -Dm755 build/vftool $1/vftool)
 }
 
+_lbtool-setup() {
+    local d
+    d="$TOOL_CACHE/lockbox"
+    if [ ! -d "$d" ]; then
+        git clone https://voidedtech.com/git/lockbox $d
+    fi
+    git -C $d pull
+    (cd $d && meson build && ninja -C build)
+}
+
 _remote-tools() {
     local dir
     dir=$LOCAL_FS/usr/local/bin/
     mkdir -p $dir
-    rm -f ${dir}lb*
     echo "-> update remote tools..."
     vim-plugin-upgrade
     _vftool-setup "$dir"
-    scp development:/var/cache/autobuilder/lockbox-macos/build/lb* $dir
+    _lbtool-setup "$dir"
     vmr bash > "$COMPLETIONS/vmr.bash"
     lb bash > "$COMPLETIONS/lb.bash"
 }
