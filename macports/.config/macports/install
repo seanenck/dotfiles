@@ -30,3 +30,4 @@ shellcheck
 stow
 tmux
 vim
+wireguard-tools
