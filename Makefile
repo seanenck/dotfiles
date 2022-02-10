@@ -12,11 +12,11 @@ setup:
 	mkdir -p $(HOME)/.ssh
 	mkdir -p $(HOME)/.vim
 
-mac: setup minimal bash kitty macports git tmux machine
+mac: common macports
 
-terminal: setup minimal tmux go git machine X userdirs pipewire
+linux: common go X userdirs pipewire
 
-minimal: bash vim 
+common: setup kitty bash vim tmux git machine
 
 $(TARGETS):
 	stow --target=$(HOME) $@
