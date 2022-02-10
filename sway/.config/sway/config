@@ -24,20 +24,15 @@ bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. 
 
 # view organization
 bindsym $mod+Shift+f exec $swaypy fullscreen
-bindsym $mod+Shift+m exec $swaypy master
-bindsym $mod+Shift+n exec $swaypy reset
-bindsym $mod+Shift+b exec $swaypy reset-all
-bindsym $mod+Shift+v exec $swaypy grid
 
 # workspace/output movement
 bindsym $mod+Tab exec $swaypy workspace-focus
-bindsym $mod+Shift+Tab exec $swaypy move-focus
 
 # focused view geometry
-bindsym $mod+h exec $swaypy move-left
-bindsym $mod+j exec $swaypy move-down
-bindsym $mod+k exec $swaypy move-up
-bindsym $mod+l exec $swaypy move-right
+bindsym $mod+h move left
+bindsym $mod+j move down
+bindsym $mod+k move up
+bindsym $mod+l move right
 bindsym $mod+Shift+h exec $swaypy resize-left
 bindsym $mod+Shift+l exec $swaypy resize-right
 bindsym $mod+Shift+k resize grow height 10
