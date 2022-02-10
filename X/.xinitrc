@@ -13,7 +13,7 @@ fi
 xset b off
 xset b 0 0 0
 xsetroot -solid "#333333"
-setxkbmap -layout us -option ctrl:swapcaps
+setxkbmap -layout us -option ctrl:nocaps
 while [ 1 -eq 1 ]; do
     if ! pgrep -x pipewire > /dev/null; then
         pipewire --config $HOME/.config/pipewire.conf &
