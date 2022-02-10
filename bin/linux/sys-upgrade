@@ -3,6 +3,11 @@ LOCAL_BIN=$LOCAL_FS/usr/local/bin
 COMPL=$LOCAL_FS/bash.completions
 mkdir -p $LOCAL_BIN
 
+echo "sudo check"
+if ! sudo echo "completed"; then
+    exit 1
+fi
+
 vim-plugin-upgrade
 sudo apk update
 sudo apk upgrade
