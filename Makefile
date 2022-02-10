@@ -14,9 +14,9 @@ setup:
 
 mac: common macports
 
-linux: common go X userdirs pipewire
+linux: common go X userdirs pipewire tmux
 
-common: setup kitty bash vim tmux git machine
+common: setup kitty bash vim git machine
 
 $(TARGETS):
 	stow --target=$(HOME) $@
