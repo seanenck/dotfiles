@@ -10,14 +10,8 @@
 "kitty"
   Mod1+Return
 
-"sys autoclip"
-  Mod1+s
-
 "pkill xinit"
   Mod1+Shift+e
-
-"status toggle"
-  Mod1+Shift+h
 
 "volume inc"
   XF86AudioRaiseVolume
@@ -27,27 +21,3 @@
 
 "volume togglemute"
   XF86AudioMute
-
-"volume togglevoice"
-  XF86AudioMicMute
-
-"brightness up"
-  XF86MonBrightnessUp
-
-"brightness down"
-  XF86MonBrightnessDown
-
-"workspaces mobile"
-  Mod1+Shift+m
-
-"workspaces docked"
-  Mod1+Shift+o
-
-"locker lock"
-  Mod1+Shift+l
-
-"locker sleep"
-  Mod1+Shift+s
-
-"locker toggle"
-  Mod1+Shift+x

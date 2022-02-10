@@ -31,7 +31,7 @@ while [ 1 -eq 1 ]; do
         sleep 0.5
     else
         echo "starting xautolock"
-        xautolock -time 5 -locker $HOME/.local/bin/locker &
+        xautolock -time 5 -locker slock &
     fi
     sleep 1
 done
