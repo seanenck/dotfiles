@@ -1,0 +1,4 @@
+[pager]
+    log = /usr/bin/diff-highlight | less
+    diff = /usr/bin/diff-highlight | less
+    show = /usr/bin/diff-highlight | less
