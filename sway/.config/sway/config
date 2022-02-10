@@ -7,54 +7,44 @@ set $menu waymenu
 gaps outer 5px
 gaps inner 5px
 
-exec swayidle -w \
-    timeout 300 'swaylock -f -c 000000' \
-    timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-    before-sleep 'swaylock -f -c 000000'
+exec swayidle -w timeout 1800 'swaylock -f -c 000000'
 
 exec $swaypy focus-model
-exec $swaypy displays
 
 output * bg #695939 solid_color
 
 # lock/sleep
-bindsym $mod+Shift+s exec $swaypy sleep
 bindsym $mod+Shift+l exec pkill --signal=SIGUSR1 swayidle
 
 # process creation/removal
-bindsym $mod+Return exec $term
+bindsym $mod+t exec $term
 bindsym $mod+d exec $menu
 bindsym $mod+Shift+q exec $swaypy kill
-
-# speciality keys
-bindsym XF86AudioMute exec ponymix toggle
-bindsym XF86AudioRaiseVolume exec ponymix increase 5%
-bindsym XF86AudioLowerVolume exec ponymix decrease 5%
 
 # sway management
 bindsym $mod+Shift+r reload
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 
 # view organization
-bindsym $mod+Shift+p exec $swaypy fullscreen
-bindsym $mod+Shift+o exec $swaypy master
-bindsym $mod+Shift+i exec $swaypy reset
-bindsym $mod+Shift+k exec $swaypy reset-all
-bindsym $mod+Shift+j exec $swaypy grid
+bindsym $mod+Shift+f exec $swaypy fullscreen
+bindsym $mod+Shift+m exec $swaypy master
+bindsym $mod+Shift+n exec $swaypy reset
+bindsym $mod+Shift+b exec $swaypy reset-all
+bindsym $mod+Shift+v exec $swaypy grid
 
 # workspace/output movement
 bindsym $mod+Tab exec $swaypy workspace-focus
 bindsym $mod+Shift+Tab exec $swaypy move-focus
 
 # focused view geometry
-bindsym $mod+Shift+Left exec $swaypy move-left
-bindsym $mod+Shift+Down exec $swaypy move-down
-bindsym $mod+Shift+Up exec $swaypy move-up
-bindsym $mod+Shift+Right exec $swaypy move-right
-bindsym $mod+Left exec $swaypy resize-left
-bindsym $mod+Right exec $swaypy resize-right
-bindsym $mod+Up resize grow height 10
-bindsym $mod+Down resize shrink height 10
+bindsym $mod+h exec $swaypy move-left
+bindsym $mod+j exec $swaypy move-down
+bindsym $mod+k exec $swaypy move-up
+bindsym $mod+l exec $swaypy move-right
+bindsym $mod+Shift+h exec $swaypy resize-left
+bindsym $mod+Shift+l exec $swaypy resize-right
+bindsym $mod+Shift+k resize grow height 10
+bindsym $mod+Shift+j resize shrink height 10
 
 #workspaces
 bindsym $mod+1 workspace number 1
