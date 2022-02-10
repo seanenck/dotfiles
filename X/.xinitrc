@@ -33,5 +33,10 @@ while [ 1 -eq 1 ]; do
         echo "starting xautolock"
         xautolock -time 5 -locker slock &
     fi
+    if pgrep -x status > /dev/null; then
+        sleep 0.5
+    else
+        status &
+    fi
     sleep 1
 done

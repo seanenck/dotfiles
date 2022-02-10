@@ -1,6 +1,12 @@
 #!/bin/bash
-status=""
+_status() {
+    status=""
+    ips=$(ip addr | grep "inet " | grep -v "127.0.0.1" | awk '{print $2}' | cut -d '/' -f 1 | tr '\n' '|')
+    status="$ips"
+    xsetroot -name "$status"
+}
 
-ips=$(ip addr | grep "inet " | grep -v "127.0.0.1" | awk '{print $2}' | cut -d '/' -f 1 | tr '\n' '|')
-status="$ips"
-xsetroot -name "$status"
+while : ; do
+    _status
+    sleep 5
+done
