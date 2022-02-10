@@ -6,10 +6,11 @@ use URI::Escape;
 use String::ShellQuote;
 use URI;
 
-my $browser   = "/usr/bin/chromium-browser";
+my $browser   = "/usr/bin/firefox";
 
 my %available;
-$available{"browser"} = $browser;
+$available{"firefox"} = $browser;
+$available{"chromium"} = "/usr/bin/chromium-browser";
 $available{"vnc"} = "gvncviewer macpro.voidedtech.com";
 foreach my $app ( "pavucontrol", "mumble" ) {
     $available{$app} = $app;
