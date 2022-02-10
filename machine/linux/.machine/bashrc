@@ -12,6 +12,7 @@ if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     exit
 fi
 
+source $LOCAL_FS/bash.completions
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye > /dev/null 2>&1
 git uncommitted
