@@ -10,6 +10,7 @@ my $browser   = "/usr/bin/chromium-browser";
 
 my %available;
 $available{"browser"} = $browser;
+$available{"vnc"} = "gvncviewer macpro.voidedtech.com";
 foreach my $app ( "pavucontrol", "mumble" ) {
     $available{$app} = $app;
 }
