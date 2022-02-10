@@ -1,4 +1,4 @@
-TARGETS := bash kitty macports git go vim tmux userdirs X pipewire
+TARGETS := bash kitty macports git vim tmux userdirs X pipewire
 
 .PHONY: $(TARGETS) machine
 
@@ -14,7 +14,7 @@ setup:
 
 mac: common macports
 
-linux: common go X userdirs pipewire tmux
+linux: common X userdirs pipewire tmux
 
 common: setup kitty bash vim git machine
 
