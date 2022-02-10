@@ -16,16 +16,6 @@ _sysupgrade() {
 
 complete -F _sysupgrade -o bashdefault -o default sys-upgrade"
 
-_vftool-setup() {
-    local d
-    d="$TOOL_CACHE/vftool"
-    if [ ! -d "$d" ]; then
-        git clone https://github.com/evansm7/vftool $d
-    fi
-    git -C $d pull
-    (cd $d && make && install -Dm755 build/vftool $1/vftool)
-}
-
 _lbtool-setup() {
     local d
     d="$TOOL_CACHE/lockbox"
@@ -41,10 +31,7 @@ _remote-tools() {
     dir=$LOCAL_FS/usr/local/bin/
     mkdir -p $dir
     echo "-> update remote tools..."
-    vim-plugin-upgrade
-    _vftool-setup "$dir"
     _lbtool-setup "$dir"
-    vmr bash > "$COMPLETIONS/vmr.bash"
     lb bash > "$COMPLETIONS/lb.bash"
 }
 
