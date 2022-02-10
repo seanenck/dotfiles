@@ -14,12 +14,18 @@ xset b off
 xset b 0 0 0
 xsetroot -solid "#333333"
 while [ 1 -eq 1 ]; do
+    if pgrep -x pipewire > /dev/null; then
+        sleep 0.5
+    else
+        pipewire --config $HOME/.config/pipewire.conf &
+    fi
     if pgrep -x dwm > /dev/null; then
         sleep 0.5
     else
         echo "starting dwm"
         xbindkeys --poll-rc
         dwm &
+        dbus-launch --exit-with-x11
     fi
     if pgrep -x xautolock > /dev/null; then
         sleep 0.5
