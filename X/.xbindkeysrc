@@ -8,7 +8,7 @@
 #
 
 "kitty"
-  Mod1+Return
+  Mod1+t
 
 "pkill xinit"
   Mod1+Shift+e
