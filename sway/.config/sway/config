@@ -15,7 +15,7 @@ output * bg #695939 solid_color
 
 # process creation/removal
 bindsym $mod+t exec $term
-bindsym $mod+d exec $menu
+bindsym $mod+r exec $menu
 bindsym $mod+Shift+q exec $swaypy kill
 
 # sway management
@@ -25,10 +25,11 @@ bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. 
 # view organization
 bindsym $mod+Shift+f exec $swaypy fullscreen
 
-# workspace/output movement
-bindsym $mod+Tab exec $swaypy workspace-focus
-
 # focused view geometry
+bindsym $mod+a focus left
+bindsym $mod+s focus down
+bindsym $mod+w focus up
+bindsym $mod+d focus right
 bindsym $mod+h move left
 bindsym $mod+j move down
 bindsym $mod+k move up
