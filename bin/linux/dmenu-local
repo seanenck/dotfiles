@@ -1,0 +1,50 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use autodie;
+use URI::Escape;
+use String::ShellQuote;
+use URI;
+
+my $browser   = "/usr/bin/chromium-browser";
+
+my %available;
+$available{"browser"} = $browser;
+foreach my $app ( "pavucontrol", "mumble" ) {
+    $available{$app} = $app;
+}
+
+my $cmd = "echo '";
+keys %available;
+foreach my $opt ( keys %available ) {
+    $cmd = "$cmd$opt\n";
+}
+
+chomp $cmd;
+$cmd = "$cmd' | sort | dmenu " . shell_quote @ARGV;
+my $stdout = `$cmd`;
+chomp $stdout;
+if ( $stdout eq "" ) {
+    exit;
+}
+
+if ( exists( $available{$stdout} ) ) {
+    system( $available{$stdout} );
+    exit;
+}
+
+$stdout =~ s/^search //i;
+my $uri = URI->new("http://$stdout");
+my $url = "";
+if ( $uri->host ) {
+    my $host = $uri->host;
+    if ( grep( /[a-zA-Z0-9]+\.[a-z]{2,}/, $host ) ) {
+        $url = $host;
+    }
+}
+
+if ( $url eq "" ) {
+    $url = "https://www.duckduckgo.com/?q=" . uri_escape($stdout);
+}
+
+system( $browser . " " . $url );
