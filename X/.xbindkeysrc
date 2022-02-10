@@ -1,0 +1,53 @@
+# A list of keys is in /usr/include/X11/keysym.h and in
+# /usr/include/X11/keysymdef.h
+# The XK_ is not needed.
+#
+# List of modifier:
+#   Release, Control, Shift, Mod1 (Alt), Mod2 (NumLock),
+#   Mod3 (CapsLock), Mod4, Mod5 (Scroll).
+#
+
+"kitty"
+  Mod1+Return
+
+"sys autoclip"
+  Mod1+s
+
+"pkill xinit"
+  Mod1+Shift+e
+
+"status toggle"
+  Mod1+Shift+h
+
+"volume inc"
+  XF86AudioRaiseVolume
+
+"volume dec"
+  XF86AudioLowerVolume
+
+"volume togglemute"
+  XF86AudioMute
+
+"volume togglevoice"
+  XF86AudioMicMute
+
+"brightness up"
+  XF86MonBrightnessUp
+
+"brightness down"
+  XF86MonBrightnessDown
+
+"workspaces mobile"
+  Mod1+Shift+m
+
+"workspaces docked"
+  Mod1+Shift+o
+
+"locker lock"
+  Mod1+Shift+l
+
+"locker sleep"
+  Mod1+Shift+s
+
+"locker toggle"
+  Mod1+Shift+x

@@ -1,4 +1,4 @@
-TARGETS := bash kitty macports git go vim tmux
+TARGETS := bash kitty macports git go vim tmux userdirs X
 
 .PHONY: $(TARGETS) machine
 
@@ -14,7 +14,7 @@ setup:
 
 mac: setup minimal bash kitty macports git tmux machine
 
-terminal: setup minimal tmux go git machine
+terminal: setup minimal tmux go git machine X userdirs
 
 minimal: bash vim 
 
