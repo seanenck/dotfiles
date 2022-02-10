@@ -1,0 +1,24 @@
+#!/bin/bash
+LOCAL_BIN=$LOCAL_FS/usr/local/bin
+COMPL=$LOCAL_FS/bash.completions
+mkdir -p $LOCAL_BIN
+
+vim-plugin-upgrade
+sudo apk update
+sudo apk upgrade
+
+LB_CACHE=$HOME/.cache/lb/
+if [ ! -d $LB_CACHE ]; then
+    git clone enckse:lockbox $LB_CACHE
+fi
+git -C $LB_CACHE pull
+(cd $LB_CACHE && meson build && ninja -C build)
+for f in $(find $LB_CACHE/build -type f -name "lb*"); do
+    install $f $LOCAL_BIN/$(basename $f)
+done
+
+_completions() {
+    lb bash
+}
+
+_completions > $COMPL
