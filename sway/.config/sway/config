@@ -13,9 +13,6 @@ exec $swaypy focus-model
 
 output * bg #695939 solid_color
 
-# lock/sleep
-bindsym $mod+Shift+l exec pkill --signal=SIGUSR1 swayidle
-
 # process creation/removal
 bindsym $mod+t exec $term
 bindsym $mod+d exec $menu
