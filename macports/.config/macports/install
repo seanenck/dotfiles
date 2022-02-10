@@ -13,6 +13,7 @@ git
 gnupg2
 gnutar
 gsed
+knock
 perl5
 pinentry-mac
 python310
