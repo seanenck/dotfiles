@@ -9,8 +9,7 @@ if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
         chmod 0700 $XDG_RUNTIME_DIR
     fi
     export DISPLAY=:0
-    exec startx $HOME/.xinitrc 2>&1 | logger -t xinit
-    exit
+    exec sway
 fi
 
 source $LOCAL_FS/bash.completions
