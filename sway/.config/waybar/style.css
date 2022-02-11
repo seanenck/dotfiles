@@ -34,6 +34,7 @@ window#waybar.hidden {
 #mode,
 #custom-notify,
 #idle_inhibitor,
+#custom-clock,
 #custom-sync {
     padding: 0 10px;
     margin: 0 4px;
@@ -59,6 +60,7 @@ window#waybar.hidden {
     margin-right: 0;
 }
 
+#custom-clock,
 #clock {
     background-color: #64727D;
 }
