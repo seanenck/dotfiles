@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-my $apps = "chromium-browser firefox kitty pavucontrol mumble";
+my $apps = "chromium firefox kitty pavucontrol mumble vnc";
 if (@ARGV) {
     my $cmd = shift @ARGV;
     if ( $cmd eq "list" ) {
