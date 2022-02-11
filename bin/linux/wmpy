@@ -1,0 +1,13 @@
+#!/usr/bin/python3
+"""Sway management via ipc."""
+import json
+import sys
+
+
+def main():
+    """Program entry."""
+    in_j = json.loads(sys.stdin.read())
+    if "change" in in_j:
+        if in_j["change"] == "new":
+            exit(0)
+    exit(1)
