@@ -10,7 +10,8 @@ if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
         mkdir $XDG_RUNTIME_DIR
         chmod 0700 $XDG_RUNTIME_DIR
     fi
-    exec sway
+    dbus-launch --exit-with-session sway
+    exit
 fi
 
 source $LOCAL_FS/bash.completions
