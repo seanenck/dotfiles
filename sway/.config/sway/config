@@ -1,6 +1,6 @@
 set $mod Mod1
 
-set $term foot
+set $term kitty
 set $swaypy wm
 set $menu waymenu
 
