@@ -34,5 +34,5 @@ for (@app_list) {
 $chosen =~ s/'/\\'/g;
 print $chosen, "\n";
 my $quoted =
-  `python -c "import urllib.parse; print(urllib.parse.quote('$chosen'))"`;
+  `python3 -c "import urllib.parse; print(urllib.parse.quote('$chosen'))"`;
 system( $ENV{"BROWSER"} . " https://duckduckgo.com?q=$quoted" );

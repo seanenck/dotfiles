@@ -1,6 +1,6 @@
 set $mod Mod1
 
-set $term kitty
+set $term foot
 set $swaypy wm
 set $menu waymenu
 
@@ -13,6 +13,10 @@ exec $swaypy focus-model
 exec --no-startup-id pipewire --config /home/enck/.config/pipewire.conf
 
 output * bg #695939 solid_color
+
+output DP-1 {
+    resolution 3840x2160
+}
 
 # process creation/removal
 bindsym $mod+t exec $term
