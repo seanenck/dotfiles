@@ -1,0 +1,5 @@
+#!/bin/bash
+pkill pipewire
+kill -9 $(pgrep -x wm)
+pipewire --config $HOME/.config/pipewire.conf &
+wm
