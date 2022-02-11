@@ -10,6 +10,7 @@ gaps inner 5px
 exec swayidle -w timeout 1800 'swaylock -f -c 000000'
 
 exec $swaypy focus-model
+exec --no-startup-id pipewire --config /home/enck/.config/pipewire.conf
 
 output * bg #695939 solid_color
 
