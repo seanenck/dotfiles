@@ -1,15 +1,16 @@
 #!/bin/bash
 while : ; do
-    was_v=1
+    was_v=0
+    swaymsg splith
     while read j; do
         if echo "$j" | wmpy; then
-        if [ $was_v -eq 1 ]; then
-            swaymsg splith
-            was_v=0
-        else
-            swaymsg splitv
-            was_v=1
-        fi
+            if [ $was_v -eq 1 ]; then
+                swaymsg splith
+                was_v=0
+            else
+                swaymsg splitv
+                was_v=1
+            fi
         fi
     done < <(swaymsg -m -t subscribe "['window']")
 done

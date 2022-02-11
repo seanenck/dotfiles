@@ -1,16 +1,13 @@
 set $mod Mod1
 
 set $term kitty
-set $swaypy wm
 set $menu waymenu
 
 gaps outer 5px
 gaps inner 5px
 
 exec swayidle -w timeout 1800 'swaylock -f -c 000000'
-
-exec $swaypy focus-model
-exec --no-startup-id pipewire --config /home/enck/.config/pipewire.conf
+exec_always sway-daemons
 
 output * bg #695939 solid_color
 
@@ -69,3 +66,4 @@ bar {
 }
 
 include /etc/sway/config.d/*
+

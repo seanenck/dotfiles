@@ -11,3 +11,7 @@ def main():
         if in_j["change"] == "new":
             exit(0)
     exit(1)
+
+
+if __name__ == "__main__":
+    main()
