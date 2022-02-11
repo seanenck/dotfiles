@@ -13,7 +13,6 @@ if has("mouse_sgr")
     set ttymouse=sgr
 endif
 
-colo slate
 
 function ToggleLine()
     if &colorcolumn == 81
