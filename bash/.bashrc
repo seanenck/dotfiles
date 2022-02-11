@@ -33,7 +33,7 @@ done
 
 PREFERPS1="(\u@\h \W)"
 if [ -z "$SSH_CONNECTION" ]; then
-    PS1='$PREFERPS1$ '
+    PS1=$PREFERPS1'$ '
 else
     PS1='\[\033[01;33m\]'$PREFERPS1'\[\033[0m\]> '
 fi
