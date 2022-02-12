@@ -8,9 +8,18 @@ def main():
     """Program entry."""
     in_j = json.loads(sys.stdin.read())
     if "change" in in_j:
-        if in_j["change"] == "new":
-            exit(0)
-    exit(1)
+        if in_j["change"] == "focus":
+            if "container" in in_j:
+                c = in_j["container"]
+                if "window_rect" in c:
+                    rect = c["window_rect"]
+                    w = rect["width"]
+                    h = rect["height"]
+                    if w > h:
+                        exit(0)
+                    else:
+                        exit(1)
+    exit(2)
 
 
 if __name__ == "__main__":
