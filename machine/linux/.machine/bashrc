@@ -3,7 +3,6 @@ export GOPATH="$HOME/.cache/go"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export XDG_RUNTIME_DIR=/tmp/$(id -u)-runtimedir
 export PATH="$GOPATH/bin:$PATH"
-export BROWSER=firefox
 
 if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     if ! test -d $XDG_RUNTIME_DIR; then
