@@ -1,4 +1,4 @@
-TARGETS := bash kitty macports git vim tmux userdirs pipewire sway
+TARGETS := bash alpine kitty macports git vim tmux userdirs pipewire sway
 
 .PHONY: $(TARGETS) machine
 
@@ -14,7 +14,10 @@ setup:
 
 mac: common macports
 
-linux: common userdirs pipewire tmux sway
+setuplinux:
+	mkdir -p $(HOME)/.abuild
+
+linux: setuplinux common alpine userdirs pipewire tmux sway
 
 common: setup kitty bash vim git machine
 
