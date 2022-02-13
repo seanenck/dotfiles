@@ -7,3 +7,5 @@ gomod-update() {
 list-repos() {
     curl https://voidedtech.com/repos.txt
 }
+
+alias mutt="mail"
