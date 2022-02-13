@@ -1,4 +1,0 @@
-#!/bin/bash
-cmd="$@"
-cmd="$cmd mutt -F $HOME/.env/workstations/mail/muttrc"
-$cmd
