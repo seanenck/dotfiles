@@ -16,8 +16,8 @@ output DP-1 {
 }
 
 # process creation/removal
-bindsym $mod+t exec $term
-bindsym $mod+r exec $menu
+bindsym $mod+Space exec $term
+bindsym $mod+t exec $menu
 bindsym $mod+Shift+q kill
 
 # sway management
