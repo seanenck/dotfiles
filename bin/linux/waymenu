@@ -7,7 +7,6 @@ import shlex
 import subprocess
 
 _APPS = {"firefox": ["firefox"],
-         "vnc": ["gvncviewer", "macpro.voidedtech.com"],
          "kitty": ["kitty"],
          "volume": ["pavucontrol"],
          "mumble": ["mumble"]}
