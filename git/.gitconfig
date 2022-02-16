@@ -28,11 +28,9 @@
     gpgSign = true
 [tag]
     gpgSign = true
-[url "center:/mnt/storage/repositories/git/"]
-    insteadOf = local:
-[url "voidedtech.com:/mnt/data/git/"]
-    insteadOf = enckse:
 [url "git@github.com:enckse/"]
     insteadOf = github:
-[url "gitea.voidedtech.com:"]
-    insteadOf = repos:
+[url "gitea.voidedtech.com:external/"]
+    insteadOf = external:
+[url "gitea.voidedtech.com:internal/"]
+    insteadOf = internal:
