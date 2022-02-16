@@ -34,3 +34,5 @@
     insteadOf = enckse:
 [url "git@github.com:enckse/"]
     insteadOf = github:
+[url "gitea.voidedtech.com:"]
+    insteadOf = repos:
