@@ -3,7 +3,3 @@ gomod-update() {
     go get -u ./...
     go mod tidy
 }
-
-list-repos() {
-    curl https://voidedtech.com/repos.txt
-}
