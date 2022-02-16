@@ -6,8 +6,8 @@ set $menu waymenu
 gaps outer 5px
 gaps inner 5px
 
-exec swayidle -w timeout 900 'swaylock -f -c 000000' \
-                 timeout 905 'swaymsg "output * dpms off"' \
+exec swayidle -w timeout 1800 'swaylock -f -c 000000' \
+                 timeout 1805 'swaymsg "output * dpms off"' \
 	             resume 'swaymsg "output * dpms on"'
 exec_always sway-daemons
 
@@ -25,6 +25,7 @@ bindsym $mod+Shift+q kill
 # sway management
 bindsym $mod+Shift+r reload
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+bindsym $mod+Shift+x exec pkill -10 swayidle
 
 # view organization
 bindsym $mod+f floating toggle
