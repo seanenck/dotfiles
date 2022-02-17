@@ -1,5 +1,6 @@
 #!/bin/bash
 LOCAL_BIN=$LOCAL_FS/usr/local/bin
+WORKSTATION=$HOME/.env/workstations/scripts
 mkdir -p $LOCAL_BIN
 
 echo "sudo check"
@@ -11,3 +12,6 @@ go-upgrade
 vim-plugin-upgrade
 sudo apk update
 sudo apk upgrade
+for f in $(ls $WORKSTATION); do
+    install -Dm755 $WORKSTATION/$f $LOCAL_BIN/$(echo $f | cut -d "." -f 1)
+done
