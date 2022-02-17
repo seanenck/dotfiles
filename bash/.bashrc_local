@@ -1,5 +1,6 @@
 export DOTFILES="$HOME/.env/dotfiles"
 export LOCAL_FS="$HOME/.fs"
+export LOCAL_COMP="$LOCAL_FS/bash.completions"
 export MACHINE_TYPE=$(uname -s | tr '[:upper:]' '[:lower:]')
 export PATH="$DOTFILES/bin:$DOTFILES/bin/$MACHINE_TYPE:$LOCAL_FS/usr/local/bin:$PATH"
 source $HOME/.env/workstations/bashrc

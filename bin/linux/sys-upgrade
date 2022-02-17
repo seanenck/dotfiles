@@ -12,6 +12,13 @@ go-upgrade
 vim-plugin-upgrade
 sudo apk update
 sudo apk upgrade
-for f in $(ls $WORKSTATION); do
-    install -Dm755 $WORKSTATION/$f $LOCAL_BIN/$(echo $f | cut -d "." -f 1)
-done
+_scripts() {
+    local f script completions
+    rm -f $LOCAL_COMP
+    for f in $(ls $WORKSTATION); do
+        script=$LOCAL_BIN/$(echo $f | cut -d "." -f 1)
+        install -Dm755 $WORKSTATION/$f $script
+        $script bash >> $LOCAL_COMP
+    done
+}
+_scripts
