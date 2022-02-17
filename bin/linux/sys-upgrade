@@ -17,7 +17,7 @@ _scripts() {
     rm -f $LOCAL_COMP
     for f in $(ls $WORKSTATION); do
         script=$LOCAL_BIN/$(echo $f | cut -d "." -f 1)
-        install -Dm755 $WORKSTATION/$f $script
+        ln -sf $WORKSTATION/$f $script
         $script bash >> $LOCAL_COMP
     done
 }
