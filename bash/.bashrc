@@ -25,7 +25,8 @@ for file in $HOME/.bashrc_local \
             $HOME/.machine/bashrc \
             $HOME/.bash_aliases \
             $HOME/.machine/bash_aliases \
-            /usr/share/bash-completion/bash_completion; do
+            /usr/share/bash-completion/bash_completion \
+            $HOME/.machine/bash_completions; do
     if [ -e "$file" ]; then
         . "$file"
     fi

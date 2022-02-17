@@ -1,7 +1,4 @@
 #!/bin/bash
-LOCAL_BIN=$LOCAL_FS/usr/local/bin
-WORKSTATION=$HOME/.env/workstations/scripts
-mkdir -p $LOCAL_BIN
 
 echo "sudo check"
 if ! sudo echo "completed"; then
@@ -12,13 +9,3 @@ go-upgrade
 vim-plugin-upgrade
 sudo apk update
 sudo apk upgrade
-_scripts() {
-    local f script completions
-    rm -f $LOCAL_COMP
-    for f in $(ls $WORKSTATION); do
-        script=$LOCAL_BIN/$(echo $f | cut -d "." -f 1)
-        ln -sf $WORKSTATION/$f $script
-        $script bash >> $LOCAL_COMP
-    done
-}
-_scripts
