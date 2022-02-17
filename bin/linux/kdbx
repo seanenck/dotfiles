@@ -30,7 +30,7 @@ fi
 
 _keepass() {
     local p
-    p=$KDBX_PASSWORD 2>/dev/null
+    p=$($KDBX_PASSWORD 2>/dev/null)
     echo "$p" | keepassxc-cli $@ 2>/dev/null
 }
 
