@@ -25,6 +25,10 @@ endfunction
 
 if has('mouse')
     set mouse=a
+    for i in ['', '2-', '3-', '4-']
+        execute "map <" . i . "MiddleMouse> <Nop>"
+        execute "imap <" . i . "MiddleMouse> <Nop>"
+    endfor
 endif
 
 " Switch syntax highlighting on, when the terminal has colors
