@@ -2,7 +2,7 @@ _kdbx() {
     local opt cur
     cur=${COMP_WORDS[COMP_CWORD]}
     if [ "$COMP_CWORD" -eq 1 ]; then
-        opts='ls show clip totp password notes'
+        opts='ls show clip totp password notes username'
     fi
     if [ "$COMP_CWORD" -eq 2 ]; then
         if [ "${COMP_WORDS[1]}" == "ls" ]; then
