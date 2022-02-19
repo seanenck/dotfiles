@@ -17,3 +17,25 @@ _kdbx() {
 }
 
 complete -F _kdbx -o bashdefault -o default kdbx
+
+_udnsbl-reconf() {
+    local opt cur hr o
+    cur=${COMP_WORDS[COMP_CWORD]}
+    if [ "$COMP_CWORD" -eq 1 ]; then
+        hr=$(date +%H)
+        for o in $(seq 6 23); do
+            if [ $o -gt $hr ]; then
+                opts="$o $opts"
+            fi
+        done
+    fi
+    if [ "$COMP_CWORD" -eq 2 ]; then
+        opts="all sites upstream reset"
+    fi
+    if [ -z "$opts" ]; then
+        return
+    fi
+    COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+}
+
+complete -F _udnsbl-reconf -o bashdefault -o default udnsbl-reconf

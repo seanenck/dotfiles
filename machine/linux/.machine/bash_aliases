@@ -3,3 +3,17 @@ gomod-update() {
     go get -u ./...
     go mod tidy
 }
+
+udnsbl-reconf() {
+    if [ -z "$1" ]; then
+        echo "time required"
+        return
+    fi
+    if [ -z "$2" ]; then
+        echo "mode required"
+        return
+    fi
+    curl -X 'POST' $UDNSBL_API/udnsbl/ \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -d "until=$1&mode=$2"
+}
