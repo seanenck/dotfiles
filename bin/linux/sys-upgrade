@@ -1,11 +1,2 @@
 #!/bin/bash
-
-echo "sudo check"
-if ! sudo echo "completed"; then
-    exit 1
-fi
-
-go-upgrade
 vim-plugin-upgrade
-sudo apk update
-sudo apk upgrade
