@@ -72,10 +72,6 @@ bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 bindsym $mod+m exec pactl set-source-mute @DEFAULT_SOURCE@ false
 bindsym --release $mod+m exec pactl set-source-mute @DEFAULT_SOURCE@ true
 
-exec layout splith
-for_window [class=".*"] split toggle
-for_window [app_id=".*"] split toggle
-
 bar {
     swaybar_command waybar
 }

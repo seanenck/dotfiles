@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+import json
+import subprocess
+
+
+def _set_layout(node):
+    height = node['rect']['height']
+    width = node['rect']['width']
+    if height > width:
+        _set_split(node["id"], "splitv")
+    else:
+        _set_split(node["id"], "splith")
+
+
+def _set_split(con_id, split):
+    cmd = '[con_id="{}"] {}'.format(con_id, split)
+    _swaymsg([cmd])
+
+
+def _get_tree():
+    return json.loads(_swaymsg(["-t", "get_tree"]))
+
+
+def _traverse(tree, finder):
+    if isinstance(tree, dict) and tree.get("id") == 1:
+        return _traverse(tree["nodes"], finder)
+    else:
+        for sub in tree:
+            ret = finder(sub)
+            if ret:
+                return ret
+            else:
+                if sub.get("nodes"):
+                    ret = _traverse(sub["nodes"], finder)
+                    if ret:
+                        return ret
+                    else:
+                        continue
+        return False
+
+
+def _get_focused_node(tree):
+    if tree.get("focused"):
+        return tree
+    return False
+
+
+def _swaymsg(command):
+    p = subprocess.Popen(["swaymsg"] + command,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.DEVNULL)
+    o, _ = p.communicate()
+    return o.decode().strip()
+
+
+def main():
+    p = subprocess.Popen(
+        ['swaymsg', '-t', 'subscribe', '-m',  '["window"]'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL
+    )
+
+    for line in p.stdout:
+        try:
+            tree = _get_tree()
+            focused_node = _traverse(tree, _get_focused_node)
+            _set_layout(focused_node)
+        except Exception as e:
+            pass
+
+
+if __name__ == "__main__":
+    main()
