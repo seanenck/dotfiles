@@ -6,5 +6,8 @@ while : ; do
     if ! pgrep -x wm > /dev/null; then
         wm &
     fi
+    if ! pgrep -x sway > /dev/null; then
+        exit
+    fi
     sleep 1
 done
