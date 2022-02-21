@@ -3,9 +3,6 @@ while : ; do
     if ! pgrep -x pipewire > /dev/null; then
         pipewire --config $HOME/.config/pipewire.conf &
     fi
-    if ! pgrep -x wm > /dev/null; then
-        wm &
-    fi
     if ! pgrep -x sway > /dev/null; then
         exit
     fi
