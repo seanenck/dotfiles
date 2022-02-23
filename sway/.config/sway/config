@@ -32,10 +32,10 @@ bindsym $mod+f floating toggle
 bindsym $mod+Shift+f fullscreen
 
 # focused view geometry
-bindsym $mod+a focus left
-bindsym $mod+s focus down
-bindsym $mod+w focus up
-bindsym $mod+d focus right
+bindsym $mod+left focus left
+bindsym $mod+down focus down
+bindsym $mod+up focus up
+bindsym $mod+right focus right
 bindsym $mod+h move left
 bindsym $mod+j move down
 bindsym $mod+k move up
