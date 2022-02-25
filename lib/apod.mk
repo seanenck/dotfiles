@@ -15,6 +15,7 @@ build:
 	cp -rL $(HOME)/.abuild $(PWD)
 	podman run -it --rm \
 		-v $(CONFS):$(HOME)/.abuild:U \
+		-v $(CONFS)/localpkgs.rsa.pub:/etc/apk/keys/localpkgs.rsa.pub \
 		-v $(PWD):/apk:U \
 		-v $(PACKS):$(HOME)/packages:U \
 		-v $(CACHE):/etc/apk/cache \
