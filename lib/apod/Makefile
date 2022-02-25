@@ -10,7 +10,7 @@ clean:
 	sudo chown -R enck:enck $(PACKS)
 
 build:
-	podman build -f $(HOME)/.env/dotfiles/lib/buildenv.Containerfile -t $(NAME)
+	podman build -f $(HOME)/.env/dotfiles/lib/apod/buildenv.Containerfile -t $(NAME)
 	mkdir -p $(CACHE) $(PACKS) $(CONFS)
 	cp -rL $(HOME)/.abuild $(PWD)
 	podman run -it --rm \

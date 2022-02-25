@@ -1,5 +1,5 @@
 #!/bin/bash
-MAKEFILE=$HOME/.env/dotfiles/lib/apod.mk
+MAKEFILE=$HOME/.env/dotfiles/lib/apod/Makefile
 if [ ! -e APKBUILD ]; then
     echo "no apkbuild"
     exit 1
