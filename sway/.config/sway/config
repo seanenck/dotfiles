@@ -32,18 +32,18 @@ bindsym $mod+f floating toggle
 bindsym $mod+Shift+f fullscreen
 
 # focused view geometry
-bindsym $mod+left focus left
-bindsym $mod+down focus down
-bindsym $mod+up focus up
-bindsym $mod+right focus right
+bindsym $mod+Shift+h focus left
+bindsym $mod+Shift+j focus down
+bindsym $mod+Shift+k focus up
+bindsym $mod+Shift+l focus right
 bindsym $mod+h move left
 bindsym $mod+j move down
 bindsym $mod+k move up
 bindsym $mod+l move right
-bindsym $mod+Shift+h resize grow width 10
-bindsym $mod+Shift+l resize shrink width 10
-bindsym $mod+Shift+k resize grow height 10
-bindsym $mod+Shift+j resize shrink height 10
+bindsym $mod+Plus resize grow width 10
+bindsym $mod+Shift+Minus resize shrink width 10
+bindsym $mod+Equal resize grow height 10
+bindsym $mod+Minus resize shrink height 10
 
 #workspaces
 bindsym $mod+1 workspace number 1
