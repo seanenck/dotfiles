@@ -6,5 +6,5 @@ if [ -z "$1" ]; then
     echo "update completed"
     exit 0
 fi
-
-notmuch search $@
+mkdir -p $HOME/.mblaze
+notmuch search --output=files $@ | mseq | mscan -I
