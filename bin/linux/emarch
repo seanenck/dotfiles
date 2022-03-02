@@ -1,0 +1,10 @@
+#!/bin/bash
+rsync -avc center:store/home/archival/mail/ $HOME/store/mail
+notmuch new
+
+if [ -z "$1" ]; then
+    echo "update completed"
+    exit 0
+fi
+
+notmuch search $@
