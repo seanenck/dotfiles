@@ -49,25 +49,28 @@ def _get_leaves(workspace):
 
 
 def _load_opened():
-    windows = _get_windows()
-    indexing = []
-    idents = []
-    for idx, workspace in enumerate(windows):
-        for window_idx, window in enumerate(workspace[1]):
-            named = window.get("app_id")
-            if not named:
-                props = window.get("window_properties")
-                if props:
-                    named = props.get("class")
-            if not named:
-                named = window.get("name")
-            if not named:
-                continue
-            indexing.append((idx, window_idx))
-            idents.append("window: [{}]: {} ({})".format(workspace[0],
-                                                         named,
-                                                         window_idx))
-    return indexing, idents, windows
+    try:
+        windows = _get_windows()
+        indexing = []
+        idents = []
+        for idx, workspace in enumerate(windows):
+            for window_idx, window in enumerate(workspace[1]):
+                named = window.get("app_id")
+                if not named:
+                    props = window.get("window_properties")
+                    if props:
+                        named = props.get("class")
+                if not named:
+                    named = window.get("name")
+                if not named:
+                    continue
+                indexing.append((idx, window_idx))
+                idents.append("window: [{}]: {} ({})".format(workspace[0],
+                                                             named,
+                                                             window_idx))
+        return indexing, idents, windows
+    except:
+        return [], [], []
 
 
 def main():
