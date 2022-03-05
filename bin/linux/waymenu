@@ -6,6 +6,7 @@ import urllib.parse
 import shlex
 import subprocess
 import json
+import argparse
 
 _APPS = {"firefox": ["firefox"],
          "kitty": ["kitty"],
@@ -48,42 +49,58 @@ def _get_leaves(workspace):
     return leaves
 
 
-def _load_opened():
-    try:
-        windows = _get_windows()
-        indexing = []
-        idents = []
-        for idx, workspace in enumerate(windows):
-            for window_idx, window in enumerate(workspace[1]):
-                named = window.get("app_id")
-                if not named:
-                    props = window.get("window_properties")
-                    if props:
-                        named = props.get("class")
-                if not named:
-                    named = window.get("name")
-                if not named:
-                    continue
-                indexing.append((idx, window_idx))
-                idents.append("window: [{}]: {} ({})".format(workspace[0],
-                                                             named,
-                                                             window_idx))
-        return indexing, idents, windows
-    except:
-        return [], [], []
+def _load_opened(is_windows):
+    if is_windows:
+        try:
+            windows = _get_windows()
+            indexing = []
+            idents = []
+            for idx, workspace in enumerate(windows):
+                for window_idx, window in enumerate(workspace[1]):
+                    named = window.get("app_id")
+                    if not named:
+                        props = window.get("window_properties")
+                        if props:
+                            named = props.get("class")
+                    if not named:
+                        named = window.get("name")
+                    if not named:
+                        continue
+                    indexing.append((idx, window_idx))
+                    idents.append("window: [{}]: {} ({})".format(workspace[0],
+                                                                 named,
+                                                                 window_idx))
+            return indexing, idents, windows
+        except:
+            pass
+    return [], [], []
 
 
 def main():
     """Program entry."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", default="")
+    args = parser.parse_args()
+    if not args.mode:
+        return
+    is_windows = args.mode == "windows"
+    is_apps = args.mode == "apps"
+    if not is_windows and not is_apps:
+        return
+    window_idxs, windows, workspace_windows = _load_opened(is_windows)
     home = os.environ["HOME"]
-    window_idxs, windows, workspace_windows = _load_opened()
-    with open(os.path.join(home, ".env", "workstations", "commands.csv")) as f:
-        c = csv.DictReader(f)
-        for o in c:
-            _APPS[o["name"]] = shlex.split(o["command"])
-    keys = sorted(_APPS.keys())
-    keys += sorted(windows)
+    if is_apps:
+        with open(os.path.join(home, ".env", "workstations", "commands.csv")) as f:
+            c = csv.DictReader(f)
+            for o in c:
+                _APPS[o["name"]] = shlex.split(o["command"])
+    keys = []
+    if is_apps:
+        keys += sorted(_APPS.keys())
+    if is_windows:
+        keys += sorted(windows)
     count = str(len(keys) + 1)
+    subprocess.run(["pkill", "wofi"])
     p = subprocess.Popen(["wofi",
                           "--show",
                           "dmenu",
@@ -102,11 +119,13 @@ def main():
     chosen = o.decode().strip()
     if not chosen:
         return
-    if chosen in windows:
+    if is_windows and chosen in windows:
         selected_id = windows.index(chosen)
         idx = window_idxs[selected_id]
         con_id = workspace_windows[idx[0]][1][idx[1]].get("id")
         subprocess.Popen(["swaymsg", "[con_id={}]".format(con_id), "focus"])
+        return
+    if not is_apps:
         return
     if chosen in keys:
         subprocess.run(_APPS[chosen])
