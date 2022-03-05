@@ -8,6 +8,7 @@ import subprocess
 import json
 import argparse
 
+_MAX_WINDOW_NAME = 50
 _APPS = {"firefox": ["firefox"],
          "kitty": ["kitty"],
          "volume": ["pavucontrol"],
@@ -66,10 +67,12 @@ def _load_opened(is_windows):
                         named = window.get("name")
                     if not named:
                         continue
+                    if len(named) > _MAX_WINDOW_NAME:
+                        named = named[0:_MAX_WINDOW_NAME] + "..."
                     indexing.append((idx, window_idx))
-                    idents.append("window: [{}]: {} ({})".format(workspace[0],
-                                                                 named,
-                                                                 window_idx))
+                    idents.append("{} (ws: {}, win: {})".format(named.lower(),
+                                                                workspace[0],
+                                                                window_idx))
             return indexing, idents, windows
         except:
             pass
