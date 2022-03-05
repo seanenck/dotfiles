@@ -83,7 +83,7 @@ def main():
             _APPS[o["name"]] = shlex.split(o["command"])
     keys = sorted(_APPS.keys())
     keys += sorted(windows)
-    count = str(len(keys))
+    count = str(len(keys) + 1)
     p = subprocess.Popen(["wofi",
                           "--show",
                           "dmenu",
