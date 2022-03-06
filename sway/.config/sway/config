@@ -72,7 +72,17 @@ bindsym --release $mod+m exec volume toggle
 exec layout splith
 
 bar {
-    swaybar_command waybar
+    position top
+    # Keep in mind that the current directory of this config file is $HOME
+    status_command swaystatus
+
+    colors {
+        # Text color of status bar
+        statusline #ffffff
+        # Background of status bar
+        background #323232
+    }
+    font pango:DejaVu Sans Mono 12
 }
 
 include /etc/sway/config.d/*

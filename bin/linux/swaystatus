@@ -1,0 +1,88 @@
+#!/bin/bash
+echo '{ "version": 1 }'
+echo '[[],'
+
+_volume() {
+    local volcolor volume mode
+    mode=$(echo "$1" | tr '[:lower:]' '[:upper:]')
+    volume=$(pactl get-$1-volume @DEFAULT_$mode@ 2>/dev/null | head -n 1 | awk '{print $5}')
+    volcolor="00ff00"
+    if [ -z "$volume" ]; then
+        volcolor="ff0000"
+        volume="?"
+    else
+        if pactl get-$1-mute @DEFAULT_$mode@ 2>/dev/null | head -n 1 | grep -q "Mute: yes"; then
+            volcolor="ffff00"
+        fi
+    fi
+    echo "$volume $volcolor"
+}
+
+while : ; do
+    dated=$(date +"%Y-%m-%dT%H:%M:%S")
+    ipaddr=$(ip addr | grep "inet " | grep -v "127\.0\.0\.1" | awk '{print $2}')
+    ipcolor="ffffff"
+    if [ -z "$ipaddr" ]; then
+        ipcolor="ff0000"
+        ipaddr="no network"
+    fi
+    vol=$(_volume sink)
+    volume=$(echo "$vol" | awk '{print $1}')
+    volcolor=$(echo "$vol" | awk '{print $2}')
+    mic=$(_volume source)
+    micin=$(echo "$mic" | awk '{print $1}')
+    miccolor=$(echo "$mic" | awk '{print $2}')
+    cat << EOF
+[
+        {
+            "full_text": " volume: $volume ",
+            "background": "$volcolor",
+            "color": "000000"
+        },
+        {
+            "full_text": " input: $micin ",
+            "background": "$miccolor",
+            "color": "000000"
+        },
+        {
+            "full_text": " $ipaddr ",
+            "color": "#$ipcolor"
+        },
+        {
+            "full_text": " $dated"
+        }
+],
+EOF
+    sleep 1
+done
+#    "modules-right": ["custom/clock", "pulseaudio", "network"],
+#    "custom/clock": {
+#        "exec": "date +%Y-%m-%dT%H:%M:%S",
+#        "interval": 1
+#    },
+#    "network": {
+#        // "interface": "wlp2*", // (Optional) To force the use of this interface
+#        "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+#        "format-linked": "{ifname} (No IP) ",
+#        "format-disconnected": "Disconnected ⚠",
+#        "tooltip-format": "{ifname}: {ipaddr}/{cidr}"
+#    },
+#    "pulseaudio": {
+#        "tooltip": false,
+#        // "scroll-step": 1, // %, can be a float
+#        "format": "{volume}% {icon} {format_source}",
+#        "format-muted": " {format_source}",
+#        "format-source": "{volume}% ",
+#        "format-source-muted": "",
+#        "format-icons": {
+#            "headphone": "",
+#            "hands-free": "",
+#            "headset": "",
+#            "phone": "",
+#            "portable": "",
+#            "car": "",
+#            "default": ["", "", ""]
+#        },
+#        "on-click": "pavucontrol"
+#    }
+#}
