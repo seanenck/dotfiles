@@ -69,8 +69,6 @@ bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+m exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 exec layout splith
-for_window [class=".*"] split toggle
-for_window [app_id=".*"] split toggle
 
 bar {
     swaybar_command waybar
