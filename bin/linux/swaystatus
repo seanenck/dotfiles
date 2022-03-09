@@ -20,7 +20,7 @@ _volume() {
 
 while : ; do
     dated=$(date +"%Y-%m-%dT%H:%M:%S")
-    ipaddr=$(ip addr | grep "inet " | grep -v "127\.0\.0\.1" | awk '{print $2}')
+    ipaddr=$(ip addr | grep "inet " | grep -v "127\.0\.0\.1" | awk '{print $2}' | tr '\n' ',' | sed 's/,$//g')
     ipcolor="ffffff"
     if [ -z "$ipaddr" ]; then
         ipcolor="ff0000"
