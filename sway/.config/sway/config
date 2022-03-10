@@ -22,6 +22,7 @@ output $primary {
 
 output $second {
     transform 90
+    position 0 0
 }
 
 # process creation/removal
