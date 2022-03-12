@@ -5,9 +5,9 @@ PACKS := /opt/packages
 CONFS := $(PWD)/.abuild
 
 clean:
-	sudo rm -rf $(CONFS)
-	sudo chown -R enck:enck $(PWD)
-	sudo chown -R enck:enck $(PACKS)
+	doas rm -rf $(CONFS)
+	doas chown -R enck:enck $(PWD)
+	doas chown -R enck:enck $(PACKS)
 
 build:
 	podman build -f $(HOME)/.env/dotfiles/lib/apod/buildenv.Containerfile -t $(NAME)
