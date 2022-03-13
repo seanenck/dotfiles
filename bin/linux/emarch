@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 rsync -avc center:store/home/archival/mail/ $HOME/store/mail
 notmuch new
 

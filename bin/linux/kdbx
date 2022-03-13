@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 if [ -z "$KDBX_PASSWORD" ]; then
     echo "KDBX_PASSWORD must be set to the command to retrieve the password"
     exit 1

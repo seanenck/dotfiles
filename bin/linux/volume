@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 _is-muted() {
     local ismuted
     ismuted=$(pactl get-source-mute @DEFAULT_SOURCE@)

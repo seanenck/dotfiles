@@ -1,10 +1,4 @@
-#!/bin/bash
-
-echo "doas check"
-if ! doas echo "completed"; then
-    exit 1
-fi
+#!/usr/bin/env bash
 
 go-upgrade
 vim-plugin-upgrade
-doas apk -U upgrade
