@@ -1,4 +1,4 @@
-TARGETS := bash alpine kitty git userdirs pipewire sway
+TARGETS := vim bash kitty git userdirs sway
 
 .PHONY: $(TARGETS) machine
 
@@ -15,7 +15,7 @@ setup:
 setuplinux:
 	mkdir -p $(HOME)/.abuild
 
-linux: setuplinux common alpine userdirs pipewire sway
+linux: setuplinux common userdirs sway
 
 common: setup kitty bash vim git machine
 
