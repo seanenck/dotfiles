@@ -25,5 +25,10 @@
         pkgs.gotools
         pkgs.mblaze
         pkgs.pamixer
+        pkgs.kitty
+        pkgs.wofi
+        pkgs.swayidle
+        pkgs.swaylock
+        pkgs.wl-clipboard
     ];
 }
