@@ -1,7 +1,5 @@
 { config, pkgs, ... }:
-
 {
-
     home.username = "enck";
     home.homeDirectory = "/home/enck";
     home.stateVersion = "21.05";
