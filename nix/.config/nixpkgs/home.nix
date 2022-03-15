@@ -8,6 +8,7 @@
         pkgs.sway
         pkgs.firefox
         pkgs.git
+        pkgs.git-lfs
         pkgs.mumble
         pkgs.gnumake
         pkgs.curl
