@@ -22,6 +22,7 @@
         pkgs.keepassxc
         pkgs.go
         pkgs.gotools
+        pkgs.gopls
         pkgs.mblaze
         pkgs.pamixer
         pkgs.kitty
@@ -29,5 +30,7 @@
         pkgs.swayidle
         pkgs.swaylock
         pkgs.wl-clipboard
+        pkgs.python39Packages.python-lsp-server
+        pkgs.python39Packages.flake8
     ];
 }
