@@ -1,4 +1,4 @@
 [pager]
-    log = diff-so-fancy | less
-    diff = diff-so-fancy | less
-    show = diff-so-fancy | less
+    log = diff-highlight | less
+    diff = diff-highlight | less
+    show = diff-highlight | less

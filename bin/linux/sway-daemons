@@ -1,5 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/bash
 while : ; do
+    if ! pgrep -x pipewire > /dev/null; then
+        pipewire --config $HOME/.config/pipewire.conf &
+    fi
     if ! pgrep -x sway > /dev/null; then
         exit
     fi

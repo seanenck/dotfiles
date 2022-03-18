@@ -1,22 +1,42 @@
-#!/usr/bin/env bash
+#!/bin/bash
+_is-muted() {
+    local ismuted
+    ismuted=$(pactl get-source-mute @DEFAULT_SOURCE@)
+    if echo "$ismuted" | grep -q "Mute: yes"; then
+        echo "yes"
+    else
+        if echo "$ismuted" | grep -q "Mute: no"; then
+            echo "no"
+        else
+            echo "unknown"
+        fi
+    fi
+}
+
 if [ -z "$1" ]; then
     echo "command required"
     exit 1
 fi
 
+state=$(_is-muted)
+if [[ "$state" == "unknown" ]]; then
+    echo "state unknown"
+    exit 1
+fi
 cmd=""
 case "$1" in
     "mute")
-        cmd="-m"
+        cmd="yes"
+        ;;
+    "unmute")
+        cmd="no"
         ;;
     "toggle")
-        cmd="-t"
+        cmd="toggle"
         ;;
     *)
         echo "unknown command: $1"
         exit 1
         ;;
 esac
-for f in $(pamixer --list-sources | tail -n +2 | cut -d " " -f 1); do
-    pamixer --source $f -$cmd
-done
+pactl set-source-mute @DEFAULT_SOURCE@ $cmd

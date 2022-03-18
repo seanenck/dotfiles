@@ -1,25 +1,17 @@
-#!/usr/bin/env bash
+#!/bin/bash
 echo '{ "version": 1 }'
 echo '[[],'
 
 _volume() {
-    local volcolor volume s vol muted
-    volume=""
-    muted=1
-    for s in $(pamixer --list-$1 | tail -n +2 | cut -d " " -f 1); do
-        vol=$(pamixer --$1 $s --get-volume-human)
-        if [[ "$vol" != "muted" ]]; then
-            muted=0
-        fi
-        volume="$volume,$vol"
-    done
-    volume=$(echo "$volume" | sed 's/^,//g')
+    local volcolor volume mode
+    mode=$(echo "$1" | tr '[:lower:]' '[:upper:]')
+    volume=$(pactl get-$1-volume @DEFAULT_$mode@ 2>/dev/null | head -n 1 | awk '{print $5}')
     volcolor="00ff00"
     if [ -z "$volume" ]; then
         volcolor="ff0000"
         volume="?"
     else
-        if [ $muted -eq 1 ]; then
+        if pactl get-$1-mute @DEFAULT_$mode@ 2>/dev/null | head -n 1 | grep -q "Mute: yes"; then
             volcolor="ffff00"
         fi
     fi

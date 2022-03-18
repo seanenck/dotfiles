@@ -3,7 +3,7 @@ set $mod Mod4
 set $term kitty
 set $menu waymenu
 set $primary DP-2
-set $second DP-4
+set $second DP-1
 
 gaps outer 5px
 gaps inner 5px
