@@ -2,8 +2,8 @@ set $mod Mod4
 
 set $term kitty
 set $menu waymenu
-set $primary DP-2
-set $second DP-4
+set $primary "Goldstar Company Ltd LG HDR WQHD 0x00009A7F"
+set $second "Dell Inc. DELL U2518D YPN767AS282L"
 
 gaps outer 5px
 gaps inner 5px
