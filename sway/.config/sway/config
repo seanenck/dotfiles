@@ -91,7 +91,7 @@ exec layout splith
 bar {
     position top
     # Keep in mind that the current directory of this config file is $HOME
-    status_command swaystatus
+    status_command sway-status
 
     colors {
         # Text color of status bar
