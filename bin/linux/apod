@@ -1,9 +1,34 @@
 #!/bin/bash
-MAKEFILE=$HOME/.env/dotfiles/lib/apod/Makefile
+CONFS=$PWD/.abuild
+PACKS=/opt/packages
+CACHE=$HOME/.cache/apks
+NAME=stable
 if [ ! -e APKBUILD ]; then
     echo "no apkbuild"
     exit 1
 fi
-make -f $MAKEFILE clean
-make -f $MAKEFILE build
-make -f $MAKEFILE clean
+
+_clean() {
+    while ! doas rm -rf $CONFS; do
+        continue
+    done
+    while ! doas chown -R enck:enck $PWD; do
+        continue
+    done
+    while ! doas chown -R enck:enck $PACKS; do
+        continue
+    done
+    echo "cleanup complete"
+}
+_clean
+podman build -f $HOME/.env/dotfiles/lib/apod/buildenv.Containerfile -t $NAME
+mkdir -p $CACHE $CONFS
+cp -rL $HOME/.abuild $PWD
+podman run -it --rm \
+    -v $CONFS:$HOME/.abuild:U \
+    -v $CONFS/localpkgs.rsa.pub:/etc/apk/keys/localpkgs.rsa.pub \
+    -v $PWD:/apk:U \
+    -v $PACKS:$HOME/packages:U \
+    -v $CACHE:/etc/apk/cache \
+    $NAME bash --login
+_clean
