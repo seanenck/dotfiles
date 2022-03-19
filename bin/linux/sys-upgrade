@@ -1,9 +1,0 @@
-#!/bin/bash
-
-echo "doas check"
-if ! doas echo "completed"; then
-    exit 1
-fi
-
-vim-plugin-upgrade
-doas apk -U upgrade
