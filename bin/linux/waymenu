@@ -103,16 +103,14 @@ def main():
     if is_windows:
         keys += sorted(windows)
     count = str(len(keys) + 1)
-    subprocess.run(["pkill", "wofi"])
-    p = subprocess.Popen(["wofi",
-                          "--show",
-                          "dmenu",
-                          "-W",
-                          "20%",
-                          "-L",
+    subprocess.run(["pkill", "bemenu"])
+    p = subprocess.Popen(["bemenu",
+                          "-i",
+                          "-l",
                           count,
-                          "--style",
-                          os.path.join(home, ".config/wofi/style.css")],
+                          "-w",
+                          "-p",
+                          "{}:".format(args.mode)],
                          stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE,
                          stderr=subprocess.DEVNULL)
