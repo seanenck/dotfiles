@@ -2,6 +2,7 @@
 CONFS=$PWD/.abuild
 PACKS=/opt/packages
 CACHE=$HOME/.cache/apks
+SRCS=$HOME/.cache/apksrc
 NAME=stable
 if [ ! -e APKBUILD ]; then
     echo "no apkbuild"
@@ -9,25 +10,26 @@ if [ ! -e APKBUILD ]; then
 fi
 
 _clean() {
+    local c
     while ! doas rm -rf $CONFS; do
         continue
     done
-    while ! doas chown -R enck:enck $PWD; do
-        continue
-    done
-    while ! doas chown -R enck:enck $PACKS; do
-        continue
+    for c in $PWD $PACKS $SRCS; do
+        while ! doas chown -R enck:enck $c; do
+            continue
+        done
     done
     echo "cleanup complete"
 }
 _clean
 podman build -f $HOME/.env/dotfiles/lib/apod/buildenv.Containerfile -t $NAME
-mkdir -p $CACHE $CONFS
+mkdir -p $CACHE $CONFS $SRCS
 cp -rL $HOME/.abuild $PWD
 podman run -it --rm \
     -v $CONFS:$HOME/.abuild:U \
     -v $CONFS/localpkgs.rsa.pub:/etc/apk/keys/localpkgs.rsa.pub \
     -v $PWD:/apk:U \
+    -v $SRCS:/src:U \
     -v $PACKS:$HOME/packages:U \
     -v $CACHE:/etc/apk/cache \
     $NAME bash --login
