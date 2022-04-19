@@ -29,19 +29,11 @@ while : ; do
     vol=$(_volume sink)
     volume=$(echo "$vol" | awk '{print $1}')
     volcolor=$(echo "$vol" | awk '{print $2}')
-    mic=$(_volume source)
-    micin=$(echo "$mic" | awk '{print $1}')
-    miccolor=$(echo "$mic" | awk '{print $2}')
     cat << EOF
 [
         {
             "full_text": " volume: $volume ",
             "background": "$volcolor",
-            "color": "000000"
-        },
-        {
-            "full_text": " input: $micin ",
-            "background": "$miccolor",
             "color": "000000"
         },
         {
