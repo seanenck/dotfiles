@@ -2,22 +2,6 @@
 echo '{ "version": 1 }'
 echo '[[],'
 
-_volume() {
-    local volcolor volume mode
-    mode=$(echo "$1" | tr '[:lower:]' '[:upper:]')
-    volume=$(pactl get-$1-volume @DEFAULT_$mode@ 2>/dev/null | head -n 1 | awk '{print $5}')
-    volcolor="00ff00"
-    if [ -z "$volume" ]; then
-        volcolor="ff0000"
-        volume="?"
-    else
-        if pactl get-$1-mute @DEFAULT_$mode@ 2>/dev/null | head -n 1 | grep -q "Mute: yes"; then
-            volcolor="ffff00"
-        fi
-    fi
-    echo "$volume $volcolor"
-}
-
 while : ; do
     dated=$(date +"%Y-%m-%dT%H:%M:%S")
     ipaddr=$(ip addr | grep "inet " | grep -v "127\.0\.0\.1" | awk '{print $2}' | tr '\n' ',' | sed 's/,$//g')
@@ -26,16 +10,8 @@ while : ; do
         ipcolor="ff0000"
         ipaddr="no network"
     fi
-    vol=$(_volume sink)
-    volume=$(echo "$vol" | awk '{print $1}')
-    volcolor=$(echo "$vol" | awk '{print $2}')
     cat << EOF
 [
-        {
-            "full_text": " volume: $volume ",
-            "background": "$volcolor",
-            "color": "000000"
-        },
         {
             "full_text": " $ipaddr ",
             "color": "#$ipcolor"
