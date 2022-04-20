@@ -1,5 +1,4 @@
 [include]
-    path = ~/.machine/gitconfig
     path = ~/.env/workstations/gitconfig
 [core]
     editor = vim
@@ -39,3 +38,7 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[pager]
+    log = diff-highlight | less
+    diff = diff-highlight | less
+    show = diff-highlight | less
