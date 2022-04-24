@@ -2,7 +2,6 @@ export TERM=xterm
 export GOPATH="$HOME/.cache/go"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export XDG_RUNTIME_DIR=/tmp/$(id -u)-runtimedir
-export PATH="$GOPATH/bin:$PATH"
 
 _sway-start() {
     dbus-launch --exit-with-session sway
