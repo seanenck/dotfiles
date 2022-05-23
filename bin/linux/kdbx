@@ -68,7 +68,7 @@ case "$1" in
         ;;
     "clip")
         _entry "$2"
-        _keepass clip $DB "$2"
+        _keepass clip $DB "$2" 0 -q
         ;;
     "totp")
         _entry "$2"
