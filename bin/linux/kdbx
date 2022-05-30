@@ -37,6 +37,10 @@ _keepass() {
 mkdir -p $CACHE
 touch $HASH $PREV
 git -C $(dirname $DB) log -n 1 --format=%h > $HASH
+if [ ! -s "$LS" ]; then
+    echo 0 > $HASH
+    echo 1 > $PREV
+fi
 if ! diff -u $HASH $PREV > /dev/null; then
     _keepass ls -R -f $DB | grep -v "Recycle Bin/" | grep -v "/\$" > $LS
     mv $HASH $PREV
