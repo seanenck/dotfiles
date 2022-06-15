@@ -17,7 +17,6 @@ nmap <silent> <C-J> <Plug>(ale_next_wrap)
 let g:ale_linters = {}
 let g:ale_linters.go = ['gopls', 'revive', 'goimports', 'govet']
 let g:ale_linters.python = ['pylsp', 'pycodestyle', 'flake8', 'pydocstyle']
-let g:ale_linters.rust = ['rls', 'analyzer', 'cargo']
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
