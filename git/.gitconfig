@@ -33,11 +33,6 @@
     insteadOf = external:
 [url "gitea.voidedtech.com:internal/"]
     insteadOf = internal:
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
 [pager]
     log = diff-highlight | less
     diff = diff-highlight | less
