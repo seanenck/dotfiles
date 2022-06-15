@@ -1,9 +1,6 @@
-[include]
-    path = ~/.env/workstations/gitconfig
 [core]
     editor = vim
     autocrlf = input
-    excludesfile = ~/.gitignore_global
 [grep]
     lineNumber = true
 [log]
