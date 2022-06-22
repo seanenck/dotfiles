@@ -12,10 +12,10 @@
 [delete]>[enter]
 [enter]>[delete]
 [rwin]>[lalt]
-{rctrl}{h}>{left}
-{rctrl}{j}>{down}
-{rctrl}{k}>{up}
-{rctrl}{l}>{right}
+{rctrl}{h}>{-rwin}{left}{+rwin}
+{rctrl}{j}>{-rwin}{up}{+rwin}
+{rctrl}{k}>{-rwin}{down}{+rwin}
+{rctrl}{l}>{-rwin}{right}{+rwin}
 {rctrl}{c}>{-kp-lctrl}{kp-insert}{+kp-lctrl}
 {rctrl}{v}>{-kp-lshift}{kp-insert}{+kp-lshift}
 {rctrl}{=}>{`}
