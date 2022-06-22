@@ -16,8 +16,8 @@
 {rctrl}{j}>{down}
 {rctrl}{k}>{up}
 {rctrl}{l}>{right}
-{rctrl}{c}>{-lctrl}{-lshift}{c}{+lctrl}{+lshift}
-{rctrl}{v}>{-lctrl}{-lshift}{v}{+lctrl}{+lshift}
+{rctrl}{c}>{-kp-lctrl}{kp-insert}{+kp-lctrl}
+{rctrl}{v}>{-kp-lshift}{kp-insert}{+kp-lshift}
 {rctrl}{=}>{`}
 {lshift}{rctrl}{=}>{-lshift}{`}{+lshift}
 {rctrl}{d}>{pdown}
@@ -28,5 +28,5 @@
 {lshift}{rctrl}{0}>{-lshift}{cbrack}{+lshift}
 {rctrl}{hyphen}>{=}
 {lshift}{rctrl}{hyphen}>{-lshift}{=}{+lshift}
-{rctrl}{lshift}>{hyphen}{=}
+{lshift}{rctrl}{}>{hyphen}{=}
 {rctrl}{r}>{-lctrl}{-lshift}{h}{+lctrl}{+lshift}
