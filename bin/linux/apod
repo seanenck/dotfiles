@@ -21,9 +21,9 @@ _clean() {
     done
     echo "cleanup complete"
 }
+mkdir -p $CACHE $CONFS $SRCS
 _clean
 podman build -f $HOME/.env/dotfiles/lib/apod/buildenv.Containerfile -t $NAME
-mkdir -p $CACHE $CONFS $SRCS
 cp -rL $HOME/.abuild $PWD
 podman run -it --rm \
     -v $CONFS:$HOME/.abuild:U \
