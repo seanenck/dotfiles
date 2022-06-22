@@ -1,20 +1,6 @@
 export TERM=xterm
 export GOPATH="$HOME/.cache/go"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
-export XDG_RUNTIME_DIR=/tmp/$(id -u)-runtimedir
-
-_sway-start() {
-    dbus-launch --exit-with-session sway
-}
-
-if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-    if ! test -d $XDG_RUNTIME_DIR; then
-        mkdir $XDG_RUNTIME_DIR
-        chmod 0700 $XDG_RUNTIME_DIR
-    fi
-    _sway-start > $HOME/.cache/sway.log 2>&1 
-    exit
-fi
 
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye > /dev/null 2>&1

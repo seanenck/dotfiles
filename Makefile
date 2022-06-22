@@ -1,4 +1,4 @@
-TARGETS := vim bash kitty git userdirs sway alpine
+TARGETS := vim bash git alpine
 
 .PHONY: $(TARGETS) machine
 
@@ -13,7 +13,7 @@ setup:
 	mkdir -p $(HOME)/.vim
 	mkdir -p $(HOME)/.abuild
 
-linux: setup kitty bash vim git machine alpine userdirs sway
+linux: setup bash vim git machine alpine
 
 $(TARGETS):
 	stow --target=$(HOME) $@
