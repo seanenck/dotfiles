@@ -28,9 +28,7 @@ _uncommitted() {
     git -C "$1" branch --show-current | grep -v "master"
 }
 
-if [ -z "$PATHS" ]; then
-    _loadpaths
-fi
+_loadpaths
 
 first=1
 for p in $(echo "$PATHS" | tr ' ' '\n'); do
