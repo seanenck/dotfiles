@@ -31,7 +31,7 @@ fi
 _keepass() {
     local p
     p=$($KDBX_PASSWORD 2>/dev/null)
-    echo "$p" | /mnt/c/Program\ Files/KeePassXC/keepassxc-cli.exe $@ 2>/dev/null
+    echo "$p" | keepassxc-cli $@ 2>/dev/null
 }
 
 mkdir -p $CACHE
@@ -56,6 +56,18 @@ _entry() {
     fi
 }
 
+_diff() {
+    local p
+    p=$($KDBX_PASSWORD 2>/dev/null)
+    if [ ! -e "$KDBX_ORIGINAL" ]; then
+        echo "KDBX_ORIGINAL not set for diffing"
+    fi
+    if [ -d $(dirname $KDBX_ORIGINAL)/.git ]; then
+        git -C $(dirname $KDBX_ORIGINAL) pull
+    fi
+    printf "$p\n$p\n" | keepassxc-cli merge --dry-run $KDBX_DATABASE $KDBX_ORIGINAL
+}
+
 case "$1" in
     "ls")
         cat $LS
@@ -76,6 +88,9 @@ case "$1" in
     "totp")
         _entry "$2"
         _keepass show -t $DB "$2"
+        ;;
+    "diff")
+        _diff
         ;;
     *)
         echo "unknown command: $1"
