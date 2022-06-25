@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-PATHS=""
+PATHS="$GIT_UNCOMMIT"
 _loadpaths() {
     local option dir opt
     for option in ".env" "workspace"; do
@@ -7,7 +7,7 @@ _loadpaths() {
         if [ ! -d "$opt" ]; then
             continue
         fi
-        for dir in $(find "$opt" -mindepth 1 -maxdepth 1 -type d); do
+        for dir in $(find "$opt" -mindepth 1 -maxdepth 1 -type d | sort); do
             if [ ! -d "$dir/.git" ]; then
                 continue
             fi
@@ -28,9 +28,12 @@ _uncommitted() {
     git -C "$1" branch --show-current | grep -v "master"
 }
 
-_loadpaths
+if [ -z "$PATHS" ]; then
+    _loadpaths
+fi
+
 first=1
-for p in $(echo "$PATHS" | tr ' ' '\n' | sort); do
+for p in $(echo "$PATHS" | tr ' ' '\n'); do
     uncommit=$(_uncommitted "$p")
     if [ -n "$uncommit" ]; then
         if [ $first -eq 1 ]; then
