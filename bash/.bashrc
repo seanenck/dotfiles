@@ -20,17 +20,19 @@ export TERM=xterm-256color
 export PAGER=less
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 
-. /etc/profile
-for file in $HOME/.bashrc_local \
-            $HOME/.machine/bashrc \
-            $HOME/.bash_aliases \
-            $HOME/.machine/bash_aliases \
-            /usr/share/bash-completion/bash_completion \
-            $HOME/.machine/bash_completions; do
-    if [ -e "$file" ]; then
-        . "$file"
-    fi
-done
+if [ -z "$IS_EXTERNAL" ]; then
+    . /etc/profile
+    for file in $HOME/.bashrc_local \
+                $HOME/.machine/bashrc \
+                $HOME/.bash_aliases \
+                $HOME/.machine/bash_aliases \
+                /usr/share/bash-completion/bash_completion \
+                $HOME/.machine/bash_completions; do
+        if [ -e "$file" ]; then
+            . "$file"
+        fi
+    done
+fi
 
 PREFERPS1="(\u@\h \W)"
 if [ -z "$SSH_CONNECTION" ]; then
@@ -39,12 +41,14 @@ else
     PS1='\[\033[01;33m\]'$PREFERPS1'\[\033[0m\]> '
 fi
 
-for f in .vim/undo .vim/swap .vim/backup; do
-    h=$HOME/$f
-    if [ -d "$h" ]; then
-        find "$h" -type f -mtime +1 -delete
-    fi
-done
+if [ -z "$IS_EXTERNAL" ]; then
+    for f in .vim/undo .vim/swap .vim/backup; do
+        h=$HOME/$f
+        if [ -d "$h" ]; then
+            find "$h" -type f -mtime +1 -delete
+        fi
+    done
+fi
 
 # check the window size after each command
 shopt -s checkwinsize
