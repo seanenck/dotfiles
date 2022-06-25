@@ -1,20 +1,26 @@
 #!/usr/bin/env bash
 PATHS=""
-for option in ".env" "workspace"; do
-    if [ -d "$HOME/$option" ]; then
-        PATHS="$PATHS "$(find "$HOME/$option" -mindepth 1 -maxdepth 1 -type d)
-    fi
-done
+_loadpaths() {
+    local option dir opt
+    for option in ".env" "workspace"; do
+        opt="$HOME/$option"
+        if [ ! -d "$opt" ]; then
+            continue
+        fi
+        for dir in $(find "$opt" -mindepth 1 -maxdepth 1 -type d); do
+            if [ ! -d "$dir/.git" ]; then
+                continue
+            fi
+            origin=$(git -C "$dir" remote show)
+            if [ -z "$origin" ]; then
+                continue
+            fi
+            PATHS="$PATHS $dir"
+        done
+    done
+}
 
 _uncommitted() {
-    local origin
-    if [ ! -d "$1/.git" ]; then
-        return
-    fi
-    origin=$(git -C "$1" remote show)
-    if [ -z "$origin" ]; then
-        return
-    fi
     git -C "$1" update-index -q --refresh
     git -C "$1" diff-index --name-only HEAD --
     git -C "$1" status -sb | grep ahead
@@ -22,6 +28,7 @@ _uncommitted() {
     git -C "$1" branch --show-current | grep -v "master"
 }
 
+_loadpaths
 first=1
 for p in $(echo "$PATHS" | tr ' ' '\n' | sort); do
     uncommit=$(_uncommitted "$p")
