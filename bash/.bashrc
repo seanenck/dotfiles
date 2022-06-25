@@ -41,14 +41,12 @@ else
     PS1='\[\033[01;33m\]'$PREFERPS1'\[\033[0m\]> '
 fi
 
-if [ -z "$IS_EXTERNAL" ]; then
-    for f in .vim/undo .vim/swap .vim/backup; do
-        h=$HOME/$f
-        if [ -d "$h" ]; then
-            find "$h" -type f -mtime +1 -delete
-        fi
-    done
-fi
+for f in .vim/undo .vim/swap .vim/backup; do
+    h=$HOME/$f
+    if [ -d "$h" ]; then
+        find "$h" -type f -mtime +1 -delete
+    fi
+done
 
 # check the window size after each command
 shopt -s checkwinsize
