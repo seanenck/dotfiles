@@ -41,12 +41,16 @@ else
     PS1='\[\033[01;33m\]'$PREFERPS1'\[\033[0m\]> '
 fi
 
-for f in .vim/undo .vim/swap .vim/backup; do
-    h=$HOME/$f
+_vimclean() {
+    local h
+    h=$HOME/.vim/$f
     if [ -d "$h" ]; then
         find "$h" -type f -mtime +1 -delete
     fi
-done
+}
+_vimclean undo
+_vimclean swap
+_vimclean backup
 
 # check the window size after each command
 shopt -s checkwinsize
