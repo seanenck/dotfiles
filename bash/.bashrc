@@ -16,7 +16,6 @@ HISTFILESIZE=-1
 export VISUAL=vim
 export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
-export TERM=xterm-256color
 export PAGER=less
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 
@@ -32,6 +31,7 @@ for file in $HOME/.bashrc_local \
     fi
 done
 
+export TERM=xterm-256color
 PREFERPS1="(\u@\h \W)"
 if [ -z "$SSH_CONNECTION" ]; then
     PS1=$PREFERPS1'$ '
