@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-PATHS="$GIT_UNCOMMIT"
+PATHS=""
 _loadpaths() {
     local option dir opt
     for option in ".env" "workspace"; do

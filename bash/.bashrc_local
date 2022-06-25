@@ -2,4 +2,3 @@ export DOTFILES="$HOME/.env/dotfiles"
 export MACHINE_TYPE=$(uname -s | tr '[:upper:]' '[:lower:]')
 export PATH="$DOTFILES/bin/:$DOTFILES/bin/$MACHINE_TYPE:$PATH"
 source $HOME/.env/workstations/bashrc
-source $HOME/.env/workstations/bashrc.$MACHINE_TYPE
