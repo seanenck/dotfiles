@@ -20,19 +20,17 @@ export TERM=xterm-256color
 export PAGER=less
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 
-if [ -z "$IS_EXTERNAL" ]; then
-    . /etc/profile
-    for file in $HOME/.bashrc_local \
-                $HOME/.machine/bashrc \
-                $HOME/.bash_aliases \
-                $HOME/.machine/bash_aliases \
-                /usr/share/bash-completion/bash_completion \
-                $HOME/.machine/bash_completions; do
-        if [ -e "$file" ]; then
-            . "$file"
-        fi
-    done
-fi
+. /etc/profile
+for file in $HOME/.bashrc_local \
+            $HOME/.machine/bashrc \
+            $HOME/.bash_aliases \
+            $HOME/.machine/bash_aliases \
+            /usr/share/bash-completion/bash_completion \
+            $HOME/.machine/bash_completions; do
+    if [ -e "$file" ]; then
+        . "$file"
+    fi
+done
 
 PREFERPS1="(\u@\h \W)"
 if [ -z "$SSH_CONNECTION" ]; then

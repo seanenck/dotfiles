@@ -2,14 +2,6 @@ export TERM=xterm
 export GOPATH="$HOME/.cache/go"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 
-if [ -z "$ZELLIJ_ON" ]; then
-    if [ ! -z "$SSH_CONNECTION" ]; then
-        export ZELLIJ_ON=1
-        zellij 
-        exit
-    fi
-fi
-
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye > /dev/null 2>&1
 bck=$(find /var/cache/backups -mtime -2 | wc -l)
