@@ -28,10 +28,15 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
+pass=$($KDBX_PASSWORD 2>/dev/null)
+if [ -z "$pass" ]; then
+    echo "no password retrieved..."
+    $KDBX_PASSWORD
+    exit 1
+fi
+
 _keepass() {
-    local p
-    p=$($KDBX_PASSWORD 2>/dev/null)
-    echo "$p" | keepassxc-cli $@ 2>/dev/null
+    echo "$pass" | keepassxc-cli $@ 2>/dev/null
 }
 
 mkdir -p $CACHE
@@ -57,15 +62,13 @@ _entry() {
 }
 
 _diff() {
-    local p
-    p=$($KDBX_PASSWORD 2>/dev/null)
     if [ ! -e "$KDBX_ORIGINAL" ]; then
         echo "KDBX_ORIGINAL not set for diffing"
     fi
     if [ -d $(dirname $KDBX_ORIGINAL)/.git ]; then
         git -C $(dirname $KDBX_ORIGINAL) pull
     fi
-    printf "$p\n$p\n" | keepassxc-cli merge --dry-run $KDBX_DATABASE $KDBX_ORIGINAL
+    printf "$pass\n$pass\n" | keepassxc-cli merge --dry-run $KDBX_DATABASE $KDBX_ORIGINAL
 }
 
 case "$1" in
