@@ -1,4 +1,8 @@
 export GOPATH="$HOME/.cache/go"
+export DOTFILES="$HOME/.env/dotfiles"
+export MACHINE_TYPE=$(uname -s | tr '[:upper:]' '[:lower:]')
+export PATH="$HOME/.bin:$DOTFILES/bin/$MACHINE_TYPE:$PATH"
+source $HOME/.env/workstations/bashrc
 
 if [ -z "$TMUX" ]; then
     tmux attach || exec tmux new-session && exit

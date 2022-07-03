@@ -20,8 +20,7 @@ export PAGER=less
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 
 . /etc/profile
-for file in $HOME/.bashrc_local \
-            $HOME/.machine/bashrc \
+for file in $HOME/.machine/bashrc \
             $HOME/.bash_aliases \
             $HOME/.machine/bash_aliases \
             /usr/share/bash-completion/bash_completion \
