@@ -39,6 +39,10 @@ _keepass() {
     echo "$pass" | keepassxc-cli $@ 2>/dev/null
 }
 
+_ls() {
+    _keepass ls -R -f $DB | grep -v "Recycle Bin/" | sed 's/\r//g' | grep -v "/\$"
+}
+
 mkdir -p $CACHE
 touch $HASH $PREV
 git -C $(dirname $DB) log -n 1 --format=%h > $HASH
@@ -46,7 +50,7 @@ if [ ! -s "$LS" ]; then
     echo 1 > $PREV
 fi
 if ! diff -u $HASH $PREV > /dev/null; then
-    _keepass ls -R -f $DB | grep -v "Recycle Bin/" | sed 's/\r//g' | grep -v "/\$" > $LS
+    _ls > $LS
     mv $HASH $PREV
 fi
 
@@ -62,13 +66,24 @@ _entry() {
 }
 
 _diff() {
+    local entry same
     if [ ! -e "$KDBX_ORIGINAL" ]; then
         echo "KDBX_ORIGINAL not set for diffing"
+        exit 1
     fi
     if [ -d $(dirname $KDBX_ORIGINAL)/.git ]; then
-        git -C $(dirname $KDBX_ORIGINAL) pull
+        git -C $(dirname $KDBX_ORIGINAL) pull > /dev/null 2>&1
     fi
-    printf "$pass\n$pass\n" | keepassxc-cli merge --dry-run $KDBX_DATABASE $KDBX_ORIGINAL
+    if ! diff -u <(KDBX_DATABASE="$KDBX_ORIGINAL" _ls) <(_ls); then
+        exit 1
+    fi
+    same=0
+    for entry in $(_ls); do
+        if ! diff -u <(KDBX_DATABASE="$KDBX_ORIGINAL" _entry "$entry") <(_entry "$entry"); then
+            same=1
+        fi
+    done
+    exit $same
 }
 
 case "$1" in
