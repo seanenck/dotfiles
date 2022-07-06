@@ -24,6 +24,7 @@ mkdir -p $CACHE $CONFS
 _clean
 podman build -f $HOME/.env/dotfiles/lib/apod/buildenv.Containerfile -t $NAME
 cp -rL $HOME/.abuild $PWD
+_podmanrun() {
 podman run -it --rm \
     -v $CONFS:$HOME/.abuild:U \
     -v $CONFS/localpkgs.rsa.pub:/etc/apk/keys/localpkgs.rsa.pub \
@@ -31,5 +32,8 @@ podman run -it --rm \
     -v $PACKS:$HOME/packages:U \
     -v $CACHE:/etc/apk/cache \
     --workdir /apk \
-    $NAME abuild -r
+    $NAME $@
+}
+_podmanrun doas apk update
+_podmanrun abuild -r
 _clean
