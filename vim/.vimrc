@@ -89,7 +89,9 @@ endfor
 imap <F1> <Nop>
 
 nnoremap <C-e> :call ToggleLine()<CR>
-nnoremap <C-v> :vsplit<CR>
+nnoremap <C-u> :vsplit<CR>
+nnoremap <S-l> :wincmd l<CR>
+nnoremap <S-h> :wincmd h<CR>
 
 noremap! <Up> <Nop>
 noremap! <Down> <Nop>
