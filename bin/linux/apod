@@ -34,6 +34,6 @@ podman run -it --rm \
     --workdir /apk \
     $NAME $@
 }
-_podmanrun doas apk update
+_podmanrun doas /sbin/apk update
 _podmanrun abuild -r
 _clean
