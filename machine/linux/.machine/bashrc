@@ -3,15 +3,7 @@ export DOTFILES="$HOME/.env/dotfiles"
 export MACHINE_TYPE=$(uname -s | tr '[:upper:]' '[:lower:]')
 export PATH="$HOME/.bin:$DOTFILES/bin/$MACHINE_TYPE:$PATH"
 source $HOME/.env/workstations/bashrc
-_completions() {
-    local c
-    c="$HOME/.cache/bash_completions"
-    mkdir -p $c
-    lb bash > $c/lb.bash
-    source $c/*.bash
-}
 
-_completions
 if [ -z "$TMUX" ]; then
     tmux attach || exec tmux new-session && exit
 fi
