@@ -35,4 +35,4 @@
     diff = diff-highlight | less
     show = diff-highlight | less
 [diff "lb"]
-    textconv = lb diff
+    textconv = lb textconv
