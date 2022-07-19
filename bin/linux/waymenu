@@ -91,10 +91,12 @@ def main():
     window_idxs, windows, workspace_windows = _load_opened(is_windows)
     home = os.environ["HOME"]
     if is_apps:
-        with open(os.path.join(home, ".env", "workstations", "commands.csv")) as f:
-            c = csv.DictReader(f)
-            for o in c:
-                _APPS[o["name"]] = shlex.split(o["command"])
+        csv_path = os.path.join(home, ".env", "workstations", "commands.csv")
+        if os.path.exists(csv_path):
+            with open(csv_path) as f:
+                c = csv.DictReader(f)
+                for o in c:
+                    _APPS[o["name"]] = shlex.split(o["command"])
     keys = []
     if is_apps:
         keys += sorted(_APPS.keys())
