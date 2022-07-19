@@ -1,0 +1,7 @@
+#!/bin/bash
+while : ; do
+    if ! pgrep -x sway > /dev/null; then
+        exit
+    fi
+    sleep 1
+done
