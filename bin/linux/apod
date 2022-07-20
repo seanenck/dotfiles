@@ -69,7 +69,7 @@ _duplicates() {
         fi
     done
     if [ "${#deletes[@]}" -gt 0 ]; then
-        echo "${deletes[*]}" | tr ' ' '\n'
+        echo "${deletes[*]}" | tr ' ' '\n' | sort -u
         read -p "delete ^ packages? (y/N) " n
         if [[ "$n" == "y" ]]; then 
             for p in $(echo ${deletes[*]} | sort -u); do
