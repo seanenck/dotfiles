@@ -20,6 +20,59 @@ _clean() {
     done
     echo "cleanup complete"
 }
+_get_packages() {
+    local f bname name
+    for f in $(find /opt/packages -type f -name "*.apk"); do
+        name=$(_get_name "$f") 
+        if [ ! -z "$1" ]; then
+            if [[ "$name" == "$1" ]]; then 
+                echo "$f"
+            fi
+            continue
+        fi
+        echo "$f"
+    done
+}
+
+_get_name() {
+    basename $1 | rev | cut -d "-" -f 3- | rev
+}
+
+_ver() {
+    basename $1 | rev | cut -d "-" -f 1,2 | cut -d "." -f 2- | rev
+}
+
+_duplicates() {
+    local p name n a first other deletes cnt cmp
+    deletes=()
+    for p in $(_get_packages); do
+        name=$(_get_name $p)
+        a=()
+        for n in $(_get_packages $name); do
+            a+=($n) 
+        done
+        cnt=${#a[@]}
+        if [ "$cnt" -gt 1 ]; then
+            first="${a[0]}"
+            for other in $(seq 1 $((cnt-1))); do
+                other=${a[$other]}
+                cmp=$(apk version -t $(_ver $first) $(_ver $other))
+                case "$cmp" in
+                    ">")
+                        deletes+=($other)
+                        ;;
+                    "<")
+                        deletes+=($first)
+                        ;;
+                esac
+            done
+        fi
+    done
+    for p in $(echo ${deletes[*]} | sort -u); do
+        rm -f $p
+    done
+}
+
 mkdir -p $CACHE $CONFS
 _clean
 podman build -f $HOME/.env/dotfiles/lib/apod/buildenv.Containerfile -t $NAME
@@ -37,3 +90,4 @@ podman run -it --rm \
 _podmanrun doas /sbin/apk update
 _podmanrun abuild -r
 _clean
+_duplicates
