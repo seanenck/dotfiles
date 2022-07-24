@@ -10,6 +10,7 @@ import argparse
 
 _MAX_WINDOW_NAME = 50
 _APPS = {"firefox": ["firefox"],
+         "pcmanfm": ["pcmanfm"],
          "transfer": ["filezilla"],
          "kitty": ["kitty"]}
 
