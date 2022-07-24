@@ -31,6 +31,12 @@ let g:ale_linters.python = ['pylsp', 'pycodestyle', 'flake8', 'pydocstyle']
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 set hidden
+
+augroup termIgnore
+    autocmd!
+    autocmd TerminalOpen * set nobuflisted
+augroup END
+
 nmap <C-n> :enew<CR>
 nmap <Tab> :bn<CR>
 nmap <S-Tab> :bp<CR>
