@@ -1,3 +1,5 @@
+[include]
+    path = ~/.env/workstations/git/config
 [core]
     editor = vim
     autocrlf = input
