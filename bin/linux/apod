@@ -8,12 +8,8 @@ if [ ! -e APKBUILD ]; then
     exit 1
 fi
 
-if [ -z "$1" ]; then
-    echo "repository required"
-    exit 1
-fi
-PACKS="$REPOS/$1"
-if [ ! -d "$PACKS" ]; then
+PACKS="$REPOS/$(basename $(dirname $PWD))"
+if [ ! -d "$PACKS/x86_64" ]; then
     echo "repository does not exist"
     exit 1
 fi
@@ -112,6 +108,7 @@ podman run -it --rm \
     -v $CONFS/localpkgs.rsa.pub:/etc/apk/keys/localpkgs.rsa.pub \
     -v $PWD:/apk:U \
     -v $PACKS:$HOME/packages:U \
+    -v $REPOS/build:$HOME/buildpkgs:U \
     -v $CACHE:/etc/apk/cache \
     --workdir /apk \
     $NAME $@
