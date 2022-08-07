@@ -18,6 +18,19 @@ if [ ! -d "$PACKS" ]; then
     exit 1
 fi
 
+_pkgexists() {
+   read -p "deploy new package? (y/N) " n
+   if [[ "$n" == "y" ]]; then
+       return
+   fi
+   exit 1
+}
+
+PKGNAME=$(basename $PWD)
+if ! ls $PACKS/x86_64 | grep -q "^$PKGNAME"; then
+    _pkgexists
+fi
+
 _clean() {
     local c
     while ! doas rm -rf $CONFS; do
