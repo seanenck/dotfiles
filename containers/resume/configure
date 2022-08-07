@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+if [ -z "$HOME_ADDRESS" ]; then
+    echo "please set address"
+    exit 1
+fi
+if [ -z "$HOME_PHONE" ]; then
+    echo "please set phone"
+    exit 1
+fi
+if [ -z "$HOME_EMAIL" ]; then
+    echo "please set email"
+    exit 1
+fi
+
+PATCH="resume.patch"
+rm -f $PATCH
+if [ ! -z "$1" ]; then
+    if [[ "$1" == "work" ]]; then
+        cp $HOME/.env/workstations/work/resume.patch $PATCH
+    else
+        echo "unknown mode"
+        exit 1
+    fi
+fi
+touch $PATCH
+
+COMMIT=$(git ls-remote https://github.com/enckse/resume | grep HEAD | awk '{print $1}')
+echo "Using commit: $COMMIT"
+
+BIN=$PWD/bin
+mkdir -p $BIN
+podman build --build-arg=ADDRESS="$HOME_ADDRESS" --build-arg=PHONE="$HOME_PHONE" --build-arg=EMAIL="$HOME_EMAIL" --build-arg=COMMIT="$COMMIT" -f Containerfile -t resume
+rm -f $PATCH
+podman run --volume $BIN:/opt resume cp /src/bin/resume.pdf /opt/

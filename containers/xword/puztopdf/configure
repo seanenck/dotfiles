@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+BIN=$PWD/bin
+mkdir -p $BIN
+podman build -f Containerfile -t puztopdf
+rm -f $BIN/*.pdf
+IFS=$'\n'
+for f in $(find $BIN -type f -name "*.puz" -exec basename {} \;); do
+    echo "processing: $f"
+    podman run --volume $BIN:/opt -i --rm puztopdf ./main.js "/opt/$f"
+done

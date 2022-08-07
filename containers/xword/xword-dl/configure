@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+BIN=$PWD/bin
+mkdir -p $BIN
+DATES=$(python3 dates.py $@)
+if [ $? != 0 ]; then
+    echo "invalid dates exit code"
+    echo "$DATES"
+    exit 1
+fi
+podman build -f Containerfile -t xword
+for f in $(python3 dates.py $@); do
+    for t in usa uni; do
+        podman run --volume $BIN:/opt -i --rm xword xword-dl $t --date $f
+        sleep 0.5
+    done
+done

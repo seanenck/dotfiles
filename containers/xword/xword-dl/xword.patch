@@ -1,0 +1,11 @@
+--- /usr/lib/python3.10/site-packages/xword_dl.py
++++ xword_dl.py
+@@ -146,7 +146,7 @@
+ 
+ 
+ def parse_date(entered_date):
+-    return dateparser.parse(entered_date, settings={'PREFER_DATES_FROM':'past'})
++    return datetime.datetime.strptime(entered_date, '%Y-%m-%d')
+ 
+ 
+ def parse_date_or_exit(entered_date):
