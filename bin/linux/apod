@@ -1,10 +1,20 @@
 #!/bin/bash
 CONFS=$PWD/.abuild
-PACKS=/opt/packages
+REPOS=/opt/repositories
 CACHE=$HOME/.cache/apks
 NAME=stable
 if [ ! -e APKBUILD ]; then
     echo "no apkbuild"
+    exit 1
+fi
+
+if [ -z "$1" ]; then
+    echo "repository required"
+    exit 1
+fi
+PACKS="$REPOS/$1"
+if [ ! -d "$PACKS" ]; then
+    echo "repository does not exist"
     exit 1
 fi
 
@@ -22,7 +32,7 @@ _clean() {
 }
 _get_packages() {
     local f bname name
-    for f in $(find /opt/packages -type f -name "*.apk"); do
+    for f in $(find $PACKS -type f -name "*.apk"); do
         name=$(_get_name "$f") 
         if [ ! -z "$1" ]; then
             if [[ "$name" == "$1" ]]; then 

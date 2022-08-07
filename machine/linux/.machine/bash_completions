@@ -6,3 +6,14 @@ _git_oclone() {
         COMPREPLY=( $(compgen -W "$opts" -- "$cur") )
     fi
 }
+
+_apod() {
+    local cur opts
+    if [ "$COMP_CWORD" -eq 1 ]; then
+        cur=${COMP_WORDS[COMP_CWORD]}
+        opts=$(ls /opt/repositories)
+        COMPREPLY=( $(compgen -W "$opts" -- "$cur") )
+    fi
+}
+
+complete -F _apod -o bashdefault -o default apod
