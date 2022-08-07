@@ -24,12 +24,6 @@
     gpgSign = true
 [tag]
     gpgSign = true
-[url "git@github.com:enckse/"]
-    insteadOf = github:
-[url "gitea.voidedtech.com:external/"]
-    insteadOf = external:
-[url "gitea.voidedtech.com:internal/"]
-    insteadOf = internal:
 [pager]
     log = diff-highlight | less
     diff = diff-highlight | less

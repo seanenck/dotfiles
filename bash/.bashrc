@@ -23,8 +23,8 @@ export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 for file in $HOME/.machine/bashrc \
             $HOME/.bash_aliases \
             $HOME/.machine/bash_aliases \
-            /usr/share/bash-completion/bash_completion \
-            $HOME/.machine/bash_completions; do
+            $HOME/.machine/bash_completions \
+            /usr/share/bash-completion/bash_completion; do
     if [ -e "$file" ]; then
         . "$file"
     fi
