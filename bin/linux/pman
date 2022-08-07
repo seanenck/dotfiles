@@ -9,4 +9,4 @@ if [ ! -d "$CONTAINER" ]; then
     echo "invalid container"
     exit 1
 fi
-(cd $CONTAINER && make)
+(cd $CONTAINER && make ${@:2})
