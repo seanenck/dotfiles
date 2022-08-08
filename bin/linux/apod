@@ -108,6 +108,7 @@ podman run -it --rm \
     -v $CONFS/localpkgs.rsa.pub:/etc/apk/keys/localpkgs.rsa.pub \
     -v $PWD:/apk:U \
     -v $PACKS:$HOME/packages:U \
+    -v $REPOS/shared:$HOME/sharedpkgs:U \
     -v $REPOS/build:$HOME/buildpkgs:U \
     -v $CACHE:/etc/apk/cache \
     --workdir /apk \
