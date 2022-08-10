@@ -9,7 +9,7 @@ ifeq ($(SINCE),)
 	$(error "since required")
 endif
 	cd xword-dl && ./configure --since $(SINCE) --until $(UNTIL) --remotes $(SOURCE)
-	cp -r xword-dl/bin puztopdf/
+	rsync -avc --delete-after xword-dl/bin puztopdf/
 
 pdfs:
 	cd puztopdf && ./configure
