@@ -9,7 +9,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--since", required=True)
     p.add_argument("--until", required=True)
-    args = p.parse_args()
+    args, _ = p.parse_known_args()
     s = datetime.datetime.strptime(args.since, "%Y-%m-%d")
     u = datetime.datetime.strptime(args.until, "%Y-%m-%d")
     if u <= s:

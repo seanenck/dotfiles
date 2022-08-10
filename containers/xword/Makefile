@@ -1,5 +1,6 @@
-UNTIL := $(shell date +%Y-%m-%d)
-SINCE :=
+UNTIL  := $(shell date +%Y-%m-%d)
+SINCE  :=
+SOURCE := usa
 
 all: download pdfs
 
@@ -7,7 +8,7 @@ download:
 ifeq ($(SINCE),)
 	$(error "since required")
 endif
-	cd xword-dl && ./configure --since $(SINCE) --until $(UNTIL)
+	cd xword-dl && ./configure --since $(SINCE) --until $(UNTIL) --remotes $(SOURCE)
 	cp -r xword-dl/bin puztopdf/
 
 pdfs:
