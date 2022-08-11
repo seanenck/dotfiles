@@ -1,19 +1,16 @@
-TARGETS := vim bash kitty git userdirs sway alpine pipewire
+TARGETS := vim bash git alpine home machine
 
 .PHONY: $(TARGETS) machine
 
 default:
 	$(error please select a target to build)
 
-machine:
-	cd machine/$(shell uname -s | tr '[:upper:]' '[:lower:]') && stow --target $(HOME) .
-
 setup:
 	mkdir -p $(HOME)/.ssh
 	mkdir -p $(HOME)/.vim
 	mkdir -p $(HOME)/.abuild
 
-linux: setup kitty bash vim git machine alpine userdirs sway pipewire
+linux: setup bash vim git machine alpine
 
 $(TARGETS):
 	stow --target=$(HOME) $@
