@@ -1,6 +1,6 @@
 UNTIL  := $(shell date +%Y-%m-%d)
 SINCE  :=
-SOURCE := usa uni
+SOURCE := usa,uni
 
 all: download pdfs
 

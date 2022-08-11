@@ -98,23 +98,34 @@ _duplicates() {
     fi
 }
 
+errors=""
 mkdir -p $CACHE $CONFS
 _clean
 podman build -f $HOME/.env/dotfiles/lib/apod/buildenv.Containerfile -t $NAME
 cp -rL $HOME/.abuild $PWD
 _podmanrun() {
-podman run -it --rm \
-    -v $CONFS:$HOME/.abuild:U \
-    -v $CONFS/localpkgs.rsa.pub:/etc/apk/keys/localpkgs.rsa.pub \
-    -v $PWD:/apk:U \
-    -v $PACKS:$HOME/packages:U \
-    -v $REPOS/shared:$HOME/sharedpkgs:U \
-    -v $REPOS/build:$HOME/buildpkgs:U \
-    -v $CACHE:/etc/apk/cache \
-    --workdir /apk \
-    $NAME $@
+    podman run -it --rm \
+        -v $CONFS:$HOME/.abuild:U \
+        -v $CONFS/localpkgs.rsa.pub:/etc/apk/keys/localpkgs.rsa.pub \
+        -v $PWD:/apk:U \
+        -v $PACKS:$HOME/packages:U \
+        -v $REPOS/shared:$HOME/sharedpkgs:U \
+        -v $REPOS/build:$HOME/buildpkgs:U \
+        -v $CACHE:/etc/apk/cache \
+        --workdir /apk \
+        $NAME $@
+    if [ $? -ne 0 ]; then
+        errors="$errors$@ "
+    fi
 }
 _podmanrun doas /sbin/apk update
 _podmanrun abuild -r
 _clean
 _duplicates
+if [ -n "$errors" ]; then
+    echo
+    echo "ERROR:"
+    echo "  -> $errors"
+    echo
+    exit 1
+fi
