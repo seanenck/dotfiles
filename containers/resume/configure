@@ -31,4 +31,4 @@ BIN=$PWD/bin
 mkdir -p $BIN
 podman build --build-arg=ADDRESS="$HOME_ADDRESS" --build-arg=PHONE="$HOME_PHONE" --build-arg=EMAIL="$HOME_EMAIL" --build-arg=COMMIT="$COMMIT" -f Containerfile -t resume
 rm -f $PATCH
-podman run --volume $BIN:/opt resume cp /src/bin/resume.pdf /opt/
+podman run --rm --volume $BIN:/opt resume cp /src/bin/resume.pdf /opt/
