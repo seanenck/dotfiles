@@ -1,4 +1,4 @@
-TARGETS := vim bash git alpine home machine
+TARGETS := vim bash git home machine
 
 .PHONY: $(TARGETS) machine
 
@@ -10,7 +10,7 @@ setup:
 	mkdir -p $(HOME)/.vim
 	mkdir -p $(HOME)/.abuild
 
-linux: setup bash vim git machine alpine
+linux: setup bash vim git machine
 
 $(TARGETS):
 	stow --target=$(HOME) $@
