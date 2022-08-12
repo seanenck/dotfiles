@@ -37,9 +37,14 @@ _clean() {
             continue
         done
     done
-    echo "cleanup complete"
-    _duplicates
 }
+
+_cleanup() {
+    _clean
+    _duplicates
+    echo "cleanup complete"
+}
+
 _get_packages() {
     local f bname name
     for f in $(find $PACKS -type f -name "*.apk"); do
@@ -117,7 +122,7 @@ _podmanrun() {
         --workdir /apk \
         $NAME $@
     if [ $? -ne 0 ]; then
-        _clean
+        _cleanup
         echo "^ error encountered"
         exit 1
     fi
@@ -126,4 +131,4 @@ _podmanrun doas /sbin/apk update
 _podmanrun abuild sanitycheck
 _podmanrun abuild verify
 _podmanrun abuild -r
-_clean
+_cleanup
