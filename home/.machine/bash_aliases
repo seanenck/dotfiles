@@ -5,5 +5,5 @@ gomod-update() {
 }
 
 mutt() {
-    /usr/bin/mutt -F $HOME/.env/workstations/mail/muttrc
+    /usr/bin/mutt -F $HOME/.env/local/mail/muttrc
 }

@@ -16,7 +16,7 @@ PATCH="resume.patch"
 rm -f $PATCH
 if [ ! -z "$1" ]; then
     if [[ "$1" == "work" ]]; then
-        cp $HOME/.env/workstations/work/resume.patch $PATCH
+        cp $HOME/.env/local/work/resume.patch $PATCH
     else
         echo "unknown mode"
         exit 1
