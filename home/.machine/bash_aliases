@@ -3,3 +3,7 @@ gomod-update() {
     go get -u ./...
     go mod tidy
 }
+
+mutt() {
+    /usr/bin/mutt -F $HOME/.env/workstations/mail/muttrc
+}
