@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CONTAINERS=$HOME/.env/dotfiles/containers/
+CONTAINERS=$HOME/.env/dotfiles/lib/containers/
 if [ -z "$1" ]; then
     echo "container required"
     exit 1
