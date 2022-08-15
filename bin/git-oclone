@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 CACHE=$HOME/.cache/gitcc
-OVERRIDE=$HOME/.env/local/git/
+OVERRIDE=$HOME/.env/local/lib/git/
 mkdir -p $CACHE
 if [ -z "$1" ]; then
     echo "remote required"

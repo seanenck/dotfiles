@@ -95,7 +95,7 @@ def main():
     window_idxs, windows, workspace_windows = _load_opened(is_windows)
     home = os.environ["HOME"]
     if is_apps:
-        csv_path = os.path.join(home, ".env", "local", "commands.csv")
+        csv_path = os.path.join(home, ".env", "local", "lib", "commands.csv")
         if os.path.exists(csv_path):
             with open(csv_path) as f:
                 c = csv.DictReader(f)
