@@ -1,0 +1,143 @@
+#!/usr/bin/env python3
+"""Menu helper."""
+import csv
+import os
+import urllib.parse
+import shlex
+import subprocess
+import json
+import argparse
+
+_MAX_WINDOW_NAME = 50
+_APPS = {"firefox": ["firefox"],
+         "pcmanfm": ["pcmanfm"],
+         "transfer": ["filezilla"],
+         "volume": ["pavucontrol"],
+         "vlc": ["vlc"],
+         "kitty": ["kitty"]}
+
+
+def _get_windows():
+    p = subprocess.Popen(["swaymsg", "-t", "get_tree"],
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE)
+    o, e = p.communicate()
+    if e is not None and e != b'':
+        return []
+    windows = []
+    j = json.loads(o)
+    for output in j["nodes"]:
+        if output.get("type") == "output":
+            workspaces = output.get("nodes")
+            for workspace in workspaces:
+                if workspace.get("type") == "workspace":
+                    windows.append((workspace.get("num"),
+                                   _get_nodes(workspace)))
+    return windows
+
+
+def _get_nodes(workspace):
+    nodes = workspace.get("floating_nodes")
+    nodes.extend(_get_leaves(workspace))
+    return nodes
+
+
+def _get_leaves(workspace):
+    leaves = []
+    for node in workspace.get("nodes"):
+        if len(node.get("nodes")):
+            leaves.extend(_get_nodes(node))
+        else:
+            leaves.append(node)
+    return leaves
+
+
+def _load_opened(is_windows):
+    if is_windows:
+        try:
+            windows = _get_windows()
+            indexing = []
+            idents = []
+            for idx, workspace in enumerate(windows):
+                for window_idx, window in enumerate(workspace[1]):
+                    named = window.get("app_id")
+                    if not named:
+                        props = window.get("window_properties")
+                        if props:
+                            named = props.get("class")
+                    if not named:
+                        named = window.get("name")
+                    if not named:
+                        continue
+                    if len(named) > _MAX_WINDOW_NAME:
+                        named = named[0:_MAX_WINDOW_NAME] + "..."
+                    indexing.append((idx, window_idx))
+                    idents.append("{} (ws: {}, win: {})".format(named.lower(),
+                                                                workspace[0],
+                                                                window_idx))
+            return indexing, idents, windows
+        except:
+            pass
+    return [], [], []
+
+
+def main():
+    """Program entry."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", default="")
+    args = parser.parse_args()
+    if not args.mode:
+        return
+    is_windows = args.mode == "windows"
+    is_apps = args.mode == "apps"
+    if not is_windows and not is_apps:
+        return
+    window_idxs, windows, workspace_windows = _load_opened(is_windows)
+    home = os.environ["HOME"]
+    if is_apps:
+        csv_path = os.path.join(home, ".env", "local", "commands.csv")
+        if os.path.exists(csv_path):
+            with open(csv_path) as f:
+                c = csv.DictReader(f)
+                for o in c:
+                    _APPS[o["name"]] = shlex.split(o["command"])
+    keys = []
+    if is_apps:
+        keys += sorted(_APPS.keys())
+    if is_windows:
+        keys += sorted(windows)
+    count = str(len(keys) + 1)
+    subprocess.run(["pkill", "bemenu"])
+    p = subprocess.Popen(["bemenu",
+                          "-i",
+                          "-l",
+                          count,
+                          "-w",
+                          "-p",
+                          "{}:".format(args.mode)],
+                         stdin=subprocess.PIPE,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.DEVNULL)
+    for k in keys:
+        p.stdin.write((k + "\n").encode())
+    o, _ = p.communicate()
+    chosen = o.decode().strip()
+    if not chosen:
+        return
+    if is_windows and chosen in windows:
+        selected_id = windows.index(chosen)
+        idx = window_idxs[selected_id]
+        con_id = workspace_windows[idx[0]][1][idx[1]].get("id")
+        subprocess.Popen(["swaymsg", "[con_id={}]".format(con_id), "focus"])
+        return
+    if not is_apps:
+        return
+    if chosen in keys:
+        subprocess.run(_APPS[chosen])
+        return
+    parsed = urllib.parse.quote(chosen)
+    subprocess.run(["firefox", "https://duckduckgo.com?q={}".format(parsed)])
+
+
+if __name__ == "__main__":
+    main()
