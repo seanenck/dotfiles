@@ -1,7 +1,7 @@
 if has("autocmd")
     autocmd BufNewFile,BufRead *.md setlocal spell
     autocmd BufNewFile,BufRead *.txt setlocal spell
-    autocmd BufNewFile,BufRead /tmp/mutt* set noautoindent filetype=mail wm=0 tw=78 nonumber digraph nolist
+    autocmd BufNewFile,BufRead /tmp/mutt* set noautoindent filetype=mail wm=0 tw=78 nonumber nolist
     autocmd BufNewFile,BufRead /tmp/mutt* setlocal spell
 endif
 
