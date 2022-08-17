@@ -17,7 +17,8 @@ if [ -d $OVERRIDE ]; then
     fi
 fi
 NAME=$(basename $1 | rev | cut -d ":" -f 1 | rev)
-git clone "$CLONE" $NAME
-if [ -n "$CONFIG" ]; then
-    cat $CONFIG >> $NAME/.git/config
+if git clone "$CLONE" $NAME; then
+    if [ -n "$CONFIG" ]; then
+        cat $CONFIG >> $NAME/.git/config
+    fi
 fi
