@@ -6,5 +6,5 @@ gomod-update() {
 
 mutt() {
     mkdir -p $HOME/.mail/{body,headers}/
-    /usr/bin/mutt
+    mail
 }
