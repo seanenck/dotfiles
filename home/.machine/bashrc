@@ -1,5 +1,4 @@
-export DOTFILES="$HOME/.env/dotfiles"
-export PATH="$DOTFILES/bin:$PATH"
+export PATH="$HOME/.env/dotfiles/bin:$PATH"
 source $HOME/.env/local/lib/bashrc
 export GOPATH="$HOME/.cache/go"
 export XDG_RUNTIME_DIR=/tmp/$(id -u)-runtimedir
