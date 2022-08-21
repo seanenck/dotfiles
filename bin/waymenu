@@ -134,7 +134,9 @@ def main():
     if not is_apps:
         return
     if chosen in keys:
-        subprocess.run(_APPS[chosen])
+        e = os.environ
+        e["WAYMENU"] = "1"
+        subprocess.run(_APPS[chosen], env=e)
         return
     parsed = urllib.parse.quote(chosen)
     subprocess.run(["firefox", "https://duckduckgo.com?q={}".format(parsed)])
