@@ -139,7 +139,9 @@ def main():
         subprocess.run(_APPS[chosen], env=e)
         return
     parsed = urllib.parse.quote(chosen)
-    subprocess.run(["firefox", "https://duckduckgo.com?q={}".format(parsed)])
+    subprocess.run(["firefox",
+                    "--new-window",
+                    "https://duckduckgo.com?q={}".format(parsed)])
 
 
 if __name__ == "__main__":
