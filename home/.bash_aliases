@@ -2,4 +2,4 @@
 alias diff="diff -u"
 alias ls='ls --color=auto'
 alias grep="rg"
-alias vi="vim"
+alias vim="vi"
