@@ -2,3 +2,5 @@ theme = "monokai"
 
 [editor]
 mouse = false
+middle-click-paste = false
+auto-pairs = false
