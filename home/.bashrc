@@ -13,7 +13,7 @@ shopt -s direxpand
 HISTSIZE=-1
 HISTFILESIZE=-1
 
-export VISUAL=hx
+export VISUAL=vim
 export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
 export PAGER=less
@@ -37,6 +37,17 @@ if [ -z "$SSH_CONNECTION" ]; then
 else
     PS1='\[\033[01;33m\]'$PREFERPS1'\[\033[0m\]> '
 fi
+
+_vimclean() {
+    local h
+    h=$HOME/.vim/$f
+    if [ -d "$h" ]; then
+        find "$h" -type f -mtime +1 -delete
+    fi
+}
+_vimclean undo
+_vimclean swap
+_vimclean backup
 
 # check the window size after each command
 shopt -s checkwinsize

@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-alias vim=hx
 gomod-update() {
     go get -u ./...
     go mod tidy
