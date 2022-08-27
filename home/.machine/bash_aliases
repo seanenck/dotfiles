@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-vim() {
-    echo "no vim..."
-}
-
+alias vim=hx
 gomod-update() {
     go get -u ./...
     go mod tidy
