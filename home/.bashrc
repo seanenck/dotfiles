@@ -13,7 +13,7 @@ shopt -s direxpand
 HISTSIZE=-1
 HISTFILESIZE=-1
 
-export VISUAL=vim
+export VISUAL=vi
 export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
 export PAGER=less
