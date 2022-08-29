@@ -3,11 +3,16 @@ if [ -z "$1" ]; then
     echo "no file given"
     exit 1
 fi
-for f in $(echo $@ | tr ' ' '\n' | sort -u); do
-    if [[ "$f" = /* ]]; then
-        path="$f"
-    else
-        path="$PWD/$f"
-    fi
-    kitty @ launch --type=tab --tab-title "$f" /usr/bin/hx $path
-done
+
+_hx() {
+    for f in $(echo $@ | tr ' ' '\n' | sort -u); do
+        if [[ "$f" = /* ]]; then
+            path="$f"
+        else
+            path="$PWD/$f"
+        fi
+        kitty @ launch --type=tab --tab-title "$f" /usr/bin/hx $path
+    done
+}
+
+_hx "$@" > /dev/null
