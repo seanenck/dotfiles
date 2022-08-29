@@ -15,7 +15,7 @@ _APPS = {"firefox": ["firefox", "--new-window"],
          "volume": ["pavucontrol"],
          "mail": ["mail"],
          "vlc": ["vlc"],
-         "kitty": ["kitty"]}
+         "terminal": ["kitty"]}
 
 
 def _get_windows():
