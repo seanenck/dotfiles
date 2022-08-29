@@ -2,4 +2,5 @@
 alias diff="diff -u"
 alias ls='ls --color=auto'
 alias grep="rg"
-alias vi="hx"
+alias vi="helix"
+alias hx="helix"

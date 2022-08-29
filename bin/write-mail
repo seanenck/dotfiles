@@ -3,5 +3,5 @@ if [ -z "$1" ]; then
 	echo "no file given"
 	exit 1
 fi
-hx $@
+/usr/bin/hx $@
 aspell -c $@
