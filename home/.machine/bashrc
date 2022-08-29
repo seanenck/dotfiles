@@ -16,17 +16,6 @@ if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     exit
 fi
 
-_vimclean() {
-    local h
-    h=$HOME/.vim/$f
-    if [ -d "$h" ]; then
-        find "$h" -type f -mtime +1 -delete
-    fi
-}
-_vimclean undo
-_vimclean swap
-_vimclean backup
-
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye > /dev/null 2>&1
 bck=$(find /var/cache/backups -mtime -2 | wc -l)

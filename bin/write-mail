@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+if [ -z "$1" ]; then
+	echo "no file given"
+	exit 1
+fi
+hx $@
+aspell -c $@

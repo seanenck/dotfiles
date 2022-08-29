@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-alias vi=vim
+alias vi=hx
 gomod-update() {
     go get -u ./...
     go mod tidy
