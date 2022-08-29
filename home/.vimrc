@@ -4,15 +4,57 @@ set noautoindent
 set background=dark
 set nowrap
 set whichwrap=b,s,<,>,[,]
-let machinedir = expand($HOME . '/.machine/vimrc')
-if filereadable(machinedir)
-    exec 'source' machinedir
+
+if has("autocmd")
+    autocmd BufNewFile,BufRead *.md setlocal spell
+    autocmd BufNewFile,BufRead *.txt setlocal spell
+    autocmd BufNewFile,BufRead /tmp/mutt* set noautoindent filetype=mail wm=0 tw=78 nonumber nolist
+    autocmd BufNewFile,BufRead /tmp/mutt* setlocal spell
 endif
+
+set termwinkey=<C-t>
+set termwinsize=20x0
+func NewTerminal()
+    let bufs=filter(range(1, bufnr('$')), 'bufexists(v:val) && '.
+                                      \'getbufvar(v:val, "&buftype") == "terminal"')
+    if empty(bufs)
+        :botright terminal
+    else
+        :call win_gotoid(get(win_findbuf(bufs[0]), 0))
+    endif
+endfunction
+nnoremap <C-t> :call NewTerminal()<CR>
+tnoremap <ESC> <C-w>exit<CR>
+let g:ale_completion_enabled = 1
+set omnifunc=syntaxcomplete#Complete
+set completeopt=noinsert
+let g:ale_set_highlights = 0
+let g:ale_sign_column_always = 1
+nmap <silent> <C-F> <Plug>(ale_find_references)
+nmap <silent> <C-G> <Plug>(ale_go_to_definition)
+nmap <silent> <C-H> <Plug>(ale_previous_wrap)
+nmap <silent> <C-J> <Plug>(ale_next_wrap)
+let g:ale_linters = {}
+let g:ale_linters.go = ['gopls', 'revive', 'goimports', 'govet']
+let g:ale_linters.python = ['pylsp', 'pycodestyle', 'flake8', 'pydocstyle']
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+set hidden
+
+augroup termIgnore
+    autocmd!
+    autocmd TerminalOpen * set nobuflisted
+augroup END
+
+nmap <C-n> :enew<CR>
+nmap <Tab> :bn<CR>
+nmap <S-Tab> :bp<CR>
+nmap <C-w> :bp <BAR> bd #<CR>
 
 if has("mouse_sgr")
     set ttymouse=sgr
 endif
-
 
 function ToggleLine()
     if &colorcolumn == 81
