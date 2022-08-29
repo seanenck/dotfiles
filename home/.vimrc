@@ -3,7 +3,7 @@ set confirm
 set noautoindent
 set background=dark
 set nowrap
-set whichwrap=b,s,<,>,[,]
+set whichwrap=b,s,<,>,[,],h,l
 
 if has("autocmd")
     autocmd BufNewFile,BufRead *.md setlocal spell
@@ -151,7 +151,5 @@ noremap <S-Up> <Nop>
 noremap <S-Down> <Nop>
 noremap <S-Left> <Nop>
 noremap <S-Right> <Nop>
-
-let loaded_netrwPlugin = 1
 
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
