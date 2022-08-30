@@ -7,5 +7,7 @@ auto-pairs = false
 
 [keys.normal]
 C-c = "yank_main_selection_to_clipboard"
+esc = "exit_select_mode"
 [keys.select]
 C-c = "yank_main_selection_to_clipboard"
+esc = "exit_select_mode"
