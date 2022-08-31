@@ -13,17 +13,3 @@ let g:ale_completion_enabled = 1
 " Airline settings
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-
-" Open at last spot in line. from defaults.vim
-augroup remember_position
-    autocmd!
-    autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-augroup END
-
-" Spelling/line wrapping defaults
-augroup text_files
-    autocmd!
-    autocmd BufRead,BufNewFile *.md,*.txt setlocal textwidth=80 spell
-    autocmd BufNewFile,BufRead /tmp/mutt* set noautoindent filetype=mail wm=0 tw=80 nonumber nolist
-    autocmd BufNewFile,BufRead /tmp/mutt* setlocal spell
-augroup END
