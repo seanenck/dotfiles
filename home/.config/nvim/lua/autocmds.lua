@@ -7,6 +7,7 @@ vim.api.nvim_create_autocmd({ "BufReadPost" }, {
     end,
 })
 
+-- Text spelling
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     pattern = { "*.md", "*.txt" },
     callback = function()
@@ -14,6 +15,7 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     end
 })
 
+-- Emails
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     pattern = { "/tmp/mutt*" },
     callback = function()
