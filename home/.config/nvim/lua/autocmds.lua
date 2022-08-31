@@ -11,7 +11,8 @@ vim.api.nvim_create_autocmd({ "BufReadPost" }, {
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     pattern = { "*.md", "*.txt" },
     callback = function()
-        vim.api.nvim_exec("setlocal textwidth=80 spell", false)
+        vim.opt_local.textwidth = 80
+        vim.opt_local.spell = true
     end
 })
 
@@ -19,6 +20,10 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     pattern = { "/tmp/mutt*" },
     callback = function()
-        vim.api.nvim_exec("setlocal spell filetype=mail wm=0 textwidth=80 nonumber nolist", false)
+        vim.opt_local.textwidth = 80
+        vim.opt_local.spell = true
+        vim.opt_local.list = false
+        vim.opt_local.filetype = "mail"
+        vim.opt_local.wrapmargin = 0
     end
 })
