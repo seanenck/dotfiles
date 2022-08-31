@@ -12,6 +12,7 @@ EOF
 
 " Options
 set background=dark
+set completeopt=noinsert
 set confirm
 set expandtab
 set mouse=a
@@ -20,6 +21,7 @@ set noerrorbells
 set novisualbell
 set nowrap
 set number
+set omnifunc=syntaxcomplete#Complete
 set shiftwidth=4
 set smartcase
 set smartindent
@@ -65,9 +67,11 @@ noremap <S-Right> <Nop>
 " Buffer/airline/tab movements
 nnoremap <C-l> :bn<CR>
 nnoremap <C-h> :bp<CR>
-nmap <C-w> :bp <BAR> bd #<CR>
+nnoremap <C-w> :bp <BAR> bd #<CR>
 nnoremap <C-k> :vsplit<CR>
 nnoremap <C-j> :close<CR>
+nnoremap <S-l> :wincmd l<CR>
+nnoremap <S-h> :wincmd h<CR>
 
 " ToggleTerm
 nmap <C-t> :ToggleTerm direction=float<CR>
@@ -79,6 +83,7 @@ let g:ale_sign_column_always = 1
 let g:ale_linters = {}
 let g:ale_linters.go = ['gopls', 'revive', 'goimports', 'govet']
 let g:ale_linters.python = ['pylsp', 'pycodestyle', 'flake8', 'pydocstyle']
+let g:ale_completion_enabled = 1
 
 " Airline settings
 let g:airline#extensions#tabline#enabled = 1
