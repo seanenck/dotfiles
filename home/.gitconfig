@@ -1,5 +1,5 @@
 [core]
-    editor = /usr/bin/hx 
+    editor = nvim 
     autocrlf = input
 [grep]
     lineNumber = true
