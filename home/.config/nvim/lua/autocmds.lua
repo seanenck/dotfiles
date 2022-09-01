@@ -27,3 +27,11 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
         vim.opt_local.wrapmargin = 0
     end
 })
+
+-- Go
+vim.api.nvim_create_autocmd({"Filetype"}, {
+    pattern = { "go" },
+    callback = function()
+        vim.opt_local.expandtab = false
+    end
+})
