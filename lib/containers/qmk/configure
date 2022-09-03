@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+BIN=$PWD/bin
+mkdir -p $BIN
+cp $HOME/.env/dotfiles/lib/keyboards/qmk/keymap.json $BIN/qmk.json
+podman build --volume $HOME/.cache/qmk:/root/qmk -f Containerfile -t qmkcli
+podman run --rm --volume $BIN:/opt qmkcli cp /src/personal.hex /opt/keymap.bin

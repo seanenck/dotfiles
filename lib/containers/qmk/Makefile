@@ -1,0 +1,4 @@
+OPTS :=
+
+all:
+	./configure $(OPTS)
