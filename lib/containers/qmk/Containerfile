@@ -3,10 +3,10 @@ FROM alpine:edge
 RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk add --no-cache qmk-cli@testing git py3-pip make gcc-avr avr-libc
 WORKDIR /src
-COPY bin/qmk.json /src/qmk.json
 RUN qmk setup --yes -H /root/qmk/qmk_firmware
 RUN python3 -m pip install -r /root/qmk/qmk_firmware/requirements.txt
 RUN mkdir -p /root/qmk/qmk_firmware/keyboards/keebio/iris/keymaps/personal
+COPY keymap.json /src/qmk.json
 RUN qmk json2c qmk.json > /root/qmk/qmk_firmware/keyboards/keebio/iris/keymaps/personal/keymap.c
 RUN qmk compile -kb keebio/iris/rev6 -km personal
 RUN cp /root/qmk/qmk_firmware/keebio_iris_rev6_personal.hex personal.hex
