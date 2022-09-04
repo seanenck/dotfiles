@@ -3,7 +3,7 @@ BIN=$PWD/bin
 CACHE=$HOME/.cache/qmk
 mkdir -p $BIN
 FIRMWARE=$CACHE/qmk_firmware
-if [ ! -d $CACHE ]; then
+if [ ! -d $FIRMWARE ]; then
     git clone --recurse-submodules "https://github.com/qmk/qmk_firmware/" $FIRMWARE
 fi
 git -C $FIRMWARE pull
