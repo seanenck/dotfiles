@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 BIN=$PWD/bin
+CACHE=$HOME/.cache/qmk
 mkdir -p $BIN
-podman build --volume $HOME/.cache/qmk:/root/qmk -f Containerfile -t qmkcli
+FIRMWARE=$CACHE/qmk_firmware
+if [ ! -d $CACHE ]; then
+    git clone --recurse-submodules "https://github.com/qmk/qmk_firmware/" $FIRMWARE
+fi
+git -C $FIRMWARE pull
+rsync -avc -delete-after $FIRMWARE $BIN
+podman build -f Containerfile -t qmkcli
 podman run --rm --volume $BIN:/opt qmkcli cp /src/personal.hex /opt/keymap.bin
