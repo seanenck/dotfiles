@@ -50,7 +50,7 @@
       "KC_V",
       "KC_B",
       "KC_LGUI",
-      "KC_RALT",
+      "KC_APP",
       "KC_N",
       "KC_M",
       "KC_COMM",
@@ -60,9 +60,9 @@
       "KC_LSFT",
       "KC_BSPC",
       "KC_ENT",
-      "MO(1)",
       "KC_SPC",
-      "KC_SPC"
+      "MO(1)",
+      "KC_RALT"
     ],
     [
       "KC_GRV",
