@@ -20,13 +20,13 @@ for _, cursor in ipairs({"<Up>", "<Down>", "<Left>", "<Right>", "<S-Up>", "<S-Do
 end
 
 -- Buffer/split movements
-nmap("<C-l>", " :bn<CR>")
-nmap("<C-h>", " :bp<CR>")
-nmap("<C-w>", " :bp <BAR> bd #<CR>")
-nmap("<C-k>", " :vsplit<CR>")
-nmap("<C-j>", " :close<CR>")
-nmap("<S-l>", " :wincmd l<CR>")
-nmap("<S-h>", " :wincmd h<CR>")
+nmap("<C-l>", ":bprevious<CR>")
+nmap("<C-h>", ":bprevious<CR>")
+nmap("<C-w>", ":bprevious <BAR> bd #<CR>")
+nmap("<C-k>", ":vsplit<CR>")
+nmap("<C-j>", ":close<CR>")
+nmap("<S-l>", ":wincmd l<CR>")
+nmap("<S-h>", ":wincmd h<CR>")
 
 -- Terminal
 tmap("<ESC>", " exit<CR>")
