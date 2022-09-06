@@ -14,25 +14,19 @@ fi
 
 BIN=$PWD/bin
 _clean() {
-    rm -f $BIN/*.patch $BIN/*.resume
+    rm -f $BIN/*.patch $BIN/resume.*
 }
 
-SCRIPT="$BIN/make.resume"
-RESUME="bin/resume.pdf"
 mkdir -p $BIN
 _clean
 cp $HOME/.env/local/lib/work/resume.patch $BIN/work.patch
+cp resume.sh $BIN/resume.sh
 {
-    echo "#!/bin/sh"
-    echo "make ADDRESS=\"$HOME_ADDRESS\" PHONE=\"$HOME_PHONE\" EMAIL=\"$HOME_EMAIL\""
-    echo "test -s $RESUME || exit 1"
-    echo "if ! mv $RESUME /opt/\$1.pdf; then"
-    echo "    exit 1"
-    echo "fi"
-    echo "exit 0"
-} > $SCRIPT
+    echo "export ADDRESS=\"$HOME_ADDRESS\""
+    echo "export PHONE=\"$HOME_PHONE\""
+    echo "export EMAIL=\"$HOME_EMAIL\""
+} > $BIN/resume.env
 
-chmod 755 $SCRIPT
 COMMIT=$(git ls-remote https://github.com/enckse/resume | grep HEAD | awk '{print $1}')
 echo "Using commit: $COMMIT"
 
