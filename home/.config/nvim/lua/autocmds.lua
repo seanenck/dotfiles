@@ -45,3 +45,12 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
         end
     end,
 })
+
+-- Syntax for gxs
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+    pattern = { "*.gxs" },
+    callback = function()
+        vim.opt_local.ft = "gxs"
+        vim.opt_local.syntax = "gxs"
+    end,
+})
