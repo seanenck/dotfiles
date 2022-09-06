@@ -34,3 +34,14 @@ vim.api.nvim_create_autocmd({"Filetype"}, {
         vim.opt_local.expandtab = false
     end
 })
+
+-- Stop writing of some buffer names to file
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+    pattern = { "*" },
+    callback = function(vars)
+        local f = vars["file"]
+        if f == "1" or f == "1q" then
+            os.execute("rm -f 1 1q")
+        end
+    end,
+})
