@@ -1,7 +1,7 @@
 vim.fn['plug#begin'](vim.fn.stdpath('data') .. '/plugged') 
 vim.fn['plug#']('dense-analysis/ale')
 vim.fn['plug#']('akinsho/toggleterm.nvim', 'v2.*')
-vim.fn['plug#']('vim-airline/vim-airline')
+vim.fn['plug#']('ojroques/nvim-hardline')
 vim.fn['plug#end']()    
 
 require("toggleterm").setup{}
@@ -22,6 +22,6 @@ vim.g.ale_completion_enabled = 1
 override_linters("py", {["python"] = {"pylsp", "pycodestyle", "flake8", "pydocstyle"}})
 override_linters("go", {["go"] = {"gopls", "revive", "govet"}}) 
 
--- Airline settings
-vim.g.airline_extensions = {"tabline"}
-vim.g.airline_extensions["tabline"] = {["formatter"] = "unique_tail_improved"}
+require('hardline').setup {
+    bufferline = true
+}
