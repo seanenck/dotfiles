@@ -9,7 +9,6 @@ RUN mv /resume/resume-* /src
 
 WORKDIR /src
 COPY bin/make.resume resume
-RUN chmod 755 resume
 RUN ./resume personal
 COPY bin/work.patch work.patch
 RUN patch < work.patch
