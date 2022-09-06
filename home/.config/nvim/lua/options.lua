@@ -20,3 +20,5 @@ vim.opt.wrap = false
 vim.opt.errorbells = false
 vim.opt.visualbell = false
 vim.opt.whichwrap = "b,s,<,>,[,],h,l"
+vim.opt.foldlevelstart = 99
+vim.opt.foldmethod = "indent"
