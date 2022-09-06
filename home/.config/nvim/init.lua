@@ -20,7 +20,7 @@ for _, cursor in ipairs({"<Up>", "<Down>", "<Left>", "<Right>", "<S-Up>", "<S-Do
 end
 
 -- Buffer/split movements
-nmap("<C-l>", ":bprevious<CR>")
+nmap("<C-l>", ":bnext<CR>")
 nmap("<C-h>", ":bprevious<CR>")
 nmap("<C-w>", ":bprevious <BAR> bd #<CR>")
 nmap("<C-k>", ":vsplit<CR>")
