@@ -12,23 +12,22 @@ if [ -z "$HOME_EMAIL" ]; then
     exit 1
 fi
 
-PATCH="resume.patch"
-rm -f $PATCH
-if [ ! -z "$1" ]; then
-    if [[ "$1" == "work" ]]; then
-        cp $HOME/.env/local/lib/work/resume.patch $PATCH
-    else
-        echo "unknown mode"
-        exit 1
-    fi
-fi
-touch $PATCH
+RESUME="bin/resume.pdf"
+BIN=$PWD/bin
+mkdir -p $BIN
+rm -f $BIN/*
+cp $HOME/.env/local/lib/work/resume.patch $BIN/work.patch
+{
+    echo "#!/bin/sh"
+    echo "make ADDRESS=\"$HOME_ADDRESS\" PHONE=\"$HOME_PHONE\" EMAIL=\"$HOME_EMAIL\""
+    echo "test -s $RESUME || exit 1"
+    echo "if ! mv $RESUME /opt/\$1.pdf; then"
+    echo "    exit 1"
+    echo "fi"
+    echo "exit 0"
+} > $BIN/make.resume
 
 COMMIT=$(git ls-remote https://github.com/enckse/resume | grep HEAD | awk '{print $1}')
 echo "Using commit: $COMMIT"
 
-BIN=$PWD/bin
-mkdir -p $BIN
-podman build --build-arg=ADDRESS="$HOME_ADDRESS" --build-arg=PHONE="$HOME_PHONE" --build-arg=EMAIL="$HOME_EMAIL" --build-arg=COMMIT="$COMMIT" -f Containerfile -t resume
-rm -f $PATCH
-podman run --rm --volume $BIN:/opt resume cp /src/bin/resume.pdf /opt/
+podman build --volume $BIN:/opt --build-arg=COMMIT="$COMMIT" -f Containerfile -t resume

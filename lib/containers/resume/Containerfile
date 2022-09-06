@@ -1,9 +1,6 @@
 FROM alpine:latest
 
-ARG ADDRESS
-ARG PHONE
 ARG COMMIT
-ARG EMAIL
 
 RUN apk add --no-cache m4 make texlive-xetex texlive-full patch
 RUN wget -O resume.zip https://github.com/enckse/resume/archive/$COMMIT.zip
@@ -11,7 +8,9 @@ RUN unzip resume.zip -d /resume
 RUN mv /resume/resume-* /src
 
 WORKDIR /src
-COPY resume.patch resume.patch
-RUN patch < resume.patch
-RUN mkdir bin
-RUN make ADDRESS="$ADDRESS" PHONE="$PHONE" EMAIL="$EMAIL" || true
+COPY bin/make.resume resume
+RUN chmod 755 resume
+RUN ./resume personal
+COPY bin/work.patch work.patch
+RUN patch < work.patch
+RUN ./resume work
