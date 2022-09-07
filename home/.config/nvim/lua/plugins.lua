@@ -14,7 +14,7 @@ vim.g.ale_set_highlights = 0
 vim.g.ale_sign_column_always = 1
 vim.g.ale_completion_enabled = 1
 override_linters("py", {["python"] = {"pylsp", "pycodestyle", "flake8", "pydocstyle"}})
-override_linters("go", {["go"] = {"gopls", "revive", "govet"}}) 
+override_linters("go", {["go"] = {"gopls", "revive", "govet", "staticcheck"}}) 
 
 -- Airline settings
 vim.g.airline_extensions = {"tabline"}
