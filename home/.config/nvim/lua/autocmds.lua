@@ -1,3 +1,8 @@
+function text()
+    vim.opt_local.textwidth = 80
+    vim.opt_local.spell = true
+end
+
 -- Restore cursor position
 vim.api.nvim_create_autocmd({ "BufReadPost" }, {
     pattern = { "*" },
@@ -9,18 +14,14 @@ vim.api.nvim_create_autocmd({ "BufReadPost" }, {
 -- Text spelling
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     pattern = { "*.md", "*.txt" },
-    callback = function()
-        vim.opt_local.textwidth = 80
-        vim.opt_local.spell = true
-    end
+    callback = text
 })
 
 -- Emails
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     pattern = { "/tmp/mutt*" },
     callback = function()
-        vim.opt_local.textwidth = 80
-        vim.opt_local.spell = true
+        text()
         vim.opt_local.list = false
         vim.opt_local.filetype = "mail"
         vim.opt_local.wrapmargin = 0
