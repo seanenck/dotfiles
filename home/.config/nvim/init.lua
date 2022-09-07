@@ -1,3 +1,5 @@
+vim.o.runtimepath = vim.o.runtimepath .. ',/usr/share/vim/vimfiles'
+
 -- Plugins
 require("options")
 require("helpers")
