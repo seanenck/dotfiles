@@ -17,7 +17,7 @@ mapall("<F1>", "<Nop>")
 nmap("q", "<Nop>")
 
 -- Disable cursor keys
-for _, cursor in ipairs({"<Up>", "<Down>", "<Left>", "<Right>", "<S-Up>", "<S-Down>", "<S-Right>", "<S-Left>"}) do
+for _, cursor in ipairs({"<S-Up>", "<S-Down>", "<S-Right>", "<S-Left>"}) do
     mapall(cursor, "<Nop>")
 end
 
