@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-RUN apk add --no-cache mdbook@testing go make
+RUN apk add --no-cache mdbook@testing go make git
 WORKDIR /src
 COPY bin/voidedtech.com /src/voidedtech.com
-RUN cd voidedtech && make release
+RUN cd voidedtech.com && make release

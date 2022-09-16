@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-CLONE=$BIN/voidedtech.com
 BIN=bin/
+CLONE=$BIN/voidedtech.com
 rm -rf $BIN/
 mkdir -p $BIN
 git clone https://github.com/enckse/voidedtech.com $CLONE
