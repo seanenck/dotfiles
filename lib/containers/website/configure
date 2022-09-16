@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+CLONE=$BIN/voidedtech.com
+BIN=bin/
+rm -rf $BIN/
+mkdir -p $BIN
+git clone https://github.com/enckse/voidedtech.com $CLONE
+
+podman build -f Containerfile -t website
+git -C $CLONE status
