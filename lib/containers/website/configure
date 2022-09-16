@@ -12,4 +12,8 @@ git clone https://github.com/enckse/voidedtech.com $CLONE
 rsync -avc $WEBSITE_RESOURCES $RSRC
 
 podman build -f Containerfile -t website
+echo
+echo "git status"
+echo "==="
 git -C $CLONE status
+echo
