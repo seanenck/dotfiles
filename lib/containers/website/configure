@@ -11,3 +11,4 @@ echo "git status"
 echo "==="
 git -C $CLONE status
 echo
+(cd $CLONE && tar cvJf ${BIN}dist.tar.xz dist)
