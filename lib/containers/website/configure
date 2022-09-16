@@ -1,17 +1,11 @@
 #!/usr/bin/env bash
-BIN=bin/
-CLONE=$BIN/voidedtech.com
-RSRC=$BIN/resources
-if [ -z "$WEBSITE_RESOURCES" ]; then
-    echo "website resources not found"
-    exit 1
-fi
-rm -rf $BIN/
+BIN=$PWD/bin/
+CLONE=${BIN}voidedtech.com
+rm -rf $BIN
 mkdir -p $BIN
 git clone https://github.com/enckse/voidedtech.com $CLONE
-rsync -avc $WEBSITE_RESOURCES $RSRC
 
-podman build -f Containerfile -t website
+podman build --volume $BIN:/src -f Containerfile -t website
 echo
 echo "git status"
 echo "==="
