@@ -106,6 +106,9 @@ _duplicates() {
 
 
 errors=""
+if [ -x configure ]; then
+    ./configure
+fi
 mkdir -p $CACHE $CONFS
 _clean
 podman build -f $HOME/.env/dotfiles/lib/apod/buildenv.Containerfile -t $NAME
