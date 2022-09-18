@@ -8,9 +8,9 @@ RUN unzip resume.zip -d /resume
 RUN mv /resume/resume-* /src
 
 WORKDIR /src
-COPY bin/resume.sh resume
-COPY bin/resume.env resume.env
-RUN ./resume personal
+COPY bin/build.sh build
+COPY bin/env resume.env
+RUN ./build personal
 COPY bin/work.patch work.patch
 RUN patch < work.patch
-RUN ./resume work
+RUN ./build work

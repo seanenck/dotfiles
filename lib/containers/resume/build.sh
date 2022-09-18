@@ -1,6 +1,6 @@
 #!/bin/sh
 source resume.env
-make ADDRESS="$ADDRESS" PHONE="$PHONE" EMAIL="$EMAIL"
+make ADDRESS="$HOME_ADDRESS" PHONE="$HOME_PHONE" EMAIL="$HOME_EMAIL"
 test -s bin/resume.pdf || exit 1
 if ! mv bin/resume.pdf /opt/$1.pdf; then
     exit 1

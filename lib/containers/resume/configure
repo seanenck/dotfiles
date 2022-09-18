@@ -8,6 +8,7 @@ _clean() {
 mkdir -p $BIN
 _clean
 cp $HOME/.env/local/lib/resume/* $BIN/
+cp build.sh $BIN/
 
 COMMIT=$(git ls-remote https://github.com/enckse/resume | grep HEAD | awk '{print $1}')
 echo "Using commit: $COMMIT"
