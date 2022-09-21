@@ -8,6 +8,11 @@ if [ ! -e APKBUILD ]; then
     exit 1
 fi
 
+if [ -d src ] || [ -d pkg ]; then
+    echo "pkg/src directory found"
+    exit 1
+fi
+
 PACKS="$REPOS/$(basename $(dirname $PWD))"
 if [ ! -d "$PACKS/x86_64" ]; then
     echo "repository does not exist"
@@ -28,9 +33,11 @@ if ! ls $PACKS/x86_64 | grep -q "^$PKGNAME"; then
 fi
 
 _clean() {
-    local c
-    while ! doas rm -rf $CONFS; do
-        continue
+    local c d
+    for d in $CONFS src pkg; do
+        while ! doas rm -rf $d; do
+            continue
+        done
     done
     for c in $PWD $PACKS; do
         while ! doas chown -R enck:enck $c; do
