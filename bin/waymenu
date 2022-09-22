@@ -13,7 +13,6 @@ _APPS = {"firefox": ["firefox", "--new-window"],
          "pcmanfm": ["pcmanfm"],
          "transfer": ["filezilla"],
          "volume": ["pavucontrol"],
-         "mail": ["mail"],
          "vlc": ["vlc"],
          "terminal": ["kitty"]}
 
