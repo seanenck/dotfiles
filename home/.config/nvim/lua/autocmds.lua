@@ -17,17 +17,6 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     callback = text
 })
 
--- Emails
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-    pattern = { "/tmp/mutt*" },
-    callback = function()
-        text()
-        vim.opt_local.list = false
-        vim.opt_local.filetype = "mail"
-        vim.opt_local.wrapmargin = 0
-    end
-})
-
 -- Go
 vim.api.nvim_create_autocmd({"Filetype"}, {
     pattern = { "go" },

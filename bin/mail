@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-if [ -z "$WAYMENU" ]; then
-    echo "do not launch from bash"
-    exit 1
-fi
-mkdir -p $HOME/.mail/{body,headers}
-kitty -- mutt
