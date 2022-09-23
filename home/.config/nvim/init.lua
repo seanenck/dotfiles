@@ -25,8 +25,8 @@ end
 nmap("<Tab>", ":bnext<CR>")
 nmap("<S-Tab>", ":bprevious<CR>")
 nmap("<C-w>", ":bprevious <BAR> bd #<CR>")
-nmap("<C-k>", ":vsplit<CR>")
-nmap("<C-j>", ":close<CR>")
+nmap("<C-v>", ":vsplit<CR>")
+nmap("<C-q>", ":close<CR>")
 nmap("<S-l>", ":wincmd l<CR>")
 nmap("<S-h>", ":wincmd h<CR>")
 
