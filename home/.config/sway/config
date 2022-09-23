@@ -22,16 +22,16 @@ output $primary {
 bindsym $mod+Space exec $term
 bindsym $mod+t exec $menu --mode=apps
 bindsym $mod+Tab exec $menu --mode=windows
-bindsym $mod+Shift+q kill
+bindsym $mod+q kill
 
 # sway management
-bindsym $mod+Shift+r reload
-bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
-bindsym $mod+Shift+x exec pkill -10 swayidle
+bindsym $mod+r reload
+bindsym $mod+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+bindsym $mod+x exec pkill -10 swayidle
 
 # view organization
-bindsym $mod+f floating toggle
-bindsym $mod+Shift+f fullscreen
+bindsym $mod+Shift+f floating toggle
+bindsym $mod+f fullscreen
 
 # focused view geometry
 bindsym $mod+Shift+h move left
