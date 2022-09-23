@@ -22,8 +22,8 @@ for _, cursor in ipairs({"<S-Up>", "<S-Down>", "<S-Right>", "<S-Left>"}) do
 end
 
 -- Buffer/split movements
-nmap("<C-l>", ":bnext<CR>")
-nmap("<C-h>", ":bprevious<CR>")
+nmap("<Tab>", ":bnext<CR>")
+nmap("<S-Tab>", ":bprevious<CR>")
 nmap("<C-w>", ":bprevious <BAR> bd #<CR>")
 nmap("<C-k>", ":vsplit<CR>")
 nmap("<C-j>", ":close<CR>")
