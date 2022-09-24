@@ -6,5 +6,8 @@ while : ; do
     if ! pgrep -x sway > /dev/null; then
         exit
     fi
+    if ! ps aux | grep keyd-application-mapper | grep -q python; then
+        keyd-application-mapper -d &
+    fi
     sleep 1
 done
