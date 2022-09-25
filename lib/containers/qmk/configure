@@ -2,6 +2,7 @@
 BIN=$PWD/bin
 CACHE=$HOME/.cache/qmk
 mkdir -p $BIN
+rm $BIN/keymap.bin
 FIRMWARE=$CACHE/qmk_firmware
 if [ ! -d $FIRMWARE ]; then
     git clone --recurse-submodules "https://github.com/qmk/qmk_firmware/" $FIRMWARE
@@ -10,9 +11,11 @@ git -C $FIRMWARE pull
 current=$(git -C $FIRMWARE log -n 1 --format="%h")
 hashed=$CACHE/git.last
 sync=1
-if [ -e $hashed ]; then
-    if diff <(echo $current) $hashed; then
-        sync=0
+if [ -d $BIN/qmk_firmware ]; then
+    if [ -e $hashed ]; then
+        if diff <(echo $current) $hashed; then
+            sync=0
+        fi
     fi
 fi
 if [ $sync -eq 1 ]; then
