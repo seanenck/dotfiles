@@ -133,10 +133,10 @@ def main():
     if not is_apps:
         return
     if chosen in keys:
-        e = os.environ
-        e["WAYMENU"] = "1"
-        subprocess.run(_APPS[chosen], env=e)
-        return
+        cmd = _APPS[chosen]
+        if cmd:
+            subprocess.run(cmd)
+            return
     url = None
     if len(chosen.split(" ")) == 1 and len(chosen.split(".")) > 1:
         parsed = urllib.parse.urlparse(chosen)
