@@ -137,10 +137,17 @@ def main():
         e["WAYMENU"] = "1"
         subprocess.run(_APPS[chosen], env=e)
         return
-    parsed = urllib.parse.quote(chosen)
-    subprocess.run(["firefox",
-                    "--new-window",
-                    "https://duckduckgo.com?q={}".format(parsed)])
+    url = None
+    if len(chosen.split(" ")) == 1 and len(chosen.split(".")) > 1:
+        parsed = urllib.parse.urlparse(chosen)
+        if (parsed.scheme and parsed.netloc and not parsed.path) or \
+           (not parsed.scheme and not parsed.netloc and parsed.path):
+            if not parsed.query and not parsed.fragment and not parsed.params:
+                url = chosen
+    if not url:
+        parsed = urllib.parse.quote(chosen)
+        url = "https://duckduckgo.com?q={}".format(parsed)
+    subprocess.run(["firefox", "--new-window", url])
 
 
 if __name__ == "__main__":
