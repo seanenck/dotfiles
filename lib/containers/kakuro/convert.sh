@@ -1,7 +1,7 @@
 #!/bin/bash
 cd /opt 
 URL="https://www.kakuros.com/?s=9x8"
-COUNT=125
+COUNT=500
 PERPDF=15
 NAME="kakuro-$(date +%Y%m%d)-"
 
