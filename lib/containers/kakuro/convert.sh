@@ -19,6 +19,7 @@ _pdfs() {
     rm -f *.pdf
     for f in $(ls | grep '\.html$'); do
         cat $f | wkhtmltopdf - $f.pdf
+        sleep 1
     done
 }
 
