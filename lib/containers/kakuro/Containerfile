@@ -1,6 +1,0 @@
-FROM debian:latest
-
-RUN apt-get update && apt-get install -y wkhtmltopdf poppler-utils imagemagick bash curl
-COPY convert.sh convert
-COPY policy.xml /etc/ImageMagick-6/policy.xml
-RUN chmod 755 convert

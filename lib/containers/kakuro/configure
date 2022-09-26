@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-BIN=$PWD/bin
-WORK=$BIN/work
-OUT=$BIN/out
-mkdir -p $WORK $OUT
-rm $OUT/*
-podman build -f Containerfile -t kakuro
-podman run --rm --volume $WORK:/opt --volume $OUT:/results kakuro ./convert
