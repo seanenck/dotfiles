@@ -29,7 +29,6 @@ nmap("<C-v>", ":vsplit<CR>")
 nmap("<C-q>", ":close<CR>")
 nmap("<S-l>", ":wincmd l<CR>")
 nmap("<S-h>", ":wincmd h<CR>")
-mapall("<C-x>", "<ESC>")
 
 -- Terminal
 tmap("<ESC>", " exit<CR>")
