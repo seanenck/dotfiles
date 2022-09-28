@@ -1,8 +1,0 @@
-FROM alpine:latest
-
-RUN apk add --no-cache py3-pip bash patch
-RUN pip install xword-dl
-
-COPY xword.patch /opt
-RUN patch -p1 < /opt/xword.patch
-WORKDIR /opt
