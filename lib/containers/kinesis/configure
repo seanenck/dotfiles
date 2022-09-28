@@ -9,4 +9,4 @@ fi
 rsync -avc --delete-after $CACHE $BIN
 PATCH=$PWD/keys.patch
 (cd $BIN/adv360 && patch -p1 < $PATCH)
-podman build --volume $BIN:/opt/ -f Containerfile -t kinesis
+podman build --volume $BIN:/out/ -f Containerfile -t kinesis
