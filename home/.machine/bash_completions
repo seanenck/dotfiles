@@ -6,14 +6,3 @@ _git_oclone() {
         COMPREPLY=( $(compgen -W "$opts" -- "$cur") )
     fi
 }
-
-_pman() {
-    local cur opts
-    if [ "$COMP_CWORD" -eq 1 ]; then
-        cur=${COMP_WORDS[COMP_CWORD]}
-        opts=$(ls $HOME/.env/dotfiles/lib/containers)
-        COMPREPLY=( $(compgen -W "$opts" -- "$cur") )
-    fi
-}
-
-complete -F _pman -o bashdefault -o default pman
