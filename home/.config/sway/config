@@ -1,4 +1,4 @@
-set $mod Escape
+set $mod Mod4
 
 set $term kitty
 set $menu waymenu
