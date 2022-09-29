@@ -1,6 +1,6 @@
 #!/bin/bash
 CONFS=$PWD/.abuild
-REPOS=/opt/repositories
+REPOS=/opt/repository
 CACHE=$HOME/.cache/apks
 NAME=stable
 if [ ! -e APKBUILD ]; then
@@ -13,8 +13,7 @@ if [ -d src ] || [ -d pkg ]; then
     exit 1
 fi
 
-PACKS="$REPOS/$(basename $(dirname $PWD))"
-if [ ! -d "$PACKS/x86_64" ]; then
+if [ ! -d "$REPOS/x86_64" ]; then
     echo "repository does not exist"
     exit 1
 fi
@@ -28,7 +27,7 @@ _pkgexists() {
 }
 
 PKGNAME=$(basename $PWD)
-if ! ls $PACKS/x86_64 | grep -q "^$PKGNAME"; then
+if ! ls $REPOS/x86_64 | grep -q "^$PKGNAME"; then
     _pkgexists
 fi
 
@@ -39,7 +38,7 @@ _clean() {
             continue
         done
     done
-    for c in $PWD $PACKS; do
+    for c in $PWD $REPOS; do
         while ! doas chown -R enck:enck $c; do
             continue
         done
@@ -54,7 +53,7 @@ _cleanup() {
 
 _get_packages() {
     local f bname name
-    for f in $(find $PACKS -type f -name "*.apk"); do
+    for f in $(find $REPOS -type f -name "*.apk"); do
         name=$(_get_name "$f") 
         if [ ! -z "$1" ]; then
             if [[ "$name" == "$1" ]]; then 
@@ -125,8 +124,7 @@ _podmanrun() {
         -v $CONFS:$HOME/.abuild:U \
         -v $CONFS/localpkgs.rsa.pub:/etc/apk/keys/localpkgs.rsa.pub \
         -v $PWD:/apk:U \
-        -v $PACKS:$HOME/packages:U \
-        -v $REPOS/shared:$HOME/sharedpkgs:U \
+        -v $REPOS:$HOME/packages:U \
         -v $CACHE:/etc/apk/cache \
         --workdir /apk \
         $NAME $@
