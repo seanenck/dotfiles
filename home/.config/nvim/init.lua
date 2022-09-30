@@ -30,7 +30,9 @@ nmap("<C-q>", ":close<CR>")
 nmap("<S-l>", ":wincmd l<CR>")
 nmap("<S-h>", ":wincmd h<CR>")
 
-vim.api.nvim_exec("cabbrev <expr> w getcmdtype()==':' && getcmdline() == \"'<,'>w\" ? '<c-u>w' : 'w'", false)
+for _, write in ipairs({"w", "wq"}) do
+    vim.api.nvim_exec(string.format("cabbrev <expr> %s getcmdtype()==':' && getcmdline() == \"'<,'>%s\" ? '<c-u>%s' : '%s'", write, write, write, write), false)
+end
 
 -- Terminal
 tmap("<ESC>", " exit<CR>")
