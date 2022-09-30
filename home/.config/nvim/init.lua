@@ -30,6 +30,8 @@ nmap("<C-q>", ":close<CR>")
 nmap("<S-l>", ":wincmd l<CR>")
 nmap("<S-h>", ":wincmd h<CR>")
 
+vim.api.nvim_exec("cabbrev <expr> w getcmdtype()==':' && getcmdline() == \"'<,'>w\" ? '<c-u>w' : 'w'", false)
+
 -- Terminal
 tmap("<ESC>", " exit<CR>")
 nmap("<C-t>", " :ToggleTerm direction=float<CR>")
