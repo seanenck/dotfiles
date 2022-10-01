@@ -29,4 +29,4 @@
     diff = diff-highlight | less
     show = diff-highlight | less
 [diff "lb"]
-    textconv = lb gitdiff
+    textconv = lb hash
