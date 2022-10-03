@@ -17,7 +17,7 @@
 [user]
     name = Sean Enck
     email = enckse@voidedtech.com
-    signingKey = 58C85D8DEA8742AFC981BE793058639FBCC82EE9
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILF34csErDEvpiwtv+SGIuhZ5c1cjmSGRSmUnG3nSeBe workstation
 [help]
     format = man
 [commit]
@@ -30,3 +30,7 @@
     show = diff-highlight | less
 [diff "lb"]
     textconv = lb hash
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
