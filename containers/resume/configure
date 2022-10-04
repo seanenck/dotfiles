@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 BIN=$PWD/bin
-LOCAL=$HOME/.env/local/lib/resume/
+LOCAL=$LOCAL_ENV/lib/resume/
+if [ ! -d "$LOCAL" ]; then
+    echo "missing local definitions"
+    exit 1
+fi
 _clean() {
     rm -f $BIN/*.patch $BIN/resume.*
 }
 
 mkdir -p $BIN
 _clean
-cp $HOME/.env/local/lib/resume/* $BIN/
+cp $LOCAL/* $BIN/
 cp build.sh $BIN/
 
 COMMIT=$(git ls-remote https://github.com/enckse/resume | grep HEAD | awk '{print $1}')

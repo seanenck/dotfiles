@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
 CACHE=$HOME/.cache/gitcc
-OVERRIDE=$HOME/.env/local/lib/git/
+OVERRIDE=$LOCAL_ENV/lib/git/
 mkdir -p $CACHE
 if [ -z "$1" ]; then
     echo "remote required"
     exit 1
 fi
 if [[ "$1" == "--list" ]]; then
-    ls $OVERRIDE
+    if [ -d "$OVERRIDE" ]; then
+        ls $OVERRIDE
+    fi
     exit 0
+fi
+if [ -z "$LOCAL_ENV" ] || [ ! -d "$LOCAL_ENV" ]; then
+    echo "LOCAL_ENV not set"
+    exit 1
 fi
 OVERRIDE=$OVERRIDE$(echo $1 | cut -d ":" -f 1)
 CLONE=$1
