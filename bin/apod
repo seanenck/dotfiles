@@ -118,12 +118,15 @@ fi
 mkdir -p $CACHE $CONFS
 _clean
 podman build -f $DOTFILES/containers/apod/Containerfile -t $NAME
+KEYS=""
+for k in $(ls $HOME/.abuild/*.pub); do
+    KEYS="$KEYS -v $k:/etc/apk/keys/$(basename $k)"
+done
 cp -rL $HOME/.abuild $PWD
 _podmanrun() {
     podman run -it --rm \
         -v $CONFS:$HOME/.abuild:U \
-        -v $CONFS/build@voidedtech.com.rsa.pub:/etc/apk/keys/build@voidedtech.com.rsa.pub \
-        -v $CONFS/localpkgs.rsa.pub:/etc/apk/keys/localpkgs.rsa.pub \
+        $KEYS \
         -v $PWD:/apk:U \
         -v $REPOS:$HOME/packages:U \
         -v $CACHE:/etc/apk/cache \
