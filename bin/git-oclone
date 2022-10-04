@@ -6,6 +6,10 @@ if [ -z "$1" ]; then
     echo "remote required"
     exit 1
 fi
+if [[ "$1" == "--list" ]]; then
+    ls $OVERRIDE
+    exit 0
+fi
 OVERRIDE=$OVERRIDE$(echo $1 | cut -d ":" -f 1)
 CLONE=$1
 CONFIG=""
