@@ -122,7 +122,7 @@ cp -rL $HOME/.abuild $PWD
 _podmanrun() {
     podman run -it --rm \
         -v $CONFS:$HOME/.abuild:U \
-        -v $CONFS/build.rsa.pub:/etc/apk/keys/build@voidedtech.com.rsa.pub \
+        -v $CONFS/build@voidedtech.com.rsa.pub:/etc/apk/keys/build@voidedtech.com.rsa.pub \
         -v $CONFS/localpkgs.rsa.pub:/etc/apk/keys/localpkgs.rsa.pub \
         -v $PWD:/apk:U \
         -v $REPOS:$HOME/packages:U \
