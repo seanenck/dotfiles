@@ -1,5 +1,4 @@
 export PATH="$HOME/.env/dotfiles/bin:$HOME/.bin:$PATH"
-source $HOME/.env/local/lib/bashrc
 export GOPATH="$HOME/.cache/go"
 export XDG_RUNTIME_DIR=/tmp/$(id -u)-runtimedir
 
@@ -16,11 +15,12 @@ if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     exit
 fi
 
+SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
 if ! pgrep ssh-agent > /dev/null; then
-    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
+    ssh-agent -t 1h > "$SSH_AGENT_ENV"
 fi
 if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
+    source "$SSH_AGENT_ENV" >/dev/null
 fi
 
 bck=$(find /var/cache/backups -mtime -2 | wc -l)

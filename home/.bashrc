@@ -24,6 +24,7 @@ for file in $HOME/.machine/bashrc \
             $HOME/.bash_aliases \
             $HOME/.machine/bash_aliases \
             $HOME/.machine/bash_completions \
+            $HOME/.bashrc_local \
             /usr/share/bash-completion/bash_completion; do
     if [ -e "$file" ]; then
         . "$file"
