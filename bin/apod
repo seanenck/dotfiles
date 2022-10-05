@@ -117,7 +117,7 @@ if [ -x configure ]; then
 fi
 mkdir -p $CACHE $CONFS
 _clean
-podman build -f $DOTFILES/containers/apod/Containerfile -t $NAME
+podman build -f $HOME/.config/apod/Containerfile -t $NAME
 KEYS=""
 for k in $(ls $HOME/.abuild/*.pub); do
     KEYS="$KEYS -v $k:/etc/apk/keys/$(basename $k)"
