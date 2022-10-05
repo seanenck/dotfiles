@@ -1,4 +1,4 @@
-FROM zmkfirmware/zmk-build-arm:stable
+FROM zmkfirmware/zmk-build-arm:2.4
 
 COPY bin/adv360 /src/
 WORKDIR /src
@@ -6,8 +6,10 @@ RUN west init -l config
 RUN west update
 RUN west zephyr-export
 RUN west build -s zmk/app -d build/left -b adv360_left -- -DZMK_CONFIG="/src/config"
+RUN cat -n build/left/zephyr/adv360_left.dts.pre.tmp
 RUN cat build/left/zephyr/.config | grep -v "^#" | grep -v "^$"
 RUN west build -s zmk/app -d build/right -b adv360_right -- -DZMK_CONFIG="/src/config"
+RUN cat -n build/right/zephyr/adv360_right.dts.pre.tmp
 RUN cat build/right/zephyr/.config | grep -v "^#" | grep -v "^$"
 RUN cp build/left/zephyr/zmk.uf2 /out/left.uf2
 RUN cp build/right/zephyr/zmk.uf2 /out/right.uf2

@@ -1,57 +1,67 @@
 diff --git a/config/adv360.keymap b/config/adv360.keymap
-index ed04f67..d01c4bf 100644
+index a3f04ed..f0c5f05 100644
 --- a/config/adv360.keymap
 +++ b/config/adv360.keymap
-@@ -24,11 +24,11 @@
+@@ -39,11 +39,11 @@
  
-     default_layer {
-       bindings = <
--        &kp EQUAL &kp N1    &kp N2   &kp N3   &kp N4     &kp N5 &tog 1                                                                       &mo 3 &kp N6 &kp N7 &kp N8    &kp N9   &kp N0   &kp MINUS
--        &kp TAB   &kp Q     &kp W    &kp E    &kp R      &kp T  &kp KP_NUMBER_1                                                      &kp KP_NUMBER_3 &kp Y  &kp U  &kp I     &kp O    &kp P    &kp BSLH
--        &kp ESC   &kp A     &kp S    &kp D    &kp F      &kp G  &kp KP_NUMBER_2    &kp LCTRL &kp LALT                    &kp LGUI  &kp RCTRL                   &kp KP_NUMBER_4 &kp H  &kp J  &kp K     &kp L    &kp SEMI &kp SQT
-+        &kp EQUAL &kp N1    &kp N2   &kp N3   &kp N4     &kp N5 &none                                                                        &none &kp N6 &kp N7 &kp N8    &kp N9   &kp N0   &kp MINUS
-+        &kp TAB   &kp Q     &kp W    &kp E    &kp R      &kp T  &none                                                      &none &kp Y  &kp U  &kp I     &kp O    &kp P    &kp BSLH
-+        &kp LCTRL   &kp A     &kp S    &kp D    &kp F      &kp G  &none    &kp LGUI &kp LALT                    &kp ESC  &kp RCTRL                   &none &kp H  &kp J  &kp K     &kp L    &kp SEMI &kp SQT
-         &kp LSHFT &kp Z     &kp X    &kp C    &kp V      &kp B        &none     &none     &kp HOME &none &none &kp PG_UP &none     &none            &kp N  &kp M  &kp COMMA &kp DOT  &kp FSLH &kp RSHFT
--        &mo 2     &kp GRAVE &kp CAPS &kp LEFT &kp RIGHT               &kp BKSP  &kp DEL   &kp END              &kp PG_DN &kp ENTER &kp SPACE               &kp UP &kp DOWN  &kp LBKT &kp RBKT &mo 2
-+        &mo 2     &kp LEFT &kp RIGHT &kp GRAVE &none               &kp BKSP  &kp DEL   &kp END              &kp PG_DN &kp ENTER &kp SPACE               &kp LBKT &kp RBKT &kp DOWN &kp UP &mo 2
-         >;
-     };
-     keypad {
-@@ -42,7 +42,7 @@
-     };
-     fn {
-       bindings = <
--        &kp F1  &kp F2 &kp F3 &kp F4 &kp F5 &kp F6 &tog 1                                                          &mo 3 &kp F7  &kp F8 &kp F9 &kp F10 &kp F11 &kp F12
-+        &kp F1  &kp F2 &kp F3 &kp F4 &kp F5 &kp F6 &none                                                           &mo 3 &kp F7  &kp F8 &kp F9 &kp F10 &kp F11 &kp F12
-         &trans  &trans &trans &trans &trans &trans  &none                                                          &none &trans  &trans &trans &trans  &trans  &trans
-         &trans  &trans &trans &trans &trans &trans  &none        &trans &trans             &trans &trans           &none &trans  &trans &trans &trans  &trans  &trans
-         &trans  &trans &trans &trans &trans &trans        &none  &none  &trans &none &none &trans &none  &none            &trans &trans &trans &trans  &trans  &trans
+         default_layer {
+             bindings = <
+- &kp EQUAL     &kp N1    &kp N2    &kp N3     &kp N4    &kp N5             &tog 1      &mo 3     &kp N6     &kp N7     &kp N8     &kp N9     &kp N0  &kp MINUS
+-   &kp TAB      &kp Q     &kp W     &kp E      &kp R     &kp T              &none      &none      &kp Y      &kp U      &kp I      &kp O      &kp P   &kp BSLH
+-   &kp ESC      &kp A     &kp S     &kp D      &kp F     &kp G              &none  &kp LCTRL   &kp LALT                         &kp LGUI  &kp RCTRL      &none     &kp H   &kp J      &kp K    &kp L  &kp SEMI    &kp SQT
+- &kp LSHFT      &kp Z     &kp X     &kp C      &kp V     &kp B              &none      &none   &kp HOME      &none      &none  &kp PG_UP      &none      &none     &kp N   &kp M  &kp COMMA  &kp DOT  &kp FSLH  &kp RSHFT
+-     &mo 2  &kp GRAVE  &kp CAPS  &kp LEFT  &kp RIGHT  &kp BSPC            &kp DEL    &kp END  &kp PG_DN  &kp ENTER  &kp SPACE     &kp UP   &kp DOWN   &kp LBKT  &kp RBKT   &mo 2
++        &kp EQUAL    &kp N1     &kp N2     &kp N3    &kp N4    &kp N5             &none    &none     &kp N6     &kp N7     &kp N8            &kp N9             &kp N0  &kp MINUS
++          &kp TAB     &kp Q      &kp W      &kp E     &kp R     &kp T              &none    &none      &kp Y      &kp U      &kp I             &kp O              &kp P   &kp BSLH
++ &kp LEFT_CONTROL     &kp A      &kp S      &kp D     &kp F     &kp G              &none  &kp LGUI   &kp LALT                                &kp ESC          &kp RCTRL      &none   &kp H   &kp J      &kp K    &kp L  &kp SEMI    &kp SQT
++        &kp LSHFT     &kp Z      &kp X      &kp C     &kp V     &kp B              &none    &none   &kp HOME      &none      &none         &kp PG_UP              &none      &none   &kp N   &kp M  &kp COMMA  &kp DOT  &kp FSLH  &kp RSHFT
++            &mo 2  &kp LEFT  &kp RIGHT  &kp GRAVE  &none  &kp BSPC            &kp DEL  &kp END  &kp PG_DN  &kp ENTER  &kp SPACE  &kp LEFT_BRACKET  &kp RIGHT_BRACKET   &kp DOWN  &kp UP   &mo 2
+             >;
+         };
+ 
+@@ -59,7 +59,7 @@
+ 
+         layer_fn {
+             bindings = <
+- &kp F1  &kp F2  &kp F3  &kp F4  &kp F5  &kp F6            &tog 1   &mo 3  &kp F7  &kp F8  &kp F9  &kp F10  &kp F11  &kp F12
++ &kp F1  &kp F2  &kp F3  &kp F4  &kp F5  &kp F6            &none   &mo 3  &kp F7  &kp F8  &kp F9  &kp F10  &kp F11  &kp F12
+  &trans  &trans  &trans  &trans  &trans  &trans             &none   &none  &trans  &trans  &trans   &trans   &trans   &trans
+  &trans  &trans  &trans  &trans  &trans  &trans             &none  &trans  &trans                   &trans   &trans    &none  &trans  &trans  &trans  &trans  &trans  &trans
+  &trans  &trans  &trans  &trans  &trans  &trans             &none   &none  &trans   &none   &none   &trans    &none    &none  &trans  &trans  &trans  &trans  &trans  &trans
 diff --git a/config/keymap.json b/config/keymap.json
-index 7859c7c..8e36461 100644
+index 2ddc229..dafcfe2 100644
 --- a/config/keymap.json
 +++ b/config/keymap.json
 @@ -10,11 +10,11 @@
    ],
    "layers": [
      [
--      "&kp EQUAL ", "&kp N1    ", "&kp N2   ", "&kp N3   ", "&kp N4     ", "&kp N5 ", "&tog 1                                                                                               ", "&mo 3  ", "&kp N6 ", "&kp N7 ", "&kp N8    ", "&kp N9   ", "&kp N0   ", "&kp MINUS",
-+      "&kp EQUAL ", "&kp N1    ", "&kp N2   ", "&kp N3   ", "&kp N4     ", "&kp N5 ", "&none                                                                                                ", "&none  ", "&kp N6 ", "&kp N7 ", "&kp N8    ", "&kp N9   ", "&kp N0   ", "&kp MINUS",
-       "&kp TAB   ", "&kp Q     ", "&kp W    ", "&kp E    ", "&kp R      ", "&kp T  ", "&none                                                                                                ", "&none  ", "&kp Y  ", "&kp U  ", "&kp I     ", "&kp O    ", "&kp P    ", "&kp BSLH",
--      "&kp ESC   ", "&kp A     ", "&kp S    ", "&kp D    ", "&kp F      ", "&kp G  ", "&none           ", "&kp LCTRL ", "&kp LALT "                   , "&kp LGUI  ", "&kp RCTRL           ", "&none  ", "&kp H  ", "&kp J  ", "&kp K     ", "&kp L    ", "&kp SEMI ", "&kp SQT",
-+      "&kp LCTRL   ", "&kp A     ", "&kp S    ", "&kp D    ", "&kp F      ", "&kp G  ", "&none           ", "&kp LGUI  ", "&kp LALT "                   , "&kp ESC   ", "&kp RCTRL           ", "&none  ", "&kp H  ", "&kp J  ", "&kp K     ", "&kp L    ", "&kp SEMI ", "&kp SQT",
-       "&kp LSHFT ", "&kp Z     ", "&kp X    ", "&kp C    ", "&kp V      ", "&kp B        ", "&none     ", "&none     ", "&kp HOME ", "&none ", "&none ", "&kp PG_UP ", "&none     ", "&none            ", "&kp N  ", "&kp M  ", "&kp COMMA ", "&kp DOT  ", "&kp FSLH ", "&kp RSHFT",
--      "&mo 2     ", "&kp GRAVE ", "&kp CAPS ", "&kp LEFT ", "&kp RIGHT                   ", "&kp BSPC  ", "&kp DEL   ", "&kp END                      ", "&kp PG_DN ", "&kp ENTER ", "&kp SPACE                   ", "&kp UP ", "&kp DOWN  ", "&kp LBKT ", "&kp RBKT ", "&mo 2"
-+      "&mo 2     ", "&kp LEFT  ", "&kp RIGHT", "&kp GRAVE", "&none                       ", "&kp BSPC  ", "&kp DEL   ", "&kp END                      ", "&kp PG_DN ", "&kp ENTER ", "&kp SPACE                   ", "&kp LBKT", "&kp RBKT  ", "&kp UP   ", "&kp DOWN ", "&mo 2"
+-       "&kp EQUAL",    "&kp N1",   "&kp N2",   "&kp N3",    "&kp N4",   "&kp N5",            "&tog 1",     "&mo 3",    "&kp N6",    "&kp N7",    "&kp N8",    "&kp N9",    "&kp N0", "&kp MINUS",
+-         "&kp TAB",     "&kp Q",    "&kp W",    "&kp E",     "&kp R",    "&kp T",             "&none",     "&none",     "&kp Y",     "&kp U",     "&kp I",     "&kp O",     "&kp P",  "&kp BSLH",
+-         "&kp ESC",     "&kp A",    "&kp S",    "&kp D",     "&kp F",    "&kp G",             "&none", "&kp LCTRL",  "&kp LALT",                            "&kp LGUI", "&kp RCTRL",     "&none",    "&kp H",  "&kp J",     "&kp K",   "&kp L", "&kp SEMI",   "&kp SQT",
+-       "&kp LSHFT",     "&kp Z",    "&kp X",    "&kp C",     "&kp V",    "&kp B",             "&none",     "&none",  "&kp HOME",     "&none",     "&none", "&kp PG_UP",     "&none",     "&none",    "&kp N",  "&kp M", "&kp COMMA", "&kp DOT", "&kp FSLH", "&kp RSHFT",
+-           "&mo 2", "&kp GRAVE", "&kp CAPS", "&kp LEFT", "&kp RIGHT", "&kp BSPC",           "&kp DEL",   "&kp END", "&kp PG_DN", "&kp ENTER", "&kp SPACE",    "&kp UP",  "&kp DOWN",  "&kp LBKT", "&kp RBKT",  "&mo 2"
++              "&kp EQUAL",   "&kp N1",    "&kp N2",    "&kp N3",   "&kp N4",   "&kp N5",            "&none",   "&none",    "&kp N6",    "&kp N7",    "&kp N8",           "&kp N9",            "&kp N0", "&kp MINUS",
++                "&kp TAB",    "&kp Q",     "&kp W",     "&kp E",    "&kp R",    "&kp T",             "&none",   "&none",     "&kp Y",     "&kp U",     "&kp I",            "&kp O",             "&kp P",  "&kp BSLH",
++       "&kp LEFT_CONTROL",    "&kp A",     "&kp S",     "&kp D",    "&kp F",    "&kp G",             "&none", "&kp LGUI",  "&kp LALT",                                   "&kp ESC",         "&kp RCTRL",     "&none",  "&kp H",  "&kp J",     "&kp K",   "&kp L", "&kp SEMI",   "&kp SQT",
++              "&kp LSHFT",    "&kp Z",     "&kp X",     "&kp C",    "&kp V",    "&kp B",             "&none",   "&none",  "&kp HOME",     "&none",     "&none",        "&kp PG_UP",             "&none",     "&none",  "&kp N",  "&kp M", "&kp COMMA", "&kp DOT", "&kp FSLH", "&kp RSHFT",
++                  "&mo 2", "&kp LEFT", "&kp RIGHT", "&kp GRAVE", "&none", "&kp BSPC",           "&kp DEL", "&kp END", "&kp PG_DN", "&kp ENTER", "&kp SPACE", "&kp LEFT_BRACKET", "&kp RIGHT_BRACKET",  "&kp DOWN", "&kp UP",  "&mo 2"
      ], [
-       "&kp EQUAL ", "&kp N1    ", "&kp N2   ", "&kp N3   ", "&kp N4     ", "&kp N5 ", "&trans                                                                                               ", "&mo 3  ", "&kp N6 ", "&kp KP_NUM ", "&kp KP_EQUAL ", "&kp KP_DIVIDE ", "&kp KP_MULTIPLY ", "&kp MINUS",
-       "&kp TAB   ", "&kp Q     ", "&kp W    ", "&kp E    ", "&kp R      ", "&kp T  ", "&none                                                                                                ", "&none  ", "&kp Y  ", "&kp KP_N7  ", "&kp KP_N8    ", "&kp KP_N9     ", "&kp KP_MINUS    ", "&kp BSLH",
+        "&kp EQUAL",    "&kp N1",   "&kp N2",   "&kp N3",    "&kp N4",   "&kp N5",            "&trans",     "&mo 3",    "&kp N6", "&kp KP_NUM", "&kp KP_EQUAL", "&kp KP_DIVIDE", "&kp KP_MULTIPLY",  "&kp MINUS",
+          "&kp TAB",     "&kp Q",    "&kp W",    "&kp E",     "&kp R",    "&kp T",             "&none",     "&none",     "&kp Y",  "&kp KP_N7",    "&kp KP_N8",     "&kp KP_N9",    "&kp KP_MINUS",   "&kp BSLH",
 @@ -22,7 +22,7 @@
-       "&kp LSHFT ", "&kp Z     ", "&kp X    ", "&kp C    ", "&kp V      ", "&kp B        ", "&none    ", "&none     ", "&kp HOME ", "&none ", "&none ", "&kp PG_UP ", "&none     ", "&none             ", "&kp N  ", "&kp KP_N1  ", "&kp KP_N2    ", "&kp KP_N3     ", "&kp KP_ENTER    ", "&kp RSHFT",
-       "&mo 2     ", "&kp GRAVE ", "&kp CAPS ", "&kp LEFT ", "&kp RIGHT                   ", "&kp BSPC ", "&kp DEL   ", "&kp END                      ", "&kp PG_DN ", "&kp ENTER ", "&kp KP_N0                    ", "&kp UP     ", "&kp DOWN     ", "&kp KP_DOT    ", "&kp RBKT        ", "&mo 2"
+        "&kp LSHFT",     "&kp Z",    "&kp X",    "&kp C",     "&kp V",    "&kp B",             "&none",     "&none",  "&kp HOME",      "&none",        "&none",     "&kp PG_UP",           "&none",      "&none",    "&kp N", "&kp KP_N1", "&kp KP_N2", "&kp KP_N3", "&kp KP_ENTER", "&kp RSHFT",
+            "&mo 2", "&kp GRAVE", "&kp CAPS", "&kp LEFT", "&kp RIGHT", "&kp BSPC",           "&kp DEL",   "&kp END", "&kp PG_DN",  "&kp ENTER",    "&kp KP_N0",        "&kp UP",        "&kp DOWN", "&kp KP_DOT", "&kp RBKT",     "&mo 2"
      ], [
--      "&kp F1    ", "&kp F2    ", "&kp F3   ", "&kp F4   ", "&kp F5     ", "&kp F6 ", "&tog 1                                                                                               ", "&mo 3  ", "&kp F7 ", "&kp F8 ", "&kp F9    ", "&kp F10  ", "&kp F11  ", "&kp F12",
-+      "&kp F1    ", "&kp F2    ", "&kp F3   ", "&kp F4   ", "&kp F5     ", "&kp F6 ", "&none                                                                                                ", "&mo 3  ", "&kp F7 ", "&kp F8 ", "&kp F9    ", "&kp F10  ", "&kp F11  ", "&kp F12",
-       "&trans    ", "&trans    ", "&trans   ", "&trans   ", "&trans     ", "&trans ", "&none                                                                                                ", "&none  ", "&trans ", "&trans ", "&trans    ", "&trans   ", "&trans   ", "&trans ",
-       "&trans    ", "&trans    ", "&trans   ", "&trans   ", "&trans     ", "&trans ", "&none          ", "&trans    ", "&trans   "                    , "&trans    ", "&trans               ", "&none  ", "&trans ", "&trans ", "&trans    ", "&trans   ", "&trans   ", "&trans ",
-       "&trans    ", "&trans    ", "&trans   ", "&trans   ", "&trans     ", "&trans       ", "&none    ", "&none     ", "&trans   ", "&none ", "&none ", "&trans    ", "&none     ", "&none             ", "&trans ", "&trans ", "&trans    ", "&trans   ", "&trans   ", "&trans ",
+-       "&kp F1", "&kp F2", "&kp F3", "&kp F4", "&kp F5", "&kp F6",           "&tog 1",  "&mo 3", "&kp F7", "&kp F8", "&kp F9", "&kp F10", "&kp F11", "&kp F12",
++       "&kp F1", "&kp F2", "&kp F3", "&kp F4", "&kp F5", "&kp F6",           "&none",  "&mo 3", "&kp F7", "&kp F8", "&kp F9", "&kp F10", "&kp F11", "&kp F12",
+        "&trans", "&trans", "&trans", "&trans", "&trans", "&trans",            "&none",  "&none", "&trans", "&trans", "&trans",  "&trans",  "&trans",  "&trans",
+        "&trans", "&trans", "&trans", "&trans", "&trans", "&trans",            "&none", "&trans", "&trans",                      "&trans",  "&trans",   "&none", "&trans", "&trans", "&trans", "&trans", "&trans", "&trans",
+        "&trans", "&trans", "&trans", "&trans", "&trans", "&trans",            "&none",  "&none", "&trans",  "&none",  "&none",  "&trans",   "&none",   "&none", "&trans", "&trans", "&trans", "&trans", "&trans", "&trans",
+@@ -35,4 +35,4 @@
+         "&none",        "&none",        "&none",   "&bl BL_INC",   "&bl BL_DEC", "&rgb_ug RGB_TOG",                       "&bl BL_TOG",       "&none",        "&none",   "&bl BL_TOG", "&rgb_ug RGB_TOG",   "&bl BL_INC",   "&bl BL_DEC",                  "&none",  "&none",  "&none"
+     ]
+   ]
+-}
+\ No newline at end of file
++}
