@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-alias vi=nvim
-alias vim=nvim
-alias nvim=nvim
+alias vi=hx
+alias vim=hx
+alias nvim=hx
 
 gomod-update() {
     go get -u ./...
