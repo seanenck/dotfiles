@@ -20,8 +20,7 @@ output $primary {
 
 # process creation/removal
 bindsym $mod+Space exec $term
-bindsym $mod+t exec $menu --mode=apps
-bindsym $mod+Tab exec $menu --mode=windows
+bindsym $mod+t exec $menu
 bindsym $mod+q kill
 
 # sway management
