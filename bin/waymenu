@@ -36,6 +36,9 @@ _menu() {
   cnt=$(_apps | wc -l)
   pkill bemenu
   chosen=$(_apps | cut -d ',' -f 1 | bemenu -i -l "$cnt" -w -p "apps:")
+  if [ -z "$chosen" ]; then
+    return
+  fi
   matched=$(_apps | grep "^$chosen," | cut -d "," -f 2)
   if [ -n "$matched" ]; then
     $matched
