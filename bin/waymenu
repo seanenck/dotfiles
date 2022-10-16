@@ -1,64 +1,56 @@
-#!/usr/bin/env python3
-"""Menu helper."""
-import csv
-import os
-import urllib.parse
-import shlex
-import subprocess
+#!/usr/bin/env bash
+CSV=$HOME/.env/local/lib/commands.csv
+_apps() {
+  echo "firefox,firefox --new-window"
+  echo "pcmanfm,pcmanfm"
+  echo "transfer,filezilla"
+  echo "volume,pavucontrol"
+  echo "music,strawberry"
+  echo "terminal,kitty"
+  if [ -e $CSV ]; then
+    cat $CSV | tail -n +2
+  fi
+}
 
-_APPS = {"firefox": ["firefox", "--new-window"],
-         "pcmanfm": ["pcmanfm"],
-         "transfer": ["filezilla"],
-         "volume": ["pavucontrol"],
-         "music": ["strawberry"],
-         "terminal": ["kitty"]}
+_urlencode() {
+  LC_ALL=C awk -- '
+    BEGIN {
+      for (i = 1; i <= 255; i++) hex[sprintf("%c", i)] = sprintf("%%%02X", i)
+    }
+    function urlencode(s,  c,i,r,l) {
+      l = length(s)
+      for (i = 1; i <= l; i++) {
+        c = substr(s, i, 1)
+        r = r "" (c ~ /^[-._~0-9a-zA-Z]$/ ? c : hex[c])
+      }
+      return r
+    }
+    BEGIN {
+      for (i = 1; i < ARGC; i++)
+        print urlencode(ARGV[i])
+    }' "$@"
+}
 
+_menu() {
+  local cnt chosen matched url
+  cnt=$(_apps | wc -l)
+  pkill bemenu
+  chosen=$(_apps | cut -d ',' -f 1 | bemenu -i -l "$cnt" -w -p "apps:")
+  matched=$(_apps | grep "^$chosen," | cut -d "," -f 2)
+  if [ -n "$matched" ]; then
+    $matched
+    return
+  fi
+  url=""
+  if echo "$chosen" | grep -v -q " "; then
+    if [ $(echo "$chosen" | tr '.' '\n' | wc -l) -gt 1 ]; then
+      url="$chosen"
+    fi
+  fi
+  if [ -z "$url" ]; then
+    url="https://duckduckgo.com?q=$(_urlencode "$chosen")"
+  fi
+  firefox --new-window "$url"
+}
 
-def main():
-    """Program entry."""
-    home = os.environ["HOME"]
-    csv_path = os.path.join(home, ".env", "local", "lib", "commands.csv")
-    if os.path.exists(csv_path):
-        with open(csv_path) as f:
-            c = csv.DictReader(f)
-            for o in c:
-                _APPS[o["name"]] = shlex.split(o["command"])
-    keys = sorted(_APPS.keys())
-    count = str(len(keys) + 1)
-    subprocess.run(["pkill", "bemenu"])
-    p = subprocess.Popen(["bemenu",
-                          "-i",
-                          "-l",
-                          count,
-                          "-w",
-                          "-p",
-                          "apps:"],
-                         stdin=subprocess.PIPE,
-                         stdout=subprocess.PIPE,
-                         stderr=subprocess.DEVNULL)
-    for k in keys:
-        p.stdin.write((k + "\n").encode())
-    o, _ = p.communicate()
-    chosen = o.decode().strip()
-    if not chosen:
-        return
-    if chosen in keys:
-        cmd = _APPS[chosen]
-        if cmd:
-            subprocess.run(cmd)
-            return
-    url = None
-    if len(chosen.split(" ")) == 1 and len(chosen.split(".")) > 1:
-        parsed = urllib.parse.urlparse(chosen)
-        if (parsed.scheme and parsed.netloc and not parsed.path) or \
-           (not parsed.scheme and not parsed.netloc and parsed.path):
-            if not parsed.query and not parsed.fragment and not parsed.params:
-                url = chosen
-    if not url:
-        parsed = urllib.parse.quote(chosen)
-        url = "https://duckduckgo.com?q={}".format(parsed)
-    subprocess.run(["firefox", "--new-window", url])
-
-
-if __name__ == "__main__":
-    main()
+_menu
