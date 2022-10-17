@@ -2,6 +2,8 @@ export PATH="$HOME/.env/dotfiles/bin:$PATH"
 export GOPATH="$HOME/.cache/go"
 export XDG_RUNTIME_DIR=/tmp/$(id -u)-runtimedir
 export DELTA_PAGER="less -c -X"
+export LOCAL_ENV="$HOME/.env/local"
+export GIT_OCLONE_DIR="$LOCAL_ENV/lib/git"
 
 _sway-start() {
     dbus-launch --exit-with-session sway
