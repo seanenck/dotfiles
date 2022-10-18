@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-goimports -l . | sed 's/^/[goimports]    /g'
-revive ./... | sed 's/^/[revive]       /g'
-staticcheck ./... | sed 's/^/[staticcheck]  /g' 
-go vet ./... | sed 's/^/[govet]         /g'
