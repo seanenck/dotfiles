@@ -5,6 +5,7 @@ mouse = false
 middle-click-paste = false
 auto-pairs = false
 bufferline = "always"
+true-color = true
 
 [keys.normal]
 C-c = "yank_main_selection_to_clipboard"
