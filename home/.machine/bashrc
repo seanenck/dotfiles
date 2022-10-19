@@ -4,8 +4,6 @@ export DELTA_PAGER="less -c -X"
 export LOCAL_ENV="$HOME/.env/local"
 export GIT_OCLONE_DIR="$LOCAL_ENV/lib/git"
 export GIT_UNCOMMIT_DIRS="$HOME/workspace:$HOME/.env"
-source "$HOME/.cargo/env"
-source $(rustc --print sysroot)/etc/bash_completion.d/cargo
 
 SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
 if ! pgrep ssh-agent > /dev/null; then
