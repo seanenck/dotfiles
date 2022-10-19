@@ -14,12 +14,21 @@ if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
     source "$SSH_AGENT_ENV" >/dev/null
 fi
 
-bck=$(find /var/cache/backups -mtime -2 | wc -l)
-if [ $bck -lt 1 ]; then
-    echo
-    echo "    -> no recent backup"
-    echo
-fi
+_checks() {
+    if ! diff -u /etc/defaults/world /etc/apk/world > /dev/null; then
+        echo
+        echo "packages:"
+        echo "  -> mismatch world"
+        echo
+    fi
+    if find /etc -type f -name "*.apk-new" >/dev/null 2>&1; then
+        echo
+        echo "apk-new:"
+        echo "  -> update settings"
+        echo
+    fi
+}
+
 _not-pushed() {
     local text
     text=$(git uncommitted)
