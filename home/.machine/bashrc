@@ -40,3 +40,4 @@ _not-pushed() {
     fi
 }
 _not-pushed
+_checks
