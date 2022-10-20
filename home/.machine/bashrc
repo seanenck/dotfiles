@@ -7,7 +7,7 @@ export GIT_UNCOMMIT_DIRS="$HOME/workspace:$HOME/.env"
 
 SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
 if ! pgrep ssh-agent > /dev/null; then
-    ssh-agent -t 1h > "$SSH_AGENT_ENV"
+    ssh-agent > "$SSH_AGENT_ENV"
 fi
 if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
     source "$SSH_AGENT_ENV" >/dev/null
