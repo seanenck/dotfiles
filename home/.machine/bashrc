@@ -27,21 +27,17 @@ if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
     source "$SSH_AGENT_ENV" >/dev/null
 fi
 
-_checks() {
-    if ! diff -u /etc/defaults/world /etc/apk/world > /dev/null; then
+_backups() {
+    local bck
+    bck=$(find /var/cache/backups -type f -mtime -2 | wc -l)    
+    if [ $bck -lt 1 ]; then
         echo
-        echo "packages:"
-        echo "  -> mismatch world"
-        echo
-    fi
-    if find /etc -type f -name "*.apk-new" 2>/dev/null | grep -q ""; then
-        echo
-        echo "apk-new:"
-        echo "  -> update settings"
+        echo "backups:"
+        echo "  -> no recents"
         echo
     fi
 }
-
+ 
 _not-pushed() {
     local text
     text=$(git uncommitted)
@@ -53,4 +49,4 @@ _not-pushed() {
     fi
 }
 _not-pushed
-_checks
+_backups
