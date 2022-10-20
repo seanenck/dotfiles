@@ -39,12 +39,10 @@ _backups() {
 }
  
 _not-pushed() {
-    local text
-    text=$(git uncommitted)
-    if [ -n "$text" ]; then
+    if ! git uncommitted --quiet; then
         echo
         echo "uncommitted:"
-        echo "$text" | cut -d " " -f 1 | sort -u | sed "s#$HOME/##g" | sed 's/^/  -> /g'
+        git uncommitted | cut -d " " -f 1 | sort -u | sed "s#$HOME/##g" | sed 's/^/  -> /g'
         echo
     fi
 }
