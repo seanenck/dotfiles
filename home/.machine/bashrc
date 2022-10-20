@@ -20,7 +20,7 @@ _checks() {
         echo "  -> mismatch world"
         echo
     fi
-    if find /etc -type f -name "*.apk-new" >/dev/null 2>&1; then
+    if find /etc -type f -name "*.apk-new" 2>/dev/null | grep -q ""; then
         echo
         echo "apk-new:"
         echo "  -> update settings"
