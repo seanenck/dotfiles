@@ -4,7 +4,6 @@ _apps() {
   echo "firefox,firefox --new-window"
   echo "pcmanfm,pcmanfm"
   echo "transfer,filezilla"
-  echo "volume,pavucontrol"
   echo "terminal,kitty"
   if [ -e $CSV ]; then
     cat $CSV | tail -n +2
