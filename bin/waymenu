@@ -5,7 +5,6 @@ _apps() {
   echo "pcmanfm,pcmanfm"
   echo "transfer,filezilla"
   echo "volume,pavucontrol"
-  echo "music,strawberry"
   echo "terminal,kitty"
   if [ -e $CSV ]; then
     cat $CSV | tail -n +2
