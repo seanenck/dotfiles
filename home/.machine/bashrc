@@ -1,4 +1,4 @@
-export PATH="$HOME/.env/dotfiles/bin:$HOME/.bin:$PATH"
+export PATH="$HOME/.bin:$PATH"
 export GOPATH="$HOME/.cache/go"
 export XDG_RUNTIME_DIR=/tmp/$(id -u)-runtimedir
 export DELTA_PAGER="less -c -X"
