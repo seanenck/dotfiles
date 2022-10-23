@@ -10,6 +10,7 @@ export APOD_CACHE="$HOME/.cache/apks"
 export APOD_ABUILD="$HOME/.abuild"
 export APOD_USER="enck"
 export APOD_BUILDDIR="/home/enck"
+export APOD_CONTAINERFILE="$HOME/.local/share/apod.Containerfile"
 
 _sway-start() {
     dbus-launch --exit-with-session sway
