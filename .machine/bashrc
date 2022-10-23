@@ -30,7 +30,7 @@ _backups() {
     d=/var/cache/backups
     bck=0
     if [ -d $d ]; then
-        bck=$(find /var/cache/backups -type f -mtime -2 | wc -l)    
+        bck=$(find $d -type f -mtime -2 | wc -l)    
     fi
     if [ $bck -lt 1 ]; then
         echo
