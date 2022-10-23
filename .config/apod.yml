@@ -7,9 +7,16 @@ builddir: "/home/enck"
 abuild: "~/.abuild"
 user: "enck"
 repository: "/opt/repository"
-run: ["-it", "--rm", "--userns", "keep-id"]
 commands:
-  - ["doas", "/sbin/apk", "update"]
-  - ["abuild", "sanitycheck"]
-  - ["abuild", "verify"]
-  - ["abuild", "-r"]
+  run_args:
+    - "-it"
+    - "--rm"
+    - "--userns"
+    - "keep-id"
+  podman_run:
+    - ["doas", "/sbin/apk", "update"]
+    - ["abuild", "sanitycheck"]
+    - ["abuild", "verify"]
+    - ["abuild", "-r"]
+  build_args: []
+  volumes: []
