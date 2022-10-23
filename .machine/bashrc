@@ -5,12 +5,6 @@ export DELTA_PAGER="less -c -X"
 export LOCAL_ENV="$HOME/.env/local"
 export GIT_OCLONE_DIR="$LOCAL_ENV/lib/git"
 export GIT_UNCOMMIT_DIRS="$HOME/workspace:$HOME/.env"
-export APOD_REPOSITORY="/opt/repository"
-export APOD_CACHE="$HOME/.cache/apks"
-export APOD_ABUILD="$HOME/.abuild"
-export APOD_USER="enck"
-export APOD_BUILDDIR="/home/enck"
-export APOD_CONTAINERFILE="$HOME/.config/apod/Containerfile"
 
 _sway-start() {
     dbus-launch --exit-with-session sway
