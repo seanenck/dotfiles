@@ -1,0 +1,13 @@
+tools:
+  - name: goimports
+    exe: goimports
+    args: ["-l", "."]
+  - name: revive
+    exe: revive
+    args: ["./..."]
+  - name: staticcheck
+    exe: staticcheck
+    args: ["./..."]
+  - name: govet
+    exe: go
+    args: ["vet", "./..."]
