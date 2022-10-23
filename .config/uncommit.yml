@@ -1,3 +1,6 @@
+paths:
+  - "~/workspace"
+  - "~/.env"
 git:
   - name: update-index
     args: ["update-index", "-q" , "--refresh"]
