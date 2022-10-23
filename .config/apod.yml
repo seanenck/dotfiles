@@ -1,10 +1,10 @@
 apksrc: "/src"
 tag: "apod-build"
 configure: "configure"
-cache: "/home/enck/.cache/apks"
-containerfile: "/home/enck/.config/apod/Containerfile"
+cache: "~/.cache/apks"
+containerfile: "~/.config/apod/Containerfile"
 builddir: "/home/enck"
-abuild: "/home/enck/.abuild"
+abuild: "~/.abuild"
 user: "enck"
 repository: "/opt/repository"
 run: ["-it", "--rm", "--userns", "keep-id"]
