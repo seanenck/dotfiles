@@ -5,3 +5,4 @@ for file in $HOME/.config/profile.d/*; do
         . "$file"
     fi
 done
+unset file
