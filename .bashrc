@@ -28,6 +28,7 @@ for file in $HOME/.machine/bashrc \
     fi
 done
 
+unset file
 export TERM=xterm-256color
 PREFERPS1="(\u@\h \W)"
 if [ -z "$SSH_CONNECTION" ]; then
