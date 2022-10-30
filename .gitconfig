@@ -18,7 +18,7 @@
 [user]
     name = Sean Enck
     email = enckse@voidedtech.com
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILF34csErDEvpiwtv+SGIuhZ5c1cjmSGRSmUnG3nSeBe workstation
+    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILF34csErDEvpiwtv+SGIuhZ5c1cjmSGRSmUnG3nSeBe workstation
 [help]
     format = man
 [commit]
@@ -28,11 +28,11 @@
 [diff "lb"]
     textconv = lb hash
 [gpg]
-	format = ssh
+    format = ssh
 [gpg "ssh"]
-	allowedSignersFile = ~/.ssh/allowed_signers
+    allowedSignersFile = ~/.ssh/allowed_signers
 [merge]
-	conflictstyle = diff3
+    conflictstyle = diff3
 [interactive]
     diffFilter = delta --color-only
 [delta]
