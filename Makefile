@@ -1,4 +1,4 @@
-SHARED_DIRS := voidedtech bash
+SHARED_DIRS := voidedtech profile.d
 
 all: $(SHARED_DIRS)
 	mkdir -p $(HOME)/.abuild
