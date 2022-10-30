@@ -1,4 +1,8 @@
-all:
+SHARED_DIRS := voidedtech bash
+
+all: $(SHARED_DIRS)
 	mkdir -p $(HOME)/.abuild
-	mkdir -p $(HOME)/.config/voidedtech
 	stow --ignore="(Makefile|README.md|LICENSE)" --target=$(HOME) .
+
+$(SHARED_DIRS):
+	mkdir -p $(HOME)/.config/$@
