@@ -18,10 +18,10 @@ export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 
-for file in $HOME/.machine/bashrc \
+for file in $HOME/.config/bash/bashrc \
             $HOME/.bash_aliases \
-            $HOME/.machine/bash_aliases \
-            $HOME/.machine/bash_completions \
+            $HOME/.config/bash/bash_aliases \
+            $HOME/.config/bash/bash_completions \
             $HOME/.bashrc_local; do
     if [ -e "$file" ]; then
         . "$file"
