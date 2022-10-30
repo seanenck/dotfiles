@@ -4,21 +4,17 @@ paths:
 git:
   - name: update-index
     args: ["update-index", "-q" , "--refresh"]
-    negate: false
-    filter: ""
   - name: diff-index
     args: ["diff-index", "--name-only", "HEAD", "--"]
-    filter: ""
-    negate: false
   - name: "status"
     args: ["status", "-sb"]
-    filter: "ahead"
-    negate: false
+    filter: 
+      text: "ahead"
+      negate: false
   - name: "ls-files"
     args: ["ls-files", "--other", "--exclude-standard"]
-    filter: ""
-    negate: false
   - name: "branch-current"
     args: ["branch", "--show-current"]
-    filter: "master"
-    negate: true
+    filter:
+      text: "master"
+      negate: true

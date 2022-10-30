@@ -2,25 +2,15 @@ browser:
   name: firefox
   args: ["--new-window"]
   search: "https://duckduckgo.com?q="
+  urls:
+    - "fastmail.com"
+    - "fastmail.com/notes"
+    - "home.voidedtech.com"
+    - "voidedtech.com"
 options:
   - name: files
     command: [pcmanfm]
-    browser: false
   - name: transfer
     command: [filezilla]
-    browser: false
   - name: terminal
-    command: ["kitty"]
-    browser: false
-  - name: fastmail.com
-    browser: true
-    command: []
-  - name: "fastmail.com/notes"
-    command: []
-    browser: true
-  - name: "home.voidedtech.com"
-    command: []
-    browser: true
-  - name: "voidedtech.com"
-    command: []
-    browser: true
+    command: [kitty]
