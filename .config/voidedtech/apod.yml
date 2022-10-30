@@ -9,6 +9,7 @@ user: "enck"
 repository: "/opt/repository"
 commands:
   run_args:
+    - "-it"
     - "--rm"
     - "--userns"
     - "keep-id"
