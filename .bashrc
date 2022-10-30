@@ -19,7 +19,6 @@ export LESSHISTFILE=$HOME/.cache/lesshst
 export PAGER=less
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 
-. /etc/profile
 for file in $HOME/.machine/bashrc \
             $HOME/.bash_aliases \
             $HOME/.machine/bash_aliases \
