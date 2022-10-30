@@ -16,7 +16,6 @@ HISTFILESIZE=-1
 export VISUAL=vi
 export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
-export PAGER=less
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 
 for file in $HOME/.machine/bashrc \
