@@ -24,21 +24,6 @@ fi
 if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
     source "$SSH_AGENT_ENV" >/dev/null
 fi
-
-_backups() {
-    local bck d
-    d=/var/cache/backups
-    bck=0
-    if [ -d $d ]; then
-        bck=$(find $d -type f -mtime -2 | wc -l)    
-    fi
-    if [ $bck -lt 1 ]; then
-        echo
-        echo "backups:"
-        echo "  -> check status"
-        echo
-    fi
-}
  
 _not-pushed() {
     if ! git uncommitted --quiet; then
@@ -49,4 +34,3 @@ _not-pushed() {
     fi
 }
 _not-pushed
-_backups
