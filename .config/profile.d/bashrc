@@ -3,6 +3,7 @@ HOME_CACHE="$HOME/.cache"
 export GOPATH="$HOME_CACHE/go"
 export DELTA_PAGER="less -c -X"
 export PATH="$HOME/.bin:$PATH"
+export XDG_SSH_ENV="$HOME/.cache/xdg.env"
 source "$HOME/.cargo/env"
 
 if [ ! -d "$HOME_CACHE" ]; then
@@ -12,12 +13,25 @@ if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     exec sway > $HOME/.cache/sway.log 2>&1 | systemd-cat -t sway
 fi
 
-SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
-if ! pgrep ssh-agent > /dev/null; then
-    ssh-agent > "$SSH_AGENT_ENV"
+if [ -z "$SSH_CONNECTION" ]; then
+    {
+        echo "export XDG_RUNTIME_DIR='$XDG_RUNTIME_DIR'"
+    } > "$XDG_SSH_ENV"
+else
+    if [ -e "$XDG_SSH_ENV" ]; then
+        soruce "$XDG_SSH_ENV"
+    fi
 fi
-if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    source "$SSH_AGENT_ENV" >/dev/null
+if [ -n "$XDG_RUNTIME_DIR" ]; then
+    SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
+    if ! pgrep ssh-agent > /dev/null; then
+        ssh-agent > "$SSH_AGENT_ENV"
+    fi
+    if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+        source "$SSH_AGENT_ENV" >/dev/null
+    fi
+else
+    echo "no agent"
 fi
  
 _not-pushed() {
