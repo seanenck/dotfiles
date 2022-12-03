@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
-export GOPATH="$HOME/.cache/go"
-export XDG_RUNTIME_DIR=/tmp/$(id -u)-runtimedir
+HOME_CACHE="$HOME/.cache"
+export GOPATH="$HOME_CACHE/go"
 export DELTA_PAGER="less -c -X"
+export PATH="$HOME/.bin:$PATH"
+source "$HOME/.cargo/env"
 
 _sway-start() {
     dbus-launch --exit-with-session sway
 }
 
-if [ ! -d $XDG_RUNTIME_DIR ]; then
-    mkdir $XDG_RUNTIME_DIR
-    chmod 0700 $XDG_RUNTIME_DIR
+if [ ! -d "$HOME_CACHE" ]; then
+    mkdir "$HOME_CACHE"
 fi
 if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     _sway-start > $HOME/.cache/sway.log 2>&1 
