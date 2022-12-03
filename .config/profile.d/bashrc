@@ -9,7 +9,7 @@ if [ ! -d "$HOME_CACHE" ]; then
     mkdir "$HOME_CACHE"
 fi
 if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-    exec sway > $HOME/.cache/sway.log 2>&1 
+    exec sway > $HOME/.cache/sway.log 2>&1 | systemd-cat -t sway
 fi
 
 SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
