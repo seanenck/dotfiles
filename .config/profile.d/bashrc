@@ -19,7 +19,7 @@ if [ -z "$SSH_CONNECTION" ]; then
     } > "$XDG_SSH_ENV"
 else
     if [ -e "$XDG_SSH_ENV" ]; then
-        soruce "$XDG_SSH_ENV"
+        source "$XDG_SSH_ENV"
     fi
 fi
 if [ -n "$XDG_RUNTIME_DIR" ]; then
