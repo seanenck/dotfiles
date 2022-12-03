@@ -5,16 +5,11 @@ export DELTA_PAGER="less -c -X"
 export PATH="$HOME/.bin:$PATH"
 source "$HOME/.cargo/env"
 
-_sway-start() {
-    dbus-launch --exit-with-session sway
-}
-
 if [ ! -d "$HOME_CACHE" ]; then
     mkdir "$HOME_CACHE"
 fi
 if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-    _sway-start > $HOME/.cache/sway.log 2>&1 
-    exit
+    exec sway > $HOME/.cache/sway.log 2>&1 
 fi
 
 SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
