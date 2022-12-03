@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 [[ $- != *i* ]] && return
-for file in $HOME/.config/profile.d/*; do
-    if [ -e "$file" ]; then
-        . "$file"
-    fi
-done
-for file in /etc/profile.d/*; do
-    if [ -e "$file" ]; then
-        . "$file"
-    fi
+for dir in "$HOME/.config/profile.d/" "/etc/profile.d/" "$HOME/.completions/"; do
+    for file in $dir*; do
+        if [ -e "$file" ]; then
+            . "$file"
+        fi
+    done
 done
 unset file
+unset dir
