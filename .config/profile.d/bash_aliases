@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 alias vi=hx
 alias vim=hx
-alias cat=batcat
+alias nvim=hx
+alias cat=bat
 
 gomod-update() {
     go get -u ./...

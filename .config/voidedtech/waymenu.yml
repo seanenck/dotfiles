@@ -8,6 +8,8 @@ browser:
     - "home.voidedtech.com"
     - "voidedtech.com"
 options:
+  - name: files
+    command: [pcmanfm]
   - name: transfer
     command: [filezilla]
   - name: terminal
