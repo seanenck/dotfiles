@@ -5,4 +5,5 @@ for file in $HOME/.config/profile.d/*; do
         . "$file"
     fi
 done
+PS1="\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 unset file

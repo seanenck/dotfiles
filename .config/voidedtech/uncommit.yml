@@ -18,3 +18,8 @@ git:
     filter:
       text: "master"
       negate: true
+color:
+  dirty: "31"
+  clean: "32"
+  prefix: "["
+  suffix: "]"
