@@ -19,7 +19,7 @@ git:
       text: "master"
       negate: true
 color:
-  dirty: "31"
-  clean: "32"
+  dirty: 31
+  clean: 32
   prefix: "["
   suffix: "]"
