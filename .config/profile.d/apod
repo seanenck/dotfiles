@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-REPODEST="/opt/repository"
+REPODEST="/opt/packages/repository"
 
 _apod-dirs() {
     local d
