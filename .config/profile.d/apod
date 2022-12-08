@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+REPODEST="/opt/repository"
+
+_apod-dirs() {
+    local d
+    for d in pkg src; do
+        rm -rf "$d"
+    done
+ }
+
+_apod-cleanup() {
+    _apod-dirs
+    _apod-duplicates
+    echo "cleanup cleanup"
+}
+
+_apod-pkgexists() {
+   read -p "deploy new package? (y/N) " n
+   if [[ "$n" == "y" ]]; then
+       return
+   fi
+   exit 1
+}
+
+_apod-packages() {
+    local f bname name
+    for f in $(find $REPODEST -type f -name "*.apk"); do
+        name=$(_apod-name "$f") 
+        if [ ! -z "$1" ]; then
+            if [[ "$name" == "$1" ]]; then 
+                echo "$f"
+            fi
+            continue
+        fi
+        echo "$f"
+    done
+}
+
+_apod-name() {
+    basename $1 | rev | cut -d "-" -f 3- | rev
+}
+
+_apod-ver() {
+    basename $1 | rev | cut -d "-" -f 1,2 | cut -d "." -f 2- | rev
+}
+
+_apod-duplicates() {
+    local p name n a first other deletes cnt cmp
+    deletes=()
+    for p in $(_apod-packages); do
+        name=$(_apod-name $p)
+        a=()
+        for n in $(_apod-packages $name); do
+            a+=($n) 
+        done
+        cnt=${#a[@]}
+        if [ "$cnt" -gt 1 ]; then
+            first="${a[0]}"
+            for other in $(seq 1 $((cnt-1))); do
+                other=${a[$other]}
+                cmp=$(apk version -t $(_apod-ver $first) $(_apod-ver $other))
+                case "$cmp" in
+                    ">")
+                        deletes+=($other)
+                        ;;
+                    "<")
+                        deletes+=($first)
+                        ;;
+                esac
+            done
+        fi
+    done
+    if [ "${#deletes[@]}" -gt 0 ]; then
+        echo "${deletes[*]}" | tr ' ' '\n' | sort -u
+        read -p "delete ^ packages? (y/N) " n
+        if [[ "$n" == "y" ]]; then 
+            for p in $(echo ${deletes[*]} | sort -u); do
+                rm -f $p
+            done
+        fi
+    fi
+}
+
+apod() {
+    local pkgname errored
+    if [ ! -e APKBUILD ]; then
+        echo "no APKBUILD"
+        exit 1
+    fi
+    if [ ! -d "$REPODEST" ]; then
+        echo "no $REPODEST found"
+    fi
+    pkgname=$(basename $PWD)
+    if ! ls $REPODEST/x86_64 | grep -q "^$pkgname"; then
+        _pkgexists
+    fi
+    _apod-dirs
+    errored=0
+    if [ -x ./configure ]; then
+        ./configure
+    fi
+    if ! REPODEST="$REPODEST" abuild rootbld; then
+        errored=1
+    fi
+    _apod-cleanup
+    if [ $errored -ne 0 ]; then
+        echo "error ^"
+        exit 1
+    fi
+}
