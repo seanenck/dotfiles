@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
 REPODEST="/opt/packages/repository"
 
-_apod-dirs() {
+_abw-dirs() {
     local d
     for d in pkg src; do
         rm -rf "$d"
     done
  }
 
-_apod-cleanup() {
-    _apod-dirs
-    _apod-duplicates
+_abw-cleanup() {
+    _abw-dirs
+    _abw-duplicates
     echo "cleanup cleanup"
 }
 
-_apod-packages() {
+_abw-packages() {
     local f bname name
     for f in $(find $REPODEST -type f -name "*.apk"); do
-        name=$(_apod-name "$f") 
+        name=$(_abw-name "$f") 
         if [ ! -z "$1" ]; then
             if [[ "$name" == "$1" ]]; then 
                 echo "$f"
@@ -28,21 +28,21 @@ _apod-packages() {
     done
 }
 
-_apod-name() {
+_abw-name() {
     basename $1 | rev | cut -d "-" -f 3- | rev
 }
 
-_apod-ver() {
+_abw-ver() {
     basename $1 | rev | cut -d "-" -f 1,2 | cut -d "." -f 2- | rev
 }
 
-_apod-duplicates() {
+_abw-duplicates() {
     local p name n a first other deletes cnt cmp
     deletes=()
-    for p in $(_apod-packages); do
-        name=$(_apod-name $p)
+    for p in $(_abw-packages); do
+        name=$(_abw-name $p)
         a=()
-        for n in $(_apod-packages $name); do
+        for n in $(_abw-packages $name); do
             a+=($n) 
         done
         cnt=${#a[@]}
@@ -50,7 +50,7 @@ _apod-duplicates() {
             first="${a[0]}"
             for other in $(seq 1 $((cnt-1))); do
                 other=${a[$other]}
-                cmp=$(apk version -t $(_apod-ver $first) $(_apod-ver $other))
+                cmp=$(apk version -t $(_abw-ver $first) $(_abw-ver $other))
                 case "$cmp" in
                     ">")
                         deletes+=($other)
@@ -73,7 +73,7 @@ _apod-duplicates() {
     fi
 }
 
-apod() {
+abw() {
     local pkgname errored repo
     if [ ! -e APKBUILD ]; then
         echo "no APKBUILD"
@@ -83,7 +83,7 @@ apod() {
         echo "no $REPODEST found"
     fi
     pkgname=$(basename $PWD)
-    _apod-dirs
+    _abw-dirs
     errored=0
     if [ -x ./configure ]; then
         ./configure
@@ -92,7 +92,7 @@ apod() {
     if ! REPODEST="$repo" abuild rootbld; then
         errored=1
     fi
-    _apod-cleanup
+    _abw-cleanup
     if [ $errored -ne 0 ]; then
         echo "error ^"
     fi
