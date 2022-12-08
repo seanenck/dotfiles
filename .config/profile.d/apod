@@ -74,7 +74,7 @@ _apod-duplicates() {
 }
 
 apod() {
-    local pkgname errored
+    local pkgname errored repo
     if [ ! -e APKBUILD ]; then
         echo "no APKBUILD"
         return
@@ -88,7 +88,8 @@ apod() {
     if [ -x ./configure ]; then
         ./configure
     fi
-    if ! REPODEST="$(dirname REPODEST)" abuild rootbld; then
+    repo=$(dirname $REPODEST)
+    if ! REPODEST="$repo" abuild rootbld; then
         errored=1
     fi
     _apod-cleanup
