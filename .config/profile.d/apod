@@ -14,14 +14,6 @@ _apod-cleanup() {
     echo "cleanup cleanup"
 }
 
-_apod-pkgexists() {
-   read -p "deploy new package? (y/N) " n
-   if [[ "$n" == "y" ]]; then
-       return
-   fi
-   exit 1
-}
-
 _apod-packages() {
     local f bname name
     for f in $(find $REPODEST -type f -name "*.apk"); do
@@ -85,26 +77,22 @@ apod() {
     local pkgname errored
     if [ ! -e APKBUILD ]; then
         echo "no APKBUILD"
-        exit 1
+        return
     fi
     if [ ! -d "$REPODEST" ]; then
         echo "no $REPODEST found"
     fi
     pkgname=$(basename $PWD)
-    if ! ls $REPODEST/x86_64 | grep -q "^$pkgname"; then
-        _pkgexists
-    fi
     _apod-dirs
     errored=0
     if [ -x ./configure ]; then
         ./configure
     fi
-    if ! REPODEST="$REPODEST" abuild rootbld; then
+    if ! REPODEST="$(dirname REPODEST)" abuild rootbld; then
         errored=1
     fi
     _apod-cleanup
     if [ $errored -ne 0 ]; then
         echo "error ^"
-        exit 1
     fi
 }
