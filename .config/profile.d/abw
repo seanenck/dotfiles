@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-REPODEST="/opt/packages/repository"
+REPODEST="/opt/packages/local"
 
 _abw-dirs() {
     local d
