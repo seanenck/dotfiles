@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+ABUILD_DIR=$HOME/.abuild
+ABUILD_CONF=$ABUILD_DIR/abuild.conf
+if ! dotfiles .; then
+	echo "dotfiles failed"
+	exit 1
+fi
+mkdir -p "$ABUILD_DIR"
+{
+	printf 'PACKAGER="Sean Enck <enckse@voidedtech.com>"'
+	printf 'PACKAGER_PRIVKEY="/home/enck/.abuild/build@voidedtech.com.rsa"'
+} > "$ABUILD_CONF"
