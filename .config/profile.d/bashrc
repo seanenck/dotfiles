@@ -3,17 +3,12 @@ export GOPATH="$HOME/.cache/go"
 export XDG_RUNTIME_DIR=/tmp/$(id -u)-runtimedir
 export DELTA_PAGER="less -c -X"
 
-_sway-start() {
-    dbus-launch --exit-with-session sway
-}
-
 if [ ! -d $XDG_RUNTIME_DIR ]; then
     mkdir $XDG_RUNTIME_DIR
     chmod 0700 $XDG_RUNTIME_DIR
 fi
 if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-    _sway-start > $HOME/.cache/sway.log 2>&1 
-    exit
+    exec dbus-launch --exit-with-session sway > $HOME/.cache/sway.log 2>&1 
 fi
 
 SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
