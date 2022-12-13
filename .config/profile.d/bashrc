@@ -2,7 +2,7 @@
 export GOPATH="$HOME/.cache/go"
 export XDG_RUNTIME_DIR=/tmp/$(id -u)-runtimedir
 export DELTA_PAGER="less -c -X"
-export GOFLAGS="-trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
+source "$HOME/.abuild/abuild.conf"
 
 if [ ! -d $XDG_RUNTIME_DIR ]; then
     mkdir $XDG_RUNTIME_DIR
