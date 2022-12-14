@@ -1,7 +1,4 @@
 tools:
-  - name: goimports
-    exe: goimports
-    args: ["-l", "."]
   - name: revive
     exe: revive
     args: ["./..."]
