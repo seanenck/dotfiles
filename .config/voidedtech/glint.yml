@@ -1,4 +1,7 @@
 tools:
+  - name: gopls
+    exe: gopls
+    args: ["-l", "."]
   - name: revive
     exe: revive
     args: ["./..."]
