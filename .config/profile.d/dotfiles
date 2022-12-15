@@ -16,7 +16,7 @@ dotfiles() {
 	local f df d
 	df=".dotfiles"
 	if [ ! -d ".git" ]; then
-		echo "not a git directory"
+		echo "not a git/parent directory"
 		return
 	fi
 	if [ ! -d "$df" ]; then
