@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+_dotfiles_hook() {
+	local h
+	h="$1/$2"
+	if [ ! -e "$h" ]; then
+		return
+	fi
+	if [ ! -x "$h" ]; then
+		echo "hook ($h) is not executable"
+		return
+	fi
+	$h
+}
+
+dotfiles() {
+	local f df d
+	df=".dotfiles"
+	if [ ! -d ".git" ]; then
+		echo "not a git directory"
+		return
+	fi
+	if [ ! -d "$df" ]; then
+		if [ ! -e "$df" ]; then
+			echo "not a dotfiles repository"
+			return
+		fi
+	fi
+	_dotfiles_hook "$df" "pre"
+	for f in $(git ls-files | grep '^\.' | grep -v "^$df"); do
+		d="$HOME/"$(dirname "$f")
+		mkdir -p "$d"
+		ln -sf "$PWD/$f" "$HOME/$f"
+	done
+	_dotfiles_hook "$df" "post"
+}
