@@ -11,4 +11,4 @@ options:
   - name: transfer
     command: [filezilla]
   - name: terminal
-    command: [kitty]
+    command: [foot]
