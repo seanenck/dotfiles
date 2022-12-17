@@ -32,7 +32,7 @@ _menu() {
   local cnt chosen matched url
   cnt=$(_apps | wc -l)
   pkill bemenu
-  chosen=$(_apps | cut -d ',' -f 1 | bemenu -i -l "$cnt" -w -p "apps:")
+  chosen=$(_apps | sort | cut -d ',' -f 1 | bemenu -i -l "$cnt" -w -p "apps:")
   if [ -z "$chosen" ]; then
     return
   fi
