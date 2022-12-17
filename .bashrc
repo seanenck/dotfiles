@@ -24,7 +24,7 @@ if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
     source "$SSH_AGENT_ENV" >/dev/null
 fi
 
-for file in ".abuild/abuild.conf" ".bashrc_local" ".bash_aliases"; do
+for file in ".abuild/abuild.conf" ".bashrc_local" ".bash_aliases" ".bash_completions"; do
     file="$HOME/$file"
     if [ -e "$file" ]; then
         source "$file"

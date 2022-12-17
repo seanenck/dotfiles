@@ -1,6 +1,43 @@
 #!/usr/bin/env bash
+CONFIG="$HOME/.config/voidedtech/oclone.yml"
+HIST="$HOME/.cache/oclone.hst"
+
 oclone() {
-	echo "$1"
+	local in spec dst url clone
+	in="$1"
+	if [ "$in" == "--list" ]; then
+    {
+			yq ".specs[].name" "$CONFIG"
+			if [ -e "$HIST" ]; then
+				cat "$HIST"
+			fi
+		} | sort
+		return
+	fi
+	repo=$(echo "$in" | cut -d '/' -f 1)
+	spec=$(yq ".specs[] | select (.name == \"$repo\")" "$CONFIG")
+	if [ -z "$spec" ]; then
+		echo "invalid argument, spec not found"
+		exit 1
+	fi
+	url=$(echo "$spec" | yq '.url')
+	clone="$url$(echo "$in" | cut -d "/" -f 2-)"
+	if ! git clone "$clone" "${@:2}"; then
+		echo "clone failed"
+		exit 1
+	fi
+	touch "$HIST"
+	awk -v line="$in" 'FNR==NR && line==$0{f=1; exit} 
+                              END{if (!f) print line >> FILENAME}' "$HIST"
 }
+
+if [ -z "$1" ]; then
+	echo "argument required"
+	exit 1
+fi
+if [ ! -e "$CONFIG" ]; then
+	echo "$CONFIG is missing"
+	exit 1
+fi
 
 oclone "$@"
