@@ -12,6 +12,11 @@ _dotfiles_hook() {
 	$h
 }
 
+_lsfiles() {
+	git ls-files
+	git ls-files --others
+}
+
 dotfiles() {
 	local f df d
 	df=".dotfiles"
@@ -26,7 +31,7 @@ dotfiles() {
 		fi
 	fi
 	_dotfiles_hook "$df" "pre"
-	for f in $(git ls-files | grep '^\.' | grep -v "^$df"); do
+	for f in $(_lsfiles | grep '^\.' | grep -v "^$df"); do
 		d="$HOME/"$(dirname "$f")
 		mkdir -p "$d"
 		ln -sf "$PWD/$f" "$HOME/$f"
