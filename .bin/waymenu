@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 _apps() {
-  echo "firefox,firefox --new-window"
-  echo "transfer,filezilla"
-  echo "terminal,kitty"
-  echo "home.voidedtech.com,home"
+  local w
+  echo "firefox,firefox --new-window,app"
+  echo "transfer,filezilla,app"
+  echo "terminal,kitty,app"
+  for w in "fastmail.com" "home.voidedtech.com" "voidedtech.com"; do
+    echo "$w,$w,web"
+  done
 }
 
 _urlencode() {
@@ -33,7 +36,7 @@ _menu() {
   if [ -z "$chosen" ]; then
     return
   fi
-  matched=$(_apps | grep "^$chosen," | cut -d "," -f 2)
+  matched=$(_apps | grep "^$chosen," | grep ',app$' | cut -d "," -f 2)
   if [ -n "$matched" ]; then
     $matched
     return
