@@ -3,11 +3,11 @@ CONFIG="$HOME/.config/voidedtech/oclone.yml"
 HIST="$HOME/.cache/oclone.hst"
 
 oclone() {
-	local in spec dst url clone
+	local in spec dst url clone cfg
 	in="$1"
 	if [ "$in" == "--list" ]; then
     {
-			yq ".specs[].name" "$CONFIG"
+			yq ".specs[].name" "$CONFIG" | sed 's#$#/#g'
 			if [ -e "$HIST" ]; then
 				cat "$HIST"
 			fi
@@ -29,6 +29,16 @@ oclone() {
 	touch "$HIST"
 	awk -v line="$in" 'FNR==NR && line==$0{f=1; exit} 
                               END{if (!f) print line >> FILENAME}' "$HIST"
+	cfg=$(echo "$spec" | yq '.config')
+	if [ -z "$cfg" ]; then
+		return
+	fi
+	dst=$(echo "$in" | rev | cut -d '/' -f 1 | rev)/.git/config
+	if [ ! -e "$dst" ]; then
+		echo "unable to set config"
+		exit 1
+	fi
+	echo "$cfg" >> "$dst"
 }
 
 if [ -z "$1" ]; then
