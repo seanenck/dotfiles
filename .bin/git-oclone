@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+oclone() {
+	echo "$1"
+}
+
+oclone "$@"
