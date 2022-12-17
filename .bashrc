@@ -16,7 +16,7 @@ fi
 
 PS1="\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
-for file in ".abuild/abuild.conf" ".bashrc_local"; do
+for file in ".abuild/abuild.conf" ".bashrc_local" ".bash_aliases"; do
     file="$HOME/$file"
     if [ -e "$file" ]; then
         source "$file"

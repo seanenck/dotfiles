@@ -33,3 +33,5 @@ dotfiles() {
 	done
 	_dotfiles_hook "$df" "post"
 }
+
+dotfiles

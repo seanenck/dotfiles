@@ -5,3 +5,5 @@ glint() {
   staticcheck ./... 2>&1 | sed "s/^/[staticcheck] -> /g"
   go vet ./... 2>&1 | sed "s/^/[govet]       -> /g"
 }
+
+glint

@@ -74,7 +74,7 @@ _abw-duplicates() {
 }
 
 abw() {
-    local pkgname errored repo
+    local errored repo
     if [ ! -e APKBUILD ]; then
         echo "no APKBUILD"
         return
@@ -82,7 +82,6 @@ abw() {
     if [ ! -d "$REPODEST" ]; then
         echo "no $REPODEST found"
     fi
-    pkgname=$(basename $PWD)
     _abw-dirs
     errored=0
     if [ -x ./configure ]; then
@@ -97,3 +96,5 @@ abw() {
         echo "error ^"
     fi
 }
+
+abw
