@@ -16,14 +16,6 @@ fi
 
 PS1="\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
-for file in ".abuild/abuild.conf" ".bashrc_local" ".bash_aliases"; do
-    file="$HOME/$file"
-    if [ -e "$file" ]; then
-        source "$file"
-    fi
-done
-unset file
-
 SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
 if ! pgrep ssh-agent > /dev/null; then
     ssh-agent > "$SSH_AGENT_ENV"
@@ -31,6 +23,14 @@ fi
 if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
     source "$SSH_AGENT_ENV" >/dev/null
 fi
+
+for file in ".abuild/abuild.conf" ".bashrc_local" ".bash_aliases"; do
+    file="$HOME/$file"
+    if [ -e "$file" ]; then
+        source "$file"
+    fi
+done
+unset file
 
 _not-pushed() {
     if ! git uncommitted --quiet; then
