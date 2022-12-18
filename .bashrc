@@ -32,6 +32,10 @@ for file in ".abuild/abuild.conf" ".bashrc_local" ".bash_aliases" ".bash_complet
 done
 unset file
 
+if [ -n "$SSH_CONNECTION" ]; then
+    export LOCKBOX_CLIP_OSC52=yes
+fi
+
 _not-pushed() {
     if ! git uncommitted --quiet; then
         echo
