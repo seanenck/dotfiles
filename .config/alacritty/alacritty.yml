@@ -16,6 +16,8 @@ key_bindings:
   - { key: Y,  mods: Control, action: Copy }
   - { key: R,  mods: Control, action: ToggleViMode }
   - { key: R,  mods: Control, mode: Vi|~Search, action: ScrollToBottom }
+  - { key: N,                 mode: Vi|~Search, action: SearchNext }
+  - { key: P,                 mode: Vi|~Search, action: SearchPrevious }
 
 colors:
   # Default colors
