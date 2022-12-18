@@ -20,27 +20,27 @@ key_bindings:
 colors:
   # Default colors
   primary:
-    background: '#000000'
-    foreground: '#dddddd'
+    background: '#101010'
+    foreground: '#c0c0c0'
 
   # Normal colors
   normal:
-    black:   '#000000'
-    red:     '#cc0403'
-    green:   '#19cb00'
-    yellow:  '#cecb00'
-    blue:    '#0d73cc'
-    magenta: '#cb1ed1'
-    cyan:    '#0dcdcd'
-    white:   '#dddddd'
+    black:   '#151515'
+    red:     '#ff4d4d'
+    green:   '#cff72f'
+    yellow:  '#62fd62'
+    blue:    '#4b94ff'
+    magenta: '#ff7001'
+    cyan:    '#ffffff'
+    white:   '#d0d0d0'
 
   # Bright colors
   bright:
     black:   '#767676'
-    red:     '#f2201f'
-    green:   '#23fd00'
-    yellow:  '#fffd00'
-    blue:    '#1a8fff'
-    magenta: '#fd28ff'
-    cyan:    '#14ffff'
+    red:     '#ff0000'
+    green:   '#cff72f'
+    yellow:  '#62fd62'
+    blue:    '#4b94ff'
+    magenta: '#ff7001'
+    cyan:    '#ffffff'
     white:   '#ffffff'
