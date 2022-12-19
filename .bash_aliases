@@ -4,6 +4,10 @@ alias vim=hx
 alias nvim=hx
 alias cat=bat
 
+goimports() {
+    gopls format $@
+}
+
 gomod-update() {
     go get -u ./...
     go mod tidy
