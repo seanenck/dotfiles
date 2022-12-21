@@ -3,7 +3,7 @@ CONFIG="$HOME/.config/voidedtech/oclone.yml"
 HIST="$HOME/.cache/oclone.hst"
 
 oclone() {
-  local in spec dst url clone cfg
+  local in spec dst url clone cfg mirrors m rel
   in="$1"
   if [ "$in" == "--list" ]; then
     {
@@ -21,7 +21,8 @@ oclone() {
     exit 1
   fi
   url=$(echo "$spec" | yq '.url')
-  clone="$url$(echo "$in" | cut -d "/" -f 2-)"
+  rel=$(echo "$in" | cut -d '/' -f 2-)
+  clone="$url$rel"
   if ! git clone "$clone" "${@:2}"; then
     echo "clone failed"
     exit 1
@@ -30,10 +31,17 @@ oclone() {
   awk -v line="$in" 'FNR==NR && line==$0{f=1; exit} 
                               END{if (!f) print line >> FILENAME}' "$HIST"
   cfg=$(echo "$spec" | yq '.config')
+  mirrors=$(echo "$spec" | yq '.mirrors[]')
+  dst=$(echo "$in" | rev | cut -d '/' -f 1 | rev)
+  if [ -n "$mirrors" ]; then
+    for m in $(echo "$mirrors"); do
+      git -C "$dst" remote set-url --add origin "$m$rel"
+    done
+  fi
   if [ -z "$cfg" ]; then
     return
   fi
-  dst=$(echo "$in" | rev | cut -d '/' -f 1 | rev)/.git/config
+  dst="$dst/.git/config" 
   if [ ! -e "$dst" ]; then
     echo "unable to set config"
     exit 1
