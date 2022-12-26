@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+CHROOT="$HOME/.store/chroot"
+STORE="$HOME/.store/repository/"
+REPO="voidedtech.db.tar.gz"
+
+_error() {
+  echo
+  echo "build failed"
+  echo "============"
+  echo "$@"
+  echo
+  exit 1
+}
+
+if [ ! -e PKGBUILD ]; then
+  _error "PKGBUILD missing"
+fi
+rm -f *-build.log *-package.log *.pkg.tar.*
+if ! arch-nspawn $CHROOT/root pacman -Syyu; then
+  _error "failed to update chroot"
+fi
+if ! makechrootpkg -c -r $CHROOT; then
+  _error "pkgbuild failed"
+fi
+NAME=$(cat PKGBUILD | grep '^pkgname=' | cut -d "=" -f 2);
+PKGS=$(ls | grep ".pkg.tar.zst")
+if [ -z "$PKGS" ]; then
+  _error "no packages built?"
+fi
+for package in $(echo "$PKGS"); do
+  if ! namcap $package; then
+    _error "namcap failure"
+  fi
+  if [ -e "$STORE/$package" ] ;then
+    _error "$package already exists"
+  fi
+done
+for f in $(ls $STORE | grep "^$NAME"); do
+  rm -f "$STORE/$f"
+done
+for package in $(echo "$PKGS"); do
+  cp $package $STORE
+  if ! (cd $STORE && repo-add $REPO $package); then
+    _error "failed to add package to repository: $package"
+  fi
+done
