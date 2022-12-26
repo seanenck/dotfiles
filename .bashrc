@@ -2,16 +2,12 @@
 [[ $- != *i* ]] && return
 
 export GOPATH="$HOME/.cache/go"
-export XDG_RUNTIME_DIR=/tmp/$(id -u)-runtimedir
 export DELTA_PAGER="less -c -X"
 export PATH="$HOME/.bin/:$PATH"
 
-if [ ! -d $XDG_RUNTIME_DIR ]; then
-    mkdir $XDG_RUNTIME_DIR
-    chmod 0700 $XDG_RUNTIME_DIR
-fi
 if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-    exec dbus-launch --exit-with-session sway > $HOME/.cache/sway.log 2>&1 
+    exec sway 2>&1 | systemd-cat -t sway
+    exit 0
 fi
 
 PS1="\$(git-uncommitted --pwd 2>/dev/null)$PS1"
