@@ -4,6 +4,7 @@
 export GOPATH="$HOME/.cache/go"
 export DELTA_PAGER="less -c -X"
 export PATH="$HOME/.bin/:$PATH"
+source /etc/profile
 
 if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     exec sway 2>&1 | systemd-cat -t sway
