@@ -20,6 +20,7 @@ PS1="\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 HAS_LOCAL_SESSION=0
 if pgrep sway > /dev/null 2>&1; then
     if [ -e "$SESSION_LOCAL_ENV" ]; then
+        source "$SESSION_LOCAL_ENV"
         export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
         if ! pgrep ssh-agent > /dev/null; then
             ssh-agent > "$SSH_AGENT_ENV"
