@@ -5,9 +5,11 @@ export GOPATH="$HOME/.cache/go"
 export GOFLAGS="-trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 export DELTA_PAGER="less -c -X"
 export PATH="$HOME/.bin/:$PATH"
+export SESSION_LOCAL_ENV="$HOME/.cache/session.env"
 source /etc/profile
 
 if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
+    echo "export XDG_RUNTIME_DIR='$XDG_RUNTIME_DIR'" > "$SESSION_LOCAL_ENV" 
     exec sway 2>&1 | systemd-cat -t sway
     exit 0
 fi
