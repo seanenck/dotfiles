@@ -17,13 +17,20 @@ fi
 CHROOT="$HOME/.store/chroot"
 PS1="\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
-SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
-if ! pgrep ssh-agent > /dev/null; then
-    ssh-agent > "$SSH_AGENT_ENV"
+HAS_LOCAL_SESSION=0
+if pgrep sway > /dev/null 2>&1; then
+    if [ -e "$SESSION_LOCAL_ENV" ]; then
+        export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
+        if ! pgrep ssh-agent > /dev/null; then
+            ssh-agent > "$SSH_AGENT_ENV"
+        fi
+        if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+            source "$SSH_AGENT_ENV" >/dev/null
+        fi
+        HAS_LOCAL_SESSION=1
+    fi
 fi
-if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    source "$SSH_AGENT_ENV" >/dev/null
-fi
+export HAS_LOCAL_SESSION
 
 for file in ".bashrc_local" ".bash_aliases" ".bash_completions"; do
     file="$HOME/$file"
