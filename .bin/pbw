@@ -12,6 +12,13 @@ _error() {
   exit 1
 }
 
+if [ ! -d "$CHROOT" ]; then
+  _error "$CHROOT not configured"
+fi
+if [ ! -d "$STORE" ]; then
+  _error "$STORE is missing for packages"
+fi
+
 if [ ! -e PKGBUILD ]; then
   _error "PKGBUILD missing"
 fi
