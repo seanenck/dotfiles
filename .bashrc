@@ -2,6 +2,7 @@
 [[ $- != *i* ]] && return
 
 export GOPATH="$HOME/.cache/go"
+export GOFLAGS="-trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 export DELTA_PAGER="less -c -X"
 export PATH="$HOME/.bin/:$PATH"
 source /etc/profile
@@ -11,6 +12,7 @@ if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     exit 0
 fi
 
+CHROOT="$HOME/.store/chroot"
 PS1="\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
 SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
@@ -21,7 +23,7 @@ if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
     source "$SSH_AGENT_ENV" >/dev/null
 fi
 
-for file in ".abuild/abuild.conf" ".bashrc_local" ".bash_aliases" ".bash_completions"; do
+for file in ".bashrc_local" ".bash_aliases" ".bash_completions"; do
     file="$HOME/$file"
     if [ -e "$file" ]; then
         source "$file"
