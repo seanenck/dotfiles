@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-alias vi=helix
-alias vim=helix
-alias nvim=helix
-alias hx=helix
 alias cat=bat
 
 goimports() {
