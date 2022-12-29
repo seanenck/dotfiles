@@ -41,6 +41,9 @@ oclone() {
   if [ -z "$cfg" ]; then
     return
   fi
+  if [ "$cfg" == "null" ]; then
+    return
+  fi
   dst="$dst/.git/config" 
   if [ ! -e "$dst" ]; then
     echo "unable to set config"
