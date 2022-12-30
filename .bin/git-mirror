@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+CONFIG="$HOME/.config/voidedtech/git.yml"
+REPO="$1"
+if [ -z "$REPO" ]; then
+	echo "repository not given"
+	exit 1
+fi
+REMOTE=$(yq ".specs[] | select (.name == \"upstream\")" $CONFIG)
+if [ -z "$REMOTE" ]; then
+	echo "no remotes set for upstream?"
+	exit 1
+fi
+STORE=$(echo "$REMOTE" | yq '.url')
+if [ -z "$STORE" ]; then
+	echo "store not set?"
+	exit 1
+fi
+if [ ! -d "$STORE" ]; then
+	echo "$STORE does not exist"
+	exit 1
+fi
+DIR=$STORE/$(echo "$REPO" | rev | cut -d '/' -f 1 | rev)
+if [ -d "$DIR" ]; then
+	echo "$REPO is already mirrored"
+	exit 0
+fi
+MAIN=$(echo "$REMOTE" | yq '.remotes[0]')
+if ! git clone "$MAIN$REPO" --mirror ${@:2} $DIR; then
+	echo "clone failed"
+	exit 1
+fi
+CNT=1
+MIRRORS=$(echo "$REMOTE" | yq '.remotes | length')
+if [ -n "$MIRRORS" ] && [ "$MIRRORS" -gt 0 ]; then
+	while [ $CNT -lt $MIRRORS ]; do
+		MIR=$(echo "$REMOTE" | yq ".remotes[$CNT]")
+		git -C "$DIR" remote set-url --add origin "$MIR$REPO"
+		CNT=$((CNT+1))
+	done
+fi
+RCV=$DIR/hooks/post-receive
+{
+	echo "#!/bin/sh"
+	echo "git -C $DIR push origin --mirror"
+} > $RCV
+chmod 755 $RCV

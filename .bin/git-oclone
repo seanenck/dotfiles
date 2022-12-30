@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-CONFIG="$HOME/.config/voidedtech/oclone.yml"
+CONFIG="$HOME/.config/voidedtech/git.yml"
 HIST="$HOME/.cache/oclone.hst"
 
 oclone() {
-  local in spec dst url clone cfg mirrors m rel
+  local in spec dst url clone cfg rel
   in="$1"
   if [ "$in" == "--list" ]; then
     {
@@ -31,13 +31,7 @@ oclone() {
   awk -v line="$in" 'FNR==NR && line==$0{f=1; exit} 
                               END{if (!f) print line >> FILENAME}' "$HIST"
   cfg=$(echo "$spec" | yq '.config')
-  mirrors=$(echo "$spec" | yq '.mirrors[]')
   dst=$(echo "$in" | rev | cut -d '/' -f 1 | rev)
-  if [ -n "$mirrors" ]; then
-    for m in $(echo "$mirrors"); do
-      git -C "$dst" remote set-url --add origin "$m$rel"
-    done
-  fi
   if [ -z "$cfg" ]; then
     return
   fi
