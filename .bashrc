@@ -14,7 +14,6 @@ if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     exit 0
 fi
 
-CHROOT="$HOME/.store/chroot"
 PS1="\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
 HAS_LOCAL_SESSION=0
