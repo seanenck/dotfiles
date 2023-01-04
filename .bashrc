@@ -4,7 +4,7 @@
 export GOPATH="$HOME/.cache/go"
 export GOFLAGS="-trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 export DELTA_PAGER="less -c -X"
-export PATH="$HOME/.bin/:$PATH"
+export PATH="$HOME/.bin/:$HOME/.cargo/bin:$PATH"
 . /etc/bashrc
 
 PS1="\$(git-uncommitted --pwd 2>/dev/null)$PS1"

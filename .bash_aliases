@@ -10,26 +10,18 @@ gomod-update() {
     go mod tidy
 }
 
-adv360() {
-    local bin cache patch target
-    bin=$(mktemp -d)
-    cache=$HOME/.cache/adv360
-    if [ ! -d $cache ]; then
-        git clone https://github.com/KinesisCorporation/Adv360-Pro-ZMK $cache
-        git -C $cache checkout V2.0
-    fi
-    git -C "$cache" pull
-    cp -r "$cache" "$bin"
-    patch=$HOME/.config/adv360/keys.patch
-    target=$bin/adv360
-    if ! (cd $target && patch -p1 < $patch); then
-        echo "patch failed"
-        exit 1
-    fi
-    if ! (cd $target && make all); then
-        echo "build failed"
-        exit 1
-    fi
-    cp $target/firmware/* $HOME/downloads/
-    rm -rf $bin
+new-toolbox() {
+  if [ -z "$1" ]; then
+    echo "requires a name"
+    return
+  fi
+  if ! toolbox create "$1"; then
+    echo "failed to create $1"
+    return
+  fi
+  if ! toolbox run --container "$1" sudo dnf install -y bat git-delta git; then
+    echo "failed to install default packages"
+    return
+  fi
+  toolbox enter $1
 }
