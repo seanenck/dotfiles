@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 [[ $- != *i* ]] && return
 
-export GOPATH="$HOME/.cache/go"
-export GOFLAGS="-trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
-export DELTA_PAGER="less -c -X"
-export PATH="$HOME/.bin/:$HOME/.cargo/bin:$PATH"
 . /etc/bashrc
 
 HISTCONTROL=ignoreboth:erasedups
@@ -20,6 +16,11 @@ export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export TERM=xterm-256color
+export GOPATH="$HOME/.cache/go"
+export GOFLAGS="-trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
+export DELTA_PAGER="less -c -X"
+export PATH="$HOME/.bin/:$HOME/.cargo/bin:$PATH"
+
 PREFERPS1="(\u@\h \W)"
 if [ -z "$SSH_CONNECTION" ]; then
     PS1=$PREFERPS1'$ '
@@ -33,13 +34,35 @@ stty -ixon
 # check the window size after each command
 shopt -s checkwinsize
 
-alias diff="diff -u"
-alias ls='ls --color=auto'
-alias grep="rg"
-alias vi=$EDITOR
-alias vim=$EDITOR
-alias hx=$EDITOR
 PS1="\$(git-uncommitted --pwd 2>/dev/null)$PS1"
+
+SESSIONS="$HOME/.cache/sessions/"
+export SESSION_LOCAL_ENV="$SESSIONS/$(cat  /proc/sys/kernel/random/boot_id).env"
+
+if [ ! -d "$SESSIONS" ]; then
+    mkdir -p "$SESSIONS"
+fi
+
+HAS_LOCAL_SESSION=0
+if [ ! -e "$SESSION_LOCAL_ENV" ]; then
+  if [ -z "$SSH_CONNECTION" ]; then
+    rm -f $SESSIONS*    
+    echo "export XDG_RUNTIME_DIR='$XDG_RUNTIME_DIR'" > "$SESSION_LOCAL_ENV" 
+  fi
+fi
+if [ -e "$SESSION_LOCAL_ENV" ]; then
+    source "$SESSION_LOCAL_ENV"
+    export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
+    if [ ! -e "$SSH_AGENT_ENV" ] || ! pgrep ssh-agent > /dev/null; then
+        pkill ssh-agent
+        ssh-agent > "$SSH_AGENT_ENV"
+    fi
+    if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+        source "$SSH_AGENT_ENV" >/dev/null
+    fi
+    HAS_LOCAL_SESSION=1
+fi
+export HAS_LOCAL_SESSION
 
 for file in ".bashrc_local" ".bash_aliases" ".bash_completions"; do
     file="$HOME/$file"
