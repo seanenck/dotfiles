@@ -7,14 +7,16 @@ alias vi=$EDITOR
 alias vim=$EDITOR
 alias hx=$EDITOR
 
-goimports() {
-    gopls format $@
-}
+if [ -n "$TOOLBOX" ] && [ "$TOOLBOX" == "go" ]; then
+  goimports() {
+      gopls format $@
+  }
 
-gomod-update() {
-    go get -u ./...
-    go mod tidy
-}
+  gomod-update() {
+      go get -u ./...
+      go mod tidy
+  }
+fi
 
 new-toolbox() {
   if [ -z "$1" ]; then

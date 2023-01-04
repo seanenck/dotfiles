@@ -45,14 +45,14 @@ _toolbox-name(){
 _toolbox-prompt() {
     local name=$(_toolbox-name)
     if [ -n "$name" ]; then
-        echo "[toolbox:$name]"
+        echo "[$name]"
     fi
 }
 
 TOOLBOX=$(_toolbox-name)
 if [ -n "$TOOLBOX" ]; then
     export $TOOLBOX
-    export PATH="$HOME/.bin/$TOOLBOX:$PATH"
+    export PATH="$HOME/.bin/toolbox-$TOOLBOX:$PATH"
 else
     unset $TOOLBOX
 fi
