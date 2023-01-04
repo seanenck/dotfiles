@@ -15,7 +15,16 @@ for file in ".bashrc_local" ".bash_aliases" ".bash_completions"; do
         source "$file"
     fi
 done
+for dir in .completions; do
+    dir="$HOME/$dir"
+    if [ -d "$dir" ]; then
+        for file in $(ls $dir); do
+            source "$dir/$file"
+	done
+    fi
+done
 unset file
+unset dir
 
 if [ -n "$SSH_CONNECTION" ]; then
     export LOCKBOX_CLIP_OSC52=yes
