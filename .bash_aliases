@@ -25,7 +25,7 @@ new-toolbox() {
     echo "failed to create $1"
     return
   fi
-  if ! toolbox run --container "$1" sudo dnf install -y bat git-delta git; then
+  if ! toolbox run --container "$1" sudo dnf install -y ripgrep bat git-delta git; then
     echo "failed to install default packages"
     return
   fi

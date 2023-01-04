@@ -34,7 +34,14 @@ stty -ixon
 # check the window size after each command
 shopt -s checkwinsize
 
-PS1="\$(git-uncommitted --pwd 2>/dev/null)$PS1"
+function _ps1tbx() {
+    if [ -f "/run/.toolboxenv" ]; then
+        TOOLBOX_NAME=$(cat /run/.containerenv | grep -oP "(?<=name=\")[^\";]+")
+        echo "[toolbox:${TOOLBOX_NAME}]"
+    fi
+}
+
+PS1="\$(_ps1tbx)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
 SESSIONS="$HOME/.cache/sessions/"
 export SESSION_LOCAL_ENV="$SESSIONS/$(cat  /proc/sys/kernel/random/boot_id).env"
