@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+CONF="$HOME/.config/voidedtech/toolbox.yml"
+if [ -z "$1" ]; then
+  echo "command required"
+  exit 1
+fi
+if [ "$1" == "--list" ]; then
+  CNT=0
+  BOX=$(yq '.boxes | length' $CONF)
+  if [ -n "$BOX" ] && [ "$BOX" -gt 0 ]; then
+    while [ $CNT -lt $BOX ]; do
+      yq ".boxes[$CNT].name" $CONF
+      CNT=$((CNT+1))
+    done
+  fi
+  exit 0
+fi
+
+SPEC=$(yq ".boxes[] | select (.name == \"$1\")" "$CONF")
+if [ -z "$SPEC" ]; then
+  echo "invalid argument, spec not found"
+  exit 1
+fi
+PKGS=""
+for P in $(echo "$SPEC" | yq '.packages[]') $(yq '.defaults[]' $CONF); do
+  PKGS="$PKGS $P"
+done
+HAS=$(toolbox list --containers | awk '{print $2}' | grep "^$1\$")
+if [ -z "$HAS" ]; then
+  if ! toolbox create "$1"; then
+    echo "failed to create $1"
+    exit 1
+  fi
+  if ! toolbox run --container "$1" sudo dnf install -y $PKGS; then
+    echo "failed to install default packages"
+    exit 1
+  fi
+fi
+exec toolbox enter $1

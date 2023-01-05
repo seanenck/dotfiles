@@ -8,14 +8,14 @@ _git_oclone() {
     fi
 }
 
-_new-toolbox() {
+_enter-toolbox() {
     local cur opts
     if [ "$COMP_CWORD" -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        opts=$(new-toolbox --list)
+        opts=$(enter-toolbox --list)
         COMPREPLY=( $(compgen -W "$opts" -- "$cur") )
     fi
 }
 
-complete -F _new-toolbox -o bashdefault -o default new-toolbox
+complete -F _enter-toolbox -o bashdefault -o default enter-toolbox
 
