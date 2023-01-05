@@ -5,26 +5,29 @@ if [ -z "$1" ]; then
   exit 1
 fi
 if [ "$1" == "--list" ]; then
-  CNT=0
-  BOX=$(yq '.boxes | length' $CONF)
-  if [ -n "$BOX" ] && [ "$BOX" -gt 0 ]; then
-    while [ $CNT -lt $BOX ]; do
-      yq ".boxes[$CNT].name" $CONF
-      CNT=$((CNT+1))
-    done
-  fi
+  {
+    CNT=0
+    BOX=$(yq '.boxes | length' $CONF)
+    if [ -n "$BOX" ] && [ "$BOX" -gt 0 ]; then
+      while [ $CNT -lt $BOX ]; do
+        yq ".boxes[$CNT].name" $CONF
+        CNT=$((CNT+1))
+      done
+    fi
+    toolbox list --containers | tail -n +2 | awk '{print $2}'
+  } | sort -u
   exit 0
 fi
-
+DEFAULTS=$(yq '.defaults[]' $CONF)
 SPEC=$(yq ".boxes[] | select (.name == \"$1\")" "$CONF")
-if [ -z "$SPEC" ]; then
-  echo "invalid argument, spec not found"
-  exit 1
+if [ -n "$SPEC" ]; then
+  PKGS=""
+  for P in $(echo "$SPEC" | yq '.packages[]') $DEFAULTS; do
+    PKGS="$PKGS $P"
+  done
+else
+  PKGS="$DEFAULTS"
 fi
-PKGS=""
-for P in $(echo "$SPEC" | yq '.packages[]') $(yq '.defaults[]' $CONF); do
-  PKGS="$PKGS $P"
-done
 HAS=$(toolbox list --containers | awk '{print $2}' | grep "^$1\$")
 if [ -z "$HAS" ]; then
   if ! toolbox create "$1"; then
