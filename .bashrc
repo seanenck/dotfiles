@@ -80,7 +80,7 @@ for dir in .completions; do
     if [ -d "$dir" ]; then
         for file in $(ls $dir); do
             source "$dir/$file"
-	done
+  done
     fi
 done
 unset file
