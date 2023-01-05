@@ -60,33 +60,14 @@ fi
 
 PS1="\$(_toolbox-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
-SESSIONS="$HOME/.cache/sessions/"
-export SESSION_LOCAL_ENV="$SESSIONS/$(cat  /proc/sys/kernel/random/boot_id).env"
-
-if [ ! -d "$SESSIONS" ]; then
-    mkdir -p "$SESSIONS"
+export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
+if [ ! -e "$SSH_AGENT_ENV" ] || ! pgrep ssh-agent > /dev/null; then
+    pkill ssh-agent
+    ssh-agent > "$SSH_AGENT_ENV"
 fi
-
-HAS_LOCAL_SESSION=0
-if [ ! -e "$SESSION_LOCAL_ENV" ]; then
-  if [ -z "$SSH_CONNECTION" ]; then
-    rm -f $SESSIONS*    
-    echo "export XDG_RUNTIME_DIR='$XDG_RUNTIME_DIR'" > "$SESSION_LOCAL_ENV" 
-  fi
+if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+    source "$SSH_AGENT_ENV" >/dev/null
 fi
-if [ -e "$SESSION_LOCAL_ENV" ]; then
-    source "$SESSION_LOCAL_ENV"
-    export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
-    if [ ! -e "$SSH_AGENT_ENV" ] || ! pgrep ssh-agent > /dev/null; then
-        pkill ssh-agent
-        ssh-agent > "$SSH_AGENT_ENV"
-    fi
-    if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-        source "$SSH_AGENT_ENV" >/dev/null
-    fi
-    HAS_LOCAL_SESSION=1
-fi
-export HAS_LOCAL_SESSION
 
 for file in ".bashrc_local" ".bash_aliases" ".bash_completions"; do
     file="$HOME/$file"
