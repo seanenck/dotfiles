@@ -14,5 +14,3 @@ boxes:
     packages: [make, gcc, cyrus-sasl, libdb-devel, openssl-devel, cyrus-sasl-devel]
   - name: filebrowser
     packages: [go, npm]
-  - name: openh264
-    packages: [make, gcc, gcc-c++, nasm]
