@@ -1,0 +1,8 @@
+defaults: [ripgrep, bat, git-delta, git, netcat]
+boxes:
+  - name: go
+    packages: [go, make]
+  - name: rust
+    packages: [cargo, rust, gcc-c++]
+  - name: shell
+    packages: [shellcheck, nodejs-bash-language-server]
