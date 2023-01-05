@@ -7,3 +7,15 @@ _git_oclone() {
         COMPREPLY=( $(compgen -W "$opts" -- "$cur") )
     fi
 }
+
+_new-toolbox() {
+    local cur opts
+    if [ "$COMP_CWORD" -eq 1 ]; then
+        cur=${COMP_WORDS[COMP_CWORD]}
+        opts=$(new-toolbox --list)
+        COMPREPLY=( $(compgen -W "$opts" -- "$cur") )
+    fi
+}
+
+complete -F _new-toolbox -o bashdefault -o default new-toolbox
+

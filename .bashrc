@@ -54,6 +54,7 @@ if [ -n "$TOOLBOX" ]; then
     export $TOOLBOX
     export PATH="$HOME/.bin/toolbox-$TOOLBOX:$PATH"
 else
+    export PATH="$HOME/.bin/host:$PATH"
     unset $TOOLBOX
 fi
 

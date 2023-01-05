@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+if [ -z "$1" ]; then
+	echo "command required"
+	exit 1
+fi
+DEFAULTS="ripgrep bat git-delta git netcat"
+PKGS=""
+case "$1" in
+	"--list")
+		echo "rust go shell"
+		exit 0
+		;;
+	"rust")
+		PKGS="cargo gcc-c++ make"
+		;;
+	"go")
+		PKGS="go make"
+		;;
+	"shell")
+		PKGS="nodejs-bash-language-server shellcheck"
+		;;
+esac
+PKGS="$PKGS $DEFAULTS"
+if ! toolbox create "$1"; then
+  echo "failed to create $1"
+	exit 1
+fi
+if ! toolbox run --container "$1" sudo dnf install -y $PKGS; then
+  echo "failed to install default packages"
+	exit 1
+fi
+toolbox enter $1
