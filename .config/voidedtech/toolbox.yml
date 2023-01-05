@@ -6,3 +6,5 @@ boxes:
     packages: [cargo, rust, gcc-c++]
   - name: shell
     packages: [shellcheck, nodejs-bash-language-server]
+  - name: stagit
+    packages: [make, gcc, patch, libgit2, libgit2-devel]
