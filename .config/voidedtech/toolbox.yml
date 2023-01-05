@@ -8,3 +8,9 @@ boxes:
     packages: [shellcheck, nodejs-bash-language-server]
   - name: stagit
     packages: [make, gcc, patch, libgit2, libgit2-devel]
+  - name: mblaze
+    packages: [make, gcc]
+  - name: isync
+    packages: [make, gcc, cyrus-sasl, libdb-devel, openssl-devel, cyrus-sasl-devel]
+  - name: filebrowser
+    packages: [go, npm]
