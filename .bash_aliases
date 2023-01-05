@@ -6,6 +6,7 @@ alias grep="rg"
 alias vi=$EDITOR
 alias vim=$EDITOR
 alias hx=$EDITOR
+alias scp="rsync"
 
 if [ -n "$TOOLBOX" ] && [ "$TOOLBOX" == "go" ]; then
   goimports() {
