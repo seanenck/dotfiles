@@ -51,7 +51,7 @@ _toolbox-prompt() {
 
 TOOLBOX=$(_toolbox-name)
 if [ -n "$TOOLBOX" ]; then
-    export $TOOLBOX
+    export TOOLBOX=$TOOLBOX
     export PATH="$HOME/.bin/toolbox-$TOOLBOX:$PATH"
 else
     export PATH="$HOME/.bin/host:$PATH"
