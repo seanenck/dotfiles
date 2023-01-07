@@ -18,6 +18,10 @@ if [ "$1" == "--list" ]; then
   } | sort -u
   exit 0
 fi
+if [ $(echo $1 | wc -c) -le 3 ]; then
+  echo "name must be >= 3 characters"
+  exit 1
+fi
 DEFAULTS=$(yq '.defaults[]' $CONF)
 SPEC=$(yq ".boxes[] | select (.name == \"$1\")" "$CONF")
 if [ -n "$SPEC" ]; then

@@ -1,6 +1,6 @@
 defaults: [ripgrep, bat, git-delta, git, netcat]
 boxes:
-  - name: go
+  - name: golang
     packages: [go, make]
   - name: rust
     packages: [cargo, rust, gcc-c++]
@@ -8,8 +8,6 @@ boxes:
     packages: [shellcheck, nodejs-bash-language-server]
   - name: mblaze
     packages: [make, gcc]
-  - name: isync
-    packages: [make, gcc, cyrus-sasl, libdb-devel, openssl-devel, cyrus-sasl-devel]
   - name: filebrowser
     packages: [go, npm]
   - name: rpms
