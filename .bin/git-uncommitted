@@ -14,7 +14,7 @@ _git-commands() {
 }
 
 git-uncommit() {
-  local res d sub has r ispwd isrev
+  local res d sub has r ispwd isrev paths
   ispwd=0
   if [ -n "$1" ]; then
     if [ "$1" == "--pwd" ]; then
@@ -28,19 +28,23 @@ git-uncommit() {
     fi
   fi
   if [ "$ispwd" -eq 0 ]; then
+    paths="$HOME/rpmbuild"
     for d in .env workspace; do
       d="$HOME/$d"
       for sub in "$d"/*; do
         if [ ! -d "$sub/.git" ]; then
           continue
         fi
-        r=$(_git-commands "$sub")
-        if [ -z "$res" ]; then
-          res=$r
-        else
-          res=$(printf "%s\n%s\n" "$res" "$r")
-        fi
+        paths="$paths $sub"
       done
+    done
+    for sub in $(echo "$paths"); do
+      r=$(_git-commands "$sub")
+      if [ -z "$res" ]; then
+        res=$r
+      else
+        res=$(printf "%s\n%s\n" "$res" "$r")
+      fi
     done
   fi
   res=$(echo "$res" | sed 's/^\s*//g' | sed  's/\s*$//g')
