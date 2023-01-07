@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
 CONF="$HOME/.config/voidedtech/toolbox.yml"
+DEFAULTS="ripgrep bat git-delta git netcat"
+BOXES=("golang:go,make"
+       "rust:cargo,rust,gcc-c++"
+       "shell:shellcheck,nodejs-bash-language-server"
+       "rpms:rpmlint,make,rpmdevtools,mock")
+
 if [ -z "$1" ]; then
   echo "command required"
   exit 1
 fi
 if [ "$1" == "--list" ]; then
   {
-    CNT=0
-    BOX=$(yq '.boxes | length' $CONF)
-    if [ -n "$BOX" ] && [ "$BOX" -gt 0 ]; then
-      while [ $CNT -lt $BOX ]; do
-        yq ".boxes[$CNT].name" $CONF
-        CNT=$((CNT+1))
-      done
-    fi
+    for t in ${BOXES[@]}; do
+      echo "$t" | cut -d ":" -f 1
+    done
     toolbox list --containers | tail -n +2 | awk '{print $2}'
   } | sort -u
   exit 0
@@ -22,16 +23,17 @@ if [ $(echo $1 | wc -c) -le 3 ]; then
   echo "name must be >= 3 characters"
   exit 1
 fi
-DEFAULTS=$(yq '.defaults[]' $CONF)
-SPEC=$(yq ".boxes[] | select (.name == \"$1\")" "$CONF")
-if [ -n "$SPEC" ]; then
-  PKGS=""
-  for P in $(echo "$SPEC" | yq '.packages[]') $DEFAULTS; do
-    PKGS="$PKGS $P"
-  done
-else
-  PKGS="$DEFAULTS"
-fi
+
+PKGS="$DEFAULTS"
+for BOX in ${BOXES[@]}; do
+  NAME=$(echo "$BOX" | cut -d ":" -f 1)
+  if [[ "$1" == "$NAME" ]]; then
+    for P in $(echo "$BOX" | cut -d ":" -f 2- | tr ',' '\n'); do
+      PKGS="$PKGS $P"
+    done
+    break
+  fi
+done
 HAS=$(toolbox list --containers | awk '{print $2}' | grep "^$1\$")
 if [ -z "$HAS" ]; then
   if ! toolbox create "$1"; then
