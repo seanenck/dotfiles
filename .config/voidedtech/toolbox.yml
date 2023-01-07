@@ -6,10 +6,6 @@ boxes:
     packages: [cargo, rust, gcc-c++]
   - name: shell
     packages: [shellcheck, nodejs-bash-language-server]
-  - name: mblaze
-    packages: [make, gcc]
-  - name: filebrowser
-    packages: [go, npm]
   - name: rpms
     packages: [rpmlint, make, rpmdevtools, mock]
 
