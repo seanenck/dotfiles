@@ -31,7 +31,7 @@ _externals() {
     if [ -e "$prev" ]; then
       if ! diff -u "$prev" "$curr"; then
         echo "$r has changed"
-        if ! confirm "dismiss"; then
+        if confirm "dismiss"; then
           mv "$curr" "$prev"
         fi
       fi
