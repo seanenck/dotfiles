@@ -79,7 +79,7 @@ for file in ".bashrc_local" ".bash_aliases" ".bash_completions"; do
     fi
 done
 
-for file in $(find $HOME/.config/voidedtech/bashrc.d -name "*.sh" | grep -E "($HOME_BASH|all).sh\$" | sort); do
+for file in $(find $HOME/.bashrc.d -type f -name "*.sh" | grep -E "($HOME_BASH|all).sh\$" | sort); do
     source $file
 done
 unset HOME_BASH
