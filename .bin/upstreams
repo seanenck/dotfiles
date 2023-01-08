@@ -43,4 +43,15 @@ _externals() {
 }
 
 mkdir -p "$UPSTREAM"
+if [ -n "$1" ]; then
+  if [ "$1" != "check" ]; then
+    echo "unknown command"
+    exit 1
+  fi
+  CNT=$(find $UPSTREAM -type f -mtime -1 | wc -l)
+  if [ $CNT -eq 0 ]; then
+    exit 1
+  fi
+  exit 0
+fi
 _externals
