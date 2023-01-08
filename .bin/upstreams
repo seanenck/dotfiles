@@ -48,7 +48,7 @@ if [ -n "$1" ]; then
     echo "unknown command"
     exit 1
   fi
-  CNT=$(find $UPSTREAM -type f -mtime -1 | wc -l)
+  CNT=$(find $UPSTREAM -type f -mtime -7 | wc -l)
   if [ $CNT -eq 0 ]; then
     exit 1
   fi
