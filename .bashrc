@@ -58,6 +58,7 @@ if [ -n "$TOOLBOX" ]; then
     export PATH="$HOME/.bin/$TOOLBOX:$PATH"
 else
     export PATH="$HOME/.bin/host:$PATH"
+    source $HOME/.config/voidedtech/bashrc.d/*.host
     unset $TOOLBOX
 fi
 
@@ -78,27 +79,4 @@ for file in ".bashrc_local" ".bash_aliases" ".bash_completions"; do
         source "$file"
     fi
 done
-for dir in .completions; do
-    dir="$HOME/$dir"
-    if [ -d "$dir" ]; then
-        for file in $(ls $dir); do
-            source "$dir/$file"
-  done
-    fi
-done
 unset file
-unset dir
-
-if [ -n "$SSH_CONNECTION" ]; then
-    export LOCKBOX_CLIP_OSC52=yes
-fi
-
-_not-pushed() {
-    if ! git uncommitted --quiet; then
-        echo
-        echo "uncommitted:"
-        git uncommitted | cut -d " " -f 1 | sort -u | sed "s#$HOME/##g" | sed 's/^/  -> /g'
-        echo
-    fi
-}
-_not-pushed
