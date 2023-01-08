@@ -14,3 +14,7 @@ boxes:
       - gcc-c++
       - rustfmt
       - file
+    rpms:
+      - gopls
+      - revive
+      - staticcheck

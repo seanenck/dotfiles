@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 CONF="$HOME/.config/voidedtech/toolbox.yml"
+RPMSTORE="$HOME/.store/pkgs/rpms/"
 if [ -z "$1" ]; then
   echo "command required"
   exit 1
@@ -23,11 +24,15 @@ if [ $(echo $1 | wc -c) -le 3 ]; then
   exit 1
 fi
 DEFAULTS=$(yq '.defaults[]' $CONF)
+RPMS=""
 SPEC=$(yq ".boxes[] | select (.name == \"$1\")" "$CONF")
 if [ -n "$SPEC" ]; then
   PKGS=""
   for P in $(echo "$SPEC" | yq '.packages[]') $DEFAULTS; do
     PKGS="$PKGS $P"
+  done
+  for R in $(echo "$SPEC" | yq '.rpms[]'); do
+    RPMS="$RPMS $R"
   done
 else
   PKGS="$DEFAULTS"
@@ -42,5 +47,11 @@ if [ -z "$HAS" ]; then
     echo "failed to install default packages"
     exit 1
   fi
+  for r in $(echo "$RPMS"); do
+    if ! toolbox run --container "$1" sudo dnf install -y $RPMSTORE/$r*; then
+      echo "failed to install $r rpm"
+      exit 1
+    fi
+  done
 fi
 exec toolbox enter $1
