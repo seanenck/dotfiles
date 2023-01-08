@@ -1,0 +1,19 @@
+sources:
+  - name: stagit
+    url: git://git.codemadness.org/stagit
+  - name: gopls
+    url: https://github.com/golang/tools
+  - name: helix
+    url: https://github.com/helix-editor/helix
+  - name: filebrowser
+    url: https://github.com/filebrowser/filebrowser
+  - name: mblaze
+    url: https://github.com/leahneukirchen/mblaze
+  - name: yq
+    url: https://github.com/mikefarah/yq
+  - name: isync
+    url: https://git.code.sf.net/p/isync/isync
+  - name: revive
+    url: https://github.com/mgechev/revive
+  - name: staticcheck
+    url: https://github.com/dominikh/go-tools
