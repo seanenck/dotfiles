@@ -8,4 +8,4 @@ SUMS   := "051cd1f6cd1585bb971a206bf3fa4ebd6df9b39414318a0151df383f3d91d7ee  $(T
 
 install:
 	install -Dm755 $(BINARY) $(DESTDIR)/host/lb
-	./$(BINARY) bash > $(HOME)/.config/voidedtech/bashrc.d/99-lb.host.sh
+	./$(BINARY) bash > $(HOME)/.bashrc.d/99-lb.host.sh
