@@ -3,4 +3,4 @@ boxes:
   - name: rpms
     packages: [rpmlint, make, rpmdevtools, mock]
   - name: dev
-    packages: [go, cargo, make, nodejs-bash-language-server, rust, shellcheck, rust-analyzer]
+    packages: [go, cargo, make, nodejs-bash-language-server, rust, shellcheck, rust-analyzer, gcc-c++]
