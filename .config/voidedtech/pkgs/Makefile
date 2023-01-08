@@ -2,10 +2,9 @@ TARGETS  := $(shell ls src/)
 BIN      := bin/
 VARS     := vars
 MKPKG    := pkgs.Makefile
-DROP     := $(HOME)/.store/pkgs/
 
 include $(BUILDINFO)
-OUTPUT   := $(DROP)/build/$(TARGET).$(TAG).tar.xz
+OUTPUT   := $(PKGS_STORE)/build/$(TARGET).$(TAG).tar.xz
 
 all:
 	$(error "select a target")
@@ -21,7 +20,7 @@ _build:
 	test -d $(SRCDIR) || tar xf $(TAR)
 	cd $(SRCDIR) && $(BUILD)
 	cp $(VARS) $(SRCDIR)/$(MKPKG)
-	cd $(SRCDIR) && make -f $(MKPKG) install DESTDIR=$(HOME)/.bin/ STORE=$(DROP)
+	cd $(SRCDIR) && make -f $(MKPKG) install DESTDIR=$(HOME)/.bin/
 	tar cJf $(OUTPUT) $(TAROPT) $(SRCDIR)
 
 _prepare:

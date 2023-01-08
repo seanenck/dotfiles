@@ -20,6 +20,9 @@ export GOPATH="$HOME/.cache/go"
 export GOFLAGS="-trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 export DELTA_PAGER="less -c -X"
 export PATH="$HOME/.bin/:$HOME/.cargo/bin:$PATH"
+export LOCAL_STORE="$HOME/.store"
+export PKGS_STORE="$LOCAL_STORE/pkgs"
+export RPMS_STORE="$PKGS_STORE/rpms"
 
 PREFERPS1="(\u@\h \W)"
 if [ -z "$SSH_CONNECTION" ]; then
