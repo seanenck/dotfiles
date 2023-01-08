@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+glint() {
+  gopls format -l $(find . -type f -name "*.go") 2>&1 | sed "s/^/[gopls]       -> /g"
+  revive ./... 2>&1 | sed "s/^/[revive]      -> /g"
+  staticcheck ./... 2>&1 | sed "s/^/[staticcheck] -> /g"
+  go vet ./... 2>&1 | sed "s/^/[govet]       -> /g"
+}
+
+glint
