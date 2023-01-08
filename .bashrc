@@ -16,8 +16,6 @@ export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export TERM=xterm-256color
-export GOPATH="$HOME/.cache/go"
-export GOFLAGS="-trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 export DELTA_PAGER="less -c -X"
 export PATH="$HOME/.bin/:$HOME/.cargo/bin:$PATH"
 export LOCAL_STORE="$HOME/.store"
