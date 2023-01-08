@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CONF="$HOME/.config/pkgs/"
+CONF="$HOME/.config/voidedtech/pkgs/"
 CACHE="$HOME/.cache/pkgs/"
 if [ -z "$1" ]; then
 	echo "option required"

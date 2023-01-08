@@ -33,5 +33,5 @@ advantage360() {
 	if ! git -C "$cache" pull; then
 		return
 	fi
-	git -C "$cache" diff 0fb8e5824fee2fb11f263de745f5b1c0efbcd78a > $HOME/.config/adv360/mappings.patch
+	git -C "$cache" diff 0fb8e5824fee2fb11f263de745f5b1c0efbcd78a > $HOME/.config/voidedtech/adv360/mappings.patch
 }
