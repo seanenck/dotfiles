@@ -1,0 +1,13 @@
+TAG    := 22.12
+TAR    := helix.tar.gz
+SRCDIR := helix-$(TAG)
+URL    := "https://github.com/helix-editor/helix/archive/$(TAG).tar.gz"
+BUILD  := CC=gcc CXX=g++ cargo install --path helix-term
+SUMS   := "edae8af46401b45c3e71c38b4fa99f931c4458127978ccd1b29aaae79331d972  $(TAR)"
+CFGS   := $(HOME)/.config/helix/runtime/
+TAROPT := --exclude="*/runtime/grammars/sources/*" --exclude="*/target/release/deps/*" --exclude="*/target/release/build/*" --exclude="*/target/release/.fingerprint/*"
+
+install:
+	@echo "noop"
+	rsync -avc --delete-after runtime/ $(CFGS)
+

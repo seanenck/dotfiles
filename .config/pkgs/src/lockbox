@@ -1,0 +1,11 @@
+TAG    := 22.12.05
+TAR    := lockbox.tar.gz
+SRCDIR := lockbox-$(TAG)
+URL    := "https://github.com/enckse/lockbox/archive/v$(TAG).tar.gz"
+BINARY := bin/lb
+BUILD  := go build $(GOFLAGS) -o $(BINARY) cmd/main.go
+SUMS   := "051cd1f6cd1585bb971a206bf3fa4ebd6df9b39414318a0151df383f3d91d7ee  $(TAR)"
+
+install:
+	install -Dm755 $(BINARY) $(DESTDIR)/host/lb
+	./$(BINARY) bash > $(HOME)/.completions/lb
