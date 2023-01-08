@@ -60,10 +60,6 @@ else
     export PATH="$HOME/.bin/host:$PATH"
     unset $TOOLBOX
 fi
-for file in $(find $HOME/.config/voidedtech/bashrc.d -name "*.$HOME_BASH.sh"); do
-    source $file
-done
-unset HOME_BASH
 
 PS1="\$(_toolbox-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
@@ -82,4 +78,9 @@ for file in ".bashrc_local" ".bash_aliases" ".bash_completions"; do
         source "$file"
     fi
 done
+
+for file in $(find $HOME/.config/voidedtech/bashrc.d -name "*.sh" | grep -E "($HOME_BASH|all).sh\$" | sort); do
+    source $file
+done
+unset HOME_BASH
 unset file
