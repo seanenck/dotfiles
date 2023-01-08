@@ -8,6 +8,7 @@ alias vim=$EDITOR
 alias hx=$EDITOR
 alias scp="rsync"
 
+if [ -n "$TOOLBOX" ] && [ "$TOOLBOX" == "dev" ]; then
 goimports() {
     gopls format $@
 }
@@ -16,3 +17,4 @@ gomod-update() {
     go get -u ./...
     go mod tidy
 }
+fi

@@ -1,4 +1,4 @@
-defaults: [ripgrep, bat, git-delta, git, netcat]
+defaults: [ripgrep, bat, git-delta, git, netcat, rsync]
 boxes:
   - name: rpms
     packages: [rpmlint, make, rpmdevtools, mock]
