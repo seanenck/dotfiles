@@ -1,0 +1,45 @@
+#!/bin/bash
+UPSTREAM="$HOME/.cache/upstreams/"
+mkdir -p "$UPSTREAM"
+PKGS="$1"
+
+_ls() {
+  echo "stagit:git://git.codemadness.org/stagit"
+  echo "gopls:https://github.com/golang/tools"
+  echo "helix:https://github.com/helix-editor/helix"
+  echo "filebrowser:https://github.com/filebrowser/filebrowser"
+  echo "mblaze:https://github.com/leahneukirchen/mblaze"
+  echo "yq:https://github.com/mikefarah/yq"
+  echo "isync:https://git.code.sf.net/p/isync/isync"
+  echo "revive:https://github.com/mgechev/revive"
+  echo "staticcheck:https://github.com/dominikh/go-tools"
+}
+
+_externals() {
+  local r n curr prev changed
+  changed=0
+  for r in $(_ls); do
+    n=$(echo "$r" | cut -d ":" -f 1)
+    curr="${UPSTREAM}$n"
+    prev="$curr.prev"
+    r=$(echo "$r" | cut -d ":" -f 2-)
+    echo "checking: $r ($n)"
+    if ! git ls-remote --tags "$r" > "$curr"; then
+      echo "failed to fetch: $r"
+      exit 1
+    fi
+    if [ -e "$prev" ]; then
+      if ! diff -u "$prev" "$curr"; then
+        echo "$r has changed"
+        read -p "dismiss? (y/N) " yes
+        if [ "$yes" == "y" ]; then
+          mv "$curr" "$prev"
+        fi
+      fi
+    fi
+  done
+  exit $changed
+}
+
+mkdir -p "$UPSTREAM"
+_externals
