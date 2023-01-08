@@ -22,13 +22,6 @@ export LOCAL_STORE="$HOME/.store"
 export PKGS_STORE="$LOCAL_STORE/pkgs"
 export RPMS_STORE="$PKGS_STORE/rpms"
 
-PREFERPS1="(\u@\h \W)"
-if [ -z "$SSH_CONNECTION" ]; then
-    PS1=$PREFERPS1'$ '
-else
-    PS1='\[\033[01;33m\]'$PREFERPS1'\[\033[0m\]> '
-fi
-
 # disable ctrl+s
 stty -ixon
 
@@ -61,6 +54,12 @@ else
     unset $TOOLBOX
 fi
 
+PREFERPS1="(\u@\h \W)"
+if [ -z "$SSH_CONNECTION" ] && [ -z "$TOOLBOX" ]; then
+    PS1=$PREFERPS1'$ '
+else
+    PS1='\[\033[01;33m\]'$PREFERPS1'\[\033[0m\]> '
+fi
 PS1="\$(_toolbox-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
 export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
