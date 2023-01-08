@@ -53,14 +53,19 @@ _toolbox-prompt() {
 }
 
 TOOLBOX=$(_toolbox-name)
+HOME_BASH="host"
 if [ -n "$TOOLBOX" ]; then
     export TOOLBOX=$TOOLBOX
     export PATH="$HOME/.bin/$TOOLBOX:$PATH"
+    HOME_BASH="$TOOLBOX"
 else
     export PATH="$HOME/.bin/host:$PATH"
-    source $HOME/.config/voidedtech/bashrc.d/*.host
     unset $TOOLBOX
 fi
+for file in $(find $HOME/.config/voidedtech/bashrc.d -name "*.$HOME_BASH.sh"); do
+    source $file
+done
+unset HOME_BASH
 
 PS1="\$(_toolbox-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
