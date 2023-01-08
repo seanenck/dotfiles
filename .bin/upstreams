@@ -31,11 +31,12 @@ _externals() {
     if [ -e "$prev" ]; then
       if ! diff -u "$prev" "$curr"; then
         echo "$r has changed"
-        read -p "dismiss? (y/N) " yes
-        if [ "$yes" == "y" ]; then
+        if ! confirm "dismiss"; then
           mv "$curr" "$prev"
         fi
       fi
+    else
+      mv "$curr" "$prev"
     fi
   done
   exit $changed

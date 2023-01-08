@@ -14,7 +14,7 @@ clean:
 	rm -rf $(BIN)
 
 _build:
-	test ! -e $(OUTPUT) || ../../confirm "rebuild $(TARGET)"
+	test ! -e $(OUTPUT) || ! confirm "rebuild $(TARGET)"
 	test -e $(TAR) || wget -O $(TAR) $(URL)
 	echo $(SUMS) > checksums
 	sha256sum -c checksums
