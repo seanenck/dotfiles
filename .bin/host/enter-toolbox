@@ -22,19 +22,18 @@ if [ $(echo $1 | wc -c) -le 3 ]; then
   echo "name must be >= 3 characters"
   exit 1
 fi
-DEFAULTS=$(yq '.defaults[]' $CONF)
-RPMS=""
+DEFAULT_PKGS=$(yq '.defaults.packages[]' $CONF)
+DEFAULT_RPMS=$(yq '.defaults.rpms[]' $CONF)
+RPMS="$DEFAULT_RPMS"
+PKGS="$DEFAULT_PKGS"
 SPEC=$(yq ".boxes[] | select (.name == \"$1\")" "$CONF")
 if [ -n "$SPEC" ]; then
-  PKGS=""
-  for P in $(echo "$SPEC" | yq '.packages[]') $DEFAULTS; do
+  for P in $(echo "$SPEC" | yq '.packages[]'); do
     PKGS="$PKGS $P"
   done
   for R in $(echo "$SPEC" | yq '.rpms[]'); do
     RPMS="$RPMS $R"
   done
-else
-  PKGS="$DEFAULTS"
 fi
 HAS=$(toolbox list --containers | awk '{print $2}' | grep "^$1\$")
 if [ -z "$HAS" ]; then
