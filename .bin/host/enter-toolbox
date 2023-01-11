@@ -35,6 +35,10 @@ if [ -n "$SPEC" ]; then
     RPMS="$RPMS $R"
   done
 fi
+RPM_INSTALLS=""
+for R in $(echo "$RPMS"); do
+  RPM_INSTALLS="$RPM_INSTALLS $(find $RPMS_STORE -type f -name "$R*.rpm" ! -name "*.src.rpm")"
+done
 HAS=$(toolbox list --containers | awk '{print $2}' | grep "^$1\$")
 if [ -z "$HAS" ]; then
   if ! toolbox create "$1"; then
@@ -45,11 +49,9 @@ if [ -z "$HAS" ]; then
     echo "failed to install default packages"
     exit 1
   fi
-  for r in $(echo "$RPMS"); do
-    if ! toolbox run --container "$1" sudo dnf install -y $RPMS_STORE/$r*; then
-      echo "failed to install $r rpm"
-      exit 1
-    fi
-  done
+  if ! toolbox run --container "$1" sudo dnf install -y $RPM_INSTALLS; then
+    echo "failed to install $r rpm"
+    exit 1
+  fi
 fi
 exec toolbox enter $1
