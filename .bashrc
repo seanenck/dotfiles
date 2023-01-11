@@ -62,15 +62,6 @@ else
 fi
 PS1="\$(_toolbox-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
-export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
-if [ ! -e "$SSH_AGENT_ENV" ] || ! pgrep ssh-agent > /dev/null; then
-    pkill ssh-agent
-    ssh-agent > "$SSH_AGENT_ENV"
-fi
-if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    source "$SSH_AGENT_ENV" >/dev/null
-fi
-
 for file in ".bashrc_local" ".bash_aliases" ".bash_completions"; do
     file="$HOME/$file"
     if [ -e "$file" ]; then
