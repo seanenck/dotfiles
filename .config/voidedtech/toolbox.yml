@@ -1,9 +1,21 @@
 defaults:
-  packages: [ripgrep, bat, git-delta, git, netcat, rsync]
-  rpms: [goyq, helix]
+  packages:
+    - ripgrep
+    - bat
+    - git-delta
+    - git
+    - netcat
+    - rsync
+  rpms:
+    - goyq
+    - helix
 boxes:
   - name: rpms
-    packages: [rpmlint, make, rpmdevtools, mock]
+    packages:
+      - rpmlint
+      - make
+      - rpmdevtools
+      - mock
   - name: dev
     packages:
       - go
