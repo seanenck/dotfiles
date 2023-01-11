@@ -1,6 +1,6 @@
 defaults:
   packages: [ripgrep, bat, git-delta, git, netcat, rsync]
-  rpms: [goyq]
+  rpms: [goyq, helix]
 boxes:
   - name: rpms
     packages: [rpmlint, make, rpmdevtools, mock]
@@ -13,7 +13,6 @@ boxes:
       - rust
       - shellcheck
       - rust-analyzer
-      - gcc-c++
       - rustfmt
       - file
     rpms:

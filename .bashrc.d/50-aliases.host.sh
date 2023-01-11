@@ -15,3 +15,11 @@ advantage360() {
 	fi
 	git -C "$cache" diff 0fb8e5824fee2fb11f263de745f5b1c0efbcd78a > "$HOME/.config/voidedtech/adv360/mappings.patch"
 }
+
+rpm-unpack() {
+	if [ -z "$1" ]; then
+		echo "rpm required"
+		return
+	fi
+	rpm2cpio "$1" | cpio -idmv
+}
