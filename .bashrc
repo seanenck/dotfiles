@@ -62,13 +62,6 @@ else
 fi
 PS1="\$(_toolbox-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
-for file in ".bashrc_local" ".bash_aliases" ".bash_completions"; do
-    file="$HOME/$file"
-    if [ -e "$file" ]; then
-        source "$file"
-    fi
-done
-
 for file in $(find $HOME/.bashrc.d -name "*.sh" | grep -E "($HOME_BASH|all).sh\$" | sort); do
     source $file
 done
