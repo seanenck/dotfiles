@@ -43,27 +43,21 @@ _toolbox-prompt() {
     fi
 }
 
+PREFERPS1="(\u@\h \W)"
 TOOLBOX=$(_toolbox-name)
-HOME_BASH="host"
 if [ -n "$TOOLBOX" ]; then
     export TOOLBOX=$TOOLBOX
-    export PATH="$HOME/.bin/$TOOLBOX:$PATH"
     HOME_BASH="$TOOLBOX"
-else
-    export PATH="$HOME/.bin/host:$PATH"
-    unset $TOOLBOX
-fi
-
-PREFERPS1="(\u@\h \W)"
-if [ -z "$TOOLBOX" ]; then
-    PS1=$PREFERPS1'$ '
-else
     PS1='\[\033[01;33m\]'$PREFERPS1'\[\033[0m\]> '
+else
+    unset $TOOLBOX
+    PS1=$PREFERPS1'$ '
+    HOME_BASH="host"
 fi
+export PATH="$HOME/.bin/$HOME_BASH:$PATH"
 PS1="\$(_toolbox-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
 for file in $(find $HOME/.bashrc.d -name "*.sh" | grep -E "($HOME_BASH|all).sh\$" | sort); do
     source $file
 done
-unset HOME_BASH
-unset file
+unset HOME_BASH PREFERPS1 file
