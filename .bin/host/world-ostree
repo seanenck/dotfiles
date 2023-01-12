@@ -4,8 +4,10 @@ _command() {
 	rpm-ostree status --booted --json | jq -r '.deployments[0]."'$1'"[]' | sed "s/^/$2: /g"
 }
 
-if [ $(find $WORLD_FILE -mtime -1 | wc -l) -eq 1 ]; then
-	exit 0
+if [ -n "$1" ] && [ "$1" == "check" ]; then
+	if [ $(find $WORLD_FILE -mtime -1 | wc -l) -eq 1 ]; then
+		exit 0
+	fi
 fi
 {
 	_command "requested-packages" "packages"
