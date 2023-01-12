@@ -7,6 +7,3 @@ _git_oclone() {
         COMPREPLY=( $(compgen -W "$opts" -- "$cur") )
     fi
 }
-
-complete -F _enter-toolbox -o bashdefault -o default enter-toolbox
-
