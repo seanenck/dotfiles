@@ -7,8 +7,6 @@ sources:
     url: https://github.com/helix-editor/helix
   - name: filebrowser
     url: https://github.com/filebrowser/filebrowser
-  - name: mblaze
-    url: https://github.com/leahneukirchen/mblaze
   - name: yq
     url: https://github.com/mikefarah/yq
   - name: isync
