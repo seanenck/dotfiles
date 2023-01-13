@@ -11,7 +11,7 @@ shopt -s direxpand
 HISTSIZE=-1
 HISTFILESIZE=-1
 
-export VISUAL=hx
+export VISUAL=nvim
 export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""

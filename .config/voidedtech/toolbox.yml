@@ -6,9 +6,11 @@ defaults:
     - git
     - netcat
     - rsync
+    - neovim
+    - vim-ale
+    - vim-airline
   rpms:
     - goyq
-    - helix
 boxes:
   - name: rpms
     packages:
@@ -21,12 +23,12 @@ boxes:
       - go
       - cargo
       - make
-      - nodejs-bash-language-server
       - rust
       - shellcheck
       - rust-analyzer
       - rustfmt
       - file
+      - golang-mvdan-gofumpt
     rpms:
       - gopls
       - revive
