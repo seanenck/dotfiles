@@ -1,4 +1,3 @@
-
 -- ALE settings
 function override_linters(extension, fixer, linters)
     vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
