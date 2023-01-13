@@ -38,3 +38,6 @@ for _, name in ipairs({"1", "1q", "1Q"}) do
     local write = "w" .. name
     vim.api.nvim_exec(string.format("cabbrev %s <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'w!' : '%s')<CR>", write, write), false)
 end
+
+-- Remap completion to right arrow
+vim.api.nvim_exec("inoremap <expr><silent> <Right> pumvisible() ? '<C-Y>' : '<Right>'", false)
