@@ -40,6 +40,11 @@ if [ -n "$SPEC" ]; then
     for P in $(echo "$SPEC" | yq '.packages[]'); do
         PKGS="$PKGS $P"
     done
+else
+    if [ -z "$ALLOW_ANY_TOOLBOX" ] || [ "$ALLOW_ANY_TOOLBOX" != "true" ]; then
+        echo "can NOT create unknown toolbox, use ALLOW_ANY_TOOLBOX=true to override"
+        exit 1
+    fi
 fi
 HAS=$(toolbox list --containers | awk '{print $2}' | grep "^$1\$")
 if [ -z "$HAS" ]; then
