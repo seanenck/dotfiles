@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 WORLD_FILE="$HOME/.config/voidedtech/world"
 _command() {
-	rpm-ostree status --booted --json | jq -r '.deployments[0]."'$1'"[]' | sed "s/^/$2: /g"
+  rpm-ostree status --booted --json | jq -r '.deployments[0]."'$1'"[]' | sed "s/^/$2: /g"
 }
 
 if [ -n "$1" ] && [ "$1" == "check" ]; then
-	if [ $(find $WORLD_FILE -mtime -1 | wc -l) -eq 1 ]; then
-		exit 0
-	fi
+  if [ $(find $WORLD_FILE -mtime -1 | wc -l) -eq 1 ]; then
+    exit 0
+  fi
 fi
 {
-	_command "requested-packages" "packages"
-	_command "requested-base-removals" "removals"
-	_command "requested-local-packages" "locals"
+  _command "requested-packages" "packages"
+  _command "requested-base-removals" "removals"
+  _command "requested-local-packages" "locals"
 } | sort -u > $WORLD_FILE

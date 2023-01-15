@@ -24,3 +24,12 @@ vim.api.nvim_create_autocmd({"Filetype"}, {
         vim.opt_local.expandtab = false
     end
 })
+
+-- Shell
+vim.api.nvim_create_autocmd({"Filetype"}, {
+    pattern = { "sh" },
+    callback = function()
+        vim.opt_local.shiftwidth = 2
+    end
+})
+
