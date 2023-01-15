@@ -3,7 +3,19 @@ CONF="$HOME/.config/voidedtech/toolbox.yml"
 if [ -z "$1" ]; then
     echo "command required"
     exit 1
-fi
+fi    
+
+_update() {
+    if ! toolbox run --container "$1" sudo cp $HOME/.config/voidedtech/voidedtech.repo /etc/yum.repos.d/voidedtech.repo; then
+        echo "failed to setup local repo"
+        exit 1
+    fi
+    if ! toolbox run --container "$1" sudo dnf update; then
+        echo "failed to dnf update"
+        exit 1
+    fi
+}
+
 case "$1" in
     "--list")
     {
@@ -21,10 +33,7 @@ case "$1" in
   ;;
     "--update")
     for f in $(enter-toolbox --list); do
-        if ! toolbox run --container "$f" sudo dnf update; then
-            echo "failed updating: $f"
-            exit 1
-        fi
+        _update "$f"
     done
     exit 0
 esac
@@ -52,14 +61,7 @@ if [ -z "$HAS" ]; then
         echo "failed to create $1"
         exit 1
     fi
-    if ! toolbox run --container "$1" sudo cp $HOME/.config/voidedtech/voidedtech.repo /etc/yum.repos.d/voidedtech.repo; then
-        echo "failed to setup local repo"
-        exit 1
-    fi
-    if ! toolbox run --container "$1" sudo dnf update; then
-        echo "failed to dnf update"
-        exit 1
-    fi
+    _update "$1"
     if ! toolbox run --container "$1" sudo dnf install -y $PKGS; then
         echo "failed to install default packages"
         exit 1
