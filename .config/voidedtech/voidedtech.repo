@@ -1,5 +1,6 @@
 [voidedtech]
 name=voidedtech
 baseurl=file:///home/enck/.store/pkgs/rpms
+module_hotfixes=1
 gpgcheck=0
 
