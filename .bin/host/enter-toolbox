@@ -1,57 +1,63 @@
 #!/usr/bin/env bash
 CONF="$HOME/.config/voidedtech/toolbox.yml"
 if [ -z "$1" ]; then
-  echo "command required"
-  exit 1
+    echo "command required"
+    exit 1
 fi
-if [ "$1" == "--list" ]; then
-  {
-    CNT=0
-    BOX=$(yq '.boxes | length' $CONF)
-    if [ -n "$BOX" ] && [ "$BOX" -gt 0 ]; then
-      while [ $CNT -lt $BOX ]; do
-        yq ".boxes[$CNT].name" $CONF
-        CNT=$((CNT+1))
-      done
-    fi
-    toolbox list --containers | tail -n +2 | awk '{print $2}'
-  } | sort -u
-  exit 0
-fi
+case "$1" in
+    "--list")
+    {
+        CNT=0
+        BOX=$(yq '.boxes | length' $CONF)
+        if [ -n "$BOX" ] && [ "$BOX" -gt 0 ]; then
+          while [ $CNT -lt $BOX ]; do
+            yq ".boxes[$CNT].name" $CONF
+            CNT=$((CNT+1))
+          done
+        fi
+        toolbox list --containers | tail -n +2 | awk '{print $2}'
+    } | sort -u
+    exit 0
+  ;;
+    "--update")
+    for f in $(enter-toolbox --list); do
+        if ! toolbox run --container "$f" sudo dnf update; then
+            echo "failed updating: $f"
+            exit 1
+        fi
+    done
+    exit 0
+esac
+
 if [ $(echo $1 | wc -c) -le 3 ]; then
-  echo "name must be >= 3 characters"
-  exit 1
+    echo "name must be >= 3 characters"
+    exit 1
 fi
 DEFAULT_PKGS=$(yq '.defaults.packages[]' $CONF)
-DEFAULT_RPMS=$(yq '.defaults.rpms[]' $CONF)
-RPMS="$DEFAULT_RPMS"
 PKGS="$DEFAULT_PKGS"
 SPEC=$(yq ".boxes[] | select (.name == \"$1\")" "$CONF")
 if [ -n "$SPEC" ]; then
-  for P in $(echo "$SPEC" | yq '.packages[]'); do
-    PKGS="$PKGS $P"
-  done
-  for R in $(echo "$SPEC" | yq '.rpms[]'); do
-    RPMS="$RPMS $R"
-  done
+    for P in $(echo "$SPEC" | yq '.packages[]'); do
+        PKGS="$PKGS $P"
+    done
 fi
-RPM_INSTALLS=""
-for R in $(echo "$RPMS"); do
-  RPM_INSTALLS="$RPM_INSTALLS $(find $RPMS_STORE -type f -name "$R*.rpm" ! -name "*.src.rpm")"
-done
 HAS=$(toolbox list --containers | awk '{print $2}' | grep "^$1\$")
 if [ -z "$HAS" ]; then
-  if ! toolbox create "$1"; then
-    echo "failed to create $1"
-    exit 1
-  fi
-  if ! toolbox run --container "$1" sudo dnf install -y $PKGS; then
-    echo "failed to install default packages"
-    exit 1
-  fi
-  if ! toolbox run --container "$1" sudo dnf install -y $RPM_INSTALLS; then
-    echo "failed to install $r rpm"
-    exit 1
-  fi
+    if ! toolbox create "$1"; then
+        echo "failed to create $1"
+        exit 1
+    fi
+    if ! toolbox run --container "$1" sudo cp $HOME/.config/voidedtech/voidedtech.repo /etc/yum.repos.d/voidedtech.repo; then
+        echo "failed to setup local repo"
+        exit 1
+    fi
+    if ! toolbox run --container "$1" sudo dnf update; then
+        echo "failed to dnf update"
+        exit 1
+    fi
+    if ! toolbox run --container "$1" sudo dnf install -y $PKGS; then
+        echo "failed to install default packages"
+        exit 1
+    fi
 fi
 exec toolbox enter $1

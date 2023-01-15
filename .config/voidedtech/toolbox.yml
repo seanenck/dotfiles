@@ -10,7 +10,6 @@ defaults:
     - vim-ale
     - shellcheck
     - vim-airline
-  rpms:
     - goyq
 boxes:
   - name: rpms
@@ -29,7 +28,6 @@ boxes:
       - rustfmt
       - file
       - golang-mvdan-gofumpt
-    rpms:
       - gopls
       - revive
       - staticcheck

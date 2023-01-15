@@ -1,0 +1,5 @@
+[voidedtech]
+name=voidedtech
+baseurl=file:///home/enck/.store/pkgs/rpms
+gpgcheck=0
+
