@@ -30,7 +30,12 @@ nmap("<C-l>", ":vsplit<CR>")
 nmap("<C-q>", ":close<CR>")
 nmap("<S-l>", ":wincmd l<CR>")
 nmap("<S-h>", ":wincmd h<CR>")
+nmap("gl", "$")
+nmap("gh", "^")
+nmap("gk", "gg")
+nmap("gj", "G")
 
+-- Everything below is currently 'cheating' and using nvim_exec instead of the nvim api...
 for _, write in ipairs({"w", "wq"}) do
     vim.api.nvim_exec(string.format("cabbrev <expr> %s getcmdtype()==':' && getcmdline() == \"'<,'>%s\" ? '<c-u>%s' : '%s'", write, write, write, write), false)
 end
