@@ -11,6 +11,7 @@ defaults:
     - shellcheck
     - vim-airline
     - goyq
+    - glibc-langpack-en
 boxes:
   - name: rpms
     packages:
