@@ -33,7 +33,9 @@ case "$1" in
   ;;
   "--update")
   for f in $(enter-toolbox --list); do
+    echo "updating: $f"
     _update "$f"
+    echo
   done
   exit 0
   ;;
