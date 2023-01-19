@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+DOTPREFIX=".dotfiles"
+
 _dotfiles_hook() {
   local h
   h="$1/$2"
@@ -13,30 +15,34 @@ _dotfiles_hook() {
 }
 
 _lsfiles() {
-  git ls-files
-  git ls-files --others
+  {
+    git ls-files
+    git ls-files --others
+  } | grep '^\.' | grep -v "^$DOTPREFIX"
 }
 
 dotfiles() {
-  local f df d
-  df=".dotfiles"
+  local f d
   if [ ! -d ".git" ]; then
     echo "not a git/parent directory"
     return
   fi
-  if [ ! -d "$df" ]; then
-    if [ ! -e "$df" ]; then
+  if [ ! -d "$DOTPREFIX" ]; then
+    if [ ! -e "$DOTPREFIX" ]; then
       echo "not a dotfiles repository"
       return
     fi
   fi
-  _dotfiles_hook "$df" "pre"
-  for f in $(_lsfiles | grep '^\.' | grep -v "^$df"); do
+  _dotfiles_hook "$DOTPREFIX" "pre"
+  for f in $(_lsfiles); do
     d="$HOME/"$(dirname "$f")
     mkdir -p "$d"
     ln -sf "$PWD/$f" "$HOME/$f"
   done
-  _dotfiles_hook "$df" "post"
+  _dotfiles_hook "$DOTPREFIX" "post"
+  for d in $(_lsfiles | grep '/' | cut -d '/' -f 1 | sort -u); do
+    find "$HOME/$d" -xtype l -delete
+  done
 }
 
 dotfiles
