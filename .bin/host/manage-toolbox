@@ -16,23 +16,28 @@ _update() {
   fi
 }
 
-case "$1" in
-  "--list")
+_list() {
+  local cnt box
   {
-    CNT=0
-    BOX=$(yq '.boxes | length' $CONF)
-    if [ -n "$BOX" ] && [ "$BOX" -gt 0 ]; then
-      while [ $CNT -lt $BOX ]; do
-        yq ".boxes[$CNT].name" $CONF
-        CNT=$((CNT+1))
+    cnt=0
+    box=$(yq '.boxes | length' $CONF)
+    if [ -n "$box" ] && [ "$box" -gt 0 ]; then
+      while [ $cnt -lt $box ]; do
+        yq ".boxes[$cnt].name" $CONF
+        cnt=$((cnt+1))
       done
     fi
     toolbox list --containers | tail -n +2 | awk '{print $2}'
   } | sort -u
+}
+
+case "$1" in
+  "--list")
+  _list
   exit 0
   ;;
   "--update")
-  for f in $(enter-toolbox --list); do
+  for f in $(_list); do
     echo "updating: $f"
     _update "$f"
     echo
@@ -52,14 +57,13 @@ if [ -n "$SPEC" ]; then
   for P in $(echo "$SPEC" | yq '.packages[]'); do
     PKGS="$PKGS $P"
   done
-else
+fi
+HAS=$(toolbox list --containers | awk '{print $2}' | grep "^$1\$")
+if [ -z "$HAS" ]; then
   if [ -z "$ALLOW_ANY_TOOLBOX" ] || [ "$ALLOW_ANY_TOOLBOX" != "true" ]; then
     echo "can NOT create unknown toolbox, use ALLOW_ANY_TOOLBOX=true to override"
     exit 1
   fi
-fi
-HAS=$(toolbox list --containers | awk '{print $2}' | grep "^$1\$")
-if [ -z "$HAS" ]; then
   if ! toolbox create "$1"; then
     echo "failed to create $1"
     exit 1

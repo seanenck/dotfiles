@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-_enter-toolbox() {
+_manage-toolbox() {
     local cur opts
     if [ "$COMP_CWORD" -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        opts=$(enter-toolbox --list)
+        opts=$(manage-toolbox --list)
         COMPREPLY=( $(compgen -W "$opts --update" -- "$cur") )
     fi
 }
 
-complete -F _enter-toolbox -o bashdefault -o default enter-toolbox
+complete -F _manage-toolbox -o bashdefault -o default manage-toolbox
