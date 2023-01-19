@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-_manage-toolbox() {
+_boxed() {
     local cur opts
     if [ "$COMP_CWORD" -eq 1 ]; then
         cur=${COMP_WORDS[COMP_CWORD]}
-        opts=$(manage-toolbox --list)
+        opts=$(boxed --list)
         COMPREPLY=( $(compgen -W "$opts --update" -- "$cur") )
     fi
 }
 
-complete -F _manage-toolbox -o bashdefault -o default manage-toolbox
+complete -F _boxed -o bashdefault -o default boxed
