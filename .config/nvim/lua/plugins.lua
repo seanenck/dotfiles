@@ -20,6 +20,7 @@ vim.g.ale_set_highlights = 0
 vim.g.ale_sign_column_always = 1
 vim.g.ale_completion_enabled = 1
 override_linters("go", "gofumpt", {["go"] = {"gopls", "govet", "staticcheck"}}) 
+vim.g.ale_go_staticcheck_options = '-checks all'
 
 -- Airline settings
 vim.g.airline_extensions = {"tabline"}
