@@ -11,3 +11,5 @@ sources:
     url: https://git.code.sf.net/p/isync/isync
   - name: staticcheck
     url: https://github.com/dominikh/go-tools
+  - name: helix
+    url: https://github.com/helix-editor/helix
