@@ -7,9 +7,7 @@ defaults:
     - netcat
     - rsync
     - neovim
-    - vim-ale
     - shellcheck
-    - vim-airline
     - goyq
     - glibc-langpack-en
 boxes:
