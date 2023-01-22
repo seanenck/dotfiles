@@ -10,10 +10,15 @@ function override_linters(extension, fixer, linters)
     vim.api.nvim_create_autocmd({ "BufWrite" }, {
         pattern = { "*." .. extension },
         callback = function()
+            vim.api.nvim_exec("autocmd User ALEFixPost let g:override_alefix=0", false)
+            vim.g.override_alefix = 1
             vim.api.nvim_exec(":ALEFix", false)
-            vim.api.nvim_exec("sleep 50m", false)
+            while vim.g.override_alefix == 1 do
+                vim.api.nvim_exec("sleep 5m", false)
+            end
         end
     })
+
 end
 
 vim.g.ale_set_highlights = 0
