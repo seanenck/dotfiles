@@ -9,7 +9,5 @@ sources:
     url: https://github.com/mikefarah/yq
   - name: isync
     url: https://git.code.sf.net/p/isync/isync
-  - name: revive
-    url: https://github.com/mgechev/revive
   - name: staticcheck
     url: https://github.com/dominikh/go-tools

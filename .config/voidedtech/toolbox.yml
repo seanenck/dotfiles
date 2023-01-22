@@ -30,5 +30,4 @@ boxes:
       - file
       - golang-mvdan-gofumpt
       - gopls
-      - revive
       - staticcheck
