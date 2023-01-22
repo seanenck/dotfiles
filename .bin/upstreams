@@ -3,6 +3,30 @@ UPSTREAM="$HOME/.cache/upstreams/"
 CONF="$HOME/.config/voidedtech/upstream.yml"
 mkdir -p "$UPSTREAM"
 PKGS="$1"
+VIM_PLUGINS="$HOME/.config/nvim/pack/plugins/start/"
+
+_vim_plugin_update() {
+  local name dir
+  name=$(basename "$1")
+  echo "updating: $name"
+  dir="${VIM_PLUGINS}$name"
+  if [ ! -d "$dir" ]; then
+    if ! git clone "$1" "$dir"; then
+      echo "failed to clone $name"
+      exit 1
+    fi
+  fi
+  if ! git -C "$dir" pull; then
+    echo "failed to update $name"
+    exit 1
+  fi
+}
+
+_vim_plugins() {
+  mkdir -p "$VIM_PLUGINS"
+  _vim_plugin_update "https://github.com/vim-airline/vim-airline"
+  _vim_plugin_update "https://github.com/dense-analysis/ale"
+}
 
 _externals() {
   local r n curr prev changed cnt len
@@ -54,4 +78,5 @@ if [ -n "$1" ]; then
   fi
   exit 0
 fi
+_vim_plugins
 _externals
