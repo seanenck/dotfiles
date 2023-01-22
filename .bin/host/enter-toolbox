@@ -50,19 +50,21 @@ if [ $(echo $1 | wc -c) -le 3 ]; then
   echo "name must be >= 3 characters"
   exit 1
 fi
-DEFAULT_PKGS=$(yq '.defaults.packages[]' $CONF)
-PKGS="$DEFAULT_PKGS"
-SPEC=$(yq ".boxes[] | select (.name == \"$1\")" "$CONF")
-if [ -n "$SPEC" ]; then
-  for P in $(echo "$SPEC" | yq '.packages[]'); do
-    PKGS="$PKGS $P"
-  done
-fi
 HAS=$(toolbox list --containers | awk '{print $2}' | grep "^$1\$")
 if [ -z "$HAS" ]; then
+  SPEC=$(yq ".boxes[] | select (.name == \"$1\")" "$CONF")
   if [ -z "$ALLOW_ANY_TOOLBOX" ] || [ "$ALLOW_ANY_TOOLBOX" != "true" ]; then
-    echo "can NOT create unknown toolbox, use ALLOW_ANY_TOOLBOX=true to override"
-    exit 1
+    if [ -z "$SPEC" ]; then
+      echo "can NOT create unknown toolbox, use ALLOW_ANY_TOOLBOX=true to override"
+      exit 1
+    fi
+  fi
+  DEFAULT_PKGS=$(yq '.defaults.packages[]' $CONF)
+  PKGS="$DEFAULT_PKGS"
+  if [ -n "$SPEC" ]; then
+    for P in $(echo "$SPEC" | yq '.packages[]'); do
+      PKGS="$PKGS $P"
+    done
   fi
   if ! toolbox create "$1"; then
     echo "failed to create $1"
