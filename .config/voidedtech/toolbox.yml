@@ -1,33 +1,32 @@
 defaults:
   packages:
-    - ripgrep
     - bat
     - git-delta
     - git
-    - netcat
-    - rsync
-    - neovim
-    - vim-ale
-    - shellcheck
-    - vim-airline
-    - goyq
     - glibc-langpack-en
+    - goyq
+    - helix
+    - netcat
+    - nodejs-bash-language-server
+    - ripgrep
+    - rsync
+    - shellcheck
 boxes:
   - name: rpms
     packages:
-      - rpmlint
       - make
-      - rpmdevtools
       - mock
+      - rpmdevtools
+      - rpmlint
   - name: dev
     packages:
-      - go
       - cargo
+      - file
+      - go
+      - golang-mvdan-gofumpt
+      - gopls
       - make
       - rust
       - rust-analyzer
       - rustfmt
-      - file
-      - golang-mvdan-gofumpt
-      - gopls
       - staticcheck
