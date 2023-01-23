@@ -51,3 +51,4 @@ end
 
 setuplsp("gopls", "gopls", "go", {gopls = { gofumpt = true, staticcheck = true}})
 setuplsp("rust-analyzer", "rust_analyzer", "rs", {})
+setuplsp("efm-langserver", "efm", "*", {})

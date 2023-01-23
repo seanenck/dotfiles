@@ -24,11 +24,9 @@ _vim_plugin_update() {
 
 _vim_plugins() {
   mkdir -p "$VIM_PLUGINS"
-  _vim_plugin_update "https://github.com/vim-airline/vim-airline"
-  _vim_plugin_update "https://github.com/neovim/nvim-lspconfig"
-  _vim_plugin_update "https://github.com/hrsh7th/nvim-cmp"
-  _vim_plugin_update "https://github.com/hrsh7th/cmp-nvim-lsp"
-  _vim_plugin_update "https://github.com/L3MON4D3/LuaSnip"
+  for f in $(yq '.plugins[]' "$CONF"); do
+    _vim_plugin_update "$f"
+  done
 }
 
 _externals() {
