@@ -25,23 +25,21 @@ cmp.setup({
 -- lsp
 local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  local bufopts = { noremap=true, silent=true, buffer=bufnr }
-
-  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 end
 
-local function setuplsp(exec, name, extension, settings)
+local function setuplsp(exec, name, extension, settings, filetypes)
   if vim.fn.executable(exec) ~= 1 then
       return
   end
   capabilities = require('cmp_nvim_lsp').default_capabilities()
-  require("lspconfig")[name].setup{
+  local cfg = require("lspconfig")[name]
+  cfg.setup{
     on_attach = on_attach,
     capabilities = capabilities,
-    settings = settings
+    filetypes=filetypes,
+    settings = settings,
   }
-  if extension ~= "" then
+  if extension ~= nil then
       vim.api.nvim_create_autocmd({ "BufWritePre" }, {
           pattern = { "*." .. extension },
           callback = function()
@@ -51,6 +49,6 @@ local function setuplsp(exec, name, extension, settings)
   end
 end
 
-setuplsp("gopls", "gopls", "go", {gopls = { gofumpt = true, staticcheck = true}})
-setuplsp("rust-analyzer", "rust_analyzer", "rs", {})
-setuplsp("efm-langserver", "efm", "", {})
+setuplsp("gopls", "gopls", "go", {gopls = { gofumpt = true, staticcheck = true}}, nil)
+setuplsp("rust-analyzer", "rust_analyzer", "rs", nil, nil)
+setuplsp("efm-langserver", "efm", nil, nil, {"sh"})
