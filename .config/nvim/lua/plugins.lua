@@ -1,32 +1,53 @@
--- ALE settings
-function override_linters(extension, fixer, linters)
-    vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-        pattern = { "*." .. extension },
-        callback = function()
-            vim.g.ale_linters = linters
-            vim.g.ale_fixers = {[extension] = {fixer}}
-        end
-    })
-    vim.api.nvim_create_autocmd({ "BufWrite" }, {
-        pattern = { "*." .. extension },
-        callback = function()
-            vim.api.nvim_exec("autocmd User ALEFixPost let g:override_alefix=0", false)
-            vim.g.override_alefix = 1
-            vim.api.nvim_exec(":ALEFix", false)
-            while vim.g.override_alefix == 1 do
-                vim.api.nvim_exec("sleep 5m", false)
-            end
-        end
-    })
-
-end
-
-vim.g.ale_set_highlights = 0
-vim.g.ale_sign_column_always = 1
-vim.g.ale_completion_enabled = 1
-override_linters("go", "gofumpt", {["go"] = {"gopls", "govet", "staticcheck"}}) 
-vim.g.ale_go_staticcheck_options = '-checks all'
-
--- Airline settings
+-- airline settings
 vim.g.airline_extensions = {"tabline"}
 vim.g.airline_extensions["tabline"] = {["formatter"] = "unique_tail_improved"}
+
+-- nvim-cmp settings
+local cmp = require'cmp'
+
+cmp.setup({
+    snippet = {
+      expand = function(args)
+        require('luasnip').lsp_expand(args.body)
+      end,
+    },
+    mapping = cmp.mapping.preset.insert({
+      ['<Right>'] = cmp.mapping.confirm({ select = false }),
+    }),
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'luasnip' },
+    }, {
+      { name = 'buffer' },
+    })
+})
+
+-- lsp
+local on_attach = function(client, bufnr)
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  local bufopts = { noremap=true, silent=true, buffer=bufnr }
+
+  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+end
+
+local function setuplsp(exec, name, extension, settings)
+  if vim.fn.executable(exec) ~= 1 then
+      return
+  end
+  capabilities = require('cmp_nvim_lsp').default_capabilities()
+  require("lspconfig")[name].setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = settings
+  }
+  vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+      pattern = { "*." .. extension },
+      callback = function()
+          vim.lsp.buf.format { async = false }
+      end
+  })
+end
+
+setuplsp("gopls", "gopls", "go", {gopls = { gofumpt = true, staticcheck = true}})
+setuplsp("rust-analyzer", "rust_analyzer", "rs", {})

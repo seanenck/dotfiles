@@ -17,14 +17,6 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     callback = text
 })
 
--- Go
-vim.api.nvim_create_autocmd({"Filetype"}, {
-    pattern = { "go" },
-    callback = function()
-        vim.opt_local.expandtab = false
-    end
-})
-
 -- Shell
 vim.api.nvim_create_autocmd({"Filetype"}, {
     pattern = { "sh" },
