@@ -37,7 +37,8 @@ _toolbox-name(){
 }
 
 _toolbox-prompt() {
-    local name=$(_toolbox-name)
+    local name
+    name=$(_toolbox-name)
     if [ -n "$name" ]; then
         echo "[$name]"
     fi
@@ -57,7 +58,7 @@ fi
 export PATH="$HOME/.bin/$HOME_BASH:$PATH"
 PS1="\$(_toolbox-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
-for file in $(find $HOME/.bashrc.d -name "*.sh" | grep -E "($HOME_BASH|all).sh\$" | sort); do
-    source $file
+for file in $(find "$HOME/.bashrc.d" -name "*.sh" | grep -E "($HOME_BASH|all).sh\$" | sort); do
+    source "$file"
 done
 unset HOME_BASH PREFERPS1 file
