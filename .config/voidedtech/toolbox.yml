@@ -10,6 +10,7 @@ defaults:
     - shellcheck
     - goyq
     - glibc-langpack-en
+    - efmlsp
 boxes:
   - name: rpms
     packages:
