@@ -51,7 +51,7 @@ if [ -n "$TOOLBOX" ]; then
     HOME_BASH="$TOOLBOX"
     PS1='\[\033[01;33m\]'$PREFERPS1'\[\033[0m\]> '
 else
-    unset $TOOLBOX
+    unset TOOLBOX
     PS1=$PREFERPS1'$ '
     HOME_BASH="host"
 fi
