@@ -41,14 +41,16 @@ local function setuplsp(exec, name, extension, settings)
     capabilities = capabilities,
     settings = settings
   }
-  vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-      pattern = { "*." .. extension },
-      callback = function()
-          vim.lsp.buf.format { async = false }
-      end
-  })
+  if extension ~= "" then
+      vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+          pattern = { "*." .. extension },
+          callback = function()
+              vim.lsp.buf.format { async = false }
+          end
+      })
+  end
 end
 
 setuplsp("gopls", "gopls", "go", {gopls = { gofumpt = true, staticcheck = true}})
 setuplsp("rust-analyzer", "rust_analyzer", "rs", {})
-setuplsp("efm-langserver", "efm", "*", {})
+setuplsp("efm-langserver", "efm", "", {})

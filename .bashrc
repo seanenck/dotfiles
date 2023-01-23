@@ -31,7 +31,7 @@ shopt -s checkwinsize
 _toolbox-name(){
     local name
     if [ -f "/run/.toolboxenv" ]; then
-        name=$(cat /run/.containerenv | grep -oP "(?<=name=\")[^\";]+")
+        name=$(grep -oP "(?<=name=\")[^\";]+" /run/.containerenv)
         echo "$name"
     fi
 }
