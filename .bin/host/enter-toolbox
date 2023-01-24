@@ -6,7 +6,7 @@ if [ -z "$1" ]; then
 fi    
 
 _update() {
-  if ! toolbox run --container "$1" sudo cp $HOME/.config/voidedtech/voidedtech.repo /etc/yum.repos.d/voidedtech.repo; then
+  if ! toolbox run --container "$1" sudo cp "$HOME/.config/voidedtech/voidedtech.repo" /etc/yum.repos.d/voidedtech.repo; then
     echo "failed to setup local repo"
     exit 1
   fi
@@ -20,10 +20,10 @@ _list() {
   local cnt box
   {
     cnt=0
-    box=$(yq '.boxes | length' $CONF)
+    box=$(yq '.boxes | length' "$CONF")
     if [ -n "$box" ] && [ "$box" -gt 0 ]; then
       while [ $cnt -lt $box ]; do
-        yq ".boxes[$cnt].name" $CONF
+        yq ".boxes[$cnt].name" "$CONF"
         cnt=$((cnt+1))
       done
     fi
@@ -46,7 +46,7 @@ case "$1" in
   ;;
 esac
 
-if [ $(echo $1 | wc -c) -le 3 ]; then
+if [ $(echo "$1" | wc -c) -le 3 ]; then
   echo "name must be >= 3 characters"
   exit 1
 fi
@@ -59,7 +59,7 @@ if [ -z "$HAS" ]; then
       exit 1
     fi
   fi
-  DEFAULT_PKGS=$(yq '.defaults.packages[]' $CONF)
+  DEFAULT_PKGS=$(yq '.defaults.packages[]' "$CONF")
   PKGS="$DEFAULT_PKGS"
   if [ -n "$SPEC" ]; then
     for P in $(echo "$SPEC" | yq '.packages[]'); do
@@ -76,4 +76,4 @@ if [ -z "$HAS" ]; then
     exit 1
   fi
 fi
-exec toolbox enter $1
+exec toolbox enter "$1"

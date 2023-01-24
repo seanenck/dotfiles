@@ -38,7 +38,7 @@ git-uncommit() {
         paths="$paths $sub"
       done
     done
-    for sub in $(echo "$paths"); do
+    for sub in $paths; do
       r=$(_git-commands "$sub")
       if [ -z "$res" ]; then
         res=$r
