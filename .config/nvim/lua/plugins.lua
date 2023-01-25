@@ -47,6 +47,17 @@ local function setuplsp(exec, name, extension, settings, filetypes)
           end
       })
   end
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics,
+    {
+      virtual_text = false,
+      signs = true,
+      update_in_insert = false,
+      underline = true,
+    }
+  )
+  vim.o.updatetime = 250
+  vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
 end
 
 setuplsp("gopls", "gopls", "go", {gopls = { gofumpt = true, staticcheck = true}}, nil)

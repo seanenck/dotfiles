@@ -30,10 +30,11 @@ nmap("<C-l>", ":vsplit<CR>")
 nmap("<C-q>", ":close<CR>")
 nmap("<S-l>", ":wincmd l<CR>")
 nmap("<S-h>", ":wincmd h<CR>")
-nmap("gl", "$")
-nmap("gh", "^")
-nmap("gk", "gg")
-nmap("gj", "G")
+local move_maps = { ["gl"] = "$", ["gh"] = "^", ["gk"] = "gg", ["gj"] = "G"}
+for key, command in pairs(move_maps) do
+    nmap(key, command)
+    vmap(key, command)
+end
 
 -- Everything below is currently 'cheating' and using nvim_exec instead of the nvim api...
 for _, write in ipairs({"w", "wq"}) do
