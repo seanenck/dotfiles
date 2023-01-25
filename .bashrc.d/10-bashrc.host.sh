@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+if [ -n "$SSH_CONNECTION" ]; then
+  export LOCKBOX_CLIP_OSC52=yes
+fi
 
 if ! git uncommitted --quiet; then
     echo
