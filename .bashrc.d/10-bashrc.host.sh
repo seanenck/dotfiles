@@ -13,4 +13,4 @@ if ! upstreams check; then
     echo "  -> check for updates"
     echo
 fi
-world-ostree check
+system-ostree check
