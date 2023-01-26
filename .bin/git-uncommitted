@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 _uncommit() {
-  if [ -n "$(git -C "$1" ${@:4} | grep $2 "$3")" ]; then
+  if [ -n "$(git -C "$1" ${@:2})" ]; then
     echo "$1 ($4)"
   fi
 }
 
 _git-commands() {
-  _uncommit "$1" "" "" update-index -q --refresh
-  _uncommit "$1" "" "" diff-index --name-only HEAD --
-  _uncommit "$1" "" "ahead" status -sb
-  _uncommit "$1" "" "" ls-files --other --exclude-standard
-  _uncommit "$1" "-v" "master" branch --show-current
+  _uncommit "$1" update-index -q --refresh
+  _uncommit "$1" diff-index --name-only HEAD --
+  _uncommit "$1" status -sb | grep "ahead"
+  _uncommit "$1" ls-files --other --exclude-standard
+  _uncommit "$1" branch --show-current | grep -E '^(main|master)$'
 }
 
 git-uncommit() {
