@@ -6,6 +6,7 @@ defaults:
     - git-delta
     - glibc-langpack-en
     - goyq
+    - jq
     - neovim
     - netcat
     - ripgrep
