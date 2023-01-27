@@ -23,7 +23,6 @@ tools:
     lint-command: 'yq .'
     lint-stdin: true
     lint-ignore-exit-code: true
-    lint-offset: 1
     lint-formats:
       - "Error: bad file '-': yaml: line %l: %m"
 
