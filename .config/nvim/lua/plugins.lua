@@ -60,7 +60,7 @@ end
 
 setuplsp("gopls", "gopls", "go", {gopls = { gofumpt = true, staticcheck = true}}, nil)
 setuplsp("rust-analyzer", "rust_analyzer", "rs", nil, nil)
-setuplsp("efm-langserver", "efm", nil, nil, {"sh"})
+setuplsp("efm-langserver", "efm", nil, nil, {"sh", "json", "yaml"})
 local diagnostics_active = true
 toggle_diagnostics = function()
   diagnostics_active = not diagnostics_active
