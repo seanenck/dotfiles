@@ -13,6 +13,8 @@ sources:
     url: https://github.com/dominikh/go-tools
   - name: efmlsp
     url: https://github.com/mattn/efm-langserver
+  - name: gofumpt
+    url: https://github.com/mvdan/gofumpt
 plugins:
   - "https://github.com/vim-airline/vim-airline"
   - "https://github.com/neovim/nvim-lspconfig"

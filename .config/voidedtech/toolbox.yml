@@ -23,7 +23,7 @@ boxes:
       - cargo
       - file
       - go
-      - golang-mvdan-gofumpt
+      - gofumpt
       - gopls
       - make
       - rust
