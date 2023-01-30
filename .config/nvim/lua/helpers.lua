@@ -2,10 +2,6 @@ function map(mode, shortcut, command)
     vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })
 end
 
-function tmap(shortcut, command)
-    map('t', shortcut, command)
-end
-
 function mapall(short, command)
     nmap(short, command)
     imap(short, command)
