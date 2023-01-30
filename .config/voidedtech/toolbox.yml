@@ -20,13 +20,15 @@ boxes:
       - rpmlint
   - name: dev
     packages:
-      - cargo
       - file
       - go
       - gofumpt
       - gopls
       - make
+      - staticcheck
+  - name: cargo
+    packages:
+      - cargo
       - rust
       - rust-analyzer
       - rustfmt
-      - staticcheck
