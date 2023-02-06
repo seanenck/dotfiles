@@ -26,6 +26,7 @@ boxes:
       - gopls
       - make
       - staticcheck
+      - revive
   - name: cargo
     packages:
       - cargo
