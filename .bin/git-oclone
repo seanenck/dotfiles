@@ -38,12 +38,16 @@ oclone() {
   if [ "$cfg" == "null" ]; then
     return
   fi
+  if [ ! -e "$cfg" ]; then
+    echo "config file does not exist"
+    exit 1
+  fi
   dst="$dst/.git/config" 
   if [ ! -e "$dst" ]; then
     echo "unable to set config"
     exit 1
   fi
-  echo "$cfg" >> "$dst"
+  cat "$cfg" >> "$dst"
 }
 
 if [ -z "$1" ]; then
