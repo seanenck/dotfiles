@@ -1,0 +1,9 @@
+[Unit]
+Description=run instaweb container
+
+[Service]
+ExecStart=/home/enck/.bin/host/instaweb start
+ExecStop=/home/enck/.bin/host/instaweb stop
+
+[Install]
+WantedBy=default.target
