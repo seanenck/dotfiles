@@ -1,6 +1,4 @@
 sources:
-  - name: stagit
-    url: git://git.codemadness.org/stagit
   - name: gopls
     url: https://github.com/golang/tools
   - name: filebrowser
