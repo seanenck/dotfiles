@@ -15,11 +15,7 @@ declare -a PACKAGES=( \
 declare -a DEV=( \
   "file" \
   "go" \
-  "gofumpt" \
-  "gopls" \
   "make" \
-  "staticcheck" \
-  "revive" \
 )
 
 declare -a CARGO=( \
