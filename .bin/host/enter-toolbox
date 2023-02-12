@@ -6,6 +6,10 @@ if [ -z "$1" ]; then
 fi    
 
 _update() {
+  if ! toolbox list --containers | grep -q "$1"; then
+    echo "$1 does not exist"
+    return
+  fi
   if ! toolbox run --container "$1" sudo cp "$HOME/.config/voidedtech/voidedtech.repo" /etc/yum.repos.d/voidedtech.repo; then
     echo "failed to setup local repo"
     exit 1
