@@ -1,0 +1,10 @@
+TAG    := 0.11.0
+TAR    := gopls.tar.gz
+SRCDIR := tools-gopls-v$(TAG)/gopls
+URL    := "https://github.com/golang/tools/archive/gopls/v$(TAG).tar.gz"
+BINARY := bin/gopls
+BUILD  := go build $(GOFLAGS) -o $(BINARY)
+SUMS   := "b5dd0040bcc75b4760eb543826b6503a163c835c90f50843e626a112ca083931  $(TAR)"
+
+install:
+	install -Dm755 $(BINARY) $(DESTDIR)/dev/gopls
