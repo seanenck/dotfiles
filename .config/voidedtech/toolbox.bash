@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 declare -a PACKAGES=( \
   "bat" \
-  "efmlsp" \
   "git" \
   "git-delta" \
+  "git-gui" \
   "glibc-langpack-en" \
   "neovim" \
   "netcat" \
