@@ -76,5 +76,5 @@ if [ -n "$1" ]; then
   fi
   exit 0
 fi
-#_vim_plugins
+_vim_plugins
 _externals
