@@ -20,7 +20,6 @@ export DELTA_PAGER="less -c -X"
 export PATH="$HOME/.bin/:$PATH"
 export LOCAL_STORE="$HOME/.store"
 export PKGS_STORE="$LOCAL_STORE/pkgs"
-export RPMS_STORE="$PKGS_STORE/rpms"
 
 # disable ctrl+s
 stty -ixon

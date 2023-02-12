@@ -12,13 +12,6 @@ declare -a PACKAGES=( \
   "shellcheck" \
 )
 
-declare -a RPMS=( \
-  "make" \
-  "mock" \
-  "rpmlint" \
-  "rpmdevtools" \
-)
-
 declare -a DEV=( \
   "file" \
   "go" \
@@ -37,7 +30,6 @@ declare -a CARGO=( \
 )
 
 declare -A BOXES=( \
-  ["rpms"]="${RPMS[@]}" \
   ["dev"]="${DEV[@]}" \
   ["cargo"]="${CARGO[@]}" \
 )
