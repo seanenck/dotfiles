@@ -1,5 +1,6 @@
 #!/bin/bash
 UPSTREAM="$HOME/.cache/upstreams/"
+BUILDS="$HOME/.env/dotfiles/builds/src/"
 CONF="$HOME/.config/voidedtech/upstream.bash"
 if [ ! -e "$CONF" ]; then
   echo "missing config file"
@@ -34,15 +35,19 @@ _vim_plugins() {
 }
 
 _externals() {
-  local r n curr prev changed
+  local r n curr prev changed path
   if [ ! -e "$CONF" ]; then
     echo "no $CONFIG file"
     exit 1
   fi
   changed=0
-  for n in "${!SOURCES[@]}"; do
-    r="${SOURCES[$n]}"
-    echo "$n $r"
+  for path in "$BUILDS"*; do
+    n=$(basename "$path")
+    r=$(grep "^SITE " "$path" | cut -d "=" -f 2- | sed 's/"//g;s/\s//g')
+    if [ -z "$r" ]; then
+      echo "$path is missing SITE"
+      exit 1
+    fi
     curr="${UPSTREAM}$n"
     prev="$curr.prev"
     echo "checking: $r ($n)"
@@ -76,5 +81,5 @@ if [ -n "$1" ]; then
   fi
   exit 0
 fi
-_vim_plugins
+#_vim_plugins
 _externals

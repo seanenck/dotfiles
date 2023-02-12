@@ -1,7 +1,8 @@
 TAG    := 23.01.02
 TAR    := lockbox.tar.gz
 SRCDIR := lockbox-$(TAG)
-URL    := "https://github.com/enckse/lockbox/archive/v$(TAG).tar.gz"
+SITE   := "https://github.com/enckse/lockbox"
+URL    := "$(SITE)/archive/v$(TAG).tar.gz"
 BINARY := bin/lb
 BUILD  := go build $(GOFLAGS) -o $(BINARY) cmd/main.go
 SUMS   := "6e97f22bfa14ae4e29bdca256a5dbbe67b9b3342e548457510d4fd2e8493e963  $(TAR)"
