@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
-CONF="$HOME/.config/voidedtech/toolbox.yml"
+CONF="$HOME/.config/voidedtech/toolbox.bash"
 if [ -z "$1" ]; then
   echo "command required"
   exit 1
-fi    
+fi
+
+if [ ! -e "$CONF" ]; then
+  echo "missing config file"
+  exit 1
+fi
+source "$CONF"
 
 _update() {
   if ! toolbox list --containers | grep -q "$1"; then
@@ -21,16 +27,8 @@ _update() {
 }
 
 _list() {
-  local cnt box
   {
-    cnt=0
-    box=$(yq '.boxes | length' "$CONF")
-    if [ -n "$box" ] && [ "$box" -gt 0 ]; then
-      while [ $cnt -lt $box ]; do
-        yq ".boxes[$cnt].name" "$CONF"
-        cnt=$((cnt+1))
-      done
-    fi
+    echo "${!BOXES[@]}" | tr ' ' '\n'
     toolbox list --containers | tail -n +2 | awk '{print $2}'
   } | sort -u
 }
@@ -56,18 +54,24 @@ if [ $(echo "$1" | wc -c) -le 3 ]; then
 fi
 HAS=$(toolbox list --containers | awk '{print $2}' | grep "^$1\$")
 if [ -z "$HAS" ]; then
-  SPEC=$(yq ".boxes[] | select (.name == \"$1\")" "$CONF")
+  for NAME in "${!BOXES[@]}"; do
+    if [ "$NAME" == "$1" ]; then
+      SPEC="${BOXES[$NAME]}"
+    fi
+  done
   if [ -z "$ALLOW_ANY_TOOLBOX" ] || [ "$ALLOW_ANY_TOOLBOX" != "true" ]; then
     if [ -z "$SPEC" ]; then
       echo "can NOT create unknown toolbox, use ALLOW_ANY_TOOLBOX=true to override"
       exit 1
     fi
   fi
-  DEFAULT_PKGS=$(yq '.defaults.packages[]' "$CONF")
-  PKGS="$DEFAULT_PKGS"
+  declare -a PKGS=()
+  for P in "${PACKAGES[@]}"; do
+    PKGS+=("$P")
+  done
   if [ -n "$SPEC" ]; then
-    for P in $(echo "$SPEC" | yq '.packages[]'); do
-      PKGS="$PKGS $P"
+    for P in "${SPEC[@]}"; do
+      PKGS+=("$P")
     done
   fi
   if ! toolbox create -y "$1"; then
@@ -75,7 +79,7 @@ if [ -z "$HAS" ]; then
     exit 1
   fi
   _update "$1"
-  if ! toolbox run --container "$1" sudo dnf install -y $PKGS; then
+  if ! toolbox run --container "$1" sudo dnf install -y ${PKGS[@]}; then
     echo "failed to install default packages"
     exit 1
   fi
