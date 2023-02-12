@@ -89,11 +89,14 @@ local function is_git()
 end
 
 local function set_ctrlq(enable)
-    local function repo_query()
+    local function is_active()
         if not is_git() then
-            return
+            return false
         end
-        if quickfix_window() then
+        return quickfix_window()
+    end
+    local function manage_quickfix()
+        if is_active() then
             vim.api.nvim_exec(":cclose", false)
         else
             local width = vim.api.nvim_win_get_width(0) * (3/4)
@@ -101,9 +104,31 @@ local function set_ctrlq(enable)
             vim.api.nvim_exec(string.format(":vertical resize %s<CR>", width), false)
         end
     end
+    local function manage_ctrll()
+        if is_active() then
+            vim.api.nvim_exec(":vertical resize -1", false)
+        else
+            vim.api.nvim_exec(":vsplit", false)
+        end
+    end
+    local function manage_keybind(call)
+        return function()
+            if is_active() then
+                vim.api.nvim_exec(call, false)
+            end
+        end
+    end
 
+    mapall("<C-k>", "")
+    mapall("<C-j>", "")
+    mapall("<C-h>", "")
+    mapall("<C-l>", "")
+    vim.keymap.set('n', '<C-l>', manage_ctrll, {})
     if enable then
-        vim.keymap.set('n', '<C-q>', repo_query, {})
+        vim.keymap.set('n', '<C-h>', manage_keybind(":vertical resize +1"), {})
+        vim.keymap.set('n', '<C-j>', manage_keybind(":cnext"), {})
+        vim.keymap.set('n', '<C-k>', manage_keybind(":cprev"), {})
+        vim.keymap.set('n', '<C-q>', manage_quickfix, {})
     else
         mapall("<C-q>", "")
     end
