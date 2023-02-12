@@ -82,3 +82,15 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
     end
 })
 
+-- telescope
+local tele = require('telescope.builtin')
+function list_files()
+    local res = os.execute("git rev-parse")
+    if res ~= nil and res then
+        tele.git_files()
+    else
+        tele.find_files()
+    end
+end
+
+vim.keymap.set('n', '<C-o>', list_files, {})
