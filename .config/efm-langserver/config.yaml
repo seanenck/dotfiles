@@ -19,17 +19,8 @@ tools:
     lint-formats:
       - '%m at line %l, column %c'
 
-  yaml-yq: &yaml-yq
-    lint-command: 'yq .'
-    lint-stdin: true
-    lint-ignore-exit-code: true
-    lint-formats:
-      - "Error: bad file '-': yaml: line %l: %m"
-
 languages:
   sh:
     - <<: *sh-shellcheck
   json:
     - <<: *json-jq
-  yaml:
-    - <<: *yaml-yq
