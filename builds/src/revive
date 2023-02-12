@@ -1,0 +1,10 @@
+TAG    := 1.2.5
+TAR    := revive.tar.gz
+SRCDIR := revive-$(TAG)
+URL    := "https://github.com/mgechev/revive/archive/v$(TAG).tar.gz"
+BINARY := bin/revive
+BUILD  := go build $(GOFLAGS) -o $(BINARY)
+SUMS   := "a34fe667d51dd9824f06fa0985f58a4359e2883ee25b235d91e366f3c4be68d8  $(TAR)"
+
+install:
+	install -Dm755 $(BINARY) $(DESTDIR)/dev/revive
