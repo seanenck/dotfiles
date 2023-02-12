@@ -82,15 +82,65 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
     end
 })
 
--- telescope
-local tele = require('telescope.builtin')
-function list_files()
+-- fugitive/telescope
+local function is_git()
     local res = os.execute("git rev-parse")
-    if res ~= nil and res then
+    return res ~= nil and res
+end
+
+local function set_ctrlq(enable)
+    local function repo_query()
+        if not is_git() then
+            return
+        end
+        if quickfix_window() then
+            vim.api.nvim_exec(":cclose", false)
+        else
+            local width = vim.api.nvim_win_get_width(0) * (3/4)
+            vim.api.nvim_exec(":vertical Gclog -n 1000", false)
+            vim.api.nvim_exec(string.format(":vertical resize %s<CR>", width), false)
+        end
+    end
+
+    if enable then
+        vim.keymap.set('n', '<C-q>', repo_query, {})
+    else
+        mapall("<C-q>", "")
+    end
+end
+
+-- telescope
+require('telescope').setup{
+  defaults = {
+    mappings = {
+      n = {
+        ["<C-q>"] = "close"
+      },
+      i = {
+        ["<C-q>"] = "close"
+      }
+    }
+  },
+}
+
+local tele = require('telescope.builtin')
+local function list_files()
+    if quickfix_window() then
+        return
+    end
+    set_ctrlq(false)
+    if is_git() then
         tele.git_files()
     else
         tele.find_files()
     end
+    set_ctrlq(true)
 end
 
 vim.keymap.set('n', '<C-o>', list_files, {})
+
+if is_git() then
+    set_ctrlq(true)
+else
+    set_ctrlq(false)
+end
