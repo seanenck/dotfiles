@@ -1,8 +1,12 @@
 #!/bin/bash
 UPSTREAM="$HOME/.cache/upstreams/"
-CONF="$HOME/.config/voidedtech/upstream.yml"
+CONF="$HOME/.config/voidedtech/upstream.bash"
+if [ ! -e "$CONF" ]; then
+  echo "missing config file"
+  exit 1
+fi
+source "$CONF"
 mkdir -p "$UPSTREAM"
-PKGS="$1"
 VIM_PLUGINS="$HOME/.config/nvim/pack/plugins/start/"
 
 _vim_plugin_update() {
@@ -24,27 +28,21 @@ _vim_plugin_update() {
 
 _vim_plugins() {
   mkdir -p "$VIM_PLUGINS"
-  for f in $(yq '.plugins[]' "$CONF"); do
+  for f in "${PLUGINS[@]}"; do
     _vim_plugin_update "$f"
   done
 }
 
 _externals() {
-  local r n curr prev changed cnt len
+  local r n curr prev changed
   if [ ! -e "$CONF" ]; then
     echo "no $CONFIG file"
     exit 1
   fi
   changed=0
-  cnt=0
-  len=$(yq '.sources | length' "$CONF")
-  if [ -z "$len" ] || [ "$len" -le 0 ]; then
-    echo "invalid sources"
-    exit 1
-  fi
-  while [ "$cnt" -lt "$len" ]; do
-    n=$(yq ".sources[$cnt].name" "$CONF")
-    r=$(yq ".sources[$cnt].url" "$CONF")
+  for n in "${!SOURCES[@]}"; do
+    r="${SOURCES[$n]}"
+    echo "$n $r"
     curr="${UPSTREAM}$n"
     prev="$curr.prev"
     echo "checking: $r ($n)"
@@ -62,7 +60,6 @@ _externals() {
     else
       mv "$curr" "$prev"
     fi
-    cnt=$((cnt+1))
   done
   exit $changed
 }
@@ -79,5 +76,5 @@ if [ -n "$1" ]; then
   fi
   exit 0
 fi
-_vim_plugins
+#_vim_plugins
 _externals
