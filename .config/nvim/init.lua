@@ -21,6 +21,8 @@ nmap("q", "<Nop>")
 for _, cursor in ipairs({"<S-Up>", "<S-Down>", "<S-Right>", "<S-Left>"}) do
     mapall(cursor, "<Nop>")
 end
+mapall("<S-Up>", ":cprev<CR>")
+mapall("<S-Down>", ":cnext<CR>")
 
 -- Buffer/split movements
 nmap("<Tab>", ":bnext<CR>")
