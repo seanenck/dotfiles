@@ -1,0 +1,10 @@
+TAG    := 0.4.0
+TAR    := gofumpt.tar.gz
+SRCDIR := gofumpt-$(TAG)
+URL    := "https://github.com/mvdan/gofumpt/archive/v$(TAG).tar.gz"
+BINARY := bin/gofumpt
+BUILD  := go build $(GOFLAGS) -o $(BINARY)
+SUMS   := "ba1fd89dd5a36a5443c879cd084b5626d3f8704000ec53c0d1cf5276af2bfa86  $(TAR)"
+
+install:
+	install -Dm755 $(BINARY) $(DESTDIR)/dev/gofumpt
