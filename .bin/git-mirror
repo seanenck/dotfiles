@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
-CONFIG="$HOME/.config/voidedtech/git.yml"
-REMOTE=$(yq ".specs[] | select (.name == \"upstream\")" $CONFIG)
-if [ -z "$REMOTE" ]; then
-  echo "no remotes set for upstream?"
+CONFIG="$HOME/.config/voidedtech/git.bash"
+if [ ! -e "$CONFIG" ]; then
+  echo "no config file"
   exit 1
 fi
-STORE=$(echo "$REMOTE" | yq '.url')
-if [ -z "$STORE" ]; then
-  echo "store not set?"
+source "$CONFIG"
+
+if [ "$(type -t "${UPSTREAM}_url")" != "function" ]; then
+  echo "missing upstream store config"
   exit 1
 fi
+STORE=$(${UPSTREAM}_url)
 if [ ! -d "$STORE" ]; then
   echo "$STORE does not exist"
   exit 1
 fi
+
 REPO="$1"
 if [ -z "$REPO" ]; then
   echo "fetching mirror updates"
@@ -30,20 +32,18 @@ if [ -d "$DIR" ]; then
   echo "$REPO is already mirrored"
   exit 0
 fi
-MAIN=$(echo "$REMOTE" | yq '.remotes[0]')
+MAIN="${UPSTREAM_REMOTES[0]}"
 if ! git clone "$MAIN$REPO" --mirror ${@:2} $DIR; then
   echo "clone failed"
   exit 1
 fi
 CNT=1
-MIRRORS=$(echo "$REMOTE" | yq '.remotes | length')
-if [ -n "$MIRRORS" ] && [ "$MIRRORS" -gt 0 ]; then
-  while [ $CNT -lt $MIRRORS ]; do
-    MIR=$(echo "$REMOTE" | yq ".remotes[$CNT]")
-    git -C "$DIR" remote set-url --add origin "$MIR$REPO"
-    CNT=$((CNT+1))
-  done
-fi
+for MIRROR in "${UPSTREAM_REMOTES[@]}"; do
+  if [ $CNT -gt 1 ]; then
+    git -C "$DIR" remote set-url --add origin "$MIRROR$REPO"
+  fi
+  CNT=$((CNT+1))
+done
 RCV=$DIR/hooks/post-receive
 {
   echo "#!/bin/sh"
