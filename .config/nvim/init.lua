@@ -17,19 +17,16 @@ mapall("<F1>", "<Nop>")
 -- Disable macros
 nmap("q", "<Nop>")
 
--- Disable cursor keys
+-- Disable shifted cursor keys
 for _, cursor in ipairs({"<S-Up>", "<S-Down>", "<S-Right>", "<S-Left>"}) do
     mapall(cursor, "<Nop>")
 end
-mapall("<S-Up>", ":cprev<CR>")
-mapall("<S-Down>", ":cnext<CR>")
 
 -- Buffer/split movements
 nmap("<Tab>", ":bnext<CR>")
 nmap("<S-Tab>", ":bprevious<CR>")
 nmap("<C-w>", ":bprevious <BAR> bd #<CR>")
 nmap("<C-l>", ":vsplit<CR>")
-nmap("<C-q>", ":close<CR>")
 nmap("<S-l>", ":wincmd l<CR>")
 nmap("<S-h>", ":wincmd h<CR>")
 local move_maps = { ["gl"] = "$", ["gh"] = "^", ["gk"] = "gg", ["gj"] = "G"}
