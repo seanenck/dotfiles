@@ -17,7 +17,7 @@ function quickfix(enable)
         mapall("<C-h>", "")
         mapall("<C-l>", "")
         local width = vim.api.nvim_win_get_width(0) * (3/4)
-        mapall("<C-q>", string.format(":vertical Gclog<CR>:vertical resize %s<CR>", width))
+        mapall("<C-q>", string.format(":vertical Gclog -n 1000<CR>:vertical resize %s<CR>", width))
     end
 end
 quickfix(false)
