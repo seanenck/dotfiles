@@ -8,11 +8,16 @@ function quickfix(enable)
     if enable then
         mapall("<C-k>", ":cprev<CR>")
         mapall("<C-j>", ":cnext<CR>")
-        mapall("<C-q>", ":close<CR>")
+        mapall("<C-q>", ":cclose<CR>")
+        mapall("<C-h>", ":vertical resize +1<CR>")
+        mapall("<C-l>", ":vertical resize -1<CR>")
     else
         mapall("<C-k>", "")
         mapall("<C-j>", "")
-        mapall("<C-q>", ":Gclog<CR>")
+        mapall("<C-h>", "")
+        mapall("<C-l>", "")
+        local width = vim.api.nvim_win_get_width(0) * (3/4)
+        mapall("<C-q>", string.format(":vertical Gclog<CR>:vertical resize %s<CR>", width))
     end
 end
 quickfix(false)
