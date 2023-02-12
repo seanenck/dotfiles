@@ -124,7 +124,7 @@ local function set_ctrlq(enable)
     mapall("<C-h>", "")
     mapall("<C-l>", "")
     vim.keymap.set('n', '<C-l>', manage_ctrll, {})
-    if enable then
+    if enable and is_git() then
         vim.keymap.set('n', '<C-h>', manage_keybind(":vertical resize +1"), {})
         vim.keymap.set('n', '<C-j>', manage_keybind(":cnext"), {})
         vim.keymap.set('n', '<C-k>', manage_keybind(":cprev"), {})
@@ -164,8 +164,4 @@ end
 
 vim.keymap.set('n', '<C-o>', list_files, {})
 
-if is_git() then
-    set_ctrlq(true)
-else
-    set_ctrlq(false)
-end
+set_ctrlq(true)
