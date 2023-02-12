@@ -1,5 +1,5 @@
 TARGETS  := $(shell ls src/)
-BIN      := bin/
+BIN      := $(HOME)/.cache/builds/
 VARS     := vars
 MKPKG    := pkgs.Makefile
 DROP     := $(PKGS_STORE)
@@ -15,7 +15,7 @@ clean:
 
 _build:
 	echo $(TOOLBOX) | grep '^dev$$'
-	test ! -e $(OUTPUT) || ../../support/confirm "rebuild $(TARGET)"
+	test ! -e $(OUTPUT) || confirm "rebuild $(TARGET)"
 	test -e $(TAR) || wget -O $(TAR) $(URL)
 	echo $(SUMS) > checksums
 	sha256sum -c checksums
@@ -27,6 +27,7 @@ _build:
 
 _prepare:
 	@mkdir -p $(DESTDIR)
+	@mkdir -p $(BIN)
 	@cp Makefile $(DESTDIR)/
 	@cp src/$(TARGET) $(DESTDIR)/$(VARS)
 	@cd $(DESTDIR) && mkdir -p src/ && make _build BUILDINFO=$(VARS) 
