@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
-CONFIG="$HOME/.config/voidedtech/git.yml"
+CONFIG="$HOME/.config/voidedtech/git.bash"
 HIST="$HOME/.cache/oclone.hst"
+if [ ! -e "$CONFIG" ]; then
+  echo "missing config"
+  exit 1
+fi
+source "$CONFIG"
 
 oclone() {
   local in spec dst url clone cfg rel
   in="$1"
   if [ "$in" == "--list" ]; then
     {
-      yq ".specs[].name" "$CONFIG" | sed 's#$#/#g'
+      echo "${SOURCES[@]}" | tr ' ' '\n' | sed 's#$#/#g'
       if [ -e "$HIST" ]; then
         cat "$HIST"
       fi
@@ -15,12 +20,12 @@ oclone() {
     return
   fi
   repo=$(echo "$in" | cut -d '/' -f 1)
-  spec=$(yq ".specs[] | select (.name == \"$repo\")" "$CONFIG")
-  if [ -z "$spec" ]; then
+  spec="${repo}_url"
+  if [ "$(type -t "$spec")" != "function" ]; then
     echo "invalid argument, spec not found"
     exit 1
   fi
-  url=$(echo "$spec" | yq '.url')
+  url=$($spec)
   rel=$(echo "$in" | cut -d '/' -f 2-)
   clone="$url$rel"
   if ! git clone "$clone" "${@:2}"; then
@@ -30,24 +35,21 @@ oclone() {
   touch "$HIST"
   awk -v line="$in" 'FNR==NR && line==$0{f=1; exit} 
                               END{if (!f) print line >> FILENAME}' "$HIST"
-  cfg=$(echo "$spec" | yq '.config')
+  cfg="${repo}_config"
+  if [ "$(type -t "$cfg")" != "function" ]; then
+    return
+  fi
+  cfg=$($cfg)
   dst=$(echo "$in" | rev | cut -d '/' -f 1 | rev)
   if [ -z "$cfg" ]; then
     return
-  fi
-  if [ "$cfg" == "null" ]; then
-    return
-  fi
-  if [ ! -e "$cfg" ]; then
-    echo "config file does not exist"
-    exit 1
   fi
   dst="$dst/.git/config" 
   if [ ! -e "$dst" ]; then
     echo "unable to set config"
     exit 1
   fi
-  cat "$cfg" >> "$dst"
+  echo "$cfg" >> "$dst"
 }
 
 if [ -z "$1" ]; then
