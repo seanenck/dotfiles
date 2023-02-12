@@ -4,6 +4,7 @@ defaults:
     - efmlsp
     - git
     - git-delta
+    - git-gui
     - glibc-langpack-en
     - goyq
     - neovim
