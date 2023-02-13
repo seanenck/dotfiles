@@ -5,6 +5,7 @@ declare -a PACKAGES=( \
   "git-delta" \
   "git-gui" \
   "glibc-langpack-en" \
+  "jq" \
   "neovim" \
   "netcat" \
   "ripgrep" \
