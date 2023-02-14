@@ -17,7 +17,7 @@ _build:
 	echo $(TOOLBOX) | grep '^dev$$'
 	test ! -e $(OUTPUT) || confirm "rebuild $(TARGET)"
 	test -e $(TAR) || wget -O $(TAR) $(URL)
-	echo $(SUMS) > checksums
+	@echo $(SUMS) > checksums
 	sha256sum -c checksums
 	test -d $(SRCDIR) || tar xf $(TAR)
 	cd $(SRCDIR) && $(BUILD)
