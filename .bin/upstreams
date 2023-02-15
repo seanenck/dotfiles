@@ -16,12 +16,12 @@ _vim_plugin_update() {
   echo "updating: $name"
   dir="${VIM_PLUGINS}$name"
   if [ ! -d "$dir" ]; then
-    if ! git clone "$1" "$dir"; then
+    if ! git clone "$1" "$dir" --single-branch; then
       echo "failed to clone $name"
       exit 1
     fi
   fi
-  if ! git -C "$dir" pull; then
+  if ! git -C "$dir" pull origin $(git -C "$dir" rev-parse --abbrev-ref HEAD); then
     echo "failed to update $name"
     exit 1
   fi
