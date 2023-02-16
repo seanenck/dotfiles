@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
-CONFIG="$HOME/.config/voidedtech/gogen.bash"
+CONFIG="$HOME/.config/voidedtech/goupdate.bash"
 FILES="$HOME/.config/voidedtech/generated/"
 if [ ! -e "$CONFIG" ]; then
   echo "missing config"
   exit 1
 fi
 source "$CONFIG"
+
+if ! go get -u ./...; then
+  exit 1
+fi
+if ! go mod tidy; then
+  exit 1
+fi
 
 if [ ! -d ".git" ]; then
   echo "must be run from a git repository root"
