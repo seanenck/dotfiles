@@ -1,11 +1,11 @@
-TAG    := 2023.1.1
+TAG    := 2023.1.2
 TAR    := staticcheck.tar.gz
 SRCDIR := go-tools-$(TAG)
 SITE   := "https://github.com/dominikh/go-tools"
 URL    := "$(SITE)/archive/$(TAG).tar.gz"
 BINARY := bin/staticcheck
 BUILD  := go build $(GOFLAGS) -o $(BINARY) ./cmd/staticcheck
-SUMS   := "bfc90d478db88bd2fae45125c75647f981c8c5ea6d9941d692c2bbee428df4f5  $(TAR)"
+SUMS   := "c112f8f5f41866729bf7e8f83881210228d0d6e2c037f45870b5d90ce239e4be  $(TAR)"
 
 install:
 	install -Dm755 $(BINARY) $(DESTDIR)/dev/staticcheck
