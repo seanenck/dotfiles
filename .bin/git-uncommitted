@@ -56,7 +56,9 @@ git-uncommit() {
     has=1
   fi
   if [ -z "$1" ]; then
-    echo "$res"    
+    if [ -n "$res" ]; then
+      echo "$res"
+    fi
   else
     case "$1" in
     "--pwd")
