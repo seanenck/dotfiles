@@ -1,6 +1,6 @@
 TAG    := 1.25.3
 TAR    := glab.tar.gz
-SITE   := "https://gitlab.com/gitlab-org/cli"
+SITE   := "https://gitlab.com/gitlab-org/cli.git/"
 SRCDIR := cli-v$(TAG)
 URL    := "$(SITE)/-/archive/v$(TAG)/cli-v$(TAG).tar.gz"
 BINARY := bin/glab

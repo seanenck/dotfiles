@@ -16,6 +16,7 @@ clean:
 _build:
 	echo $(TOOLBOX) | grep '^dev$$'
 	test ! -e $(OUTPUT) || confirm "rebuild $(TARGET)"
+	rm -f $(OUTPUT)
 	test -e $(TAR) || wget -O $(TAR) $(URL)
 	@echo $(SUMS) > checksums
 	sha256sum -c checksums
@@ -23,7 +24,7 @@ _build:
 	cd $(SRCDIR) && $(BUILD)
 	cp $(VARS) $(SRCDIR)/$(MKPKG)
 	cd $(SRCDIR) && make -f $(MKPKG) install DESTDIR=$(HOME)/.bin/ STORE=$(DROP)
-	tar cJf $(OUTPUT) $(TAROPT) $(SRCDIR)
+	tar cvJf $(OUTPUT) $(TAROPT) $(SRCDIR)
 
 _prepare:
 	@mkdir -p $(DESTDIR)
