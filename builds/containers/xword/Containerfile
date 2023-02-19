@@ -1,0 +1,7 @@
+FROM alpine:latest
+
+RUN apk add --no-cache py3-pip bash patch git nodejs
+RUN pip install xword-dl
+
+RUN apk add --no-cache nodejs git
+RUN git clone https://github.com/dnr/puz_to_pdf /puz

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+_date() {
+	date -d @$1 +%Y-%m-%d
+}
+if [ -z "$UNTIL" ]; then
+	echo "UNTIL must be set"
+	exit 1
+fi
+TODAY=$(date +%s)
+_date "$TODAY"
+while : ; do
+	TODAY=$((TODAY-86400))
+	WAS=$(_date $TODAY)
+	echo "$WAS"
+	if [[ "$WAS" == "$UNTIL" ]]; then
+		break
+	fi
+done
