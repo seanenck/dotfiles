@@ -82,59 +82,12 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
     end
 })
 
--- fugitive/telescope
+-- telescope
 local function is_git()
     local res = os.execute("git rev-parse")
     return res ~= nil and res
 end
 
-local function set_ctrlq(enable)
-    local function is_active()
-        if not is_git() then
-            return false
-        end
-        return quickfix_window()
-    end
-    local function manage_quickfix()
-        if is_active() then
-            vim.api.nvim_exec(":cclose", false)
-        else
-            local width = vim.api.nvim_win_get_width(0) * (3/4)
-            vim.api.nvim_exec(":vertical Gclog -n 1000", false)
-            vim.api.nvim_exec(string.format(":vertical resize %s<CR>", width), false)
-        end
-    end
-    local function manage_ctrll()
-        if is_active() then
-            vim.api.nvim_exec(":vertical resize -1", false)
-        else
-            vim.api.nvim_exec(":vsplit", false)
-        end
-    end
-    local function manage_keybind(call)
-        return function()
-            if is_active() then
-                vim.api.nvim_exec(call, false)
-            end
-        end
-    end
-
-    mapall("<C-k>", "")
-    mapall("<C-j>", "")
-    mapall("<C-h>", "")
-    mapall("<C-l>", "")
-    vim.keymap.set('n', '<C-l>', manage_ctrll, {})
-    if enable and is_git() then
-        vim.keymap.set('n', '<C-h>', manage_keybind(":vertical resize +1"), {})
-        vim.keymap.set('n', '<C-j>', manage_keybind(":cnext"), {})
-        vim.keymap.set('n', '<C-k>', manage_keybind(":cprev"), {})
-        vim.keymap.set('n', '<C-q>', manage_quickfix, {})
-    else
-        mapall("<C-q>", "")
-    end
-end
-
--- telescope
 require('telescope').setup{
   defaults = {
     mappings = {
@@ -153,15 +106,11 @@ local function list_files()
     if quickfix_window() then
         return
     end
-    set_ctrlq(false)
     if is_git() then
         tele.git_files()
     else
         tele.find_files()
     end
-    set_ctrlq(true)
 end
 
 vim.keymap.set('n', '<C-o>', list_files, {})
-
-set_ctrlq(true)
