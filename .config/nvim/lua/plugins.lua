@@ -114,3 +114,9 @@ local function list_files()
 end
 
 vim.keymap.set('n', '<C-o>', list_files, {})
+
+-- term
+require("toggleterm").setup{
+    open_mapping = [[<C-t>]],
+    direction = "float",
+}
