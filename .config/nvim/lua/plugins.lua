@@ -82,39 +82,6 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
     end
 })
 
--- telescope
-local function is_git()
-    local res = os.execute("git rev-parse")
-    return res ~= nil and res
-end
-
-require('telescope').setup{
-  defaults = {
-    mappings = {
-      n = {
-        ["<C-q>"] = "close"
-      },
-      i = {
-        ["<C-q>"] = "close"
-      }
-    }
-  },
-}
-
-local tele = require('telescope.builtin')
-local function list_files()
-    if quickfix_window() then
-        return
-    end
-    if is_git() then
-        tele.git_files()
-    else
-        tele.find_files()
-    end
-end
-
-vim.keymap.set('n', '<C-o>', list_files, {})
-
 -- term
 require("toggleterm").setup{
     open_mapping = [[<C-t>]],
