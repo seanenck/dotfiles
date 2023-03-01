@@ -1,11 +1,11 @@
-TAG    := 23.01.02
+TAG    := 23.03.00
 TAR    := lockbox.tar.gz
 SRCDIR := lockbox-$(TAG)
 SITE   := "https://github.com/enckse/lockbox"
 URL    := "$(SITE)/archive/v$(TAG).tar.gz"
 BINARY := bin/lb
 BUILD  := go build $(GOFLAGS) -o $(BINARY) cmd/main.go
-SUMS   := "6e97f22bfa14ae4e29bdca256a5dbbe67b9b3342e548457510d4fd2e8493e963  $(TAR)"
+SUMS   := "c4f927c277d9aa1da5b38f516dabf93389dbb5a3885acec739e37088c82bb15e  $(TAR)"
 
 install:
 	install -Dm755 $(BINARY) $(DESTDIR)/host/lb
