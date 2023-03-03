@@ -41,6 +41,8 @@ for key, command in pairs(move_maps) do
     vmap(key, command)
 end
 
+nmap("rr", "\"_dd")
+
 -- Everything below is currently 'cheating' and using nvim_exec instead of the nvim api...
 for _, write in ipairs({"w", "wq"}) do
     vim.api.nvim_exec(string.format("cabbrev <expr> %s getcmdtype()==':' && getcmdline() == \"'<,'>%s\" ? '<c-u>%s' : '%s'", write, write, write, write), false)
