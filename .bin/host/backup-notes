@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+NOTES="$LOCAL_STORE/notes"
+CACHE="$HOME/.cache/notes"
+if [ ! -d "$NOTES" ]; then
+  echo "no local notes store? $NOTES"
+  exit 1
+fi
+mkdir -p "$CACHE"
+if ! sudo jmtpfs "$CACHE" >/dev/null; then
+  echo "failed to mount"
+  exit 1
+fi
+
+echo
+echo "processing..."
+echo "==="
+
+FAILURES=0
+_print() {
+  local prefix
+  prefix=""
+  if [ "$1" -ne 0 ]; then
+    FAILURES=$((FAILURES+1))
+    prefix="[ERROR] "
+  fi
+  echo " -> $prefix$2"
+}
+
+DID=0
+_list() {
+  local f bname path mod has offset exported pdf 
+  offset="$CACHE/Supernote"
+  for f in $(sudo find "$offset/Note/" -type f -name "*.note"); do
+    bname=$(basename "$f")
+    mod=$(sudo stat --printf "%Y" "$f" 2>/dev/null)
+    if [ -z "$mod" ]; then
+      _print 1 "failed to stat: $bname"
+      continue
+    fi
+    pdf="${bname%".note"}".pdf
+    path="$NOTES/$pdf"
+    exported="$offset/EXPORT/${bname%".note"}".pdf
+    if [ -e "$path" ]; then
+      has=$(stat --printf "%Y" "$path")
+      if [ "$has" -ge "$mod" ]; then
+        _print 0 "up-to-date: $pdf"
+        continue
+      fi
+      has=$(sudo stat --printf "%Y" "$exported" 2>/dev/null)
+      if [ -z "$has" ]; then
+        _print 1 "failed to stat: $exported"
+        continue
+      fi
+      if [ "$has" -lt "$mod" ]; then
+        _print 1 "export is stale: $exported"
+        continue
+      fi
+    fi
+    if ! sudo install -Dm644 --owner="$UID" --group="$UID" "$exported" "$path"; then
+      _print 1 "failed to get export: $exported"
+      continue
+    fi
+    _print 0 "updating: $bname -> $pdf"
+    DID=1
+  done
+}
+
+_list
+sudo umount "$CACHE"
+echo
+if [ "$FAILURES" -eq 0 ]; then
+  if [ "$DID" -eq 1 ]; then
+    if ! rsync -avc --delete-after "$NOTES/" "router:~/store/home/media/writings/$(date +%Y)/active"; then
+      FAILURES=$((FAILURES+1))
+    fi
+  else
+    echo "all files up-to-date"
+    echo
+  fi
+fi
+if [ "$FAILURES" -gt 0 ]; then
+  echo "^^^ errors encountered ^^^"
+  echo
+  exit 1
+fi
