@@ -28,7 +28,7 @@ _print() {
 
 DID=0
 _list() {
-  local f bname path mod has offset exported pdf subdir notes
+  local f bname path mod curmod expmod offset exported pdf subdir notes hashed hashb hashd
   offset="$CACHE/Supernote"
   notes="$offset/Note/"
   for f in $(sudo find "$notes" -type f -name "*.note"); do
@@ -51,24 +51,33 @@ _list() {
     pdf="${bname%".note"}".pdf
     path="$NOTES/$subdir$pdf"
     exported="$offset/EXPORT/$pdf"
-    has=$(sudo stat --printf "%Y" "$exported" 2>/dev/null)
-    if [ -z "$has" ]; then
+    expmod=$(sudo stat --printf "%Y" "$exported" 2>/dev/null)
+    if [ -z "$expmod" ]; then
       _print 1 "failed to stat: $exported"
       continue
     fi
     if [ -e "$path" ]; then
-      has=$(stat --printf "%Y" "$path")
-      if [ "$has" -ge "$mod" ]; then
+      curmod=$(stat --printf "%Y" "$path")
+      if [ "$curmod" -ge "$mod" ]; then
         _print 0 "up-to-date: $pdf"
         continue
       fi
-      if [ "$has" -lt "$mod" ]; then
+      if [ "$expmod" -lt "$mod" ]; then
         _print 1 "export is stale: $exported"
         continue
       fi
     fi
     if [ -n "$subdir" ]; then
       mkdir -p "$(dirname "$path")"
+    fi
+    if [ -e "$path" ]; then
+      hashed=$(sha256sum "$path" | cut -d " " -f 1 | cut -c 1-7)
+      hashb=".$(basename "$path").$hashed"
+      hashd="$(dirname "$path")"
+      if ! cp "$path" "$hashd/$hashb"; then
+        _print 1 "failed to create backup: $path"
+        continue
+      fi
     fi
     if ! sudo cp "$exported" "$path"; then
       _print 1 "failed to get export: $exported"
@@ -85,12 +94,12 @@ _list() {
 _list
 sudo umount "$CACHE"
 echo
-if [ "$FAILURES" -eq 0 ]; then
-  if [ "$DID" -eq 1 ]; then
-    if ! rsync -avc --delete-after "$NOTES/" "router:~/store/home/media/writings/$(date +%Y)/active"; then
-      FAILURES=$((FAILURES+1))
-    fi
-  else
+if [ "$DID" -eq 1 ]; then
+  if ! rsync -avc --delete-after "$NOTES/" "router:~/store/home/media/writings/$(date +%Y)/active"; then
+    FAILURES=$((FAILURES+1))
+  fi
+else
+  if [ "$FAILURES" -eq 0 ]; then
     echo "all files up-to-date"
     echo
   fi
