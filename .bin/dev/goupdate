@@ -1,48 +1,7 @@
 #!/usr/bin/env bash
-CONFIG="$HOME/.config/voidedtech/goupdate.bash"
-FILES="$HOME/.config/voidedtech/generated/"
-if [ ! -e "$CONFIG" ]; then
-  echo "missing config"
-  exit 1
-fi
-source "$CONFIG"
-
 if ! go get -u ./...; then
   exit 1
 fi
 if ! go mod tidy; then
-  exit 1
-fi
-
-if [ ! -d ".git" ]; then
-  echo "must be run from a git repository root"
-  exit 1
-fi
-DIR=$(basename "$PWD")
-FOUND=0
-for K in "${KNOWN[@]}"; do
-  if [ "$K" == "$DIR" ]; then
-    FOUND=1
-    break
-  fi
-done
-if [ $FOUND -eq 0 ]; then
-  echo "no configuration for: $DIR"
-  exit 1
-fi
-DID=0
-VERS="${DIR}_version"
-if [ "$(type -t "$VERS")" == "function" ]; then
-  VERS=$($VERS)
-  if ! install -Dm755 "${FILES}version.sh" "$VERS"; then
-    echo "failed to create version file"
-    exit 1
-  fi
-  echo "installed: $VERS"
-  DID=1
-fi
-
-if [ "$DID" -eq 0 ]; then
-  echo "nothing done...configuration error?"
   exit 1
 fi
