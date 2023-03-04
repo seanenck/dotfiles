@@ -30,18 +30,7 @@ if [ $FOUND -eq 0 ]; then
   echo "no configuration for: $DIR"
   exit 1
 fi
-COMMON="${DIR}_common"
 DID=0
-if [ "$(type -t "$COMMON")" == "function" ]; then
-  COMMON=$($COMMON)
-  PACKAGE=$(basename "$(dirname "$COMMON")")
-  if ! sed "s/PACKAGE/$PACKAGE/g" "${FILES}common.go" > "$COMMON"; then
-    echo "failed to create common go file"
-    exit 1
-  fi
-  echo "wrote: $COMMON (with package of $PACKAGE)"
-  DID=1
-fi
 VERS="${DIR}_version"
 if [ "$(type -t "$VERS")" == "function" ]; then
   VERS=$($VERS)
