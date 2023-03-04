@@ -28,27 +28,38 @@ _print() {
 
 DID=0
 _list() {
-  local f bname path mod has offset exported pdf 
+  local f bname path mod has offset exported pdf subdir notes
   offset="$CACHE/Supernote"
-  for f in $(sudo find "$offset/Note/" -type f -name "*.note"); do
+  notes="$offset/Note/"
+  for f in $(sudo find "$notes" -type f -name "*.note"); do
+    subdir=$(dirname "${f#"$notes"}")
+    if [ "$subdir" == "." ]; then
+      subdir=""
+    else
+      subdir="$subdir/"
+    fi
     bname=$(basename "$f")
+    if echo "$bname" | grep -v -q "^[01][0-9]\.[0123][0-9]\."; then
+      _print 1 "invalid note name: $bname"
+      continue
+    fi
     mod=$(sudo stat --printf "%Y" "$f" 2>/dev/null)
     if [ -z "$mod" ]; then
       _print 1 "failed to stat: $bname"
       continue
     fi
     pdf="${bname%".note"}".pdf
-    path="$NOTES/$pdf"
-    exported="$offset/EXPORT/${bname%".note"}".pdf
+    path="$NOTES/$subdir$pdf"
+    exported="$offset/EXPORT/$pdf"
+    has=$(sudo stat --printf "%Y" "$exported" 2>/dev/null)
+    if [ -z "$has" ]; then
+      _print 1 "failed to stat: $exported"
+      continue
+    fi
     if [ -e "$path" ]; then
       has=$(stat --printf "%Y" "$path")
       if [ "$has" -ge "$mod" ]; then
         _print 0 "up-to-date: $pdf"
-        continue
-      fi
-      has=$(sudo stat --printf "%Y" "$exported" 2>/dev/null)
-      if [ -z "$has" ]; then
-        _print 1 "failed to stat: $exported"
         continue
       fi
       if [ "$has" -lt "$mod" ]; then
@@ -56,9 +67,15 @@ _list() {
         continue
       fi
     fi
-    if ! sudo install -Dm644 --owner="$UID" --group="$UID" "$exported" "$path"; then
+    if [ -n "$subdir" ]; then
+      mkdir -p "$(dirname "$path")"
+    fi
+    if ! sudo cp "$exported" "$path"; then
       _print 1 "failed to get export: $exported"
       continue
+    fi
+    if ! sudo chown -R "$UID:$UID" "$NOTES"; then
+      _print 1 "failed to preserve ownership...continuing"
     fi
     _print 0 "updating: $bname -> $pdf"
     DID=1
