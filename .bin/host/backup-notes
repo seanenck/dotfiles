@@ -95,7 +95,7 @@ _list
 sudo umount "$CACHE"
 echo
 if [ "$DID" -eq 1 ]; then
-  if ! rsync -avc --delete-after "$NOTES/" "router:~/store/home/media/writings/$(date +%Y)/active"; then
+  if ! rsync -avc --delete-after "$NOTES/" "router:~/store/active/notebooks"; then
     FAILURES=$((FAILURES+1))
   fi
 else
