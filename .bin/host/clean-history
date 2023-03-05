@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+FILE="$HOME/.bash_history"
+TEMP="$HOME/.cache/bash_history"
+LINE_LENGTH=30
+MIN_LINES=500
+declare -a IGNORES=( \
+  "git commit" \
+  "git clone" \
+  "git oclone" \
+  "git push" \
+  "git add" \
+  "cd" \
+  "firefox" \
+  "mv" \
+  "cp" \
+  "rm"
+)
+
+if [ "$(wc -l "$FILE" | cut -d " " -f 1)" -lt $MIN_LINES ]; then
+  echo "history below clean threshold ($MIN_LINES)"
+  exit 1
+fi
+
+_process() {
+  local line ignored ignores short
+  ignores=0
+  short=0
+  echo
+  echo processing...
+  echo
+  rm -f "$TEMP"
+  while IFS= read -r line; do
+    if [ "${#line}" -lt "$LINE_LENGTH" ]; then
+      short=$((short+1))
+      continue
+    fi
+    ignored=0
+    for ignore in ${IGNORES[@]}; do
+      if echo "$line" | grep -q "^$ignore "; then
+        ignored=1
+        break
+      fi
+    done
+    if [ $ignored -eq 1 ]; then
+      ignores=$((ignores+1))
+      continue
+    fi
+    echo "$line" >> "$TEMP"
+  done < "$FILE"
+  printf "%10s: lines < %s\n%10s: ignored\n\n" "$short" "$LINE_LENGTH" "$ignores"
+  mv "$TEMP" "$FILE"
+}
+
+_process

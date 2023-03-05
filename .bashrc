@@ -3,11 +3,11 @@
 
 . /etc/bashrc
 
-HISTCONTROL=ignoreboth:erasedups
 
 shopt -s histappend
 shopt -s direxpand
 
+HISTCONTROL=ignoreboth:erasedups
 HISTSIZE=-1
 HISTFILESIZE=-1
 
