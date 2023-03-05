@@ -96,15 +96,15 @@ _list() {
 _list
 sudo umount "$CACHE"
 _sync() {
-  if ! rsync -avc --delete-after "$1/" "router:~/store/$2"; then
+  if ! rsync -avc --delete-after "$1/" "router:~/store/$2/notebooks"; then
     FAILURES=$((FAILURES+1))
   fi
 }
 
 echo
 if [ "$DID" -eq 1 ]; then
-  _sync "$ACTIVE" "home/media/writings/notebooks"
-  _sync "$REFS" "active/notebooks"
+  _sync "$ACTIVE" "home/media/writings"
+  _sync "$REFS" "active"
 else
   if [ "$FAILURES" -eq 0 ]; then
     echo "all files up-to-date"
