@@ -2,7 +2,6 @@
 VERSION="23.03.01"
 URL="https://github.com/enckse/lockbox"
 TAR=".tar.gz"
-NAME="lockbox"
 
 version() {
   echo "$VERSION"
@@ -20,7 +19,7 @@ url() {
   echo "$URL"
 }
 
-src() {
+tarfile() {
   echo "$TAR"
 }
 
@@ -29,7 +28,7 @@ download() {
 }
 
 workdir() {
-  echo "$NAME-$VERSION"
+  echo "lockbox-$VERSION"
 }
 
 build() {

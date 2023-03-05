@@ -1,11 +1,40 @@
-TAG    := 1.2.5
-TAR    := revive.tar.gz
-SRCDIR := revive-$(TAG)
-SITE   := "https://github.com/mgechev/revive"
-URL    := "$(SITE)/archive/v$(TAG).tar.gz"
-BINARY := bin/revive
-BUILD  := go build $(GOFLAGS) -o $(BINARY)
-SUMS   := "a34fe667d51dd9824f06fa0985f58a4359e2883ee25b235d91e366f3c4be68d8  $(TAR)"
+#!/usr/bin/env bash
+VERSION="1.2.5"
+URL="https://github.com/mgechev/revive"
+TAR=".tar.gz"
 
-install:
-	install -Dm755 $(BINARY) $(DESTDIR)/dev/revive
+version() {
+  echo "$VERSION"
+}
+
+tarfile() {
+  echo "$TAR"
+}
+
+deps() {
+  echo golang
+}
+
+url() {
+  echo "$URL"
+}
+
+workdir() {
+  echo "revive-$VERSION"
+}
+
+download() {
+  echo "$URL/archive/v$VERSION$TAR"
+}
+
+build() {
+  echo "go build $GOFLAGS -o bin/revive"
+}
+
+sha256sum() {
+  echo "a34fe667d51dd9824f06fa0985f58a4359e2883ee25b235d91e366f3c4be68d8"
+}
+
+install() {
+  echo "install -Dm755 bin/revive $BINDIR/dev/revive"
+}

@@ -1,11 +1,40 @@
-TAG    := 0.0.44
-TAR    := efmlsp.tar.gz
-SITE   := "https://github.com/mattn/efm-langserver"
-SRCDIR := efm-langserver-$(TAG)
-URL    := "$(SITE)/archive/v$(TAG).tar.gz"
-BINARY := bin/efm-langserver
-BUILD  := go build $(GOFLAGS) -o $(BINARY)
-SUMS   := "825aef5815fb6eff656370e9f01fc31f91e5b2ab9d2b1f080881839676020dac  $(TAR)"
+#!/usr/bin/env bash
+VERSION="0.0.44"
+TAR=".tar.gz"
+URL="https://github.com/mattn/efm-langserver"
 
-install:
-	install -Dm755 $(BINARY) $(DESTDIR)/efm-langserver
+version() {
+  echo "$VERSION"
+}
+
+deps() {
+  echo golang
+}
+
+url() {
+  echo "$URL"
+}
+
+tarfile() {
+  echo "$TAR"
+}
+
+sha256sum() {
+  echo "825aef5815fb6eff656370e9f01fc31f91e5b2ab9d2b1f080881839676020dac"
+}
+
+download() {
+  echo "$URL/archive/v$VERSION$TAR"
+}
+
+workdir() {
+  echo "efm-langserver-$VERSION"
+}
+
+build() {
+  echo "go build $GOFLAGS -o bin/efm-langserver"
+}
+
+install() {
+  echo "install -Dm755 bin/efm-langserver $BINDIR/efm-langserver"
+}

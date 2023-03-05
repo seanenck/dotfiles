@@ -1,11 +1,40 @@
-TAG    := 1.6.3
-TAR    := errcheck.tar.gz
-SRCDIR := errcheck-$(TAG)
-SITE   := "https://github.com/kisielk/errcheck"
-URL    := "$(SITE)/archive/v$(TAG).tar.gz"
-BINARY := bin/errcheck
-BUILD  := go build $(GOFLAGS) -o $(BINARY)
-SUMS   := "6b5e8fb4637d58b72dc3dfcfc0e75cbc3703477e50b4e8234a6772104316975f  $(TAR)"
+#!/usr/bin/env bash
+VERSION="1.6.3"
+TAR=".tar.gz"
+URL="https://github.com/kisielk/errcheck"
 
-install:
-	install -Dm755 $(BINARY) $(DESTDIR)/dev/errcheck
+version() {
+  echo "$VERSION"
+}
+
+deps() {
+  echo "golang"
+}
+
+url() {
+  echo "$URL"
+}
+
+tarfile() {
+  echo "$TAR"
+}
+
+sha256sum() {
+  echo "6b5e8fb4637d58b72dc3dfcfc0e75cbc3703477e50b4e8234a6772104316975f"
+}
+
+download() {
+  echo "$URL/archive/v$VERSION$TAR"
+}
+
+workdir() {
+  echo "errcheck-$VERSION"
+}
+
+build() {
+  echo "go build $GOFLAGS -o bin/errcheck"
+}
+
+install() {
+	echo "install -Dm755 bin/errcheck $BINDIR/dev/errcheck"
+}

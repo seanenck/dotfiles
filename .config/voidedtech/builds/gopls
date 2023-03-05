@@ -1,11 +1,40 @@
-TAG    := 0.11.0
-TAR    := gopls.tar.gz
-SRCDIR := tools-gopls-v$(TAG)/gopls
-SITE   := "https://github.com/golang/tools"
-URL    := "$(SITE)/archive/gopls/v$(TAG).tar.gz"
-BINARY := bin/gopls
-BUILD  := go build $(GOFLAGS) -o $(BINARY)
-SUMS   := "b5dd0040bcc75b4760eb543826b6503a163c835c90f50843e626a112ca083931  $(TAR)"
+#!/usr/bin/env bash
+VERSION="0.11.0"
+TAR=".tar.gz"
+URL="https://github.com/golang/tools"
 
-install:
-	install -Dm755 $(BINARY) $(DESTDIR)/dev/gopls
+version() {
+  echo "$VERSION"
+}
+
+deps() {
+  echo golang
+}
+
+tarfile() {
+  echo "$TAR"
+}
+
+sha256sum() {
+  echo "b5dd0040bcc75b4760eb543826b6503a163c835c90f50843e626a112ca083931"
+}
+
+url() {
+  echo "$URL"
+}
+
+download() {
+  echo "$URL/archive/gopls/v$VERSION$TAR"
+}
+
+workdir() {
+  echo "tools-gopls-v$VERSION/gopls"
+}
+
+build() {
+  echo "go build $GOFLAGS -o bin/gopls"
+}
+
+install() {
+  echo "install -Dm755 bin/gopls $BINDIR/dev/gopls"
+}

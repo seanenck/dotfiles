@@ -39,7 +39,7 @@ export BINDIR="$PKGDIR/.bin"
 declare -A BUILD=(\
   ["name"]="$1" 
 )
-for fxn in deps version sha256sum download build url install workdir src; do
+for fxn in deps version sha256sum download build url install workdir tarfile; do
   if [ "$(type -t "$fxn")" != "function" ]; then
     echo "$1 does not have required function: $fxn"
     exit 1

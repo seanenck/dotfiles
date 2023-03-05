@@ -1,11 +1,40 @@
-TAG    := 0.4.0
-TAR    := gofumpt.tar.gz
-SITE   := "https://github.com/mvdan/gofumpt"
-SRCDIR := gofumpt-$(TAG)
-URL    := "$(SITE)/archive/v$(TAG).tar.gz"
-BINARY := bin/gofumpt
-BUILD  := go build $(GOFLAGS) -o $(BINARY)
-SUMS   := "ba1fd89dd5a36a5443c879cd084b5626d3f8704000ec53c0d1cf5276af2bfa86  $(TAR)"
+#!/usr/bin/env bash
+VERSION="0.4.0"
+TAR=".tar.gz"
+URL="https://github.com/mvdan/gofumpt"
 
-install:
-	install -Dm755 $(BINARY) $(DESTDIR)/dev/gofumpt
+version() {
+  echo "$VERSION"
+}
+
+deps() {
+  echo golang
+}
+
+url() {
+  echo "$URL"
+}
+
+sha256sum() {
+  echo "ba1fd89dd5a36a5443c879cd084b5626d3f8704000ec53c0d1cf5276af2bfa86"
+}
+
+tarfile() {
+  echo "$TAR"
+}
+
+download() {
+  echo "$URL/archive/v$VERSION$TAR"
+}
+
+workdir() {
+  echo "gofumpt-$VERSION"
+}
+
+build() {
+  echo "go build $GOFLAGS -o bin/gofumpt"
+}
+
+install() {
+  echo "install -Dm755 bin/gofumpt $BINDIR/dev/gofumpt"
+}
