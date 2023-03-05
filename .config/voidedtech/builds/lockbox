@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+VERSION="23.03.01"
+URL="https://github.com/enckse/lockbox"
+TAR=".tar.gz"
+NAME="lockbox"
+
+version() {
+  echo "$VERSION"
+}
+
+deps() {
+  echo golang
+}
+
+sha256sum() {
+  echo "95908762d8cc9395222530f3adae22307e82e8e71703ce0b868b66146aef6172"
+}
+
+url() {
+  echo "$URL"
+}
+
+src() {
+  echo "$TAR"
+}
+
+download() {
+  echo "$URL/archive/v$VERSION$TAR"
+}
+
+workdir() {
+  echo "$NAME-$VERSION"
+}
+
+build() {
+  echo "go build $GOFLAGS -o bin/lb cmd/main.go"
+}
+
+install() {
+  echo "install -Dm 755 bin/lb $BINDIR/host/lb"
+  echo "mkdir -p $PKGDIR/.bashrc.d/"
+  echo "bin/lb bash > $PKGDIR/.bashrc.d/99-lockbox.host.sh"
+}
