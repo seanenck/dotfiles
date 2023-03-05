@@ -39,7 +39,7 @@ export BINDIR="$PKGDIR/.bin"
 declare -A BUILD=(\
   ["name"]="$1" 
 )
-for fxn in deps version sha256sum download build url install workdir tarfile; do
+for fxn in deps version sha256sum download build url install workdir; do
   if [ "$(type -t "$fxn")" != "function" ]; then
     echo "$1 does not have required function: $fxn"
     exit 1
@@ -52,7 +52,12 @@ if [ -e "$ARTIFACT_PATH" ]; then
     exit 0
   fi
 fi
-BUILD["src"]="src${BUILD[tar]}"
+TARFILE=$(basename "${BUILD[download]}" | rev | cut -d "." -f 1,2 | rev | grep '^tar\.')
+if [ -z "$TARFILE" ]; then
+  echo "unable to understand tar file from download"
+  exit 1
+fi
+BUILD["src"]="src.$TARFILE"
 
 _containerfile() {
   cat << EOF

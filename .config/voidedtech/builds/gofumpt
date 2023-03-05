@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
-VERSION="0.4.0"
-TAR=".tar.gz"
-URL="https://github.com/mvdan/gofumpt"
-
 version() {
-  echo "$VERSION"
+  echo "0.4.0"
 }
 
 deps() {
@@ -12,23 +8,19 @@ deps() {
 }
 
 url() {
-  echo "$URL"
+  echo "https://github.com/mvdan/gofumpt"
 }
 
 sha256sum() {
   echo "ba1fd89dd5a36a5443c879cd084b5626d3f8704000ec53c0d1cf5276af2bfa86"
 }
 
-tarfile() {
-  echo "$TAR"
-}
-
 download() {
-  echo "$URL/archive/v$VERSION$TAR"
+  echo "$(url)/archive/v$(version).tar.gz"
 }
 
 workdir() {
-  echo "gofumpt-$VERSION"
+  echo "gofumpt-$(version)"
 }
 
 build() {

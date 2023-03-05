@@ -1,18 +1,10 @@
 #!/usr/bin/env bash
-VERSION="0.11.0"
-TAR=".tar.gz"
-URL="https://github.com/golang/tools"
-
 version() {
-  echo "$VERSION"
+  echo "0.11.0"
 }
 
 deps() {
   echo golang
-}
-
-tarfile() {
-  echo "$TAR"
 }
 
 sha256sum() {
@@ -20,15 +12,15 @@ sha256sum() {
 }
 
 url() {
-  echo "$URL"
+  echo "https://github.com/golang/tools"
 }
 
 download() {
-  echo "$URL/archive/gopls/v$VERSION$TAR"
+  echo "$(url)/archive/gopls/v$(version).tar.gz"
 }
 
 workdir() {
-  echo "tools-gopls-v$VERSION/gopls"
+  echo "tools-gopls-v$(version)/gopls"
 }
 
 build() {

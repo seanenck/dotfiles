@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
-VERSION="2023.1.2"
-TAR=".tar.gz"
-URL="https://github.com/dominikh/go-tools"
-
 url() {
-  echo "$URL"
-}
-
-tarfile() {
-  echo "$TAR"
+  echo "https://github.com/dominikh/go-tools"
 }
 
 deps() {
@@ -16,7 +8,7 @@ deps() {
 }
 
 version() {
-  echo "$VERSION"
+  echo "2023.1.2"
 }
 
 sha256sum() {
@@ -24,11 +16,11 @@ sha256sum() {
 }
 
 workdir() {
-  echo "go-tools-$VERSION"
+  echo "go-tools-$(version)"
 }
 
 download() {
-  echo "$URL/archive/$VERSION$TAR"
+  echo "$(url)/archive/$(version).tar.gz"
 }
 
 build() {

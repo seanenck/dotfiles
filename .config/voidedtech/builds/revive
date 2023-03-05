@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
-VERSION="1.2.5"
-URL="https://github.com/mgechev/revive"
-TAR=".tar.gz"
-
 version() {
-  echo "$VERSION"
-}
-
-tarfile() {
-  echo "$TAR"
+  echo "1.2.5"
 }
 
 deps() {
@@ -16,15 +8,15 @@ deps() {
 }
 
 url() {
-  echo "$URL"
+  echo "https://github.com/mgechev/revive"
 }
 
 workdir() {
-  echo "revive-$VERSION"
+  echo "revive-$(version)"
 }
 
 download() {
-  echo "$URL/archive/v$VERSION$TAR"
+  echo "$(url)/archive/v$(version).tar.gz"
 }
 
 build() {

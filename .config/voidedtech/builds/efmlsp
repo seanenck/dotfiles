@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
-VERSION="0.0.44"
-TAR=".tar.gz"
-URL="https://github.com/mattn/efm-langserver"
-
 version() {
-  echo "$VERSION"
+  echo "0.0.44"
 }
 
 deps() {
@@ -12,11 +8,7 @@ deps() {
 }
 
 url() {
-  echo "$URL"
-}
-
-tarfile() {
-  echo "$TAR"
+  echo "https://github.com/mattn/efm-langserver"
 }
 
 sha256sum() {
@@ -24,11 +16,11 @@ sha256sum() {
 }
 
 download() {
-  echo "$URL/archive/v$VERSION$TAR"
+  echo "$(url)/archive/v$(version).tar.gz"
 }
 
 workdir() {
-  echo "efm-langserver-$VERSION"
+  echo "efm-langserver-$(version)"
 }
 
 build() {
