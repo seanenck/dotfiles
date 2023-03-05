@@ -61,26 +61,10 @@ end
 setuplsp("gopls", "gopls", "go", {gopls = { gofumpt = true, staticcheck = true}}, nil)
 setuplsp("rust-analyzer", "rust_analyzer", "rs", nil, nil)
 setuplsp("efm-langserver", "efm", nil, nil, {"sh", "json", "yaml"})
-local diagnostics_active = true
 toggle_diagnostics = function()
-    diagnostics_active = not diagnostics_active
-    if diagnostics_active then
-        vim.diagnostic.enable()
-    else
-        vim.diagnostic.disable()
-    end
+    vim.diagnostic.open_float(nil, {focus=false})
 end
-vim.api.nvim_buf_set_keymap(0, 'n', '<C-d>', ':call v:lua.toggle_diagnostics()<CR>', {silent=true, noremap=true})
-
-vim.o.updatetime = 250
-vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-    pattern = "*",
-    callback = function()
-        if diagnostics_active then
-            vim.diagnostic.open_float(nil, {focus=false})
-        end
-    end
-})
+vim.api.nvim_buf_set_keymap(0, 'n', '<C-e>', ':call v:lua.toggle_diagnostics()<CR>', {silent=true, noremap=true})
 
 -- term
 require("toggleterm").setup{
