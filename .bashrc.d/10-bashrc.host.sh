@@ -16,4 +16,5 @@ if ! upstreams check; then
   echo "  -> check for updates"
   echo
 fi
+(data-backups &)
 system-ostree check

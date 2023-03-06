@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+TARGET="router:store/active/backup/"
+COMPLETE="completed all backups"
+TYPE="backups"
+
+if journalctl -t "$TYPE" --since "3 days ago" | grep -q "$COMPLETE"; then
+  exit 0
+fi
+
+_sync() {
+  local finished
+  finished=1
+  for f in ".cache/upstreams" ".env" ".store"; do
+    if ! rsync -avc --delete-after "$HOME/$f" "$TARGET"; then
+      finished=0
+    fi
+  done
+  if [ $finished -eq 1 ]; then
+    echo "$COMPLETE"
+  else
+    echo "failed"
+  fi
+}
+
+_sync | systemd-cat -t "$TYPE"
