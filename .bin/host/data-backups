@@ -2,9 +2,17 @@
 TARGET="router:store/active/backup/"
 COMPLETE="completed all backups"
 TYPE="backups"
+FORCE=0
+if [ -n "$1" ]; then
+  if [ "$1" == "--force" ]; then
+    FORCE=1
+  fi
+fi
 
-if journalctl -t "$TYPE" --since "3 days ago" | grep -q "$COMPLETE"; then
-  exit 0
+if [ $FORCE -eq 0 ]; then
+  if journalctl -t "$TYPE" --since "3 days ago" | grep -q "$COMPLETE"; then
+    exit 0
+  fi
 fi
 
 _sync() {
