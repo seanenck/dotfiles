@@ -65,7 +65,7 @@ _sync() {
   if ! ssh router -- rm -f "$BACKUP"; then
     finished=0
   fi
-  if ! ssh router -- tar cvJf "$BACKUP" "$TARGET.store/pkgs" "$TARGET.store/git" "$TARGET.env"; then
+  if ! ssh router -- tar cJf "$BACKUP" "$TARGET.store/pkgs" "$TARGET.store/git" "$TARGET.env"; then
     finished=0
   fi
   if [ $finished -eq 1 ]; then
