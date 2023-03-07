@@ -1,20 +1,31 @@
 #!/usr/bin/env bash
 TARGET="router:store/active/backup/"
 COMPLETE="completed all backups"
+CACHE="$HOME/.cache/backups"
 TYPE="backups"
+TODAY="$CACHE/$(date +%Y%m%d)"
 FORCE=0
 if [ -n "$1" ]; then
   if [ "$1" == "--force" ]; then
     FORCE=1
+    mkdir -p "$CACHE"
   fi
 fi
 
 if [ $FORCE -eq 0 ]; then
+  if [ -e "$TODAY" ]; then
+    exit 0
+  fi
+  if [ ! -d "$CACHE" ]; then
+    echo "unable to backup yet..., try '--force'"
+    exit 1
+  fi
   if journalctl -t "$TYPE" --since "3 days ago" | grep -q "$COMPLETE"; then
     exit 0
   fi
 fi
 
+touch "$TODAY"
 _sync() {
   local finished
   finished=1
