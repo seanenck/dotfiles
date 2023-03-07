@@ -1,0 +1,10 @@
+[Unit]
+Description=Handle backups
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/enck/.bin/host/data-backups
+
+[Install]
+WantedBy=default.target

@@ -6,11 +6,25 @@ if ! git uncommitted --quiet; then
   echo
 fi
 
-if ! upstreams check; then
+if ! upstreams --check; then
   echo
   echo "upstreams:"
   echo "  -> check for updates"
   echo
 fi
-(data-backups &)
+
+_backups() {
+  local data
+  data=$(data-backups --check)
+  if [ -z "$data" ]; then
+    return
+  fi
+  echo
+  echo "backups:"
+  echo "$data" | sed 's/^/  -> /g'
+  echo
+}
+
+_backups
+data-backups --daily
 system-ostree check
