@@ -1,0 +1,48 @@
+scrolling:
+  history: 50000
+
+font:
+  normal:
+    family: monospace
+  size: 12.5
+
+hints:
+  enabled: []
+
+mouse_bindings: []
+
+key_bindings:
+  - { key: P,  mods: Control, action: Paste }
+  - { key: Y,  mods: Control, action: Copy }
+  - { key: R,  mods: Control, action: ToggleViMode }
+  - { key: R,  mods: Control, mode: Vi|~Search, action: ScrollToBottom }
+  - { key: N,                 mode: Vi|~Search, action: SearchNext }
+  - { key: P,                 mode: Vi|~Search, action: SearchPrevious }
+
+colors:
+  # Default colors
+  primary:
+    background: '#101010'
+    foreground: '#c0c0c0'
+
+  # Normal colors
+  normal:
+    black:   '#151515'
+    red:     '#ff4d4d'
+    green:   '#cff72f'
+    yellow:  '#62fd62'
+    blue:    '#4b94ff'
+    magenta: '#ff7001'
+    cyan:    '#ffffff'
+    white:   '#d0d0d0'
+
+  # Bright colors
+  bright:
+    black:   '#767676'
+    red:     '#ff0000'
+    green:   '#cff72f'
+    yellow:  '#62fd62'
+    blue:    '#4b94ff'
+    magenta: '#ff7001'
+    cyan:    '#ffffff'
+    white:   '#ffffff'

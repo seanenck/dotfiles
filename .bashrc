@@ -27,6 +27,15 @@ stty -ixon
 # check the window size after each command
 shopt -s checkwinsize
 
+export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
+if [ ! -e "$SSH_AGENT_ENV" ] || ! pgrep ssh-agent > /dev/null; then
+  pkill ssh-agent
+  ssh-agent > "$SSH_AGENT_ENV"
+fi
+if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+  source "$SSH_AGENT_ENV" >/dev/null
+fi
+
 for file in $(find "$HOME/.ssh/" -type f -name "*.key"); do
   ssh-add "$file" > /dev/null 2>&1
 done
