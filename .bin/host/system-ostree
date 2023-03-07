@@ -15,4 +15,3 @@ fi
   _command "requested-base-removals" "removals"
   _command "requested-local-packages" "locals"
 } | sort -u > "$WORLD_FILE"
-cp /etc/ssh/sshd_config "${LOCAL_LIB}sshd_config"
