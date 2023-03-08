@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 version() {
-  echo "23.03.01"
+  echo "1.0.0"
 }
 
 deps() {
@@ -8,7 +8,7 @@ deps() {
 }
 
 sha256sum() {
-  echo "95908762d8cc9395222530f3adae22307e82e8e71703ce0b868b66146aef6172"
+  echo "076757a960fcc41a5d0ffd041a790ef0ec0e0ed15f5189a1580768096b5bf5a1"
 }
 
 url() {
