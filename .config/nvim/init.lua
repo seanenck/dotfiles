@@ -26,7 +26,7 @@ mapall("<C-k>", "")
 mapall("<C-j>", "")
 mapall("<C-h>", "")
 mapall("<C-l>", "")
-nmap("<C-l>", ":vsplit<CR>")
+nmap("<C-s>", ":vsplit<CR>")
 mapall("<C-q>", "")
 
 -- Buffer/split movements
