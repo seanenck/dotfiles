@@ -24,3 +24,26 @@ vim.api.nvim_create_autocmd({"Filetype"}, {
         vim.opt_local.shiftwidth = 2
     end
 })
+
+local valid_file = function(file) 
+    for _, write in ipairs({"1", "1q", "w"}) do
+        if file == write or string.upper(write) == file then
+            return false
+        end
+    end
+    if file:find("^:") ~= nil then
+        return false
+    end
+    return true
+end
+
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+    pattern = { "*" },
+    callback = function(e) 
+        if e ~= nil then
+            if not valid_file(e.file) then
+                error(string.format("invalid file name: %s", e.file))
+            end
+        end
+    end,
+})

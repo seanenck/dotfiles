@@ -47,10 +47,6 @@ nmap("rr", "\"_dd")
 for _, write in ipairs({"w", "wq"}) do
     vim.api.nvim_exec(string.format("cabbrev <expr> %s getcmdtype()==':' && getcmdline() == \"'<,'>%s\" ? '<c-u>%s' : '%s'", write, write, write, write), false)
 end
-for _, name in ipairs({"1", "1q", "1Q"}) do
-    local write = "w" .. name
-    vim.api.nvim_exec(string.format("cabbrev %s <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'w!' : '%s')<CR>", write, write), false)
-end
 
 vim.api.nvim_set_hl(0, "Pmenu", {bg='black'})
 vim.api.nvim_set_hl(0, "Search", {bg='peru', fg='wheat'})
