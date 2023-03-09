@@ -50,7 +50,7 @@ local function setuplsp(exec, name, extension, settings, filetypes)
     vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         vim.lsp.diagnostic.on_publish_diagnostics,
         {
-            virtual_text = false,
+            virtual_text = true,
             signs = true,
             update_in_insert = false,
             underline = true,
@@ -61,13 +61,16 @@ end
 setuplsp("gopls", "gopls", "go", {gopls = { gofumpt = true, staticcheck = true}}, nil)
 setuplsp("rust-analyzer", "rust_analyzer", "rs", nil, nil)
 setuplsp("efm-langserver", "efm", nil, nil, {"sh", "json", "yaml"})
-vim.o.updatetime = 250
-vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-    pattern = "*",
-    callback = function()
-        vim.diagnostic.open_float(nil, {focus=false})
-    end
-})
+function toggle_diagnostics()
+    vim.diagnostic.open_float(nil, {
+        focus=false,
+        scope="buffer",
+        format=function(d)
+            return string.format("%s (line: %d, col: %d)", d.message, d.lnum, d.col)
+        end
+    })
+end
+vim.api.nvim_set_keymap("n", "<C-e>", ':call v:lua.toggle_diagnostics()<CR>', { noremap = true, silent = true })
 
 -- term
 require("toggleterm").setup{
