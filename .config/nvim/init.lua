@@ -51,6 +51,7 @@ for _, name in ipairs({"1", "1q", "1Q"}) do
     local write = "w" .. name
     vim.api.nvim_exec(string.format("cabbrev %s <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'w!' : '%s')<CR>", write, write), false)
 end
+vim.api.nvim_exec("cabbrev <expr> w getcmdtype()==':' && getcmdline() == \"'<,'>w\" ? '<c-u>w' : 'w'", false)
 
 vim.api.nvim_set_hl(0, "Pmenu", {bg='black'})
 vim.api.nvim_set_hl(0, "Search", {bg='peru', fg='wheat'})
