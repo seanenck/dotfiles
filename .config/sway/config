@@ -69,6 +69,7 @@ bindsym $mod+Shift+9 move container to workspace number 9
 
 for_window [class="."] inhibit_idle fullscreen
 for_window [app_id="."] inhibit_idle fullscreen
+for_window [app_id="rhythmbox"] move window to workspace 9
 
 exec swaymsg layout splith
 
@@ -87,4 +88,3 @@ bar {
 }
 
 include /etc/sway/config.d/*
-
