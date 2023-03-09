@@ -25,19 +25,26 @@ vim.api.nvim_create_autocmd({"Filetype"}, {
     end
 })
 
+local bad_prefix = function()
+    local invalids = {">", "<", "^:"}
+    for _, prefix in ipairs({"w", "wq"}) do
+        for _, write in ipairs({"1", ":", " "}) do
+            table.insert(invalids, string.format("^%s%s", prefix, write))
+        end
+        for i=0,9,1 do
+            table.insert(invalids, string.format("^%s%d", prefix, i))
+        end
+    end
+    return invalids
+end
+local invalid_commands = bad_prefix()
+
 vim.api.nvim_create_autocmd({ "CmdlineChanged" }, {
     pattern = { "*" },
     callback = function(e)
         local cmd = vim.fn.getcmdline()
         if cmd ~= nil then
-            local invalids = {">", "<", "^:"}
-            for _, write in ipairs({"1", ":", " "}) do
-                table.insert(invalids, string.format("^w%s", write))
-            end
-            for i=0,9,1 do
-                table.insert(invalids, string.format("^w%d", i))
-            end
-            for _, invalid in ipairs(invalids) do
+            for _, invalid in ipairs(invalid_commands) do
                 if cmd:find(invalid) ~= nil then
                     vim.fn.setcmdline("")
                 end
