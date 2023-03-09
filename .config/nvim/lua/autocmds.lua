@@ -25,24 +25,22 @@ vim.api.nvim_create_autocmd({"Filetype"}, {
     end
 })
 
-local valid_file = function(file) 
-    for _, write in ipairs({"1", "1q", "w"}) do
-        if file == write or string.upper(write) == file then
-            return false
-        end
-    end
-    if file:find("^:") ~= nil then
-        return false
-    end
-    return true
-end
-
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+vim.api.nvim_create_autocmd({ "CmdlineChanged" }, {
     pattern = { "*" },
-    callback = function(e) 
-        if e ~= nil then
-            if not valid_file(e.file) then
-                error(string.format("invalid file name: %s", e.file))
+    callback = function(e)
+        local cmd = vim.fn.getcmdline()
+        if cmd ~= nil then
+            local invalids = {">", "<", "^:"}
+            for _, write in ipairs({"1", ":", " "}) do
+                table.insert(invalids, string.format("^w%s", write))
+            end
+            for i=0,9,1 do
+                table.insert(invalids, string.format("^w%d", i))
+            end
+            for _, invalid in ipairs(invalids) do
+                if cmd:find(invalid) ~= nil then
+                    vim.fn.setcmdline("")
+                end
             end
         end
     end,
