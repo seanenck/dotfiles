@@ -20,11 +20,8 @@ function vmap(shortcut, command)
     map('v', shortcut, command)
 end
 
-function quickfix_window()
-    for _, win in pairs(vim.fn.getwininfo()) do
-        if win["quickfix"] == 1 then
-            return true
-        end
+function disableall(commands)
+    for _, cursor in ipairs(commands) do
+        mapall(cursor, "<Nop>")
     end
-    return false
 end

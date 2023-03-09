@@ -17,17 +17,10 @@ mapall("<F1>", "<Nop>")
 -- Disable macros
 nmap("q", "<Nop>")
 
--- Disable shifted cursor keys
-for _, cursor in ipairs({"<S-Up>", "<S-Down>", "<S-Right>", "<S-Left>"}) do
-    mapall(cursor, "<Nop>")
-end
-
-mapall("<C-k>", "")
-mapall("<C-j>", "")
-mapall("<C-h>", "")
-mapall("<C-l>", "")
-nmap("<C-s>", ":vsplit<CR>")
-mapall("<C-q>", "")
+-- Disable shifted cursor keys, ctrl jklh cursor, and q
+-- Disable ctrl jklh cursors
+disableall({"<S-Up>", "<S-Down>", "<S-Right>", "<S-Left>"})
+disableall({"<C-k>", "<C-j>", "<C-h>", "<C-l>", "<C-q>"})
 
 -- Buffer/split movements
 nmap("<Tab>", ":bnext<CR>")
