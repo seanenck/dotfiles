@@ -4,6 +4,8 @@ _apps() {
   echo "firefox,firefox --new-window,app"
   echo "nautilus,nautilus,app"
   echo "terminal,alacritty,app"
+  echo "music,flatpak run org.gnome.Rhythmbox3,app"
+  echo "settings,gnome-control-center,app"
   for w in "fastmail.com" "home.voidedtech.com" "voidedtech.com"; do
     echo "$w,$w,web"
   done
