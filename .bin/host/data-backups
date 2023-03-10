@@ -8,6 +8,7 @@ TODAY="$CACHE/$(date +%Y%m%d)"
 FORCE=0
 CHECK=0
 DAILY=0
+DAYS="1"
 if [ -n "$1" ]; then
   case "$1" in
     "--force")
@@ -15,6 +16,7 @@ if [ -n "$1" ]; then
       mkdir -p "$CACHE"
       ;;
     "--check")
+      DAYS="3"
       CHECK=1
       ;;
     "--daily")
@@ -39,7 +41,7 @@ if [ $FORCE -eq 0 ]; then
     echo "unable to backup yet..., try '--force'"
     exit 1
   fi
-  if journalctl -t "$TYPE" --since "3 days ago" | grep -q "$COMPLETE"; then
+  if journalctl -t "$TYPE" --since "$DAYS days ago" | grep -q "$COMPLETE"; then
     exit 0
   else
     if [ $CHECK -eq 1 ]; then
