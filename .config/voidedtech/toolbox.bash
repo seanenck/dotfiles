@@ -11,12 +11,17 @@ declare -a PACKAGES=( \
   "ripgrep" \
   "rsync" \
   "shellcheck" \
+  "efmlsp" \
 )
 
 declare -a DEV=( \
   "file" \
   "go" \
   "make" \
+  "gofumpt" \
+  "gopls" \
+  "revive" \
+  "staticcheck" \
 )
 
 declare -a RPMS=( \
