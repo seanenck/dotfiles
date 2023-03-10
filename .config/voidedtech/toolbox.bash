@@ -19,6 +19,13 @@ declare -a DEV=( \
   "make" \
 )
 
+declare -a RPMS=( \
+  "make" \
+  "mock" \
+  "rpmlint" \
+  "rpmdevtools" \
+)
+
 declare -a CARGO=( \
   "cargo" \
   "rust" \
@@ -29,6 +36,7 @@ declare -a CARGO=( \
 declare -A BOXES=( \
   ["dev"]="${DEV[@]}" \
   ["cargo"]="${CARGO[@]}" \
+  ["rpms"]="${RPMS[@]}" \
 )
 
 export BOXES

@@ -41,12 +41,6 @@ bindsym $mod+Shift+Minus resize shrink width 10
 bindsym $mod+Equal resize grow height 10
 bindsym $mod+Minus resize shrink height 10
 
-# remap some keys to left/right/up/down for overall nav
-bindsym Ctrl+l exec wtype -k Right
-bindsym Ctrl+h exec wtype -k Left
-bindsym Ctrl+k exec wtype -k Up
-bindsym Ctrl+j exec wtype -k Down
-
 #workspaces
 bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2

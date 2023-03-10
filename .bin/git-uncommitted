@@ -32,6 +32,7 @@ git-uncommit() {
     fi
   fi
   if [ "$ispwd" -eq 0 ]; then
+    paths="$HOME/rpmbuild"
     for d in .env workspace; do
       d="$HOME/$d"
       for sub in "$d"/*; do
