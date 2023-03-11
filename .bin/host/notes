@@ -104,7 +104,6 @@ _sync() {
 echo
 if [ "$DID" -eq 1 ]; then
   _sync "$ACTIVE" "home/media/writings"
-  _sync "$REFS" "active"
 else
   if [ "$FAILURES" -eq 0 ]; then
     echo "all files up-to-date"
