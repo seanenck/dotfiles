@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 NOTES="$LOCAL_STORE/notes"
-ACTIVE="$LOCAL_STORE/active"
-REFS="$LOCAL_STORE/refs"
+ACTIVE="$NOTES/active"
+REFS="$NOTES/refs"
 CACHE="$HOME/.cache/notes"
 if [ ! -d "$NOTES" ]; then
   echo "no local notes store? $NOTES"
@@ -95,15 +95,12 @@ _list() {
 
 _list
 sudo umount "$CACHE"
-_sync() {
-  if ! rsync -avc --delete-after "$1/" "router:~/store/$2/notebooks"; then
-    FAILURES=$((FAILURES+1))
-  fi
-}
-
 echo
 if [ "$DID" -eq 1 ]; then
-  _sync "$ACTIVE" "home/media/writings"
+  if ! rsync -avc --delete-after "$ACTIVE/" "router:~/store/home/media/writings/notebooks"; then
+    FAILURES=$((FAILURES+1))
+  fi
+  data-sync --force
 else
   if [ "$FAILURES" -eq 0 ]; then
     echo "all files up-to-date"
