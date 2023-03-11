@@ -15,7 +15,7 @@ fi
 
 _backups() {
   local data
-  data=$(data-backups --check)
+  data=$(data-sync --check)
   if [ -z "$data" ]; then
     return
   fi
@@ -26,5 +26,5 @@ _backups() {
 }
 
 _backups
-data-backups --daily
+data-sync --daily
 system-ostree check
