@@ -100,7 +100,6 @@ if [ "$DID" -eq 1 ]; then
   if ! rsync -avc --delete-after "$ACTIVE/" "router:~/store/home/media/writings/notebooks"; then
     FAILURES=$((FAILURES+1))
   fi
-  data-sync --force
 else
   if [ "$FAILURES" -eq 0 ]; then
     echo "all files up-to-date"
