@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+TARGET="store/active/backup/"
+BACKUP="store/active/hosted/misc/backup.tar.xz"
+COMPLETE="completed all backups"
+CACHE="$HOME/.cache/backups"
+TYPE="backups"
+TODAY="$CACHE/$(date +%Y%m%d)"
+FORCE=0
+CHECK=0
+DAILY=0
+DAYS="1"
+if [ -n "$1" ]; then
+  case "$1" in
+    "--force")
+      FORCE=1
+      mkdir -p "$CACHE"
+      ;;
+    "--check")
+      DAYS="3"
+      CHECK=1
+      ;;
+    "--daily")
+      DAILY=1
+      ;;
+    *)
+      echo "unknown argument"
+      ;;
+    esac
+fi
+
+if [ $FORCE -eq 0 ]; then
+  if [ -e "$TODAY" ]; then
+    exit 0
+  else
+    if [ $DAILY -eq 1 ]; then
+      systemctl start --user backups
+      exit 0
+    fi
+  fi
+  if [ ! -d "$CACHE" ]; then
+    echo "unable to backup yet..., try '--force'"
+    exit 1
+  fi
+  if journalctl -t "$TYPE" --since "$DAYS days ago" | grep -q "$COMPLETE"; then
+    exit 0
+  else
+    if [ $CHECK -eq 1 ]; then
+      echo "no recent backup"
+      exit 1
+    fi
+  fi
+fi
+
+if [ $CHECK -eq 1 ]; then
+  exit 0
+fi
+
+touch "$TODAY"
+_sync() {
+  local finished
+  finished=1
+  for f in ".cache/upstreams" ".env" ".store"; do
+    if ! rsync -avc --delete-after "$HOME/$f" "router:$TARGET" 2>&1; then
+      finished=0
+    fi
+  done
+  if ! ssh router -- rm -f "$BACKUP"; then
+    finished=0
+  fi
+  if ! ssh router -- tar cJf "$BACKUP" "$TARGET.store/pkgs" "$TARGET.store/git" "$TARGET.env"; then
+    finished=0
+  fi
+  if [ $finished -eq 1 ]; then
+    echo "$COMPLETE"
+  else
+    echo "failed"
+  fi
+}
+
+_sync | systemd-cat -t "$TYPE"
