@@ -36,6 +36,7 @@ declare -a CARGO=( \
   "rust" \
   "rust-analyzer" \
   "rustfmt" \
+  "clippy" \
 )
 
 declare -A BOXES=( \
