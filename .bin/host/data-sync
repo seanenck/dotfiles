@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 TARGET="store/active/backup/"
-BACKUP="store/active/hosted/misc/backup.tar.xz"
 COMPLETE="completed all backups"
 CACHE="$HOME/.cache/backups"
 TYPE="backups"
@@ -64,12 +63,6 @@ _sync() {
       finished=0
     fi
   done
-  if ! ssh router -- rm -f "$BACKUP"; then
-    finished=0
-  fi
-  if ! ssh router -- tar cJf "$BACKUP" "$TARGET.store/pkgs" "$TARGET.store/git" "$TARGET.env"; then
-    finished=0
-  fi
   if [ $finished -eq 1 ]; then
     echo "$COMPLETE"
   else
