@@ -71,3 +71,22 @@ _sync() {
 }
 
 _sync | systemd-cat -t "$TYPE"
+CACHE="$LOCAL_STORE/media/"
+
+_htmlmp4() {
+    echo "<html><body><video controls preload loop playsinline poster=''>
+          <source src='$1' type='video/mp4'></video></body></html>"
+}
+
+regen-media() {
+  local t f
+  rm -f "$CACHE"*.html
+  for f in $(ls "$CACHE"*.mp4); do
+    t="$f.html"
+    _htmlmp4 "$(basename $f)" > "$t"
+    chmod 644 "$t"
+  done
+  rsync -avc --delete-after "$CACHE" "router:store/active/media/"
+}
+
+regen-media
