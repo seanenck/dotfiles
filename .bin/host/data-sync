@@ -1,60 +1,62 @@
 #!/usr/bin/env bash
-TARGET="store/active/backup/"
+TARGET="store/active/backups/"
 COMPLETE="completed all backups"
-CACHE="$HOME/.cache/backups"
+MEDIA="$LOCAL_STORE/media/"
 TYPE="backups"
-TODAY="$CACHE/$(date +%Y%m%d)"
-FORCE=0
-CHECK=0
-DAILY=0
-DAYS="1"
+DIRS=(".cache/upstreams" ".env" ".store")
+CHECK_DAYS=7
+CHECK="$CHECK_DAYS days ago"
+REPORT=0
+
+_check() {
+  local d cnt
+  for d in "${DIRS[@]}"; do
+    cnt=$(find "$HOME/$d" -type f -mtime +$CHECK_DAYS | wc -l)
+    if [ "$cnt" -gt 0 ]; then
+      return
+    fi
+  done
+  exit 0
+}
+
 if [ -n "$1" ]; then
   case "$1" in
-    "--force")
-      FORCE=1
-      mkdir -p "$CACHE"
-      ;;
     "--check")
-      DAYS="3"
-      CHECK=1
+      _check
+      REPORT=1
       ;;
-    "--daily")
-      DAILY=1
-      ;;
-    *)
-      echo "unknown argument"
-      ;;
-    esac
+    "--force")
+      CHECK=""
+  esac
+else
+    CHECK="today"
 fi
 
-if [ $FORCE -eq 0 ]; then
-  if [ -e "$TODAY" ]; then
-    exit 0
-  else
-    if [ $DAILY -eq 1 ]; then
-      systemctl start --user backups
-      exit 0
-    fi
-  fi
-  if [ ! -d "$CACHE" ]; then
-    echo "unable to backup yet..., try '--force'"
-    exit 1
-  fi
-  if journalctl -t "$TYPE" --since "$DAYS days ago" | grep -q "$COMPLETE"; then
-    exit 0
-  else
-    if [ $CHECK -eq 1 ]; then
-      echo "no recent backup"
-      exit 1
-    fi
+if [ -n "$CHECK" ]; then
+  if journalctl -t "$TYPE" --since "$CHECK" | grep -q "$COMPLETE"; then
+    exit $REPORT
   fi
 fi
 
-if [ $CHECK -eq 1 ]; then
-  exit 0
-fi
+_htmlmp4() {
+    echo "<html><body><video controls preload loop playsinline poster=''>
+          <source src='$1' type='video/mp4'></video></body></html>"
+}
 
-touch "$TODAY"
+_regen-media() {
+  local t f cnt
+  cnt=$(find "$MEDIA" -type f -not -name "*.html" -mtime -7 | wc -l)
+  if [ "$cnt" -eq 0 ]; then
+    return
+  fi
+  rm -f "$MEDIA"*.html
+  for f in "$MEDIA"*.mp4; do
+    t="$f.html"
+    _htmlmp4 "$(basename "$f")" > "$t"
+    chmod 644 "$t"
+  done
+}
+
 _sync() {
   local finished
   finished=1
@@ -70,23 +72,5 @@ _sync() {
   fi
 }
 
+_regen-media
 _sync | systemd-cat -t "$TYPE"
-CACHE="$LOCAL_STORE/media/"
-
-_htmlmp4() {
-    echo "<html><body><video controls preload loop playsinline poster=''>
-          <source src='$1' type='video/mp4'></video></body></html>"
-}
-
-regen-media() {
-  local t f
-  rm -f "$CACHE"*.html
-  for f in $(ls "$CACHE"*.mp4); do
-    t="$f.html"
-    _htmlmp4 "$(basename $f)" > "$t"
-    chmod 644 "$t"
-  done
-  rsync -avc --delete-after "$CACHE" "router:store/active/media/"
-}
-
-regen-media

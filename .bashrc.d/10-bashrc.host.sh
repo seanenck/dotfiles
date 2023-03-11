@@ -14,17 +14,15 @@ if ! upstreams --check; then
 fi
 
 _backups() {
-  local data
-  data=$(data-sync --check)
-  if [ -z "$data" ]; then
+  systemctl start --user backups
+  if data-sync --check; then
     return
   fi
   echo
   echo "backups:"
-  echo "$data" | sed 's/^/  -> /g'
+  echo "  -> backup issues"
   echo
 }
 
 _backups
-data-sync --daily
 system-ostree check
