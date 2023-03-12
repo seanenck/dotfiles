@@ -70,7 +70,7 @@ fi
 export PATH="$HOME/.bin/$HOME_BASH:$PATH"
 PS1="\$(_toolbox-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
-for file in $(find "$HOME/.bashrc.d" -name "*.sh" | grep -E "($HOME_BASH|all).sh\$" | sort); do
+for file in $(find "$HOME/.bashrc.d" -name "*.sh" | grep -E "\.($HOME_BASH|all)\." | sort); do
   # shellcheck source=/dev/null
   source "$file"
 done
