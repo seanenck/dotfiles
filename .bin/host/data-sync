@@ -45,15 +45,12 @@ _htmlmp4() {
 
 _regen-media() {
   local t f cnt
-  cnt=$(find "$MEDIA" -type f -not -name "*.html" -mtime -7 | wc -l)
-  if [ "$cnt" -eq 0 ]; then
-    return
-  fi
-  rm -f "$MEDIA"*.html
   for f in "$MEDIA"*.mp4; do
     t="$f.html"
-    _htmlmp4 "$(basename "$f")" > "$t"
-    chmod 644 "$t"
+    if [ ! -e "$t" ]; then
+      _htmlmp4 "$(basename "$f")" > "$t"
+      chmod 644 "$t"
+    fi
   done
 }
 
