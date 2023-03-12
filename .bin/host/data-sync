@@ -50,8 +50,11 @@ _regen-media() {
     if [ ! -e "$t" ]; then
       _htmlmp4 "$(basename "$f")" > "$t"
       chmod 644 "$t"
+    else
+      touch "$t"
     fi
   done
+  find "$MEDIA" -type f -name "*.html" -mtime +1 -delete
 }
 
 _sync() {
