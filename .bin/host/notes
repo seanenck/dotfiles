@@ -96,11 +96,7 @@ _list() {
 _list
 sudo umount "$CACHE"
 echo
-if [ "$DID" -eq 1 ]; then
-  if ! rsync -avc --delete-after "$ACTIVE/" "router:~/store/home/media/writings/notebooks"; then
-    FAILURES=$((FAILURES+1))
-  fi
-else
+if [ "$DID" -eq 0 ]; then
   if [ "$FAILURES" -eq 0 ]; then
     echo "all files up-to-date"
     echo
