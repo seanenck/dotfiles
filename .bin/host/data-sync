@@ -34,7 +34,11 @@ fi
 
 if [ -n "$CHECK" ]; then
   if journalctl -t "$TYPE" --since "$CHECK" | grep -q "$COMPLETE"; then
-    exit $REPORT
+    exit 0
+  else
+    if [ "$REPORT" -eq 1 ]; then
+      exit 1
+    fi
   fi
 fi
 
