@@ -1,6 +1,5 @@
 #!/bin/bash
 UPSTREAM="$HOME/.cache/upstreams/"
-BUILDS="$HOME/rpmbuild/SPECS/"
 CONF="$HOME/.config/voidedtech/upstream.bash"
 if [ ! -e "$CONF" ]; then
   echo "missing config file"
@@ -34,6 +33,23 @@ _vim_plugins() {
   done
 }
 
+_get-builds() {
+  local rpms spec file
+  rpms="$HOME/.cache/mirrors/rpms"
+  if [ ! -d "$rpms" ]; then
+    >&2 echo "$rpms is not mirrored"
+    exit 1
+  fi
+  for spec in $(git -C "$rpms" show HEAD:SPECS/ | grep "\.spec"); do
+    echo $(echo "$spec" | sed 's/\.spec//g'):$(git -C "$rpms" show HEAD:SPECS/$spec | grep "^URL" | cut -d ":" -f 2- | sed 's/\s*//g')
+  done
+  for file in $(find "$HOME/.env/dotfiles/containers" -name "*.Containerfile" -not -name "baseline.*"); do
+    for spec in $(grep github "$file" | cut -d " " -f 4 | sed 's/"//g'); do
+      echo $(echo "$spec" | rev | cut -d "/" -f 1 | rev):$(echo "$spec")
+    done
+  done
+}
+
 _externals() {
   local r n curr prev changed path
   if [ ! -e "$CONF" ]; then
@@ -41,9 +57,9 @@ _externals() {
     exit 1
   fi
   changed=0
-  for path in "$BUILDS"*; do
-    n=$(basename "$path" | sed 's/\.spec//g')
-    r=$(grep "^URL:" "$path" | cut -d ":" -f 2- | sed 's/\s*//g')
+  for path in $(_get-builds | sort -u); do
+    n=$(echo "$path" | cut -d ":" -f 1)
+    r=$(echo "$path" | cut -d ":" -f 2-)
     if [ -z "$r" ]; then
       echo "unable to get .spec URL"
       exit 1
@@ -81,5 +97,6 @@ if [ -n "$1" ]; then
   fi
   exit 0
 fi
+_get-builds >/dev/null
 _vim_plugins
 _externals

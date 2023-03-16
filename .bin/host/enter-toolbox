@@ -30,8 +30,22 @@ fi
 EFMVERS=$(git -C "$RPMS" show HEAD:SPECS/efmlsp.spec | grep "^Version:" | cut -d ":" -f 2 | sed 's/\s*//g')
 if ! (cd "$ROOT_DIR" && podman build --build-arg=GOFLAGS="$GOFLAGS" --build-arg=EFMVER=$EFMVERS --build-arg=CONTAINER_SHELL=$CONTAINER_SHELL --build-arg=CONTAINER_HOME="$CONTAINER_HOME" --build-arg=PASS=$(lb show systems/workstations/enck) --build-arg=USERID=$UID -f "$CONFIGS/"baseline.Containerfile -t baseline .); then
   exit 1
-fi 
-if ! (cd "$ROOT_DIR" && podman build -f "$CONFIGS/$1.Containerfile" -t "$1" .); then
+fi
+
+BUILD_ARGS=""
+VOLUME_ARGS=""
+case "$1" in
+  "dev")
+    BUILD_ARGS='--build-arg=GOFLAGS='$GOFLAGS
+    VOLUME_ARGS='
+      --volume '$HOME'/.cache/go:'$CONTAINER_HOME'/.cache/go:rslave
+      --volume '$HOME'/.cache/staticcheck:'$CONTAINER_HOME'/.cache/staticcheck:rslave
+      --volume '$HOME'/.cache/go-build:'$CONTAINER_HOME'/.cache/go-build:rslave
+    '
+    ;;
+esac
+
+if ! (cd "$ROOT_DIR" && podman build "$BUILD_ARGS" -f "$CONFIGS/$1.Containerfile" -t "$1" .); then
   exit 1
 fi
 
@@ -53,11 +67,10 @@ exec podman run \
     --volume "$HOME":"/var/home/enck":ro \
     --volume "$HOME":"$CONTAINER_HOME":ro \
     --volume "$HOME/workspace":"$CONTAINER_HOME/workspace":rslave  \
+    $VOLUME_ARGS \
     --volume "$HOME/.cache/mirrors":"$CONTAINER_HOME/.cache/mirrors":rslave \
     --volume "$HOME/.cache/oclone.hst":"$CONTAINER_HOME/.cache/oclone.hst":rslave \
     --volume "$HOME/.cache/nvim":"$CONTAINER_HOME/.cache/nvim":rslave \
-    --volume "$HOME/.cache/go":"$CONTAINER_HOME/.cache/go":rslave \
-    --volume "$HOME/.cache/go-build":"$CONTAINER_HOME/.cache/go-build":rslave \
     --volume "$HOME/.local/state/nvim":"$CONTAINER_HOME/.local/state/nvim":rslave \
     --volume "$PKGS_STORE":"$CONTAINER_HOME/.store/pkgs":rslave \
     --volume /run/user/$UID:/run/user/$UID:rslave \
