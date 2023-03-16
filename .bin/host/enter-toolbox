@@ -22,7 +22,7 @@ if [ ! -e "$CONTAINER" ]; then
   echo "$1 is not a valid container definition"
   exit 1
 fi
-if ! (cd "$ROOT_DIR" && podman build --build-arg=CONTAINER_SHELL=$CONTAINER_SHELL --build-arg=CONTAINER_HOME="$CONTAINER_HOME" --build-arg=PASS=$(lb show systems/workstations/enck) --build-arg=USERID=$UID -f "$CONFIGS/"baseline.Containerfile -t baseline .); then
+if ! (cd "$ROOT_DIR" && podman build --build-arg=GOFLAGS="$GOFLAGS" --build-arg=EFMVER=0.0.44 --build-arg=CONTAINER_SHELL=$CONTAINER_SHELL --build-arg=CONTAINER_HOME="$CONTAINER_HOME" --build-arg=PASS=$(lb show systems/workstations/enck) --build-arg=USERID=$UID -f "$CONFIGS/"baseline.Containerfile -t baseline .); then
   exit 1
 fi 
 if ! (cd "$ROOT_DIR" && podman build -f "$CONFIGS/$1.Containerfile" -t "$1" .); then
