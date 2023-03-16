@@ -32,19 +32,6 @@ stty -ixon
 # check the window size after each command
 shopt -s checkwinsize
 
-export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
-if [ ! -e "$SSH_AGENT_ENV" ] || ! pgrep ssh-agent > /dev/null; then
-  pkill ssh-agent
-  ssh-agent > "$SSH_AGENT_ENV"
-fi
-if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-  source "$SSH_AGENT_ENV" >/dev/null
-fi
-
-for file in $(find "$HOME/.ssh/" -type f -name "*.key"); do
-  ssh-add "$file" > /dev/null 2>&1
-done
-
 _toolbox-name(){
   echo "$CONTAINER_TYPE"
 }
@@ -70,6 +57,18 @@ else
 fi
 export PATH="$HOME/.bin/$HOME_BASH:$PATH"
 PS1="\$(_toolbox-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
+
+export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/$HOME_BASH.ssh-agent.env"
+if [ ! -e "$SSH_AGENT_ENV" ] || ! pgrep ssh-agent > /dev/null; then
+  ssh-agent > "$SSH_AGENT_ENV"
+fi
+if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+  source "$SSH_AGENT_ENV" >/dev/null
+fi
+
+for file in $(find "$HOME/.ssh/" -type f -name "*.key"); do
+  ssh-add "$file" > /dev/null 2>&1
+done
 
 for file in $(find "$HOME/.bashrc.d" -name "*.sh" | grep -E "\.($HOME_BASH|all)\." | sort); do
   # shellcheck source=/dev/null
