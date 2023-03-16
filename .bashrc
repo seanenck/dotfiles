@@ -44,6 +44,7 @@ _toolbox-prompt() {
   fi
 }
 
+export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
 PREFERPS1="(\u@\h \W)"
 TOOLBOX=$(_toolbox-name)
 if [ -n "$TOOLBOX" ]; then
@@ -54,12 +55,12 @@ else
   unset TOOLBOX
   PS1=$PREFERPS1'$ '
   HOME_BASH="host"
+  if [ ! -e "$SSH_AGENT_ENV" ] || ! pgrep ssh-agent > /dev/null; then
+    pkill ssh-agent
+    ssh-agent > "$SSH_AGENT_ENV"
+  fi
 fi
 
-export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/$$.ssh-agent.env"
-if [ ! -e "$SSH_AGENT_ENV" ]; then
-  ssh-agent > "$SSH_AGENT_ENV"
-fi
 if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
   source "$SSH_AGENT_ENV" >/dev/null
 fi

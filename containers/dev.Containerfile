@@ -15,7 +15,7 @@ WORKDIR /src/revive
 RUN git checkout v$REVIVEVER
 RUN go build $GOFLAGS -o revive
 
-FROM localhost/baseline:latest
+FROM localhost/alpine-baseline:latest
 
 RUN apk add go gopls staticcheck make
 COPY --from=buildenv /src/gofumpt/gofumpt /usr/bin/gofumpt

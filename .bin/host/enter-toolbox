@@ -4,6 +4,7 @@ CONFIGS="$ROOT_DIR/containers"
 CONTAINER_HOME="/home/enck"
 CONTAINER_SHELL="/bin/bash"
 RPMS="$HOME/.cache/mirrors/rpms"
+COMMON_ARGS="--build-arg=CONTAINER_SHELL=$CONTAINER_SHELL --build-arg=CONTAINER_HOME=\"$CONTAINER_HOME\" --build-arg=PASS=$(lb show systems/workstations/enck) --build-arg=USERID=$UID"
 if [ ! -d "$CONFIGS" ]; then
   echo "no configs directory?"
   exit 1
@@ -27,13 +28,10 @@ if [ ! -d "$RPMS" ]; then
   echo "$RPMS is not mirrored"
   exit 1
 fi
-EFMVERS=$(git -C "$RPMS" show HEAD:SPECS/efmlsp.spec | grep "^Version:" | cut -d ":" -f 2 | sed 's/\s*//g')
-if ! (cd "$ROOT_DIR" && podman build --build-arg=GOFLAGS="$GOFLAGS" --build-arg=EFMVER=$EFMVERS --build-arg=CONTAINER_SHELL=$CONTAINER_SHELL --build-arg=CONTAINER_HOME="$CONTAINER_HOME" --build-arg=PASS=$(lb show systems/workstations/enck) --build-arg=USERID=$UID -f "$CONFIGS/"baseline.Containerfile -t baseline .); then
-  exit 1
-fi
 
 BUILD_ARGS=""
 VOLUME_ARGS=""
+BASELINE=1
 case "$1" in
   "dev")
     BUILD_ARGS='--build-arg=GOFLAGS='$GOFLAGS
@@ -44,6 +42,13 @@ case "$1" in
     '
     ;;
 esac
+
+if [ $BASELINE -eq 1 ]; then
+  EFMVERS=$(git -C "$RPMS" show HEAD:SPECS/efmlsp.spec | grep "^Version:" | cut -d ":" -f 2 | sed 's/\s*//g')
+  if ! (cd "$ROOT_DIR" && podman build --build-arg=GOFLAGS="$GOFLAGS" --build-arg=EFMVER=$EFMVERS $COMMON_ARGS -f "$CONFIGS/"alpine.Containerfile -t alpine-baseline .); then
+    exit 1
+  fi
+fi
 
 if ! (cd "$ROOT_DIR" && podman build "$BUILD_ARGS" -f "$CONFIGS/$1.Containerfile" -t "$1" .); then
   exit 1
@@ -73,6 +78,7 @@ exec podman run \
     --volume "$HOME/.cache/nvim":"$CONTAINER_HOME/.cache/nvim":rslave \
     --volume "$HOME/.local/state/nvim":"$CONTAINER_HOME/.local/state/nvim":rslave \
     --volume "$PKGS_STORE":"$CONTAINER_HOME/.store/pkgs":rslave \
+    --volume /tmp:/tmp:rslave \
     --volume /run/user/$UID:/run/user/$UID:rslave \
     --ulimit host --annotation run.oci.keep_original_groups=1 \
     --mount type=devpts,destination=/dev/pts \
