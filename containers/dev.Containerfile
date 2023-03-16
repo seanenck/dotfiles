@@ -1,7 +1,7 @@
 FROM alpine:latest as buildenv
 
 ARG GOFUMPTVER=0.4.0
-ARG REVIVEVER=1.2.5
+ARG REVIVEVER=1.3.0
 ARG GOFLAGS
 
 RUN apk add --no-cache go git
