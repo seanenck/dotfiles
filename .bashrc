@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 [[ $- != *i* ]] && return
 
-. /etc/bashrc
-
+if [ -e /etc/bashrc ]; then
+  . /etc/bashrc
+else
+  if [ -e /etc/bash/bashrc ]; then
+    . /etc/bash/bashrc
+  fi
+fi
 
 shopt -s histappend
 shopt -s direxpand
@@ -41,11 +46,7 @@ for file in $(find "$HOME/.ssh/" -type f -name "*.key"); do
 done
 
 _toolbox-name(){
-  local name
-  if [ -f "/run/.toolboxenv" ]; then
-    name=$(grep -oP "(?<=name=\")[^\";]+" /run/.containerenv)
-    echo "$name"
-  fi
+  echo "$CONTAINER_TYPE"
 }
 
 _toolbox-prompt() {

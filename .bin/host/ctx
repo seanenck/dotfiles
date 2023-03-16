@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+ROOT_DIR="$HOME/.env/dotfiles"
+CONFIGS="$ROOT_DIR/containers"
+CONTAINER_HOME="/home/enck"
+CONTAINER_SHELL="/bin/bash"
+if [ ! -d "$CONFIGS" ]; then
+  echo "no configs directory?"
+  exit 1
+fi
+if [ -z "$1" ]; then
+  echo "argument required"
+  exit 1
+fi
+case "$1" in
+  "--list")
+    ls "$CONFIGS" | grep "\.Containerfile" | grep -v baseline | cut -d "." -f 1 | sort
+    exit 0
+    ;;
+esac
+CONTAINER="$CONFIGS/$1.Containerfile"
+if [ ! -e "$CONTAINER" ]; then
+  echo "$1 is not a valid container definition"
+  exit 1
+fi
+if ! (cd "$ROOT_DIR" && podman build --build-arg=CONTAINER_SHELL=$CONTAINER_SHELL --build-arg=CONTAINER_HOME="$CONTAINER_HOME" --build-arg=PASS=$(lb show systems/workstations/enck) --build-arg=USERID=$UID -f "$CONFIGS/"baseline.Containerfile -t baseline .); then
+  exit 1
+fi 
+if ! (cd "$ROOT_DIR" && podman build -f "$CONFIGS/$1.Containerfile" -t "$1" .); then
+  exit 1
+fi
+
+exec podman run \
+    --hostname "$1.container" \
+    --ipc host \
+    --name "$1-$(diceware)" \
+    --network host \
+    --rm \
+    -it \
+    --security-opt label=disable \
+    --env "SHELL=/bin/bash" \
+    --env "HOME=$CONTAINER_HOME" \
+    --env "XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR" \
+    --env "CONTAINER_TYPE=$1" \
+    --volume /etc/hosts:/etc/hosts:ro \
+    --volume /etc/localtime:/etc/localtime:ro \
+    --volume /etc/resolv.conf:/etc/resolv.conf:ro  \
+    --volume "$HOME":"/var/home/enck":ro \
+    --volume "$HOME":"$CONTAINER_HOME":ro \
+    --volume "$HOME/workspace":"$CONTAINER_HOME/workspace":rslave  \
+    --volume "$HOME/.cache/mirrors":"$CONTAINER_HOME/.cache/mirrors":rslave \
+    --volume "$HOME/.cache/oclone.hst":"$CONTAINER_HOME/.cache/oclone.hst":rslave \
+    --volume "$HOME/.cache/nvim":"$CONTAINER_HOME/.cache/nvim":rslave \
+    --volume "$HOME/.cache/go":"$CONTAINER_HOME/.cache/go":rslave \
+    --volume "$HOME/.cache/go-build":"$CONTAINER_HOME/.cache/go-build":rslave \
+    --volume "$HOME/.local/state/nvim":"$CONTAINER_HOME/.local/state/nvim":rslave \
+    --volume "$PKGS_STORE":"$CONTAINER_HOME/.store/pkgs":rslave \
+    --volume /run/user/$UID:/run/user/$UID:rslave \
+    --ulimit host --annotation run.oci.keep_original_groups=1 \
+    --mount type=devpts,destination=/dev/pts \
+    --userns keep-id \
+    --workdir "$CONTAINER_HOME" \
+    localhost/"$1":latest $CONTAINER_SHELL
