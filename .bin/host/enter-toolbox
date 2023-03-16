@@ -15,7 +15,7 @@ if [ -z "$1" ]; then
 fi
 case "$1" in
   "--list")
-    ls "$CONFIGS" | grep "\.Containerfile" | grep -v baseline | cut -d "." -f 1 | sort
+    ls "$CONFIGS" | grep "\.Containerfile" | grep -v alpine | cut -d "." -f 1 | sort
     exit 0
     ;;
 esac
