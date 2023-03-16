@@ -65,7 +65,7 @@ _sync() {
   local finished
   finished=1
   for f in ".cache/upstreams" ".env" ".store"; do
-    if ! rsync -avc --delete-after "$HOME/$f" "router:$TARGET" 2>&1; then
+    if ! rsync -avc --delete-after "$HOME/$f" "router.voidedtech.com:$TARGET" 2>&1; then
       finished=0
     fi
   done
