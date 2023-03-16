@@ -3,6 +3,7 @@ ROOT_DIR="$HOME/.env/dotfiles"
 CONFIGS="$ROOT_DIR/containers"
 CONTAINER_HOME="/home/enck"
 CONTAINER_SHELL="/bin/bash"
+RPMS="$HOME/.cache/mirrors/rpms"
 if [ ! -d "$CONFIGS" ]; then
   echo "no configs directory?"
   exit 1
@@ -22,7 +23,12 @@ if [ ! -e "$CONTAINER" ]; then
   echo "$1 is not a valid container definition"
   exit 1
 fi
-if ! (cd "$ROOT_DIR" && podman build --build-arg=GOFLAGS="$GOFLAGS" --build-arg=EFMVER=0.0.44 --build-arg=CONTAINER_SHELL=$CONTAINER_SHELL --build-arg=CONTAINER_HOME="$CONTAINER_HOME" --build-arg=PASS=$(lb show systems/workstations/enck) --build-arg=USERID=$UID -f "$CONFIGS/"baseline.Containerfile -t baseline .); then
+if [ ! -d "$RPMS" ]; then
+  echo "$RPMS is not mirrored"
+  exit 1
+fi
+EFMVERS=$(git -C "$RPMS" show HEAD:SPECS/efmlsp.spec | grep "^Version:" | cut -d ":" -f 2 | sed 's/\s*//g')
+if ! (cd "$ROOT_DIR" && podman build --build-arg=GOFLAGS="$GOFLAGS" --build-arg=EFMVER=$EFMVERS --build-arg=CONTAINER_SHELL=$CONTAINER_SHELL --build-arg=CONTAINER_HOME="$CONTAINER_HOME" --build-arg=PASS=$(lb show systems/workstations/enck) --build-arg=USERID=$UID -f "$CONFIGS/"baseline.Containerfile -t baseline .); then
   exit 1
 fi 
 if ! (cd "$ROOT_DIR" && podman build -f "$CONFIGS/$1.Containerfile" -t "$1" .); then
