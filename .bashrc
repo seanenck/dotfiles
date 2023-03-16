@@ -54,18 +54,20 @@ else
   unset TOOLBOX
   PS1=$PREFERPS1'$ '
   HOME_BASH="host"
-  export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/$HOME_BASH.ssh-agent.env"
-  if [ ! -e "$SSH_AGENT_ENV" ] || ! pgrep ssh-agent > /dev/null; then
-    ssh-agent > "$SSH_AGENT_ENV"
-  fi
-  if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    source "$SSH_AGENT_ENV" >/dev/null
-  fi
-
-  for file in $(find "$HOME/.ssh/" -type f -name "*.key"); do
-    ssh-add "$file" > /dev/null 2>&1
-  done
 fi
+
+export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/$$.ssh-agent.env"
+if [ ! -e "$SSH_AGENT_ENV" ]; then
+  ssh-agent > "$SSH_AGENT_ENV"
+fi
+if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+  source "$SSH_AGENT_ENV" >/dev/null
+fi
+
+for file in $(find "$HOME/.ssh/" -type f -name "*.key"); do
+  ssh-add "$file" > /dev/null 2>&1
+done
+
 export PATH="$HOME/.bin/$HOME_BASH:$PATH"
 PS1="\$(_toolbox-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
