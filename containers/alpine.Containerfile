@@ -26,5 +26,5 @@ RUN printf "$PASS\n$PASS" | passwd enck
 RUN chmod 4755 /bin/su
 RUN echo $DOTFILES > /etc/dotfiles
 COPY --chown=enck:enck . $CONTAINER_HOME
-RUN rm -rf $CONTAINER_HOME/containers/ $CONTAINER_HOME/LICENSE $CONTAINER_HOME/README.md $CONTAINER_HOME/.bin/host $CONTAINER_HOME/.bashrc.d/*.host.*
+RUN rm -rf $CONTAINER_HOME/.git $CONTAINER_HOME/containers/ $CONTAINER_HOME/LICENSE $CONTAINER_HOME/README.md $CONTAINER_HOME/.bin/host $CONTAINER_HOME/.bashrc.d/*.host.*
 COPY --from=efmbuild /src/efm/efm-langserver /usr/bin/efm-langserver

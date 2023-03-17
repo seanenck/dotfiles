@@ -38,7 +38,7 @@ case "$1" in
     BUILD_ARGS='--build-arg=GOFLAGS='$GOFLAGS
     VOLUME_ARGS='
       --volume '$COMMON_CACHE_DIR':'$CONTAINER_HOME'/.cache:rslave
-      --volume '$PKGS_STORE':'$CONTAINER_HOME'/.store/pkgs":rslave
+      --volume '$PKGS_STORE':'$CONTAINER_HOME'/.store/pkgs:rslave
     '
     ;;
 esac
