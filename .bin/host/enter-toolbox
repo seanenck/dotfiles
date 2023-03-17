@@ -86,6 +86,8 @@ exec podman run \
     --volume "$HOME/.config/nvim/pack":"$CONTAINER_HOME/.config/nvim/pack":ro \
     --volume "$HOME/.cache/oclone.hst":"$CONTAINER_HOME/.cache/oclone.hst":rslave \
     --volume "$HOME/.env/local/.config/voidedtech/git.bash":"$CONTAINER_HOME"/.config/voidedtech/git.bash:ro \
+    --volume "$HOME/.env/local/.ssh/config":"$CONTAINER_HOME"/.ssh/config:ro \
+    --volume "$HOME/.env/local/.ssh/allowed_signers":"$CONTAINER_HOME"/.ssh/allowed_signers:ro \
     $VOLUME_ARGS \
     --volume /tmp:/tmp:rslave \
     --volume /run/user/$UID:/run/user/$UID:rslave \
