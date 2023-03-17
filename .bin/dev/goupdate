@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-if ! go get -u ./...; then
-  exit 1
-fi
-if ! go mod tidy; then
-  exit 1
-fi
