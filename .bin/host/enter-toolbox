@@ -4,4 +4,6 @@ if [ ! -d "$DIR" ]; then
   echo "$DIR not available/configured"
   exit 1
 fi
-cd "$DIR" && "./configure" $@
+if ! (cd "$DIR" && "./configure" $@); then
+  exit 1
+fi
