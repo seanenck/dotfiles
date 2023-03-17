@@ -28,6 +28,8 @@ if [ ! -d "$RPMS" ]; then
   exit 1
 fi
 
+COMMON_CACHE_DIR="$HOME/.cache/ctx/$1/.cache"
+mkdir -p "$COMMON_CACHE_DIR"
 BUILD_ARGS=""
 VOLUME_ARGS=""
 BASELINE=1
@@ -35,9 +37,7 @@ case "$1" in
   "dev")
     BUILD_ARGS='--build-arg=GOFLAGS='$GOFLAGS
     VOLUME_ARGS='
-      --volume '$HOME'/.cache/go:'$CONTAINER_HOME'/.cache/go:rslave
-      --volume '$HOME'/.cache/staticcheck:'$CONTAINER_HOME'/.cache/staticcheck:rslave
-      --volume '$HOME'/.cache/go-build:'$CONTAINER_HOME'/.cache/go-build:rslave
+      --volume '$COMMON_CACHE_DIR':'$CONTAINER_HOME'/.cache:rslave
       --volume '$PKGS_STORE':'$CONTAINER_HOME'/.store/pkgs":rslave
     '
     ;;
@@ -47,6 +47,7 @@ if [ $BASELINE -eq 1 ]; then
   EFMVERS=$(git -C "$RPMS" show HEAD:SPECS/efmlsp.spec | grep "^Version:" | cut -d ":" -f 2 | sed 's/\s*//g')
   if ! (cd "$ROOT_DIR" && podman build \
                           --build-arg=CONTAINER_SHELL=$CONTAINER_SHELL \
+                          --build-arg=DOTFILES=$(git -C $ROOT_DIR log -n 1 --format=%h) \
                           --build-arg=CONTAINER_HOME=$CONTAINER_HOME \
                           --build-arg=PASS=$(lb show systems/workstations/enck) \
                           --build-arg=USERID=$UID \
@@ -75,14 +76,13 @@ exec podman run \
     --volume /etc/hosts:/etc/hosts:ro \
     --volume /etc/localtime:/etc/localtime:ro \
     --volume /etc/resolv.conf:/etc/resolv.conf:ro  \
-    --volume "$HOME":"/var/home/enck":ro \
-    --volume "$HOME":"$CONTAINER_HOME":ro \
     --volume "$HOME/workspace":"$CONTAINER_HOME/workspace":rslave  \
-    $VOLUME_ARGS \
+    --volume "$HOME/.ssh":"$CONTAINER_HOME/.ssh":rslave \
     --volume "$HOME/.cache/mirrors":"$CONTAINER_HOME/.cache/mirrors":rslave \
+    --volume "$HOME/.config/nvim/pack":"$CONTAINER_HOME/.config/nvim/pack":ro \
     --volume "$HOME/.cache/oclone.hst":"$CONTAINER_HOME/.cache/oclone.hst":rslave \
-    --volume "$HOME/.cache/nvim":"$CONTAINER_HOME/.cache/nvim":rslave \
-    --volume "$HOME/.local/state/nvim":"$CONTAINER_HOME/.local/state/nvim":rslave \
+    --volume "$HOME/.env/local/.config/voidedtech/git.bash":"$CONTAINER_HOME"/.config/voidedtech/git.bash:ro \
+    $VOLUME_ARGS \
     --volume /tmp:/tmp:rslave \
     --volume /run/user/$UID:/run/user/$UID:rslave \
     --ulimit host --annotation run.oci.keep_original_groups=1 \
