@@ -38,6 +38,7 @@ case "$1" in
       --volume '$HOME'/.cache/go:'$CONTAINER_HOME'/.cache/go:rslave
       --volume '$HOME'/.cache/staticcheck:'$CONTAINER_HOME'/.cache/staticcheck:rslave
       --volume '$HOME'/.cache/go-build:'$CONTAINER_HOME'/.cache/go-build:rslave
+      --volume '$PKGS_STORE':'$CONTAINER_HOME'/.store/pkgs":rslave
     '
     ;;
 esac
@@ -82,7 +83,6 @@ exec podman run \
     --volume "$HOME/.cache/oclone.hst":"$CONTAINER_HOME/.cache/oclone.hst":rslave \
     --volume "$HOME/.cache/nvim":"$CONTAINER_HOME/.cache/nvim":rslave \
     --volume "$HOME/.local/state/nvim":"$CONTAINER_HOME/.local/state/nvim":rslave \
-    --volume "$PKGS_STORE":"$CONTAINER_HOME/.store/pkgs":rslave \
     --volume /tmp:/tmp:rslave \
     --volume /run/user/$UID:/run/user/$UID:rslave \
     --ulimit host --annotation run.oci.keep_original_groups=1 \
