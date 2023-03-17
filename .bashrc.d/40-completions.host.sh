@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-_enter-toolbox() {
+_workbench() {
   local cur opts
   if [ "$COMP_CWORD" -eq 1 ]; then
     cur=${COMP_WORDS[COMP_CWORD]}
-    opts=$(enter-toolbox --list)
+    opts=$(workbench --list)
     COMPREPLY=( $(compgen -W "$opts" -- "$cur") )
   fi
 }
 
-complete -F _enter-toolbox -o bashdefault -o default enter-toolbox
+complete -F _workbench -o bashdefault -o default workbench
