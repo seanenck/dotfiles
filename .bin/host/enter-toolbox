@@ -8,6 +8,7 @@ if [ ! -d "$CONFIGS" ]; then
   echo "no configs directory?"
   exit 1
 fi
+source "$CONFIGS/go.env"
 if [ -z "$1" ]; then
   echo "argument required"
   exit 1
@@ -58,7 +59,10 @@ if [ $BASELINE -eq 1 ]; then
   fi
 fi
 
-if ! (cd "$ROOT_DIR" && podman build "$BUILD_ARGS" -f "$CONFIGS/$1.Containerfile" -t "$1" .); then
+if ! (cd "$ROOT_DIR" && podman build \
+                        --build-arg=CONTAINER_HOME=$CONTAINER_HOME \
+                        "$BUILD_ARGS" \
+                        -f "$CONFIGS/$1.Containerfile" -t "$1" .); then
   exit 1
 fi
 

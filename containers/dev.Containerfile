@@ -17,6 +17,9 @@ RUN go build $GOFLAGS -o revive
 
 FROM localhost/alpine-baseline:latest
 
+ARG CONTAINER_HOME
+
 RUN apk add go gopls staticcheck make
+COPY --chown=enck:enck containers/go.env $CONTAINER_HOME/.bashrc.d/20-go.all.sh
 COPY --from=buildenv /src/gofumpt/gofumpt /usr/bin/gofumpt
 COPY --from=buildenv /src/revive/revive /usr/bin/revive
