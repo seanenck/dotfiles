@@ -62,7 +62,6 @@ fi
 
 exec podman run \
     --hostname "$1.container" \
-    --ipc host \
     --name "$1-$(diceware)" \
     --network host \
     --rm \
