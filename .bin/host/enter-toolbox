@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-DIR="$HOME/.env/containers"
+DIR="$HOME/.env/workbench"
 if [ ! -d "$DIR" ]; then
   echo "$DIR not available/configured"
   exit 1
