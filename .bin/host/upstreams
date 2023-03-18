@@ -43,11 +43,6 @@ _get-builds() {
   for spec in $(git -C "$rpms" show HEAD:SPECS/ | grep "\.spec"); do
     echo $(echo "$spec" | sed 's/\.spec//g'):$(git -C "$rpms" show HEAD:SPECS/$spec | grep "^URL" | cut -d ":" -f 2- | sed 's/\s*//g')
   done
-  for file in $(find "$HOME/.env/workbench" -name "*.Containerfile" -not -name "baseline.*"); do
-    for spec in $(grep github "$file" | cut -d " " -f 4 | sed 's/"//g'); do
-      echo $(echo "$spec" | rev | cut -d "/" -f 1 | rev):$(echo "$spec")
-    done
-  done
 }
 
 _externals() {
