@@ -49,12 +49,11 @@ PREFERPS1="(\u@\h \W)"
 TOOLBOX=$(_toolbox-name)
 if [ -n "$TOOLBOX" ]; then
   export TOOLBOX=$TOOLBOX
-  HOME_BASH="$TOOLBOX"
   PS1='\[\033[01;33m\]'$PREFERPS1'\[\033[0m\]> '
 else
   unset TOOLBOX
   PS1=$PREFERPS1'$ '
-  HOME_BASH="host"
+  export PATH="$HOME/.bin/host:$PATH"
   if [ ! -e "$SSH_AGENT_ENV" ] || ! pgrep ssh-agent > /dev/null; then
     pkill ssh-agent
     ssh-agent > "$SSH_AGENT_ENV"
@@ -69,11 +68,10 @@ for file in $(find "$HOME/.ssh/" -type f -name "*.key"); do
   ssh-add "$file" > /dev/null 2>&1
 done
 
-export PATH="$HOME/.bin/$HOME_BASH:$PATH"
 PS1="\$(_toolbox-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
-for file in $(find "$HOME/.bashrc.d" -name "*.sh" | grep -E "\.($HOME_BASH|all)\." | sort); do
+for file in "$HOME/.bashrc.d/"*; do
   # shellcheck source=/dev/null
   source "$file"
 done
-unset HOME_BASH PREFERPS1 file
+unset PREFERPS1 file
