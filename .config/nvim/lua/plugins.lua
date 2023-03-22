@@ -49,27 +49,6 @@ local function setuplsp(exe, format_types)
                 }
             },
         }
-    elseif exe == "dart" then
-        lspconfig.dartls.setup{
-            cmd = args,
-            on_attach = on_attach,
-            capabilities = capabilities,
-            root_dir=util.root_pattern("pubspec.yaml"),
-            init_options={
-                closingLabels = true,
-                flutterOutline = true,
-                onlyAnalyzeProjectsWithOpenFiles = true,
-                outline = true,
-                suggestFromUnimportedLibraries = true
-            },
-            filetypes={"dart"},
-            settings={
-                dart={
-                    completeFunctionCalls = true,
-                    showTodos = true
-                }
-            },
-        }
     elseif exe == "efm-langserver" then
         lspconfig.efm.setup{
             on_attach = on_attach,
@@ -98,7 +77,6 @@ local function setuplsp(exe, format_types)
     )
 end
 
-setuplsp("dart", "dart")
 setuplsp("efm-langserver", nil)
 setuplsp("gopls", "go")
 function toggle_diagnostics()
