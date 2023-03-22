@@ -33,13 +33,12 @@ local no_exec = function(name)
     return vim.fn.executable(name) ~= 1
 end
 
-local function setuplsp(name, format_types)
+local function setuplsp(exe, format_types)
+    if no_exec(exe) then
+        return
+    end
     capabilities = require('cmp_nvim_lsp').default_capabilities()
-    vim.lsp.set_log_level("debug")
-    if name == "gopls" then
-        if no_exec("gopls") then
-            return
-        end
+    if exe == "gopls" then
         lspconfig.gopls.setup{
             on_attach = on_attach,
             capabilities = capabilities,
@@ -50,10 +49,7 @@ local function setuplsp(name, format_types)
                 }
             },
         }
-    elseif name == "dartls" then
-        if no_exec("dart") then
-            return
-        end
+    elseif exe == "dart" then
         lspconfig.dartls.setup{
             cmd = args,
             on_attach = on_attach,
@@ -74,10 +70,7 @@ local function setuplsp(name, format_types)
                 }
             },
         }
-    elseif name == "efm" then
-        if no_exec("efm-langserver") then
-            return
-        end
+    elseif exe == "efm-langserver" then
         lspconfig.efm.setup{
             on_attach = on_attach,
             capabilities = capabilities,
@@ -105,8 +98,8 @@ local function setuplsp(name, format_types)
     )
 end
 
-setuplsp("dartls", "dart")
-setuplsp("efm", nil)
+setuplsp("dart", "dart")
+setuplsp("efm-langserver", nil)
 setuplsp("gopls", "go")
 function toggle_diagnostics()
     vim.diagnostic.open_float(nil, {
