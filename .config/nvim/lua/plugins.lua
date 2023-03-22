@@ -23,25 +23,72 @@ cmp.setup({
 })
 
 -- lsp
+util = require 'lspconfig.util'
+lspconfig = require "lspconfig"
 local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
-local function setuplsp(exec, name, extension, settings, filetypes)
-    if vim.fn.executable(exec) ~= 1 then
-        return
-    end
+local no_exec = function(name)
+    return vim.fn.executable(name) ~= 1
+end
+
+local function setuplsp(name, format_types)
     capabilities = require('cmp_nvim_lsp').default_capabilities()
-    local cfg = require("lspconfig")[name]
-    cfg.setup{
-        on_attach = on_attach,
-        capabilities = capabilities,
-        filetypes=filetypes,
-        settings = settings,
-    }
-    if extension ~= nil then
+    vim.lsp.set_log_level("debug")
+    if name == "gopls" then
+        if no_exec("gopls") then
+            return
+        end
+        lspconfig.gopls.setup{
+            on_attach = on_attach,
+            capabilities = capabilities,
+            settings = {
+                gopls = {
+                    gofumpt = true,
+                    staticcheck = true
+                }
+            },
+        }
+    elseif name == "dartls" then
+        if no_exec("dart") then
+            return
+        end
+        lspconfig.dartls.setup{
+            cmd = args,
+            on_attach = on_attach,
+            capabilities = capabilities,
+            root_dir=util.root_pattern("pubspec.yaml"),
+            init_options={
+                closingLabels = true,
+                flutterOutline = true,
+                onlyAnalyzeProjectsWithOpenFiles = true,
+                outline = true,
+                suggestFromUnimportedLibraries = true
+            },
+            filetypes={"dart"},
+            settings={
+                dart={
+                    completeFunctionCalls = true,
+                    showTodos = true
+                }
+            },
+        }
+    elseif name == "efm" then
+        if no_exec("efm-langserver") then
+            return
+        end
+        lspconfig.efm.setup{
+            on_attach = on_attach,
+            capabilities = capabilities,
+            filetypes={"sh", "json", "yaml"},
+        }
+    else
+        error("unknown lsp requested")
+    end
+    if format_types ~= nil then
         vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-            pattern = { "*." .. extension },
+            pattern = { "*." .. format_types },
             callback = function()
                 vim.lsp.buf.format { async = false }
             end
@@ -58,9 +105,9 @@ local function setuplsp(exec, name, extension, settings, filetypes)
     )
 end
 
-setuplsp("gopls", "gopls", "go", {gopls = { gofumpt = true, staticcheck = true}}, nil)
-setuplsp("rust-analyzer", "rust_analyzer", "rs", nil, nil)
-setuplsp("efm-langserver", "efm", nil, nil, {"sh", "json", "yaml"})
+setuplsp("dartls", "dart")
+setuplsp("efm", nil)
+setuplsp("gopls", "go")
 function toggle_diagnostics()
     vim.diagnostic.open_float(nil, {
         focus=false,
