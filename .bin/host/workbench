@@ -4,6 +4,7 @@ if [ ! -d "$DIR" ]; then
   echo "$DIR not available/configured"
   exit 1
 fi
+export WORKDIR="$PWD"
 if ! (cd "$DIR" && "./configure" $@); then
   exit 1
 fi
