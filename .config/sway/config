@@ -3,6 +3,7 @@ set $mod Mod4
 set $path /home/enck/.bin/host/
 set $term alacritty
 set $menu $path/waymenu
+set $delay 1000
 
 gaps outer 5px
 gaps inner 5px
@@ -40,6 +41,10 @@ bindsym $mod+Plus resize grow width 10
 bindsym $mod+Shift+Minus resize shrink width 10
 bindsym $mod+Equal resize grow height 10
 bindsym $mod+Minus resize shrink height 10
+bindsym Ctrl+j exec wtype -k down -s $delay
+bindsym Ctrl+k exec wtype -k up -s $delay
+bindsym Ctrl+l exec wtype -k right -s $delay
+bindsym Ctrl+h exec wtype -k left -s $delay
 
 #workspaces
 bindsym $mod+1 workspace number 1
