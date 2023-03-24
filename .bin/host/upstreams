@@ -34,14 +34,16 @@ _vim_plugins() {
 }
 
 _get-builds() {
-  local rpms spec file
-  rpms="$HOME/.cache/mirrors/rpms"
-  if [ ! -d "$rpms" ]; then
-    >&2 echo "$rpms is not mirrored"
+  local workbench url
+  workbench="$HOME/.env/workbench/tools"
+  if [ ! -d "$workbench" ]; then
+    echo "no workbench directory"
     exit 1
   fi
-  for spec in $(git -C "$rpms" show HEAD:SPECS/ | grep "\.spec"); do
-    echo $(echo "$spec" | sed 's/\.spec//g'):$(git -C "$rpms" show HEAD:SPECS/$spec | grep "^URL" | cut -d ":" -f 2- | sed 's/\s*//g')
+  for file in "$workbench/"*.Containerfile; do
+    url=$(grep "github.com" "$file" | cut -d " " -f 4)
+    name=$(echo "$url" | rev | cut -d '/' -f 1 | rev)
+    echo "$name:$url"
   done
 }
 
