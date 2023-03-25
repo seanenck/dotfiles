@@ -54,6 +54,11 @@ local function setuplsp(exe, format_types)
             on_attach = on_attach,
             capabilities = capabilities,
         }
+    elseif exe == "rust-analyzer" then
+        lspconfig.rust_analyzer.setup{
+            on_attach = on_attach,
+            capabilities = capabilities,
+        }
     else
         error("unknown lsp requested")
     end
@@ -76,6 +81,7 @@ local function setuplsp(exe, format_types)
     )
 end
 
+setuplsp("rust-analyzer", "rs")
 setuplsp("bash-language-server", nil)
 setuplsp("gopls", "go")
 function toggle_diagnostics()
