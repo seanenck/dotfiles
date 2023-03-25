@@ -1,5 +1,5 @@
 #!/bin/bash
-UPSTREAM="$HOME/.cache/upstreams/"
+UPSTREAM="$LOCAL_STORE/upstreams/"
 CONF="$HOME/.config/voidedtech/upstream.bash"
 if [ ! -e "$CONF" ]; then
   echo "missing config file"
