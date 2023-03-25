@@ -34,20 +34,9 @@ _vim_plugins() {
 }
 
 _get-builds() {
-  local workbench url dir file
-  workbench="$HOME/.env/workbench/"
-  if [ ! -d "$workbench" ]; then
-    echo "no workbench directory"
+  if ! workbench --upstreams; then
     exit 1
   fi
-  for dir in images tools; do
-    for file in "$workbench$dir/"*.Containerfile; do
-      for url in $(grep "github.com" "$file" | cut -d " " -f 4 | sed 's/"//g'); do
-        name=$(echo "$url" | rev | cut -d '/' -f 1 | rev)
-        echo "$name:$url"
-      done
-    done
-  done
 }
 
 _externals() {
