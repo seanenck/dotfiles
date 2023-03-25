@@ -49,11 +49,10 @@ local function setuplsp(exe, format_types)
                 }
             },
         }
-    elseif exe == "efm-langserver" then
-        lspconfig.efm.setup{
+    elseif exe == "bash-language-server" then
+        lspconfig.bashls.setup{
             on_attach = on_attach,
             capabilities = capabilities,
-            filetypes={"sh", "json", "yaml"},
         }
     else
         error("unknown lsp requested")
@@ -77,7 +76,7 @@ local function setuplsp(exe, format_types)
     )
 end
 
-setuplsp("efm-langserver", nil)
+setuplsp("bash-language-server", nil)
 setuplsp("gopls", "go")
 function toggle_diagnostics()
     vim.diagnostic.open_float(nil, {
