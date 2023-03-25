@@ -32,13 +32,13 @@ stty -ixon
 # check the window size after each command
 shopt -s checkwinsize
 
-_toolbox-name(){
+_workbench-name(){
   echo "$CONTAINER_TYPE"
 }
 
-_toolbox-prompt() {
+_workbench-prompt() {
   local name
-  name=$(_toolbox-name)
+  name=$(_workbench-name)
   if [ -n "$name" ]; then
     echo "[$name]"
   fi
@@ -46,12 +46,12 @@ _toolbox-prompt() {
 
 export SSH_AGENT_ENV="$XDG_RUNTIME_DIR/ssh-agent.env"
 PREFERPS1="(\u@\h \W)"
-TOOLBOX=$(_toolbox-name)
-if [ -n "$TOOLBOX" ]; then
-  export TOOLBOX=$TOOLBOX
+WORKBENCH=$(_workbench-name)
+if [ -n "$WORKBENCH" ]; then
+  export WORKBENCH=$WORKBENCH
   PS1='\[\033[01;33m\]'$PREFERPS1'\[\033[0m\]> '
 else
-  unset TOOLBOX
+  unset WORKBENCH
   PS1=$PREFERPS1'$ '
   export PATH="$HOME/.bin/host:$PATH"
   if [ ! -e "$SSH_AGENT_ENV" ] || ! pgrep ssh-agent > /dev/null; then
@@ -68,7 +68,7 @@ for file in $(find "$HOME/.ssh/" -type f -name "*.key"); do
   ssh-add "$file" > /dev/null 2>&1
 done
 
-PS1="\$(_toolbox-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
+PS1="\$(_workbench-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
 for file in "$HOME/.bashrc.d/"*; do
   # shellcheck source=/dev/null
