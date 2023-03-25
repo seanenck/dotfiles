@@ -1,109 +1,28 @@
 #!/usr/bin/env bash
-NOTES="$LOCAL_STORE/notes"
-ACTIVE="$NOTES/active"
-REFS="$NOTES/refs"
 CACHE="$HOME/.cache/notes"
-if [ ! -d "$NOTES" ]; then
-  echo "no local notes store? $NOTES"
-  exit 1
-fi
-mkdir -p "$CACHE"
-if ! sudo jmtpfs "$CACHE" >/dev/null; then
+MOUNT="$CACHE/mount"
+DEST="$CACHE/files"
+mkdir -p "$MOUNT" "$DEST"
+if ! sudo jmtpfs "$MOUNT" >/dev/null; then
   echo "failed to mount"
   exit 1
 fi
 
-echo
-echo "processing..."
-echo "==="
-
-FAILURES=0
-_print() {
-  local prefix
-  prefix=""
-  if [ "$1" -ne 0 ]; then
-    FAILURES=$((FAILURES+1))
-    prefix="[ERROR] "
-  fi
-  echo " -> $prefix$2"
+_error() {
+  echo "[ERROR] $1"
 }
 
-DID=0
-_list() {
-  local f bname path mod curmod expmod offset exported pdf subdir notes hashed hashb hashd
-  offset="$CACHE/Supernote"
-  notes="$offset/Note/"
-  for f in $(sudo find "$notes" -type f -name "*.note"); do
-    subdir=$(dirname "${f#"$notes"}")
-    if [ "$subdir" == "." ]; then
-      subdir=""
-    else
-      subdir="$subdir/"
-    fi
-    bname=$(basename "$f")
-    if echo "$bname" | grep -v -q "^[01][0-9]\.[0123][0-9]\."; then
-      _print 1 "invalid note name: $bname"
-      continue
-    fi
-    mod=$(sudo stat --printf "%Y" "$f" 2>/dev/null)
-    if [ -z "$mod" ]; then
-      _print 1 "failed to stat: $bname"
-      continue
-    fi
-    pdf="${bname%".note"}".pdf
-    path="$ACTIVE/$subdir$pdf"
-    exported="$offset/EXPORT/$pdf"
-    expmod=$(sudo stat --printf "%Y" "$exported" 2>/dev/null)
-    if [ -z "$expmod" ]; then
-      _print 1 "failed to stat: $exported"
-      continue
-    fi
-    if [ -e "$path" ]; then
-      curmod=$(stat --printf "%Y" "$path")
-      if [ "$curmod" -ge "$mod" ]; then
-        _print 0 "up-to-date: $pdf"
-        continue
-      fi
-      if [ "$expmod" -lt "$mod" ]; then
-        _print 1 "export is stale: $exported"
-        continue
-      fi
-    fi
-    if [ -n "$subdir" ]; then
-      mkdir -p "$(dirname "$path")"
-    fi
-    if [ -e "$path" ]; then
-      hashed=$(sha256sum "$path" | cut -d " " -f 1 | cut -c 1-7)
-      hashb="$(basename "$path").$hashed"
-      hashd="$REFS/"
-      if ! cp "$path" "$hashd/$hashb"; then
-        _print 1 "failed to create backup: $path"
-        continue
-      fi
-    fi
-    if ! sudo cp "$exported" "$path"; then
-      _print 1 "failed to get export: $exported"
-      continue
-    fi
-    if ! sudo chown -R "$UID:$UID" "$NOTES"; then
-      _print 1 "failed to preserve ownership...continuing"
-    fi
-    _print 0 "updating: $bname -> $pdf"
-    DID=1
-  done
-}
-
-_list
-sudo umount "$CACHE"
-echo
-if [ "$DID" -eq 0 ]; then
-  if [ "$FAILURES" -eq 0 ]; then
-    echo "all files up-to-date"
-    echo
+EXPORTED="$MOUNT/Supernote/EXPORT"
+for file in $(sudo find "$EXPORTED" -type f -iname "*.pdf"); do
+  echo "copying: $file"
+  if ! sudo cp "$file" "$DEST/"; then
+    _error "unable to copy"
   fi
+done
+if ! sudo chown -R enck:enck "$DEST"; then
+  _error "unable to chown"
 fi
-if [ "$FAILURES" -gt 0 ]; then
-  echo "^^^ errors encountered ^^^"
-  echo
-  exit 1
-fi
+
+sudo umount "$MOUNT"
+echo "files in"
+echo "  $DEST"
