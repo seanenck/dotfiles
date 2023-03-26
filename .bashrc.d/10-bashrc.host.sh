@@ -24,18 +24,5 @@ _backups() {
   echo
 }
 
-_lb-completions() {
-  local file cnt
-  file="$HOME/.bashrc.d/99-lockbox.host.sh"
-  if [ -s "$file" ]; then
-    cnt=$(find "$file" -mtime +1 -type f | wc -l)
-    if [ "$cnt" -eq 0 ]; then
-      return
-    fi
-  fi
-  lb bash 2>/dev/null > "$file"
-}
-
-_lb-completions
 _backups
 system-ostree check
