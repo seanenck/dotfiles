@@ -34,9 +34,20 @@ _vim_plugins() {
 }
 
 _get-builds() {
-  if ! workbench --upstreams; then
+  local workbench dir file line name
+  workbench="$HOME/.cache/mirrors/workbench"
+  if [ ! -d "$workbench" ]; then
+    echo "missing $workbench mirror"
     exit 1
   fi
+  for dir in images tools; do
+    for file in $(git -C "$workbench" show HEAD:$dir/ 2>&1 | grep "Containerfile"); do
+      while IFS= read -r line; do
+        name=$(echo "$line" | rev | cut -d "/" -f 1 | rev)
+        echo "$name:$line"
+      done < <(git -C "$workbench" show "HEAD:$dir/$file" | grep "github.com" | cut -d " " -f 4 | sed 's/"//g')
+    done
+  done
 }
 
 _externals() {
