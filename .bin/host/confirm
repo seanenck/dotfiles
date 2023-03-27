@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-read -p "$@? (y/N) " yes
-if [ "$yes" != "y" ]; then
-  exit 1
-fi
-exit 0
