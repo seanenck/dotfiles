@@ -1,0 +1,34 @@
+#!/bin/bash
+CONF="$HOME/.config/voidedtech/upstream.bash"
+if [ ! -e "$CONF" ]; then
+  echo "missing config file"
+  exit 1
+fi
+source "$CONF"
+NEOVIM_PLUGINS="$HOME/.config/nvim/pack/plugins/start/"
+
+_neovim_plugin_update() {
+  local name dir
+  name=$(basename "$1")
+  echo "updating: $name"
+  dir="${NEOVIM_PLUGINS}$name"
+  if [ ! -d "$dir" ]; then
+    if ! git clone "$1" "$dir" --single-branch; then
+      echo "failed to clone $name"
+      exit 1
+    fi
+  fi
+  if ! git -C "$dir" pull origin $(git -C "$dir" rev-parse --abbrev-ref HEAD); then
+    echo "failed to update $name"
+    exit 1
+  fi
+}
+
+_neovim_plugins() {
+  mkdir -p "$NEOVIM_PLUGINS"
+  for f in "${PLUGINS[@]}"; do
+    _neovim_plugin_update "$f"
+  done
+}
+
+_neovim_plugins

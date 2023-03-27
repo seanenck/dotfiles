@@ -6,13 +6,6 @@ if ! git uncommitted --quiet; then
   echo
 fi
 
-if ! upstreams --check; then
-  echo
-  echo "upstreams:"
-  echo "  -> check for updates"
-  echo
-fi
-
 _backups() {
   systemctl start --user backups
   if data-sync --check; then
