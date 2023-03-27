@@ -66,7 +66,7 @@ _regen-media() {
 _sync() {
   local finished
   finished=1
-  if ! rsync -avcn --delete-after "$LOCAL_STORE/" "router.voidedtech.com:store/active/synced/" 2>&1; then
+  if ! rsync -avc --delete-after "$LOCAL_STORE/" "sync.voidedtech.com:store/active/synced/" 2>&1; then
     finished=0
   fi
   if [ $finished -eq 1 ]; then
