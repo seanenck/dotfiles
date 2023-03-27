@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-TARGET="store/active/backups/"
+TARGET="store/active/synced/"
 COMPLETE="completed all backups"
 MEDIA="$LOCAL_STORE/media/"
 READY="$HOME/.cache/backups.ready"
