@@ -58,15 +58,23 @@ else
     pkill ssh-agent
     ssh-agent > "$SSH_AGENT_ENV"
   fi
+  for file in $(find "$HOME/.ssh/" -type f -name "*.key"); do
+    ssh-add "$file" > /dev/null 2>&1
+  done
 fi
 
-if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-  source "$SSH_AGENT_ENV" >/dev/null
+if [ ! -f "$SSH_AUTH_SOCK" ]; then
+  if [ -e "$SSH_AGENT_ENV" ]; then
+    source "$SSH_AGENT_ENV" >/dev/null
+  fi
 fi
 
-for file in $(find "$HOME/.ssh/" -type f -name "*.key"); do
-  ssh-add "$file" > /dev/null 2>&1
-done
+if [ -z "$SSH_AGENT_PID" ]; then
+  echo
+  echo "ssh-agent:"
+  echo "  -> unavailable"
+  echo
+fi
 
 PS1="\$(_workbench-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
