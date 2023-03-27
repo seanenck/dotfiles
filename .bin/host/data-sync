@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
-TARGET="store/active/synced/"
 COMPLETE="completed all backups"
 MEDIA="$LOCAL_STORE/media/"
 READY="$HOME/.cache/backups.ready"
 TYPE="backups"
-DIRS=(".store")
 CHECK_DAYS=7
 CHECK="$CHECK_DAYS days ago"
 REPORT=0
@@ -15,13 +13,11 @@ if [ ! -e "$READY" ]; then
 fi
 
 _check() {
-  local d cnt
-  for d in "${DIRS[@]}"; do
-    cnt=$(find "$HOME/$d" -type f -mtime +$CHECK_DAYS | wc -l)
-    if [ "$cnt" -gt 0 ]; then
-      return
-    fi
-  done
+  local cnt
+  cnt=$(find "$LOCAL_STORE" -type f -mtime +$CHECK_DAYS | wc -l)
+  if [ "$cnt" -gt 0 ]; then
+    return
+  fi
   exit 0
 }
 
@@ -70,11 +66,9 @@ _regen-media() {
 _sync() {
   local finished
   finished=1
-  for f in "${DIRS[@]}"; do
-    if ! rsync -avc --delete-after "$HOME/$f" "router.voidedtech.com:$TARGET" 2>&1; then
-      finished=0
-    fi
-  done
+  if ! rsync -avcn --delete-after "$LOCAL_STORE/" "router.voidedtech.com:store/active/synced/" 2>&1; then
+    finished=0
+  fi
   if [ $finished -eq 1 ]; then
     echo "$COMPLETE"
   else
