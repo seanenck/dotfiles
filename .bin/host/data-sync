@@ -35,7 +35,7 @@ else
 fi
 
 if [ -n "$CHECK" ]; then
-  if journalctl -t "$TYPE" --since "$CHECK" | grep -q "$COMPLETE"; then
+  if journalctl -t "$TYPE" --since "$CHECK" MESSAGE="$COMPLETE" | grep -q "$COMPLETE"; then
     exit 0
   else
     if [ "$REPORT" -eq 1 ]; then
