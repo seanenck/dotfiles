@@ -7,6 +7,7 @@ TYPE="backups"
 CHECK_DAYS=7
 CHECK="$CHECK_DAYS days ago"
 REPORT=0
+WORLD_FILE="${LOCAL_STORE}/etc/world"
 
 if [ ! -e "$READY" ]; then
     echo "not ready for backups, missing: $READY"
@@ -77,5 +78,19 @@ _sync() {
   fi
 }
 
+_command() {
+  rpm-ostree status --booted --json | jq -r '.deployments[0]."'$1'"[]' | sed "s/^/$2: /g"
+}
+
+_ostree() {
+  mkdir -p $(dirname "$WORLD_FILE")
+  {
+    _command "requested-packages" "packages"
+    _command "requested-base-removals" "removals"
+    _command "requested-local-packages" "locals"
+  } | sort -u > "$WORLD_FILE"
+}
+
+_ostree
 _regen-media
 _sync | systemd-cat -t "$TYPE"

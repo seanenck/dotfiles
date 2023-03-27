@@ -18,4 +18,3 @@ _backups() {
 }
 
 _backups
-system-ostree check
