@@ -5,6 +5,11 @@ if [ ! -e "$CONF" ]; then
   echo "missing config file"
   exit 1
 fi
+WORKBENCH="$HOME/.cache/mirrors/workbench"
+if [ ! -d "$WORKBENCH" ]; then
+  echo "$WORKBENCH unavailable"
+  exit 1
+fi
 source "$CONF"
 mkdir -p "$UPSTREAM"
 VIM_PLUGINS="$HOME/.config/nvim/pack/plugins/start/"
@@ -34,18 +39,13 @@ _vim_plugins() {
 }
 
 _get-builds() {
-  local workbench dir file line name
-  workbench="$HOME/.cache/mirrors/workbench"
-  if [ ! -d "$workbench" ]; then
-    echo "missing $workbench mirror"
-    exit 1
-  fi
+  local dir file line name
   for dir in images tools; do
-    for file in $(git -C "$workbench" show HEAD:$dir/ 2>&1 | grep "Containerfile"); do
+    for file in $(git -C "$WORKBENCH_DIR" show HEAD:$dir/ 2>&1 | grep "Containerfile"); do
       while IFS= read -r line; do
         name=$(echo "$line" | rev | cut -d "/" -f 1 | rev)
         echo "$name:$line"
-      done < <(git -C "$workbench" show "HEAD:$dir/$file" | grep "github.com" | cut -d " " -f 4 | sed 's/"//g')
+      done < <(git -C "$WORKBENCH_DIR" show "HEAD:$dir/$file" | grep "github.com" | cut -d " " -f 4 | sed 's/"//g')
     done
   done
 }
@@ -97,6 +97,5 @@ if [ -n "$1" ]; then
   fi
   exit 0
 fi
-_get-builds >/dev/null
 _vim_plugins
 _externals
