@@ -7,7 +7,6 @@ if ! git uncommitted --quiet; then
 fi
 
 _backups() {
-  systemctl --user set-environment LOCAL_STORE="$LOCAL_STORE"
   systemctl start --user backups
   if data-sync --check; then
     return

@@ -23,8 +23,6 @@ export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export TERM=xterm-256color
 export DELTA_PAGER="less -c -X"
 export PATH="$HOME/.bin/:$PATH"
-export LOCAL_STORE="$HOME/.sync"
-export PKGS_STORE="$LOCAL_STORE/pkgs"
 
 # disable ctrl+s
 stty -ixon
