@@ -51,7 +51,6 @@ if [ -n "$WORKBENCH" ]; then
 else
   unset WORKBENCH
   PS1=$PREFERPS1'$ '
-  export PATH="$HOME/.bin/host:$PATH"
   for file in $(find "$HOME/.ssh/" -type f -name "*.key"); do
     ssh-add "$file" > /dev/null 2>&1
   done
