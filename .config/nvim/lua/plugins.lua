@@ -100,3 +100,8 @@ require("toggleterm").setup{
     open_mapping = [[<C-t>]],
     direction = "float",
 }
+
+-- update
+vim.api.nvim_create_user_command("UpdatePlugins", function() 
+    vim.cmd("make --no-print-directory -C ~/.config/nvim/")
+end, {})

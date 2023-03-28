@@ -17,8 +17,4 @@ _backups() {
   echo
 }
 
-neovim-plugins() {
-  make -C "$HOME/.config/nvim" | grep -v '^make'
-}
-
 _backups
