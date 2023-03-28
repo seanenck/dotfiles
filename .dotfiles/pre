@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+mkdir -p "$HOME/.cache/mirrors"
+mkdir -p "$PKGS_STORE"
+touch "$HOME/.cache/oclone.hst"
