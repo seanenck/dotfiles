@@ -51,7 +51,7 @@ if [ -n "$WORKBENCH" ]; then
 else
   unset WORKBENCH
   PS1=$PREFERPS1'$ '
-  for file in $(find "$HOME/.ssh/" -type f -name "*.key"); do
+  for file in "$HOME/.ssh/"*.key; do
     ssh-add "$file" > /dev/null 2>&1
   done
 fi
