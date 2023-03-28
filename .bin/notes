@@ -22,6 +22,9 @@ done
 if ! sudo chown -R enck:enck "$DEST"; then
   _error "unable to chown"
 fi
+if ! sudo cp ./*.pdf "$MOUNT/Supernote/Document/"; then
+  _error "failed to copy pdfs"
+fi
 
 sudo umount "$MOUNT"
 echo "files in"
