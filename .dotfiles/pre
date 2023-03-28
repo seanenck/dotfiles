@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 mkdir -p "$HOME/.cache/mirrors"
-mkdir -p "$PKGS_STORE"
 touch "$HOME/.cache/oclone.hst"
+if [ -n "$PKGS_STORE" ]; then
+  mkdir -p "$PKGS_STORE"
+fi
