@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source "$HOME/.bashrc.d/00-env.all.sh"
+source "$HOME/.bashrc.d/env.all.sh"
 COMPLETE="completed all backups"
 MEDIA="$LOCAL_STORE/media/"
 READY="$HOME/.cache/backups.ready"
