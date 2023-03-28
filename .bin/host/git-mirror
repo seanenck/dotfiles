@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CONFIG="$HOME/.config/voidedtech/git.bash"
+CONFIG="$HOME/.config/oclone/config.bash"
 if [ ! -e "$CONFIG" ]; then
   echo "no config file"
   exit 1

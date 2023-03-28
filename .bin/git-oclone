@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CONFIG="$HOME/.config/voidedtech/git.bash"
+CONFIG="$HOME/.config/oclone/config.bash"
 HIST="$HOME/.cache/oclone.hst"
 if [ ! -e "$CONFIG" ]; then
   echo "missing config"
