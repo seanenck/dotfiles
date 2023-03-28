@@ -1,6 +1,6 @@
 set $mod Mod4
 
-set $path /home/enck/.bin/host/
+set $path /home/enck/.bin/
 set $term alacritty
 set $menu $path/waymenu
 set $delay 1000
