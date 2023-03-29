@@ -7,7 +7,7 @@ TYPE="backups"
 CHECK_DAYS=7
 CHECK="$CHECK_DAYS days ago"
 REPORT=0
-WORLD_FILE="${LOCAL_STORE}/etc/world"
+WORLD_FILE="${LOCAL_STORE}/baseline/world"
 
 if [ ! -e "$READY" ]; then
     echo "not ready for backups, missing: $READY"
