@@ -39,8 +39,8 @@ oclone() {
   if [ "$(type -t "$cfg")" != "function" ]; then
     return
   fi
-  cfg=$($cfg)
   dst=$(echo "$in" | rev | cut -d '/' -f 1 | rev)
+  cfg=$($cfg "$dst" "$(basename "$dst")")
   if [ -z "$cfg" ]; then
     return
   fi
