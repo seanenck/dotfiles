@@ -49,8 +49,8 @@ local function setuplsp(exe, format_types)
                 }
             },
         }
-    elseif exe == "bash-language-server" then
-        lspconfig.bashls.setup{
+    elseif exe == "efm-langserver" then
+        lspconfig.efm.setup{
             on_attach = on_attach,
             capabilities = capabilities,
         }
@@ -82,7 +82,7 @@ local function setuplsp(exe, format_types)
 end
 
 setuplsp("rust-analyzer", "rs")
-setuplsp("bash-language-server", nil)
+setuplsp("efm-langserver", nil)
 setuplsp("gopls", "go")
 function toggle_diagnostics()
     vim.diagnostic.open_float(nil, {
