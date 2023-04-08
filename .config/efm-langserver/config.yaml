@@ -1,0 +1,26 @@
+version: 2
+root-markers:
+  - .git/
+lint-debounce: 1s
+
+tools:
+  sh-shellcheck: &sh-shellcheck
+    lint-command: 'shellcheck -f gcc -x'
+    lint-source: 'shellcheck'
+    lint-formats:
+      - '%f:%l:%c: %trror: %m'
+      - '%f:%l:%c: %tarning: %m'
+      - '%f:%l:%c: %tote: %m'
+
+  json-jq: &json-jq
+    lint-command: 'jq .'
+    lint-ignore-exit-code: true
+    lint-offset: 1
+    lint-formats:
+      - '%m at line %l, column %c'
+
+languages:
+  sh:
+    - <<: *sh-shellcheck
+  json:
+    - <<: *json-jq
