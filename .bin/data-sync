@@ -79,15 +79,13 @@ _sync() {
 }
 
 _command() {
-  rpm-ostree status --booted --json | jq -r '.deployments[0]."'$1'"[]' | sed "s/^/$2: /g"
+  rpm-ostree status --booted --json | jq -r '.deployments[0]."'$1'"[]'
 }
 
 _ostree() {
   mkdir -p $(dirname "$WORLD_FILE")
   {
-    _command "requested-packages" "packages"
-    _command "requested-base-removals" "removals"
-    _command "requested-local-packages" "locals"
+    _command "requested-packages"
   } | sort -u > "$WORLD_FILE"
 }
 
