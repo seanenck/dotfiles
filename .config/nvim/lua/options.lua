@@ -22,3 +22,4 @@ vim.opt.whichwrap = "b,s,<,>,[,],h,l"
 vim.opt.foldlevelstart = 99
 vim.opt.foldmethod = "indent"
 vim.opt.signcolumn = "yes"
+vim.opt.clipboard = "unnamedplus"
