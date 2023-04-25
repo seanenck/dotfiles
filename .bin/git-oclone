@@ -8,7 +8,7 @@ fi
 source "$CONFIG"
 
 oclone() {
-  local in spec dst url clone cfg rel
+  local in spec dst url clone cfg rel opts
   in="$1"
   if [ "$in" == "--list" ]; then
     {
@@ -28,7 +28,13 @@ oclone() {
   url=$($spec)
   rel=$(echo "$in" | cut -d '/' -f 2-)
   clone="$url$rel"
-  if ! git clone "$clone" "${@:2}"; then
+  opts="${repo}_options"
+  if [ "$(type -t "$opts")" == "function" ]; then
+    opts=$($opts)
+  else
+    opts=""
+  fi
+  if ! git $opts clone "$clone" "${@:2}"; then
     echo "clone failed"
     exit 1
   fi
