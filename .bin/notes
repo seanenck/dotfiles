@@ -22,7 +22,7 @@ done
 if ! sudo chown -R enck:enck "$DEST"; then
   _error "unable to chown"
 fi
-PDFS=$(find . -maxdepth=1 -type f -iname "*.pdf" | wc -l)
+PDFS=$(find . -maxdepth 1 -type f -iname "*.pdf" | wc -l)
 if [ "$PDFS" -gt 0 ]; then
   if ! sudo cp ./*.pdf "$MOUNT/Supernote/Document/"; then
     _error "failed to copy pdfs"
