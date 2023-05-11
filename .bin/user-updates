@@ -3,6 +3,7 @@ NVIM="$HOME/.config/nvim/"
 CACHE="$HOME/.cache/updates/"
 WORKBENCH="$CACHE/workbench"
 mkdir -p "$CACHE"
+echo "updating plugins..."
 if ! make --no-print-directory -C "$NVIM"; then
   echo "failed to update plugins"
   exit 1
@@ -13,6 +14,7 @@ if [ ! -d "$WORKBENCH" ]; then
     exit 1
   fi
 fi
+echo "version checks..."
 if ! git -C "$WORKBENCH" pull; then
   echo "failed to pull"
   exit 1
