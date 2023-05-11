@@ -14,7 +14,7 @@ _get:
 	@make _pull NAME=$(NAME) URL=$(URL)
 
 _clone:
-	test -d $(DEST) || git clone "$(URL)$(NAME)" $(DEST) --single-branch
+	@test -d $(DEST) || git clone "$(URL)$(NAME)" $(DEST) --single-branch
 
 _pull:
-	git -C $(DEST) pull origin $(shell git -C $(DEST) rev-parse --abbrev-ref HEAD)
+	@git -C $(DEST) pull origin $(shell git -C $(DEST) rev-parse --abbrev-ref HEAD)
