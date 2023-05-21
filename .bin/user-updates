@@ -23,3 +23,7 @@ if ! make -C "$WORKBENCH" versions; then
   echo "failed to check versions"
   exit 1
 fi
+if ! flatpak update; then
+  echo "failed to update flatpak packages"
+  exit 1
+fi
