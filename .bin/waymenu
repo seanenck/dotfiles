@@ -3,10 +3,12 @@ _apps() {
   local w
   echo "firefox,firefox --new-window,app"
   echo "files,thunar,app"
-  echo "vlc,flatpak run org.videolan.VLC,app"
   echo "terminal,alacritty,app"
   for w in "fastmail.com" "home.voidedtech.com" "voidedtech.com"; do
     echo "$w,$w,web"
+  done
+  for w in $(flatpak list --app --columns="application"); do
+    echo "$(echo "$w" | rev | cut -d '.' -f 1 | rev | tr '[:upper:]' '[:lower:]'),flatpak run $w,app"
   done
 }
 
