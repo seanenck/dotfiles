@@ -13,7 +13,9 @@ declare -a IGNORES=( \
   "firefox" \
   "mv" \
   "cp" \
-  "rm"
+  "rm" \
+  "vim" \
+  "lb"
 )
 
 if [ "$(wc -l "$FILE" | cut -d " " -f 1)" -lt $MIN_LINES ]; then
