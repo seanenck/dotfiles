@@ -21,7 +21,6 @@ nmap("q", "<Nop>")
 -- Disable ctrl jklh cursors
 disableall({"<S-Up>", "<S-Down>", "<S-Right>", "<S-Left>"})
 disableall({"<C-k>", "<C-j>", "<C-h>", "<C-l>", "<C-q>"})
-nmap("<C-s>", ":vsplit<CR>")
 
 -- Buffer/split movements
 nmap("<Tab>", ":bnext<CR>")
