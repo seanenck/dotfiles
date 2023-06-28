@@ -30,3 +30,4 @@ _versions() {
 
 _plugins
 _versions
+abw sync
