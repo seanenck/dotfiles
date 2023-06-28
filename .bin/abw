@@ -1,6 +1,26 @@
 #!/usr/bin/env bash
 REPODEST="/opt/packages/local"
 
+_syncpkgs() {
+  if ! rsync -avc --delete-after $(dirname "$REPODEST")/ router.voidedtech.com:"/mnt/storage/active/hosted/packages/"; then
+    echo "failed to sync packages"
+    exit 1
+  fi
+}
+
+if [ -n "$1" ]; then
+  case "$1" in
+    "sync")
+      _syncpkgs
+      exit 0
+      ;;
+    *)
+      echo "unknown command: $1"
+      exit 1
+      ;;
+  esac
+fi
+
 _abw-dirs() {
     local d
     for d in pkg src; do
@@ -98,6 +118,8 @@ abw() {
     _abw-cleanup
     if [ $errored -ne 0 ]; then
         echo "error ^"
+    else
+      _syncpkgs
     fi
 }
 
