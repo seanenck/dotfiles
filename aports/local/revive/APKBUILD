@@ -13,11 +13,11 @@ source="$pkgname-$pkgver.tar.gz::https://github.com/mgechev/revive/archive/refs/
 export GOPATH="$srcdir"
 
 build() {
-    go build $GOFLAGS
+  go build $GOFLAGS
 }
 
 package() {
-    install -Dm755 revive "$pkgdir/usr/bin/revive"
+  install -Dm755 revive "$pkgdir/usr/bin/revive"
 }
 
 sha512sums="

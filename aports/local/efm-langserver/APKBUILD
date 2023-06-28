@@ -13,11 +13,11 @@ source="$pkgname-$pkgver.tar.gz::https://github.com/mattn/efm-langserver/archive
 export GOPATH="$srcdir"
 
 build() {
-    go build $GOFLAGS
+  go build $GOFLAGS
 }
 
 package() {
-    install -Dm755 efm-langserver "$pkgdir/usr/bin/efm-langserver"
+  install -Dm755 efm-langserver "$pkgdir/usr/bin/efm-langserver"
 }
 
 sha512sums="

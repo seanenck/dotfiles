@@ -1,0 +1,27 @@
+# Maintainer: Sean Enck <enckse@voidedtech.com>
+pkgname=lockbox
+pkgver=1.3.3
+pkgrel=1
+pkgdesc="pass inspired,kdbx-based password manager"
+url="https://github.com/enckse/lockbox"
+license="GPL-3"
+arch="all"
+options="!check chmod-clean net"
+makedepends="go make"
+source="$pkgname-$pkgver.tar.gz::https://github.com/enckse/lockbox/archive/refs/tags/v$pkgver.tar.gz"
+
+export GOPATH="$srcdir"
+
+build() {
+  make
+  ./bin/lb bash > bin/completions
+}
+
+package() {
+  install -Dm755 bin/lb "$pkgdir/usr/bin/lb"
+  install -Dm644 bin/completions "$pkgdir/usr/share/bash-completion/completions/lb"
+}
+
+sha512sums="
+375c1906e7c710ea94aacabd0417d69b3bd3a587dc082dfecf85c4c0c9f1a6dda98ccf022a2b2f434696e704ee7ded583b79447e049c976770e5e52a76b8f26d  lockbox-1.3.3.tar.gz
+"

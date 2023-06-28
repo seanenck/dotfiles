@@ -13,11 +13,11 @@ source="$pkgname-$pkgver.tar.gz::https://github.com/mvdan/gofumpt/archive/refs/t
 export GOPATH="$srcdir"
 
 build() {
-    go build $GOFLAGS
+  go build $GOFLAGS
 }
 
 package() {
-    install -Dm755 gofumpt "$pkgdir/usr/bin/gofumpt"
+  install -Dm755 gofumpt "$pkgdir/usr/bin/gofumpt"
 }
 
 sha512sums="
