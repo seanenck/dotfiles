@@ -1,29 +1,7 @@
 #!/usr/bin/env bash
 NVIM="$HOME/.config/nvim/"
-CACHE="$HOME/.cache/updates/"
-WORKBENCH="$CACHE/workbench"
-mkdir -p "$CACHE"
 echo "updating plugins..."
 if ! make --no-print-directory -C "$NVIM"; then
   echo "failed to update plugins"
-  exit 1
-fi
-if [ ! -d "$WORKBENCH" ]; then
-  if ! git clone "https://github.com/enckse/workbench" "$WORKBENCH"; then
-    echo "failed to clone"
-    exit 1
-  fi
-fi
-echo "version checks..."
-if ! git -C "$WORKBENCH" pull; then
-  echo "failed to pull"
-  exit 1
-fi
-if ! make -C "$WORKBENCH" versions; then
-  echo "failed to check versions"
-  exit 1
-fi
-if ! flatpak update; then
-  echo "failed to update flatpak packages"
   exit 1
 fi
