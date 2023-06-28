@@ -55,6 +55,12 @@ else
     ssh-add "$file" > /dev/null 2>&1
   done
 fi
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    ssh-agent -t 1h > "$HOME/.cache/ssh-agent.env"
+fi
+if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+    source "$HOME/.cache/ssh-agent.env" >/dev/null
+fi
 
 PS1="\$(_workbench-prompt)\$(git-uncommitted --pwd 2>/dev/null)$PS1"
 
