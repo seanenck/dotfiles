@@ -38,10 +38,10 @@ _abw-cleanup() {
 }
 
 _abw-packages() {
-    local f bname name
+    local f name
     for f in $(find $REPODEST -type f -name "*.apk"); do
         name=$(_abw-name "$f") 
-        if [ ! -z "$1" ]; then
+        if [ -n "$1" ]; then
             if [[ "$name" == "$1" ]]; then 
                 echo "$f"
             fi
@@ -52,34 +52,34 @@ _abw-packages() {
 }
 
 _abw-name() {
-    basename $1 | rev | cut -d "-" -f 3- | rev
+    basename "$1" | rev | cut -d "-" -f 3- | rev
 }
 
 _abw-ver() {
-    basename $1 | rev | cut -d "-" -f 1,2 | cut -d "." -f 2- | rev
+    basename "$1" | rev | cut -d "-" -f 1,2 | cut -d "." -f 2- | rev
 }
 
 _abw-duplicates() {
     local p name n a first other deletes cnt cmp
     deletes=()
     for p in $(_abw-packages); do
-        name=$(_abw-name $p)
+        name=$(_abw-name "$p")
         a=()
-        for n in $(_abw-packages $name); do
-            a+=($n) 
+        for n in $(_abw-packages "$name"); do
+            a+=("$n") 
         done
         cnt=${#a[@]}
         if [ "$cnt" -gt 1 ]; then
             first="${a[0]}"
             for other in $(seq 1 $((cnt-1))); do
                 other=${a[$other]}
-                cmp=$(apk version -t $(_abw-ver $first) $(_abw-ver $other))
+                cmp=$(apk version -t "$(_abw-ver "$first")" "$(_abw-ver "$other")")
                 case "$cmp" in
                     ">")
-                        deletes+=($other)
+                        deletes+=("$other")
                         ;;
                     "<")
-                        deletes+=($first)
+                        deletes+=("$first")
                         ;;
                 esac
             done
@@ -90,7 +90,7 @@ _abw-duplicates() {
         read -p "delete ^ packages? (y/N) " n
         if [[ "$n" == "y" ]]; then 
             for p in $(echo ${deletes[*]} | sort -u); do
-                rm -f $p
+                rm -f "$p"
             done
         fi
     fi
@@ -113,7 +113,7 @@ abw() {
     repo=$(dirname $REPODEST)
     name=$(basename "$REPODEST")
     mkdir -p "$name"
-    cat /etc/apk/repositories | grep "http" > "$name/.rootbld-repositories"
+    grep "http" /etc/apk/repositories > "$name/.rootbld-repositories"
     if ! REPODEST="$repo" abuild rootbld; then
         errored=1
     fi
