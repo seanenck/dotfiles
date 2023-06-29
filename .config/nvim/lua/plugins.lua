@@ -97,6 +97,6 @@ vim.api.nvim_set_keymap("n", "<C-e>", ':call v:lua.toggle_diagnostics()<CR>', { 
 
 -- term
 require("toggleterm").setup{
-    open_mapping = [[<C-t>]],
+    open_mapping = [[<C-Space>]],
     direction = "float",
 }
