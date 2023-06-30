@@ -4,7 +4,6 @@ REPODEST="/opt/packages/local"
 _syncpkgs() {
   local src
   src=$(dirname "$REPODEST")
-  cp /etc/apk/world "$src/baseline/world"
   if ! rsync -avc --delete-after "$src/" router.voidedtech.com:"/mnt/storage/active/hosted/packages/"; then
     echo "failed to sync packages"
     exit 1
