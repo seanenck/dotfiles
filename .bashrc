@@ -33,7 +33,7 @@ shopt -s checkwinsize
 PREFERPS1="(\u@\h \W)"
 PS1=$PREFERPS1'$ '
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    ssh-agent -t 1h > "$HOME/.cache/ssh-agent.env"
+    ssh-agent > "$HOME/.cache/ssh-agent.env"
 fi
 export SSH_AUTH_SOCK="$HOME/.cache/ssh-agent.socket"
 if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
