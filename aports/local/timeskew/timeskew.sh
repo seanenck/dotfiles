@@ -13,10 +13,14 @@ _daemon() {
     if [ "$cur" != "$pid" ]; then
       return
     fi
-    lt=$(date +%s)
-    rt=$(curl --silent "http://router.voidedtech.com/time")
     sleep 10
-    delta=0
+    rt=$(curl --silent "http://router.voidedtech.com/time")
+    if [ -n "$rt" ] && [ "$rt" -eq "$rt" ] 2>/dev/null; then
+      lt=$(date +%s)
+      delta=0
+    else
+      continue
+    fi
     if [ "$lt" -gt "$rt" ]; then
       delta=$((lt-rt))
     else
