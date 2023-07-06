@@ -1,17 +1,8 @@
 #!/usr/bin/env bash
 PIDFILE="/run/timeskew.pid"
 
-_log() {
-  echo "$@" | logger -t timeskew
-}
-
-_datetime() {
-  date | cut -d " " -f 2- | rev | cut -d " " -f 3- | rev
-}
-
 _daemon() {
-  local dt pid cur reset h login
-  dt=$(_datetime)
+  local pid cur lt rt delta
   pid="$$"
   echo "$pid" > $PIDFILE
   while : ; do
@@ -22,28 +13,24 @@ _daemon() {
     if [ "$cur" != "$pid" ]; then
       return
     fi
-    sleep 1
-    reset=0
-    if awk "\$0>=\"$dt\"" < /var/log/messages | grep -q "WARNING: clock skew detected"; then
-      _log "potentially skewed time"
-      reset=1
-    fi
-    for h in /home/*; do
-      login="$h/.cache/login"
-      if [ -e "$login" ]; then
-        _log "user login detected: $login"
-        rm -f "$login"
-        reset=1
-      fi
-    done
-    if [ "$reset" -eq 1 ]; then
-      _log "restarting chrony"
-      pkill chronyd 2>&1 | logger -t timeskew
-      if ! rc-service chronyd restart 2>&1 | logger -t timeskew; then
-        continue
+    lt=$(date +%s)
+    rt=$(curl --silent "http://router.voidedtech.com/time")
+    sleep 10
+    delta=0
+    if [ "$lt" -gt "$rt" ]; then
+      delta=$((lt-rt))
+    else
+      if [ "$rt" -gt "$lt" ]; then
+        delta=$((rt-lt))
       fi
     fi
-    dt=$(_datetime)
+    if [ "$delta" -gt 10 ]; then
+      {
+        echo "delta detected, exceeds threshold: $delta (local: $lt, remote: $rt)"
+        pkill chronyd
+        rc-service chronyd restart
+      } 2>&1 | logger -t timeskew
+    fi
   done
 }
 
