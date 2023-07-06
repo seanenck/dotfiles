@@ -19,6 +19,8 @@ _daemon() {
       lt=$(date +%s)
       delta=0
     else
+      echo "failed to get remote time" | logger -t timeskew
+      sleep 5
       continue
     fi
     if [ "$lt" -gt "$rt" ]; then
