@@ -3,7 +3,7 @@
 command="/usr/bin/timeskew"
 description="timeskew daemon"
 pidfile="/run/timeskew.pid"
-command_args=""
+command_args="--daemon"
 
 depend() {
 	need ntp-server 
