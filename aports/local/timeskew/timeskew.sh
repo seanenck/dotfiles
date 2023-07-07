@@ -1,25 +1,12 @@
 #!/usr/bin/env bash
-PIDFILE="/run/timeskew.pid"
-
 _run() {
-  local pid cur lt rt delta is_daemon hr
+  local lt rt delta is_daemon hr
   is_daemon=0
   if [ "$1" == "--daemon" ]; then
     is_daemon=1
   fi
-  if [ "$is_daemon" -eq 1 ]; then
-    pid="$$"
-    echo "$pid" > $PIDFILE
-  fi
   while : ; do
     if [ "$is_daemon" -eq 1 ]; then
-      if [ ! -e "$PIDFILE" ]; then
-        return
-      fi
-      cur=$(cat "$PIDFILE")
-      if [ "$cur" != "$pid" ]; then
-        return
-      fi
       hr=$(date +%H)
       if [ "$hr" -lt 6 ] || [ "$hr" -gt 21 ]; then
         sleep 1800
@@ -60,8 +47,20 @@ _run() {
   done
 }
 
+_kill() {
+  local pid self
+  self="$$"
+  for pid in $(ps | grep "timeskew" | grep bash | awk '{print $1}'); do
+    if [ "$pid" == "$self" ]; then
+      continue
+    fi
+    kill -9 "$pid" 2>&1 | logger -t timeskew
+  done
+}
+
 if [ -n "$1" ]; then
   if [ "$1" == "--daemon" ]; then
+    _kill
     _run --daemon &
     exit 0
   fi
