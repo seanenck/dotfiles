@@ -2,7 +2,7 @@
 PIDFILE="/run/timeskew.pid"
 
 _run() {
-  local pid cur lt rt delta is_daemon
+  local pid cur lt rt delta is_daemon hr
   is_daemon=0
   if [ "$1" == "--daemon" ]; then
     is_daemon=1
@@ -20,7 +20,12 @@ _run() {
       if [ "$cur" != "$pid" ]; then
         return
       fi
-      sleep 10
+      hr=$(date +%H)
+      if [ "$hr" -lt 6 ] || [ "$hr" -gt 21 ]; then
+        sleep 1800
+      else
+        sleep 10
+      fi
     fi
     rt=$(curl --silent "http://router.voidedtech.com/time")
     if [ -n "$rt" ] && [ "$rt" -eq "$rt" ] 2>/dev/null; then

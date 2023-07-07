@@ -1,7 +1,7 @@
 # Maintainer: Sean Enck <enckse@voidedtech.com>
 pkgname=timeskew
-pkgver=2023.07.06
-pkgrel=13
+pkgver=2023.07.07
+pkgrel=1
 pkgdesc="simplistic timeskew manager script."
 url="https://github.com/enckse/dotfiles"
 license="GPL-3"
@@ -17,6 +17,6 @@ package() {
 }
 
 sha512sums="
-1038e3438e75177b81c9e8329ab992f09f60a3626c5c053209c9d664e5a18e95939ade1a2cb03eb498f6d5502f472bc1549b66f72fa0f72aaf64d3a3da92a335  timeskew.sh
+1732508df43f10a17fce5e8bb9b6d0dd1bb66812ff661e93c3659f38ebe0a8ccec5774bf6618acbfe9d2016bbc2ff1af7df65125f2f4ec2071e8858a99ebf36f  timeskew.sh
 e40ff38641fe690035b8d48b6705d83c898082e055f5553145c06ad730286715bdd10295cc70145c174082e57946e3fdac8954fe89daff0279c41c3c50b7bd5c  timeskew.openrc
 "
