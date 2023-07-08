@@ -1,18 +1,13 @@
 #!/usr/bin/env bash
 _run() {
-  local lt rt delta is_daemon hr
+  local lt rt delta is_daemon
   is_daemon=0
   if [ "$1" == "--daemon" ]; then
     is_daemon=1
   fi
   while : ; do
     if [ "$is_daemon" -eq 1 ]; then
-      hr=$(date +%H)
-      if [ "$hr" -lt 6 ] || [ "$hr" -gt 21 ]; then
-        sleep 1800
-      else
-        sleep 10
-      fi
+      sleep 10
     fi
     rt=$(curl --silent "http://router.voidedtech.com/time")
     if [ -n "$rt" ] && [ "$rt" -eq "$rt" ] 2>/dev/null; then
