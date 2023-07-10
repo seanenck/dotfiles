@@ -59,12 +59,6 @@ local function setuplsp(exe, format_types)
             on_attach = on_attach,
             capabilities = capabilities,
         }
-    elseif exe == "omnisharp" then
-        lspconfig.omnisharp.setup{
-            cmd = {"OmniSharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid())},
-            on_attach = on_attach,
-            capabilities = capabilities,
-        }
     else
         error("unknown lsp requested")
     end
@@ -89,7 +83,6 @@ end
 
 setuplsp("rust-analyzer", "rs")
 setuplsp("efm-langserver", nil)
-setuplsp("omnisharp", nil)
 setuplsp("gopls", "go")
 function toggle_diagnostics()
     vim.diagnostic.open_float(nil, {
