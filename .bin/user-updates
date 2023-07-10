@@ -6,7 +6,7 @@ HASHES=( \
   "f71dee3 https://github.com/mvdan/gofumpt" \
   "2b65be6 https://github.com/rxhanson/Rectangle" \
   "3352b02 https://github.com/utmapp/UTM" \
-  "052d314 https://github.com/kovidgoyal/kitty" \
+  "24b9e43 https://github.com/kovidgoyal/kitty" \
 )
 
 _plugins() {
