@@ -29,11 +29,9 @@ _run() {
     fi
     if [ "$is_daemon" -eq 1 ]; then
       if [ "$delta" -gt 10 ]; then
-        {
-          echo "delta detected, exceeds threshold: $delta (local: $lt, remote: $rt)"
-          pkill chronyd
-          rc-service chronyd restart
-        } 2>&1 | logger -t timeskew
+        echo "delta detected, exceeds threshold: $delta (local: $lt, remote: $rt)" | logger -t timeskew
+        pkill chronyd 2>&1 | logger -t timeskew
+        rc-service chronyd restart 2>&1 | logger -t timeskew
       fi
     else
       echo "delta: $delta, remote: $rt, local: $lt"
