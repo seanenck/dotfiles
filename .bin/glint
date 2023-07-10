@@ -6,4 +6,8 @@ glint() {
   go vet ./... 2>&1 | sed "s/^/[govet]       -> /g"
 }
 
-glint
+if [ -d "vendor" ] ; then
+  glint | grep -v "vendor/"
+else
+  glint
+fi
