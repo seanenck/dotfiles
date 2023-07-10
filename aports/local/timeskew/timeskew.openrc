@@ -5,5 +5,5 @@ description="timeskew daemon"
 command_args="--daemon"
 
 depend() {
-	need ntp-server 
+	need net
 }
