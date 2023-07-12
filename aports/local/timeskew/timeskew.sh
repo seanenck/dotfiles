@@ -1,15 +1,23 @@
 #!/usr/bin/env bash
+TIME_SOURCE="http://router.voidedtech.com/time"
+
 _run() {
-  local lt rt delta is_daemon
+  local lt rt delta is_daemon hr
   is_daemon=0
   if [ "$1" == "--daemon" ]; then
     is_daemon=1
   fi
   while : ; do
+    hr=$(curl --silent "$TIME_SOURCE?format=15")
+    if [ -n "$hr" ]; then
+      if [ "$hr" -gt 21 ] || [ "$hr" -lt 6 ]; then
+        sleep 1800
+      fi
+    fi
     if [ "$is_daemon" -eq 1 ]; then
       sleep 10
     fi
-    rt=$(curl --silent "http://router.voidedtech.com/time")
+    rt=$(curl --silent "$TIME_SOURCE")
     if [ -n "$rt" ] && [ "$rt" -eq "$rt" ] 2>/dev/null; then
       lt=$(date +%s)
       delta=0
@@ -34,7 +42,7 @@ _run() {
         rc-service chronyd restart 2>&1 | logger -t timeskew
       fi
     else
-      echo "delta: $delta, remote: $rt, local: $lt"
+      echo "delta: $delta, remote: $rt (hour: $hr), local: $lt"
       return
     fi
   done
