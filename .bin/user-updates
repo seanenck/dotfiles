@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 NVIM="$HOME/.config/nvim/"
-HASHES=( \
-  "9834273 https://github.com/mgechev/revive" \
-  "6087b1e https://github.com/mattn/efm-langserver" \
-  "f71dee3 https://github.com/mvdan/gofumpt" \
-  "2b65be6 https://github.com/rxhanson/Rectangle" \
-  "3352b02 https://github.com/utmapp/UTM" \
-  "24b9e43 https://github.com/kovidgoyal/kitty" \
-)
 
 _plugins() {
   echo "updating plugins..."
@@ -18,22 +10,6 @@ _plugins() {
   echo
 }
 
-_versions() {
-  local line hash url
-  echo "version checks..."
-  for line in "${HASHES[@]}"; do
-    hash=$(echo "$line" | cut -d " " -f 1)
-    url=$(echo "$line" | cut -d " " -f 2)
-    found=$(git ls-remote --tags --sort=v:refname "$url" | awk '{print $2}' | sha256sum | awk '{ print $1 }' | cut -c 1-7)
-    if [ "$found" != "$hash" ]; then
-      echo "$found $url"
-      echo "^ new hash (replaced $hash)"
-    fi
-  done
-  echo
-}
-
 _plugins
-_versions
 echo "syncing files..."
 abw sync
