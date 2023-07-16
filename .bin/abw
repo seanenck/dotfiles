@@ -24,102 +24,102 @@ if [ -n "$1" ]; then
 fi
 
 _abw-dirs() {
-    local d
-    for d in pkg src; do
-        rm -rf "$d"
-    done
- }
+  local d
+  for d in pkg src; do
+    rm -rf "$d"
+  done
+}
 
 _abw-cleanup() {
-    _abw-dirs
-    _abw-duplicates
-    echo "cleanup cleanup"
+  _abw-dirs
+  _abw-duplicates
+  echo "cleanup cleanup"
 }
 
 _abw-packages() {
-    local f name
-    for f in $(find $REPODEST -type f -name "*.apk"); do
-        name=$(_abw-name "$f") 
-        if [ -n "$1" ]; then
-            if [[ "$name" == "$1" ]]; then 
-                echo "$f"
-            fi
-            continue
-        fi
+  local f name
+  for f in $(find $REPODEST -type f -name "*.apk"); do
+    name=$(_abw-name "$f") 
+    if [ -n "$1" ]; then
+      if [[ "$name" == "$1" ]]; then 
         echo "$f"
-    done
+      fi
+      continue
+    fi
+    echo "$f"
+  done
 }
 
 _abw-name() {
-    basename "$1" | rev | cut -d "-" -f 3- | rev
+  basename "$1" | rev | cut -d "-" -f 3- | rev
 }
 
 _abw-ver() {
-    basename "$1" | rev | cut -d "-" -f 1,2 | cut -d "." -f 2- | rev
+  basename "$1" | rev | cut -d "-" -f 1,2 | cut -d "." -f 2- | rev
 }
 
 _abw-duplicates() {
-    local p name n a first other deletes cnt cmp
-    deletes=()
-    for p in $(_abw-packages); do
-        name=$(_abw-name "$p")
-        a=()
-        for n in $(_abw-packages "$name"); do
-            a+=("$n") 
-        done
-        cnt=${#a[@]}
-        if [ "$cnt" -gt 1 ]; then
-            first="${a[0]}"
-            for other in $(seq 1 $((cnt-1))); do
-                other=${a[$other]}
-                cmp=$(apk version -t "$(_abw-ver "$first")" "$(_abw-ver "$other")")
-                case "$cmp" in
-                    ">")
-                        deletes+=("$other")
-                        ;;
-                    "<")
-                        deletes+=("$first")
-                        ;;
-                esac
-            done
-        fi
+  local p name n a first other deletes cnt cmp
+  deletes=()
+  for p in $(_abw-packages); do
+    name=$(_abw-name "$p")
+    a=()
+    for n in $(_abw-packages "$name"); do
+      a+=("$n") 
     done
-    if [ "${#deletes[@]}" -gt 0 ]; then
-        echo "${deletes[*]}" | tr ' ' '\n' | sort -u
-        read -p "delete ^ packages? (y/N) " n
-        if [[ "$n" == "y" ]]; then 
-            for p in $(echo ${deletes[*]} | sort -u); do
-                rm -f "$p"
-            done
-        fi
+    cnt=${#a[@]}
+    if [ "$cnt" -gt 1 ]; then
+      first="${a[0]}"
+      for other in $(seq 1 $((cnt-1))); do
+        other=${a[$other]}
+        cmp=$(apk version -t "$(_abw-ver "$first")" "$(_abw-ver "$other")")
+        case "$cmp" in
+          ">")
+            deletes+=("$other")
+            ;;
+          "<")
+            deletes+=("$first")
+            ;;
+        esac
+      done
     fi
+  done
+  if [ "${#deletes[@]}" -gt 0 ]; then
+    echo "${deletes[*]}" | tr ' ' '\n' | sort -u
+    read -p "delete ^ packages? (y/N) " n
+    if [[ "$n" == "y" ]]; then 
+      for p in $(echo ${deletes[*]} | sort -u); do
+        rm -f "$p"
+      done
+    fi
+  fi
 }
 
 abw() {
     local errored repo name
     if [ ! -e APKBUILD ]; then
-        echo "no APKBUILD"
-        return
+      echo "no APKBUILD"
+      return
     fi
     if [ ! -d "$REPODEST" ]; then
-        echo "no $REPODEST found"
+      echo "no $REPODEST found"
     fi
     _abw-dirs
     errored=0
     if [ -x ./configure ]; then
-        ./configure
+      ./configure
     fi
     repo=$(dirname $REPODEST)
     name=$(basename "$REPODEST")
     mkdir -p "$name"
     grep "http" /etc/apk/repositories | grep -v "voidedtech\.com" > "$name/.rootbld-repositories"
     if ! REPODEST="$repo" abuild rootbld; then
-        errored=1
+      errored=1
     fi
     rm -rf "$name"
     _abw-cleanup
     if [ $errored -ne 0 ]; then
-        echo "error ^"
+      echo "error ^"
     else
       _syncpkgs
     fi
