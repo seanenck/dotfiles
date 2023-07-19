@@ -1,9 +1,0 @@
-#!/sbin/openrc-run
-
-command="/usr/bin/timeskew"
-description="timeskew daemon"
-command_args="--daemon"
-
-depend() {
-	need net
-}

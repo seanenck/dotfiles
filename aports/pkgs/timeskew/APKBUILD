@@ -1,23 +1,20 @@
 # Maintainer: Sean Enck <enckse@voidedtech.com>
 pkgname=timeskew
 pkgver=2023.07.19
-pkgrel=2
+pkgrel=6
 pkgdesc="simplistic timeskew manager script."
 url="https://github.com/enckse/dotfiles"
 license="GPL-3"
 arch="noarch"
 options="!check chmod-clean net"
 makedepends=""
-source="timeskew.sh timeskew.openrc"
+source="timeskew.sh"
 depends="bash"
-subpackages="$pkgname-openrc"
 
 package() {
-  install -Dm755 timeskew.openrc "$pkgdir/etc/init.d/timeskew"
   install -Dm755 timeskew.sh "$pkgdir/usr/bin/timeskew"
 }
 
 sha512sums="
-30ae20e2fc32bf1bc4c178cea78a55ac94b0553933b27bb6acf1ca0ccee8d391f3596396616662be30f8b66af693a342e8070684e20eb4ff50f2e2cfd5c6f4a0  timeskew.openrc
-2a3d828c662a59bd502022b83fa56f21c2b80fec8002ae4fc1e1708ae85c5b9080837a2adc4aabf92b3f25a4743d1d291adcd9a59ab2c0f68d8126b316fab8d5  timeskew.sh
+8be53aadc86a3ba62920984ed644980f96f75355ccfaa97c91ef47044b683a993204a27fce241dac64f977022767d36b44b20d0c019b5933a1fcaf4b8c5580a1  timeskew.sh
 "

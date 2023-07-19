@@ -48,20 +48,8 @@ _run() {
   done
 }
 
-_kill() {
-  local pid self
-  self="$$"
-  for pid in $(pgrep "timeskew"); do
-    if [ "$pid" == "$self" ]; then
-      continue
-    fi
-    kill -9 "$pid" 2>&1 | logger -t timeskew
-  done
-}
-
 if [ -n "$1" ]; then
   if [ "$1" == "--daemon" ]; then
-    _kill
     _run --daemon &
     exit 0
   fi
