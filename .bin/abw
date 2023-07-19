@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-REPODEST="/opt/packages/local"
+PACKAGES="/opt/packages"
+BASELINE="$PACKAGES/baseline/alpine"
+REPODEST="$BASELINE/pkgs"
 
 _syncpkgs() {
-  local src
-  src=$(dirname "$REPODEST")
-  if ! rsync -avc --delete-after "$src/" router.voidedtech.com:"/mnt/storage/active/hosted/packages/"; then
+  cp "$HOME/.abuild/"*.rsa* "$BASELINE/keys/"
+  if ! rsync -avc --delete-after "$PACKAGES/" router.voidedtech.com:"/mnt/storage/active/hosted/packages/"; then
     echo "failed to sync packages"
     exit 1
   fi
