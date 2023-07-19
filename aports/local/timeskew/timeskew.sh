@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 TIME_SOURCE="http://router.voidedtech.com/time"
 
 _run() {
@@ -51,7 +51,7 @@ _run() {
 _kill() {
   local pid self
   self="$$"
-  for pid in $(ps | grep "timeskew" | grep bash | awk '{print $1}'); do
+  for pid in $(pgrep "timeskew"); do
     if [ "$pid" == "$self" ]; then
       continue
     fi
