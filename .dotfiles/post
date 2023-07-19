@@ -2,8 +2,14 @@
 ABUILD_DIR=$HOME/.abuild
 ABUILD_CONF=$ABUILD_DIR/abuild.conf
 mkdir -p "$ABUILD_DIR"
-{
+
+_abuild-conf() {
+  local k
   printf 'PACKAGER="Sean Enck <enckse@voidedtech.com>"\n'
-  printf 'PACKAGER_PRIVKEY=%s/.abuild/enckse@voidedtech.com.rsa\n' "$HOME"
+  for k in "$ABUILD_DIR/"*.rsa; do
+    printf 'PACKAGER_PRIVKEY=%s\n' "$k"
+  done
   printf 'export GOFLAGS="-trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"'
-} > "$ABUILD_CONF"
+} 
+
+_abuild-conf > "$ABUILD_CONF"
