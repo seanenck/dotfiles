@@ -4,7 +4,7 @@ BASELINE="$PACKAGES/baseline/alpine"
 REPODEST="$BASELINE/pkgs"
 
 _syncpkgs() {
-  cp "$HOME/.abuild/"*.rsa* "$BASELINE/keys/"
+  cp "$HOME/.abuild/"*.rsa.pub "$BASELINE/keys/"
   if ! rsync -avc --delete-after "$PACKAGES/" router.voidedtech.com:"/mnt/storage/active/hosted/packages/"; then
     echo "failed to sync packages"
     exit 1
