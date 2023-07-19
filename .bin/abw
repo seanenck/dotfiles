@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 PACKAGES="/opt/packages"
-BASELINE="$PACKAGES/baseline/alpine"
+BASELINE="$PACKAGES/alpine"
 REPODEST="$BASELINE/pkgs"
 
 _syncpkgs() {
