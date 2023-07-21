@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-DOTPREFIX=".dotfiles"
+DOTPREFIX="dotfiles"
 
 _dotfiles_hook() {
   local h
@@ -22,11 +22,7 @@ _lsfiles() {
 }
 
 dotfiles() {
-  local f d
-  if [ ! -d ".git" ]; then
-    echo "not a git/parent directory"
-    return
-  fi
+  local f
   if [ ! -d "$DOTPREFIX" ]; then
     if [ ! -e "$DOTPREFIX" ]; then
       echo "not a dotfiles repository"
@@ -40,9 +36,6 @@ dotfiles() {
     ln -sf "$PWD/$f" "$HOME/$f"
   done
   _dotfiles_hook "$DOTPREFIX" "post"
-  for d in $(_lsfiles | grep '/' | cut -d '/' -f 1 | sort -u); do
-    find "$HOME/$d" -xtype l -delete
-  done
 }
 
 dotfiles
