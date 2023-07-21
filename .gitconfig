@@ -1,7 +1,7 @@
+[include]
+    path = ~/.gitconfig_local
 [core]
-    editor = nvim
     autocrlf = input
-    pager = delta
 [grep]
     lineNumber = true
 [log]
@@ -18,36 +18,7 @@
 [user]
     name = Sean Enck
     email = enckse@voidedtech.com
-    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKZsnnWWP93H4mHOW4w0CUQWVtElh7hvT86ZAXoMVbQo enck@desktop
 [help]
     format = man
-[commit]
-    gpgSign = true
-[tag]
-    gpgSign = true
-[diff "lb"]
-    textconv = lb conv
-[gpg]
-    format = ssh
-[gpg "ssh"]
-    allowedSignersFile = ~/.ssh/allowed_signers
 [merge]
     conflictstyle = diff3
-[interactive]
-    diffFilter = delta --color-only
-[delta]
-    navigate = true
-    light = false
-    features = decorations
-    keep-plus-minus-markers = true
-    line-numbers = true
-[diff]
-    colorMoved = default
-[delta "decorations"]
-    commit-decoration-style = blue ol
-    commit-style = raw
-    file-style = omit
-    hunk-header-decoration-style = blue box
-    hunk-header-file-style = red
-    hunk-header-line-number-style = "#067a00"
-    hunk-header-style = file line-number syntax
