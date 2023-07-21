@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-NAME=$(uname | tr '[:upper:]' '[:lower:]')
-if [ -d "$NAME" ]; then
-  if ! (cd "$NAME" && dotfiles); then
-    exit 1
-  fi
-fi

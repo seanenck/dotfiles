@@ -22,7 +22,7 @@ _lsfiles() {
 }
 
 dotfiles() {
-  local f
+  local f n
   if [ ! -d "$DOTPREFIX" ]; then
     if [ ! -e "$DOTPREFIX" ]; then
       echo "not a dotfiles repository"
@@ -36,6 +36,12 @@ dotfiles() {
     ln -sf "$PWD/$f" "$HOME/$f"
   done
   _dotfiles_hook "$DOTPREFIX" "post"
+  n=$(uname | tr '[:upper:]' '[:lower:]')
+  if [ -d "$n" ]; then
+    if ! (cd "$n" && $0); then
+      exit 1
+    fi
+  fi
 }
 
 dotfiles
