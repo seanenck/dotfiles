@@ -1,4 +1,5 @@
 export PATH="$HOME/.bin:$PATH"
+export CLICOLOR=1
 
 zstyle ':completion:*:*:git:*' user-commands uncommitted:'check for uncommitted changes' 
 autoload -Uz compinit && compinit

@@ -1,0 +1,14 @@
+#!/bin/sh
+FILE="$HOME/.env/dotfiles/.git/hooks/pre-commit"
+_setup() {
+cat << EOF
+#!/bin/sh
+echo
+echo "REPOSITORY IS READ-ONLY"
+echo
+exit 1
+EOF
+}
+
+_setup > "$FILE"
+chmod 755 "$FILE"
