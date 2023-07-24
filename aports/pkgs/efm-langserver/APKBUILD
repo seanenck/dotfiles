@@ -1,6 +1,6 @@
 # Maintainer: Sean Enck <enckse@voidedtech.com>
 pkgname=efm-langserver
-pkgver=0.0.44
+pkgver=0.0.46
 pkgrel=1
 pkgdesc="Generic language server implementation"
 url="https://github.com/mattn/efm-langserver"
@@ -21,5 +21,5 @@ package() {
 }
 
 sha512sums="
-d156e8e636f88c3fa8662c9dc154036d5162400d12e0b63e183eb4c4363b13957c7c78b630d3013f62430a8262bf3160be2503ad672e7141fbe12124bce5bb53  efm-langserver-0.0.44.tar.gz
+f5036007e4943c9a1d53f3eefdc5612f6405344cf211994e9d59627332c1ee3660f65ee016a57a335eb5ab0626d8561947e7fc2e779f592fb187cdd6c83bad98  efm-langserver-0.0.46.tar.gz
 "
