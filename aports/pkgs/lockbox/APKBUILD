@@ -1,6 +1,6 @@
 # Maintainer: Sean Enck <enckse@voidedtech.com>
 pkgname=lockbox
-pkgver=1.5.3
+pkgver=1.5.4
 pkgrel=1
 pkgdesc="pass inspired,kdbx-based password manager"
 url="https://github.com/enckse/lockbox"
@@ -24,5 +24,5 @@ package() {
 }
 
 sha512sums="
-937d0b36c9538fe27c85bc2bc0fe961ad3ce5fae69a764ef95c9a12ec5d7958dc3d5c868194335a11a16fd389f98484d9b7bfb5dc9befd6509483eef6f0b2a1e  lockbox-1.5.3.tar.gz
+713557d00ec00b79c3c635722f5fa413063c729c3ad1d9c7013ccbe0a325e7ff8df079483caa191ad8908086493c7e2af651e1862931c2438f8be44b6b5aacba  lockbox-1.5.4.tar.gz
 "
