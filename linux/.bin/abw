@@ -4,7 +4,17 @@ BASELINE="$PACKAGES/alpine"
 REPODEST="$BASELINE/pkgs"
 
 _syncpkgs() {
-  cp "$HOME/.abuild/"*.rsa.pub "$BASELINE/keys/"
+  local k b
+  for k in "$HOME/.abuild/"*.pub; do
+    b=$(basename "$k")
+    if ! cp "$k" "$BASELINE/keys/$b"; then
+      echo "failed to backup: $k"
+      exit 1
+    fi
+    if [ ! -s "/etc/apk/keys/$b" ]; then
+      echo "[WARN] $b is not in etc store"
+    fi
+  done
   if ! rsync -avc --delete-after "$PACKAGES/" router.voidedtech.com:"/mnt/storage/active/hosted/packages/"; then
     echo "failed to sync packages"
     exit 1
