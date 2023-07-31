@@ -23,6 +23,8 @@ _lsfiles() {
 
 dotfiles() {
   local f n
+  n=$(uname | tr '[:upper:]' '[:lower:]')
+  export DOTFILES_OS="$n"
   if [ ! -d "$DOTPREFIX" ]; then
     if [ ! -e "$DOTPREFIX" ]; then
       echo "not a dotfiles repository"
@@ -36,9 +38,8 @@ dotfiles() {
     ln -sf "$PWD/$f" "$HOME/$f"
   done
   _dotfiles_hook "$DOTPREFIX" "post"
-  n=$(uname | tr '[:upper:]' '[:lower:]')
-  if [ -d "$n" ]; then
-    if ! (cd "$n" && $0); then
+  if [ -d "$DOTFILES_OS" ]; then
+    if ! (cd "$DOTFILES_OS" && $0); then
       exit 1
     fi
   fi
