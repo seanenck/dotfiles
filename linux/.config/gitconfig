@@ -3,12 +3,6 @@
 [core]
     editor = nvim
     pager = delta
-[user]
-    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKZsnnWWP93H4mHOW4w0CUQWVtElh7hvT86ZAXoMVbQo enck@desktop
-[commit]
-    gpgSign = true
-[tag]
-    gpgSign = true
 [diff "lb"]
     textconv = lb conv
 [gpg]
