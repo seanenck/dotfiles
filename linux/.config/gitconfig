@@ -1,3 +1,5 @@
+[include]
+    path = ~/.config/gitconfig_private
 [core]
     editor = nvim
     pager = delta
