@@ -17,6 +17,7 @@
     showUntrackedFiles = all
 [user]
     name = Sean Enck
+    useConfigOnly = true
 [help]
     format = man
 [merge]
