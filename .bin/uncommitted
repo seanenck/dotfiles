@@ -4,23 +4,12 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-_all() {
-  local f code
-  code=0
-  for f in git; do
-    if ! uncommitted "$f" $@; then
-      code=1
-    fi
-  done
-  exit $code
-}
-
 MODE="$1"
 case "$1" in
   "git")
     ;;
   "all")
-    _all ${@:2}
+    MODE="git"
     ;;
   *)
     echo "unknown command: $1"
