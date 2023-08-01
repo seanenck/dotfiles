@@ -48,9 +48,14 @@ _git-commands() {
 }
 
 _jj-commands() {
-  if jj -R "$1" status | grep -v -E "^(Parent commit|Working copy ):" | grep -v '^The working copy is clean$' > /dev/null 2>&1; then
-    echo "$1 (status)"
-  fi
+  {
+    if jj -R "$1" status | grep -v -E "^(Parent commit|Working copy ):" | grep -v '^The working copy is clean$' > /dev/null 2>&1; then
+      echo "$1 (status)"
+    fi
+    if jj -R "$1" branch list | grep -E "(behind|ahead) by" | grep -q "commits"; then
+      echo "$1 (commits)"
+    fi
+  }
 }
 
 uncommit() {
