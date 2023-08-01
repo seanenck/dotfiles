@@ -1,5 +1,11 @@
 [include]
     path = ~/.config/gitconfig_private
+[user]
+    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKZsnnWWP93H4mHOW4w0CUQWVtElh7hvT86ZAXoMVbQo enck@desktop
+[commit]
+    gpgSign = true
+[tag]
+    gpgSign = true
 [core]
     editor = nvim
     pager = delta
@@ -27,4 +33,3 @@
     hunk-header-file-style = red
     hunk-header-line-number-style = "#067a00"
     hunk-header-style = file line-number syntax
-
