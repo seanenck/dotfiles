@@ -1,9 +1,5 @@
 [include]
     path = ~/.config/git/private
-[commit]
-    gpgSign = true
-[tag]
-    gpgSign = true
 [core]
     editor = nvim
     pager = delta
