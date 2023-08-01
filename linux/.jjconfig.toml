@@ -1,0 +1,12 @@
+[user]
+name = "Sean Enck"
+email = "enckse@voidedtech.com"
+
+[templates]
+log = 'builtin_log_detailed'
+
+[ui]
+pager = ["sh", "-c", "bat | less -RFX"]
+
+[aliases]
+lall = ["log", "-r", "all()"]
