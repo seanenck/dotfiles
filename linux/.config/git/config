@@ -5,10 +5,6 @@
     pager = delta
 [diff "lb"]
     textconv = lb conv
-[gpg]
-    format = ssh
-[gpg "ssh"]
-    allowedSignersFile = ~/.ssh/allowed_signers
 [interactive]
     diffFilter = delta --color-only
 [delta]
