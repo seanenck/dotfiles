@@ -26,3 +26,7 @@
    insteadOf = upstream:
 [url "router.voidedtech.com:/mnt/storage/active/git/private/"]
    insteadOf = private:
+[includeIf "hasconfig:remote.*.url:upstream:*"]
+   path = "~/.config/git/user"
+[includeIf "hasconfig:remote.*.url:private:*"]
+   path = "~/.config/git/user"
