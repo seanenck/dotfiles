@@ -43,7 +43,7 @@ for file in "$HOME/.ssh/"*.key; do
   ssh-add "$file" > /dev/null 2>&1
 done
 
-PS1="\$(git-uncommitted --pwd 2>/dev/null)$PS1"
+PS1="\$(uncommitted all --pwd 2>/dev/null)$PS1"
 
 for file in "$HOME/.bashrc.d/"*; do
   # shellcheck source=/dev/null
