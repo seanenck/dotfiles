@@ -16,7 +16,7 @@ if [ "$1" == "--list" ]; then
   {
     _targets
     cat "$CACHE"
-  } | sed 's#:#/#'
+  } | sed 's#:#/#' | sort
   exit 0
 fi
 
