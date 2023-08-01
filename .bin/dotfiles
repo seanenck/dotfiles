@@ -21,10 +21,6 @@ _lsfiles() {
     if [ "$isrev" == "true" ]; then
       git ls-files
       git ls-files --others
-    else
-      if jj status >/dev/null 2>&1; then
-        jj files .
-      fi
     fi
   } | grep '^\.' | grep -v "^$DOTPREFIX"
 }
