@@ -9,4 +9,4 @@ log = 'builtin_log_detailed'
 pager = ["sh", "-c", "bat | less -RFX"]
 
 [aliases]
-lall = ["log", "-r", "all()"]
+log-all = ["log", "-r", "all()"]

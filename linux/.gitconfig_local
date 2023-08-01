@@ -1,6 +1,10 @@
 [core]
     editor = nvim
     pager = delta
+[url "enck@router.voidedtech.com:/mnt/storage/active/git/public/"]
+   insteadOf = upstream:
+[url "enck@router.voidedtech.com:/mnt/storage/active/git/private/"]
+   insteadOf = private:
 [user]
     signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKZsnnWWP93H4mHOW4w0CUQWVtElh7hvT86ZAXoMVbQo enck@desktop
 [commit]
