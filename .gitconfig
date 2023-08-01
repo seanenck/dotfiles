@@ -22,3 +22,7 @@
     format = man
 [merge]
     conflictstyle = diff3
+[url "enck@router.voidedtech.com:/mnt/storage/active/git/public/"]
+   insteadOf = upstream:
+[url "enck@router.voidedtech.com:/mnt/storage/active/git/private/"]
+   insteadOf = private:
