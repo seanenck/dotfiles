@@ -5,5 +5,5 @@ alias ls='ls --color=auto'
 alias grep="rg"
 alias vi="$EDITOR"
 alias vim="$EDITOR"
-alias scp="rsync"
+alias scp="echo noop"
 alias abw-sync="abw sync"
