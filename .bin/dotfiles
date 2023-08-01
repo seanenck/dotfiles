@@ -15,9 +15,17 @@ _dotfiles_hook() {
 }
 
 _lsfiles() {
+  local isrev
   {
-    git ls-files
-    git ls-files --others
+    isrev=$(git -C "$PWD" rev-parse --is-inside-work-tree 2>/dev/null)
+    if [ "$isrve" == "true" ]; then
+      git ls-files
+      git ls-files --others
+    else
+      if jj status >/dev/null 2>&1; then
+        jj files .
+      fi
+    fi
   } | grep '^\.' | grep -v "^$DOTPREFIX"
 }
 
