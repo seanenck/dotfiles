@@ -16,7 +16,4 @@ _disk() {
 
 _disk
 echo
-if ! git uncommitted --quiet; then
-  git uncommitted | cut -d " " -f 1 | sort -u | sed "s#$HOME/##g" | sed 's/^/  -> /g' | sed '1i\uncommitted:'
-  echo
-fi
+git uncommitted | cut -d " " -f 1 | sort -u | sed "s#$HOME/##g" | sed 's/^/  -> /g' | sed '1i\uncommitted:'

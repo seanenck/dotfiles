@@ -87,8 +87,6 @@ uncommit() {
         printf '\e[31m%s\e[0m' "(dirty)"
       fi
       ;;
-    "--quiet")
-        ;;
     *)
       echo "unknown subcommand"
       exit 1
