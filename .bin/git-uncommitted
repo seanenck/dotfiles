@@ -9,6 +9,10 @@ _git-uncommit() {
 
 _tracked() {
   local tracked
+  if echo "$1" | grep -q "\/\.env\/"; then
+    echo 1
+    return
+  fi
   tracked=$(git -C "$1" config --list | grep 'user\.email' 2>&1)
   if [ -z "$tracked" ]; then
     echo 0
