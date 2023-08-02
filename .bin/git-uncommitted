@@ -7,7 +7,20 @@ _git-uncommit() {
   fi
 }
 
+_tracked() {
+  local tracked
+  tracked=$(git -C "$1" config --list | grep 'user\.email' 2>&1)
+  if [ -z "$tracked" ]; then
+    echo 0
+  else
+    echo 1
+  fi
+}
+
 _git-commands() {
+  if [ "$(_tracked "$1")" == 0 ]; then
+    return
+  fi
   {
     _git-uncommit "$1" update-index -q --refresh &
     _git-uncommit "$1" diff-index --name-only HEAD -- &
@@ -24,7 +37,7 @@ uncommit() {
   if [ -n "$1" ]; then
     if [ "$1" == "--pwd" ]; then
       isrev=$(git -C "$PWD" rev-parse --is-inside-work-tree 2>/dev/null)
-      if [ "$isrev" == "true" ]; then
+      if [ "$isrev" == "true" ] && [ "$(_tracked "$PWD")" == 1 ]; then
         res=$(_git-commands "$PWD")
       else
         exit 0
