@@ -21,16 +21,37 @@ _tracked() {
   fi
 }
 
+_git-command() {
+  case "$2" in
+    "update-index")
+      _git-uncommit "$1" "$2" -q --refresh
+    ;;
+    "diff-index")
+      _git-uncommit "$1" "$2" --name-only HEAD --
+    ;;
+    "status")
+      _git-uncommit "$1" "$2" -sb | grep "\[ahead "
+    ;;
+    "ls-files")
+      _git-uncommit "$1" "$2" --other --exclude-standard
+    ;;
+    "branch")
+      _git-uncommit "$1" "$2" --show-current | grep -v -E ',(main|master)$'
+    ;;
+  esac
+}
+
 _git-commands() {
+  local c
   if [ "$(_tracked "$1")" == 0 ]; then
     return
   fi
   {
-    _git-uncommit "$1" update-index -q --refresh
-    _git-uncommit "$1" diff-index --name-only HEAD --
-    _git-uncommit "$1" status -sb | grep "\[ahead "
-    _git-uncommit "$1" ls-files --other --exclude-standard
-    _git-uncommit "$1" branch --show-current | grep -v -E ',(main|master)$'
+    for c in update-index diff-index status ls-files branch; do
+      if _git-command "$1" "$c" | grep '^uncommit:'; then
+        break
+      fi
+    done
   } | grep '^uncommit:' | cut -d ':' -f 2- | cut -d ',' -f 1,2 | sed 's/,/ (/g' | sed 's/$/)/g' | sort -u
 }
 
