@@ -26,13 +26,12 @@ _git-commands() {
     return
   fi
   {
-    _git-uncommit "$1" update-index -q --refresh &
-    _git-uncommit "$1" diff-index --name-only HEAD -- &
-    _git-uncommit "$1" status -sb | grep "\[ahead " &
-    _git-uncommit "$1" ls-files --other --exclude-standard &
-    _git-uncommit "$1" branch --show-current | grep -v -E ',(main|master)$' &
+    _git-uncommit "$1" update-index -q --refresh
+    _git-uncommit "$1" diff-index --name-only HEAD --
+    _git-uncommit "$1" status -sb | grep "\[ahead "
+    _git-uncommit "$1" ls-files --other --exclude-standard
+    _git-uncommit "$1" branch --show-current | grep -v -E ',(main|master)$'
   } | grep '^uncommit:' | cut -d ':' -f 2- | cut -d ',' -f 1,2 | sed 's/,/ (/g' | sed 's/$/)/g' | sort -u
-  wait
 }
 
 uncommit() {
