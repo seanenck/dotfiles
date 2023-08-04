@@ -23,3 +23,4 @@ vim.opt.foldlevelstart = 99
 vim.opt.foldmethod = "indent"
 vim.opt.signcolumn = "yes"
 vim.opt.clipboard = "unnamedplus"
+vim.opt.omnifunc = "syntaxcomplete#Complete"

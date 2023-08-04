@@ -39,3 +39,6 @@ nmap("rr", "\"_dd")
 
 vim.api.nvim_set_hl(0, "Pmenu", {bg='black'})
 vim.api.nvim_set_hl(0, "Search", {bg='peru', fg='wheat'})
+
+-- completions as right arrow
+vim.api.nvim_exec("inoremap <expr><silent> <Right> pumvisible() ? '<C-Y>' : '<Right>'", false)
