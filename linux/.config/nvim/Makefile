@@ -3,11 +3,8 @@ DEST := $(PACK)$(NAME)
 
 all:
 	@make _get URL="https://github.com/vim-airline/" NAME="vim-airline"
-	@make _get URL="https://github.com/neovim/" NAME="nvim-lspconfig"
-	@make _get URL="https://github.com/hrsh7th/" NAME="nvim-cmp"
-	@make _get URL="https://github.com/hrsh7th/" NAME="cmp-nvim-lsp"
-	@make _get URL="https://github.com/L3MON4D3/" NAME="LuaSnip"
 	@make _get URL="https://github.com/akinsho/" NAME="toggleterm.nvim"
+	@make _get URL="https://github.com/dense-analysis/" NAME="ale"
 
 _get:
 	@make _clone NAME=$(NAME) URL=$(URL)
