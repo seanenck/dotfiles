@@ -34,7 +34,7 @@ vim.g.ale_fixers = {
 }
 ale_handle_fix("go")
 ale_handle_fix("perl")
-vim.g.ale_go_staticcheck_options = '-checks all'
+vim.g.ale_go_staticcheck_options = '-checks all -debug.run-quickfix-analyzers'
 
 -- term
 require("toggleterm").setup{
