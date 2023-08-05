@@ -123,7 +123,7 @@ abw() {
     repo=$(dirname $REPODEST)
     name=$(basename "$REPODEST")
     mkdir -p "$name"
-    grep "http" /etc/apk/repositories | grep -v "voidedtech\.com" > "$name/.rootbld-repositories"
+    grep "http" /etc/apk/repositories | grep -v '^@' | grep -v "voidedtech\.com" > "../.rootbld-repositories"
     if ! REPODEST="$repo" abuild rootbld; then
       errored=1
     fi
