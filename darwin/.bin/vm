@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+CONFIGS="$HOME/.vms/"
+_init() {
+  (cd "$CONFIGS/$1" && $HOME/.env/swiftvf/build/swiftvf --config "$CONFIGS/$1.json" $2)
+}
+
+_status() {
+  if screen -list | grep -q "\.$1"; then
+    echo "running"
+    exit 0
+  fi
+  echo "stopped"
+}
+
+_start() {
+  local script
+  _status "$1"
+  script="vm init $1"
+  if ! $script "--verify"; then
+    echo "verify failed"
+    exit 1
+  fi
+  echo
+  echo "starting $1..."
+  echo
+  screen -S $1 -d -m $script
+}
+
+if [ -z "$1" ]; then
+  echo "command required"
+  exit 1
+fi
+if [ "$1" != "ls" ]; then
+  if [ -z "$2" ]; then
+    echo "vm required"
+    exit 1
+  fi
+  if [ ! -e "$CONFIGS/$2.json" ]; then
+    echo "$2 is not a valid vm"
+    exit 1
+  fi
+fi
+
+case "$1" in
+  "start")
+    _start $2
+  ;;
+  "init")
+    _init $2 $3 
+  ;;
+  "stop")
+    pkill swiftvf
+  ;;
+  "attach")
+    screen -r $2
+  ;;
+  "status")
+    _status $2
+  ;;
+  "ls")
+    ls "$CONFIGS" | grep json | rev | cut -d "." -f 2- | rev  
+  ;;
+  *)
+    echo "unknown command: $1"
+    exit 1
+  ;;
+esac
