@@ -1,0 +1,5 @@
+#!/bin/sh
+e="$HOME/.env/"
+for f in $(ls "$e"); do
+  git -C "$e$f" pull
+done
