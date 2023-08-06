@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 CONFIGS="$HOME/.vms/"
 _init() {
-  (cd "$CONFIGS/$1" && $HOME/.env/swiftvf/build/swiftvf --config "$CONFIGS/$1.json" $2)
+  (cd "$CONFIGS/$1" && $HOME/.env/swiftvf/build/swiftvf --config "$CONFIGS/$1/config.json" $2)
 }
 
 _status() {
@@ -35,7 +35,7 @@ if [ "$1" != "ls" ]; then
     echo "vm required"
     exit 1
   fi
-  if [ ! -e "$CONFIGS/$2.json" ]; then
+  if [ ! -e "$CONFIGS/$2/config.json" ]; then
     echo "$2 is not a valid vm"
     exit 1
   fi
@@ -58,7 +58,7 @@ case "$1" in
     _status $2
   ;;
   "ls")
-    ls "$CONFIGS" | grep json | rev | cut -d "." -f 2- | rev  
+    ls "$CONFIGS"
   ;;
   *)
     echo "unknown command: $1"
