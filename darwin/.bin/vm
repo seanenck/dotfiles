@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 CONFIGS="$HOME/.vms/"
 _init() {
-  (cd "$CONFIGS/$1" && $HOME/.env/swiftvf/build/swiftvf --config "$CONFIGS/$1/config.json" $2)
+  (cd "$CONFIGS/$1" && swiftvf --config "$CONFIGS/$1/config.json" $2)
 }
 
 _status() {
