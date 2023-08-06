@@ -1,11 +1,6 @@
 export PATH="$HOME/.bin:$PATH"
 export CLICOLOR=1
 
-CONFD="$HOME/.zshrc.d"
-if [ -d "$CONFD" ]; then
-    source "$CONFD/"*
-fi
-
 zstyle ':completion:*:*:git:*' user-commands uncommitted:'check for uncommitted changes' 
 autoload -Uz compinit && compinit
 COMPLETIONS="$HOME/.completions"
@@ -22,6 +17,11 @@ if [ -s "$LB_COMP" ]; then
   source "$LB_COMP"
   compdef _lb lb
 fi
-unset COMPLETIONS LB_COMP
+
+CONFD="$HOME/.zshrc.d"
+if [ -d "$CONFD" ]; then
+    source "$CONFD/"*
+fi
+unset COMPLETIONS LB_COMP CONFD
 
 git uncommitted
