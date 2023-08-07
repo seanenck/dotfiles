@@ -13,22 +13,12 @@ _status() {
 }
 
 _start() {
-  local script pre
+  local script
   _status "$1"
-  pre="$CONFIGS$1/pre"
-  if [ -x "$pre" ]; then
-    if ! $pre; then
-      exit 1
-    fi
-  fi
-  script="vm init $1"
-  if ! $script "--verify"; then
-    echo "verify failed"
-    exit 1
-  fi
   echo
   echo "starting $1..."
   echo
+  script="vm init $1"
   screen -S $1 -d -m $script
 }
 
