@@ -1,4 +1,4 @@
-vim.o.runtimepath = vim.o.runtimepath .. ',/usr/share/vim/vimfiles'
+vim.o.runtimepath = vim.o.runtimepath
 vim.o.directory = "/home/enck/.cache/nvim"
 
 -- Plugins
