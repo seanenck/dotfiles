@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 CONFIGS="$HOME/.vms/"
 _init() {
-  (cd "$CONFIGS$1" && swiftvf --config "$CONFIGS$1/config.json" $2)
+  (cd "$CONFIGS$1" && vfu --config "$CONFIGS$1/config.json" $2)
 }
 
 _status() {
@@ -49,7 +49,7 @@ case "$1" in
     _init $2 $3 
   ;;
   "stop")
-    pkill swiftvf
+    pkill vfu
   ;;
   "attach")
     screen -r $2
