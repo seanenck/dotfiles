@@ -1,12 +1,33 @@
 #!/usr/bin/env bash
-NVIM="$HOME/.config/nvim/"
+PACK="$HOME/.config/nvim/pack/plugins/start/"
+PLUGINS=(
+  "https://github.com/vim-airline/vim-airline" \
+  "https://github.com/neovim/nvim-lspconfig" \
+  "https://github.com/hrsh7th/nvim-cmp" \
+  "https://github.com/hrsh7th/cmp-nvim-lsp" \
+  "https://github.com/L3MON4D3/LuaSnip" \
+  "https://github.com/akinsho/toggleterm.nvim" \
+  "https://github.com/mhartington/formatter.nvim"
+)
 
 _plugins() {
+  local bname url dest
   echo "updating plugins..."
-  if ! make --no-print-directory -C "$NVIM"; then
-    echo "failed to update plugins"
-    exit 1
-  fi
+  for url in "${PLUGINS[@]}"; do
+    bname=$(basename "$url")
+    echo "updating: $bname"
+    dest="$PACK/$bname"
+    if [ ! -d "$dest" ]; then
+      if ! git clone "$url" "$dest" --single-branch; then
+        echo "unable to clone"
+        exit 1
+      fi
+    fi
+    if ! git -C "$dest" pull origin "$(git -C "$dest" rev-parse --abbrev-ref HEAD)"; then
+      echo "failed to pull updates"
+      exit 1
+    fi
+  done
   echo
 }
 
