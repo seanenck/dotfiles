@@ -20,10 +20,11 @@ tools:
       - '%m at line %l, column %c'
 
   perl-perlcritic: &perl-perlcritic
-    lint-command: 'perlcritic --nocolor -3 --verbose "%l:%c %m\n"'
+    lint-command: 'perlcritic --nocolor --verbose "%l:%c %m\n"'
     lint-ignore-exit-code: true
     lint-formats:
       - '%l:%c %m'
+
   perl-perltidy: &perl-perltidy
     format-command: "perltidy -b"
     format-stdin: true
