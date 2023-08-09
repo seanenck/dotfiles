@@ -9,7 +9,6 @@ all:
 	@make _get URL="https://github.com/L3MON4D3/" NAME="LuaSnip"
 	@make _get URL="https://github.com/akinsho/" NAME="toggleterm.nvim"
 	@make _get URL="https://github.com/mhartington/" NAME="formatter.nvim"
-	@make _get URL="https://github.com/dense-analysis/" NAME="ale"
 
 _get:
 	@make _clone NAME=$(NAME) URL=$(URL)

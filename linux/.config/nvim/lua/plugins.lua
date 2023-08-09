@@ -54,17 +54,26 @@ local function setuplsp(exe, format_types)
             on_attach = on_attach,
             capabilities = capabilities,
         }
+    elseif exe == "efm-langserver" then
+        lspconfig.efm.setup{
+            on_attach = on_attach,
+            capabilities = capabilities,
+            init_options = {documentFormatting = true},
+        }
     else
         error("unknown lsp requested")
     end
-    if format_types ~= nil then
-        vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-            pattern = { "*." .. format_types },
-            callback = function()
-                vim.lsp.buf.format { async = false }
+    vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+        pattern = { "*" },
+        callback = function()
+            for _, ft in ipairs(format_types) do
+                if vim.bo.filetype ~= ft then
+                    vim.lsp.buf.format { async = false }
+                    return
+                end
             end
-        })
-    end
+        end
+    })
     vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         vim.lsp.diagnostic.on_publish_diagnostics,
         {
@@ -76,8 +85,9 @@ local function setuplsp(exe, format_types)
     )
 end
 
-setuplsp("rust-analyzer", "rs")
-setuplsp("gopls", "go")
+setuplsp("rust-analyzer", {"rust"})
+setuplsp("gopls", {"go"})
+setuplsp("efm-langserver", {"perl"})
 function toggle_diagnostics()
     vim.diagnostic.open_float(nil, {
         focus=false,
@@ -88,49 +98,6 @@ function toggle_diagnostics()
     })
 end
 vim.api.nvim_set_keymap("n", "<C-e>", ':call v:lua.toggle_diagnostics()<CR>', { noremap = true, silent = true })
-
--- ale
-function ale_handlers(ft, has_fixers)
-    vim.api.nvim_create_autocmd({ "BufRead", "BufEnter" }, {
-        pattern = { "*" },
-        callback = function()
-            if vim.bo.filetype ~= ft then
-                return
-            end
-            vim.b.ale_enabled = 1
-        end
-    })
-    if has_fixers then
-        vim.api.nvim_create_autocmd({ "BufWrite" }, {
-            pattern = { "*" },
-            callback = function()
-                if vim.bo.filetype ~= ft then
-                    return
-                end
-                vim.api.nvim_exec("autocmd User ALEFixPost let g:override_alefix=0", false)
-                vim.g.override_alefix = 1
-                vim.api.nvim_exec(":ALEFix", false)
-                while vim.g.override_alefix == 1 do
-                    vim.api.nvim_exec("sleep 5m", false)
-                end
-            end
-        })
-    end
-end
-
-vim.g.ale_enabled = 0
-vim.g.ale_set_highlights = 0
-vim.g.ale_sign_column_always = 1
-vim.g.ale_completion_enabled = 1
-vim.g.ale_linters = {
-    ["perl"] = {"perl", "perlcritic"},
-    ["sh"] = {"shellcheck"},
-}
-vim.g.ale_fixers = {
-    ["perl"] = {"perltidy"},
-}
-ale_handlers("perl", true)
-ale_handlers("sh", false)
 
 -- term
 require("toggleterm").setup{
