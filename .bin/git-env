@@ -1,0 +1,11 @@
+#!/bin/sh
+for f in "$HOME/.env/"*; do
+  echo "updating: $f"
+  for mode in fetch pull; do
+    if ! git -C "$f" "$mode"; then
+      echo "failed: $mode"
+      exit 1
+    fi
+  done
+  echo
+done
