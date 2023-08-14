@@ -16,12 +16,18 @@ HISTCONTROL=ignoreboth:erasedups
 HISTSIZE=-1
 HISTFILESIZE=-1
 
-export VISUAL=nvim
+export VISUAL=vi
+if [ -x /usr/bin/nvim ]; then
+  export VISUAL=nvim
+fi
+if [ -x /usr/bin/delta ]; then
+  export DELTA_PAGER="less -c -X"
+fi
+
 export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export TERM=xterm-256color
-export DELTA_PAGER="less -c -X"
 export PATH="$HOME/.bin/:$PATH"
 
 # disable ctrl+s
@@ -43,7 +49,10 @@ for file in "$HOME/.ssh/"*.key; do
   ssh-add "$file" > /dev/null 2>&1
 done
 
-PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
+if [ -x /usr/bin/perl ]; then
+  export HAS_PERL=1
+  PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
+fi
 
 for file in "$HOME/.bashrc.d/"*; do
   # shellcheck source=/dev/null

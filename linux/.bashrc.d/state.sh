@@ -10,4 +10,6 @@ _disk() {
 
 _disk
 echo
-git uncommitted
+if [ -n "$HAS_PERL" ]; then
+  git uncommitted
+fi
