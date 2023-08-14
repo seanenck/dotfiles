@@ -23,3 +23,7 @@
     hunk-header-file-style = red
     hunk-header-line-number-style = "#067a00"
     hunk-header-style = file line-number syntax
+[url "router.voidedtech.com:/mnt/storage/active/git/public/"]
+   insteadOf = upstream:
+[includeIf "hasconfig:remote.*.url:upstream:*"]
+   path = "~/.config/git/user"
