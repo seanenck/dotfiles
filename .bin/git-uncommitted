@@ -41,8 +41,6 @@ if ( not $is_pwd ) {
     my @targets;
     push( @targets, ".env" );
     push( @targets, "workspace" );
-    push( @targets, "Workspace" );
-    push( @targets, "OTHER" );
     my $home = $ENV{"HOME"};
     if ( not $home ) {
         die("unable to get home");
