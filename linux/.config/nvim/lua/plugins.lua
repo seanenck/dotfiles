@@ -67,7 +67,7 @@ local function setuplsp(exe, format_types)
         pattern = { "*" },
         callback = function()
             for _, ft in ipairs(format_types) do
-                if vim.bo.filetype ~= ft then
+                if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" and vim.bo.filetype ~= ft then
                     vim.lsp.buf.format { async = false }
                     return
                 end
