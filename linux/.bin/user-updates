@@ -32,5 +32,3 @@ _plugins() {
 }
 
 _plugins
-echo "syncing files..."
-abw sync

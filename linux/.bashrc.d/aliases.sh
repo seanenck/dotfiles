@@ -10,4 +10,3 @@ fi
 alias vi="$EDITOR"
 alias vim="$EDITOR"
 alias scp="echo noop"
-alias abw-sync="abw sync"
