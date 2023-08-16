@@ -3,8 +3,6 @@
 [core]
     editor = nvim
     pager = delta
-[diff "lb"]
-    textconv = lb conv
 [interactive]
     diffFilter = delta --color-only
 [delta]
