@@ -28,7 +28,7 @@ workbench-$t() {
     exit 1
   fi
   h=$CONTAINER_HOME/$t
-  if distrobox-list | cut -d "|" -f 2 | grep -q -v '$t'; then
+  if ! distrobox-list | cut -d "|" -f 2 | grep -q '$t'; then
     if ! distrobox-create --name $t --image localhost/$t --home \$h --volume $HOME/workspace:\$h/workspace --volume $HOME/downloads:\$h/downloads; then
       echo "failed to create $t"
       exit 1
