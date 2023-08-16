@@ -37,5 +37,6 @@ workbench-$t() {
   distrobox-enter --name $t --no-workdir
 }
 EOF
+  cat state.sh
   done
-} > "$HOME/.bashrc_containers"
+} > "$HOME/.bashrc_host"
