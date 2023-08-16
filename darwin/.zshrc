@@ -20,4 +20,5 @@ done
 
 unset file COMPLETIONS LB_COMP 
 
+export TERM=xterm-256color
 git uncommitted
