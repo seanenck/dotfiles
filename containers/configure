@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+CONTAINER_HOME=/var/home/enck
+if env | grep -q "^DISTROBOX"; then
+  echo "can NOT run from distrobox"
+  exit 1
+fi
+if [ -z "$1" ]; then
+  echo "no target given"
+  exit 1
+fi
+FILE="$1.Containerfile"
+if [ ! -s "$FILE" ]; then
+  echo "no containerfile definition found"
+  exit 1
+fi
+if ! podman build -f "$FILE" -t "$1"; then
+  echo "podman failed"
+  exit 1
+fi
+{
+  printf "#!/usr/bin/env bash\n"
+  for t in $(echo "$TARGETS"); do
+    cat << EOF
+workbench-$t() {
+  local h
+  if ! podman images | grep -q '^localhost/$t'; then
+    echo "image not found/not built?"
+    exit 1
+  fi
+  h=$CONTAINER_HOME/$t
+  if ! distrobox-create --name $t --image localhost/$t --home \$h --volume $HOME/workspace:\$h/workspace --volume $HOME/downloads:\$h/downloads; then
+    echo "failed to create $t"
+    exit 1
+  fi
+  exec distrobox-enter --name $t --no-workdir
+}
+EOF
+  done
+} > "$HOME/.bashrc_containers"
