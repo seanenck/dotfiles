@@ -17,9 +17,10 @@ if ! podman build -f "$FILE" -t "$1"; then
   echo "podman failed"
   exit 1
 fi
-{
-  printf "#!/usr/bin/env bash\n"
-  for t in $(echo "$TARGETS"); do
+for t in $(echo "$TARGETS"); do
+  file="$HOME/bin/workbench-$t"
+  {
+    printf "#!/usr/bin/env bash\n"
     cat << EOF
 workbench-$t() {
   local h
@@ -34,9 +35,14 @@ workbench-$t() {
       exit 1
     fi
   fi
-  distrobox-enter --name $t --no-workdir
+  exec distrobox-enter --name $t --no-workdir
 }
+
+workbench-$t
 EOF
-  cat state.sh
-  done
-} > "$HOME/.bashrc_host"
+  } > "$file"
+  chmod 755 "$file"
+done
+for f in *.sh; do
+  install -Dm755 $f "$HOME/bin/$(basename "$f" | sed 's/\.sh//g')"
+done

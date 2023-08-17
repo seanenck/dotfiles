@@ -1,7 +1,6 @@
 TARGETS := $(shell ls *.Containerfile | cut -d "." -f 1)
 
-all:
-	$(error select a target)
+all: $(TARGETS)
 
 $(TARGETS):
 	TARGETS="$(TARGETS)" ./configure "$@"
