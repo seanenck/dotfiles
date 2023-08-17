@@ -22,7 +22,7 @@
     format = man
 [merge]
     conflictstyle = diff3
-[url "router.voidedtech.com:/mnt/storage/active/git/private/"]
+[url "store.voidedtech.com:/mnt/storage/active/git/private/"]
    insteadOf = private:
 [includeIf "hasconfig:remote.*.url:private:*"]
    path = "~/.config/git/user"
