@@ -21,4 +21,5 @@ done
 unset file COMPLETIONS LB_COMP 
 
 export TERM=xterm-256color
+alias scp="echo noop"
 git uncommitted
