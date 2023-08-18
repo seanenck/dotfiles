@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 _df() {
   df -h 2>/dev/null | grep "^$1" | grep "$2" | awk '{printf("%-15s%s\n", $1, $5)}' | sort -u | sed 's/^/  -> /g'
 }

@@ -17,8 +17,9 @@ if ! podman build -f "$FILE" -t "$1"; then
   echo "podman failed"
   exit 1
 fi
-for t in $(echo "$TARGETS"); do
-  file="$HOME/bin/workbench-$t"
+EXPORTS="$HOME/.hostrc"
+echo "#!/usr/bin/env bash" > "$EXPORTS"
+for t in $(ls *.Containerfile | cut -d "." -f 1); do
   {
     printf "#!/usr/bin/env bash\n"
     cat << EOF
@@ -26,23 +27,18 @@ workbench-$t() {
   local h
   if ! podman images | grep -q '^localhost/$t'; then
     echo "image not found/not built?"
-    exit 1
+    return
   fi
   h=$CONTAINER_HOME/$t
   if ! distrobox-list | cut -d "|" -f 2 | grep -q '$t'; then
     if ! distrobox-create --name $t --image localhost/$t --home \$h --volume $HOME/shared:\$h/shared --volume $HOME/workspace:\$h/workspace --volume $HOME/downloads:\$h/downloads; then
       echo "failed to create $t"
-      exit 1
+      return
     fi
   fi
-  exec distrobox-enter --name $t --no-workdir
+  distrobox-enter --name $t --no-workdir
 }
-
-workbench-$t
 EOF
-  } > "$file"
-  chmod 755 "$file"
+  } >> "$EXPORTS"
 done
-for f in *.sh; do
-  install -Dm755 $f "$HOME/bin/$(basename "$f" | sed 's/\.sh//g')"
-done
+cat *.sh >> "$EXPORTS"
