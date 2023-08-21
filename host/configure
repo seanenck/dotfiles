@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CONTAINER_HOME=/var/home/enck
+CONTAINER_HOME=/var/home/containers
 if env | grep -q "^DISTROBOX"; then
   echo "can NOT run from distrobox"
   exit 1
