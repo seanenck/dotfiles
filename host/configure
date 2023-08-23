@@ -46,4 +46,4 @@ done
 cat *.sh >> "$EXPORTS"
 echo "installing timeskew"
 sudo install -Dm755 timeskew.sh /var/usrlocal/bin/timeskew
-sudo install -Dm655 timeskew.service /etc/systemd/system/timeskew.service
+sudo install -Dm644 timeskew.service /etc/systemd/system/timeskew.service
