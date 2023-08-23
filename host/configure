@@ -4,18 +4,20 @@ if env | grep -q "^DISTROBOX"; then
   echo "can NOT run from distrobox"
   exit 1
 fi
-if [ -z "$1" ]; then
-  echo "no target given"
+if [ "$UID" -eq 0 ]; then
+  echo 'do NOT run as root'
   exit 1
 fi
-FILE="$1.Containerfile"
-if [ ! -s "$FILE" ]; then
-  echo "no containerfile definition found"
-  exit 1
-fi
-if ! podman build -f "$FILE" -t "$1"; then
-  echo "podman failed"
-  exit 1
+if [ -n "$1" ]; then
+  FILE="$1.Containerfile"
+  if [ ! -s "$FILE" ]; then
+    echo "no containerfile definition found"
+    exit 1
+  fi
+  if ! podman build -f "$FILE" -t "$1"; then
+    echo "podman failed"
+    exit 1
+  fi
 fi
 EXPORTS="$HOME/.hostrc"
 echo "#!/usr/bin/env bash" > "$EXPORTS"
@@ -42,3 +44,6 @@ EOF
   } >> "$EXPORTS"
 done
 cat *.sh >> "$EXPORTS"
+echo "installing timeskew"
+sudo install -Dm755 timeskew.sh /var/usrlocal/bin/timeskew
+sudo install -Dm655 timeskew.service /etc/systemd/system/timeskew.service
