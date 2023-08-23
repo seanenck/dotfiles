@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+CLI="/Applications/KeePassXC.app/Contents/MacOS/keepassxc-cli"
+KEY=$(security find-generic-password -a com.voidedtech.secrets -g -w)
+QUERY="
+select [Group] || '/' || [Title] as user, [Last Modified] as lastmod, substr(hex(IFNULL(NULLIF(Password, ''), Notes)), 0, 10) as value from entries order by [Group], [Title]
+"
+
+_dump() {
+  {
+    printf "%s" "$KEY" | "$CLI" export --format csv --key-file "$HOME/.env/secrets/.key/key.file" "$1" 2>/dev/null
+  } | sqlite3 ":memory:" ".import --csv /dev/stdin entries" "$QUERY" | sed 's/|/\n -> /g' | sed 's#^root/##g'
+}
+
+_dump "$1"
