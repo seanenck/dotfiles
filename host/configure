@@ -49,7 +49,10 @@ workbench-$t() {
 EOF
   } >> "$EXPORTS"
 done
-cat include/*.sh >> "$EXPORTS"
+{
+  cat include/*.sh
+  echo timeskew
+} >> "$EXPORTS"
 echo "installing timeskew"
 sudo install -Dm755 src/timeskew.sh /var/usrlocal/bin/timeskew
 sudo install -Dm644 src/timeskew.service /etc/systemd/system/timeskew.service

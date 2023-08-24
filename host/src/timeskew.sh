@@ -1,5 +1,5 @@
 #!/bin/bash
-TIME_SOURCE="http://store.voidedtech.com/time"
+TIME_SOURCE="http://192.168.65.1:8989"
 
 _run() {
   local lt rt delta is_daemon hr
@@ -8,7 +8,7 @@ _run() {
     is_daemon=1
   fi
   while : ; do
-    hr=$(curl --silent "$TIME_SOURCE?format=15")
+    hr=$(curl --silent "$TIME_SOURCE/hour")
     if [ -n "$hr" ]; then
       if [ "$hr" -gt 21 ] || [ "$hr" -lt 6 ]; then
         sleep 1800
@@ -17,7 +17,7 @@ _run() {
     if [ "$is_daemon" -eq 1 ]; then
       sleep 10
     fi
-    rt=$(curl --silent "$TIME_SOURCE")
+    rt=$(curl --silent "$TIME_SOURCE/time")
     if [ -n "$rt" ] && [ "$rt" -eq "$rt" ] 2>/dev/null; then
       lt=$(date +%s)
       delta=0
