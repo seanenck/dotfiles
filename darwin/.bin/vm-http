@@ -1,0 +1,39 @@
+#!/usr/bin/env perl
+use HTTP::Daemon;
+use HTTP::Status;
+use strict;
+use warnings;
+
+my $d = HTTP::Daemon->new(
+    LocalAddr => "192.168.65.1",
+    LocalPort => "8910",
+) || die;
+while ( my $c = $d->accept ) {
+    while ( my $r = $c->get_request ) {
+        my $sent = 0;
+        if ( $r->method eq 'GET' ) {
+            my $fmt = "";
+            if ( $r->uri->path eq "/hour" ) {
+                $fmt = "%H";
+            }
+            elsif ( $r->uri->path eq "/time" ) {
+                $fmt = "%s";
+            }
+            if ($fmt) {
+                my $res = HTTP::Response->new(200);
+                $res->content(`date +$fmt`);
+                $c->send_response($res);
+                $c->autoflush();
+                $sent = 1;
+            }
+        }
+        elsif ( $r->method eq 'GET' and $r->uri->path eq "/hour" ) {
+            $c->send_response(`date +%h`);
+        }
+        if ( $sent == 0 ) {
+            $c->send_error(RC_FORBIDDEN);
+        }
+    }
+    $c->close;
+    undef($c);
+}
