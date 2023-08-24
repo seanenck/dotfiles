@@ -11,7 +11,7 @@ _vm() {
   len=${#words[@]}
   case $state in
     main)
-      _arguments '1:main:(start status stop attach ls)'
+      _arguments '1:main:(start status stop attach ls http)'
     ;;
     *)
       case $words[2] in

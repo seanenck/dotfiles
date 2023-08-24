@@ -4,9 +4,12 @@ use HTTP::Status;
 use strict;
 use warnings;
 
+my $args = $#ARGV + 1;
+die "unvalid args: <server> <port>" if $args != 2; 
+
 my $d = HTTP::Daemon->new(
-    LocalAddr => "192.168.65.1",
-    LocalPort => "8910",
+    LocalAddr => $ARGV[0],
+    LocalPort => $ARGV[1],
 ) || die;
 while ( my $c = $d->accept ) {
     while ( my $r = $c->get_request ) {
