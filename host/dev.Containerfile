@@ -1,7 +1,7 @@
 FROM alpine:edge as buildenv
 
 ARG GOFUMPTVER=v0.5.0
-ARG REVIVEVER=v1.3.2
+ARG REVIVEVER=v1.3.3
 ARG GOFLAGS="-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 
 RUN apk add --no-cache go gcc musl-dev git
