@@ -21,6 +21,6 @@ FROM alpine:edge
 
 RUN echo "@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk update
-RUN apk add go make git bash bash-completion bat delta docs efm-langserver@testing findutils gcc gopls musl-dev neovim openssh openssl perl-critic@testing perl-tidy@testing ripgrep rsync shellcheck staticcheck util-linux xz
+RUN apk add go make git bash bash-completion bat delta docs efm-langserver@testing findutils gcc gopls musl-dev neovim openssh openssl perl-critic@testing perl-tidy@testing ripgrep rsync shellcheck staticcheck util-linux xz tar
 COPY --from=buildenv /src/gofumpt/gofumpt /usr/bin/gofumpt
 COPY --from=buildenv /src/revive/revive /usr/bin/revive
