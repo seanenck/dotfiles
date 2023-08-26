@@ -2,7 +2,7 @@
 if [ -x /usr/bin/bat ];then
   alias cat=bat
 fi
-alias diff="diff -u"
+alias diff="diff --color -u"
 alias ls='ls --color=auto'
 if [ -x /usr/bin/rg ]; then
   alias grep="rg"
