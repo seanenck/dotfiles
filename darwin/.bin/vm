@@ -21,7 +21,7 @@ _http() {
 
 _check-http() {
   if ! curl --silent --connect-timeout 1 "http://$TIME_SERVER:$TIME_PORT/time"; then
-    if [ "$1" -eq "warn" ]; then
+    if [ "$1" == "warn" ]; then
       echo "http server not running, remember to start it"
     else
       vm-http "$TIME_SERVER" "$TIME_PORT" &

@@ -23,7 +23,7 @@ _run() {
       delta=0
     else
       echo "failed to get remote time"
-      if [ "$is_daemon" ]; then
+      if [ "$is_daemon" -eq 1 ]; then
         sleep 5
         continue
       fi
