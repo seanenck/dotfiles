@@ -26,6 +26,8 @@ _run() {
       if [ "$is_daemon" -eq 1 ]; then
         sleep 5
         continue
+      else
+        return
       fi
     fi
     if [ "$lt" -gt "$rt" ]; then
