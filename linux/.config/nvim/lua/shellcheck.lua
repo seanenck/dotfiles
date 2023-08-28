@@ -36,7 +36,7 @@ local function shellcheck()
             elseif cat == "warn" then
                 texthl = "Search"
             end
-            local define = "shellcheck_l" .. line .. "_c_" .. col
+            local define = "shellcheck_l" .. line .. "_c" .. col
             vim.api.nvim_command(":sign define " .. define .. " texthl=" .. texthl .. " text=>>")
             vim.api.nvim_command(':exe ":sign place 2 line=' .. line .. ' name=' .. define .. ' file=" .. expand("%:p")')
             if string.len(msg) > 2 then
