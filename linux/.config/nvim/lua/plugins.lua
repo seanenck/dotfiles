@@ -71,7 +71,8 @@ local lint = require('guard.lint')
 ft('go'):fmt({
     cmd = 'gofumpt',
     args = {"-extra"},
-    stdin = true
+    stdin = true,
+    ignore_error = true
 })
 
 ft("python"):fmt({
