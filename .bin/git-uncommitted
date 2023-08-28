@@ -1,172 +1,84 @@
-#!/usr/bin/env perl
-use strict;
-use warnings;
-use threads;
-use Cwd;
-use Thread::Queue;
-use File::Spec::Functions 'catfile';
-
-sub tracked {
-    my $path = $_[0];
-    if ( index( $path, ".env" ) != -1 ) {
-        return 1;
-    }
-    my $tracking = `git -C "$path" config --list | grep 'user\.email' 2>&1`;
-    $tracking =~ s/^\s+|\s+$//g;
-    if ($tracking) {
-        return 1;
-    }
-    return 0;
+#!/usr/bin/env bash
+_git-uncommit() {
+  local result
+  result=$(git -C "$1" ${@:2})
+  if [ -n "$result" ]; then
+    echo "uncommit:$1,$2,$result"
+  fi
 }
 
-my $arg  = "";
-my $args = $#ARGV + 1;
-my @paths;
-my %friendly;
-my $is_pwd = 0;
-$args == 1 or $args == 0 or die("invalid arguments");
-if ( $args == 1 ) {
-    $arg = $ARGV[0];
-    $arg eq "--pwd" or die("unknown argument: $arg");
-    $is_pwd = 1;
-    my $wd    = getcwd();
-    my $isrev = `git -C "$wd" rev-parse --is-inside-work-tree 2>/dev/null`;
-    $isrev =~ s/^\s+|\s+$//g;
-    if ( $isrev ne "true" or not tracked($wd) ) {
-        exit(0);
-    }
-    push( @paths, $wd );
-}
-if ( not $is_pwd ) {
-    my @targets;
-    push( @targets, ".env" );
-    push( @targets, "workspace" );
-    my $home = $ENV{"HOME"};
-    if ( not $home ) {
-        die("unable to get home");
-    }
-    for my $target (@targets) {
-        my $pathing = catfile( $home, $target );
-        if ( not -d $pathing ) {
-            next;
-        }
-        my $handle;
-        opendir( $handle, $pathing );
-        my @files = readdir($handle);
-        closedir($handle);
-
-        foreach my $file (@files) {
-            next if ( $file =~ /^\.$/ );
-            next if ( $file =~ /^\.\.$/ );
-            my $path_to = catfile( $pathing, $file );
-            if ( not -d catfile( $path_to, ".git" ) ) {
-                next;
-            }
-            $friendly{$path_to} = catfile( $target, $file );
-            push( @paths, $path_to );
-        }
-    }
+_git-commands() {
+  {
+    _git-uncommit "$1" update-index -q --refresh
+    _git-uncommit "$1" diff-index --name-only HEAD --
+    _git-uncommit "$1" status -sb | grep "\[ahead "
+    _git-uncommit "$1" ls-files --other --exclude-standard
+    _git-uncommit "$1" branch --show-current | grep -v -E ',(main|master)$'
+  } | grep '^uncommit:' | cut -d ':' -f 2- | cut -d ',' -f 1,2 | sed 's/,/ (/g' | sed 's/$/)/g' | sort -u
 }
 
-sub uncommit {
-    my $arg = $_[0];
-    if ( not tracked($arg) ) {
-        return "";
-    }
-    my @commands;
-    my $git          = "git -C '$arg'";
-    my $update_index = `$git update-index -q --refresh 2>&1`;
-    if ($update_index) {
-        $update_index = "update-index";
-    }
-    push( @commands, "diff-index:$git diff-index --name-only HEAD --" );
-    push( @commands, "status:$git status -sb | grep '\\[ahead '" );
-    push( @commands, "ls-files:$git ls-files --other --exclude-standard" );
-    push( @commands,
-        "branch:$git branch --show-current | grep -v -E '^(main|master)\$'" );
-
-    my $procs = scalar(@commands);
-    my @runners;
-
-    my $in = Thread::Queue->new();
-    $in->limit = $procs;
-    my $out = Thread::Queue->new();
-    $out->limit = $procs;
-
-    my $spawning = $procs;
-    while ( $spawning >= 0 ) {
-        push(
-            @runners,
-            threads->create(
-                sub {
-                    while ( defined( my $item = $in->dequeue() ) ) {
-                        my @items = split( ":", $item );
-                        my $cmd   = join( ":", @items[ 1 .. $#items ] );
-                        my $res   = `$cmd 2>&1`;
-                        if ($res) {
-                            $res = "$items[0]";
-                        }
-                        $out->enqueue($res);
-                    }
-                }
-            )
-        );
-        $spawning -= 1;
-    }
-
-    for my $cmd (@commands) {
-        $in->enqueue($cmd);
-    }
-    $in->end();
-
-    my @has;
-    while ( $out->pending() != $procs ) { }
-    $out->end();
-    my $more = 1;
-    while ($more) {
-        if ( $out->pending() ) {
-            my $nxt = $out->dequeue();
-            if ($nxt) {
-                push( @has, $nxt );
-            }
-        }
-        else {
-            last;
-        }
-    }
-
-    for my $runner (@runners) {
-        $runner->join();
-    }
-    push( @has, $update_index );
-    my $all = join( " ", @has );
-    $all =~ s/^\s+|\s+$//g;
-    return $all;
+uncommit() {
+  local res d sub has r ispwd isrev paths
+  ispwd=0
+  if [ -n "$1" ]; then
+    if [ "$1" == "--pwd" ]; then
+      isrev=$(git -C "$PWD" rev-parse --is-inside-work-tree 2>/dev/null)
+      if [ "$isrev" == "true" ]; then
+        res=$(_git-commands "$PWD")
+      else
+        exit 0
+      fi
+      ispwd=1
+    fi
+  fi
+  if [ "$ispwd" -eq 0 ]; then
+    paths=""
+    for d in .env workspace; do
+      d="$HOME/$d"
+      for sub in "$d"/*; do
+        if [ ! -d "$sub/.git" ]; then
+          continue
+        fi
+        paths="$paths $sub"
+      done
+    done
+    for sub in $paths; do
+      r=$(_git-commands "$sub")
+      if [ -z "$res" ]; then
+        res=$r
+      else
+        res=$(printf "%s\n%s\n" "$res" "$r")
+      fi
+    done
+  fi
+  res=$(echo "$res" | sed 's/^\s*//g' | sed  's/\s*$//g')
+  has=0
+  if [ -n "$res" ]; then
+    has=1
+  fi
+  if [ -z "$1" ]; then
+    if [ -n "$res" ]; then
+      echo "$res"
+    fi
+  else
+    case "$1" in
+    "--pwd")
+      if [ $has -eq 0 ]; then
+        printf '\e[32m%s\e[0m' "(clean)"
+      else
+        printf '\e[31m%s\e[0m' "(dirty)"
+      fi
+      ;;
+    "--quiet")
+        ;;
+    *)
+      echo "unknown subcommand"
+      exit 1
+      ;;
+    esac
+  fi
+  exit $has
 }
 
-my $first = 1;
-for my $path (@paths) {
-    my $res = uncommit($path);
-    if ($is_pwd) {
-        if ($res) {
-            print "\e[31m(dirty)\e[0m";
-        }
-        else {
-            print "\e[32m(clean)\e[0m";
-        }
-        last;
-    }
-    if ($res) {
-        if ($first) {
-            print "uncommitted:\n";
-            $first = 0;
-        }
-        for my $warn ( split( " ", $res ) ) {
-            my $name = $friendly{$path};
-            print "  -> $name ($warn)\n";
-        }
-    }
-}
-if ( not $first ) {
-    print "\n";
-}
+uncommit "$1"
+

@@ -49,10 +49,7 @@ for file in "$HOME/.ssh/"*.key; do
   ssh-add "$file" > /dev/null 2>&1
 done
 
-if [ -x /usr/bin/perl ]; then
-  export HAS_PERL=1
-  PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
-fi
+PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
 
 for file in "$HOME/.bashrc.d/"*; do
   # shellcheck source=/dev/null
