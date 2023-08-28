@@ -59,6 +59,52 @@ local function setuplsp(exe, format_types)
             on_attach = on_attach,
             capabilities = capabilities,
             init_options = {documentFormatting = true},
+            settings = {
+                rootMarkers = {".git/"},
+                languages = {
+                    sh = {
+                        {
+                            lintCommand = 'shellcheck -f gcc -x',
+                            lintSource = 'shellcheck',
+                            lintFormats = {
+                                '%f:%l:%c: %trror: %m',
+                                '%f:%l:%c: %tarning: %m',
+                                '%f:%l:%c: %tote: %m'
+                            },
+                            lintIgnoreExitCode = true
+                        }
+                    }
+                }
+            }
+        }
+    elseif exe == "pylsp" then
+        lspconfig.pylsp.setup{
+            on_attach = on_attach,
+            capabilities = capabilities,
+            init_options = {documentFormatting = true},
+            settings = {
+                pylsp = {
+                    plugins = {
+                        autopep8 = {
+                            enabled = false,
+                        },
+                        pylsp_mypy = {
+                            enabled = true,
+                            strict = true
+                        },
+                        yapf = {
+                            enabled = true
+                        },
+                        pycodestyle = {
+                            enabled = true,
+                            maxLineLength = 120,
+                        },
+                        pyflakes = {
+                            enabled = true,
+                        }
+                    }
+                }
+            }
         }
     else
         error("unknown lsp requested")
@@ -85,9 +131,10 @@ local function setuplsp(exe, format_types)
     )
 end
 
+setuplsp("pylsp", {"python"})
 setuplsp("rust-analyzer", {"rust"})
 setuplsp("gopls", {"go"})
-setuplsp("efm-langserver", {"perl"})
+setuplsp("efm-langserver", {})
 function toggle_diagnostics()
     vim.diagnostic.open_float(nil, {
         focus=false,
