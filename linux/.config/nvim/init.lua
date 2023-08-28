@@ -1,5 +1,5 @@
 vim.o.runtimepath = vim.o.runtimepath
-vim.o.directory = "/home/enck/.cache/nvim"
+vim.o.directory = os.getenv("HOME") .. "/.cache/nvim"
 
 -- Plugins
 require("options")

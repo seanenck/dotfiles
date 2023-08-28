@@ -46,10 +46,6 @@ local function setuplsp()
         settings = {
             pylsp = {
                 plugins = {
-                    pylsp_mypy = {
-                        enabled = true,
-                        strict = true
-                    },
                     pycodestyle = {
                         enabled = true,
                         maxLineLength = 120,
@@ -99,6 +95,7 @@ mapall("<C-j>", ":wincmd j<CR>")
 
 -- guard
 local ft = require('guard.filetype')
+local lint = require('guard.lint')
 
 ft('go'):fmt({
     cmd = 'gofumpt',
@@ -110,6 +107,18 @@ ft("python"):fmt({
     cmd = "yapf",
     stdin = true,
     ignore_error = true
+}):lint({
+    cmd = "dmypy",
+    args = {"--status-file", os.getenv( "HOME" ) .. "/.cache/dmypy.json", "run"},
+    parse = lint.from_regex({
+        regex = ':(%d+):(%d*):%s+(%w+):%s+(.-)%s+%[(.-)%]',
+        groups = { 'lnum', 'col', 'severity', 'message', 'code' },
+        severities = {
+          information = lint.severities.info,
+          hint = lint.severities.info,
+          note = lint.severities.style,
+        },
+  }),
 })
 
 ft("sh"):lint("shellcheck")
