@@ -96,3 +96,24 @@ end
 
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 mapall("<C-j>", ":wincmd j<CR>")
+
+-- guard
+local ft = require('guard.filetype')
+
+ft('go'):fmt({
+    cmd = 'gofumpt',
+    args = {"-extra"},
+    stdin = true
+})
+
+ft("python"):fmt({
+    cmd = "yapf",
+    stdin = true
+})
+
+ft("sh"):lint("shellcheck")
+
+require('guard').setup({
+    fmt_on_save = true,
+    lsp_as_default_formatter = false,
+})
