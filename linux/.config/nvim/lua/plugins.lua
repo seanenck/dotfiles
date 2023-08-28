@@ -23,80 +23,44 @@ cmp.setup({
 })
 
 -- lsp
-util = require 'lspconfig.util'
 lspconfig = require "lspconfig"
 local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
-local no_exec = function(name)
-    return vim.fn.executable(name) ~= 1
-end
-
-local function setuplsp(exe, format_types)
-    if no_exec(exe) then
-        return
-    end
+local function setuplsp()
     capabilities = require('cmp_nvim_lsp').default_capabilities()
-    if exe == "gopls" then
-        lspconfig.gopls.setup{
-            on_attach = on_attach,
-            capabilities = capabilities,
-            settings = {
-                gopls = {
-                    gofumpt = true,
-                    staticcheck = true
-                }
-            },
-        }
-    elseif exe == "rust-analyzer" then
-        lspconfig.rust_analyzer.setup{
-            on_attach = on_attach,
-            capabilities = capabilities,
-        }
-    elseif exe == "pylsp" then
-        lspconfig.pylsp.setup{
-            on_attach = on_attach,
-            capabilities = capabilities,
-            init_options = {documentFormatting = true},
-            settings = {
-                pylsp = {
-                    plugins = {
-                        autopep8 = {
-                            enabled = false,
-                        },
-                        pylsp_mypy = {
-                            enabled = true,
-                            strict = true
-                        },
-                        yapf = {
-                            enabled = true
-                        },
-                        pycodestyle = {
-                            enabled = true,
-                            maxLineLength = 120,
-                        },
-                        pyflakes = {
-                            enabled = true,
-                        }
+    lspconfig.gopls.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
+        settings = {
+            gopls = {
+                gofumpt = true,
+                staticcheck = true
+            }
+        },
+    }
+    lspconfig.pylsp.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
+        settings = {
+            pylsp = {
+                plugins = {
+                    pylsp_mypy = {
+                        enabled = true,
+                        strict = true
+                    },
+                    pycodestyle = {
+                        enabled = true,
+                        maxLineLength = 120,
+                    },
+                    pyflakes = {
+                        enabled = true,
                     }
                 }
             }
         }
-    else
-        error("unknown lsp requested")
-    end
-    vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-        pattern = { "*" },
-        callback = function()
-            for _, ft in ipairs(format_types) do
-                if vim.bo.filetype ~= nil and vim.bo.filetype ~= "" and vim.bo.filetype == ft then
-                    vim.lsp.buf.format { async = false }
-                    return
-                end
-            end
-        end
-    })
+    }
     vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         vim.lsp.diagnostic.on_publish_diagnostics,
         {
@@ -108,9 +72,7 @@ local function setuplsp(exe, format_types)
     )
 end
 
-setuplsp("pylsp", {"python"})
-setuplsp("rust-analyzer", {"rust"})
-setuplsp("gopls", {"go"})
+setuplsp()
 function toggle_diagnostics()
     vim.diagnostic.open_float(nil, {
         focus=false,
@@ -129,9 +91,8 @@ require("toggleterm").setup{
 
 function _G.set_terminal_keymaps()
   local opts = {buffer = 0}
-  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
   vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
 end
 
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
-mapall("<C-k>", ":wincmd k<CR>")
+mapall("<C-j>", ":wincmd j<CR>")
