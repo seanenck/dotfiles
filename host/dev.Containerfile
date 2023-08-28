@@ -26,7 +26,33 @@ RUN GOFLAGS=$GOFLAGS make bin/tdiff
 FROM alpine:edge
 
 RUN apk update
-RUN apk add go make git bash bash-completion bat delta docs findutils gcc gopls musl-dev neovim openssh openssl py3-lsp-server py3-mypy py3-pycodestyle py3-pyflakes py3-whatthepatch py3-yapf ripgrep rsync shellcheck staticcheck util-linux xz tar
+RUN apk add \
+        go \
+        make \
+        git \
+        bash \
+        bash-completion \
+        bat delta \
+        docs \
+        findutils \
+        gcc \
+        gopls \
+        musl-dev \
+        neovim \
+        openssh \
+        openssl \
+        py3-lsp-server \
+        py3-mypy \
+        py3-pycodestyle \
+        py3-pyflakes \
+        py3-whatthepatch \
+        py3-yapf \
+        ripgrep \
+        rsync \
+        shellcheck \
+        staticcheck \
+        util-linux \
+        tar
 COPY --from=buildenv /src/gofumpt/gofumpt /usr/bin/gofumpt
 COPY --from=buildenv /src/revive/revive /usr/bin/revive
 COPY --from=buildenv /src/tdiff/bin/tdiff /usr/bin/tdiff
