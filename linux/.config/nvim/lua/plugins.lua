@@ -54,29 +54,6 @@ local function setuplsp(exe, format_types)
             on_attach = on_attach,
             capabilities = capabilities,
         }
-    elseif exe == "efm-langserver" then
-        lspconfig.efm.setup{
-            on_attach = on_attach,
-            capabilities = capabilities,
-            init_options = {documentFormatting = true},
-            settings = {
-                rootMarkers = {".git/"},
-                languages = {
-                    sh = {
-                        {
-                            lintCommand = 'shellcheck -f gcc -x',
-                            lintSource = 'shellcheck',
-                            lintFormats = {
-                                '%f:%l:%c: %trror: %m',
-                                '%f:%l:%c: %tarning: %m',
-                                '%f:%l:%c: %tote: %m'
-                            },
-                            lintIgnoreExitCode = true
-                        }
-                    }
-                }
-            }
-        }
     elseif exe == "pylsp" then
         lspconfig.pylsp.setup{
             on_attach = on_attach,
@@ -134,7 +111,6 @@ end
 setuplsp("pylsp", {"python"})
 setuplsp("rust-analyzer", {"rust"})
 setuplsp("gopls", {"go"})
-setuplsp("efm-langserver", {})
 function toggle_diagnostics()
     vim.diagnostic.open_float(nil, {
         focus=false,

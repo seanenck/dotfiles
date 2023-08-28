@@ -6,6 +6,7 @@ require("options")
 require("helpers")
 require("plugins")
 require("autocmds")
+require("shellcheck")
 
 -- Mouse, disable paste on middle click
 for _, mouseMiddle in ipairs({"", "2-", "3-", "4-"}) do
