@@ -108,7 +108,8 @@ ft('go'):fmt({
 
 ft("python"):fmt({
     cmd = "yapf",
-    stdin = true
+    stdin = true,
+    ignore_error = true
 })
 
 ft("sh"):lint("shellcheck")
