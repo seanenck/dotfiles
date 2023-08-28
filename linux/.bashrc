@@ -2,6 +2,7 @@
 [[ $- != *i* ]] && return
 
 if [ -e /etc/bashrc ]; then
+  # shellcheck source=/dev/null
   . /etc/bashrc
 else
   if [ -e /etc/bash/bashrc ]; then
