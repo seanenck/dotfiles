@@ -110,6 +110,7 @@ ft("python"):fmt({
 }):lint({
     cmd = "dmypy",
     args = {"--status-file", os.getenv( "HOME" ) .. "/.cache/dmypy.json", "run"},
+    ignore_error = true,
     parse = lint.from_regex({
         regex = ':(%d+):(%d*):%s+(%w+):%s+(.-)%s+%[(.-)%]',
         groups = { 'lnum', 'col', 'severity', 'message', 'code' },
