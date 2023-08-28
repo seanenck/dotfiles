@@ -20,7 +20,7 @@ nmap("q", "<Nop>")
 -- Disable shifted cursor keys, ctrl jklh cursor, and q
 -- Disable ctrl jklh cursors
 disableall({"<S-Up>", "<S-Down>", "<S-Right>", "<S-Left>"})
-disableall({"<C-k>", "<C-j>", "<C-h>", "<C-l>", "<C-q>"})
+disableall({"<C-j>", "<C-h>", "<C-l>", "<C-q>"})
 
 -- Buffer/split movements
 nmap("<Tab>", ":bnext<CR>")
