@@ -2,37 +2,10 @@
 vim.g.airline_extensions = {"tabline"}
 vim.g.airline_extensions["tabline"] = {["formatter"] = "unique_tail_improved"}
 
--- nvim-cmp settings
-local cmp = require'cmp'
-
-cmp.setup({
-    snippet = {
-        expand = function(args)
-            require('luasnip').lsp_expand(args.body)
-        end,
-    },
-    mapping = cmp.mapping.preset.insert({
-        ['<Right>'] = cmp.mapping.confirm({ select = false }),
-    }),
-    sources = cmp.config.sources({
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-    }, {
-        { name = 'buffer' },
-    })
-})
-
 -- lsp
 lspconfig = require "lspconfig"
-local on_attach = function(client, bufnr)
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-end
-
 local function setuplsp()
-    capabilities = require('cmp_nvim_lsp').default_capabilities()
     lspconfig.gopls.setup{
-        on_attach = on_attach,
-        capabilities = capabilities,
         settings = {
             gopls = {
                 gofumpt = true,
@@ -41,8 +14,6 @@ local function setuplsp()
         },
     }
     lspconfig.pylsp.setup{
-        on_attach = on_attach,
-        capabilities = capabilities,
         settings = {
             pylsp = {
                 plugins = {
@@ -128,3 +99,7 @@ require('guard').setup({
     fmt_on_save = true,
     lsp_as_default_formatter = false,
 })
+
+-- mini completion
+vim.api.nvim_command('inoremap <silent><expr> <Right> pumvisible() ? "<C-n>" : "<Right>"')
+require('mini.completion').setup()
