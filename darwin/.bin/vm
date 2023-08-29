@@ -20,15 +20,14 @@ _http() {
 }
 
 _check-http() {
-  if ! ps aux | grep vm-http | grep -q python; then
+  if ! ps aux | grep vm-http | grep -q Python; then
     if [ "$1" == "warn" ]; then
       echo "http server not running, remember to start it"
     else
-      vm-http --address "$TIME_SERVER" --port "$TIME_PORT" &
-      disown
+      screen -S vm-http -d -m vm-http --address "$TIME_SERVER" --port "$TIME_PORT"
     fi 
+    echo "vm http started"
   fi
-  echo "vm http started"
 }
 
 _start() {
