@@ -25,8 +25,8 @@ _check-http() {
       echo "http server not running, remember to start it"
     else
       screen -S vm-http -d -m vm-http --address "$TIME_SERVER" --port "$TIME_PORT"
+      echo "vm http started"
     fi 
-    echo "vm http started"
   fi
 }
 
