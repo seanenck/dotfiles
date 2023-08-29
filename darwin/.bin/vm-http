@@ -1,42 +1,36 @@
-#!/usr/bin/env perl
-use HTTP::Daemon;
-use HTTP::Status;
-use strict;
-use warnings;
+#!/usr/bin/env python3
+from http.server import HTTPServer, BaseHTTPRequestHandler
+import argparse
+from datetime import datetime
+import time
 
-my $args = $#ARGV + 1;
-die "unvalid args: <server> <port>" if $args != 2; 
 
-my $d = HTTP::Daemon->new(
-    LocalAddr => $ARGV[0],
-    LocalPort => $ARGV[1],
-) || die;
-while ( my $c = $d->accept ) {
-    while ( my $r = $c->get_request ) {
-        my $sent = 0;
-        if ( $r->method eq 'GET' ) {
-            my $fmt = "";
-            if ( $r->uri->path eq "/hour" ) {
-                $fmt = "%H";
-            }
-            elsif ( $r->uri->path eq "/time" ) {
-                $fmt = "%s";
-            }
-            if ($fmt) {
-                my $res = HTTP::Response->new(200);
-                $res->content(`date +$fmt`);
-                $c->send_response($res);
-                $c->autoflush();
-                $sent = 1;
-            }
-        }
-        elsif ( $r->method eq 'GET' and $r->uri->path eq "/hour" ) {
-            $c->send_response(`date +%h`);
-        }
-        if ( $sent == 0 ) {
-            $c->send_error(RC_FORBIDDEN);
-        }
-    }
-    $c->close;
-    undef($c);
-}
+class VMHandler(BaseHTTPRequestHandler):
+
+    def do_GET(self) -> None:
+        if self.path == "/time" or self.path == "/hour":
+            self.send_response(200)
+            self.end_headers()
+            val = ""
+            if self.path == "/time":
+                val = str(int(time.time()))
+            else:
+                val = str(datetime.now().hour)
+                if len(val) < 2:
+                    val = "0" + val
+            self.wfile.write(val.encode("utf-8"))
+        else:
+            self.send_error(403)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--address", type=str, required=True)
+    parser.add_argument("--port", type=int, required=True)
+    args = parser.parse_args()
+    httpd = HTTPServer((args.address, args.port), VMHandler)
+    httpd.serve_forever()
+
+
+if __name__ == "__main__":
+    main()
