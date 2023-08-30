@@ -15,7 +15,7 @@ _syncpkgs() {
       echo "[WARN] $b is not in etc store"
     fi
   done
-  if ! rsync -avc --delete-after "$PACKAGES/" store.voidedtech.com:"/mnt/storage/active/hosted/packages/"; then
+  if ! rsync -avc --delete-after "$PACKAGES/" store.voidedtech.com:"/mnt/store/active/hosted/packages/"; then
     echo "failed to sync packages"
     exit 1
   fi
