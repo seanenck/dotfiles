@@ -1,7 +1,3 @@
--- airline settings
-vim.g.airline_extensions = {"tabline"}
-vim.g.airline_extensions["tabline"] = {["formatter"] = "unique_tail_improved"}
-
 -- lsp
 lspconfig = require "lspconfig"
 local function setuplsp()
@@ -134,3 +130,12 @@ end
 
 vim.keymap.set('i', '<Right>', 'v:lua._G.cr_action()', { expr = true })
 require('mini.completion').setup()
+
+-- mini tabline
+require('mini.tabline').setup()
+vim.api.nvim_set_hl(0, "MiniTablineCurrent", {bg='peru', fg='black'})
+vim.api.nvim_set_hl(0, "MiniTablineVisible", {bg='blue', fg='white'})
+vim.api.nvim_set_hl(0, "MiniTablineHidden", {bg='black', fg='white'})
+vim.api.nvim_set_hl(0, "MiniTablineModifiedCurrent", {bg='red', fg='black'})
+vim.api.nvim_set_hl(0, "MiniTablineModifiedVisible", {bg='red', fg='white'})
+vim.api.nvim_set_hl(0, "MiniTablineModifiedHidden", {bg='red', fg='white'})

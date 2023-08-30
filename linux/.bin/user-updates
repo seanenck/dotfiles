@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 PACK="$HOME/.config/nvim/pack/plugins/start/"
 PLUGINS=(
-  "https://github.com/vim-airline/vim-airline" \
   "https://github.com/neovim/nvim-lspconfig" \
   "https://github.com/akinsho/toggleterm.nvim" \
   "https://github.com/nvimdev/guard.nvim" \
