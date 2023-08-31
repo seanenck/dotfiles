@@ -15,9 +15,11 @@ _status() {
 }
 
 _set-time() {
+  local t
+  t="${TIME}$1/"
   while : ; do
-    find "$TIME" -name "*.$1.*" -mmin +5 -delete
-    date +%s > "$TIME/$1.$(date +%Y.%m.%d.%H.%M.%S)"
+    find "$t" -mmin +5 -delete
+    date +%s > "$t/$(date +%Y.%m.%d.%H.%M.%S)"
     sleep 15
   done 
 }
