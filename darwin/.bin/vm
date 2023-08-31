@@ -15,14 +15,28 @@ _status() {
 }
 
 _set-time() {
-  local t
-  t="${TIME}$1/"
-  mkdir -p "$t"
+  local now file t
   while : ; do
-    find "$t" -mmin +5 -delete
-    date +%s > "$t/$(date +%Y.%m.%d.%H.%M.%S)"
+    now="$(date +%s)"
+    file="$(date +%Y.%m.%d.%H.%M.%S)"
+    for d in $(ls "$CONFIGS"); do
+	t="${TIME}$d/"
+	mkdir -p "$t"
+	find "$t" -mmin +5 -delete
+	echo "$now" > "$t/$file"
+    done
     sleep 15
   done 
+}
+
+_manage-time() {
+  local script
+  script="vm time"
+  if screen -list | grep -q "vm-time"; then
+    return
+  fi
+  echo "starting time manager"
+  screen -S vm-time -d -m $script 
 }
 
 _start() {
@@ -36,7 +50,7 @@ _start() {
   echo
   echo "starting $1..."
   echo
-  _set-time "$1" &
+  _manage-time
   screen -S $1 -d -m $script
 }
 
@@ -44,7 +58,7 @@ if [ -z "$1" ]; then
   echo "command required"
   exit 1
 fi
-if [ "$1" != "ls" ]; then
+if [ "$1" != "ls" ] && [ "$1" != "time" ]; then
   if [ -z "$2" ]; then
     echo "vm required"
     exit 1
@@ -56,6 +70,9 @@ if [ "$1" != "ls" ]; then
 fi
 
 case "$1" in
+  "time")
+    _set-time
+  ;;
   "start")
     _start $2
   ;;
