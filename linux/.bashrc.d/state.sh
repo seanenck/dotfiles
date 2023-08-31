@@ -10,4 +10,6 @@ _disk() {
 
 _disk
 echo
+timeskew
+echo
 git uncommitted
