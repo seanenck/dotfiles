@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 CONFIGS="$HOME/.vms/"
-TIME="$HOME/Shared/comm/"
 
 _init() {
   (cd "$CONFIGS$1" && vfu --config "$CONFIGS$1/config.json" $2)
@@ -15,15 +14,12 @@ _status() {
 }
 
 _set-time() {
-  local now file t
+  local ip msg now
   while : ; do
-    now="$(date +%s)"
-    file="$(date +%Y.%m.%d.%H.%M.%S)"
-    for d in $(ls "$CONFIGS"); do
-	t="${TIME}$d/"
-	mkdir -p "$t"
-	find "$t" -mmin +5 -delete
-	echo "$now" > "$t/$file"
+    now=$(python3 -c 'import time; print(int(time.time_ns()))')
+    msg="{\"execute\": \"guest-set-time\", \"arguments\":{\"time\": $now}}"
+    for ip in $(grep "ip_address=" /var/db/dhcpd_leases | cut -d "=" -f 2); do
+      echo "$msg" | nc -G 1 "$ip" 9999 
     done
     sleep 15
   done 
