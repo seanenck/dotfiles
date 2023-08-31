@@ -14,21 +14,24 @@ _status() {
 }
 
 _set-time() {
-  local ip msg now curr last delta
-  last=0
+  local has ip msg now delta
   while : ; do
-    sleep 15
-    curr=$(date +%s)
-    delta=$((curr-last))
-    last=$curr
-    if [ "$delta" -lt 1800 ]; then
-      continue
-    fi
     now=$(python3 -c 'import time; print(int(time.time_ns()))')
     msg="{\"execute\": \"guest-set-time\", \"arguments\":{\"time\": $now}}"
     for ip in $(grep "ip_address=" /var/db/dhcpd_leases | cut -d "=" -f 2); do
+      delta=0
+      has=$(echo {\"execute\": \"guest-get-time\"} | nc -G 1 "$ip" 9999 | cut -d ":" -f 2 | cut -d "}" -f 1 | sed 's/[[:space:]]//g' | sed 's/[^[:digit:].-]//g')
+      if [ -n "$has" ]; then
+        delta=$((now-has))
+        delta=${delta#-}
+        delta=$((delta/1000000000))
+        if [ "$delta" -lt 30 ]; then
+	  continue
+        fi
+      fi
       echo "$msg" | nc -G 1 "$ip" 9999 
     done
+    sleep 15
   done 
 }
 
