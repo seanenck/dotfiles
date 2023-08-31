@@ -4,8 +4,9 @@ _df() {
 }
 _disk() {
   echo "disk:"
-  _df "home" "" | sed "s/share/host /g"
+  _df "workspace" "" | sed "s/share/host /g"
   _df "/dev/vd" "/dev/vd[a-z][0-9]"
+  _df "tmpfs" "/home"
 }
 
 _disk

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CACHE="$HOME/.cache/oclone.hst"
+CACHE="$HOME/.local/voidedtech/oclone.hst"
 if [ ! -e "$CACHE" ]; then
   touch "$CACHE"
 fi
