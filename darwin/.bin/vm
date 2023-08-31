@@ -17,6 +17,7 @@ _status() {
 _set-time() {
   local t
   t="${TIME}$1/"
+  mkdir -p "$t"
   while : ; do
     find "$t" -mmin +5 -delete
     date +%s > "$t/$(date +%Y.%m.%d.%H.%M.%S)"
