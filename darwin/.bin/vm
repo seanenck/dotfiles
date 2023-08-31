@@ -40,7 +40,7 @@ def _time() -> None:
         ns_now = time.time_ns()
         j: typing.Dict[str, typing.Any] = {}
         j["execute"] = "guest-set-time"
-        j["arguments"] = {"time": str(ns_now)}
+        j["arguments"] = {"time": ns_now}
         cmd = json.dumps(j).encode("utf-8")
         for ip in ips:
             nc = ["nc", "-G", "1", ip, "9999"]
