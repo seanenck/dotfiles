@@ -29,6 +29,8 @@ _set-time() {
 	  continue
         fi
       fi
+      date +%Y-%m-%d.%H.%M.%S
+      echo "setting time for $ip ($delta)"
       echo "$msg" | nc -G 1 "$ip" 9999 
     done
     sleep 15
