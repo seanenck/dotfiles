@@ -14,8 +14,10 @@ for COMPGEN in lb vm; do
       $COMPGEN zsh > "$COMPATH" 
     fi
   fi
-  source "$COMPPATH"
-  compdef _$COMPGEN $COMPGEN
+  if [ -s "$COMPPATH" ]; then
+    source "$COMPPATH"
+    compdef _$COMPGEN $COMPGEN
+  fi
 done
 
 unset COMPGEN COMPLETIONS COMPPATH 
