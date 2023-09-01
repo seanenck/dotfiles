@@ -3,7 +3,7 @@ export CLICOLOR=1
 
 zstyle ':completion:*:*:git:*' user-commands uncommitted:'check for uncommitted changes' env:'pull env file updates' 
 autoload -Uz compinit && compinit
-COMPLETIONS="$HOME/.completions"
+COMPLETIONS="$HOME/.local/completions"
 if [ ! -d "$COMPLETIONS" ]; then
   mkdir -p "$COMPLETIONS"
 fi
