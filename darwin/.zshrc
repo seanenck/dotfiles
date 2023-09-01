@@ -11,7 +11,7 @@ for COMPGEN in lb vm; do
   COMPPATH="$COMPLETIONS/$COMPGEN"
   if [ -x "$HOME/.local/bin/$COMPGEN" ]; then
     if [ ! -s "$COMPPATH" ]; then
-      $COMPGEN zsh > "$COMPATH" 
+      $COMPGEN zsh > "$COMPPATH" 
     fi
   fi
   if [ -s "$COMPPATH" ]; then
