@@ -2,6 +2,21 @@
 PACKAGES="$HOME/shared/packages"
 BASELINE="$PACKAGES/alpine"
 REPODEST="$BASELINE/pkgs"
+ABUILD_DIR=$HOME/.abuild
+ABUILD_CONF=$ABUILD_DIR/abuild.conf
+
+_abuild-conf() {
+  local k
+  mkdir -p "$ABUILD_DIR"
+  printf 'PACKAGER="Sean Enck <enckse@voidedtech.com>"\n'
+  for k in "$ABUILD_DIR/"*.rsa; do
+    if [ -s "$k" ]; then
+      printf 'PACKAGER_PRIVKEY=%s\n' "$k"
+    fi
+  done
+  printf 'export GOFLAGS="-trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"'
+} 
+
 
 _syncpkgs() {
   local k b
@@ -108,6 +123,7 @@ _abw-duplicates() {
 
 abw() {
     local errored repo name
+    _abuild-conf > "$ABUILD_CONF"
     if [ ! -e APKBUILD ]; then
       echo "no APKBUILD"
       return
