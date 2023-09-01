@@ -8,7 +8,7 @@ if [ ! -d "$COMPLETIONS" ]; then
 fi
 for COMPGEN in lb vm; do
   COMPPATH="$COMPLETIONS/$COMPGEN"
-  if [ -x "$HOME/.local/bin/$COMPGEN" ]; then
+  if [ -x "/usr/local/bin/$COMPGEN" ]; then
     if [ ! -s "$COMPPATH" ]; then
       $COMPGEN zsh > "$COMPPATH" 
     fi
