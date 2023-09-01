@@ -35,6 +35,7 @@ _makefile() {
       _lsfiles ""
       _lsfiles "$UNAME/"
     } | sort -u -k 3
+    echo "rm Makefile"
   } | sed 's/^/\t/g'
 }
 
