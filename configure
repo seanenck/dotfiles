@@ -37,6 +37,9 @@ _makefile() {
     } | sort -u -k 3
     echo "rm Makefile"
   } | sed 's/^/\t/g'
+  if [ -x "configure.local" ]; then
+    UNAME="$UNAME" ./configure.local
+  fi
 }
 
 _makefile > Makefile
