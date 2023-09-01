@@ -34,12 +34,12 @@ _makefile() {
       fi
       _lsfiles ""
       _lsfiles "$UNAME/"
+      if [ -x "configure.local" ]; then
+        UNAME="$UNAME" ./configure.local
+      fi
     } | awk '!x[$0]++'
     echo "rm Makefile"
   } | sed 's/^/\t/g'
-  if [ -x "configure.local" ]; then
-    UNAME="$UNAME" ./configure.local
-  fi
 }
 
 _makefile > Makefile
