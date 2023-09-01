@@ -29,7 +29,9 @@ export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export TERM=xterm-256color
-export PATH="$HOME/.bin/:$PATH"
+export PATH="$HOME/.local/bin/:$PATH"
+export GOPATH="$HOME/.cache/go"
+export GOFLAGS="-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 
 # disable ctrl+s
 stty -ixon
@@ -52,8 +54,38 @@ done
 
 PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
 
-for file in "$HOME/.bashrc.d/"*; do
-  # shellcheck source=/dev/null
-  source "$file"
+for file in "$HOME/.local/completions/"*.sh; do
+  if [ -e "$file" ]; then
+    source "$file"
+  fi
 done
 unset PREFERPS1 file
+
+# aliases
+if [ -x /usr/bin/bat ];then
+  alias cat=bat
+fi
+alias diff="diff --color -u"
+alias ls='ls --color=auto'
+if [ -x /usr/bin/rg ]; then
+  alias grep="rg"
+fi
+alias vi="$EDITOR"
+alias vim="$EDITOR"
+alias scp="echo noop"
+alias abw-sync="abw sync"
+
+# state
+_df() {
+  df -h 2>/dev/null | grep "^$1" | grep "$2" | awk '{printf("%-15s%s\n", $1, $5)}' | sort -u | sed 's/^/  -> /g'
+}
+_disk() {
+  echo "disk:"
+  _df "workspace" "" | sed "s/share/host /g"
+  _df "/dev/vd" "/dev/vd[a-z][0-9]"
+  _df "tmpfs" "/home"
+}
+
+_disk
+echo
+git uncommitted
