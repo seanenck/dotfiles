@@ -16,7 +16,7 @@ _lsfiles() {
       continue
     fi
     dest="$(echo "$file" | sed "s#^$1##g")"
-    dir="$(dirname "$file")"
+    dir="$(dirname "$dest")"
     if [ "$dir" != "." ]; then
       echo "mkdir -p \"$HOME/$(dirname "$dest")\""
     fi
@@ -34,7 +34,7 @@ _makefile() {
       fi
       _lsfiles ""
       _lsfiles "$UNAME/"
-    } | sort -u -k 3
+    } | awk '!x[$0]++'
     echo "rm Makefile"
   } | sed 's/^/\t/g'
   if [ -x "configure.local" ]; then
