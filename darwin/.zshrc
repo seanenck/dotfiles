@@ -1,7 +1,7 @@
 export PATH="$HOME/.local/bin:$PATH"
 export CLICOLOR=1
 
-zstyle ':completion:*:*:git:*' user-commands uncommitted:'check for uncommitted changes' env:'pull env file updates' 
+zstyle ':completion:*:*:git:*' user-commands uncommitted:'check for uncommitted changes' sync:'sync local git repos'
 autoload -Uz compinit && compinit
 COMPLETIONS="$HOME/.local/completions"
 if [ ! -d "$COMPLETIONS" ]; then
