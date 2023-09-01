@@ -29,7 +29,6 @@ export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export TERM=xterm-256color
-export PATH="$HOME/.local/bin/:$PATH"
 export GOPATH="$HOME/.cache/go"
 export GOBASE_FLAGS="-trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 export GOFLAGS="-ldflags=-linkmode=external $GOBASE_FLAGS"
