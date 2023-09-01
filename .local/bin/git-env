@@ -1,5 +1,5 @@
 #!/bin/sh
-for f in "$HOME/.env/"*; do
+for f in "$HOME/.local/git/"*; do
   echo "updating: $f"
   for mode in fetch pull; do
     if ! git -C "$f" "$mode"; then

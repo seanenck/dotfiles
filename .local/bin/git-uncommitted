@@ -33,7 +33,7 @@ uncommit() {
   fi
   if [ "$ispwd" -eq 0 ]; then
     paths=""
-    for d in .env workspace; do
+    for d in .local/git workspace; do
       d="$HOME/$d"
       for sub in "$d"/*; do
         if [ ! -d "$sub/.git" ]; then
