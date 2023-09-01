@@ -21,6 +21,7 @@ for COMPGEN in lb vm; do
 done
 
 unset COMPGEN COMPLETIONS COMPPATH 
+source "$HOME/.config/voidedtech/git.env"
 
 export TERM=xterm-256color
 alias scp="echo noop"
