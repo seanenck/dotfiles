@@ -1,6 +1,18 @@
 vim.o.runtimepath = vim.o.runtimepath
 vim.o.directory = os.getenv("HOME") .. "/.cache/nvim"
 
+local function user_updates(cmd)
+    if not os.execute(os.getenv("HOME") .. '/.config/nvim/user-updates ' .. cmd .. ' > /dev/null 2>&1') then
+        print("user-updates failed")
+    end
+end
+local function nvim_user_updates()
+    user_updates("update")
+end
+user_updates("init")
+
+vim.api.nvim_create_user_command('UserUpdates', nvim_user_updates, { nargs = 0 })
+
 -- Plugins
 require("options")
 require("helpers")
