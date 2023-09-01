@@ -62,7 +62,6 @@ for file in "$HOME/.local/completions/"*.sh; do
 done
 unset PREFERPS1 file
 
-# aliases
 if [ -x /usr/bin/bat ];then
   alias cat=bat
 fi
