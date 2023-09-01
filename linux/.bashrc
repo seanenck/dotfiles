@@ -33,6 +33,7 @@ export PATH="$HOME/.local/bin/:$PATH"
 export GOPATH="$HOME/.cache/go"
 export GOBASE_FLAGS="-trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 export GOFLAGS="-ldflags=-linkmode=external $GOBASE_FLAGS"
+source "$HOME/.config/voidedtech/git.env"
 
 # disable ctrl+s
 stty -ixon

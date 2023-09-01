@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-mkdir -p "$HOME/.cache"
-mkdir -p "$HOME/.local/state"
