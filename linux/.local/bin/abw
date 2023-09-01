@@ -14,7 +14,7 @@ _abuild-conf() {
       printf 'PACKAGER_PRIVKEY=%s\n' "$k"
     fi
   done
-  printf 'export GOFLAGS="-trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"'
+  printf 'export GOFLAGS="%s"' "$GOBASE_FLAGS"
 } 
 
 
