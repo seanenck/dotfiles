@@ -35,7 +35,10 @@ _makefile() {
       _lsfiles ""
       _lsfiles "$UNAME/"
       if [ -x "configure.local" ]; then
-        UNAME="$UNAME" ./configure.local
+        if ! UNAME="$UNAME" ./configure.local; then
+          printf "failed in configure.local\n" 1>&2
+          exit 1
+        fi
       fi
     } | awk '!x[$0]++'
     echo "rm Makefile"
