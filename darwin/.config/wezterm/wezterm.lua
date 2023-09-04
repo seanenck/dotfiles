@@ -12,9 +12,9 @@ config.initial_rows = 50
 config.enable_tab_bar = false
 config.font = wezterm.font {
   family = 'JetBrains Mono',
-  harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
+  weight = "Bold",
 }
-config.font_size = 15 
+config.font_size = 14.5 
 
 config.keys = {
   {
