@@ -15,6 +15,7 @@ config.font = wezterm.font {
   weight = "Bold",
 }
 config.font_size = 14.5 
+config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
 
 config.keys = {
   {
