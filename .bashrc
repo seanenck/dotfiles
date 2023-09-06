@@ -9,7 +9,6 @@ else
     . /etc/bash/bashrc
   fi
 fi
-source "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
 shopt -s histappend
 shopt -s direxpand
@@ -22,7 +21,7 @@ export VISUAL=vi
 export VISUAL=nvim
 export DELTA_PAGER="less -c -X"
 
-export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/bin:$HOME/.local/bin:$PATH"
 for f in coreutils findutils make gnu-sed; do
   export PATH="/opt/homebrew/opt/$f/libexec/gnubin:$PATH"
 done
@@ -56,20 +55,25 @@ done
 
 PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
 
-for file in "$HOME/.local/completions/"*.sh; do
-  if [ -e "$file" ]; then
-    source "$file"
-  fi
-done
 unset PREFERPS1 file
 
-alias cat=bat
-alias diff="diff --color -u"
-alias ls='ls --color=auto'
-alias grep="rg"
-alias vi="$EDITOR"
-alias vim="$EDITOR"
-alias scp="echo noop"
+_local-completions() {
+  local c
+  c="$HOME/.local/completions"
+  if [ ! -d "$c" ]; then
+    mkdir -p "$c"
+    lb bash > "$c/lb"
+    git oclone --bash > "$c/git-oclone"
+    tdiff --bash-completion > "$c/tdiff"
+  fi
+  for f in "$c/"*; do
+    source "$f"
+  done
+  source "/opt/homebrew/etc/profile.d/bash_completion.sh"
+}
+
+_local-completions
+source "$HOME/.bash_aliases"
 
 echo
 git uncommitted
