@@ -26,11 +26,14 @@ esac
 _plugins() {
   local bname url dest
   if [ "$CMD" == "update" ]; then
+    date
     echo "updating plugins..."
   fi
   for url in "${PLUGINS[@]}"; do
     bname=$(basename "$url")
-    echo "$CMD: $bname"
+    if [ "$CMD" == "update" ]; then
+      echo "$CMD: $bname"
+    fi
     dest="$PACK/$bname"
     if [ ! -d "$dest" ]; then
       if ! git clone "$url" "$dest" --single-branch; then
@@ -47,7 +50,6 @@ _plugins() {
       exit 1
     fi
   done
-  echo
 }
 
 _plugins

@@ -9,6 +9,7 @@ else
     . /etc/bash/bashrc
   fi
 fi
+source "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
 shopt -s histappend
 shopt -s direxpand
