@@ -27,6 +27,9 @@ if [ -x /usr/bin/delta ]; then
 fi
 
 export PATH="/opt/homebrew/bin:$PATH"
+for f in coreutils findutils make gnu-sed; do
+  export PATH="/opt/homebrew/opt/$f/libexec/gnubin:$PATH"
+done
 export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
