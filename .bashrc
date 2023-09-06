@@ -19,12 +19,8 @@ HISTSIZE=-1
 HISTFILESIZE=-1
 
 export VISUAL=vi
-if [ -x /usr/bin/nvim ]; then
-  export VISUAL=nvim
-fi
-if [ -x /usr/bin/delta ]; then
-  export DELTA_PAGER="less -c -X"
-fi
+export VISUAL=nvim
+export DELTA_PAGER="less -c -X"
 
 export PATH="/opt/homebrew/bin:$PATH"
 for f in coreutils findutils make gnu-sed; do
@@ -67,18 +63,13 @@ for file in "$HOME/.local/completions/"*.sh; do
 done
 unset PREFERPS1 file
 
-if [ -x /usr/bin/bat ];then
-  alias cat=bat
-fi
+alias cat=bat
 alias diff="diff --color -u"
 alias ls='ls --color=auto'
-if [ -x /usr/bin/rg ]; then
-  alias grep="rg"
-fi
+alias grep="rg"
 alias vi="$EDITOR"
 alias vim="$EDITOR"
 alias scp="echo noop"
-alias abw-sync="abw sync"
 
 echo
 git uncommitted
