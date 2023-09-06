@@ -2,7 +2,8 @@ vim.o.runtimepath = vim.o.runtimepath
 vim.o.directory = os.getenv("HOME") .. "/.cache/nvim"
 
 local function user_updates(cmd)
-    if not os.execute(os.getenv("HOME") .. '/.config/nvim/user-updates ' .. cmd .. ' > /dev/null 2>&1') then
+    local home = os.getenv("HOME")
+    if not os.execute(home .. '/.config/nvim/user-updates ' .. cmd .. ' >> ' .. home .. "/.local/state/nvim-user-updates.log 2>&1") then
         print("user-updates failed")
     end
 end
