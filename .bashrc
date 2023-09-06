@@ -1,21 +1,9 @@
 #!/usr/bin/env bash
 [[ $- != *i* ]] && return
 
-if [ -e /etc/bashrc ]; then
-  # shellcheck source=/dev/null
-  . /etc/bashrc
-else
-  if [ -e /etc/bash/bashrc ]; then
-    . /etc/bash/bashrc
-  fi
-fi
+source /etc/bashrc
 
-shopt -s histappend
 shopt -s direxpand
-
-HISTCONTROL=ignoreboth:erasedups
-HISTSIZE=-1
-HISTFILESIZE=-1
 
 export VISUAL=vi
 export VISUAL=nvim
@@ -28,10 +16,8 @@ done
 export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
-export TERM=xterm-256color
 export GOPATH="$HOME/.cache/go"
-export GOBASE_FLAGS="-trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
-export GOFLAGS="-ldflags=-linkmode=external $GOBASE_FLAGS"
+export GOFLAGS="-ldflags=-linkmode=external $GOBASE_FLAGS -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 source "$HOME/.config/voidedtech/git.env"
 
 # disable ctrl+s
