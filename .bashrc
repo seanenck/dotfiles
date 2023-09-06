@@ -63,7 +63,6 @@ _local-completions() {
   if [ ! -d "$c" ]; then
     mkdir -p "$c"
     lb bash > "$c/lb"
-    git oclone --bash > "$c/git-oclone"
     tdiff --bash-completion > "$c/tdiff"
   fi
   for f in "$c/"*; do
