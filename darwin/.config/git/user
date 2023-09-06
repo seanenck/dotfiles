@@ -1,4 +1,0 @@
-[include]
-    path = "~/.config/git/email"
-[diff "lb"]
-    textconv = lb conv

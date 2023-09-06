@@ -24,18 +24,14 @@ _lsfiles() {
   done
 }
 
-UNAME=$(uname | tr '[:upper:]' '[:lower:]')
 _makefile() {
   echo "all:"
   {
     {
-      if [ "$UNAME" == "linux" ]; then
-        echo "mkdir -p \"$HOME/.cache\""
-      fi
+      echo "mkdir -p \"$HOME/.cache\""
       _lsfiles ""
-      _lsfiles "$UNAME/"
       if [ -x "configure.local" ]; then
-        if ! UNAME="$UNAME" ./configure.local; then
+        if ! ./configure.local; then
           printf "failed in configure.local\n" 1>&2
           exit 1
         fi

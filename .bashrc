@@ -25,6 +25,7 @@ if [ -x /usr/bin/delta ]; then
   export DELTA_PAGER="less -c -X"
 fi
 
+export PATH="/opt/homebrew/bin:$PATH"
 export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
@@ -75,17 +76,5 @@ alias vim="$EDITOR"
 alias scp="echo noop"
 alias abw-sync="abw sync"
 
-# state
-_df() {
-  df -h 2>/dev/null | grep "^$1" | grep "$2" | awk '{printf("%-15s%s\n", $1, $5)}' | sort -u | sed 's/^/  -> /g'
-}
-_disk() {
-  echo "disk:"
-  _df "workspace" "" | sed "s/share/host /g"
-  _df "/dev/vd" "/dev/vd[a-z][0-9]"
-  _df "tmpfs" "/home"
-}
-
-_disk
 echo
 git uncommitted
