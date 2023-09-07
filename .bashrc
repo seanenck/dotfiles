@@ -17,7 +17,7 @@ export EDITOR="$VISUAL"
 export LESSHISTFILE=$HOME/.cache/lesshst
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export GOPATH="$HOME/.cache/go"
-export GOFLAGS="-ldflags=-linkmode=external $GOBASE_FLAGS -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
+export GOFLAGS="-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 export HOME_GIT="$HOME/.local/git"
 export GIT_UNCOMMIT="$HOME_GIT $HOME/workspace"
 
