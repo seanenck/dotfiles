@@ -1,5 +1,3 @@
-[diff "lb"]
-    textconv = lb conv
 [user]
     name = Sean Enck
     email = enckse@voidedtech.com

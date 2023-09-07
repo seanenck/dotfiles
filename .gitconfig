@@ -37,6 +37,8 @@
     showUntrackedFiles = all
 [user]
     useConfigOnly = true
+[diff "lb"]
+    textconv = lb conv
 [help]
     format = man
 [merge]
