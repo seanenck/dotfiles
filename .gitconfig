@@ -36,6 +36,7 @@
     showStash = true
     showUntrackedFiles = all
 [user]
+    name = Sean Enck
     useConfigOnly = true
 [diff "lb"]
     textconv = lb conv
