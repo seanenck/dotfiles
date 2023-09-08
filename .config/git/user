@@ -1,6 +1,6 @@
 [user]
     email = enckse@voidedtech.com
-    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKZsnnWWP93H4mHOW4w0CUQWVtElh7hvT86ZAXoMVbQo enck@desktop
+    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID1vWmgvb51hJoNqx1x/r3EHotNDDnTxM1uwvn52e80d
 [commit]
     gpgSign = true
 [tag]
