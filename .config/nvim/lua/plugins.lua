@@ -77,7 +77,7 @@ ft("python"):fmt({
     ignore_error = true
 }):lint({
     cmd = "dmypy",
-    args = {"--status-file", os.getenv( "HOME" ) .. "/.cache/dmypy.json", "run"},
+    args = {"--status-file", os.getenv( "HOME" ) .. "/.local/state/dmypy.json", "run"},
     ignore_error = true,
     parse = lint.from_regex({
         regex = ':(%d+):(%d*):%s+(%w+):%s+(.-)%s+%[(.-)%]',

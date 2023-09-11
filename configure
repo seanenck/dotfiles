@@ -28,7 +28,6 @@ _makefile() {
   echo "all:"
   {
     {
-      echo "mkdir -p \"$HOME/.cache\""
       _lsfiles ""
       if [ -x "configure.local" ]; then
         if ! ./configure.local; then

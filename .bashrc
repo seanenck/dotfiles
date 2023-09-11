@@ -14,9 +14,8 @@ for f in coreutils findutils make gnu-sed; do
   export PATH="/opt/homebrew/opt/$f/libexec/gnubin:$PATH"
 done
 export EDITOR="$VISUAL"
-export LESSHISTFILE=$HOME/.cache/lesshst
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
-export GOPATH="$HOME/.cache/go"
+export GOPATH="$HOME/Library/Caches/go"
 export GOFLAGS="-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 export HOME_GIT="$HOME/.local/git"
 export GIT_UNCOMMIT="$HOME_GIT $HOME/workspace"
@@ -29,12 +28,13 @@ shopt -s checkwinsize
 
 PREFERPS1="(\u@\h \W)"
 PS1=$PREFERPS1'$ '
+SSH_AGENT_ENV="$HOME/.local/state/ssh-agent.env"
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    ssh-agent > "$HOME/.cache/ssh-agent.env"
+    ssh-agent > "$SSH_AGENT_ENV"
 fi
-export SSH_AUTH_SOCK="$HOME/.cache/ssh-agent.socket"
+export SSH_AUTH_SOCK="$HOME/.local/state/ssh-agent.socket"
 if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    source "$HOME/.cache/ssh-agent.env" >/dev/null
+    source "$SSH_AGENT_ENV" >/dev/null
 fi
 for file in "$HOME/.ssh/"*.key; do
   ssh-add "$file" > /dev/null 2>&1
