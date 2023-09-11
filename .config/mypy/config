@@ -1,4 +1,4 @@
 [mypy]
-cache_dir: $HOME/Library/Cache/mypycache
+cache_dir: $HOME/Library/Caches/mypycache
 strict: true
 show_column_numbers: true
