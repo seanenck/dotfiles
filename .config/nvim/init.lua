@@ -47,8 +47,5 @@ for key, command in pairs(move_maps) do
     vmap(key, command)
 end
 
--- allow for a non-register overwrite delete
-nmap("rr", "\"_dd")
-
 vim.api.nvim_set_hl(0, "Pmenu", {bg='peru', fg='black'})
 vim.api.nvim_set_hl(0, "Search", {bg='peru', fg='wheat'})
