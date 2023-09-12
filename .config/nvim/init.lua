@@ -1,5 +1,3 @@
-vim.o.directory = os.getenv("HOME") .. "/Library/Caches/nvim"
-
 local function user_updates(cmd)
     local home = os.getenv("HOME")
     if not os.execute(home .. '/.config/nvim/user-updates ' .. cmd .. ' >> ' .. home .. "/.local/state/nvim-user-updates.log 2>&1") then
