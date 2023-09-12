@@ -93,22 +93,30 @@ ft("python"):fmt({
 ft("sh"):lint("shellcheck")
 
 require('guard').setup({
-    fmt_on_save = true,
+    fmt_on_save = false,
     lsp_as_default_formatter = false,
 })
 
-function _G.preserve(cmd)
-    local cmd = string.format('keepjumps keeppatterns execute %q', cmd)
-    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-    vim.api.nvim_command(cmd)
-    local lastline = vim.fn.line('$')
-    if line > lastline then
-        line = lastline
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*",
+    callback = function(args)
+        local f = vim.bo[args.buf].filetype
+        if f == nil then
+            return
+        end
+        for k, v in pairs(ft) do
+            for vk, vv in pairs(v) do
+                if k == f and vk == "format" then
+                    if pcall(function() 
+                            vim.api.nvim_exec("undojoin | GuardFmt", false)
+                        end) == false then
+                            vim.api.nvim_exec("GuardFmt", false)
+                    end
+                end
+            end
+        end
     end
-    vim.api.nvim_win_set_cursor(0, {line , col})
-end
-map('n', 'u', ':lua preserve(":undo")<cr>')
-map('n', 'r', ':lua preserve(":redo")<cr>')
+})
 
 -- mini completion
 local keys = {
