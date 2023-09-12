@@ -17,6 +17,17 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     callback = text
 })
 
+-- Directory
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+    pattern = "*",
+    callback = function(args)
+        local b = vim.fn.expand("%s")
+        if vim.fn.isdirectory(b) == 1 then
+            vim.api.nvim_buf_set_option(args.buf, "readonly", true)
+        end
+    end
+})
+
 -- Shell
 vim.api.nvim_create_autocmd({"Filetype"}, {
     pattern = { "sh" },
