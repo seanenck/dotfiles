@@ -1,7 +1,43 @@
+-- airline settings
+vim.g.airline_extensions = {"tabline"}
+vim.g.airline_extensions["tabline"] = {["formatter"] = "unique_tail_improved"}
+
+-- nvim-cmp settings
+local cmp = require'cmp'
+
+cmp.setup({
+    snippet = {
+        expand = function(args)
+            require('luasnip').lsp_expand(args.body)
+        end,
+    },
+    mapping = cmp.mapping.preset.insert({
+        ['<Right>'] = cmp.mapping.confirm({ select = false }),
+    }),
+    sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' },
+    }, {
+        { name = 'buffer' },
+    })
+})
+
 -- lsp
+util = require 'lspconfig.util'
 lspconfig = require "lspconfig"
+local on_attach = function(client, bufnr)
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+end
+
+local no_exec = function(name)
+    return vim.fn.executable(name) ~= 1
+end
+
 local function setuplsp()
+    capabilities = require('cmp_nvim_lsp').default_capabilities()
     lspconfig.gopls.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
         settings = {
             gopls = {
                 gofumpt = true,
@@ -10,6 +46,8 @@ local function setuplsp()
         },
     }
     lspconfig.pylsp.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
         settings = {
             pylsp = {
                 plugins = {
@@ -19,11 +57,23 @@ local function setuplsp()
                     },
                     pyflakes = {
                         enabled = true,
+                    },
+                    yapf = {
+                        enabled = true,
+                    },
+                    pylsp_mypy = {
+                        enabled = true,
                     }
                 }
             }
         }
     }
+    vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+        pattern = "*",
+        callback = function()
+            vim.lsp.buf.format { async = false }
+        end
+    })
     vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         vim.lsp.diagnostic.on_publish_diagnostics,
         {
@@ -62,89 +112,9 @@ mapall("<C-j>", ":wincmd j<CR>")
 
 -- guard
 local ft = require('guard.filetype')
-local lint = require('guard.lint')
-
-ft('go'):fmt({
-    cmd = 'gofumpt',
-    args = {"-extra"},
-    stdin = true,
-    ignore_error = true
-})
-
-ft("python"):fmt({
-    cmd = "yapf",
-    stdin = true,
-    ignore_error = true
-}):lint({
-    cmd = "dmypy",
-    args = {"--status-file", os.getenv( "HOME" ) .. "/.local/state/dmypy.json", "run"},
-    ignore_error = true,
-    parse = lint.from_regex({
-        regex = ':(%d+):(%d*):%s+(%w+):%s+(.-)%s+%[(.-)%]',
-        groups = { 'lnum', 'col', 'severity', 'message', 'code' },
-        severities = {
-          information = lint.severities.info,
-          hint = lint.severities.info,
-          note = lint.severities.style,
-        },
-  }),
-})
-
 ft("sh"):lint("shellcheck")
 
 require('guard').setup({
     fmt_on_save = false,
     lsp_as_default_formatter = false,
 })
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*",
-    callback = function(args)
-        local f = vim.bo[args.buf].filetype
-        if f == nil then
-            return
-        end
-        for k, v in pairs(ft) do
-            for vk, vv in pairs(v) do
-                if k == f and vk == "format" then
-                    if pcall(function() 
-                            vim.api.nvim_exec("undojoin | GuardFmt", false)
-                        end) == false then
-                            vim.api.nvim_exec("GuardFmt", false)
-                    end
-                end
-            end
-        end
-    end
-})
-
--- mini completion
-local keys = {
-  ['cr']        = vim.api.nvim_replace_termcodes('<CR>', true, true, true),
-  ['ctrl-y']    = vim.api.nvim_replace_termcodes('<C-y>', true, true, true),
-  ['ctrl-y_cr'] = vim.api.nvim_replace_termcodes('<C-y><CR>', true, true, true),
-}
-_G.cr_action = function()
-  if vim.fn.pumvisible() ~= 0 then
-    -- If popup is visible, confirm selected item or add new line otherwise
-    local item_selected = vim.fn.complete_info()['selected'] ~= -1
-    return item_selected and keys['ctrl-y'] or keys['ctrl-y_cr']
-  else
-    -- If popup is not visible, use plain `<CR>`. You might want to customize
-    -- according to other plugins. For example, to use 'mini.pairs', replace
-    -- next line with `return require('mini.pairs').cr()`
-    return keys['cr']
-  end
-end
-
-vim.keymap.set('i', '<Right>', 'v:lua._G.cr_action()', { expr = true })
-require('mini.completion').setup()
-
--- mini tabline
-require('mini.tabline').setup()
-vim.api.nvim_set_hl(0, "MiniTablineCurrent", {bg='peru', fg='black'})
-vim.api.nvim_set_hl(0, "MiniTablineVisible", {bg='blue', fg='white'})
-vim.api.nvim_set_hl(0, "MiniTablineHidden", {bg='black', fg='white'})
-vim.api.nvim_set_hl(0, "MiniTablineModifiedCurrent", {bg='red', fg='black'})
-vim.api.nvim_set_hl(0, "MiniTablineModifiedVisible", {bg='red', fg='white'})
-vim.api.nvim_set_hl(0, "MiniTablineModifiedHidden", {bg='red', fg='white'})
