@@ -23,6 +23,9 @@ export GIT_UNCOMMIT="$HOME_GIT $HOME/workspace"
 # disable ctrl+s
 stty -ixon
 
+# cache cleanups
+find "$HOME/.local/state/nvim/undo" -type f -mmin +60 -delete
+
 # check the window size after each command
 shopt -s checkwinsize
 
