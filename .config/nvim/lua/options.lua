@@ -24,3 +24,5 @@ vim.opt.foldmethod = "indent"
 vim.opt.signcolumn = "yes"
 vim.opt.clipboard = "unnamedplus"
 vim.opt.omnifunc = "syntaxcomplete#Complete"
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrw = 1
