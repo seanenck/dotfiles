@@ -107,8 +107,8 @@ function _G.preserve(cmd)
     end
     vim.api.nvim_win_set_cursor(0, {line , col})
 end
-map('n', 'u', ':lua preserve(":undo")<cr>', opts)
-map('n', 'r', ':lua preserve(":redo")<cr>', opts)
+map('n', 'u', ':lua preserve(":undo")<cr>')
+map('n', 'r', ':lua preserve(":redo")<cr>')
 
 -- mini completion
 local keys = {
