@@ -1,4 +1,3 @@
-vim.o.runtimepath = vim.o.runtimepath
 vim.o.directory = os.getenv("HOME") .. "/Library/Caches/nvim"
 
 local function user_updates(cmd)
