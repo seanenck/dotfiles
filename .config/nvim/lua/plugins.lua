@@ -45,6 +45,26 @@ local function setuplsp()
             }
         },
     }
+    lspconfig.efm.setup {
+        on_attach = on_attach,
+        capabilities = capabilities,
+        settings = {
+            rootMarkers = {".git/"},
+            languages = {
+                sh = {
+                    {
+                        lintCommand = "shellcheck -f gcc -x",
+                        lintSource = "shellcheck",
+                        lintFormats = {
+                            '%f:%l:%c: %trror: %m',
+                            '%f:%l:%c: %tarning: %m',
+                            '%f:%l:%c: %tote: %m',
+                        }
+                    }
+                }
+            }
+        }
+    }
     lspconfig.pylsp.setup{
         on_attach = on_attach,
         capabilities = capabilities,
@@ -109,12 +129,3 @@ end
 
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 mapall("<C-j>", ":wincmd j<CR>")
-
--- guard
-local ft = require('guard.filetype')
-ft("sh"):lint("shellcheck")
-
-require('guard').setup({
-    fmt_on_save = false,
-    lsp_as_default_formatter = false,
-})

@@ -6,8 +6,7 @@ PLUGINS=(
   "https://github.com/hrsh7th/nvim-cmp" \
   "https://github.com/hrsh7th/cmp-nvim-lsp" \
   "https://github.com/L3MON4D3/LuaSnip" \
-  "https://github.com/vim-airline/vim-airline" \
-  "https://github.com/nvimdev/guard.nvim"
+  "https://github.com/vim-airline/vim-airline"
 )
 
 if [ -z "$1" ]; then
