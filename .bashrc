@@ -19,6 +19,7 @@ export GOPATH="$HOME/Library/Caches/go"
 export GOFLAGS="-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 export HOME_GIT="$HOME/.local/git"
 export GIT_UNCOMMIT="$HOME_GIT $HOME/workspace"
+export TERM=xterm-256color
 
 # disable ctrl+s
 stty -ixon
