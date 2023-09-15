@@ -3,7 +3,7 @@ hs.hotkey.bind({'cmd','ctrl'}, 'space', function()
     local screen = windows[1]:screen():frame()
     local nOfSpaces = #windows > 1 and #windows - 1 or 1
 
-    local xMargin = screen.w / 10 -- unused horizontal margin
+    local xMargin = screen.w / 20 -- unused horizontal margin
     local yMargin = 20            -- unused vertical margin
     local spacing = 100           -- the visible margin for each window
 
