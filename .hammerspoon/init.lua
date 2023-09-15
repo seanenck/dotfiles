@@ -5,7 +5,7 @@ hs.hotkey.bind({'cmd','ctrl'}, 'space', function()
 
     local xMargin = screen.w / 10 -- unused horizontal margin
     local yMargin = 20            -- unused vertical margin
-    local spacing = 40            -- the visible margin for each window
+    local spacing = 100           -- the visible margin for each window
 
     for i, win in ipairs(windows) do
         local offset = (i - 1) * spacing
