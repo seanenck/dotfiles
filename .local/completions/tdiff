@@ -1,47 +1,13 @@
 # tdiff completion
 
 _tdiff() {
-  local f cur opts last
+  local cur opts
   cur=${COMP_WORDS[COMP_CWORD]}
   opts="${opts}--exclude "
   opts="${opts}--exit-early "
   opts="${opts}--headers-only "
   opts="${opts}--quiet "
   opts="${opts}--short "
-  if [ "$COMP_CWORD" -gt 1 ]; then
-    last=${COMP_WORDS[COMP_CWORD-1]}
-    case "$last" in
-        *)
-          for f in ${COMP_WORDS[*]}; do
-            if [ "$f" == "--exclude" ]; then
-              opts=$(echo "$opts" | sed "s/--headers-only//g")
-            else
-              opts="$opts"
-            fi
-            if [ "$f" == "--headers-only" ]; then
-              opts=$(echo "$opts" | sed "s/--headers-only//g")
-            else
-              opts="$opts"
-            fi
-            if [ "$f" == "--quiet" ]; then
-              opts=$(echo "$opts" | sed "s/--quiet//g")
-            else
-              opts="$opts"
-            fi
-            if [ "$f" == "--exit-early" ]; then
-              opts=$(echo "$opts" | sed "s/--exit-early//g")
-            else
-              opts="$opts"
-            fi
-            if [ "$f" == "--short" ]; then
-              opts=$(echo "$opts" | sed "s/--short//g")
-            else
-              opts="$opts"
-            fi
-          done
-          ;;
-    esac
-  fi
   COMPREPLY=($(compgen -W "$opts" -- "$cur"))
 }
 
