@@ -60,7 +60,6 @@ _local-completions() {
   c="$HOME/.local/completions"
   mkdir -p "$c"
   _local-gencomp "lb bash" "$c/lb"
-  _local-gencomp "tdiff --bash-completion" "$c/tdiff"
   for f in "$c/"*; do
     source "$f"
   done

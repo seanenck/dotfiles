@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+FILE1=""
+FILE2=""
+EXCLUDE=""
+EXIT_EARLY=0
+HEADER_ONLY=0
+OUTPUT=/dev/stdout
+EXIT_CODE=0
+QUIET=0
+SHORT=0
+
+_usage() {
+  echo "tdiff <args> <file1> <file2}
+  --exclude=<pattern>
+      exclusion pattern when interacting with tar files
+  --quiet
+      suppress output
+  --headers-only
+      only diff headers/file information
+  --exit-early
+      exit on first difference
+  --short
+      less/compact output
+" >&2
+}
+
+for i in "$@"; do
+  case $i in
+    --exclude=*)
+      EXCLUDE="${i#*=}"
+      ;;
+    --quiet)
+      OUTPUT=/dev/null
+      QUIET=1
+      ;;
+    --exit-early)
+      EXIT_EARLY=1
+      ;;
+    --headers-only)
+      HEADER_ONLY=1
+      ;;
+    --short)
+      SHORT=1
+      ;;
+    --help)
+      _usage
+      exit 0
+      ;;
+    *)
+      if [ -z "$FILE1" ]; then
+        FILE1="$i"
+      else
+        if [ -z "$FILE2" ]; then
+          FILE2="$i"
+        else
+          printf "unknown argument: %s\n" "$i" >&2
+          _usage
+          exit 1
+        fi
+      fi
+      ;;
+  esac
+done
+if [ -z "$FILE1" ] || [ -z "$FILE2" ]; then
+  printf "file inputs required\n" >&2
+  _usage
+  exit 1
+fi
+if [ ! -e "$FILE1" ] || [ ! -e "$FILE2" ]; then
+  printf "file inputs do not exist\n" >&2
+  exit 1
+fi
+
+_diff() {
+  if ! diff -u --color <(echo "$1") <(echo "$2") > "$OUTPUT"; then
+    if [ "$QUIET" -eq 0 ] && [ -n "$3" ]; then
+      echo "$3"
+    fi
+    if [ "$EXIT_EARLY" -eq 1 ]; then
+      exit 1
+    fi
+    EXIT_CODE=1
+  fi 
+}
+
+_tar() {
+  local
+  args=()
+  if [ -n "$EXCLUDE" ]; then
+    args+=(--exclude "$EXCLUDE")
+  fi
+  tar $1 "$2" ${args[*]} ${@:3}
+}
+
+FILE1LIST=$(_tar -tf "$FILE1" | sort)
+FILE2LIST=$(_tar -tf "$FILE2" | sort)
+
+_diff "$FILE1LIST" "$FILE2LIST"
+if [ "$HEADER_ONLY" -eq 1 ]; then
+  exit "$EXIT_CODE"
+fi
+
+_tarfile() {
+  local prefix
+  prefix=$(echo "$1" | sed 's#^\.\/##g')
+  _tar -xf "$2" --to-stdout "$1" | sed "s#^#$prefix: #g"
+}
+
+_tarloop() {
+  local a b al bl item other one two short
+  a="$1"
+  b="$3"
+  al="$2"
+  bl="$4"
+  for item in $(echo "$al" | tr '\n' ' '); do
+    if echo "$item" | grep -q '/$'; then
+      continue
+    fi
+    for other in $(echo "$bl" | tr '\n' ' '); do
+      if [ "$item" == "$other" ]; then
+        one=$(_tarfile "$item" "$a")
+        two=$(_tarfile "$item" "$b")
+        short=""
+        if [ "$SHORT" -eq 1 ]; then
+          short="* $item"
+        fi
+        _diff "$one" "$two" "$short"
+        break
+      fi
+    done
+  done
+}
+
+if [ "$SHORT" -eq 1 ]; then
+  OUTPUT=/dev/null
+fi
+_tarloop "$FILE1" "$FILE1LIST" "$FILE2" "$FILE2LIST"
+
+exit "$EXIT_CODE"
