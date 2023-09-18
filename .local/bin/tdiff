@@ -101,7 +101,7 @@ FILE1INFO=$(_tar -tvf "$FILE1" | awk '{printf "%-15s %-15s %s\n", $1, $5, $9}')
 FILE2INFO=$(_tar -tvf "$FILE2" | awk '{printf "%-15s %-15s %s\n", $1, $5, $9}')
 
 _warning() {
-  echo -e "\e[1;33m* $1\e[0m"
+  echo -e "\e[0;33m* $1\e[0m"
 }
 
 HEADERS=""
