@@ -117,12 +117,12 @@ fi
 
 _tarfile() {
   local prefix c
-  prefix=$(echo "$1" | sed 's#^\.\/##g')
-  c=$(_tar -xf "$2" --to-stdout "$1" | sed "s#^#$prefix: #g" | xxd)
+  c=$(_tar -xf "$2" --to-stdout "$1" | xxd)
   if echo -e "$c" | xxd -r | hexdump -C | cut -d '|' -f 1 | grep -q " 00 "; then
     echo "$c" | xxd -r | sha256sum | cut -d " " -f 1 | cut -c 1-7 | sed 's/^/sha256-short: /g'
   else
-    echo "$c" | xxd -r
+    prefix=$(echo "$1" | sed 's#^\.\/##g')
+    echo "$c" | xxd -r | sed "s#^#$prefix: #g"
   fi
 }
 
