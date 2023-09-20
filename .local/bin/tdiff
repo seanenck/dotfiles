@@ -125,15 +125,15 @@ fi
 
 _tarfile() {
   local prefix c
-  c=$(_tar -xf "$2" --to-stdout "$1" | xxd)
   prefix=$(echo "$1" | sed 's#^\.\/##g')
   {
-    if echo -e "$c" | xxd -r | hexdump -C | cut -d '|' -f 1 | grep -q " 00 "; then
-      echo "$c" | xxd -r | sha256sum | cut -d " " -f 1 | cut -c 1-7 | sed 's/$/ (sha256-short)/g'
+    c=$(_tar -xf "$2" --to-stdout "$1")
+    if echo "$c" | file - | grep -q "ASCII"; then
+      echo "$c"
     else
-      echo "$c" | xxd -r
+      echo "$c" | sha256sum | cut -d " " -f 1 | cut -c 1-7 | sed 's/$/ (sha256-short)/g'
     fi
-  } | sed "s#^#$prefix: #g"
+  } 2>/dev/null | sed "s#^#$prefix: #g"
 }
 
 _tarloop() {
