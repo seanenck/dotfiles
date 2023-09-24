@@ -25,7 +25,10 @@ export TERM=xterm-256color
 stty -ixon
 
 # cache cleanups
-find "$HOME/.local/state/nvim/undo" -type f -mmin +60 -delete
+f="$HOME/.local/state/nvim/undo"
+if [ -d "$f" ]; then
+  find "$f" -type f -mmin +60 -delete
+fi
 
 # check the window size after each command
 shopt -s checkwinsize

@@ -44,11 +44,11 @@
     format = man
 [merge]
     conflictstyle = diff3
-[url "store.voidedtech.com:/mnt/store/active/git/private/"]
+[url "~/Active/git/private/"]
    insteadOf = private:
 [includeIf "hasconfig:remote.*.url:private:*"]
    path = "~/.config/git/user"
-[url "store.voidedtech.com:/mnt/store/active/git/public/"]
+[url "~/Active/git/public/"]
    insteadOf = upstream:
 [includeIf "hasconfig:remote.*.url:upstream:*"]
    path = "~/.config/git/user"
