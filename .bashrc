@@ -67,6 +67,23 @@ _local-completions() {
   source "/opt/homebrew/etc/profile.d/bash_completion.sh"
 }
 
+brew-update() {
+  local d c
+  d="$HOME/Active/brew"
+  for c in update upgrade; do
+    if ! brew "$c"; then
+      echo "brew $c failed!"
+      return
+    fi
+  done
+  rm -f "$d/Brewfile"
+  mkdir -p "$d"
+  if ! (cd "$d" && brew bundle dump); then
+    echo "failed to dump brew definitions"
+    return
+  fi
+}
+
 _local-completions
 source "$HOME/.bash_aliases"
 
