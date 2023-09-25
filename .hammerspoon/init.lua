@@ -19,3 +19,40 @@ hs.hotkey.bind({'cmd','ctrl'}, 'space', function()
     end
 end)
 
+hs.hotkey.bind({'cmd','ctrl'}, 'return', function()
+    local windows = hs.window.orderedWindows()
+    local screen = windows[1]:screen():frame()
+
+    local xMargin = screen.w / 50
+    local yMargin = 20
+    local bigX = 0.6
+    local mainX = screen.w * bigX
+
+    local count = 0
+    for i, win in ipairs(windows) do
+        local app = win:application()
+        if app ~= nil then
+            local name = app:name()
+            if name ~= nil and name == "kitty" then
+              local rect = {
+                  x = xMargin,
+                  y = screen.y + yMargin,
+                  w = screen.w,
+                  h = screen.h
+              }
+              if count == 0 then
+                  rect.w = mainX
+              elseif count == 1 then
+                  rect.w = (screen.w * (1 - bigX)) - 200
+                  rect.x = rect.x + mainX + 50
+              end
+              win:setFrame(rect)
+              count = count + 1
+              if count >= 2 then
+                  return
+              end
+            end
+        end
+    end
+end)
+
