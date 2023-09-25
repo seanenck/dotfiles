@@ -74,7 +74,7 @@ _local-completions
 source "$HOME/.bash_aliases"
 
 echo
-echo "disk usage"
+echo "disk"
 echo "==="
 df -h / | tail -n +2 | awk '{print $5}' | sed 's/^/  usage => /g'
 echo
