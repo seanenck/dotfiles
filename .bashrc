@@ -9,10 +9,7 @@ export VISUAL=vi
 export VISUAL=nvim
 export DELTA_PAGER="less -c -X"
 
-export PATH="/opt/homebrew/bin:$HOME/.local/bin:$PATH"
-for f in coreutils findutils make gnu-sed; do
-  export PATH="/opt/homebrew/opt/$f/libexec/gnubin:$PATH"
-done
+source ~/.bash_vars
 export EDITOR="$VISUAL"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export GOPATH="$HOME/Library/Caches/go"
