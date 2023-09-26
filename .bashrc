@@ -66,7 +66,7 @@ _local-completions() {
   source "/opt/homebrew/etc/profile.d/bash_completion.sh"
 }
 
-brew-update() {
+sys-update() {
   local d c
   d="$HOME/Active/brew"
   for c in update upgrade; do
@@ -81,6 +81,7 @@ brew-update() {
     echo "failed to dump brew definitions"
     return
   fi
+  (cd "$HOME/.config/nvim" && ./user-updates update)
 }
 
 _local-completions
