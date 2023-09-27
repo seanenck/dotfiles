@@ -68,7 +68,7 @@ _local-completions() {
 
 sys-update() {
   local d c
-  d="$HOME/Active/brew"
+  d="$TASK_CACHE/brew"
   for c in update upgrade; do
     if ! brew "$c"; then
       echo "brew $c failed!"
