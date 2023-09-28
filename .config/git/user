@@ -1,0 +1,11 @@
+[user]
+    email = enckse@voidedtech.com
+    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID1vWmgvb51hJoNqx1x/r3EHotNDDnTxM1uwvn52e80d
+[commit]
+    gpgSign = true
+[tag]
+    gpgSign = true
+[gpg]
+    format = ssh
+[gpg "ssh"]
+    allowedSignersFile = ~/.ssh/allowed_signers

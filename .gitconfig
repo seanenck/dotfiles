@@ -1,0 +1,54 @@
+[include]
+    path = ~/.config/git/private
+[core]
+    editor = nvim
+    pager = delta
+    autocrlf = input
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    navigate = true
+    light = false
+    features = decorations
+    keep-plus-minus-markers = true
+    line-numbers = true
+[diff]
+    colorMoved = default
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
+[grep]
+    lineNumber = true
+[log]
+    date = iso-strict
+[pull]
+    rebase = false
+[push]
+    default = simple
+[status]
+    short = true
+    branch = true
+    showStash = true
+    showUntrackedFiles = all
+[user]
+    name = Sean Enck
+    useConfigOnly = true
+[diff "lb"]
+    textconv = lb conv
+[help]
+    format = man
+[merge]
+    conflictstyle = diff3
+[url "~/Active/git/private/"]
+   insteadOf = private:
+[includeIf "hasconfig:remote.*.url:private:*"]
+   path = "~/.config/git/user"
+[url "~/Active/git/public/"]
+   insteadOf = upstream:
+[includeIf "hasconfig:remote.*.url:upstream:*"]
+   path = "~/.config/git/user"
