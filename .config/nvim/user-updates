@@ -9,33 +9,13 @@ PLUGINS=(
   "https://github.com/vim-airline/vim-airline"
 )
 
-if [ -z "$1" ]; then
-  echo "command required"
-  exit 1
-fi
-CMD="$1"
-case "$CMD" in
-  "init")
-    ;;
-  "update")
-    ;;
-  *)
-    echo "unknown command: $CMD"
-    exit 1
-    ;;
-esac
-
 _plugins() {
   local bname url dest
-  if [ "$CMD" == "update" ]; then
-    date
-    echo "updating plugins..."
-  fi
   for url in "${PLUGINS[@]}"; do
     bname=$(basename "$url")
-    if [ "$CMD" == "update" ]; then
-      echo "$CMD: $bname"
-    fi
+    echo "========="
+    echo "$bname"
+    echo "========="
     dest="$PACK/$bname"
     if [ ! -d "$dest" ]; then
       if ! git clone "$url" "$dest" --single-branch; then
@@ -43,13 +23,10 @@ _plugins() {
         exit 1
       fi
     else
-      if [ "$CMD" == "init" ]; then
-        continue
+      if ! git -C "$dest" pull origin "$(git -C "$dest" rev-parse --abbrev-ref HEAD)"; then
+        echo "failed to pull updates"
+        exit 1
       fi
-    fi
-    if ! git -C "$dest" pull origin "$(git -C "$dest" rev-parse --abbrev-ref HEAD)"; then
-      echo "failed to pull updates"
-      exit 1
     fi
   done
 }
