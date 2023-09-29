@@ -29,6 +29,7 @@ hs.hotkey.bind({'cmd','ctrl'}, 'return', function()
     local mainX = screen.w * bigX
 
     local count = 0
+    local focus = {}
     for i, win in ipairs(windows) do
         local app = win:application()
         if app ~= nil then
@@ -42,17 +43,25 @@ hs.hotkey.bind({'cmd','ctrl'}, 'return', function()
               }
               if count == 0 then
                   rect.w = mainX
+                  win:focus()
               elseif count == 1 then
                   rect.w = (screen.w * (1 - bigX)) - 200
                   rect.x = rect.x + mainX + 50
               end
               win:setFrame(rect)
+              focus[count] = win
               count = count + 1
               if count >= 2 then
-                  return
+                  break
               end
             end
         end
+    end
+    if count > 0 then
+        if count > 1 then
+            focus[1]:focus()
+        end
+        focus[0]:focus()
     end
 end)
 
