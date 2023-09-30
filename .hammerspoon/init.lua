@@ -19,6 +19,22 @@ hs.hotkey.bind({'cmd','ctrl'}, 'space', function()
     end
 end)
 
+local swap_focus = function()
+    local windows = hs.window.orderedWindows()
+    local first = true
+    for i, win in ipairs(windows) do
+        if first then
+            first = false
+        else
+            win:focus()
+            return
+        end
+    end
+end
+
+hs.hotkey.bind({'cmd','ctrl'}, 'l', swap_focus)
+hs.hotkey.bind({'cmd','ctrl'}, 'h', swap_focus)
+
 hs.hotkey.bind({'cmd','ctrl'}, 'return', function()
     local windows = hs.window.orderedWindows()
     local screen = windows[1]:screen():frame()
@@ -64,4 +80,3 @@ hs.hotkey.bind({'cmd','ctrl'}, 'return', function()
         focus[0]:focus()
     end
 end)
-
