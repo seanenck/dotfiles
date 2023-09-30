@@ -47,4 +47,4 @@
 [url "~/Active/git/"]
     insteadOf = localhost:
 [includeIf "hasconfig:remote.*.url:localhost:**/*"]
-   path = "~/.config/git/user"
+    path = "~/.config/git/user"
