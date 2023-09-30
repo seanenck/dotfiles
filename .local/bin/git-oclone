@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 CACHE="$HOME/.local/state/oclone.hst"
+REPOS="$HOME/Active/git"
 if [ ! -e "$CACHE" ]; then
   mkdir -p "$(dirname "$CACHE")"
   touch "$CACHE"
@@ -10,13 +11,18 @@ if [ -z "$1" ]; then
 fi
 
 _targets() {
-  git config --list | grep insteadof | rev | cut -d "=" -f 1 | rev | sort -u
+  git config --list | grep insteadof | rev | cut -d "=" -f 1 | rev | grep -v '^localhost:$' | sort -u
+}
+
+_dirs() {
+  ls "$REPOS" | sed 's#$#/#g'
 }
 
 case "$1" in
   "--list")
   {
-    _targets | sed 's#^localhost/##g'
+    _targets
+    _dirs
     cat "$CACHE"
   } | sed 's#:#/#' | sort
   exit 0
@@ -24,15 +30,14 @@ case "$1" in
 esac
 
 _redirect() {
-  local r base
-  name=$(echo "$1" | sed 's#/#:#')
-  for r in $(_targets | grep '^localhost/'); do
-    base="$(basename "$r" | sed 's#:$#/#g')"
-    if echo "$1" | grep -q "^$base"; then
-      echo "localhost/$name"
+  local r base name
+  for r in $(_dirs); do
+    if echo "$1" | grep -q "^$r"; then
+      echo "localhost:$1"
       return
     fi
   done
+  echo "$1" | sed 's#/#:#'
   echo "$name"
 }
 
