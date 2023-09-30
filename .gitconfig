@@ -45,10 +45,8 @@
 [merge]
     conflictstyle = diff3
 [url "~/Active/git/private/"]
-   insteadOf = private:
-[includeIf "hasconfig:remote.*.url:private:*"]
-   path = "~/.config/git/user"
+   insteadOf = localhost/private:
 [url "~/Active/git/public/"]
-   insteadOf = upstream:
-[includeIf "hasconfig:remote.*.url:upstream:*"]
+   insteadOf = localhost/upstream:
+[includeIf "hasconfig:remote.*.url:localhost/**/*"]
    path = "~/.config/git/user"

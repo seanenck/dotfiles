@@ -85,5 +85,3 @@ uncommit() {
 }
 
 uncommit "$1"
-
-# hash: 040a08e

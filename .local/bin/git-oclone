@@ -16,17 +16,29 @@ _targets() {
 case "$1" in
   "--list")
   {
-    _targets
+    _targets | sed 's#^localhost/##g'
     cat "$CACHE"
   } | sed 's#:#/#' | sort
   exit 0
   ;;
 esac
 
-TARGET="$(echo "$1" | sed 's#/#:#')"
+_redirect() {
+  local r base
+  name=$(echo "$1" | sed 's#/#:#')
+  for r in $(_targets | grep '^localhost/'); do
+    base="$(basename "$r" | sed 's#:$#/#g')"
+    if echo "$1" | grep -q "^$base"; then
+      echo "localhost/$name"
+      return
+    fi
+  done
+  echo "$name"
+}
+
+TARGET=$(_redirect "$1")
 if ! git clone "$TARGET"; then
   exit 1
 fi
 echo "$TARGET" >> "$CACHE"
 sort -u -o "$CACHE" "$CACHE"
-# hash: 040a08e
