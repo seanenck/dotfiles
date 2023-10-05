@@ -45,6 +45,10 @@ local function setuplsp()
             }
         },
     }
+    lspconfig.denols.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
+    }
     lspconfig.efm.setup {
         on_attach = on_attach,
         capabilities = capabilities,
