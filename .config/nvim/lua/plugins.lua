@@ -85,6 +85,9 @@ local function setuplsp()
                     yapf = {
                         enabled = true,
                     },
+                    ruff = {
+                        enabled = false,
+                    },
                     pylsp_mypy = {
                         enabled = true,
                     }
