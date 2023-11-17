@@ -59,7 +59,6 @@ _local-completions() {
   c="$HOME/.local/completions"
   mkdir -p "$c"
   _local-gencomp "lb bash" "$c/lb"
-  _local-gencomp "vm bash" "$c/vm" 
   for f in "$c/"*; do
     source "$f"
   done
