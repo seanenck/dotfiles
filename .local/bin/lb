@@ -23,7 +23,8 @@ _clear-clipboard() {
   counter=0
 
   while true; do
-    content=$(pbpaste | shasum | cut -d " " -f 1)
+    content=$(pbpaste)
+    content=$(printf "$content" | shasum | cut -d " " -f 1)
     if [ "$content" != "$1" ]; then
       exit 0
     else
@@ -82,13 +83,15 @@ _get() {
 }
 
 _output() {
+  local hash
   if [ "$1" == "$SHOW_CMD" ]; then
     echo "$2"
     return
   fi
   echo "clipboard will clear in $CLEAR_CLIP (seconds)"
   printf "$2" | pbcopy
-  "$SCRIPT" "$PB_CMD" $(echo "$2" | shasum | cut -d " " -f 1) &
+  hash=$(printf "$2" | shasum | cut -d " " -f 1)
+  "$SCRIPT" "$PB_CMD" "$hash" &
   disown
 }
 
