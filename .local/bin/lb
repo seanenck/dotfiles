@@ -1,0 +1,161 @@
+#!/usr/bin/env bash
+CLEAR_CLIP=45
+CONFIG="$HOME/.config/lb.env"
+APP="/Applications/KeePassXC.app/Contents/MacOS/keepassxc-cli"
+SCRIPT="lb"
+TOTP_CMD="totp"
+SHOW_CMD="show"
+CLIP_CMD="clip"
+PB_CMD="clipboard"
+TOTP_TYPE="/totp$"
+
+if [ -s "$CONFIG" ]; then
+  source "$CONFIG"
+fi
+if [ -z "$LB_STORE" ] || [ -z "$LB_KEY" ] || [ -z "$LB_KEYFILE" ]; then
+  echo "missing required variables, $CONFIG setup?"
+  exit 1
+fi
+
+_clear-clipboard() {
+  local content counter
+  content=""
+  counter=0
+
+  while true; do
+    content=$(pbpaste | shasum | cut -d " " -f 1)
+    if [ "$content" != "$1" ]; then
+      exit 0
+    else
+      if [ "$counter" -eq "$CLEAR_CLIP" ]; then 
+        pbcopy < /dev/null
+        exit 0
+      fi
+    fi
+    counter=$((counter+1))
+    sleep 1
+  done
+}
+
+_keepass-cmd() {
+  echo $($LB_KEY) | "$APP" "$1" --quiet --key-file "$LB_KEYFILE" "$LB_STORE" ${@:2} | grep -v '/$' | sort
+}
+
+_ls() {
+  _keepass-cmd "ls" -R -f
+}
+
+_check-args() {
+  if [ -n "$1" ]; then
+    echo "invalid command, too many args"
+    exit 1
+  fi
+}
+
+_get() {
+  local allowed attr val show totp
+  if [ -z "$2" ]; then
+    echo "entry required"
+    exit 1
+  fi
+  totp=""
+  if [ "$3" == "$TOTP_CMD" ]; then
+    totp="--totp"
+  fi
+  allowed="Password"
+  show=0
+  if [ "$1" == "$SHOW_CMD" ]; then
+    show=1
+    allowed="$allowed Notes"
+  fi
+  for attr in $allowed; do
+    val=$(_keepass-cmd "show" --show-protected $totp --attributes "$attr" "$2" 2>/dev/null)
+    if [ -n "$val" ]; then
+      echo "$val"
+      return
+    fi
+  done
+  if [ -z "$val" ]; then
+    echo "unable to find entry: $2" 1>&2
+    exit 1
+  fi
+}
+
+_output() {
+  if [ "$1" == "$SHOW_CMD" ]; then
+    echo "$2"
+    return
+  fi
+  echo "clipboard will clear in $CLEAR_CLIP (seconds)"
+  printf "$2" | pbcopy
+  "$SCRIPT" "$PB_CMD" $(echo "$2" | shasum | cut -d " " -f 1) &
+  disown
+}
+
+_showclip() {
+  local val
+  val=$(_get "$1" "$2")
+  if echo "$2" | grep -q "$TOTP_TYPE"; then
+    echo "invalid entry, is totp"
+    exit 1
+  fi
+  _output "$1" "$val"
+}
+
+_totp() {
+  local val
+  val=$(_get "$1" "$2" "$TOTP_CMD" | head -n 1)
+  if echo "$2" | grep -q -v "$TOTP_TYPE"; then
+    echo "invalid entry, is not totp"
+    exit 1
+  fi
+  _output "$1" "$val"
+}
+
+if [ -z "$1" ]; then
+  echo "command required"
+  exit 1
+fi
+
+IS_TOTP=0
+case "$1" in
+  "$PB_CMD")
+    _check-args "$3"
+    if [ -n "$2" ]; then
+      _clear-clipboard "$2"
+    fi
+    ;;
+  "ls")
+    _check-args "$2"
+    _ls | grep -v "$TOTP_TYPE"
+    ;;
+  "$SHOW_CMD" | "$CLIP_CMD")
+    _check-args "$3"
+    _showclip "$1" "$2"
+    ;;
+  "$TOTP_CMD")
+    IS_TOTP=1
+    ;;
+  *)
+    echo "unknown command"
+    exit 1
+esac
+
+if [ "$IS_TOTP" -eq 0 ]; then
+  exit 0
+fi
+
+SUB="$2"
+case "$2" in
+  "ls")
+    _check-args "$3"
+    _ls | grep "$TOTP_TYPE"
+    ;;
+  "$SHOW_CMD" | "$CLIP_CMD")
+    _check-args "$4"
+    _totp "$2" "$3"
+    ;;
+  *)
+    echo "unknown totp command"
+    exit 1
+esac
