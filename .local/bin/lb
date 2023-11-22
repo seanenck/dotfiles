@@ -106,13 +106,28 @@ _showclip() {
 }
 
 _totp() {
-  local val
+  local val ts time seconds expires
+  time=$(date +"%H:%M:%S")
   val=$(_get "$1" "$2" "$TOTP_CMD" | head -n 1)
   if echo "$2" | grep -q -v "$TOTP_TYPE"; then
     echo "invalid entry, is not totp"
     exit 1
   fi
   _output "$1" "$val"
+  seconds=$(echo "$time" | cut -d ":" -f 3 | sed 's/^0//g')
+  seconds=$((59-seconds))
+  expires="\033[0;31mexpiring\033[0m"
+  if [ "$seconds" -gt 5 ]; then
+    if [ "$seconds" -lt 30 ] || [ "$seconds" -gt 35 ]; then
+      expires="valid to"
+    fi
+  fi
+  if [ "$seconds" -lt 10 ]; then
+    seconds="0$seconds"
+  fi
+
+  echo
+  echo -e "$expires: $time ($seconds seconds)"
 }
 
 if [ -z "$1" ]; then
