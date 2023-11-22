@@ -47,18 +47,10 @@ PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
 
 unset PREFERPS1 file
 
-_local-gencomp() {
-  if [ -e "$2" ]; then
-    return
-  fi
-  $1 > "$2"
-}
-
 _local-completions() {
   local c f
   c="$HOME/.local/completions"
   mkdir -p "$c"
-  _local-gencomp "lb bash" "$c/lb"
   for f in "$c/"*; do
     source "$f"
   done

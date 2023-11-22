@@ -1,0 +1,48 @@
+# lb completion
+
+_lb() {
+  local cur opts
+  cur=${COMP_WORDS[COMP_CWORD]}
+  if [ "$COMP_CWORD" -eq 1 ]; then
+    opts="${opts}ls "
+    opts="${opts}show "
+    opts="${opts}clip "
+    opts="${opts}totp "
+    # shellcheck disable=SC2207
+    COMPREPLY=( $(compgen -W "$opts" -- "$cur") )
+  else
+    if [ "$COMP_CWORD" -eq 2 ]; then
+      case ${COMP_WORDS[1]} in
+        "totp")
+          opts="ls "
+          opts="$opts show"
+          opts="$opts clip"
+          ;;
+        "show" | "clip" )
+          opts=$(lb ls)
+          ;;
+      esac
+    else
+      if [ "$COMP_CWORD" -eq 3 ]; then
+        case "${COMP_WORDS[1]}" in
+          "totp")
+            case "${COMP_WORDS[2]}" in
+              "show")
+                opts=$(lb totp ls)
+                ;;
+              "clip")
+                opts=$(lb totp ls)
+                ;;
+            esac
+            ;;
+        esac
+      fi
+    fi
+    if [ -n "$opts" ]; then
+      # shellcheck disable=SC2207
+      COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+    fi
+  fi
+}
+
+complete -F _lb -o bashdefault lb
