@@ -168,6 +168,24 @@ _totp() {
   echo -e "$expires: $time ($seconds seconds)"
 }
 
+_init() {
+  local d h
+  d=$(dirname "$LB_STORE")
+  h="$d/.git/hooks/post-commit"
+  {
+    echo "#!/bin/sh"
+    echo rsync $LB_STORE $HOME/Documents/synced/
+  } > "$h"
+  if [ ! -s "$h" ]; then
+    echo "failed to set hook?"
+    exit 1
+  fi
+  if ! chmod 755 "$h"; then
+    echo "invalid hook configuration?"
+    exit 1
+  fi
+}
+
 if [ -z "$1" ]; then
   echo "command required"
   exit 1
@@ -175,6 +193,10 @@ fi
 
 IS_TOTP=0
 case "$1" in
+  "init")
+    _check-args "$2"
+    _init
+    ;;
   "conv")
     _check-args "$3"
     _conv "$2"
