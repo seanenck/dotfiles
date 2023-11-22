@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-CLEAR_CLIP=45
 CONFIG="$HOME/.config/lb.env"
-APP="/Applications/KeePassXC.app/Contents/MacOS/keepassxc-cli"
 SCRIPT="lb"
 TOTP_CMD="totp"
 SHOW_CMD="show"
@@ -12,7 +10,7 @@ TOTP_TYPE="/totp$"
 if [ -s "$CONFIG" ]; then
   source "$CONFIG"
 fi
-if [ -z "$LB_STORE" ] || [ -z "$LB_KEY" ] || [ -z "$LB_KEYFILE" ]; then
+if [ -z "$LB_STORE" ] || [ -z "$LB_KEY" ] || [ -z "$LB_KEYFILE" ] || [ -z "$LB_APP" ] || [ -z "$LB_CLEAR_CLIP" ]; then
   echo "missing required variables, $CONFIG setup?"
   exit 1
 fi
@@ -28,7 +26,7 @@ _clear-clipboard() {
     if [ "$content" != "$1" ]; then
       exit 0
     else
-      if [ "$counter" -eq "$CLEAR_CLIP" ]; then 
+      if [ "$counter" -eq "$LB_CLEAR_CLIP" ]; then 
         pbcopy < /dev/null
         exit 0
       fi
@@ -39,7 +37,7 @@ _clear-clipboard() {
 }
 
 _keepass-cmd() {
-  echo $($LB_KEY) | "$APP" "$1" --quiet --key-file "$LB_KEYFILE" "$LB_STORE" ${@:2}
+  echo $($LB_KEY) | "$LB_APP" "$1" --quiet --key-file "$LB_KEYFILE" "$LB_STORE" ${@:2}
 }
 
 _conv() {
@@ -126,7 +124,7 @@ _output() {
     echo "$2"
     return
   fi
-  echo "clipboard will clear in $CLEAR_CLIP (seconds)"
+  echo "clipboard will clear in $LB_CLEAR_CLIP (seconds)"
   printf "$2" | pbcopy
   hash=$(printf "$2" | shasum | cut -d " " -f 1)
   "$SCRIPT" "$PB_CMD" "$hash" &
@@ -146,7 +144,7 @@ _showclip() {
 _totp() {
   local val ts time seconds expires
   time=$(date +"%H:%M:%S")
-  val=$(_get "$1" "$2" "$TOTP_CMD" | grep '[0-9][0-9][0-9][0-9][0-9][0-9]')
+  val=$(_get "$1" "$2" "$TOTP_CMD" | grep '^[0-9][0-9][0-9][0-9][0-9][0-9]$')
   if echo "$2" | grep -q -v "$TOTP_TYPE"; then
     echo "invalid entry, is not totp"
     exit 1
@@ -170,11 +168,14 @@ _totp() {
 
 _init() {
   local d h
+  if [ -z "$LB_GIT_SYNC" ]; then
+    return
+  fi
   d=$(dirname "$LB_STORE")
   h="$d/.git/hooks/post-commit"
   {
     echo "#!/bin/sh"
-    echo rsync $LB_STORE $HOME/Documents/synced/
+    echo rsync $LB_STORE $LB_GIT_SYNC
   } > "$h"
   if [ ! -s "$h" ]; then
     echo "failed to set hook?"
