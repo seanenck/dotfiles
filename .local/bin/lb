@@ -39,11 +39,49 @@ _clear-clipboard() {
 }
 
 _keepass-cmd() {
-  echo $($LB_KEY) | "$APP" "$1" --quiet --key-file "$LB_KEYFILE" "$LB_STORE" ${@:2} | grep -v '/$' | sort
+  echo $($LB_KEY) | "$APP" "$1" --quiet --key-file "$LB_KEYFILE" "$LB_STORE" ${@:2}
+}
+
+_conv() {
+  if [ -z "$1" ]; then
+    echo "no file to conv" 1>&2 
+    exit 1
+  fi
+  export LB_STORE="$1"
+  _keepass-cmd export --format csv | python3 -c "
+import csv
+import json
+import sys
+import hashlib
+
+data = sys.stdin.readlines()
+reader = csv.DictReader(data)
+keys = {}
+for r in reader:
+  result = {}
+  entry = ''
+  for item in ['Group', 'Title', 'Username']:
+    value = r[item]
+    if len(value) == 0:
+      continue
+    if len(entry) > 0:
+      entry = entry + '/'
+    entry += value
+  h = hashlib.sha256()
+  for item in ['Password', 'TOTP', 'Notes']:
+    h.update(r[item].encode())
+  keys[entry] = {'modtime': r['Last Modified'], 'hash': h.hexdigest()[0:7]}
+for k in sorted(keys.keys()):
+  print('{}: {{'.format(k))
+  obj = keys[k]
+  for i in sorted(obj.keys()):
+    print('  {}: {}'.format(i, obj[i]))
+  print('}')
+"
 }
 
 _ls() {
-  _keepass-cmd "ls" -R -f
+  _keepass-cmd "ls" -R -f | grep -v '/$' | sort
 }
 
 _check-args() {
@@ -108,7 +146,7 @@ _showclip() {
 _totp() {
   local val ts time seconds expires
   time=$(date +"%H:%M:%S")
-  val=$(_get "$1" "$2" "$TOTP_CMD" | head -n 1)
+  val=$(_get "$1" "$2" "$TOTP_CMD" | grep '[0-9][0-9][0-9][0-9][0-9][0-9]')
   if echo "$2" | grep -q -v "$TOTP_TYPE"; then
     echo "invalid entry, is not totp"
     exit 1
@@ -137,6 +175,10 @@ fi
 
 IS_TOTP=0
 case "$1" in
+  "conv")
+    _check-args "$3"
+    _conv "$2"
+    ;;
   "$PB_CMD")
     _check-args "$3"
     if [ -n "$2" ]; then
