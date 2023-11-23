@@ -149,6 +149,10 @@ _totp() {
     echo "invalid entry, is not totp"
     exit 1
   fi
+  if [ -z "$val" ]; then
+    echo "invalid totp entry found (no match)"
+    exit 1
+  fi
   _output "$1" "$val"
   seconds=$(echo "$time" | cut -d ":" -f 3 | sed 's/^0//g')
   seconds=$((59-seconds))
