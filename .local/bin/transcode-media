@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+_name() {
+  local h
+  h=$(echo "$1" | sha256sum | cut -c 1-7)
+  d=$(date +"%d.T_%H%M%S")
+  echo "$d.$h"
+}
+
+_do() {
+  local f ext code name
+  for f in $(ls); do
+    ext=$(echo "$f" | rev | cut -d "." -f 1 | rev)
+    if [ "$ext" != "$1" ]; then
+      ext=$(echo "$ext" | tr '[:upper:]' '[:lower:]')
+      if [ "$ext" != "$1" ]; then
+        continue
+      fi
+    fi
+    code=0
+    name=$(_name "$f").$2
+    echo "$f -> $name"
+    case "$1" in
+      "mov")
+      avconvert -s "$f" -o "$name" -p PresetHEVCHighestQuality
+      code=$?
+      ;;
+      "heic")
+      sips --setProperty format jpeg --out "$name" "$f"
+      code=$?
+      ;;
+    esac
+    if [ "$code" -ne 0 ]; then
+      echo "failed: $f"
+      rm -f "$name"
+      continue
+    fi
+    rm -f "$f"
+  done
+}
+
+_do "mov" "mp4"
+_do "heic" "jpeg"
