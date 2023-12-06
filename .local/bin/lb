@@ -133,6 +133,10 @@ _output() {
 
 _showclip() {
   local val
+  if echo "$2" | grep -q '/$'; then
+    echo "invalid entry, group detected"
+    exit 1
+  fi
   val=$(_get "$1" "$2")
   if echo "$2" | grep -q "$TOTP_TYPE"; then
     echo "invalid entry, is totp"
