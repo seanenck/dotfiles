@@ -38,7 +38,7 @@ sys-update() {
   d="$HOME/.local/state/repos.current"
   touch "$d"
   {
-    for c in keepassxreboot/keepassxc kovidgoyal/kitty utmapp/UTM obsidianmd/obsidian-releases Hammerspoon/hammerspoon; do
+    for c in keepassxreboot/keepassxc kovidgoyal/kitty obsidianmd/obsidian-releases Hammerspoon/hammerspoon; do
       echo "getting data for: $c" 1>&2
       git ls-remote --tags "https://github.com/$c" | grep 'refs/tags/' | sed "s#^#$c: #g"
     done
@@ -58,4 +58,3 @@ alias grep="rg"
 alias vi="$EDITOR"
 alias vim="$EDITOR"
 alias scp="echo noop"
-alias utmctl="/Applications/UTM.app/Contents/MacOS/utmctl"
