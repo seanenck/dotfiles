@@ -24,7 +24,7 @@ case "$1" in
     _targets
     _dirs
     cat "$CACHE"
-  } | sed 's#:#/#' | sort
+  } | sed 's#:#/#' | sed 's#^localhost/##g' | sort
   exit 0
   ;;
 esac
