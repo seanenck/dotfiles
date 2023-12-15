@@ -49,7 +49,8 @@ local function setuplsp()
         on_attach = on_attach,
         capabilities = capabilities,
     }
-    lspconfig.efm.setup {
+    lspconfig.ccls.setup{}
+    lspconfig.efm.setup{
         on_attach = on_attach,
         capabilities = capabilities,
         settings = {
