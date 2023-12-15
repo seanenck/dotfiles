@@ -49,7 +49,15 @@ local function setuplsp()
         on_attach = on_attach,
         capabilities = capabilities,
     }
-    lspconfig.ccls.setup{}
+    lspconfig.ccls.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
+        init_options = {
+            cache = {
+                directory = os.getenv('HOME') .. "/.local/state/ccls/"
+            }
+        },
+    }
     lspconfig.efm.setup{
         on_attach = on_attach,
         capabilities = capabilities,
