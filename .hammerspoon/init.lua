@@ -35,8 +35,16 @@ local swap_focus = function()
     end
 end
 
+local move_focus = function() 
+  local win = hs.window.focusedWindow()
+  local screen = win:screen()
+  win:move(win:frame():toUnitRect(screen:frame()), screen:next(), true, 0)
+end
+
 hs.hotkey.bind({'cmd','ctrl'}, 'l', swap_focus)
 hs.hotkey.bind({'cmd','ctrl'}, 'h', swap_focus)
+hs.hotkey.bind({'cmd','shift'}, 'l', move_focus)
+hs.hotkey.bind({'cmd','shift'}, 'h', move_focus)
 
 hs.hotkey.bind({'cmd','ctrl'}, 'return', function()
     local windows = hs.window.orderedWindows()
