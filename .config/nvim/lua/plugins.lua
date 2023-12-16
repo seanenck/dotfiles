@@ -49,6 +49,10 @@ local function setuplsp()
         on_attach = on_attach,
         capabilities = capabilities,
     }
+    lspconfig.rust_analyzer.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
+    }
     lspconfig.ccls.setup{
         on_attach = on_attach,
         capabilities = capabilities,
