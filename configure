@@ -25,14 +25,10 @@ _lsfiles() {
 }
 
 _builds() {
-  local d
-  for d in src/*; do
-    mkdir -p "$d/bin"
-    if ! (cd $d && deno task compile); then
-      echo "build failed: $d"
-      return
-    fi
-  done
+  if ! (cd src && make 1>&2); then
+    echo "build failed: $d"
+    return
+  fi
 }
 
 _installs() {

@@ -1,5 +1,0 @@
-{
-  "tasks": {
-    "compile": "deno compile --allow-env --allow-read --allow-run -o bin/git-uncommitted git-uncommitted.ts "
-  }
-}

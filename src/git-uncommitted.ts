@@ -1,6 +1,7 @@
 import { join } from "https://deno.land/std/path/mod.ts";
 import { existsSync } from "https://deno.land/std/fs/mod.ts";
 import { red, yellow } from "https://deno.land/std/fmt/colors.ts";
+import { main } from "./generated.ts";
 
 class Result {
   private matched: boolean;
@@ -111,7 +112,7 @@ function stat(dir: string, early: boolean): Array<string> {
   return lines;
 }
 
-function main() {
+function uncommit() {
   const dirs = Deno.env.get("GIT_UNCOMMIT");
   if (dirs === undefined || dirs === "") {
     console.log("GIT_UNCOMMIT not set");
@@ -165,5 +166,5 @@ function main() {
   }
 }
 if (import.meta.main) {
-  main();
+  main(uncommit);
 }

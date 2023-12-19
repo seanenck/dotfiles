@@ -1,2 +1,3 @@
 Makefile
-src/**/bin/*
+src/bin/*
+src/generated*
