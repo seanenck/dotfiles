@@ -24,28 +24,7 @@ _lsfiles() {
   done
 }
 
-_builds() {
-  if [ ! -d src ]; then
-    return
-  fi
-  if ! (cd src && make 1>&2); then
-    echo "build failed: $d"
-    return
-  fi
-}
-
-_installs() {
-  local f
-  if [ ! -d src ]; then
-    return
-  fi
-  for f in $(find src/ -type f -wholename "*/bin/*"); do
-    echo "install -Dm755 $f $HOME/.local/bin/$(basename $f)"
-  done
-}
-
 _makefile() {
-  _builds
   echo "all:"
   {
     {
@@ -57,7 +36,6 @@ _makefile() {
         fi
       fi
     } | awk '!x[$0]++'
-    _installs
     echo "rm Makefile"
   } | sed 's/^/\t/g'
 }
