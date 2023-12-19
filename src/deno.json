@@ -1,5 +1,6 @@
 {
   "tasks": {
-    "git-uncommitted": "deno compile --allow-env --allow-read --allow-run -o bin/git-uncommitted git-uncommitted.ts "
+    "git-uncommitted": "deno compile --allow-env --allow-read --allow-run -o bin/git-uncommitted git-uncommitted.ts",
+    "git-oclone": "deno compile --allow-env --allow-read --allow-run --allow-write -o bin/git-oclone git-oclone.ts"
   }
 }
