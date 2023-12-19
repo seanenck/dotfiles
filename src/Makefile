@@ -4,7 +4,7 @@ VERSION := $(shell sha256sum *.ts | grep -v "generated.ts" | cut -d " " -f 1 | s
 
 all: $(OBJECTS)
 
-generated.ts: generated.ts.template
+generated.ts: generated.ts.template $(shell ls *.ts | grep -v generated)
 	cat generated.ts.template | sed "s/VERSION/$(VERSION)/g" > generated.ts
 
 $(OBJECTS): generated.ts *.ts
