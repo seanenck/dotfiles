@@ -48,8 +48,14 @@ PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
 unset PREFERPS1 file
 
 _local-completions() {
-  local c f
+  local c f cmd
   c="$HOME/.local/completions"
+  for cmd in git-oclone; do
+    f="$c/$cmd"
+    if [ ! -s "$f" ]; then
+      "$cmd" --bash > "$f"
+    fi 
+  done
   mkdir -p "$c"
   for f in "$c/"*; do
     source "$f"
