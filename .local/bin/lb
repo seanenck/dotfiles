@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CONFIG="$HOME/.config/lb.env"
+CONFIG="$HOME/.config/voidedtech/lb.env"
 SCRIPT="lb"
 TOTP_CMD="totp"
 SHOW_CMD="show"

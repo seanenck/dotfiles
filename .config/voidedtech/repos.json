@@ -1,0 +1,16 @@
+{
+  "apps": [
+    "keepassxreboot/keepassxc",
+    "kovidgoyal/kitty",
+    "obsidianmd/obsidian-releases",
+    "Hammerspoon/hammerspoon"
+  ],
+  "neovim": [
+    "neovim/nvim-lspconfig",
+    "akinsho/toggleterm.nvim",
+    "hrsh7th/nvim-cmp",
+    "hrsh7th/cmp-nvim-lsp",
+    "L3MON4D3/LuaSnip",
+    "vim-airline/vim-airline"
+  ]
+}
