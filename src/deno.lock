@@ -1,12 +1,25 @@
 {
   "version": "3",
   "redirects": {
+    "https://deno.land/std/datetime/mod.ts": "https://deno.land/std@0.209.0/datetime/mod.ts",
+    "https://deno.land/std/encoding/hex.ts": "https://deno.land/std@0.209.0/encoding/hex.ts",
     "https://deno.land/std/fs/mod.ts": "https://deno.land/std@0.209.0/fs/mod.ts",
     "https://deno.land/std/path/mod.ts": "https://deno.land/std@0.209.0/path/mod.ts"
   },
   "remote": {
     "https://deno.land/std@0.209.0/assert/assert.ts": "e265ad50a9341f3b40e51dd4cb41ab253d976943ba78a977106950e52e0302ab",
     "https://deno.land/std@0.209.0/assert/assertion_error.ts": "26ed1863d905005f00785c89750c001c3522c5417e4f58f95044b8143cfc1593",
+    "https://deno.land/std@0.209.0/datetime/_common.ts": "32ab92a6a9353e2f7ee23a30f0dfbd458b750e1c6fd71af1ec83f93a8f7c268a",
+    "https://deno.land/std@0.209.0/datetime/constants.ts": "b63a6b702e06fa028fb2ffa25e0cf775e3b21cf7f38e53a6f219e9641894dfbb",
+    "https://deno.land/std@0.209.0/datetime/day_of_year.ts": "2d50431735f4b1b171dcd8c339f991c3efca8c8d8618a3ebfe501a7aa0e1efd5",
+    "https://deno.land/std@0.209.0/datetime/difference.ts": "fab879a5a7caf44604c240898ed2c7cdd16f037a3bd6e0cb185994fafbd71e4b",
+    "https://deno.land/std@0.209.0/datetime/format.ts": "2d7a430ca9571e054ac181dcb950faf9ac23445e081dcb230ca37134e6eaad0c",
+    "https://deno.land/std@0.209.0/datetime/is_leap.ts": "706c3579a34d38111eea92c1b8683e859e5c5db9ec05f08a9b611ec888fbd787",
+    "https://deno.land/std@0.209.0/datetime/mod.ts": "365b3bd6809d7772346e8277b588ece59684e46ab0bf624223d4d3527370cd1d",
+    "https://deno.land/std@0.209.0/datetime/parse.ts": "b59f583e7fe5ef2105c6dd4a74825670c9f4e1e35462c047c6f0a207b5653aac",
+    "https://deno.land/std@0.209.0/datetime/week_of_year.ts": "663be3ac95630499625cd8416f5145705dd2f553071133646adfd1ea8381156d",
+    "https://deno.land/std@0.209.0/encoding/_util.ts": "f368920189c4fe6592ab2e93bd7ded8f3065b84f95cd3e036a4a10a75649dcba",
+    "https://deno.land/std@0.209.0/encoding/hex.ts": "f0a88c260af36f19c7f36b127a4e0c960bb3e65e16cb04493912e4c8b478e877",
     "https://deno.land/std@0.209.0/fs/_util.ts": "b03c46be986540a23916918fe0c01e257909e34be371943812001792859e22be",
     "https://deno.land/std@0.209.0/fs/copy.ts": "b6006efcf5643445dcd21c8d4c4d66fcc18e05aefffa08a92fc60d7751370926",
     "https://deno.land/std@0.209.0/fs/empty_dir.ts": "7fba29ef2d03f3503cd512616efc0535984cf1bbe7ca9d098e8b4d0d88910120",
