@@ -48,7 +48,7 @@ unset PREFERPS1 file
 _local-completions() {
   local c f cmd
   c="$HOME/.local/completions"
-  for cmd in git-oclone; do
+  for cmd in git-oclone lb; do
     f="$c/$cmd"
     if [ ! -s "$f" ]; then
       "$cmd" --bash > "$f"
