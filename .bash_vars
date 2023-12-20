@@ -7,4 +7,4 @@ export EXCLUDE_FILES='-not -name .DS_Store -not -name .localized'
 export HOME_GIT="$HOME/Git"
 export TASK_CACHE="$HOME/Library/voidedtech"
 export SYSIM="$TASK_CACHE/sysim"
-export TASK_SOURCE="$HOME_GIT/controlled/tasks"
+export TASK_SOURCE="$HOME_GIT/tasks"
