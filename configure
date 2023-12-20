@@ -29,12 +29,6 @@ _makefile() {
   {
     {
       _lsfiles ""
-      if [ -x "configure.local" ]; then
-        if ! ./configure.local; then
-          printf "failed in configure.local\n" 1>&2
-          exit 1
-        fi
-      fi
     } | awk '!x[$0]++'
     echo "rm Makefile"
   } | sed 's/^/\t/g'
