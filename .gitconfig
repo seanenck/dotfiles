@@ -38,6 +38,8 @@
 [user]
     name = Sean Enck
     useConfigOnly = true
+    email = enckse@voidedtech.com
+    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID1vWmgvb51hJoNqx1x/r3EHotNDDnTxM1uwvn52e80d
 [diff "lb"]
     textconv = lb conv
 [help]
@@ -46,9 +48,6 @@
     conflictstyle = diff3
 [url "~/Active/git/"]
     insteadOf = localhost:
-[user]
-    email = enckse@voidedtech.com
-    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID1vWmgvb51hJoNqx1x/r3EHotNDDnTxM1uwvn52e80d
 [commit]
     gpgSign = true
 [tag]
