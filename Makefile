@@ -6,8 +6,8 @@ all: dirs files
 
 files:
 	@for file in $(FILES) ; do \
-        ln -sf $(PWD)/$$file $(HOME)/$$file ; \
-    done
+		ln -sf $(PWD)/$$file $(HOME)/$$file ; \
+	done
 
 dirs:
 	@for dir in $(DIRS) ; do \
