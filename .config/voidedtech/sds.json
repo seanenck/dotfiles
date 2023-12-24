@@ -1,7 +1,0 @@
-{
-    "store": "~/Active/sds",
-    "bundles": "~/Documents/archival/bundles",
-    "cache": "~/Library/Caches/sds",
-    "rsync": ["-ac", "--delete-after"],
-    "since": 7
-}
