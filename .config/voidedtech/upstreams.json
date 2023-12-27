@@ -2,8 +2,8 @@
   "apps": [
     "keepassxreboot/keepassxc",
     "kovidgoyal/kitty",
-    "obsidianmd/obsidian-releases",
-    "Hammerspoon/hammerspoon"
+    "Hammerspoon/hammerspoon",
+    "utmapp/UTM"
   ],
   "neovim": [
     "neovim/nvim-lspconfig",
