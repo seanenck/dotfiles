@@ -82,32 +82,6 @@ local function setuplsp()
             }
         }
     }
-    lspconfig.pylsp.setup{
-        on_attach = on_attach,
-        capabilities = capabilities,
-        settings = {
-            pylsp = {
-                plugins = {
-                    pycodestyle = {
-                        enabled = true,
-                        maxLineLength = 120,
-                    },
-                    pyflakes = {
-                        enabled = true,
-                    },
-                    yapf = {
-                        enabled = true,
-                    },
-                    ruff = {
-                        enabled = false,
-                    },
-                    pylsp_mypy = {
-                        enabled = true,
-                    }
-                }
-            }
-        }
-    }
     vim.api.nvim_create_autocmd({ "BufWritePre" }, {
         pattern = "*",
         callback = function()
