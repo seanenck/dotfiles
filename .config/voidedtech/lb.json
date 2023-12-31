@@ -7,7 +7,6 @@
     },
     "options": {
       "app": "/Applications/KeePassXC.app/Contents/MacOS/keepassxc-cli",
-      "clipboard": 45,
-      "sync": "~/Documents/synced/"
+      "clipboard": 45
     }
 }
