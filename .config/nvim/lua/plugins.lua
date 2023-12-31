@@ -35,32 +35,9 @@ end
 
 local function setuplsp()
     capabilities = require('cmp_nvim_lsp').default_capabilities()
-    lspconfig.gopls.setup{
-        on_attach = on_attach,
-        capabilities = capabilities,
-        settings = {
-            gopls = {
-                gofumpt = true,
-                staticcheck = true
-            }
-        },
-    }
     lspconfig.denols.setup{
         on_attach = on_attach,
         capabilities = capabilities,
-    }
-    lspconfig.rust_analyzer.setup{
-        on_attach = on_attach,
-        capabilities = capabilities,
-    }
-    lspconfig.ccls.setup{
-        on_attach = on_attach,
-        capabilities = capabilities,
-        init_options = {
-            cache = {
-                directory = os.getenv('HOME') .. "/.local/state/ccls/"
-            }
-        },
     }
     lspconfig.efm.setup{
         on_attach = on_attach,
