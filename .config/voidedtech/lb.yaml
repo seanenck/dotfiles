@@ -1,0 +1,8 @@
+store:
+  root: "~/Git/secrets"
+  database: "passwords.kdbx"
+  keyfile: ".key/key.file"
+  key: ["security", "find-generic-password", "-a", "com.voidedtech.secrets", "-g", "-w"]
+options:
+  app: "/Applications/KeePassXC.app/Contents/MacOS/keepassxc-cli"
+  clipboard: 45
