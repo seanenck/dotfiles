@@ -19,9 +19,9 @@ export TERM=xterm-256color
 stty -ixon
 
 # cache cleanups
-f="$HOME/.local/state/nvim/undo"
-if [ -d "$f" ]; then
-  find "$f" -type f -mmin +60 -delete
+file="$HOME/.local/state/nvim/undo"
+if [ -d "$file" ]; then
+  find "$file" -type f -mmin +60 -delete
 fi
 
 # check the window size after each command
@@ -45,12 +45,12 @@ PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
 
 file="$HOME/.local/completions/"
 utility-wrapper bash "$file"
-for f in "$file"*; do
-  source "$f"
+for file in "$file"*; do
+  source "$file"
 done
 source "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
-unset PREFERPS1 file f
+unset PREFERPS1 file
 
 source "$HOME/.bash_aliases"
 
