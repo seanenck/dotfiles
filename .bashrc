@@ -31,11 +31,11 @@ PREFERPS1="(\u@\h \W)"
 PS1=$PREFERPS1'$ '
 SSH_AGENT_ENV="$HOME/.local/state/ssh-agent.env"
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    ssh-agent > "$SSH_AGENT_ENV"
+  ssh-agent > "$SSH_AGENT_ENV"
 fi
 export SSH_AUTH_SOCK="$HOME/.local/state/ssh-agent.socket"
 if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    source "$SSH_AGENT_ENV" >/dev/null
+  source "$SSH_AGENT_ENV" >/dev/null
 fi
 for file in "$HOME/.ssh/"*.key; do
   ssh-add "$file" > /dev/null 2>&1
@@ -43,25 +43,15 @@ done
 
 PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
 
-unset PREFERPS1 file
+file="$HOME/.local/completions/"
+utility-wrapper bash "$file"
+for f in "$file"*; do
+  source "$f"
+done
+source "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
-_local-completions() {
-  local c f cmd
-  c="$HOME/.local/completions"
-  for cmd in git-oclone lb; do
-    f="$c/$cmd"
-    if [ ! -s "$f" ]; then
-      "$cmd" --bash > "$f"
-    fi 
-  done
-  mkdir -p "$c"
-  for f in "$c/"*; do
-    source "$f"
-  done
-  source "/opt/homebrew/etc/profile.d/bash_completion.sh"
-}
+unset PREFERPS1 file f
 
-_local-completions
 source "$HOME/.bash_aliases"
 
 echo
