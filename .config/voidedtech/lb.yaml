@@ -4,5 +4,5 @@ store:
   keyfile: ".key/key.file"
   key: ["security", "find-generic-password", "-a", "com.voidedtech.secrets", "-g", "-w"]
 options:
-  app: "/Applications/KeePassXC.app/Contents/MacOS/keepassxc-cli"
+  app: "/Applications/KeePassXC.app/Contents/MacOS"
   clipboard: 45
