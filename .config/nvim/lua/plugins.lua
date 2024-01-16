@@ -27,6 +27,7 @@ util = require 'lspconfig.util'
 lspconfig = require "lspconfig"
 local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+    vim.keymap.set('n', '<C-k>', vim.lsp.buf.hover, opts)
 end
 
 capabilities = require('cmp_nvim_lsp').default_capabilities()
