@@ -29,50 +29,47 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
-local function setuplsp()
-    capabilities = require('cmp_nvim_lsp').default_capabilities()
-    lspconfig.denols.setup{
-        on_attach = on_attach,
-        capabilities = capabilities,
-    }
-    lspconfig.efm.setup{
-        on_attach = on_attach,
-        capabilities = capabilities,
-        settings = {
-            rootMarkers = {".git/"},
-            languages = {
-                sh = {
-                    {
-                        lintCommand = "shellcheck -f gcc -x",
-                        lintSource = "shellcheck",
-                        lintFormats = {
-                            '%f:%l:%c: %trror: %m',
-                            '%f:%l:%c: %tarning: %m',
-                            '%f:%l:%c: %tote: %m',
-                        }
+capabilities = require('cmp_nvim_lsp').default_capabilities()
+lspconfig.denols.setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+}
+lspconfig.efm.setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+        rootMarkers = {".git/"},
+        languages = {
+            sh = {
+                {
+                    lintCommand = "shellcheck -f gcc -x",
+                    lintSource = "shellcheck",
+                    lintFormats = {
+                        '%f:%l:%c: %trror: %m',
+                        '%f:%l:%c: %tarning: %m',
+                        '%f:%l:%c: %tote: %m',
                     }
                 }
             }
         }
     }
-    vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-        pattern = "*",
-        callback = function()
-            vim.lsp.buf.format { async = false }
-        end
-    })
-    vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-        vim.lsp.diagnostic.on_publish_diagnostics,
-        {
-            virtual_text = true,
-            signs = true,
-            update_in_insert = false,
-            underline = true,
-        }
-    )
-end
+}
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+    pattern = "*",
+    callback = function()
+        vim.lsp.buf.format { async = false }
+    end
+})
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics,
+    {
+        virtual_text = true,
+        signs = true,
+        update_in_insert = false,
+        underline = true,
+    }
+)
 
-setuplsp()
 function toggle_diagnostics()
     vim.diagnostic.open_float(nil, {
         focus=false,

@@ -1,9 +1,4 @@
-function text()
-    vim.opt_local.textwidth = 80
-    vim.opt_local.spell = true
-end
-
--- Restore cursor position, setup quickfix
+-- Restore cursor position
 vim.api.nvim_create_autocmd({ "BufReadPost" }, {
     pattern = { "*" },
     callback = function()
@@ -14,7 +9,10 @@ vim.api.nvim_create_autocmd({ "BufReadPost" }, {
 -- Text spelling
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     pattern = { "*.md", "*.txt" },
-    callback = text
+    callback = function()
+        vim.opt_local.textwidth = 80
+        vim.opt_local.spell = true
+    end,
 })
 
 -- Directory
