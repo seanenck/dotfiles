@@ -1,9 +1,13 @@
 apps:
-  - "keepassxreboot/keepassxc"
-  - "kovidgoyal/kitty"
-  - "Hammerspoon/hammerspoon"
-  - "utmapp/UTM"
-  - "ganeshrvel/openmtp"
+  remotes:
+    - "keepassxreboot/keepassxc"
+    - "kovidgoyal/kitty"
+    - "Hammerspoon/hammerspoon"
+    - "utmapp/UTM"
+    - "ganeshrvel/openmtp"
+  filters:
+    - '[0-9]'
+    - 'refs\/tags\/'
 neovim:
   - "neovim/nvim-lspconfig"
   - "akinsho/toggleterm.nvim"
