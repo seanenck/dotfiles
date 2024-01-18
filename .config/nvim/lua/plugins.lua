@@ -88,3 +88,6 @@ end
 
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 mapall("<C-j>", ":wincmd j<CR>")
+
+-- scrollbar
+require("scrollbar").setup({})

@@ -14,4 +14,4 @@ neovim:
   - "hrsh7th/nvim-cmp"
   - "hrsh7th/cmp-nvim-lsp"
   - "vim-airline/vim-airline"
-  - "dstein64/nvim-scrollview"
+  - "petertriho/nvim-scrollbar"
