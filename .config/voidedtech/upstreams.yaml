@@ -3,8 +3,8 @@ apps:
     - "keepassxreboot/keepassxc"
     - "kovidgoyal/kitty"
     - "Hammerspoon/hammerspoon"
-    - "utmapp/UTM"
     - "ganeshrvel/openmtp"
+    - "canonical/multipass"
   filters:
     - '[0-9]'
     - 'refs\/tags\/'
