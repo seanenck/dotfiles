@@ -4,7 +4,6 @@ apps:
     - "kovidgoyal/kitty"
     - "Hammerspoon/hammerspoon"
     - "ganeshrvel/openmtp"
-    - "canonical/multipass"
   filters:
     - '[0-9]'
     - 'refs\/tags\/'
