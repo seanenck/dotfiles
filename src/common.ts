@@ -7,6 +7,7 @@ export enum EnvironmentVariable {
   TaskCache = "TASK_CACHE",
 }
 export enum KnownCommands {
+  Screen = "screen",
   Sort = "sort",
   Git = "git",
   Brew = "brew",

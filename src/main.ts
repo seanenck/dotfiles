@@ -12,6 +12,7 @@ import {
   messageAndExitNonZero,
 } from "./common.ts";
 import { existsSync } from "std/fs/exists.ts";
+import { manageVM, VM_COMMAND } from "./vm.ts";
 
 const LB_COMMAND = KnownCommands.Lockbox;
 const OCLONE_COMMAND = "git-oclone";
@@ -25,7 +26,8 @@ COMMANDS.set(LB_COMMAND, lockbox);
 COMMANDS.set("sys-update", (_: Array<string>) => {
   sync();
 });
-const COMPLETIONS = [LB_COMMAND, OCLONE_COMMAND];
+COMMANDS.set(VM_COMMAND, manageVM);
+const COMPLETIONS = [LB_COMMAND, OCLONE_COMMAND, VM_COMMAND];
 const EXECUTABLE = "utility-wrapper";
 
 function main() {
