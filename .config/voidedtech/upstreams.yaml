@@ -2,7 +2,6 @@ apps:
   remotes:
     - "keepassxreboot/keepassxc"
     - "kovidgoyal/kitty"
-    - "Hammerspoon/hammerspoon"
     - "ganeshrvel/openmtp"
   filters:
     - '[0-9]'
