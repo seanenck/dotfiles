@@ -1,4 +1,5 @@
 export const BASH_ARG = "--bash";
+export const CONFIG_LOCATION = "voidedtech";
 export enum EnvironmentVariable {
   Home = "HOME",
   Version = "VERSION",

@@ -7,6 +7,7 @@ import { red } from "std/fmt/colors.ts";
 import { parse as parseConfig } from "std/yaml/mod.ts";
 import {
   BASH_ARG,
+  CONFIG_LOCATION,
   EnvironmentVariable,
   getEnv,
   KnownCommands,
@@ -378,7 +379,7 @@ export function loadLockboxConfig(useDefaults: boolean): App {
     return new App("", "", ["echo"], "", "", 0);
   }
   const home = getEnv(EnvironmentVariable.Home);
-  const config = join(home, ".config", "voidedtech", "lb.yaml");
+  const config = join(home, ".config", CONFIG_LOCATION, "lb.yaml");
   if (!existsSync(config)) {
     messageAndExitNonZero("missing configuration file");
   }

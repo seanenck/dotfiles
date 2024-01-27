@@ -2,6 +2,7 @@ import { basename, join } from "std/path/mod.ts";
 import { existsSync, moveSync } from "std/fs/mod.ts";
 import { parse as parseConfig } from "std/yaml/mod.ts";
 import {
+  CONFIG_LOCATION,
   EnvironmentVariable,
   getEnv,
   KnownCommands,
@@ -41,7 +42,7 @@ export function sync() {
     messageAndExitNonZero("failed to dump brew information");
   }
   const config = join(home, ".config");
-  const configFile = join(config, "voidedtech", "upstreams.yaml");
+  const configFile = join(config, CONFIG_LOCATION, "upstreams.yaml");
   const packs = join(config, "nvim", "pack", "plugins", "start");
   const data = new TextDecoder().decode(Deno.readFileSync(configFile));
   const cfg = parseConfig(data) as Config;
