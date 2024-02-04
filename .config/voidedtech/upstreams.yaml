@@ -3,6 +3,7 @@ apps:
     - "keepassxreboot/keepassxc"
     - "kovidgoyal/kitty"
     - "ganeshrvel/openmtp"
+    - "alpinelinux/aports"
   filters:
     - '[0-9]'
     - 'refs\/tags\/'
