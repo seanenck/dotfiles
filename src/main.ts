@@ -1,5 +1,4 @@
 import { join } from "std/path/mod.ts";
-import { transcode } from "./transcode.ts";
 import { uncommit } from "./uncommitted.ts";
 import { sync } from "./sync.ts";
 import { loadLockboxConfig, lockbox } from "./lb.ts";
@@ -15,9 +14,6 @@ import { manageVM, VM_COMMAND } from "./vm.ts";
 
 const LB_COMMAND = KnownCommands.Lockbox;
 const COMMANDS: Map<string, (args: Array<string>) => void> = new Map();
-COMMANDS.set("transcode-media", (_: Array<string>) => {
-  transcode();
-});
 COMMANDS.set("git-uncommitted", uncommit);
 COMMANDS.set(LB_COMMAND, lockbox);
 COMMANDS.set("sys-update", (_: Array<string>) => {

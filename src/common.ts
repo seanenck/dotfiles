@@ -11,8 +11,6 @@ export enum KnownCommands {
   Git = "git",
   Brew = "brew",
   Diff = "diff",
-  Sips = "sips",
-  AVConvert = "avconvert",
   PBCopy = "pbcopy",
   PBPaste = "pbpaste",
   KeepassXCCLI = "keepassxc-cli",
