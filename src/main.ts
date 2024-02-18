@@ -1,7 +1,6 @@
 import { join } from "std/path/mod.ts";
 import { transcode } from "./transcode.ts";
 import { uncommit } from "./uncommitted.ts";
-import { oclone } from "./oclone.ts";
 import { sync } from "./sync.ts";
 import { loadLockboxConfig, lockbox } from "./lb.ts";
 import {
@@ -15,19 +14,17 @@ import { existsSync } from "std/fs/exists.ts";
 import { manageVM, VM_COMMAND } from "./vm.ts";
 
 const LB_COMMAND = KnownCommands.Lockbox;
-const OCLONE_COMMAND = "git-oclone";
 const COMMANDS: Map<string, (args: Array<string>) => void> = new Map();
 COMMANDS.set("transcode-media", (_: Array<string>) => {
   transcode();
 });
-COMMANDS.set(OCLONE_COMMAND, oclone);
 COMMANDS.set("git-uncommitted", uncommit);
 COMMANDS.set(LB_COMMAND, lockbox);
 COMMANDS.set("sys-update", (_: Array<string>) => {
   sync();
 });
 COMMANDS.set(VM_COMMAND, manageVM);
-const COMPLETIONS = [LB_COMMAND, OCLONE_COMMAND, VM_COMMAND];
+const COMPLETIONS = [LB_COMMAND, VM_COMMAND];
 const EXECUTABLE = "utility-wrapper";
 
 function main() {

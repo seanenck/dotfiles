@@ -3,7 +3,6 @@ export const CONFIG_LOCATION = "voidedtech";
 export enum EnvironmentVariable {
   Home = "HOME",
   Version = "VERSION",
-  GitSources = "GIT_SOURCES",
   GitUncommit = "GIT_UNCOMMIT",
   TaskCache = "TASK_CACHE",
 }

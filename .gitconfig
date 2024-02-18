@@ -43,8 +43,10 @@
     format = man
 [merge]
     conflictstyle = diff3
-[url "~/Active/git/"]
-    insteadOf = localhost:
+[url "store.voidedtech.com:/mnt/store/active/git/private/"]
+    insteadOf = private:
+[url "store.voidedtech.com:/mnt/store/active/git/upstream/"]
+    insteadOf = public:
 [commit]
     gpgSign = true
 [tag]

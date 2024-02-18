@@ -58,6 +58,5 @@ echo
 echo "disk"
 echo "==="
 df -h / | tail -n +2 | awk '{print $5}' | sed 's/^/  usage => /g'
-ls "$SYSIM" | wc -l | grep -v '^0$' | sed 's/^/\nsysim\n===\n  sysim messages => /g'
 echo
 git uncommitted
