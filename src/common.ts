@@ -4,7 +4,6 @@ export enum EnvironmentVariable {
   Home = "HOME",
   Version = "VERSION",
   GitUncommit = "GIT_UNCOMMIT",
-  TaskCache = "TASK_CACHE",
 }
 export enum KnownCommands {
   Screen = "screen",
