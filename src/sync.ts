@@ -21,7 +21,6 @@ interface AppSet {
 
 export function sync() {
   const home = getEnv(EnvironmentVariable.Home);
-  const tasks = getEnv(EnvironmentVariable.TaskCache);
   for (const sub of ["update", "upgrade"]) {
     console.log(`=> brew operation: ${sub}`);
     if (!command(KnownCommands.Brew, [sub], undefined)) {
@@ -30,7 +29,7 @@ export function sync() {
       );
     }
   }
-  const brewConfig = join(tasks, "brew");
+  const brewConfig = join(home, "Library", "voidedtech", "brew");
   if (!existsSync(brewConfig)) {
     Deno.mkdir(brewConfig);
   }
