@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 [[ $- != *i* ]] && return
 
-source /etc/bashrc
+source /etc/bash/bashrc
 
 shopt -s direxpand
 
@@ -9,11 +9,12 @@ export VISUAL=vi
 export VISUAL=nvim
 export DELTA_PAGER="less -c -X"
 
-source ~/.bash_vars
 export EDITOR="$VISUAL"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
-export GIT_UNCOMMIT="$HOME_GIT $HOME/Workspace"
+export GIT_UNCOMMIT="$HOME_GIT $HOME/workspace"
 export TERM=xterm-256color
+export HOME_GIT="$HOME/.env/"
+export PATH="$HOME/.local/bin:$PATH"
 
 # disable ctrl+s
 stty -ixon
@@ -48,7 +49,6 @@ utility-wrapper bash "$file"
 for file in "$file"*; do
   source "$file"
 done
-source "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
 unset PREFERPS1 file
 

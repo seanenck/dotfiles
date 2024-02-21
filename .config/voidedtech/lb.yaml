@@ -1,5 +1,5 @@
 store:
-  root: "~/Git/secrets"
+  root: "~/.env/secrets"
   database: "passwords.kdbx"
   keyfile: ".key/key.file"
   key: ["security", "find-generic-password", "-a", "com.voidedtech.secrets", "-g", "-w"]
