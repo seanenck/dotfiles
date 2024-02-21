@@ -1,8 +1,6 @@
 apps:
   remotes:
     - "keepassxreboot/keepassxc"
-    - "kovidgoyal/kitty"
-    - "ganeshrvel/openmtp"
   filters:
     - '[0-9]'
     - 'refs\/tags\/'

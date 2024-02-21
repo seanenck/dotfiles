@@ -21,25 +21,6 @@ interface AppSet {
 
 export function sync() {
   const home = getEnv(EnvironmentVariable.Home);
-  for (const sub of ["update", "upgrade"]) {
-    console.log(`=> brew operation: ${sub}`);
-    if (!command(KnownCommands.Brew, [sub], undefined)) {
-      messageAndExitNonZero(
-        `brew ${sub} failed`,
-      );
-    }
-  }
-  const brewConfig = join(home, "Library", "voidedtech", "brew");
-  if (!existsSync(brewConfig)) {
-    Deno.mkdir(brewConfig);
-  }
-  const brewConfigFile = join(brewConfig, "Brewfile");
-  if (existsSync(brewConfigFile)) {
-    Deno.removeSync(brewConfigFile);
-  }
-  if (!command(KnownCommands.Brew, ["bundle", "dump"], brewConfig)) {
-    messageAndExitNonZero("failed to dump brew information");
-  }
   const config = join(home, ".config");
   const configFile = join(config, CONFIG_LOCATION, "upstreams.yaml");
   const packs = join(config, "nvim", "pack", "plugins", "start");
