@@ -2,7 +2,7 @@ store:
   root: "~/.env/secrets"
   database: "passwords.kdbx"
   keyfile: ".key/key.file"
-  key: ["security", "find-generic-password", "-a", "com.voidedtech.secrets", "-g", "-w"]
+  key: ["age", "-i", "~/.env/secrets/.key/age.key", "-d", "~/.env/secrets/.key/password.age"]
 options:
-  app: "/Applications/KeePassXC.app/Contents/MacOS"
+  app: "/usr/bin/"
   clipboard: 45
