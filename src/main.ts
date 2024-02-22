@@ -1,6 +1,4 @@
 import { join } from "std/path/mod.ts";
-import { uncommit } from "./uncommitted.ts";
-import { sync } from "./sync.ts";
 import { loadLockboxConfig, lockbox } from "./lb.ts";
 import {
   EnvironmentVariable,
@@ -10,10 +8,6 @@ import {
 } from "./common.ts";
 
 const COMMANDS: Map<string, (args: Array<string>) => void> = new Map();
-COMMANDS.set("git-uncommitted", uncommit);
-COMMANDS.set("sys-update", (_: Array<string>) => {
-  sync();
-});
 COMMANDS.set(KnownCommands.Lockbox, lockbox);
 const EXECUTABLE = "utility-wrapper";
 
