@@ -1,7 +1,6 @@
 import { join } from "std/path/mod.ts";
 import { uncommit } from "./uncommitted.ts";
 import { sync } from "./sync.ts";
-import { loadLockboxConfig, lockbox } from "./lb.ts";
 import {
   EnvironmentVariable,
   getEnv,
@@ -9,10 +8,8 @@ import {
   messageAndExitNonZero,
 } from "./common.ts";
 
-const LB_COMMAND = KnownCommands.Lockbox;
 const COMMANDS: Map<string, (args: Array<string>) => void> = new Map();
 COMMANDS.set("git-uncommitted", uncommit);
-COMMANDS.set(LB_COMMAND, lockbox);
 COMMANDS.set("sys-update", (_: Array<string>) => {
   sync();
 });
@@ -43,10 +40,7 @@ function main() {
       const allowedEnv = Object.values(EnvironmentVariable).map(String).join(
         ",",
       );
-      const lb = loadLockboxConfig(Deno.env.get("CI") === "true");
-      const allowedRun = Object.values(KnownCommands).map(String).concat(
-        [lb.command],
-      ).join(",");
+      const allowedRun = Object.values(KnownCommands).map(String).join(",");
       const home = getEnv(EnvironmentVariable.Home);
       const args = [
         "compile",
