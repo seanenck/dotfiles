@@ -1,4 +1,4 @@
-IGNORE := | grep '^\.' | grep -v '^\.gitignore'
+IGNORE := | grep '^\.' | grep -v '^\.gitignore' | grep -v '^\.github'
 FILES  := $(shell git ls-files $(IGNORE)) $(shell git ls-files --others $(IGNORE))
 DIRS   := $(shell find $(FILES) -type f -exec dirname {} \; | grep -v '^\.$$' | sort -u)
 
