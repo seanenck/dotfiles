@@ -49,6 +49,17 @@ lspconfig.efm.setup{
         }
     }
 }
+lspconfig.gopls.setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+        gopls = {
+            gofumpt = true,
+            staticcheck = true
+        }
+    }
+}
+
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     pattern = "*",
     callback = function()
