@@ -3,6 +3,3 @@ store:
   database: "passwords.kdbx"
   keyfile: ".key/key.file"
   key: ["age", "-i", "~/.env/secrets/.key/age.key", "-d", "~/.env/secrets/.key/password.age"]
-options:
-  app: "/usr/bin/"
-  clipboard: 45

@@ -3,14 +3,11 @@ import { uncommit } from "./uncommitted.ts";
 import { sync } from "./sync.ts";
 import { loadLockboxConfig, lockbox } from "./lb.ts";
 import {
-  BASH_ARG,
   EnvironmentVariable,
   getEnv,
   KnownCommands,
   messageAndExitNonZero,
 } from "./common.ts";
-import { existsSync } from "std/fs/exists.ts";
-import { manageVM, VM_COMMAND } from "./vm.ts";
 
 const LB_COMMAND = KnownCommands.Lockbox;
 const COMMANDS: Map<string, (args: Array<string>) => void> = new Map();
@@ -19,8 +16,6 @@ COMMANDS.set(LB_COMMAND, lockbox);
 COMMANDS.set("sys-update", (_: Array<string>) => {
   sync();
 });
-COMMANDS.set(VM_COMMAND, manageVM);
-const COMPLETIONS = [LB_COMMAND, VM_COMMAND];
 const EXECUTABLE = "utility-wrapper";
 
 function main() {
@@ -44,37 +39,13 @@ function main() {
     return;
   }
   switch (command) {
-    case "bash": {
-      if (args.length !== 1) {
-        messageAndExitNonZero("directory required");
-      }
-      const target = args[0];
-      if (!existsSync(target)) {
-        Deno.mkdirSync(target);
-      }
-      for (const key of COMPLETIONS) {
-        const completion = join(target, key);
-        if (existsSync(completion)) {
-          continue;
-        }
-        const cb = COMMANDS.get(key);
-        if (cb === undefined) {
-          messageAndExitNonZero(
-            `unable to resolve completion callback: ${key}`,
-          );
-          return;
-        }
-        cb([BASH_ARG, completion]);
-      }
-      break;
-    }
     case "compile": {
       const allowedEnv = Object.values(EnvironmentVariable).map(String).join(
         ",",
       );
       const lb = loadLockboxConfig(Deno.env.get("CI") === "true");
       const allowedRun = Object.values(KnownCommands).map(String).concat(
-        [lb.command, lb.applicationPath()],
+        [lb.command],
       ).join(",");
       const home = getEnv(EnvironmentVariable.Home);
       const args = [

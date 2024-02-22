@@ -1,4 +1,3 @@
-export const BASH_ARG = "--bash";
 export const CONFIG_LOCATION = "voidedtech";
 export enum EnvironmentVariable {
   Home = "HOME",
@@ -9,10 +8,7 @@ export enum KnownCommands {
   Screen = "screen",
   Sort = "sort",
   Git = "git",
-  Brew = "brew",
   Diff = "diff",
-  PBCopy = "pbcopy",
-  PBPaste = "pbpaste",
   KeepassXCCLI = "keepassxc-cli",
   Lockbox = "lb",
 }

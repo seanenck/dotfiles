@@ -44,12 +44,6 @@ done
 
 PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
 
-file="$HOME/.local/completions/"
-utility-wrapper bash "$file"
-for file in "$file"*; do
-  source "$file"
-done
-
 unset PREFERPS1 file
 
 source "$HOME/.bash_aliases"
