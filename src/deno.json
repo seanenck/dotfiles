@@ -3,7 +3,7 @@
     "std/": "https://deno.land/std@0.210.0/"
   },
   "tasks": {
-    "compile": "deno run --allow-run=deno --allow-env=HOME,CI --allow-read=$HOME/.config/voidedtech main.ts compile",
+    "compile": "deno run --allow-run=deno --allow-env=HOME,CI --allow-read=$HOME/.config/voidedtech,$HOME main.ts compile",
     "cache": "deno cache --lock=deno.lock --lock-write main.ts"
   }
 }

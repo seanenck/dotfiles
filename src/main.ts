@@ -42,12 +42,18 @@ function main() {
       );
       const allowedRun = Object.values(KnownCommands).map(String).join(",");
       const home = getEnv(EnvironmentVariable.Home);
+      const reads = [home];
+      for (const d of [".env", "workspace"]) {
+        const full = join(home, d);
+        reads.push(Deno.realPathSync(full));
+      }
+      const readPaths = reads.join(",");
       const args = [
         "compile",
         `--allow-env=${allowedEnv}`,
         `--allow-run=${allowedRun}`,
         `--allow-write=${home}`,
-        `--allow-read=${home}`,
+        `--allow-read=${readPaths}`,
         "-o",
         "build/utility-wrapper",
         "main.ts",
