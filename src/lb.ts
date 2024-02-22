@@ -100,12 +100,10 @@ class App {
     const synced = this.gitStatus(this.synced);
     const current = this.gitStatus(this.root);
     let mismatch = true;
-    let misText = "file mismatch";
     if (current.length == synced.length) {
       mismatch = false;
       for (const i in synced) {
         if (synced[i] !== current[i]) {
-          misText = `${synced[i]} != ${current[i]}`;
           mismatch = true;
           break;
         }
@@ -113,7 +111,7 @@ class App {
     }
     if (mismatch) {
       console.log(
-        `\npasswords\n===\n- out-of-sync (${misText})\n`,
+        `\npasswords\n===\n- out-of-sync\n`,
       );
       console.log("<<<<<<<<<<<<");
       console.log(synced);
