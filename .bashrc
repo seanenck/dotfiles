@@ -15,6 +15,7 @@ export GIT_UNCOMMIT="$HOME_GIT $HOME/workspace"
 export TERM=xterm-256color
 export HOME_GIT="$HOME/.env/"
 export PATH="$HOME/.local/bin:$PATH"
+export LB_SYNCED="/mnt/c/Users/enck/Passwords"
 
 # disable ctrl+s
 stty -ixon
@@ -52,5 +53,6 @@ echo
 echo "disk"
 echo "==="
 df -h / | tail -n +2 | awk '{print $5}' | sed 's/^/  usage => /g'
+lb resync
 echo
 git uncommitted

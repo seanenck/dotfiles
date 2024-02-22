@@ -3,10 +3,14 @@ export enum EnvironmentVariable {
   Home = "HOME",
   Version = "VERSION",
   GitUncommit = "GIT_UNCOMMIT",
+  LockboxSync = "LB_SYNCED",
 }
 export enum KnownCommands {
   Git = "git",
   Diff = "diff",
+  KeepassXCCLI = "keepassxc-cli",
+  Lockbox = "lb",
+  Sha256Sum = "sha256sum",
 }
 export function messageAndExitNonZero<T>(message?: string): Promise<T> {
   if (message !== undefined) {

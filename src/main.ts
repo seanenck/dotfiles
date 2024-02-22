@@ -1,6 +1,7 @@
 import { join } from "std/path/mod.ts";
 import { uncommit } from "./uncommitted.ts";
 import { sync } from "./sync.ts";
+import { loadLockboxConfig, lockbox } from "./lb.ts";
 import {
   EnvironmentVariable,
   getEnv,
@@ -13,6 +14,7 @@ COMMANDS.set("git-uncommitted", uncommit);
 COMMANDS.set("sys-update", (_: Array<string>) => {
   sync();
 });
+COMMANDS.set(KnownCommands.Lockbox, lockbox);
 const EXECUTABLE = "utility-wrapper";
 
 function main() {
@@ -40,20 +42,17 @@ function main() {
       const allowedEnv = Object.values(EnvironmentVariable).map(String).join(
         ",",
       );
-      const allowedRun = Object.values(KnownCommands).map(String).join(",");
+      const lb = loadLockboxConfig(Deno.env.get("CI") === "true");
+      const allowedRun = Object.values(KnownCommands).map(String).concat(
+        [lb.command],
+      ).join(",");
       const home = getEnv(EnvironmentVariable.Home);
-      const reads = [home];
-      for (const d of [".env", "workspace"]) {
-        const full = join(home, d);
-        reads.push(Deno.realPathSync(full));
-      }
-      const readPaths = reads.join(",");
       const args = [
         "compile",
         `--allow-env=${allowedEnv}`,
         `--allow-run=${allowedRun}`,
         `--allow-write=${home}`,
-        `--allow-read=${readPaths}`,
+        `--allow-read=${home}`,
         "-o",
         "build/utility-wrapper",
         "main.ts",
