@@ -1,6 +1,0 @@
-store:
-  root: "~/.env/secrets"
-  database: "passwords.kdbx"
-  keyfile: ".key/key.file"
-  key: ["age", "-i", "~/.env/secrets/.key/age.key", "-d", "~/.env/secrets/.key/password.age"]
-  synced: "/mnt/c/Users/enck/Passwords"

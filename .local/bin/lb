@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+FILE="passwords.kdbx"
+ROOT_STORE="$HOME/.env/secrets"
+KEY_STORE="$ROOT_STORE/.key"
+DATABASE="$ROOT_STORE/$FILE"
+KEYFILE="$KEY_STORE/key.file"
+SYNCED="/mnt/c/Users/enck/Passwords/"
+COMMAND="age -i $KEY_STORE/age.key -d $KEY_STORE/password.age"
+GIT_STATUS="git-status"
+
+if [ -z "$1" ]; then
+  echo "command required"
+  exit 1
+fi
+
+_env() {
+  echo "export LB_$1=\"$2\""
+}
+
+_git-status() {
+  local f hash
+  for f in $(git -C "$1" ls-files | sort); do
+    hash=$(sha256sum "$1/$f" | cut -c 1-7)
+    printf "%s %s\n" "$hash" "$f"
+  done
+}
+
+_conv() {
+  local name hex mod line
+  for line in $(echo $($COMMAND) | keepassxc-cli export --quiet --key-file "$KEYFILE" "$1" --format csv | sqlite3 -csv :memory: ".import '|cat -' lb" "select [Group] || '/' || [Title] || '/'  || [Username], hex([Password]) || hex([TOTP]) || hex([Notes]), [Last Modified] from lb" | sort); do
+    name=$(echo "$line" | cut -d "," -f 1 | sed 's#//#/#g;s#/$##g')
+    hex=$(echo "$line" | cut -d "," -f 2 | sha256sum | cut -c 1-7)
+    mod=$(echo "$line" | cut -d "," -f 3)
+    echo "$name {"
+    echo "  hash: $hex"
+    echo "  mod: $mod"
+    echo "}"
+  done
+}
+
+_show() {
+  local a val
+  for a in Password Notes; do
+    val=$(echo $($COMMAND) | keepassxc-cli show --quiet --key-file "$KEYFILE" --show-protected "$DATABASE" "$1" --attributes "$a" | sed "s/\s*//g")
+    if [ -z "$val" ]; then
+      continue
+    fi
+    echo "$val"
+    break
+  done
+}
+
+case "$1" in
+  "env")
+    _env "KEY" "$COMMAND"
+    _env "KEYFILE" "$KEYFILE"
+    _env "DATABASE" "$DATABASE"
+    _env "SYNCED" "$SYNCED"
+    ;;
+  "conv")
+    if [ -z "$2" ]; then
+      echo "database required"
+      exit 1
+    fi
+    _conv "$2"
+    ;;
+  "show")
+    if [ -z "$2" ]; then
+      echo "entry required"
+      exit 1
+    fi
+    _show "$2"
+    ;;
+  "$GIT_STATUS")
+    if [ -z "$2" ] || [ ! -d "$2" ]; then
+      echo "invalid git status directory argument" 1>&2
+      exit 1
+    fi
+    _git-status "$2"
+    ;;
+  "resync")
+    if ! diff -u <(lb "$GIT_STATUS" "$ROOT_STORE") <(lb "$GIT_STATUS" "$SYNCED"); then
+      echo
+      echo "=== password database out-of-sync ==="
+      echo
+      exit 1
+    fi
+    ;;
+esac
