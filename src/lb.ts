@@ -37,6 +37,7 @@ interface StoreConfig {
   key: Array<string>;
   keyfile: string;
   database: string;
+  synced: string;
 }
 
 interface Config {
@@ -50,19 +51,18 @@ class App {
   private readonly command_args: Array<string>;
   private key?: Uint8Array;
   private readonly inCommand: Array<string>;
-  private readonly synced: string;
   constructor(
     readonly root: string,
     database: string,
     key: Array<string>,
     keyfile: string,
+    readonly synced: string,
   ) {
     this.database = join(root, database);
     this.keyfile = join(root, keyfile);
     this.command = key[0];
     this.command_args = key.slice(1);
     this.inCommand = key;
-    this.synced = getEnv(EnvironmentVariable.LockboxSync);
   }
   gitStatus(dir: string): Array<string> {
     const proc = new Deno.Command(KnownCommands.Git, {
@@ -253,7 +253,7 @@ async function hashValue(value: Uint8Array): Promise<string> {
 
 export function loadLockboxConfig(useDefaults: boolean): App {
   if (useDefaults) {
-    return new App("", "", ["echo"], "");
+    return new App("", "", ["echo"], "", "");
   }
   const home = getEnv(EnvironmentVariable.Home);
   const config = join(home, ".config", CONFIG_LOCATION, "lb.yaml");
@@ -267,6 +267,7 @@ export function loadLockboxConfig(useDefaults: boolean): App {
     yaml.store.database,
     yaml.store.key,
     yaml.store.keyfile,
+    yaml.store.synced,
   );
 }
 

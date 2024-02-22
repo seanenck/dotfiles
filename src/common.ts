@@ -3,7 +3,6 @@ export enum EnvironmentVariable {
   Home = "HOME",
   Version = "VERSION",
   GitUncommit = "GIT_UNCOMMIT",
-  LockboxSync = "LB_SYNCED",
 }
 export enum KnownCommands {
   Git = "git",

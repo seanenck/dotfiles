@@ -15,7 +15,6 @@ export GIT_UNCOMMIT="$HOME_GIT $HOME/workspace"
 export TERM=xterm-256color
 export HOME_GIT="$HOME/.env/"
 export PATH="$HOME/.local/bin:$PATH"
-export LB_SYNCED="/mnt/c/Users/enck/Passwords"
 
 # disable ctrl+s
 stty -ixon
