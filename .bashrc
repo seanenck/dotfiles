@@ -30,8 +30,7 @@ fi
 # check the window size after each command
 shopt -s checkwinsize
 
-PREFERPS1="(\u@\h \W)"
-PS1=$PREFERPS1'$ '
+PS1="\u@\h:\W -> "
 SSH_AGENT_ENV="$HOME/.local/state/ssh-agent.env"
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
   ssh-agent > "$SSH_AGENT_ENV"
@@ -46,7 +45,7 @@ done
 
 PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
 
-unset PREFERPS1 file
+unset file
 
 source "$HOME/.bash_aliases"
 

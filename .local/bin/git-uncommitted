@@ -62,7 +62,7 @@ uncommit() {
   fi
   if [ -z "$1" ]; then
     if [ -n "$res" ]; then
-      echo "$res"
+      echo "$res" | sed "s#//#/#g"
     fi
   else
     case "$1" in
