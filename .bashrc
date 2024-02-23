@@ -11,9 +11,7 @@ export DELTA_PAGER="less -c -X"
 
 export EDITOR="$VISUAL"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
-export GIT_UNCOMMIT="$HOME_GIT $HOME/workspace"
 export TERM=xterm-256color
-export HOME_GIT="$HOME/.env/"
 export PATH="$HOME/.local/bin:$PATH"
 export GOPATH="$HOME/.cache/go"
 export GOFLAGS="-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
