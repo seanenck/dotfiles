@@ -50,10 +50,5 @@ unset PREFERPS1 file
 
 source "$HOME/.bash_aliases"
 
-echo
-echo "disk"
-echo "==="
-df -h / | tail -n +2 | awk '{print $5}' | sed 's/^/  usage => /g'
 lb resync
-echo
 git uncommitted
