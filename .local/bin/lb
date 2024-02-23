@@ -39,11 +39,16 @@ _conv() {
 }
 
 _show() {
-  local a val
+  local a val empty
   for a in Password Notes; do
-    val=$(echo $($COMMAND) | keepassxc-cli show --quiet --key-file "$KEYFILE" --show-protected "$DATABASE" "$1" --attributes "$a" | sed "s/\s*//g")
+    val=$(echo $($COMMAND) | keepassxc-cli show --quiet --key-file "$KEYFILE" --show-protected "$DATABASE" "$1" --attributes "$a")
     if [ -z "$val" ]; then
       continue
+    else
+      empty=$(echo "$val" | xargs)
+      if [ -z "$empty" ]; then
+        continue
+      fi
     fi
     echo "$val"
     break
