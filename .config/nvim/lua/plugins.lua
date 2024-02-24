@@ -17,6 +17,16 @@ cmp.setup({
 })
 
 -- lsp
+local function lsp_exists(name)
+    for p in string.gmatch(os.getenv("PATH"), "([^:]+)") do
+        local exe = string.format("test -x %s/%s", p, name)
+        if os.execute(exe) == 0 then
+            return true
+        end
+    end
+    return false
+end
+
 util = require 'lspconfig.util'
 lspconfig = require "lspconfig"
 local on_attach = function(client, bufnr)
@@ -25,36 +35,42 @@ local on_attach = function(client, bufnr)
 end
 
 capabilities = require('cmp_nvim_lsp').default_capabilities()
-lspconfig.efm.setup{
-    on_attach = on_attach,
-    capabilities = capabilities,
-    settings = {
-        rootMarkers = {".git/"},
-        languages = {
-            sh = {
-                {
-                    lintCommand = "shellcheck -f gcc -x",
-                    lintSource = "shellcheck",
-                    lintFormats = {
-                        '%f:%l:%c: %trror: %m',
-                        '%f:%l:%c: %tarning: %m',
-                        '%f:%l:%c: %tote: %m',
+
+if lsp_exists("efm-langserver") then
+    lspconfig.efm.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
+        settings = {
+            rootMarkers = {".git/"},
+            languages = {
+                sh = {
+                    {
+                        lintCommand = "shellcheck -f gcc -x",
+                        lintSource = "shellcheck",
+                        lintFormats = {
+                            '%f:%l:%c: %trror: %m',
+                            '%f:%l:%c: %tarning: %m',
+                            '%f:%l:%c: %tote: %m',
+                        }
                     }
                 }
             }
         }
     }
-}
-lspconfig.gopls.setup{
-    on_attach = on_attach,
-    capabilities = capabilities,
-    settings = {
-        gopls = {
-            gofumpt = true,
-            staticcheck = true
+end
+
+if lsp_exists("gopls") then
+    lspconfig.gopls.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
+        settings = {
+            gopls = {
+                gofumpt = true,
+                staticcheck = true
+            }
         }
     }
-}
+end
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     pattern = "*",
