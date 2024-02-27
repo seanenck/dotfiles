@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 [[ $- != *i* ]] && return
 
-source /etc/bash.bashrc
-
 shopt -s direxpand
 
 export VISUAL=vi
@@ -12,7 +10,6 @@ export DELTA_PAGER="less -c -X"
 export EDITOR="$VISUAL"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export TERM=xterm-256color
-export PATH="$HOME/.local/bin:$PATH"
 export GOPATH="$HOME/.cache/go"
 export GOFLAGS="-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 
@@ -47,5 +44,4 @@ unset file
 
 source "$HOME/.bash_aliases"
 
-lb resync
 git uncommitted

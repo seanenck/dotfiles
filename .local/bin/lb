@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 FILE="passwords.kdbx"
-ROOT_STORE="$HOME/.env/secrets"
+ROOT_STORE="$HOME/Git/secrets"
 KEY_STORE="$ROOT_STORE/.key"
 DATABASE="$ROOT_STORE/$FILE"
 KEYFILE="$KEY_STORE/key.file"
-SYNCED="/mnt/c/Users/enck/Passwords/"
 COMMAND="age -i $KEY_STORE/age.key -d $KEY_STORE/password.age"
-GIT_STATUS="git-status"
 
 if [ -z "$1" ]; then
   echo "command required"
@@ -15,14 +13,6 @@ fi
 
 _env() {
   echo "export LB_$1=\"$2\""
-}
-
-_git-status() {
-  local f hash
-  for f in $(git -C "$1" ls-files | sort); do
-    hash=$(sha256sum "$1/$f" | cut -c 1-7)
-    printf "%s %s\n" "$hash" "$f"
-  done
 }
 
 _conv() {
@@ -60,7 +50,6 @@ case "$1" in
     _env "KEY" "$COMMAND"
     _env "KEYFILE" "$KEYFILE"
     _env "DATABASE" "$DATABASE"
-    _env "SYNCED" "$SYNCED"
     ;;
   "conv")
     if [ -z "$2" ]; then
@@ -82,13 +71,5 @@ case "$1" in
       exit 1
     fi
     _git-status "$2"
-    ;;
-  "resync")
-    if ! diff -u <(lb "$GIT_STATUS" "$ROOT_STORE") <(lb "$GIT_STATUS" "$SYNCED"); then
-      echo
-      echo "=== password database out-of-sync ==="
-      echo
-      exit 1
-    fi
     ;;
 esac
