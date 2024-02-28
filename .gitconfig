@@ -46,7 +46,7 @@
 [url "store.voidedtech.com:/mnt/store/active/git/private/"]
     insteadOf = private:
 [url "store.voidedtech.com:/mnt/store/active/git/upstream/"]
-    insteadOf = public:
+    insteadOf = upstream:
 [commit]
     gpgSign = true
 [tag]
