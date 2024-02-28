@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 [[ $- != *i* ]] && return
 
+source /etc/bash/bashrc
+
 shopt -s direxpand
 
 export VISUAL=vi
@@ -12,6 +14,7 @@ export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export TERM=xterm-256color
 export GOPATH="$HOME/.cache/go"
 export GOFLAGS="-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
+export PATH="$HOME/.local/bin:$PATH"
 
 # disable ctrl+s
 stty -ixon
@@ -44,4 +47,8 @@ unset file
 
 source "$HOME/.bash_aliases"
 
+echo "disks"
+echo "==="
+df -h 2>/dev/null | grep '^/dev/vd' | awk '{printf "  %-10s %s\n", $1, $5}' | sort
+echo
 git uncommitted

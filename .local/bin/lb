@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 FILE="passwords.kdbx"
-ROOT_STORE="$HOME/Git/secrets"
+ROOT_STORE="$HOME/git/secrets"
 KEY_STORE="$ROOT_STORE/.key"
 DATABASE="$ROOT_STORE/$FILE"
 KEYFILE="$KEY_STORE/key.file"

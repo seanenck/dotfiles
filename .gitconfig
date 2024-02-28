@@ -36,7 +36,7 @@
 [user]
     name = Sean Enck
     email = enckse@voidedtech.com
-    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID1vWmgvb51hJoNqx1x/r3EHotNDDnTxM1uwvn52e80d
+    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDzCv14UXSUoeZOXsSgIJpwzqgP9G5QvtJrpUdnS+wxF
 [diff "lb"]
     textconv = lb conv
 [help]
