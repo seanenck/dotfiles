@@ -1,3 +1,5 @@
+autoload -Uz compinit
+compinit
 path+=("$HOME/.local/bin")
 export PATH
 
