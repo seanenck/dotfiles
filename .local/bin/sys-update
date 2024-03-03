@@ -11,6 +11,7 @@ PLUGINS=(
 APPS=(
   "keepassxreboot/keepassxc"
   "kovidgoyal/kitty"
+  "alpinelinux/aports"
 )
 
 _plugins() {
