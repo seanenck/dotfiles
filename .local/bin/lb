@@ -29,7 +29,8 @@ _conv() {
 }
 
 _show() {
-  local a val empty
+  local a val empty displayed
+  displayed=0
   for a in Password Notes; do
     val=$(echo $($COMMAND) | keepassxc-cli show --quiet --key-file "$KEYFILE" --show-protected "$DATABASE" "$1" --attributes "$a")
     if [ -z "$val" ]; then
@@ -41,8 +42,13 @@ _show() {
       fi
     fi
     echo "$val"
+    displayed=1
     break
   done
+  if [ "$displayed" -eq 0 ]; then
+    echo "unable to show entry: $1"
+    exit 1
+  fi
 }
 
 case "$1" in
