@@ -28,7 +28,7 @@ fi
 # check the window size after each command
 shopt -s checkwinsize
 
-PS1="\u@\h:\W -> "
+PS1="[\u@\h:\W]$ "
 SSH_AGENT_ENV="$HOME/.local/state/ssh-agent.env"
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
   ssh-agent > "$SSH_AGENT_ENV"
@@ -51,4 +51,7 @@ echo "disks"
 echo "==="
 df -h 2>/dev/null | grep '^/dev/vd' | awk '{printf "  %-10s %s\n", $1, $5}' | sort
 echo
-git uncommitted
+echo "uncommitted"
+echo "==="
+git uncommitted | sed 's/^/  /g'
+echo

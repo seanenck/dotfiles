@@ -37,8 +37,11 @@
     }
   ],
   "shares": {
+    "downloads": {
+       "path": "~/Downloads"
+    },
     "workdir": {
        "path": "~/.workdir"
-    },
+    }
   }
 }
