@@ -6,11 +6,17 @@ vim.g.airline_extensions["tabline"] = {["formatter"] = "unique_tail_improved"}
 local cmp = require'cmp'
 
 cmp.setup({
+    snippet = {
+      expand = function(args)
+        require('luasnip').lsp_expand(args.body)
+      end,
+    },
     mapping = cmp.mapping.preset.insert({
         ['<Right>'] = cmp.mapping.confirm({ select = false }),
     }),
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
+        { name = 'luasnip' },
     }, {
         { name = 'buffer' },
     })
@@ -20,7 +26,8 @@ cmp.setup({
 local function lsp_exists(name)
     for p in string.gmatch(os.getenv("PATH"), "([^:]+)") do
         local exe = string.format("test -x %s/%s", p, name)
-        if os.execute(exe) == 0 then
+        _, _, code = os.execute(exe)
+        if code == 0 then
             return true
         end
     end
