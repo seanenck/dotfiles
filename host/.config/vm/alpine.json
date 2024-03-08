@@ -37,6 +37,9 @@
     }
   ],
   "shares": {
+    "documents": {
+       "path": "~/Documents"
+    },
     "downloads": {
        "path": "~/Downloads"
     },
