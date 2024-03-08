@@ -42,6 +42,9 @@
     },
     "workdir": {
        "path": "~/.workdir"
+    },
+    "documents": {
+       "path": "~/Documents"
     }
   }
 }
