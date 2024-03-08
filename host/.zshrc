@@ -3,6 +3,14 @@ compinit
 path+=("$HOME/.local/bin")
 export PATH
 
+if [ "$(find ~/Documents/hosted -mtime -7 | wc -l)" -eq 0 ]; then
+  echo
+  echo "sync"
+  echo "===="
+  echo "- no recent sync"
+  echo
+fi
+
 function vm() {
   local name
   if [ -z "$1" ]; then
