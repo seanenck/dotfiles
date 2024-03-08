@@ -51,7 +51,9 @@ echo "disks"
 echo "==="
 df -h 2>/dev/null | grep '^/dev/vd' | awk '{printf "  %-10s %s\n", $1, $5}' | sort
 echo
-echo "uncommitted"
-echo "==="
-git uncommitted | sed 's/^/  /g'
-echo
+if ! git uncommitted --quiet; then
+  echo "uncommitted"
+  echo "==="
+  git uncommitted | sed 's/^/  /g'
+  echo
+fi
