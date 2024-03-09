@@ -1,12 +1,2 @@
 #!/bin/sh
-HOST_FILE="$HOME/.workdir/host/time"
-
-_time() {
-  while [ 1 -eq 1 ]; do
-    date +%s > "$HOST_FILE"
-    sleep 60
-  done
-}
-
-_time &
-exec vfu --config "$HOME/.config/vm/alpine.json"
+exec vfu --config "$HOME/.workdir/host/vm.json"

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 [[ $- != *i* ]] && return
 
-source /etc/bash/bashrc
+source /etc/bashrc
 
 shopt -s direxpand
 
