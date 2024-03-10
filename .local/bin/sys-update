@@ -75,7 +75,7 @@ _backups() {
     echo "no $TARGET to backup"
     return
   fi
-  if ! rsync "$TARGET" store.voidedtech.com:~/active/images/development.tar.xz; then
+  if ! rsync -avc "$TARGET" store.voidedtech.com:~/active/images/development.tar.xz; then
     echo "failed to store etc-backups"
   fi
 }
