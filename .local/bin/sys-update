@@ -11,8 +11,7 @@ PLUGINS=(
 APPS=(
   "keepassxreboot/keepassxc"
   "kovidgoyal/kitty"
-  "mattn/efm-langserver"
-  "denoland/deno"
+  "alpinelinux/aports"
 )
 
 _plugins() {
@@ -67,5 +66,10 @@ _apps() {
   rm -f "$next"
 }
 
+_backup() {
+  rsync -avc "/media/vdb1/"*.tar.* store.voidedtech.com:~/active/apk
+}
+
 _plugins
 _apps
+_backup
