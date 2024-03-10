@@ -11,16 +11,8 @@
   },
   "disks": [
     { 
-      "mode": "usb",
-      "path": "$CONFIG/alpine-3.19.1.iso"
-    },
-    { 
       "mode": "block",
-      "path": "$CONFIG/apkovl.img"
-    },
-    { 
-      "mode": "block",
-      "path": "$CONFIG/data.img",
+      "path": "$CONFIG/disk.img",
     },
     { 
       "mode": "block",
