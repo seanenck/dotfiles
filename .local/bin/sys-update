@@ -70,12 +70,12 @@ _apps() {
 }
 
 _backups() {
-  TARGET=/mnt/workdir/host/etc.tar.xz
+  TARGET=/mnt/workdir/host/dev.tar.xz
   if [ ! -e "$TARGET" ]; then
     echo "no $TARGET to backup"
     return
   fi
-  if ! rsync -avc "$TARGET" store.voidedtech.com:~/active/images/development.tar.xz; then
+  if ! rsync -avc "$TARGET" store.voidedtech.com:~/active/images/; then
     echo "failed to store etc-backups"
   fi
 }
