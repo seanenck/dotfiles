@@ -69,5 +69,17 @@ _apps() {
   rm -f "$next"
 }
 
+_backups() {
+  TARGET=/mnt/workdir/host/etc.tar.xz
+  if [ ! -e "$TARGET" ]; then
+    echo "no $TARGET to backup"
+    return
+  fi
+  if ! rsync "$TARGET" store.voidedtech.com:~/active/images/development.tar.xz; then
+    echo "failed to store etc-backups"
+  fi
+}
+
 _plugins
 _apps
+_backups
