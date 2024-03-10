@@ -9,9 +9,9 @@ PLUGINS=(
   "L3MON4D3/LuaSnip"
 )
 APPS=(
+  "alpinelinux/aports"
   "keepassxreboot/keepassxc"
   "kovidgoyal/kitty"
-  "alpinelinux/aports"
 )
 
 _plugins() {
@@ -43,14 +43,16 @@ _apps() {
   {
     for name in "${APPS[@]}"; do
       echo "getting state: $name" 1>&2
-      for tag in $(git ls-remote --tags "https://github.com/$name" | tr '\t' '|'); do
-        val=$(echo "$tag" | cut -d '|' -f 2)
-        if echo "$val" | grep "refs/tags" | grep -q "[0-9]"; then
-          echo "$name: $tag" | tr '|' ' '
-        fi
-      done
+      {
+        for tag in $(git ls-remote --tags "https://github.com/$name" | tr '\t' '|'); do
+          val=$(echo "$tag" | cut -d '|' -f 2)
+          if echo "$val" | grep "refs/tags" | grep -q "[0-9]"; then
+            echo "$name: $tag" | tr '|' ' '
+          fi
+        done
+      } | rg -v '\^\{}$' | sort -k 3
     done
-  } | sort > "$next"
+  } > "$next"
   touch "$cache"
   if ! diff -u "$cache" "$next"; then
     echo
