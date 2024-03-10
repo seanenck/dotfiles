@@ -70,7 +70,7 @@ _apps() {
 }
 
 _backups() {
-  TARGET=/mnt/workdir/host/dev.tar.xz
+  TARGET=/mnt/workdir/host/dev.etc.tar.xz
   if [ ! -e "$TARGET" ]; then
     echo "no $TARGET to backup"
     return
