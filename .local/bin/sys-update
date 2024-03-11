@@ -9,7 +9,6 @@ PLUGINS=(
   "L3MON4D3/LuaSnip"
 )
 APPS=(
-  "alpinelinux/aports"
   "denoland/deno"
   "keepassxreboot/keepassxc"
   "kovidgoyal/kitty"
@@ -69,17 +68,5 @@ _apps() {
   rm -f "$next"
 }
 
-_backups() {
-  TARGET=/mnt/workdir/host/dev.etc.tar.xz
-  if [ ! -e "$TARGET" ]; then
-    echo "no $TARGET to backup"
-    return
-  fi
-  if ! rsync -avc "$TARGET" store.voidedtech.com:~/active/images/; then
-    echo "failed to store etc-backups"
-  fi
-}
-
 _plugins
 _apps
-_backups
