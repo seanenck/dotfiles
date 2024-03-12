@@ -1,7 +1,7 @@
 #!/bin/sh
 CONFIGS="$HOME/.config/vm"
 for opt in $(ls "$CONFIGS" | grep json); do
-  if [ -e "$(echo "$opt" | cut -d "." -f 1)".img ]; then
+  if [ -e "$CONFIGS/$(echo "$opt" | cut -d "." -f 1)".img ]; then
     echo "starting: $opt"
     exec vfu --config "$HOME/.config/vm/$opt"
   fi
