@@ -43,9 +43,9 @@
     format = man
 [merge]
     conflictstyle = diff3
-[url "store.voidedtech.com:/mnt/store/active/git/private/"]
+[url "store:/mnt/store/active/git/private/"]
     insteadOf = private:
-[url "store.voidedtech.com:/mnt/store/active/git/upstream/"]
+[url "store:/mnt/store/active/git/upstream/"]
     insteadOf = upstream:
 [commit]
     gpgSign = true
