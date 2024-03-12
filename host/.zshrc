@@ -3,6 +3,8 @@ compinit
 path+=("$HOME/.local/bin")
 export PATH
 
+cp ~/.ssh/config ~/.workdir/host/data/ssh.config
+
 function vm() {
   local name
   if [ -z "$1" ]; then
