@@ -20,7 +20,8 @@
   },
   "networks": [
     {
-      "mode": "nat"
+      "mode": "nat",
+      "mac": "06:93:ed:97:4b:92"
     }
   ],
   "shares": {
