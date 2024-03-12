@@ -1,2 +1,10 @@
 #!/bin/sh
-exec vfu --config "$HOME/.config/vm/debian.json"
+CONFIGS="$HOME/.config/vm"
+for opt in $(ls "$CONFIGS" | grep json); do
+  if [ -e "$(echo "$opt" | cut -d "." -f 1)".img ]; then
+    echo "starting: $opt"
+    exec vfu --config "$HOME/.config/vm/$opt"
+  fi
+done
+echo "no valid vms found..."
+exit 1

@@ -1,0 +1,34 @@
+{
+  "boot": {
+    "efi": {
+      "store": "$CONFIG/efi_vars.fd"
+    }
+  },
+  "identifier": "$CONFIG/machine_id",
+  "resources": {
+      "cpus": 2,
+      "memory": 8192 
+  },
+  "disks": [
+    { 
+      "mode": "block",
+      "path": "$CONFIG/store.img"
+    }
+  ],
+  "env": {
+      "CONFIG": "~/.config/vm"
+  },
+  "networks": [
+    {
+      "mode": "nat"
+    }
+  ],
+  "shares": {
+    "documents": {
+       "path": "~/Documents"
+    },
+    "active": {
+       "path": "~/Active"
+    }
+  }
+}

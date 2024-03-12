@@ -12,7 +12,7 @@
   "disks": [
     { 
       "mode": "block",
-      "path": "$CONFIG/disk.img",
+      "path": "$CONFIG/dev.img",
     },
     { 
       "mode": "block",
