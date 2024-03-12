@@ -68,5 +68,17 @@ _apps() {
   rm -f "$next"
 }
 
+_sync() {
+  local d parent
+  parent=/mnt/workdir/host
+  for d in $(ls "$parent"); do
+    echo "syncing: $d"
+    if ! rsync -avcn --delete-after "$parent/$d/" "store:/mnt/store/active/$d/"; then
+      echo "unable to sync: $d"
+    fi
+  done
+}
+
 _plugins
 _apps
+_sync
