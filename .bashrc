@@ -37,7 +37,7 @@ export SSH_AUTH_SOCK="$HOME/.local/state/ssh-agent.socket"
 if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
   source "$SSH_AGENT_ENV" >/dev/null
 fi
-for file in "$HOME/.ssh/"*.key; do
+for file in "$HOME/.ssh/"*.privkey; do
   ssh-add "$file" > /dev/null 2>&1
 done
 
