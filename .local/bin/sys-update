@@ -16,6 +16,7 @@ APPS=(
 
 _plugins() {
   local bname url dest
+  echo "neovim plugins..."
   for url in "${PLUGINS[@]}"; do
     bname=$(basename "$url")
     echo "========="
@@ -33,11 +34,14 @@ _plugins() {
         exit 1
       fi
     fi
+    echo
   done
 }
 
 _apps() {
   local name tag val cache next yes
+  echo
+  echo "app versions..."
   cache="$HOME/.local/state/repos.current"
   next="$cache.next"
   {
@@ -70,6 +74,8 @@ _apps() {
 
 _sync() {
   local d parent
+  echo
+  echo "syncing data..."
   parent=/mnt/workdir/host
   if ! cp "$parent/data/ssh.config" "$HOME/.ssh/config"; then
     echo "missing host ssh config"
