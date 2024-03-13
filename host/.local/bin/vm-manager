@@ -1,8 +1,27 @@
 #!/bin/sh
+_httpserver() {
+  local dir port
+  dir="$HOME/.workdir/host/packages"
+  if [ ! -d "$dir" ]; then
+    dir="$HOME/Active/packages"
+  fi
+  if [ ! -d "$dir" ]; then
+    echo "unable to find package store"
+    exit 1
+  fi
+  port=9999
+  if curl --silent "http://localhost:$port" > /dev/null; then
+    echo "http server running..."
+    return
+  fi
+  (cd "$dir" && python3 -m http.server $port) &
+}
+
 CONFIGS="$HOME/.config/vm"
 for opt in $(ls "$CONFIGS" | grep json); do
   if [ -e "$CONFIGS/$(echo "$opt" | cut -d "." -f 1)".img ]; then
     echo "starting: $opt"
+    _httpserver
     exec vfu --config "$HOME/.config/vm/$opt"
   fi
 done
