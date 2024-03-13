@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-alias cat=batcat
+alias cat=bat
 alias diff="diff --color -u"
 alias ls='ls --color=auto'
 alias grep="rg"

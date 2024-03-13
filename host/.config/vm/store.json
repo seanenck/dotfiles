@@ -11,6 +11,14 @@
   },
   "disks": [
     { 
+      "mode": "usb",
+      "path": "$CONFIG/boot.iso",
+    },
+    { 
+      "mode": "block",
+      "path": "$CONFIG/var.img",
+    },
+    { 
       "mode": "block",
       "path": "$CONFIG/store.img"
     }

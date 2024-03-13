@@ -9,7 +9,7 @@ PLUGINS=(
   "L3MON4D3/LuaSnip"
 )
 APPS=(
-  "denoland/deno"
+  "alpinelinux/aports"
   "keepassxreboot/keepassxc"
   "kovidgoyal/kitty"
 )
