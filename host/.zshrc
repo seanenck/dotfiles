@@ -3,7 +3,9 @@ compinit
 path+=("$HOME/.local/bin")
 export PATH
 
-rsync -c ~/.ssh/config ~/.workdir/host/dev/ssh.config
+if [ -d ~/.workdir ]; then
+  rsync -c ~/.ssh/config ~/.workdir/host/dev/ssh.config
+fi
 
 function vm() {
   local name
