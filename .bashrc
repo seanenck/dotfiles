@@ -23,8 +23,11 @@ export PATH="$HOME/.local/bin:$PATH"
 # disable ctrl+s
 stty -ixon
 
-# cache cleanups
-file="$HOME/.local/state/nvim/undo"
+# cache
+state="$HOME/.local/state"
+mkdir -p "$state"
+
+file="$state/nvim/undo"
 if [ -d "$file" ]; then
   find "$file" -type f -mmin +60 -delete
 fi
@@ -33,11 +36,11 @@ fi
 shopt -s checkwinsize
 
 PS1="[\u@\h:\W]$ "
-SSH_AGENT_ENV="$HOME/.local/state/ssh-agent.env"
+SSH_AGENT_ENV="$state/ssh-agent.env"
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
   ssh-agent > "$SSH_AGENT_ENV"
 fi
-export SSH_AUTH_SOCK="$HOME/.local/state/ssh-agent.socket"
+export SSH_AUTH_SOCK="$state/ssh-agent.socket"
 if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
   source "$SSH_AGENT_ENV" >/dev/null
 fi
@@ -47,7 +50,7 @@ done
 
 PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
 
-unset file
+unset file state
 
 source "$HOME/.bash_aliases"
 
