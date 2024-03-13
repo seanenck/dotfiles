@@ -2,7 +2,7 @@
  
  _name() {
    local h
-   h=$(echo "$1" | sha256sum | cut -c 1-7)
+   h=$(echo "$1" | shasum -a 256 | cut -c 1-7)
    d=$(date +"%d.T_%H%M%S")
    echo "$d.$h"
  }
