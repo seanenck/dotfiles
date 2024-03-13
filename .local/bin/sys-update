@@ -77,10 +77,10 @@ _sync() {
   echo
   echo "syncing data..."
   parent=/mnt/workdir/host
-  if ! cp "$parent/data/ssh.config" "$HOME/.ssh/config"; then
+  if ! cp "$parent/dev/ssh.config" "$HOME/.ssh/config"; then
     echo "missing host ssh config"
   fi
-  for d in $(ls "$parent" | grep -v data); do
+  for d in $(ls "$parent"); do
     echo "syncing: $d"
     if ! rsync -avc --delete-after "$parent/$d/" "store:/mnt/store/active/$d/"; then
       echo "unable to sync: $d"
