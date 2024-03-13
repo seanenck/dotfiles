@@ -6,6 +6,9 @@ export PATH
 if [ -d ~/.workdir ]; then
   rsync -c ~/.ssh/config ~/.workdir/host/dev/ssh.config
 fi
+if [ ! -z "$SSH_CONNECTION" ] && [[ "$TERM" == "xterm-kitty" ]]; then
+  export TERM=xterm
+fi
 
 function vm() {
   local name

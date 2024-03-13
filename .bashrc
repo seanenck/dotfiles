@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 [[ $- != *i* ]] && return
 
-source /etc/bash/bashrc
+for file in /etc/bashrc /etc/bash.bashrc /etc/bash/bashrc /etc/bash/bash.bashrc; do
+  if [ -s "$file" ]; then
+    source "$file"
+  fi
+done
 
 shopt -s direxpand
 
@@ -54,6 +58,6 @@ echo
 if ! git uncommitted --quiet; then
   echo "uncommitted"
   echo "==="
-  git uncommitted | sed 's/^/  /g'
+  git uncommitted | sed "s#$HOME/##g" | sed 's/^/  /g'
   echo
 fi
