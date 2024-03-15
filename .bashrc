@@ -49,8 +49,19 @@ for file in "$HOME/.ssh/"*.privkey; do
 done
 
 PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
+comp="$HOME/.local/completions"
+if [ -d "$comp" ]; then
+  for file in "$comp/"*; do
+    source "$file"
+  done
+fi
 
-unset file state
+file="$HOME/git/secrets/lockbox.env"
+if [ -e "$file" ]; then
+  source "$file"
+fi
+
+unset file state comp
 
 source "$HOME/.bash_aliases"
 
