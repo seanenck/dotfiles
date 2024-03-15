@@ -1,0 +1,68 @@
+#!/bin/bash
+CONFIGS="$HOME/.config/vm"
+
+_httpserver() {
+  local dir port
+  dir="$HOME/.workdir/host/packages"
+  if [ ! -d "$dir" ]; then
+    dir="$HOME/Active/packages"
+  fi
+  if [ ! -d "$dir" ]; then
+    echo "unable to find package store"
+    exit 1
+  fi
+  port=9999
+  if curl --silent "http://localhost:$port" > /dev/null; then
+    echo "http server running..."
+    return
+  fi
+  (cd "$dir" && python3 -m http.server $port) &
+}
+
+_vm() {
+  local name
+  if [[ "$1" == "run" ]]; then
+    _manage
+  fi
+  name="vfu-vm"
+  if screen -list | grep -q "$name"; then
+    if [[ "$1" == "status" ]]; then
+      echo running
+    fi
+    return
+  fi
+  case "$1" in
+    "status")
+      echo stopped
+      return
+      ;;
+    "start")
+      screen -d -S "$name" -m vm run
+      return
+      ;;
+    *)
+      echo "unknown command"
+      exit 1
+      ;;
+  esac
+}
+
+_manage() {
+  local opt
+  for opt in $(ls "$CONFIGS" | grep json); do
+    if [ -e "$CONFIGS/$(echo "$opt" | cut -d "." -f 1)".img ]; then
+      echo "starting: $opt"
+      _httpserver
+      exec vfu --config "$HOME/.config/vm/$opt"
+    fi
+  done
+  echo "no valid vms found..."
+  exit 1
+}
+
+if [ -z "$1" ]; then
+  echo "command required"
+  exit 1
+fi
+
+_vm "$1"
