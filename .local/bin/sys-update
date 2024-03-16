@@ -78,7 +78,7 @@ _sync() {
   parent=/mnt/workdir/host
   for d in $(ls "$parent"); do
     echo "syncing: $d"
-    if ! rsync -avc --delete-after "$parent/$d/" "store:/mnt/store/active/$d/"; then
+    if ! rsync -avc --exclude="*.tmpfile" --delete-after "$parent/$d/" "store:/mnt/store/active/$d/"; then
       echo "unable to sync: $d"
     fi
   done

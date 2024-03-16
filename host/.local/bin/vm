@@ -3,7 +3,7 @@ CONFIGS="$HOME/.config/vm"
 
 _time() {
   while : ; do
-    date +%s > "$1/now"
+    date +%s > "$1/now.tmpfile"
     sleep 30
   done
 }
