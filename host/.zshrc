@@ -9,7 +9,9 @@ if [ -d "$comps" ]; then
     source "$f"
   done
 fi
-source "$HOME/.workdir/git/secrets/lockbox.env"
+if which lb > /dev/null; then
+  source "$HOME/.workdir/git/secrets/lockbox.env"
+fi
 
 if [ ! -z "$SSH_CONNECTION" ] && [[ "$TERM" == "xterm-kitty" ]]; then
   export TERM=xterm
