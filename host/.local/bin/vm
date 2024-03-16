@@ -1,8 +1,15 @@
 #!/bin/bash
 CONFIGS="$HOME/.config/vm"
 
+_time() {
+  while : ; do
+    date +%s > "$1/now"
+    sleep 30
+  done
+}
+
 _httpserver() {
-  local dir port
+  local dir port time
   dir="$HOME/.workdir/host/packages"
   if [ ! -d "$dir" ]; then
     dir="$HOME/Active/packages"
@@ -16,6 +23,9 @@ _httpserver() {
     echo "http server running..."
     return
   fi
+  time="$dir/time"
+  mkdir -p "$time"
+  _time "$time" &
   (cd "$dir" && python3 -m http.server $port) &
 }
 
