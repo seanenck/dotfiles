@@ -10,10 +10,11 @@ _time() {
 
 _httpserver() {
   local dir port time
-  dir="$HOME/.workdir/host/packages"
+  dir="$HOME/.workdir/host"
   if [ ! -d "$dir" ]; then
-    dir="$HOME/Active/packages"
+    dir="$HOME/Active"
   fi
+  dir="$dir/shared"
   if [ ! -d "$dir" ]; then
     echo "unable to find package store"
     exit 1
