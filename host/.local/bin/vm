@@ -9,7 +9,7 @@ _time() {
 }
 
 _httpserver() {
-  local dir port time
+  local dir port cache
   dir="$HOME/.workdir/host"
   if [ ! -d "$dir" ]; then
     dir="$HOME/Active"
@@ -24,9 +24,9 @@ _httpserver() {
     echo "http server running..."
     return
   fi
-  time="$dir/time"
-  mkdir -p "$time"
-  _time "$time" &
+  cache="$dir/cache"
+  mkdir -p "$cache"
+  _time "$cache" &
   (cd "$dir" && python3 -m http.server $port) &
 }
 
