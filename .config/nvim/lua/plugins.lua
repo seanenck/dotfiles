@@ -86,6 +86,32 @@ if lsp_exists("gopls") then
     }
 end
 
+if lsp_exists("pylsp") then
+   lspconfig.pylsp.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
+        settings = {
+            pylsp = {
+                plugins = {
+                    pycodestyle = {
+                        enabled = true,
+                        maxLineLength = 120,
+                    },
+                    pyflakes = {
+                        enabled = true,
+                    },
+                    yapf = {
+                        enabled = true,
+                    },
+                    ruff = {
+                        enabled = false,
+                    }
+                }
+            }
+        }
+    }
+end
+
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     pattern = "*",
     callback = function()
