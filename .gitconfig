@@ -34,9 +34,8 @@
     showStash = true
     showUntrackedFiles = all
 [user]
+    useConfigOnly = true
     name = Sean Enck
-    email = enckse@voidedtech.com
-    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDzCv14UXSUoeZOXsSgIJpwzqgP9G5QvtJrpUdnS+wxF
 [diff "lb"]
     textconv = lb conv
 [help]
@@ -47,11 +46,7 @@
     insteadOf = private:
 [url "store:/mnt/store/active/git/upstream/"]
     insteadOf = upstream:
-[commit]
-    gpgSign = true
-[tag]
-    gpgSign = true
-[gpg]
-    format = ssh
-[gpg "ssh"]
-    allowedSignersFile = ~/.ssh/allowed_signers
+[includeIf "hasconfig:remote.*.url:private:**"]
+	path = ~/.config/gitconfig
+[includeIf "hasconfig:remote.*.url:upstream:**"]
+	path = ~/.config/gitconfig
