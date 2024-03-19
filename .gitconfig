@@ -47,6 +47,6 @@
 [url "store:/mnt/store/active/git/upstream/"]
     insteadOf = upstream:
 [includeIf "hasconfig:remote.*.url:private:**"]
-	path = ~/.config/gitconfig
+    path = ~/.config/gitconfig
 [includeIf "hasconfig:remote.*.url:upstream:**"]
-	path = ~/.config/gitconfig
+    path = ~/.config/gitconfig
