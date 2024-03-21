@@ -61,10 +61,6 @@ if [ -e "$file" ]; then
   source "$file"
 fi
 
-for file in "$HOME/.local/lib/"*; do
-  alias $(basename "$file" | cut -d "." -f 1)="$file"
-done
-
 unset file state comp
 
 source "$HOME/.bash_aliases"
