@@ -1,89 +1,14 @@
-#!/usr/bin/env bash
-PACK="$HOME/.config/nvim/pack/plugins/start/"
-PLUGINS=(
-  "neovim/nvim-lspconfig"
-  "hrsh7th/nvim-cmp"
-  "hrsh7th/cmp-nvim-lsp"
-  "vim-airline/vim-airline"
-  "petertriho/nvim-scrollbar"
-  "L3MON4D3/LuaSnip"
-)
-APPS=(
-  "alpinelinux/aports"
-  "kovidgoyal/kitty"
-)
-
-_plugins() {
-  local bname url dest
-  echo "neovim plugins..."
-  for url in "${PLUGINS[@]}"; do
-    bname=$(basename "$url")
-    echo "========="
-    echo "$bname"
-    echo "========="
-    dest="$PACK/$bname"
-    if [ ! -d "$dest" ]; then
-      if ! git clone "https://github.com/$url" "$dest" --single-branch; then
-        echo "unable to clone"
-        exit 1
-      fi
-    else
-      if ! git -C "$dest" pull origin "$(git -C "$dest" rev-parse --abbrev-ref HEAD)"; then
-        echo "failed to pull updates"
-        exit 1
-      fi
+#!/bin/sh
+DIR="$HOME/.config/voidedtech/sys-updates/"
+for SCRIPT in "$DIR"*; do
+  NAME="$(basename "$SCRIPT")"
+  if [ -x "$SCRIPT" ]; then
+    echo "executing: $NAME"
+    if ! "$SCRIPT"; then
+      echo "[aborting]"
+      exit 1
     fi
-    echo
-  done
-}
-
-_apps() {
-  local name tag val cache next yes
-  echo
-  echo "app versions..."
-  cache="$HOME/.local/state/repos.current"
-  next="$cache.next"
-  {
-    for name in "${APPS[@]}"; do
-      echo "getting state: $name" 1>&2
-      {
-        for tag in $(git ls-remote --tags "https://github.com/$name" | tr '\t' '|'); do
-          val=$(echo "$tag" | cut -d '|' -f 2)
-          if echo "$val" | grep "refs/tags" | grep -q "[0-9]"; then
-            echo "$name: $tag" | tr '|' ' '
-          fi
-        done
-      } | rg -v '\^\{}$' | sort -k 3
-    done
-  } > "$next"
-  touch "$cache"
-  if ! diff -u "$cache" "$next"; then
-    echo
-    echo "app differences detected"
-    echo
-    read -p "updates completed? [y/N] " yes
-    case $yes in
-      [Yy]*)
-        mv "$next" "$cache"
-        ;;
-    esac
+  else
+    echo "WARN: $NAME is not executable, skipping..."
   fi
-  rm -f "$next"
-}
-
-_sync() {
-  local d parent
-  echo
-  echo "syncing data..."
-  parent=/mnt/workdir/host
-  for d in $(ls "$parent"); do
-    echo "syncing: $d"
-    if ! rsync -avc --exclude="*.tmpfile" --delete-after "$parent/$d/" "store:/mnt/store/active/$d/"; then
-      echo "unable to sync: $d"
-    fi
-  done
-}
-
-_plugins
-_apps
-_sync
+done

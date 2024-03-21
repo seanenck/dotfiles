@@ -1,0 +1,33 @@
+#!/bin/sh
+CACHE="$HOME/.local/state/repos.current"
+NEXT="$CACHE.next"
+
+{
+  for APP in "alpinelinux/aports" \
+             "kovidgoyal/kitty" \
+             ; do
+    echo "getting state: $APP" 1>&2
+    {
+      git ls-remote --tags "https://github.com/$APP" | \
+        tr '\t' ' ' | \
+        cut -d " " -f 2- | \
+        grep -v '{}' | \
+        grep 'refs/tags' | \
+        grep '[0-9]' | sort -u | sed "s#^#$APP: #g"
+    }
+  done
+} > "$NEXT"
+touch "$CACHE"
+if ! diff -u "$CACHE" "$NEXT"; then
+  echo
+  echo "app differences detected"
+  echo
+  printf "updates completed? [y/N] "
+  read -r YES
+  case "$YES" in
+    [Yy]*)
+      mv "$NEXT" "$CACHE"
+      ;;
+  esac
+fi
+rm -f "$NEXT"

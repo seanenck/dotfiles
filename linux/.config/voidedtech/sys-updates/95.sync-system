@@ -1,0 +1,8 @@
+#!/bin/sh
+HOST_WORKDIR=/mnt/workdir/host
+for DIR in $(ls "$HOST_WORKDIR"); do
+  echo "syncing: $DIR"
+  if ! rsync -avc --exclude="*.tmpfile" --delete-after "$HOST_WORKDIR/$DIR/" "store:/mnt/store/active/$DIR/"; then
+    echo "unable to sync: $DIR"
+  fi
+done
