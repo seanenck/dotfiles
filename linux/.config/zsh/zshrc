@@ -38,6 +38,7 @@ if [ -e "$file" ]; then
 fi
 
 unset state file
+zstyle ':completion:*:*:git:*' user-commands uncommitted:"display uncommitted changes"
 
 alias cat=bat
 alias grep="rg"
