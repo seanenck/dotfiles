@@ -1,79 +1,66 @@
-#!/bin/bash
+#!/bin/sh
 CONFIGS="$HOME/.config/vm"
-
-_time() {
-  while : ; do
-    date +%s > "$1/now.tmpfile"
-    sleep 30
-  done
-}
-
-_httpserver() {
-  local dir port cache
-  dir="$HOME/.workdir/host"
-  if [ ! -d "$dir" ]; then
-    dir="$HOME/Active"
-  fi
-  dir="$dir/shared"
-  if [ ! -d "$dir" ]; then
-    echo "unable to find package store"
-    exit 1
-  fi
-  port=9999
-  if curl --silent "http://localhost:$port" > /dev/null; then
-    echo "http server running..."
-    return
-  fi
-  cache="$dir/cache"
-  mkdir -p "$cache"
-  _time "$cache" &
-  (cd "$dir" && python3 -m http.server $port) &
-}
-
-_vm() {
-  local name
-  if [[ "$1" == "run" ]]; then
-    _manage
-  fi
-  name="vfu-vm"
-  if screen -list | grep -q "$name"; then
-    if [[ "$1" == "status" ]]; then
-      echo running
-    fi
-    return
-  fi
-  case "$1" in
-    "status")
-      echo stopped
-      return
-      ;;
-    "start")
-      screen -d -S "$name" -m vm run
-      return
-      ;;
-    *)
-      echo "unknown command"
-      exit 1
-      ;;
-  esac
-}
-
-_manage() {
-  local opt
-  for opt in $(ls "$CONFIGS" | grep json); do
-    if [ -e "$CONFIGS/$(echo "$opt" | cut -d "." -f 1)".img ]; then
-      echo "starting: $opt"
-      _httpserver
-      exec vfu --config "$HOME/.config/vm/$opt"
-    fi
-  done
-  echo "no valid vms found..."
-  exit 1
-}
+SCREEN="vfu-vm"
+PORT=9999
 
 if [ -z "$1" ]; then
   echo "command required"
   exit 1
 fi
 
-_vm "$1"
+if [ "$1" = "run" ]; then
+  for OPT in $(ls "$CONFIGS" | grep json); do
+    if [ -e "$CONFIGS/$(echo "$OPT" | cut -d "." -f 1)".img ]; then
+      echo "starting: $OPT"
+      DIR="$HOME/.workdir/host"
+      if [ ! -d "$DIR" ]; then
+        DIR="$HOME/Active"
+      fi
+      DIR="$DIR/shared"
+      if [ ! -d "$DIR" ]; then
+        echo "unable to find package store"
+        exit 1
+      fi
+      CACHE="$DIR/cache"
+      mkdir -p "$CACHE"
+      (
+        if curl --silent "http://localhost:$PORT" > /dev/null; then
+          echo "http server running..."
+        else
+          (
+            while : ; do
+              date +%s > "$CACHE/now.tmpfile"
+              sleep 30
+            done
+          ) &
+          (cd "$DIR" && python3 -m http.server $PORT) &
+        fi
+      ) &
+      exec vfu --config "$HOME/.config/vm/$OPT"
+    fi
+  done
+  echo "no valid vms found..."
+  exit 1
+fi
+
+if screen -list | grep -q "$SCREEN"; then
+  if [ "$1" = "status" ]; then
+    echo running
+  fi
+  exit 0
+fi
+
+case "$1" in
+  "status")
+    echo stopped
+    exit 0
+    ;;
+  "start")
+    screen -d -S "$SCREEN" -m vm run
+    exit 0
+    ;;
+  *)
+    echo "unknown command"
+    exit 1
+    ;;
+esac

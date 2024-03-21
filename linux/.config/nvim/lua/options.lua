@@ -1,4 +1,4 @@
-vim.opt.shell = "/bin/bash"
+vim.opt.shell = "/bin/zsh"
 vim.opt.background = 'dark'
 vim.opt.confirm = true
 vim.opt.mouse = 'a'
