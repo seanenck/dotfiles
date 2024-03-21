@@ -15,23 +15,6 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     end,
 })
 
--- Handle unknown filetypes
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
-    pattern = { "*" },
-    callback = function()
-        if vim.fn.did_filetype() and vim.bo.filetype == "conf" then
-            local fstline = vim.api.nvim_buf_get_lines(0, 0, 1, true)[1]
-            if fstline then
-                shebang =  fstline:match("#!%s*/usr/bin/env%s+(%S+)")
-                        or fstline:match("#!%s*/%S+/([^ /]+)")
-                if shebang == "pwsh" then
-                    vim.bo.filetype = "ps1"
-                end
-            end
-        end
-    end,
-})
-
 -- Directory
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
     pattern = "*",

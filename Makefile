@@ -1,24 +1,21 @@
-IGNORE := | grep '^\.' | grep -v '^\.gitignore' | grep -v '^\.github'
-FILES  := $(shell git ls-files $(IGNORE)) $(shell git ls-files --others $(IGNORE))
+UNAME  := $(shell uname | tr '[:upper:]' '[:lower:]')
+FILES  := $(shell find . -type f | cut -d '/' -f 2-)
 DIRS   := $(shell find $(FILES) -type f -exec dirname {} \; | grep -v '^\.$$' | sort -u)
 
-all: 
-	$(error "pick a target")
+.PHONY: linux darwin
 
-.PHONY: host
+$(UNAME):
+	ln -sf $(PWD)/.zshrc $(HOME)/.zshrc
+	cd $(UNAME) && make -f ../Makefile _install
 
-host:
-	cp Makefile host/Makefile
-	cd host && make install
+_install: _dirs _files
 
-install: dirs files
-
-files:
+_files:
 	@for file in $(FILES) ; do \
 		ln -sf $(PWD)/$$file $(HOME)/$$file ; \
 	done
 
-dirs:
+_dirs:
 	@for dir in $(DIRS) ; do \
 		mkdir -p $(HOME)/$$dir ; \
 	done

@@ -1,0 +1,28 @@
+ #!/bin/sh
+ 
+for mode in mov heic; do
+   unset f ext code name
+   for f in $(ls); do
+     ext=$(echo "$f" | rev | cut -d "." -f 1 | rev)
+     if [ "$ext" != "$mode" ]; then
+       ext=$(echo "$ext" | tr '[:upper:]' '[:lower:]')
+       if [ "$ext" != "$mode" ]; then
+         continue
+       fi
+     fi
+     code=0
+     h=$(echo "$f" | shasum -a 256 | cut -c 1-7)
+     d=$(date +"%d.T_%H%M%S")
+     name="$d.$h"
+     echo "$f -> $name"
+     case "$mode" in
+       "mov")
+       avconvert -s "$f" -o "$name.mp4" -p PresetHEVCHighestQuality
+       ;;
+       "heic")
+       sips --setProperty format jpeg --out "$name.jpeg" "$f"
+       ;;
+     esac
+     rm -f "$f"
+   done
+done

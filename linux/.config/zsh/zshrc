@@ -1,29 +1,17 @@
-#!/usr/bin/env bash
-[[ $- != *i* ]] && return
+setopt PROMPT_SUBST
 
-for file in /etc/bashrc /etc/bash.bashrc /etc/bash/bashrc /etc/bash/bash.bashrc; do
-  if [ -s "$file" ]; then
-    source "$file"
-  fi
-done
+PS1="[\u@\h:\W]$ "
 
-shopt -s direxpand
+PS1='[%n@%m %~]$ '
+PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
 
-export VISUAL=vi
-export VISUAL=nvim
+export EDITOR="nvim"
+export VISUAL="$EDITOR"
 export DELTA_PAGER="less -c -X"
-
-export EDITOR="$VISUAL"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
-export TERM=xterm-256color
 export GOPATH="$HOME/.cache/go"
 export GOFLAGS="-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
-export PATH="$HOME/.local/bin:$PATH"
 
-# disable ctrl+s
-stty -ixon
-
-# cache
 state="$HOME/.local/state"
 mkdir -p "$state"
 
@@ -32,10 +20,6 @@ if [ -d "$file" ]; then
   find "$file" -type f -mmin +60 -delete
 fi
 
-# check the window size after each command
-shopt -s checkwinsize
-
-PS1="[\u@\h:\W]$ "
 SSH_AGENT_ENV="$state/ssh-agent.env"
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
   ssh-agent > "$SSH_AGENT_ENV"
@@ -48,22 +32,18 @@ for file in "$HOME/.ssh/"*.privkey; do
   ssh-add "$file" > /dev/null 2>&1
 done
 
-PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
-comp="$HOME/.local/completions"
-if [ -d "$comp" ]; then
-  for file in "$comp/"*; do
-    source "$file"
-  done
-fi
-
 file="$HOME/git/secrets/lockbox.env"
 if [ -e "$file" ]; then
-  source "$file"
+    source "$file"
 fi
 
-unset file state comp
+unset state file
 
-source "$HOME/.bash_aliases"
+alias cat=bat
+alias grep="rg"
+alias vi="$EDITOR"
+alias vim="$EDITOR"
+alias scp="echo noop"
 
 echo "disks"
 echo "==="
