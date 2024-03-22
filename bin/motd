@@ -1,0 +1,11 @@
+#!/bin/sh
+echo "disks"
+echo "==="
+df -h / 2>/dev/null | tail -n 1 | awk '{printf "  %s: %5s\n", $1, $5}'
+echo
+if ! git uncommitted --quiet; then
+  echo "uncommitted"
+  echo "==="
+  git uncommitted | sed "s#$HOME/##g" | sed 's/^/  /g'
+  echo
+fi

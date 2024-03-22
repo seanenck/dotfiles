@@ -3,8 +3,7 @@ CACHE="$HOME/.local/state/repos.current"
 NEXT="$CACHE.next"
 
 {
-  for APP in "alpinelinux/aports" \
-             "kovidgoyal/kitty" \
+  for APP in "kovidgoyal/kitty" \
              ; do
     echo "getting state: $APP" 1>&2
     {

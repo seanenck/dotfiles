@@ -5,9 +5,9 @@ if status is-interactive
     if test -d "$undos"
         find "$undos" -type f -mmin +60 -delete
     end
-    set -l lb_env "$HOME/git/secrets/.env/linux.vars"
+    set -l lb_env "$HOME/Git/secrets/vars.sh"
     if test -e "$lb_env"
-        source "$HOME/git/secrets/.env/linux.vars"
+        source "$lb_env"
     end
     set -l ssh_agent_env "$state/ssh-agent.env"
     if ! pgrep -u "$USER" ssh-agent > /dev/null
@@ -20,14 +20,5 @@ if status is-interactive
     for file in "$HOME/.ssh/"*.privkey
         ssh-add "$file" > /dev/null 2>&1
     end
-    echo "disks"
-    echo "==="
-    df -h 2>/dev/null | grep '^/dev/vd' | awk '{printf "  %-10s %s\n", $1, $5}' | sort
-    echo
-    if ! git uncommitted --quiet
-        echo "uncommitted"
-        echo "==="
-        git uncommitted | sed "s#$HOME/##g" | sed 's/^/  /g'
-        echo
-    end
+    motd
 end

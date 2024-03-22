@@ -4,3 +4,4 @@ set -U VISUAL $EDITOR
 set -x DELTA_PAGER "less -c -X"
 set -x GOPATH "$HOME/.cache/go"
 set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
+set -x DOTFILES_PROFILE dev 

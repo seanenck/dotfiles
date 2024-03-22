@@ -1,12 +1,19 @@
-UNAME  := $(shell uname | tr '[:upper:]' '[:lower:]')
-FILES  := $(shell find . -type f | cut -d '/' -f 2-)
-DIRS   := $(shell find $(FILES) -type f -exec dirname {} \; | grep -v '^\.$$' | sort -u)
+PROFILE := $(DOTFILES_PROFILE)
+FILES   := $(shell find . -type f | cut -d '/' -f 2-)
+DIRS    := $(shell find $(FILES) -type f -exec dirname {} \; | grep -v '^\.$$' | sort -u)
+DESTDIR := $(HOME)/.local/
+ifeq ($(PROFILE),)
+PROFILE := none
+endif
 
-.PHONY: linux darwin
+.PHONY: dev server
 
-$(UNAME):
-	cd $(UNAME) && make -f ../Makefile _install
-	ln -sf $(PWD)/bin/git-uncommitted $(HOME)/.local/bin/git-uncommitted
+$(PROFILE):
+	cd $(PROFILE) && make -f ../Makefile _install
+	mkdir -p $(DESTDIR)
+	@for file in $(shell find bin/ -type f) ; do \
+		ln -sf $(PWD)/$$file $(DESTDIR)$$file ; \
+	done
 
 _install: _dirs _files
 
