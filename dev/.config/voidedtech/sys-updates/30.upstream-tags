@@ -1,5 +1,5 @@
 #!/bin/sh
-CACHE="$HOME/.local/state/repos.current"
+CACHE="$HOME/Library/voidedtech/repos.current"
 NEXT="$CACHE.next"
 
 {

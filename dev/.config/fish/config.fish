@@ -1,5 +1,5 @@
 if status is-interactive
-    set -l state "$HOME/.local/state"
+    set -l state "$HOME/Library/voidedtech"
     mkdir -p "$state"
     set -l undos "$state/nvim/undo"
     if test -d "$undos"
