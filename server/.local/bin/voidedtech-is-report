@@ -1,0 +1,9 @@
+#!/bin/sh
+WEEKDAY=$(date +%A)
+TIME=$(date +%H)
+if [ "$WEEKDAY" = "Friday" ]; then
+  if [ "$TIME" -le 5 ]; then
+    exit 0
+  fi
+fi
+exit 1
