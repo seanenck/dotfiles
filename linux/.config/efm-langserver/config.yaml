@@ -3,12 +3,6 @@ root-markers:
   - .git/
 
 tools:
-  perl-perlcritic: &perl-perlcritic
-    lint-command: 'perlcritic --nocolor -3 --verbose "%l:%c %m\n"'
-    lint-ignore-exit-code: true
-    lint-formats:
-      - '%l:%c %m'
-
   sh-shellcheck: &sh-shellcheck
     lint-command: 'shellcheck -f gcc -x'
     lint-source: 'shellcheck'
@@ -18,8 +12,5 @@ tools:
       - '%f:%l:%c: %tote: %m'
 
 languages:
-  perl:
-    - <<: *perl-perlcritic
-
   sh:
     - <<: *sh-shellcheck
