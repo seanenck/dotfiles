@@ -27,7 +27,7 @@ if ! git -C "$REPO" bundle create "$TARGET" --all; then
 fi
 EOF
       else
-        echo "$HOME/Git/secrets/bin/github '$REPO'"
+        echo "exec $HOME/Git/secrets/bin/github '$REPO'"
       fi
     } > "$HOOK"
     if ! chmod 755 "$HOOK"; then
