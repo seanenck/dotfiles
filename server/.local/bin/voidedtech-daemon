@@ -27,7 +27,7 @@ if [ "$CMD" = "run" ]; then
       echo "last run"
       echo "==="
       date
-      voidedtech-tasks 2>&1
+      voidedtech-scheduled 2>&1
     } > "$PIDFILE"
   done
 else
