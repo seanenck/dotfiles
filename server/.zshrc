@@ -20,14 +20,10 @@ export HOMEBREW_REPOSITORY="/opt/homebrew";
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
 export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
 export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
-
-if ! git uncommitted; then
-  echo "commits"
-  echo "==="
-  git uncommitted | sed "s#$HOME/##g" | sed 's/^/  -> /g'
-  echo
-fi
+export DOTFILES_PROFILE=server
 
 if [ ! -z "$SSH_CONNECTION" ] && [[ "$TERM" == "xterm-kitty" ]]; then
   export TERM=xterm
 fi
+
+motd
