@@ -6,6 +6,7 @@ DIRS   := $(shell find $(FILES) -type f -exec dirname {} \; | grep -v '^\.$$' | 
 
 $(UNAME):
 	cd $(UNAME) && make -f ../Makefile _install
+	ln -sf $(PWD)/bin/git-uncommitted $(HOME)/.local/bin/git-uncommitted
 
 _install: _dirs _files
 

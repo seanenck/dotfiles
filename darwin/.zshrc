@@ -30,14 +30,11 @@ if [ -e "$vars" ]; then
   source "$vars"
 fi
 
-uncommit="$HOME/Git/dotfiles/linux/.local/bin/git-uncommitted"
-if [ -x "$uncommit" ]; then
-  if ! $uncommit > /dev/null; then
-    echo "commits"
-    echo "==="
-    $uncommit | sed "s#$HOME/##g" | sed 's/^/  -> /g'
-    echo
-  fi
+if ! git uncommitted; then
+  echo "commits"
+  echo "==="
+  git uncommitted | sed "s#$HOME/##g" | sed 's/^/  -> /g'
+  echo
 fi
 
 if [ ! -z "$SSH_CONNECTION" ] && [[ "$TERM" == "xterm-kitty" ]]; then
