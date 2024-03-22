@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env 
 HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=1000
@@ -22,4 +22,10 @@ unset comps
 path+=("$HOME/.local/bin")
 export PATH
 
-source ~/.config/zsh/zshrc
+if which lb > /dev/null; then
+  source "$HOME/.workdir/git/secrets/.env/darwin.vars"
+fi
+
+if [ ! -z "$SSH_CONNECTION" ] && [[ "$TERM" == "xterm-kitty" ]]; then
+  export TERM=xterm
+fi
