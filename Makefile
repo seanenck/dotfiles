@@ -5,7 +5,6 @@ DIRS   := $(shell find $(FILES) -type f -exec dirname {} \; | grep -v '^\.$$' | 
 .PHONY: linux darwin
 
 $(UNAME):
-	ln -sf $(PWD)/.zshrc $(HOME)/.zshrc
 	cd $(UNAME) && make -f ../Makefile _install
 
 _install: _dirs _files
