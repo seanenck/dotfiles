@@ -10,7 +10,7 @@ zstyle :compinstall filename '~/.zshrc'
 autoload -Uz compinit
 compinit
 
-vars="$HOME/Git/tasks/vars.sh"
+vars="$HOME/.config/voidedech/tasks/vars.sh"
 if [ -e "$vars" ]; then
   source "$vars"
 fi
