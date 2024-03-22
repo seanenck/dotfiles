@@ -27,3 +27,10 @@ if [ ! -z "$SSH_CONNECTION" ] && [[ "$TERM" == "xterm-kitty" ]]; then
 fi
 
 motd
+if ! voidedtech-daemon start > /dev/null; then
+    echo
+    echo "============================"
+    echo "[WARNING] daemon not running"
+    echo "============================"
+    echo
+fi
