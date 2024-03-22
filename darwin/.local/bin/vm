@@ -1,7 +1,6 @@
 #!/bin/sh
 CONFIGS="$HOME/.config/vm"
 SCREEN="vfu-vm"
-PORT=9999
 
 if [ -z "$1" ]; then
   echo "command required"
@@ -12,30 +11,6 @@ if [ "$1" = "run" ]; then
   for OPT in $(ls "$CONFIGS" | grep json); do
     if [ -e "$CONFIGS/$(echo "$OPT" | cut -d "." -f 1)".img ]; then
       echo "starting: $OPT"
-      DIR="$HOME/.workdir/host"
-      if [ ! -d "$DIR" ]; then
-        DIR="$HOME/Active"
-      fi
-      DIR="$DIR/shared"
-      if [ ! -d "$DIR" ]; then
-        echo "unable to find package store"
-        exit 1
-      fi
-      CACHE="$DIR/cache"
-      mkdir -p "$CACHE"
-      (
-        if curl --silent "http://localhost:$PORT" > /dev/null; then
-          echo "http server running..."
-        else
-          (
-            while : ; do
-              date +%s > "$CACHE/now.tmpfile"
-              sleep 30
-            done
-          ) &
-          (cd "$DIR" && python3 -m http.server $PORT) &
-        fi
-      ) &
       exec vfu --config "$HOME/.config/vm/$OPT"
     fi
   done
