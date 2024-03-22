@@ -25,6 +25,10 @@ export PATH
 if which lb > /dev/null; then
   source "$HOME/.workdir/git/secrets/.env/darwin.vars"
 fi
+vars="$HOME/Git/tasks/vars.sh"
+if [ -e "$vars" ]; then
+  source "$vars"
+fi
 
 if [ ! -z "$SSH_CONNECTION" ] && [[ "$TERM" == "xterm-kitty" ]]; then
   export TERM=xterm
