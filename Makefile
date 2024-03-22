@@ -1,5 +1,5 @@
 PROFILE := $(DOTFILES_PROFILE)
-FILES   := $(shell find . -type f | cut -d '/' -f 2-)
+FILES   := $(shell find . -type f -name "*\.*" | cut -d '/' -f 2-)
 DIRS    := $(shell find $(FILES) -type f -exec dirname {} \; | grep -v '^\.$$' | sort -u)
 DESTDIR := $(HOME)/.local/
 ifeq ($(PROFILE),)

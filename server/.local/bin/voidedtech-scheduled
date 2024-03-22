@@ -1,6 +1,6 @@
 #!/bin/sh
 HOUR=$(date +%H)
 if [ "$HOUR" = "04" ] || [ "$HOUR" = "10" ] || [ "$HOUR" = "16" ] || [ "$HOUR" = "22" ]; then
-  source "$HOME/.config/voidedtech/tasks/vars.sh"
+  source "$HOME/Git/dotfiles/server/tasks/vars.sh"
   voidedtech-tasks
 fi

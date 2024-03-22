@@ -1,6 +1,6 @@
 #!/bin/sh
 export TASK_DOCS="$HOME/Documents"
-export TASK_ROOT="$HOME/Git/tasks"
+export TASK_ROOT="$HOME/Git/dotfiles/server/tasks/scripts"
 export TASK_CACHE="$HOME/Library/voidedtech"
 export TASK_SOURCE="$HOME/Git/secrets/etc"
 export GIT_SOURCES="$HOME/Active/git"
