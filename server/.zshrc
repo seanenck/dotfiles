@@ -10,10 +10,7 @@ zstyle :compinstall filename '~/.zshrc'
 autoload -Uz compinit
 compinit
 
-vars="$HOME/.config/voidedech/tasks/vars.sh"
-if [ -e "$vars" ]; then
-  source "$vars"
-fi
+source "$HOME/.config/voidedtech/tasks/vars.sh"
 export HOMEBREW_PREFIX="/opt/homebrew";
 export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
 export HOMEBREW_REPOSITORY="/opt/homebrew";
