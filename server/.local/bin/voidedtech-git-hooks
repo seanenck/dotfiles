@@ -1,0 +1,38 @@
+#!/bin/sh
+ARCHIVE="$HOME/Documents/workdir/repositories/"
+REPOS="$HOME/Active/git/"
+
+for DIRS in $(ls "$REPOS"); do
+  OFFSET="$REPOS$DIRS"
+  for NAME in $(ls "$OFFSET/"); do
+    REPO="$OFFSET/$NAME"
+    NAME=$(basename "$REPO")
+    echo "updating: $DIRS/$NAME"
+    HOOK="$REPO/hooks/post-receive"
+    {
+      echo "#!/bin/sh"
+      if echo "$REPO" | grep -q "/private/"; then
+        TARGET="$ARCHIVE$NAME.bundle"
+        cat << EOF
+if [ -e "$TARGET" ]; then
+  rm -f "$TARGET"
+fi
+echo "bundling: $NAME"
+if ! git -C "$REPO" bundle create "$TARGET" --all; then
+  echo
+  echo "WARNING:"
+  echo "  failed to create bundle for $NAME"
+  echo
+  exit 1
+fi
+EOF
+      else
+        echo "$HOME/Git/secrets/bin/github '$REPO'"
+      fi
+    } > "$HOOK"
+    if ! chmod 755 "$HOOK"; then
+      echo "failed to setup hook: $HOOK"
+      exit 1
+    fi
+  done
+done
