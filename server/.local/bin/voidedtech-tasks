@@ -15,7 +15,7 @@ if [ $(ls "$TASK_DOCS" | wc -l) -eq 0 ]; then
   exit 1
 fi
 
-find "$TASK_LOGS" -type f -mtime +90 -delete
+find "$TASK_LOGS" -type f -mtime +10 -delete
 
 {
   for SCRIPT in "$HOME/Git/configs/server/tasks/scripts/"*; do
