@@ -18,7 +18,7 @@ fi
 find "$TASK_LOGS" -type f -mtime +90 -delete
 
 {
-  for SCRIPT in "$HOME/Git/dotfiles/server/tasks/scripts/"*; do
+  for SCRIPT in "$HOME/Git/configs/server/tasks/scripts/"*; do
     NAME=$(basename "$SCRIPT")
     echo "============"
     echo "> START: $NAME"

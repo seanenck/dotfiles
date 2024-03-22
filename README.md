@@ -1,4 +1,4 @@
-dotfiles
+configus
 ===
 
-Personal dotfiles
+Personal system configurations/dotfiles

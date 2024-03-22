@@ -1,5 +1,5 @@
 #!/bin/sh
-if ! $HOME/Git/dotfiles/server/.local/bin/brew-updates; then
+if ! $HOME/Git/configs/server/.local/bin/brew-updates; then
   echo "brew updates failed"
   exit 1
 fi

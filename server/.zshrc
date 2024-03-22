@@ -10,7 +10,7 @@ zstyle :compinstall filename '~/.zshrc'
 autoload -Uz compinit
 compinit
 
-source "$HOME/Git/dotfiles/server/tasks/vars.sh"
+source "$HOME/Git/configs/server/tasks/vars.sh"
 export HOMEBREW_PREFIX="/opt/homebrew";
 export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
 export HOMEBREW_REPOSITORY="/opt/homebrew";
