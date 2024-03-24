@@ -5,6 +5,10 @@ if status is-interactive
     if test -d "$undos"
         find "$undos" -type f -mmin +60 -delete
     end
+    set -l lb_env "$HOME/Git/passdb/lockbox.fish"
+    if test -e "$lb_env"
+        source "$lb_env"
+    end
     set -l ssh_agent_env "$state/ssh-agent.env"
     if ! pgrep -u "$USER" ssh-agent > /dev/null
         ssh-agent -c > "$ssh_agent_env"
