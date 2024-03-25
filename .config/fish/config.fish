@@ -20,5 +20,5 @@ if status is-interactive
     for file in "$HOME/.ssh/"*.privkey
         ssh-add "$file" > /dev/null 2>&1
     end
-    voidedtech motd
+    voidedtech startup
 end
