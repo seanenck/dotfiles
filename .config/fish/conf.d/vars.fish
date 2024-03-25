@@ -1,4 +1,4 @@
-fish_add_path -gP "$HOME/.local/bin" "$HOME/Configuration/bin";
+fish_add_path -gP "$HOME/.local/bin";
 set -U EDITOR nvim
 set -U VISUAL $EDITOR
 set -x DELTA_PAGER "less -c -X"
