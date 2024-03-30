@@ -1,9 +1,0 @@
-#!/bin/sh
-TARGET="macmini.voidedtech.com"
-WORKDIR="$HOME/Active"
-for DIR in $(ls "$WORKDIR"); do
-  echo "syncing: $DIR"
-  if ! rsync -avc --delete-after "$WORKDIR/$DIR/" "$TARGET:~/Active/$DIR/"; then
-    echo "unable to sync: $DIR"
-  fi
-done

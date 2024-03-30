@@ -1,9 +1,0 @@
-#!/bin/sh
-if ! $HOME/Git/configs/server/.local/bin/brew-updates; then
-  echo "brew updates failed"
-  exit 1
-fi
-if ! rsync -avc "$HOME/Library/voidedtech/brew/Brewfile" "$HOME/Active/dev/"; then
-  echo "failed to archive brewfile"
-  exit 1
-fi
