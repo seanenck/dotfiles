@@ -5,7 +5,7 @@ if status is-interactive
     if test -d "$undos"
         find "$undos" -type f -mmin +60 -delete
     end
-    set -l lb_env "$HOME/Git/passdb/lockbox.fish"
+    set -l lb_env "$SECRETS/lockbox.fish"
     if test -e "$lb_env"
         source "$lb_env"
     end
