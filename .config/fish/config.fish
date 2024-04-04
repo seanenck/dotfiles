@@ -8,7 +8,7 @@ if status is-interactive
     if test -d "$undos"
         find "$undos" -type f -mmin +60 -delete
     end
-    set -l lb_env "$SECRETS/src/lockbox.fish"
+    set -l lb_env "$SECRETS/db/lockbox.fish"
     if test -e "$lb_env"
         source "$lb_env"
     end
