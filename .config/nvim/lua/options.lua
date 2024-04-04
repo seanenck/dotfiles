@@ -1,4 +1,4 @@
-vim.opt.shell = "/opt/homebrew/bin/fish"
+vim.opt.shell = "/usr/bin/fish"
 vim.opt.background = 'dark'
 vim.opt.confirm = true
 vim.opt.mouse = 'a'

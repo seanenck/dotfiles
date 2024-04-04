@@ -1,4 +1,7 @@
 if status is-interactive
+    set -g EDITOR nvim
+    set -g VISUAL $EDITOR
+    set -x SECRETS "$HOME/Git/secrets"
     set -l state "$HOME/.local/state"
     mkdir -p "$state"
     set -l undos "$state/nvim/undo"
@@ -19,6 +22,25 @@ if status is-interactive
     end
     for file in "$HOME/.ssh/"*.privkey
         ssh-add "$file" > /dev/null 2>&1
+    end
+
+    abbr -a cat bat
+    abbr -a grep rg
+    abbr -a vi $EDITOR
+    abbr -a vim $EDITOR
+    abbr -a nano $EDITOR
+
+    set -g fish_autosuggestion_enabled 0
+    set fish_greeting
+    set -x DELTA_PAGER "less -c -X"
+
+    fish_add_path -gP "$HOME/.local/bin";
+    if set -q TOOLBOX_PATH
+        if test -x /usr/bin/go
+            fish_add_path -gP "$HOME/.cache/go/bin";
+            set -x GOPATH "$HOME/.cache/go"
+            set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
+        end
     end
     voidedtech startup
 end
