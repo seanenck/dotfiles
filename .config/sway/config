@@ -19,7 +19,7 @@ bindsym $mod+q kill
 # sway management
 bindsym $mod+r reload
 bindsym $mod+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
-bindsym $mod+x exec pkill -10 swayidle
+bindsym $mod+Shift+x exec pkill -10 swayidle
 
 # view organization
 bindsym $mod+Shift+f fullscreen
