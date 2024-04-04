@@ -43,7 +43,7 @@ if status is-interactive
         end
     end
     set -g __fish_git_prompt_show_informative_status 1
-    set -g __fish_git_prompt_hide_untrackedfiles 1
+    set -g __fish_git_prompt_hide_untrackedfiles 0
     
     set -g __fish_git_prompt_color_branch magenta bold
     set -g __fish_git_prompt_showupstream "informative"
