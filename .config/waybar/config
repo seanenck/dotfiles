@@ -6,9 +6,6 @@
         "sway/mode",
         "sway/scratchpad"
     ],
-    "modules-center": [
-        "sway/window"
-    ],
     "modules-right": [
         "idle_inhibitor",
         "pulseaudio",
