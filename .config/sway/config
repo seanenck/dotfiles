@@ -1,7 +1,7 @@
 set $mod Mod4
 
 set $term kitty
-set $rofi_cmd printf "firefox\nkitty\nedge\nvlc\nthunar" | rofi -terminal kitty -dmenu | sed 's#edge#flatpak run com.microsoft.Edge#;s#vlc#flatpak run org.videolan.VLC#' | sh
+set $rofi_cmd printf "firefox\nkitty\nedge\nthunar" | rofi -terminal kitty -dmenu | sed 's#edge#flatpak run com.microsoft.Edge#' | sh
 set $menu $rofi_cmd
 
 gaps outer 5px
