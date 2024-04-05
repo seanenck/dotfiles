@@ -34,13 +34,15 @@ if status is-interactive
     set fish_greeting
     set -x DELTA_PAGER "less -c -X"
 
-    fish_add_path -gP "$HOME/.local/bin";
-    if set -q TOOLBOX_PATH
-        if test -x /usr/bin/go
-            fish_add_path -gP "$HOME/.cache/go/bin";
-            set -x GOPATH "$HOME/.cache/go"
-            set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
+    set -l local_bin "$HOME/.local/bin"
+    if test -x "$local_bin/voidedtech"
+        fish_add_path -gP "$local_bin";
+        switch (voidedtech system)
+            case go
+                fish_add_path -gP "$HOME/.cache/go/bin";
+                set -x GOPATH "$HOME/.cache/go"
+                set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
         end
+        voidedtech startup
     end
-    voidedtech startup
 end
