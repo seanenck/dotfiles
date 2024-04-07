@@ -1,0 +1,10 @@
+#!/bin/sh
+sudo dnf install -y \
+    bat \
+    fish \
+    git \
+    git-delta \
+    make \
+    neovim \
+    ripgrep \
+    kitty-terminfo

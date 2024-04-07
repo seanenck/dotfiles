@@ -38,13 +38,14 @@ if status is-interactive
     if test -x "$local_bin/voidedtech"
         fish_add_path -gP "$local_bin";
         set -l system_type $(voidedtech system)
-        set -l path_bin "$local_bin/$system_type/"
+        set -f path_bin "$local_bin/$system_type/"
         if test -d "$path_bin"
             fish_add_path -gP "$path_bin"
         end
-        set -l path_bin "$local_bin/host/"
-        if test "$system_type" != "host"
-            set -l path_bin "$local_bin/toolbox/"
+        if test "$system_type" = "host"
+            set -f path_bin "$local_bin/host/"
+        else
+            set -f path_bin "$local_bin/toolbox/"
         end
         if test -d "$path_bin"
             fish_add_path -gP "$path_bin"
