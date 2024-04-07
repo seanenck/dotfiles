@@ -1,0 +1,23 @@
+#!/bin/sh
+PLUGINS="$HOME/.config/nvim/pack/plugins/start/"
+
+for PLUGIN in "https://github.com/neovim/nvim-lspconfig" \
+	          "https://github.com/hrsh7th/nvim-cmp" \
+	          "https://github.com/hrsh7th/cmp-nvim-lsp" \
+	          "https://github.com/vim-airline/vim-airline" \
+	          "https://github.com/petertriho/nvim-scrollbar" \
+	          "https://github.com/L3MON4D3/LuaSnip"; do
+  NAME=$(basename "$PLUGIN")
+  CLONE="$PLUGINS/$NAME"
+  echo
+  echo "updating: $NAME"
+  if [ -d "$CLONE" ]; then
+    if ! git -C "$CLONE" pull origin $(git -C "$CLONE" rev-parse --abbrev-ref HEAD); then
+      echo "  -> failed to update plugin"
+    fi
+  else
+    if ! git clone "$PLUGIN" "$CLONE" --single-branch; then
+      echo "  -> failed to clone plugin"
+    fi
+  fi
+done
