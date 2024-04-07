@@ -1,0 +1,9 @@
+#!/bin/sh
+for TOOL in honnef.co/go/tools/cmd/staticcheck@latest \
+            github.com/mgechev/revive@latest \
+            golang.org/x/tools/gopls@latest; do
+  echo "installing: $TOOL"
+  if ! go install "$TOOL"; then
+    echo "  -> failed"
+  fi
+done
