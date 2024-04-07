@@ -37,6 +37,10 @@ if status is-interactive
     set -l local_bin "$HOME/.local/bin"
     if test -x "$local_bin/voidedtech"
         fish_add_path -gP "$local_bin";
+        set -l local_bin "$local_bin/$(voidedtech system)/"
+        if test -d "$local_bin"
+            fish_add_path -gP "$local_bin"
+        end
         switch (voidedtech system)
             case go
                 fish_add_path -gP "$HOME/.cache/go/bin";
