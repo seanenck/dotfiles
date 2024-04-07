@@ -1,0 +1,28 @@
+#!/bin/sh
+
+for FILE in $(ls); do
+  TARGET=$(date +%d.T_%H%M%S).$(echo "$FILE" | sha256sum | cut -c 1-7)
+  EXT=$(echo "$FILE" | tr '[:upper:]' '[:lower:]' | rev | cut -d "." -f 1 | rev)
+  echo "processing: $FILE"
+  case "$EXT" in
+    "jpeg")
+      TARGET="$TARGET.jpeg"
+      if ! cp "$FILE" "$TARGET"; then
+        echo "unable to copy"
+        exit 1
+      fi
+      ;;
+    "mov")
+      TARGET="$TARGET.mp4"
+      if ! ffmpeg -i "$FILE" -c copy "$TARGET"; then
+        echo "unable to transcode via ffmpeg"
+        exit 1
+      fi
+      ;;
+    *)
+      continue
+      ;;
+  esac
+  echo "  -> $TARGET"
+  rm -f "$FILE"
+done
