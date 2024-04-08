@@ -41,8 +41,7 @@ if status is-interactive
     echo "disks"
     echo "==="
     df -h /dev/mapper/* | grep '^/' | awk '{printf "  %-20s %s\n", $6, $5}' | sort
-    echo
-    git-uncommitted | sed "s#$HOME/##g" | sed 's/^/  /g' | sed '1 i\uncommitted\n==='
+    git-uncommitted | sed "s#$HOME/##g" | sed 's/^/  /g' | sed '1 i\\\nuncommitted\n==='
     echo
 
     if test -x "$local_bin/voidedtech"
