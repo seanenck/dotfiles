@@ -1,0 +1,14 @@
+#!/bin/sh
+LENGTH=32
+SOURCE=/usr/share/hunspell/en_US.dic
+
+CURR=""
+while : ; do
+  NEXT=$(cat "$SOURCE" | shuf -n 1 | cut -d "/" -f 1 | tr -cd '[:alnum:]' | sed -e "s/\b\(.\)/\u\1/g")
+  CURR="$CURR$NEXT"
+  if [ "$(echo "$CURR" | wc -m)" -ge "$LENGTH" ]; then
+    break
+  fi
+done
+CHR=$(printf ".\n_\n-" | shuf -n 1)
+echo "$CURR$CHR$RANDOM"
