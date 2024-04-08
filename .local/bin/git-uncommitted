@@ -63,4 +63,3 @@ else
     ;;
   esac
 fi
-exit "$HAS"
