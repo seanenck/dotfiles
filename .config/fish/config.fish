@@ -35,6 +35,16 @@ if status is-interactive
     set -x DELTA_PAGER "less -c -X"
 
     set -l local_bin "$HOME/.local/bin"
+    if test -d "$local_bin"
+        fish_add_path -gP "$local_bin";
+    end
+    echo "disks"
+    echo "==="
+    df -h /dev/mapper/* | grep '^/' | awk '{printf "  %-20s %s\n", $6, $5}' | sort
+    echo
+    git-uncommitted | sed "s#$HOME/##g" | sed 's/^/  /g' | sed '1 i\uncommitted\n==='
+    echo
+
     if test -x "$local_bin/voidedtech"
         fish_add_path -gP "$local_bin";
         set -l system_type $(voidedtech system)
