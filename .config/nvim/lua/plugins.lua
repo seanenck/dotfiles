@@ -50,6 +50,12 @@ if lsp_exists("efm-langserver") then
     }
 end
 
+if lsp_exists("bash-language-server") then
+    lspconfig.bashls.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
+    }
+end
 if lsp_exists("deno") then
     lspconfig.denols.setup{
         on_attach = on_attach,

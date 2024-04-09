@@ -1,0 +1,2 @@
+#!/bin/sh
+exec podman build -f "$HOME/.config/voidedtech/toolbox.Containerfile" -t voidedtech-toolbox-39

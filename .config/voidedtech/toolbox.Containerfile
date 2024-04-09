@@ -1,5 +1,6 @@
-#!/bin/sh
-sudo dnf install -y \
+FROM registry.fedoraproject.org/fedora-toolbox:39
+
+RUN dnf install -y \
     bat \
     fish \
     git \

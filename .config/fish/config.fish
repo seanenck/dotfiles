@@ -53,11 +53,9 @@ if status is-interactive
         end
         if test "$system_type" = "host"
             set -f path_bin "$local_bin/host/"
-        else
-            set -f path_bin "$local_bin/toolbox/"
-        end
-        if test -d "$path_bin"
-            fish_add_path -gP "$path_bin"
+            if test -d "$path_bin"
+                fish_add_path -gP "$path_bin"
+            end
         end
         switch (voidedtech system)
             case go
