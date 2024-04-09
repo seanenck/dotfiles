@@ -1,5 +1,6 @@
 #!/bin/sh
-PLUGINS="$HOME/.config/nvim/pack/plugins/start/"
+SOURCES="$HOME/Env/dotfiles/src/"
+IMAGE="voidedtech-"
 UPDATE="update-toolbox"
 BUILD="build-toolbox"
 GOTOOLS="go-tooling"
@@ -27,9 +28,34 @@ _gotooling() {
   fi
 }
 
+_buildimage() {
+  echo "building image: $1"
+  if ! (cd "$SOURCES" && podman build -f "$2" -t "$IMAGE$1"); then
+    echo "failed"
+    exit 1
+  fi
+}
+
 case "$1" in
   "$BUILD")
-    exec podman build -f "$HOME/.config/voidedtech/toolbox.Containerfile" -t voidedtech-toolbox-39
+    _buildimage "toolbox" "toolbox.Containerfile"
+    for FILE in "$SOURCES"*.Containerfile; do
+      if echo "$FILE" | grep -q '/toolbox.*'; then
+        continue
+      fi
+      TBBASE="$(basename "$FILE")"
+      TBNAME="$(echo "$TBBASE" | cut -d "." -f 1)"
+      _buildimage "$TBNAME" "$TBBASE"
+      echo "making toolbox: $TBNAME"
+      if toolbox list -c | tail -n +2 | awk '{print $2}' | grep -q "^$TBNAME\$"; then
+        echo "  -> already exists..."
+        continue
+      fi
+      if ! toolbox create --image "$IMAGE$TBNAME" "$TBNAME"; then
+        echo "failed"
+        exit 1
+      fi
+    done
     ;;
   "$UPDATE")
     _toolboxes
