@@ -14,10 +14,12 @@ for PLUGIN in "https://github.com/neovim/nvim-lspconfig" \
   if [ -d "$CLONE" ]; then
     if ! git -C "$CLONE" pull origin $(git -C "$CLONE" rev-parse --abbrev-ref HEAD); then
       echo "  -> failed to update plugin"
+      exit 1
     fi
   else
     if ! git clone "$PLUGIN" "$CLONE" --single-branch; then
       echo "  -> failed to clone plugin"
+      exit 1
     fi
   fi
 done

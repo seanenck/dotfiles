@@ -1,29 +1,48 @@
 #!/bin/sh
+PLUGINS="$HOME/.config/nvim/pack/plugins/start/"
 UPDATE="update-toolbox"
 BUILD="build-toolbox"
+GOTOOLS="go-tooling"
 ALL="update-all"
-CMDS="$UPDATE $BUILD"
+CMDS="$UPDATE $BUILD $ALL $GOTOOLS"
 if [ -z "$1" ]; then
   echo "command required"
   exit 1
 fi
+
+_toolboxes() {
+  for TB in $(toolbox list -c | tail -n +2 | awk '{print $2}'); do
+    echo "updating: $TB"
+    if ! toolbox run -c "$TB" sudo dnf update -y; then
+      echo "update failed"
+      exit 1
+    fi
+  done 
+}
+
+_gotooling() {
+  if ! toolbox run -c "go" fish -c "gotooling"; then
+    echo "failed to update go tooling"
+    exit 1
+  fi
+}
+
 case "$1" in
   "$BUILD")
     exec podman build -f "$HOME/.config/voidedtech/toolbox.Containerfile" -t voidedtech-toolbox-39
     ;;
-  "$UPDATE" | "$ALL")
+  "$UPDATE")
+    _toolboxes
+    ;;
+  "$GOTOOLS")
+    _gotooling
+    ;;
+  "$ALL")
     if ! neovim-plugins; then
-      echo "failed to update neovim plugins"
       exit 1
     fi
-    #toolbox run -c "go" fish -c "$HOME/.local/bin/go/gotooling"
-    for TB in $(toolbox list -c | tail -n +2 | awk '{print $2}'); do
-      echo "updating: $TB"
-      if ! toolbox run -c "$TB" sudo dnf update -y; then
-        echo "update failed"
-        exit 1
-      fi
-    done 
+    _toolboxes
+    _gotooling
     ;;
   "fish")
     cat << EOF
@@ -36,3 +55,4 @@ EOF
     exit 1
     ;;
 esac
+
