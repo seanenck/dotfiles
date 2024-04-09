@@ -1,0 +1,23 @@
+#!/bin/sh
+if [ -z "$1" ]; then
+  echo "command required"
+  exit 1
+fi
+case "$1" in
+  "build")
+    exec podman build -f "$HOME/.config/voidedtech/toolbox.Containerfile" -t voidedtech-toolbox-39
+    ;;
+  "update")
+    for TB in $(toolbox list -c | tail -n +2 | awk '{print $2}'); do
+      echo "updating: $TB"
+      if ! toolbox run -c "$TB" sudo dnf update -y; then
+        echo "update failed"
+        exit 1
+      fi
+    done 
+    ;;
+  *)
+    echo "unknown command: $1"
+    exit 1
+    ;;
+esac
