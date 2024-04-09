@@ -1,6 +1,7 @@
 #!/bin/sh
-UPDATE="update"
-BUILD="build"
+UPDATE="update-toolbox"
+BUILD="build-toolbox"
+ALL="update-all"
 CMDS="$UPDATE $BUILD"
 if [ -z "$1" ]; then
   echo "command required"
@@ -10,7 +11,12 @@ case "$1" in
   "$BUILD")
     exec podman build -f "$HOME/.config/voidedtech/toolbox.Containerfile" -t voidedtech-toolbox-39
     ;;
-  "$UPDATE")
+  "$UPDATE" | "$ALL")
+    if ! neovim-plugins; then
+      echo "failed to update neovim plugins"
+      exit 1
+    fi
+    #toolbox run -c "go" fish -c "$HOME/.local/bin/go/gotooling"
     for TB in $(toolbox list -c | tail -n +2 | awk '{print $2}'); do
       echo "updating: $TB"
       if ! toolbox run -c "$TB" sudo dnf update -y; then
@@ -21,8 +27,8 @@ case "$1" in
     ;;
   "fish")
     cat << EOF
-complete -c setup-toolboxes -f
-complete -c setup-toolboxes -n "not __fish_seen_subcommand_from $CMDS" -a "$CMDS"
+complete -c manage-system -f
+complete -c manage-system -n "not __fish_seen_subcommand_from $CMDS" -a "$CMDS"
 EOF
     ;;
   *)
