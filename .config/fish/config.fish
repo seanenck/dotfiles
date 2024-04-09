@@ -8,26 +8,15 @@ if test -d "$local_bin"
     fish_add_path -gP "$local_bin";
 end
 
-if test -x "$local_bin/voidedtech"
-    fish_add_path -gP "$local_bin";
-    set -l system_type $(voidedtech system)
-    set -f path_bin "$local_bin/$system_type/"
-    if test -d "$path_bin"
-        fish_add_path -gP "$path_bin"
+if test -e /run/.containerenv
+    switch (cat /run/.containerenv | grep "^name=" | cut -d "=" -f 2- | sed 's/"//g')
+        case go
+            fish_add_path -gP "$HOME/.cache/go/bin";
+            set -x GOPATH "$HOME/.cache/go"
+            set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
     end
-    if test "$system_type" = "host"
-        set -f path_bin "$local_bin/host/"
-        if test -d "$path_bin"
-            fish_add_path -gP "$path_bin"
-        end
-    end
-end
-
-switch (voidedtech system)
-    case go
-        fish_add_path -gP "$HOME/.cache/go/bin";
-        set -x GOPATH "$HOME/.cache/go"
-        set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
+else
+    fish_add_path -gP "$local_bin/host"
 end
 
 if status is-interactive
