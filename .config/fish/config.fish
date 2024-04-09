@@ -1,7 +1,7 @@
 if status is-interactive
     set -g EDITOR nvim
     set -g VISUAL $EDITOR
-    set -x SECRETS "$HOME/Git/secrets"
+    set -x SECRETS "$HOME/Env/secrets"
     set -l state "$HOME/.local/state"
     mkdir -p "$state"
     set -l undos "$state/nvim/undo"

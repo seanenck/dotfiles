@@ -27,7 +27,7 @@ if [ -n "$1" ]; then
 fi
 if [ "$IS_PWD" -eq 0 ]; then
   REPOS=""
-  for DIR in $HOME/Git $HOME/Workspace; do
+  for DIR in $HOME/Env $HOME/Workspace; do
     for SUB in "$DIR"/*; do
       if [ ! -d "$SUB/.git" ]; then
         continue
