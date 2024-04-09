@@ -16,8 +16,10 @@ if test -e /run/.containerenv
             set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
     end
 else
-    set -f do_startup 1
     fish_add_path -gP "$local_bin/host"
+    if test -x "$local_bin/voidedtech"
+        set -f do_startup 1
+    end
 end
 
 if status is-interactive
