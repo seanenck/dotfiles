@@ -16,6 +16,7 @@ if test -e /run/.containerenv
             set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
     end
 else
+    set -f do_startup 1
     fish_add_path -gP "$local_bin/host"
 end
 
@@ -57,7 +58,7 @@ if status is-interactive
     git-uncommitted | sed "s#$HOME/##g" | sed 's/^/  /g' | sed '1 i\\\nuncommitted\n==='
     echo
 
-    if test -x "$local_bin/voidedtech"
+    if set -q do_startup
         voidedtech startup
     end
 end
