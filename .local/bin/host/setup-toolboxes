@@ -1,13 +1,16 @@
 #!/bin/sh
+UPDATE="update"
+BUILD="build"
+CMDS="$UPDATE $BUILD"
 if [ -z "$1" ]; then
   echo "command required"
   exit 1
 fi
 case "$1" in
-  "build")
+  "$BUILD")
     exec podman build -f "$HOME/.config/voidedtech/toolbox.Containerfile" -t voidedtech-toolbox-39
     ;;
-  "update")
+  "$UPDATE")
     for TB in $(toolbox list -c | tail -n +2 | awk '{print $2}'); do
       echo "updating: $TB"
       if ! toolbox run -c "$TB" sudo dnf update -y; then
@@ -15,6 +18,12 @@ case "$1" in
         exit 1
       fi
     done 
+    ;;
+  "fish")
+    cat << EOF
+complete -c setup-toolboxes -f
+complete -c setup-toolboxes -n "not __fish_seen_subcommand_from $CMDS" -a "$CMDS"
+EOF
     ;;
   *)
     echo "unknown command: $1"
