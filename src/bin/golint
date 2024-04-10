@@ -1,9 +1,0 @@
-#!/bin/sh
-if [ ! -e "go.mod" ]; then
-  echo "cowardly refusing to run linting outside of project root"
-  exit 1
-fi
-revive ./...                                                | sed 's/^/revive:      /g'
-go vet ./...                                                | sed 's/^/govet:       /g'
-staticcheck -checks all -debug.run-quickfix-analyzers ./... | sed 's/^/staticcheck: /g'
-gofumpt -l -extra $(find . -type f -name "*.go")            | sed 's/^/gofumpt:     /g'

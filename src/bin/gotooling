@@ -1,7 +1,0 @@
-#!/bin/sh
-for TOOL in $(cat "$HOME/.config/voidedtech/gotools"); do
-  echo "installing: $TOOL"
-  if ! go install "$TOOL"; then
-    echo "  -> failed"
-  fi
-done
