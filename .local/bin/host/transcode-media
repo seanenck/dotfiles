@@ -1,2 +1,0 @@
-#!/bin/sh
-exec toolbox run -c ffmpeg transcode-media
