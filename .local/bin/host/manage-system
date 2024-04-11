@@ -30,10 +30,6 @@ _gotooling() {
 case "$1" in
   "$BUILD")
     for CONTAINER in go ffmpeg; do
-      if toolbox list -c | tail -n +2 | awk '{print $2}' | grep -q "^$CONTAINER\$"; then
-          echo "$CONTAINER already exists..."
-          continue
-      fi
       if ! toolbox create --image "ghcr.io/enckse/fedora-toolbox-$CONTAINER:$VERSION-master" "$CONTAINER"; then
         echo "failed"
         exit 1
@@ -47,6 +43,9 @@ case "$1" in
     _gotooling
     ;;
   "$ALL")
+    if ! neovim-plugins; then
+      exit 1
+    fi
     _toolboxes
     _gotooling
     ;;
