@@ -8,6 +8,8 @@ if test -e /run/.containerenv
     switch (cat /run/.containerenv | grep "^name=" | cut -d "=" -f 2- | sed 's/"//g')
         case go
             fish_add_path -gP "$HOME/.cache/go/bin";
+            set -x GOPATH "$HOME/.cache/go"
+            set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
     end
 else
     if test -d "$local_bin"
