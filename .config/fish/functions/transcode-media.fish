@@ -26,6 +26,6 @@ if test -e /run/.containerenv
     end
 else
     function transcode-media
-        toolbox run -c ffmpeg transcode-media
+        toolbox run -c ffmpeg fish -c transcode-media
     end
 end
