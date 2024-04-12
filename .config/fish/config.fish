@@ -2,10 +2,6 @@ set -g EDITOR nvim
 set -g VISUAL $EDITOR
 set -x SECRETS "$HOME/Env/secrets"
 set -x DELTA_PAGER "less -c -X"
-set -l local_bin "$HOME/.local/bin"
-if test -d "$local_bin"
-    fish_add_path -gP "$local_bin";
-end
 
 if test -e /run/.containerenv
     switch (cat /run/.containerenv | grep "^name=" | cut -d "=" -f 2- | sed 's/"//g')
@@ -15,8 +11,12 @@ if test -e /run/.containerenv
             set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
     end
 else
-    if test -x "$local_bin/voidedtech"
-        set -f do_startup 1
+    set -l local_bin "$HOME/.local/bin"
+    if test -d "$local_bin"
+        fish_add_path -gP "$local_bin";
+        if test -x "$local_bin/voidedtech"
+            set -f do_startup 1
+        end
     end
 end
 
