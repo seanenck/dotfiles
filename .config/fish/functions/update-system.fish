@@ -1,5 +1,7 @@
-function update-system
-    neovim-plugins
-    go-tooling
-    update-toolbox
+if ! test -e /run/.containerenv
+    function update-system
+        neovim-plugins
+        gotooling
+        update-toolbox
+    end
 end
