@@ -108,6 +108,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
         vim.lsp.buf.format { async = false }
     end
 })
+
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics,
     {
@@ -127,6 +128,7 @@ function toggle_diagnostics()
         end
     })
 end
+
 vim.api.nvim_set_keymap("n", "<C-e>", ':call v:lua.toggle_diagnostics()<CR>', { noremap = true, silent = true })
 
 -- scrollbar
