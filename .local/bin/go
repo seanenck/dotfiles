@@ -1,2 +1,0 @@
-#!/usr/bin/fish
-exec toolbox run -c go /usr/bin/go $argv
