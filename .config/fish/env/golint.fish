@@ -9,4 +9,10 @@ if set -q GOPATH
         staticcheck -checks all -debug.run-quickfix-analyzers ./... | sed 's/^/staticcheck: /g'
         gofumpt -l -extra $(find . -type f -name "*.go")            | sed 's/^/gofumpt:     /g'
     end
+else
+    if ! test -e /run/.containerenv
+        function golint
+            toolbox run -c go fish -c "golint"
+        end
+    end
 end
