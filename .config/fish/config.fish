@@ -22,6 +22,10 @@ else
     end
 end
 
+for file in "$HOME/.config/fish/env/"*
+    source "$file"
+end
+
 if status is-interactive
     set -l state "$HOME/.local/state"
     mkdir -p "$state"
