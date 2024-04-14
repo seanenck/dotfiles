@@ -30,7 +30,8 @@ if status is-interactive
     if test -d "$undos"
         find "$undos" -type f -mmin +60 -delete
     end
-    set -l lb_env "$HOME/Env/secrets/db/lockbox.fish"
+    set -g -x SECRET_ROOT "$HOME/Env/secrets"
+    set -l lb_env "$SECRET_ROOT/db/lockbox.fish"
     if test -e "$lb_env"
         source "$lb_env"
     end
