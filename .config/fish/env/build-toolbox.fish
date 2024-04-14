@@ -1,7 +1,7 @@
 if ! test -e /run/.containerenv
     function build-toolbox
         set -l toolbox_version 39
-        for tb in go ffmpeg
+        for tb in go ffmpeg generic
             if toolbox list -c | tail -n +2 | awk '{print $2}' | grep -q "^$tb\$"
                 echo "$tb exists..."
                 continue
