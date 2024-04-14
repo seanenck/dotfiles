@@ -1,6 +1,5 @@
 set -g EDITOR nvim
 set -g VISUAL $EDITOR
-set -x SECRETS "$HOME/Env/secrets"
 set -x DELTA_PAGER "less -c -X"
 
 if test -e /run/.containerenv
@@ -31,7 +30,7 @@ if status is-interactive
     if test -d "$undos"
         find "$undos" -type f -mmin +60 -delete
     end
-    set -l lb_env "$SECRETS/db/lockbox.fish"
+    set -l lb_env "$HOME/Env/secrets/db/lockbox.fish"
     if test -e "$lb_env"
         source "$lb_env"
     end
