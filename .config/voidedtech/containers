@@ -1,0 +1,3 @@
+export PACKAGE_BASE_SET="bat fish git git-delta make neovim ripgrep nodejs-bash-language-server ShellCheck"
+export WORKSTATION_SET="age gstreamer1-plugin-openh264 diceware isync kitty mozilla-openh264 openh264 rclone $PACKAGE_BASE_SET"
+export VERSION=39
