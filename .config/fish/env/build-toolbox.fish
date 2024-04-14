@@ -6,10 +6,10 @@ if ! test -e /run/.containerenv
                 echo "$tb exists..."
                 continue
             end
-           if ! toolbox create --image "ghcr.io/enckse/fedora-toolbox-$tb:$toolbox_version-master" "$tb"
-               echo "failed to build $tb"
-               return
-           end
+            if ! toolbox create --image "ghcr.io/enckse/fedora-toolbox-$tb:$toolbox_version-master" "$tb"
+                echo "failed to build $tb"
+                return
+            end
         end
     end
 end
