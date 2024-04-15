@@ -13,7 +13,7 @@ if test -e /run/.containerenv
                     end
                 case mov
                     set -f output "$target.mp4"
-                    if ! ffmpeg -i "$file" -c copy "$target"
+                    if ! ffmpeg -i "$file" -c copy "$output"
                         echo "unable to transcode via ffmpeg"
                         return
                     end
