@@ -24,9 +24,12 @@ cmp.setup({
 
 -- lsp
 local function lsp_exists(name)
+    if os.getenv("ENABLE_LSP") == nil then
+        return false
+    end
     for p in string.gmatch(os.getenv("PATH"), "([^:]+)") do
         local exe = string.format("test -x %s/%s", p, name)
-        code, _, _ = os.execute(exe)
+        code, _, reason = os.execute(exe)
         if code then
             return true
         end

@@ -2,43 +2,50 @@ set -g EDITOR nvim
 set -g VISUAL $EDITOR
 set -x DELTA_PAGER "less -c -X"
 set -l local_bin "$HOME/.local/bin"
+set -f is_host 0
 if test -d "$local_bin"
     fish_add_path -gP "$local_bin";
 end
-
-if test -e /run/.containerenv
-    switch (cat /run/.containerenv | grep "^name=" | cut -d "=" -f 2- | sed 's/"//g')
-        case go
-            fish_add_path -gP "$HOME/.cache/go/bin";
-            set -x GOPATH "$HOME/.cache/go"
-            set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
-    end
-else
-    set -l host_bin "$HOME/.local/bin/host"
-    if test -d "$host_bin"
-        fish_add_path -gP "$host_bin";
-        if test -x "$host_bin/voidedtech"
-            set -f do_startup 1
-        end
-    end
+set -l state "$HOME/.local/state"
+mkdir -p "$state"
+set -l undos "$state/nvim/undo"
+if test -d "$undos"
+    find "$undos" -type f -mmin +60 -delete
 end
+
+if test -x /usr/bin/go
+    set -x GOPATH "$HOME/.cache/go"
+    fish_add_path -gP "$GOPATH/bin"
+    set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
+end
+
+switch (uname)
+    case Linux
+        set -gx ENABLE_LSP 1
+    case Darwin
+        set -f is_host 1
+        set -gx HOMEBREW_PREFIX "/opt/homebrew";
+        set -gx HOMEBREW_CELLAR "/opt/homebrew/Cellar";
+        set -gx HOMEBREW_REPOSITORY "/opt/homebrew";
+        fish_add_path -gP "/opt/homebrew/bin" "/opt/homebrew/sbin";
+        ! set -q MANPATH; and set MANPATH ''; set -gx MANPATH "/opt/homebrew/share/man" $MANPATH;
+        ! set -q INFOPATH; and set INFOPATH ''; set -gx INFOPATH "/opt/homebrew/share/info" $INFOPATH;
+        set -g -x SECRET_ROOT "$HOME/Env/secrets"
+        set -l lb_env "$SECRET_ROOT/db/lockbox.fish"
+        if test -e "$lb_env"
+            source "$lb_env"
+        end
+        voidedtech dotfiles
+        voidedtech sync 2>&1 > /dev/null &
+        voidedtech sync -dryrun
+end
+
 
 for file in "$HOME/.config/fish/env/"*
     source "$file"
 end
 
 if status is-interactive
-    set -l state "$HOME/.local/state"
-    mkdir -p "$state"
-    set -l undos "$state/nvim/undo"
-    if test -d "$undos"
-        find "$undos" -type f -mmin +60 -delete
-    end
-    set -g -x SECRET_ROOT "$HOME/Env/secrets"
-    set -l lb_env "$SECRET_ROOT/db/lockbox.fish"
-    if test -e "$lb_env"
-        source "$lb_env"
-    end
     set -l ssh_agent_env "$state/ssh-agent.env"
     if ! pgrep -u "$USER" ssh-agent > /dev/null
         ssh-agent -c > "$ssh_agent_env"
@@ -62,11 +69,8 @@ if status is-interactive
 
     echo "disks"
     echo "==="
-    df -h /dev/mapper/* | grep '^/' | awk '{printf "  %-20s %s\n", $6, $5}' | sort
-    git-uncommitted | sed "s#$HOME/##g" | sed 's/^/  /g' | sed '1 i\\\nuncommitted\n==='
+    df -h / | tail -n 1 | awk '{printf "  -> root available space: %5s", $4}'
     echo
-
-    if set -q do_startup
-        voidedtech startup
-    end
+    git-uncommitted --motd
+    echo
 end

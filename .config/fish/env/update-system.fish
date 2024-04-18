@@ -1,7 +1,9 @@
-if ! test -e /run/.containerenv
-    function update-system
-        neovim-plugins
-        gotooling
-        update-toolbox
+function update-system
+    neovim-plugins
+    switch (uname)
+        case Darwin
+            remotes
+        case Linux
+            gotooling
     end
 end
