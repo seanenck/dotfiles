@@ -35,9 +35,6 @@ switch (uname)
         if test -e "$lb_env"
             source "$lb_env"
         end
-        voidedtech dotfiles
-        voidedtech sync 2>&1 > /dev/null &
-        voidedtech sync -dryrun
 end
 
 

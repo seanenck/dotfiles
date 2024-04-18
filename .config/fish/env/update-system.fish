@@ -3,6 +3,7 @@ function update-system
     switch (uname)
         case Darwin
             remotes
+            sync-system
         case Linux
             gotooling
     end
