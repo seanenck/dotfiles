@@ -1,5 +1,6 @@
 #!/bin/sh
 DOCS="$HOME/Documents"
+NOW_CMD="now"
 SCREEN_NAME="dsync-daemon"
 MANAGE_CMD="manage"
 RUN_CMD="run"
@@ -19,13 +20,9 @@ if [ -z "$1" ]; then
 fi
 
 _sync() {
-  for DIR in filing media; do
-    echo "syncing: $DIR"
-    FULL="$DOCS/$DIR"
-    if ! rclone --config "$HOME/Env/secrets/sync/rclone.conf" sync --dry-run --no-update-dir-modtime --no-update-modtime --checksum core:"/home/enck/Documents/$DIR/" "$FULL" 2>&1; then
-      echo "[$ERROR] failed to sync: $DIR"
-    fi
-  done
+  if ! rclone --config "$HOME/Env/secrets/sync/rclone.conf" sync --no-update-dir-modtime --no-update-modtime --checksum core:"/home/enck/Documents/" "$DOCS" 2>&1; then
+    echo "[$ERROR] failed to sync"
+  fi
 }
 
 _run() {
@@ -40,12 +37,12 @@ _run() {
       sleep 600
       continue
     fi
-    _sync >> "$LOGFILE"
+    caffeinate -s "$0" "$NOW_CMD" >> "$LOGFILE"
   done
 }
 
 case "$CMD" in
-  "now")
+  "$NOW_CMD")
     _sync
     ;;
   "$MANAGE_CMD")
