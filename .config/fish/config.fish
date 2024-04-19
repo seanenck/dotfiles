@@ -73,5 +73,6 @@ if status is-interactive
         end
         df -h $disk 2>/dev/null | tail -n +2 | awk '{printf "  %-15s %s\n", $1, $5}'
     end
+    echo
     git-uncommitted --motd
 end

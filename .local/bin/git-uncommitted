@@ -53,10 +53,10 @@ else
   case "$1" in
   "--motd")
     if [ -n "$RESULT" ]; then
-      echo
       echo "uncommitted"
       echo "==="
       echo "$RESULT" | sed "s#$HOME/#  -> #g"
+      echo
     fi
     ;;
   "--pwd")
