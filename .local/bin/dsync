@@ -63,7 +63,7 @@ case "$CMD" in
       screen -d -m -S "$SCREEN_NAME" "$0" "$RUN_CMD"
       sleep 0.25
     done
-    for FILE in $(find "$LOGS" -type f -mtime -1); do
+    for FILE in $(find "$LOGS" -type f -mtime -3); do
       if grep -q "$ERROR" "$FILE"; then
         echo "found error in: $FILE"
       fi
