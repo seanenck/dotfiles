@@ -35,6 +35,7 @@ switch (uname)
         if test -e "$lb_env"
             source "$lb_env"
         end
+        dsync
 end
 
 

@@ -1,0 +1,100 @@
+#!/bin/sh
+DOCS="$HOME/Documents"
+SCREEN_NAME="dsync-daemon"
+MANAGE_CMD="manage"
+RUN_CMD="run"
+LOCAL="$HOME/.local/voidedtech"
+STATE="$LOCAL/dsync.state"
+LOGS="$LOCAL/dsync"
+ERROR="ERROR"
+
+if [ "$(uname)" != "Darwin" ]; then
+  echo "unsuitable os found"
+  exit 1
+fi
+
+mkdir -p "$LOGS"
+CMD="$1"
+if [ -z "$1" ]; then
+  CMD="$MANAGE_CMD"
+fi
+
+_run() {
+  if [ ! -e "$STATE" ]; then
+    echo "$STATE" > "$STATE"
+  fi
+  IFS=$'\n'
+  while : ; do
+    LOGFILE="$LOGS/$(date +%Y-%m-%d)"
+    if ! ping -c 1 -W 1 core.voidedtech.com 2>&1 > /dev/null; then
+      echo "host offline" >> "$LOGFILE"
+      sleep 30
+      continue
+    fi
+    DID=0
+    IN_ERROR=0
+    {
+      NEWEST=""
+      NEWER=0
+      BASELINE=$(cat "$STATE")
+      if [ ! -e "$BASELINE" ]; then
+        BASELINE="$STATE"
+      fi
+      for DIR in filing media; do
+        FULL="$DOCS/$DIR"
+        MUST=0
+        for FILE in $(find "$FULL" -type f -newer "$(cat "$STATE")"); do
+          MUST=1
+          MODTIME=$(stat -f "%m" "$FILE")
+          if [ "$MODTIME" -gt $NEWER ]; then
+            NEWEST="$FILE"
+            NEWER="$MODTIME"
+          fi
+        done
+        if [ "$MUST" -eq 1 ]; then
+          DID=1
+          if ! rclone --config "$HOME/Env/secrets/sync/rclone.conf" sync --dry-run --no-update-dir-modtime --no-update-modtime --checksum "$FULL" core:"/home/enck/Documents/$DIR/" 2>&1; then
+            echo "[$ERROR] failed to sync: $DIR"
+            IN_ERROR=1
+          fi
+        fi
+      done
+    } >> "$LOGFILE"
+    if [ "$DID" -eq 1 ]; then
+      if [ "$IN_ERROR" -eq 0 ]; then
+        echo "$NEWEST" > "$STATE"
+      fi
+    fi
+    sleep 30
+  done
+}
+
+case "$CMD" in
+  "$MANAGE_CMD")
+    STARTS=0
+    while : ; do
+      if screen -list 2>/dev/null | grep -q "$SCREEN_NAME"; then
+        break
+      fi
+      STARTS=$((STARTS+1))
+      if [ "$STARTS" -gt 4 ]; then
+        echo "unable to start daemon..."
+        break
+      fi
+      screen -d -m -S "$SCREEN_NAME" "$0" "$RUN_CMD"
+      sleep 0.25
+    done
+    for FILE in $(find "$LOGS" -type f -mtime -1); do
+      if grep -q "$ERROR" "$FILE"; then
+        echo "found error in: $FILE"
+      fi
+    done
+    ;;
+  "$RUN_CMD")
+    _run
+    ;;
+  *)
+    echo "unknown command: $CMD"
+    exit 1
+    ;;
+esac
