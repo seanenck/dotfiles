@@ -3,6 +3,7 @@ switch (uname)
         function remotes
             set -l remote_file "$HOME/.local/voidedtech/remotes"
             set -l remote_last "$remote_file.last"
+            rm -f "$remote_file"
             touch "$remote_file" "$remote_last"
             for remote in https://gitlab.alpinelinux.org/alpine/aports \
                           https://github.com/kovidgoyal/kitty \
