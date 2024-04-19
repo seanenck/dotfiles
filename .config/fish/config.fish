@@ -64,10 +64,5 @@ if status is-interactive
     set -g fish_autosuggestion_enabled 0
     set fish_greeting
 
-    echo "disks"
-    echo "==="
-    df -h / | tail -n 1 | awk '{printf "  -> root available space: %5s", $4}'
-    echo
     git-uncommitted --motd
-    echo
 end
