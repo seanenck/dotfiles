@@ -5,7 +5,7 @@ switch (uname)
             set -l remote_last "$remote_file.last"
             rm -f "$remote_file"
             touch "$remote_file" "$remote_last"
-            for remote in https://gitlab.alpinelinux.org/alpine/aports https://github.com/kovidgoyal/kitty
+            for remote in $(cat "$HOME/.config/voidedtech/remotes")
                 echo "getting: $remote"
                 set -l name $(basename "$remote")
                 git ls-remote --tags "$remote" 2>/dev/null | awk '{print $2}' | grep -v '{}' | grep '[0-9]\.[0-9]' | rev | cut -d "/" -f 1 | rev | sed "s#^#$name #g" >> "$remote_file"
