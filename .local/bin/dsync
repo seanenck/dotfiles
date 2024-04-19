@@ -4,7 +4,6 @@ SCREEN_NAME="dsync-daemon"
 MANAGE_CMD="manage"
 RUN_CMD="run"
 LOCAL="$HOME/.local/voidedtech"
-STATE="$LOCAL/dsync.state"
 LOGS="$LOCAL/dsync"
 ERROR="ERROR"
 
@@ -19,59 +18,39 @@ if [ -z "$1" ]; then
   CMD="$MANAGE_CMD"
 fi
 
+_sync() {
+  for DIR in filing media; do
+    echo "syncing: $DIR"
+    FULL="$DOCS/$DIR"
+    if ! rclone --config "$HOME/Env/secrets/sync/rclone.conf" sync --dry-run --no-update-dir-modtime --no-update-modtime --checksum core:"/home/enck/Documents/$DIR/" "$FULL" 2>&1; then
+      echo "[$ERROR] failed to sync: $DIR"
+    fi
+  done
+}
+
 _run() {
-  if [ ! -e "$STATE" ]; then
-    echo "$STATE" > "$STATE"
-  fi
-  IFS=$'\n'
   while : ; do
-    LOGFILE="$LOGS/$(date +%Y-%m-%d)"
-    if ! ping -c 1 -W 1 core.voidedtech.com 2>&1 > /dev/null; then
-      echo "host offline" >> "$LOGFILE"
-      sleep 30
+    LOGFILE="$LOGS/$(date +%Y-%m-%d-%p)"
+    if [ -e "$LOGFILE" ]; then
+      sleep 600
       continue
     fi
-    DID=0
-    IN_ERROR=0
-    {
-      NEWEST=""
-      NEWER=0
-      BASELINE=$(cat "$STATE")
-      if [ ! -e "$BASELINE" ]; then
-        BASELINE="$STATE"
-      fi
-      for DIR in filing media; do
-        FULL="$DOCS/$DIR"
-        MUST=0
-        for FILE in $(find "$FULL" -type f -newer "$(cat "$STATE")"); do
-          MUST=1
-          MODTIME=$(stat -f "%m" "$FILE")
-          if [ "$MODTIME" -gt $NEWER ]; then
-            NEWEST="$FILE"
-            NEWER="$MODTIME"
-          fi
-        done
-        if [ "$MUST" -eq 1 ]; then
-          DID=1
-          if ! rclone --config "$HOME/Env/secrets/sync/rclone.conf" sync --dry-run --no-update-dir-modtime --no-update-modtime --checksum "$FULL" core:"/home/enck/Documents/$DIR/" 2>&1; then
-            echo "[$ERROR] failed to sync: $DIR"
-            IN_ERROR=1
-          fi
-        fi
-      done
-    } >> "$LOGFILE"
-    if [ "$DID" -eq 1 ]; then
-      if [ "$IN_ERROR" -eq 0 ]; then
-        echo "$NEWEST" > "$STATE"
-      fi
+    if ! ping -c 1 -W 1 core.voidedtech.com 2>&1 > /dev/null; then
+      echo "host offline"
+      sleep 600
+      continue
     fi
-    sleep 30
+    _sync >> "$LOGFILE"
   done
 }
 
 case "$CMD" in
+  "now")
+    _sync
+    ;;
   "$MANAGE_CMD")
     STARTS=0
+    find "$LOGS" -mtime +10 -delete
     while : ; do
       if screen -list 2>/dev/null | grep -q "$SCREEN_NAME"; then
         break
