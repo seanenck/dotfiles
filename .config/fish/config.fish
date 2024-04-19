@@ -22,8 +22,6 @@ end
 switch (uname)
     case Linux
         set -gx ENABLE_LSP 1
-        abbr -a cat bat
-        abbr -a grep rg
     case Darwin
         set -f is_host 1
         set -gx HOMEBREW_PREFIX "/opt/homebrew";
@@ -57,6 +55,8 @@ if status is-interactive
         ssh-add "$file" > /dev/null 2>&1
     end
 
+    abbr -a cat bat
+    abbr -a grep rg
     abbr -a vi $EDITOR
     abbr -a vim $EDITOR
     abbr -a nano $EDITOR
