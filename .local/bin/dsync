@@ -1,6 +1,6 @@
 #!/bin/sh
 DOCS="$HOME/Documents"
-NOW_CMD="now"
+DAEMON_CMD="daemon-run"
 SCREEN_NAME="dsync-daemon"
 MANAGE_CMD="manage"
 RUN_CMD="run"
@@ -20,9 +20,11 @@ if [ -z "$1" ]; then
 fi
 
 _sync() {
+  echo "syncing: $(date)"
   if ! rclone --config "$HOME/Env/secrets/sync/rclone.conf" sync --no-update-dir-modtime --no-update-modtime --checksum core:"/home/enck/Documents/" "$DOCS" 2>&1; then
     echo "[$ERROR] failed to sync"
   fi
+  echo "done"
 }
 
 _run() {
@@ -37,12 +39,19 @@ _run() {
       sleep 600
       continue
     fi
-    caffeinate -s "$0" "$NOW_CMD" >> "$LOGFILE"
+    caffeinate -s "$0" "$DAEMON_CMD" "$LOGFILE"
   done
 }
 
 case "$CMD" in
-  "$NOW_CMD")
+  "$DAEMON_CMD")
+    if [ -z "$2" ]; then
+      echo "logfile required"
+      exit 1
+    fi
+    _sync >> "$2"
+    ;;
+  "now")
     _sync
     ;;
   "$MANAGE_CMD")
