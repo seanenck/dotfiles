@@ -11,7 +11,7 @@ switch (uname)
                           https://github.com/neovim/neovim
                 echo "getting: $remote"
                 set -l name $(basename "$remote")
-                git ls-remote --tags "$remote" 2>/dev/null | awk '{print $2}' | grep -v '{}' | rev | cut -d "/" -f 1 | rev | sed "s#^#$name #g" >> "$remote_file"
+                git ls-remote --tags "$remote" 2>/dev/null | awk '{print $2}' | grep -v '{}' | grep '[0-9]\.[0-9]' | rev | cut -d "/" -f 1 | rev | sed "s#^#$name #g" >> "$remote_file"
             end
             sort -u -o "$remote_file" "$remote_file"
             if diff -u "$remote_last" "$remote_file"
