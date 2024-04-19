@@ -8,11 +8,6 @@ LOCAL="$HOME/.local/voidedtech"
 LOGS="$LOCAL/dsync"
 ERROR="ERROR"
 
-if [ "$(uname)" != "Darwin" ]; then
-  echo "unsuitable os found"
-  exit 1
-fi
-
 mkdir -p "$LOGS"
 CMD="$1"
 if [ -z "$1" ]; then

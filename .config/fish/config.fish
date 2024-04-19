@@ -24,6 +24,7 @@ switch (uname)
         set -f display_disks "/dev/vd"*
         set -gx ENABLE_LSP 1
     case Darwin
+        fish_add_path -gP "$local_bin/$(uname | tr '[:upper:]' '[:lower:]')"
         set -f display_disks "/System/Volumes/Data/"
         set -gx HOMEBREW_PREFIX "/opt/homebrew";
         set -gx HOMEBREW_CELLAR "/opt/homebrew/Cellar";
