@@ -2,7 +2,7 @@ set -g EDITOR nvim
 set -g VISUAL $EDITOR
 set -x DELTA_PAGER "less -c -X"
 set -l local_bin "$HOME/.local/bin"
-set -f is_host 0
+
 if test -d "$local_bin"
     fish_add_path -gP "$local_bin";
 end
@@ -21,9 +21,10 @@ end
 
 switch (uname)
     case Linux
+        set -f display_disks "/dev/vd"*
         set -gx ENABLE_LSP 1
     case Darwin
-        set -f is_host 1
+        set -f display_disks "/System/Volumes/Data/"
         set -gx HOMEBREW_PREFIX "/opt/homebrew";
         set -gx HOMEBREW_CELLAR "/opt/homebrew/Cellar";
         set -gx HOMEBREW_REPOSITORY "/opt/homebrew";
@@ -64,6 +65,13 @@ if status is-interactive
 
     set -g fish_autosuggestion_enabled 0
     set fish_greeting
-
+    echo "disks"
+    echo "==="
+    for disk in $display_disks
+        if echo "$disk" | grep -q '/dev/vd[a-z]$'
+            continue
+        end
+        df -h $disk 2>/dev/null | tail -n +2 | awk '{printf "  %-15s %s\n", $1, $5}'
+    end
     git-uncommitted --motd
 end
