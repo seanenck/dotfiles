@@ -1,6 +1,6 @@
 #!/bin/sh
 ACTIVE="$HOME/Active"
-DIR="$ACTIVE/air"
+DIR="$ACTIVE/cache"
 
 rm -f "$DIR/Brewfile"
 if ! (cd "$DIR" && brew bundle dump); then
@@ -13,9 +13,7 @@ if ! cp "$HOME/.config/vm/alpine.json" "$DIR/vm.json"; then
   exit 1
 fi
 
-for SUB in $(ls "$ACTIVE"); do
-  if ! rsync -avc --delete-after "$ACTIVE/$SUB/" "mini.voidedtech.com:~/Active/synced/$SUB/"; then
-    echo "failed to rsync state"
-    exit 1
-  fi
-done
+if ! rsync -avc --delete-after "$ACTIVE/" "mini.voidedtech.com:~/Active/synced/"; then
+  echo "failed to rsync state"
+  exit 1
+fi
