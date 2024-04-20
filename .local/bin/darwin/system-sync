@@ -1,0 +1,18 @@
+#!/bin/sh
+DIR="$HOME/.local/voidedtech/synced"
+
+rm -f "$DIR/Brewfile"
+if ! (cd "$DIR" && brew bundle dump); then
+  echo "failed to brew dump"
+  exit 1
+fi
+
+if ! cp "$HOME/.config/vm/alpine.json" "$DIR/vm.json"; then
+  echo "failed to copy vm config"
+  exit 1
+fi
+
+if ! rsync -avc --delete-after "$DIR/" "core.voidedtech.com:~/Active/air/"; then
+  echo "failed to rsync state"
+  exit 1
+fi
