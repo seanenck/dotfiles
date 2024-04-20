@@ -14,7 +14,7 @@ if ! cp "$HOME/.config/vm/alpine.json" "$DIR/vm.json"; then
 fi
 
 for SUB in $(ls "$ACTIVE"); do
-  if ! rsync -avc --delete-after "$ACTIVE/$SUB/" "mini.voidedtech.com:~/Active/$SUB/"; then
+  if ! rsync -avc --delete-after "$ACTIVE/$SUB/" "mini.voidedtech.com:~/Active/synced/$SUB/"; then
     echo "failed to rsync state"
     exit 1
   fi
