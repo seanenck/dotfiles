@@ -1,0 +1,22 @@
+#!/bin/sh
+SCREEN_NAME="vfu-vm"
+if [ -z "$1" ]; then
+  echo "command required"
+  exit 1
+fi
+
+case "$1" in
+  "status")
+    if screen -list 2>/dev/null | grep -q "$SCREEN_NAME"; then
+      echo "running"
+      exit 0
+    fi
+    echo "stopped"
+    ;;
+  "start")
+    screen -d -m -S "$SCREEN_NAME" vfu --config "$HOME/.config/vm/alpine.json"
+    ;;
+  *)
+    echo "unknown command"
+    exit 1
+esac
