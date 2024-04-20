@@ -22,6 +22,6 @@ for FILE in $(ls); do
       ;;
   esac
   if [ -n "$OUTPUT" ]; then
-    rm -f "$OUTPUT"
+    rm -f "$FILE"
   fi
 done
