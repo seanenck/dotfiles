@@ -12,7 +12,7 @@ if ! cp "$HOME/.config/vm/alpine.json" "$DIR/vm.json"; then
   exit 1
 fi
 
-if ! rsync -avc --delete-after "$DIR/" "core.voidedtech.com:~/Active/air/"; then
+if ! rsync -avc --delete-after "$DIR/" "mini.voidedtech.com:~/Active/air/"; then
   echo "failed to rsync state"
   exit 1
 fi
