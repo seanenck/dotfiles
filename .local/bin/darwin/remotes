@@ -1,5 +1,5 @@
 #!/bin/sh
-REMOTES="$HOME/.local/voidedtech/remotes"
+REMOTES="$HOME/Active/air/remotes"
 LAST="$REMOTES.last"
 rm -f "$REMOTES"
 touch "$REMOTES" "$LAST"
