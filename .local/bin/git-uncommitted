@@ -6,10 +6,11 @@ _commands() {
     {
       (cd "$REPO" && 
         git update-index -q --refresh | head -n 1| sed 's/^/update-index:/g'
-        git diff-index --name-only HEAD -- | head -n 1 | sed 's/^/diff-index:/g'
-        git status -sb | grep "\[ahead " | head -n 1 | sed 's/^/status:/g'
-        git ls-files --other --exclude-standard | head -n 1 | sed 's/^/ls-files:/g'
-        git branch --show-current | grep -v -E 'main|master' | head -n 1 | sed 's/^/branch:/g'
+        git diff-index --name-only HEAD -- | head -n 1 | sed 's/^/diff-index:/g' &
+        git status -sb | grep "\[ahead " | head -n 1 | sed 's/^/status:/g' &
+        git ls-files --other --exclude-standard | head -n 1 | sed 's/^/ls-files:/g' &
+        git branch --show-current | grep -v -E 'main|master' | head -n 1 | sed 's/^/branch:/g' &
+        wait
       )
     } | cut -d ":" -f 1 | sed "s#^#-> $DISPLAY (#g" | sed 's/$/)/g' &
   done
