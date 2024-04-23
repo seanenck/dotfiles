@@ -74,5 +74,11 @@ if status is-interactive
         df -h $disk 2>/dev/null | tail -n +2 | awk '{printf "  %-15s %s\n", $1, $5}'
     end
     echo
+    switch (uname)
+        case Darwin
+            voidedtech startup
+            daemon-list
+            echo
+    end
     git-uncommitted --motd
 end

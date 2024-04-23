@@ -1,5 +1,6 @@
 #!/bin/sh
 SCREEN_NAME="vfu-vm"
+CONFIG="$HOME/.config/vm/alpine.json"
 if [ -z "$1" ]; then
   echo "command required"
   exit 1
@@ -14,7 +15,11 @@ case "$1" in
     echo "stopped"
     ;;
   "start")
-    screen -d -m -S "$SCREEN_NAME" vfu --config "$HOME/.config/vm/alpine.json"
+    if ! rsync -c "$CONFIG" "$HOME/.local/voidedtech/tmp/vm/alpine.json"; then
+      echo "failed to backup config"
+      exit 1
+    fi
+    screen -d -m -S "$SCREEN_NAME" vfu --config "$CONFIG"
     ;;
   *)
     echo "unknown command"
