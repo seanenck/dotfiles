@@ -29,8 +29,8 @@ local function lsp_exists(name)
     end
     for p in string.gmatch(os.getenv("PATH"), "([^:]+)") do
         local exe = string.format("test -x %s/%s", p, name)
-        code, _, reason = os.execute(exe)
-        if code then
+        code, _, _ = os.execute(exe)
+        if code == 0 then
             return true
         end
     end
