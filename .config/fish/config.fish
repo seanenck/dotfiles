@@ -19,8 +19,10 @@ if test -x /usr/bin/go
     set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 end
 
+set -f bat bat
 switch (uname)
     case Linux
+        set -f bat batcat
         set -f display_disks "/dev/vd"*
         set -gx ENABLE_LSP 1
     case Darwin
@@ -57,7 +59,7 @@ if status is-interactive
         ssh-add "$file" > /dev/null 2>&1
     end
 
-    abbr -a cat bat
+    abbr -a cat $bat
     abbr -a grep rg
     abbr -a vi $EDITOR
     abbr -a vim $EDITOR
