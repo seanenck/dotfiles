@@ -79,7 +79,6 @@ if status is-interactive
     switch (uname)
         case Darwin
             voidedtech startup
-            daemon-list
             echo
     end
     git-uncommitted --motd
