@@ -1,23 +1,41 @@
 #!/bin/sh
-SCREEN_NAME="vfu-vm"
-CONFIG="$HOME/.config/vm/debian.json"
+SCREEN_NAME="vfu-vm-"
+CONFIGS="$HOME/.config/vm/"
 if [ -z "$1" ]; then
   echo "command required"
   exit 1
 fi
 
-case "$1" in
-  "status")
-    if screen -list 2>/dev/null | grep -q "$SCREEN_NAME"; then
-      echo "running"
-      exit 0
-    fi
-    echo "stopped"
-    ;;
-  "start")
-    screen -d -m -S "$SCREEN_NAME" vfu --config "$CONFIG"
-    ;;
-  *)
-    echo "unknown command"
-    exit 1
-esac
+DONE=0
+for FILE in $(ls "$CONFIGS" | grep "\.json"); do
+  NAME="$(basename "$FILE" | cut -d "." -f 1)"
+  SCREEN="$SCREEN_NAME$NAME"
+  case "$1" in
+    "status")
+      DONE=1
+      printf "%-10s " "$NAME:"
+      if screen -list 2>/dev/null | grep -q "$SCREEN"; then
+        printf "running"
+      else
+        printf "stopped"
+      fi
+      echo
+      ;;
+    "start")
+      if [ -n "$2" ] && [ "$2" = "$NAME" ]; then
+        screen -d -m -S "$SCREEN" vfu --config "$CONFIGS/$FILE"
+        DONE=1
+        break
+      fi
+      ;;
+  esac
+done
+
+if [ "$DONE" -eq 1 ]; then
+  exit 0
+fi
+
+echo "invalid command"
+echo
+echo "vm <command> <vm?>"
+exit 1
