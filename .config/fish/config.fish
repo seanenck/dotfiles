@@ -20,14 +20,11 @@ if test -x /usr/bin/go
 end
 
 set -f bat bat
-switch (uname)
-    case Linux
-        set -gx ENABLE_LSP 1
-        set -g -x SECRET_ROOT "$HOME/Env/secrets"
-        set -l lb_env "$SECRET_ROOT/db/lockbox.fish"
-        if test -e "$lb_env"
-            source "$lb_env"
-        end
+set -gx ENABLE_LSP 1
+set -g -x SECRET_ROOT "$HOME/Env/secrets"
+set -l lb_env "$SECRET_ROOT/db/lockbox.fish"
+if test -e "$lb_env"
+    source "$lb_env"
 end
 
 
