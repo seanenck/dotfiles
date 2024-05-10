@@ -1,19 +1,19 @@
 #!/bin/sh
 for FILE in $(ls); do
-  TARGET=$(date +%d.T_%H%M%S).$(echo "$FILE" | shasum -a 256 | cut -c 1-7)
+  TARGET=$(date +%d.T_%H%M%S).$(echo "$FILE" | sha256sum | cut -c 1-7)
   EXT=$(echo "$FILE" | tr '[:upper:]' '[:lower:]' | rev | cut -d "." -f 1 | rev)
   echo "processing: $FILE"
   case "$EXT" in
-    "heic")
+    "jpeg")
       OUTPUT="$TARGET.jpeg"
-      if ! sips --setProperty format jpeg --out "$OUTPUT" "$FILE"; then
-        echo "unable to transcode via sips"
+      if ! mv "$FILE" "$OUTPUT"; then
+        echo "failed to rename target"
         exit 1
       fi
       ;;
     "mov")
       OUTPUT="$TARGET.mp4"
-      if ! avconvert -s "$FILE" -o "$OUTPUT" -p PresetHEVCHighestQuality; then
+      if ! ffmpeg -i "$FILE" -codec copy "$OUTPUT"; then
         echo "failed to transcode via avconvert"
         exit 1
       fi

@@ -1,7 +1,7 @@
 set -g EDITOR nvim
 set -g VISUAL $EDITOR
 set -x DELTA_PAGER "less -c -X"
-set -l local_bin "$HOME/.local/bin"
+set -l local_bin "$HOME/.bin"
 
 if test -d "$local_bin"
     fish_add_path -gP "$local_bin";
@@ -22,18 +22,7 @@ end
 set -f bat bat
 switch (uname)
     case Linux
-        set -f bat batcat
-        set -f display_disks "/dev/vd"*
         set -gx ENABLE_LSP 1
-    case Darwin
-        fish_add_path -gP "$local_bin/$(uname | tr '[:upper:]' '[:lower:]')"
-        set -f display_disks "/System/Volumes/Data/"
-        set -gx HOMEBREW_PREFIX "/opt/homebrew";
-        set -gx HOMEBREW_CELLAR "/opt/homebrew/Cellar";
-        set -gx HOMEBREW_REPOSITORY "/opt/homebrew";
-        fish_add_path -gP "/opt/homebrew/bin" "/opt/homebrew/sbin";
-        ! set -q MANPATH; and set MANPATH ''; set -gx MANPATH "/opt/homebrew/share/man" $MANPATH;
-        ! set -q INFOPATH; and set INFOPATH ''; set -gx INFOPATH "/opt/homebrew/share/info" $INFOPATH;
         set -g -x SECRET_ROOT "$HOME/Env/secrets"
         set -l lb_env "$SECRET_ROOT/db/lockbox.fish"
         if test -e "$lb_env"
@@ -69,17 +58,9 @@ if status is-interactive
     set fish_greeting
     echo "disks"
     echo "==="
-    for disk in $display_disks
-        if echo "$disk" | grep -q '/dev/vd[a-z]$'
-            continue
-        end
-        df -h $disk 2>/dev/null | tail -n +2 | awk '{printf "  %-15s %s\n", $1, $5}'
+    for disk in /dev/mapper/*
+        df -h $disk 2>/dev/null | grep -v udev | tail -n +2 | awk '{printf "  %-35s %s\n", $1, $5}'
     end
     echo
-    switch (uname)
-        case Darwin
-            voidedtech startup
-            echo
-    end
     git-uncommitted --motd
 end
