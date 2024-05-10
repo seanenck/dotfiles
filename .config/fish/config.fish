@@ -56,11 +56,5 @@ if status is-interactive
 
     set -g fish_autosuggestion_enabled 0
     set fish_greeting
-    echo "disks"
-    echo "==="
-    for disk in /dev/mapper/*
-        df -h $disk 2>/dev/null | grep -v udev | tail -n +2 | awk '{printf "  %-35s %s\n", $1, $5}'
-    end
-    echo
     git-uncommitted --motd
 end
