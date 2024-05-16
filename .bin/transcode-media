@@ -12,7 +12,7 @@ for FILE in $(ls); do
       ;;
     "mov")
       OUTPUT="$TARGET.mp4"
-      if ! ffmpeg -i "$FILE" -codec copy "$OUTPUT"; then
+      if ! ffmpeg -i "$FILE" -vcodec h264 "$OUTPUT"; then
         echo "failed to transcode via avconvert"
         exit 1
       fi
