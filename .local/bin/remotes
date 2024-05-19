@@ -1,0 +1,25 @@
+#!/bin/sh
+REMOTES="$HOME/.local/state/remotes"
+LAST="$REMOTES.last"
+rm -f "$REMOTES"
+touch "$REMOTES" "$LAST"
+
+for REMOTE in $(cat "$HOME/.config/voidedtech/remotes"); do
+  echo "getting: $REMOTE"
+  BNAME=$(basename "$REMOTE")
+  git ls-remote --tags "$REMOTE" 2>/dev/null | awk '{print $2}' | grep -v '{}' | grep '[0-9]\.[0-9]' | rev | cut -d "/" -f 1 | rev | sed "s#^#$BNAME #g" >> "$REMOTES"
+done
+sort -u -o "$REMOTES" "$REMOTES"
+if diff -u "$REMOTES" "$LAST"; then
+  rm -f "$REMOTES"
+  exit 0
+fi
+
+printf "Updates applied? [y/N]"
+read CONFIRM
+case "$CONFIRM" in
+  "y" | "Y")
+    mv "$REMOTES" "$LAST"
+    ;;
+esac
+rm -f "$REMOTES"

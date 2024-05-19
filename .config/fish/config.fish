@@ -1,11 +1,19 @@
 set -g EDITOR nvim
 set -g VISUAL $EDITOR
 set -x DELTA_PAGER "less -c -X"
-set -l local_bin "$HOME/.bin"
+set -l local_bin "$HOME/.local/bin"
 
 if test -d "$local_bin"
     fish_add_path -gP "$local_bin";
 end
+
+set -gx HOMEBREW_PREFIX "/opt/homebrew";
+set -gx HOMEBREW_CELLAR "/opt/homebrew/Cellar";
+set -gx HOMEBREW_REPOSITORY "/opt/homebrew";
+fish_add_path -gP "/opt/homebrew/bin" "/opt/homebrew/sbin";
+! set -q MANPATH; and set MANPATH ''; set -gx MANPATH "/opt/homebrew/share/man" $MANPATH;
+! set -q INFOPATH; and set INFOPATH ''; set -gx INFOPATH "/opt/homebrew/share/info" $INFOPATH;
+
 set -l state "$HOME/.local/state"
 mkdir -p "$state"
 set -l undos "$state/nvim/undo"
@@ -13,11 +21,9 @@ if test -d "$undos"
     find "$undos" -type f -mmin +60 -delete
 end
 
-if test -x /usr/bin/go
-    set -x GOPATH "$HOME/.cache/go"
-    fish_add_path -gP "$GOPATH/bin"
-    set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
-end
+set -x GOPATH "$HOME/.cache/go"
+fish_add_path -gP "$GOPATH/bin"
+set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 
 set -f bat bat
 set -gx ENABLE_LSP 1
