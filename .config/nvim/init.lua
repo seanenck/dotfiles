@@ -4,6 +4,8 @@ require("helpers")
 require("plugins")
 require("autocmds")
 
+vim.cmd 'colorscheme vim'
+
 -- Mouse, disable paste on middle click
 for _, mouseMiddle in ipairs({"", "2-", "3-", "4-"}) do
     mapall("<" .. mouseMiddle .. "MiddleMouse>", '<Nop>')
