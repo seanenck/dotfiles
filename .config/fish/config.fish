@@ -21,7 +21,7 @@ if test -d "$undos"
     find "$undos" -type f -mmin +60 -delete
 end
 
-set -x GOPATH "$HOME/.cache/go"
+set -x GOPATH "$HOME/Library/go"
 fish_add_path -gP "$GOPATH/bin"
 set -x GOFLAGS "-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
 

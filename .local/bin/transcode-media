@@ -5,14 +5,14 @@ for FILE in $(ls); do
   case "$EXT" in
     "jpeg" | "jpg")
       OUTPUT="$TARGET.jpeg"
-      if ! mv "$FILE" "$OUTPUT"; then
+      if ! sips --setProperty format jpeg --out "$OUTPUT" "$FILE"; then
         echo "failed to rename target"
         exit 1
       fi
       ;;
     "mov")
-      OUTPUT="$TARGET.mp4"
-      if ! ffmpeg -i "$FILE" -vcodec h264 "$OUTPUT"; then
+      OUTPUT="$TARGET.mov"
+      if ! mv "$FILE" "$OUTPUT"; then
         echo "failed to transcode via avconvert"
         exit 1
       fi
