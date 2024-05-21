@@ -1,9 +1,9 @@
 #!/bin/sh
 for FILE in $(ls); do
-  TARGET=$(date +%d.T_%H%M%S).$(echo "$FILE" | sha256sum | cut -c 1-7)
+  TARGET=$(date +%d.T_%H%M%S).$(echo "$FILE" | shasum -a 256 | cut -c 1-7)
   EXT=$(echo "$FILE" | tr '[:upper:]' '[:lower:]' | rev | cut -d "." -f 1 | rev)
   case "$EXT" in
-    "jpeg" | "jpg")
+    "heic")
       OUTPUT="$TARGET.jpeg"
       if ! sips --setProperty format jpeg --out "$OUTPUT" "$FILE"; then
         echo "failed to rename target"
