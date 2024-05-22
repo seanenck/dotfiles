@@ -15,7 +15,7 @@ if diff -u "$REMOTES" "$LAST"; then
   exit 0
 fi
 
-printf "Updates applied? [y/N]"
+printf "Updates applied? [y/N] "
 read CONFIRM
 case "$CONFIRM" in
   "y" | "Y")
