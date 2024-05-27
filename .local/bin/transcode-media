@@ -6,8 +6,14 @@ for FILE in $(ls); do
     "heic")
       OUTPUT="$TARGET.jpeg"
       if ! sips --setProperty format jpeg --out "$OUTPUT" "$FILE"; then
-        echo "failed to rename target"
+        echo "failed to convert target"
         exit 1
+      fi
+      ;;
+    "jpeg" | "jpg" | "png")
+      OUTPUT="$TARGET.$EXT"
+      if ! mv "$FILE" "$OUTPUT"; then
+        echo "failed to rename"
       fi
       ;;
     "mov")
