@@ -47,6 +47,6 @@
 [url "core:~/Active/git/upstream/"]
     insteadOf = upstream:
 [includeIf "hasconfig:remote.*.url:private:**"]
-    path = ~/.config/voidedtech/gitconfig
+    path = ~/.config/etc/gitconfig
 [includeIf "hasconfig:remote.*.url:upstream:**"]
-    path = ~/.config/voidedtech/gitconfig
+    path = ~/.config/etc/gitconfig

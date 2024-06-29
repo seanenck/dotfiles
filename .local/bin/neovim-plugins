@@ -1,7 +1,7 @@
 #!/bin/sh
 PLUGINS="$HOME/.config/nvim/pack/plugins/start"
 
-for PLUGIN in $(cat "$HOME/.config/voidedtech/neovim-plugins"); do
+for PLUGIN in $(cat "$HOME/.config/etc/neovim-plugins"); do
   BNAME=$(basename "$PLUGIN")
   CLONE="$PLUGINS/$BNAME"
   (

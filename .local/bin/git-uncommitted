@@ -38,7 +38,7 @@ if [ "$IS_PWD" -eq 0 ]; then
       fi
       REPOS="$REPOS $SUB"
     done
-  done < "$HOME/.config/voidedtech/uncommit"
+  done < "$HOME/.config/etc/uncommit"
   RESULT=$(_commands $REPOS)
 fi
 RESULT=$(echo "$RESULT" | sed 's/^\s*//g' | sed  's/\s*$//g')

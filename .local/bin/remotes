@@ -4,7 +4,7 @@ LAST="$REMOTES.last"
 rm -f "$REMOTES"
 touch "$REMOTES" "$LAST"
 
-for REMOTE in $(cat "$HOME/.config/voidedtech/remotes"); do
+for REMOTE in $(cat "$HOME/.config/etc/remotes"); do
   echo "getting: $REMOTE"
   BNAME=$(basename "$REMOTE")
   git ls-remote --tags "$REMOTE" 2>/dev/null | awk '{print $2}' | grep -v '{}' | grep '[0-9]\.[0-9]' | rev | cut -d "/" -f 1 | rev | sed "s#^#$BNAME #g" >> "$REMOTES"
