@@ -54,7 +54,7 @@ if status is-interactive
 
     if test -d "$tasks_bin"
         fish_add_path -gP "$tasks_bin";
-        task-runner
+        caffeinate task-runner
     end
 
     abbr -a cat $bat
