@@ -2,6 +2,7 @@ set -g EDITOR nvim
 set -g VISUAL $EDITOR
 set -x DELTA_PAGER "less -c -X"
 set -l local_bin "$HOME/.local/bin"
+set -l tasks_bin "$HOME/Env/tasks/bin"
 
 if test -d "$local_bin"
     fish_add_path -gP "$local_bin";
@@ -49,6 +50,11 @@ if status is-interactive
     end
     for file in "$HOME/.ssh/"*.privkey
         ssh-add "$file" > /dev/null 2>&1
+    end
+
+    if test -d "$tasks_bin"
+        fish_add_path -gP "$tasks_bin";
+        task-runner
     end
 
     abbr -a cat $bat
