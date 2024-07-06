@@ -18,7 +18,7 @@ for f in $(ls | grep -v " "); do
           echo "failed to transcode heic"
           exit 1
         fi
-        rm -f "$1"
+        rm -f "$f"
         ;;
     esac
 done
