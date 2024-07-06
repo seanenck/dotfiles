@@ -1,0 +1,13 @@
+#!/bin/sh
+COMMANDS="remotes bundle-brew"
+case "$SYSTEM_PROFILE" in
+  "dev")
+    COMMANDS="gotooling"
+    ;;
+esac
+
+for c in neovim-plugins $COMMANDS; do
+  if ! "$c"; then
+    echo "$c failed..."
+  fi
+done

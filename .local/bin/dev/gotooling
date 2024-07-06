@@ -1,0 +1,7 @@
+#!/bin/sh
+for tool in $(cat "$HOME/.config/etc/gotools"); do
+    echo "installing: $tool"
+    if ! go install "$tool"; then
+        echo "  -> failed"
+    fi
+done

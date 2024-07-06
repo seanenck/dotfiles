@@ -19,6 +19,8 @@ export SYSTEM_PROFILE="host"
 case $(uname) in
   "Linux")
     export SYSTEM_PROFILE=dev
+    export GOPATH="$HOME/.cache/go"
+    export PATH="$GOPATH/bin:$PATH"
     ;;
 esac
 
@@ -44,21 +46,21 @@ if [ -d "$LOCAL_STATE/nvim/undo" ]; then
   find "$LOCAL_STATE/nvim/undo" -type f -mmin +60 -delete
 fi
 
-if command -v go; then
-  export GOPATH="$HOME/.cache/go"
-  export PATH="$GOPATH/bin:$PATH"
-  export GOFLAGS="-ldflags=-linkmode=external -trimpath -buildmode=pie -mod=readonly -modcacherw -buildvcs=false"
-fi
-
 export ENABLE_LSP=1
 
-export SECRET_ROOT="$HOME/Env/secrets"
-LB_ENV="$SECRET_ROOT/db/lockbox.bash"
-if [ -e "$LB_ENV" ]; then
-  source "$LB_ENV"
-fi
-unset LB_ENV 
+if [ "$SYSTEM_PROFILE" == "host" ]; then
+  export SECRET_ROOT="$HOME/Env/secrets"
+  LB_ENV="$SECRET_ROOT/db/lockbox.bash"
+  if [ -e "$LB_ENV" ]; then
+    source "$LB_ENV"
+  fi
+  unset LB_ENV 
 
+  for FILE in "$HOME/.completions/"*.bash; do
+    source "$FILE"
+  done
+fi
+  
 SSH_AGENT_ENV="$LOCAL_STATE/ssh-agent.env"
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
   ssh-agent > "$SSH_AGENT_ENV"
@@ -71,13 +73,13 @@ for FILE in "$HOME/.ssh/"*.privkey; do
   ssh-add "$FILE" > /dev/null 2>&1
 done
 
-for FILE in "$HOME/.completions/"*.bash; do
-  source "$FILE"
-done
 unset LOCAL_STATE SSH_AGENT_ENV FILE
 
 PS1="[\u@\h:\W]$ "
 PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
 
-caffeinate task-runner
+if [ "$SYSTEM_PROFILE" == "host" ]; then
+  caffeinate task-runner
+fi
+
 git-uncommitted --motd
