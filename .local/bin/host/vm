@@ -12,11 +12,23 @@ fi
 
 if [ "$1" = "completions" ]; then
   cat << EOF
-complete -c $SCRIPT -f
+_vm() {
+  local cur opts
+  cur=\${COMP_WORDS[COMP_CWORD]}
+  if [ "\$COMP_CWORD" -eq 1 ]; then
+    COMPREPLY=( \$(compgen -W "$START $STATUS $LIST" -- "\$cur") )
+  else
+    if [ "\$COMP_CWORD" -eq 2 ]; then
+      case "\${COMP_WORDS[1]}" in
+        "$START")
+          COMPREPLY=( \$(compgen -W "\$($SCRIPT $LIST)" -- "\$cur") )
+          ;;
+      esac
+    fi
+  fi
+}
 
-set -l commands $START $STATUS $LIST
-complete -c $SCRIPT -n "not __fish_seen_subcommand_from \$commands" -a "\$commands"
-complete -c $SCRIPT -n "__fish_seen_subcommand_from $START; and test (count (commandline -opc)) -lt 3" -a "\$($SCRIPT $LIST)"
+complete -F _vm -o bashdefault vm
 EOF
   exit 0
 fi

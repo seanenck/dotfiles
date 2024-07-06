@@ -2,8 +2,8 @@
 [[ $- != *i* ]] && return
 
 for FILE in /etc/bashrc /etc/bash.bashrc /etc/bash/bashrc /etc/bash/bash.bashrc /opt/homebrew/etc/profile.d/bash_completion.sh; do
-  if [ -s "$file" ]; then
-    source "$file"
+  if [ -s "$FILE" ]; then
+    source "$FILE"
   fi
 done
 
@@ -15,10 +15,13 @@ export EDITOR=nvim
 export VISUAL=nvim
 export DELTA_PAGER="less -c -X"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
+export SYSTEM_PROFILE="host"
+case $(uname) in
+  "Linux")
+    export SYSTEM_PROFILE=dev
+    ;;
+esac
 
-if [ -d "$HOME/.local/bin" ]; then
-  export PATH="$HOME/.local/bin:$PATH"
-fi
 
 export HOMEBREW_PREFIX="/opt/homebrew";
 export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
@@ -26,6 +29,9 @@ export HOMEBREW_REPOSITORY="/opt/homebrew";
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
 export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
 export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+if [ -d "$HOME/.local/bin" ]; then
+  export PATH="$HOME/.local/bin:$HOME/.local/bin/$SYSTEM_PROFILE:$PATH"
+fi
 
 source "$HOME/.bash_aliases"
 
