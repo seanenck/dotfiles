@@ -16,8 +16,10 @@ export VISUAL=nvim
 export DELTA_PAGER="less -c -X"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export SYSTEM_PROFILE="host"
+PS1_COLOR="93"
 case $(uname) in
   "Linux")
+    PS1_COLOR=95
     export SYSTEM_PROFILE=dev
     export GOPATH="$HOME/.cache/go"
     export PATH="$GOPATH/bin:$PATH"
@@ -73,10 +75,10 @@ for FILE in "$HOME/.ssh/"*.privkey; do
   ssh-add "$FILE" > /dev/null 2>&1
 done
 
-unset LOCAL_STATE SSH_AGENT_ENV FILE
-
-PS1="[\u@\h:\W]$ "
+PS1="[\u@\[\e[${PS1_COLOR}m\]\h\[\e[0m\]:\W]$ "
 PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
+
+unset LOCAL_STATE SSH_AGENT_ENV FILE PS1_COLOR
 
 if [ "$SYSTEM_PROFILE" == "host" ]; then
   caffeinate task-runner
