@@ -10,7 +10,20 @@ tools:
       - '%f:%l:%c: %trror: %m'
       - '%f:%l:%c: %tarning: %m'
       - '%f:%l:%c: %tote: %m'
+  
+  perl-perlcritic: &perl-perlcritic
+    lint-command: 'perlcritic --nocolor -3 --verbose "%l:%c %m\n"'
+    lint-ignore-exit-code: true
+    lint-formats:
+      - '%l:%c %m'
+
+  perl-perltidy: &perl-perltidy
+    format-command: "perltidy -b"
+    format-stdin: true
 
 languages:
   sh:
     - <<: *sh-shellcheck
+  perl:
+    - <<: *perl-perlcritic
+    - <<: *perl-perltidy
