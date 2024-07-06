@@ -1,5 +1,5 @@
 #!/bin/sh
-for f in $(ls); do
+for f in $(ls | grep -v " "); do
     EXT=$(echo "$f" | rev | cut -d "." -f 1 | rev | tr '[:upper:]' '[:lower:]')
     TARGET="$(date +%d.T_%H%M%S).$(shasum -a 256 "$f" | cut -c 1-7)"
     case "$EXT" in
