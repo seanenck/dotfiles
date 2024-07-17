@@ -105,6 +105,10 @@ if lsp_exists("pylsp") then
     }
 end
 
+if lsp_exists("clangd") then
+    lspconfig.clangd.setup{}
+end
+
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     pattern = "*",
     callback = function()
