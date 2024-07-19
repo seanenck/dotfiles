@@ -1,5 +1,5 @@
 #!/bin/sh
-COMMANDS="remotes bundle-brew"
+COMMANDS="bundle-status"
 case "$SYSTEM_PROFILE" in
   "dev")
     COMMANDS="gotooling"
