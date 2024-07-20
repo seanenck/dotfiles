@@ -1,2 +1,0 @@
-#!/bin/sh
-rpm-ostree status --booted | grep Layered > "$HOME/.local/state/AppFile"

@@ -1,0 +1,75 @@
+#!/bin/sh
+SCREEN_NAME="vfu-vm-"
+CONFIGS="$HOME/.config/vm/"
+START="start"
+STATUS="status"
+SCRIPT="vm"
+LIST="list"
+if [ -z "$1" ]; then
+  echo "command required"
+  exit 1
+fi
+
+if [ "$1" = "completions" ]; then
+  cat << EOF
+_vm() {
+  local cur opts
+  cur=\${COMP_WORDS[COMP_CWORD]}
+  if [ "\$COMP_CWORD" -eq 1 ]; then
+    COMPREPLY=( \$(compgen -W "$START $STATUS $LIST" -- "\$cur") )
+  else
+    if [ "\$COMP_CWORD" -eq 2 ]; then
+      case "\${COMP_WORDS[1]}" in
+        "$START")
+          COMPREPLY=( \$(compgen -W "\$($SCRIPT $LIST)" -- "\$cur") )
+          ;;
+      esac
+    fi
+  fi
+}
+
+complete -F _vm -o bashdefault vm
+EOF
+  exit 0
+fi
+
+DONE=0
+for FILE in $(ls "$CONFIGS" | grep "\.json"); do
+  NAME="$(basename "$FILE" | cut -d "." -f 1)"
+  SCREEN="$SCREEN_NAME$NAME"
+  case "$1" in
+    "$LIST")
+      DONE=1
+      echo "$NAME"
+      ;;
+    "$STATUS")
+      if [ "$DONE" -eq 0 ]; then
+        printf "%-10s %s\n------------------\n" "vm" "status"
+      fi
+      DONE=1
+      printf "%-10s " "$NAME"
+      if screen -list 2>/dev/null | grep -q "$SCREEN"; then
+        printf "running"
+      else
+        printf "stopped"
+      fi
+      echo
+      ;;
+    "$START")
+      if [ -n "$2" ] && [ "$2" = "$NAME" ]; then
+        screen -d -m -S "$SCREEN" vfu --config "$CONFIGS/$FILE"
+        DONE=1
+        break
+      fi
+      ;;
+  esac
+done
+
+if [ "$DONE" -eq 1 ]; then
+  exit 0
+fi
+
+echo "invalid command"
+echo
+echo "$SCRIPT [$START|$STATUS|$LIST] <vm?>"
+exit 1

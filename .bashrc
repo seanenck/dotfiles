@@ -17,11 +17,23 @@ export DELTA_PAGER="less -c -X"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export SYSTEM_PROFILE="host"
 PS1_COLOR="93"
-if [ -e "/run/.containerenv" ]; then
-  PS1_COLOR=95
-  export SYSTEM_PROFILE=dev
-  export GOPATH="$HOME/.cache/go"
-  export PATH="$GOPATH/bin:$PATH"
+case $(uname) in
+  "Linux")
+    PS1_COLOR=95
+    export SYSTEM_PROFILE=dev
+    export GOPATH="$HOME/.cache/go"
+    export PATH="$GOPATH/bin:$PATH"
+    ;;
+esac
+
+
+if [ "$SYSTEM_PROFILE" == "host" ]; then
+  export HOMEBREW_PREFIX="/opt/homebrew";
+  export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
+  export HOMEBREW_REPOSITORY="/opt/homebrew";
+  export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
+  export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
+  export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
 fi
 
 if [ -d "$HOME/.local/bin" ]; then
@@ -72,7 +84,7 @@ PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
 unset LOCAL_STATE SSH_AGENT_ENV FILE PS1_COLOR
 
 if [ "$SYSTEM_PROFILE" == "host" ]; then
-  systemd-inhibit task-runner
+  caffeinate task-runner
 fi
 
 git-uncommitted --motd
