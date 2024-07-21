@@ -84,7 +84,7 @@ PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
 unset LOCAL_STATE SSH_AGENT_ENV FILE PS1_COLOR
 
 if [ "$SYSTEM_PROFILE" == "host" ]; then
-  caffeinate task-runner
+  task-runner
 fi
 
 git-uncommitted --motd
