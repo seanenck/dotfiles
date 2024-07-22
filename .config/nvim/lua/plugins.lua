@@ -86,6 +86,13 @@ if lsp_exists("pylsp") then
         settings = {
             pylsp = {
                 plugins = {
+                    pylsp_mypy = {
+                        enabled = true,
+                        strict = true
+                    },
+                    pydocstyle = {
+                        enable = true,
+                    },
                     pycodestyle = {
                         enabled = true,
                         maxLineLength = 120,
@@ -94,7 +101,7 @@ if lsp_exists("pylsp") then
                         enabled = true,
                     },
                     yapf = {
-                        enabled = true,
+                        enabled = false,
                     },
                     ruff = {
                         enabled = false,

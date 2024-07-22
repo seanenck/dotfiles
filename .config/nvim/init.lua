@@ -4,7 +4,9 @@ require("helpers")
 require("plugins")
 require("autocmds")
 
-vim.cmd 'colorscheme vim'
+if vim.version().major == 0 and vim.version().minor >= 10 then
+    vim.cmd 'colorscheme vim'
+end
 
 -- Mouse, disable paste on middle click
 for _, mouseMiddle in ipairs({"", "2-", "3-", "4-"}) do
