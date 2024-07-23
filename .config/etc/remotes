@@ -1,3 +1,11 @@
-https://github.com/kovidgoyal/kitty
-https://github.com/rxhanson/Rectangle
-https://gitlab.alpinelinux.org/alpine/aports
+{
+  "State": ".local/state/remotes",
+  "Remotes": [
+    "https://github.com/kovidgoyal/kitty",
+    "https://github.com/rxhanson/Rectangle"
+  ],
+  "Filter": [
+    "[a-zA-Z0-9.]+$",
+    "[0-9].[0-9]"
+  ]
+}

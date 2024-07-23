@@ -1,2 +1,6 @@
-Env
-Workspace
+{
+  "Directories": [
+    "Env",
+    "Workspace"
+  ]
+}

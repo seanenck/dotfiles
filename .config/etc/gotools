@@ -1,4 +1,8 @@
-honnef.co/go/tools/cmd/staticcheck@latest
-github.com/mgechev/revive@latest
-mvdan.cc/gofumpt@latest
-golang.org/x/tools/gopls@latest
+{
+  "Tools": [
+    "honnef.co/go/tools/cmd/staticcheck@latest",
+    "github.com/mgechev/revive@latest",
+    "mvdan.cc/gofumpt@latest",
+    "golang.org/x/tools/gopls@latest"
+  ]
+}

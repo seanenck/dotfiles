@@ -1,0 +1,10 @@
+{
+  "Bind": "0.0.0.0:8080",
+  "Store": "Downloads",
+  "Extensions": [
+    "jpeg",
+    "jpg",
+    "png",
+    "mov"
+  ]
+}

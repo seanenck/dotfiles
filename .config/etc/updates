@@ -1,0 +1,7 @@
+{
+  "Updates": [
+    { "Detect": "nvim", "Command": ["neovim-plugins"]},
+    { "Detect": "kitty", "Command": ["remotes"] },
+    { "Detect": "go", "Command": ["gotooling"] }
+  ]
+}

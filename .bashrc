@@ -15,19 +15,14 @@ export EDITOR=nvim
 export VISUAL=nvim
 export DELTA_PAGER="less -c -X"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
-export SYSTEM_PROFILE="host"
 PS1_COLOR="93"
 case $(uname) in
   "Linux")
     PS1_COLOR=95
-    export SYSTEM_PROFILE=dev
-    export GOPATH="$HOME/.cache/go"
-    export PATH="$GOPATH/bin:$PATH"
     ;;
 esac
 
-
-if [ "$SYSTEM_PROFILE" == "host" ]; then
+if [ -d "/opt/homebrew" ]; then
   export HOMEBREW_PREFIX="/opt/homebrew";
   export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
   export HOMEBREW_REPOSITORY="/opt/homebrew";
@@ -36,9 +31,12 @@ if [ "$SYSTEM_PROFILE" == "host" ]; then
   export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
 fi
 
-if [ -d "$HOME/.local/bin" ]; then
-  export PATH="$HOME/.local/bin:$HOME/.local/bin/$SYSTEM_PROFILE:$PATH"
+if command -v go >/dev/null; then
+  export GOPATH="$HOME/Library/Go"
+  export PATH="$GOPATH/bin:$PATH"
 fi
+
+export PATH="$HOME/.local/bin:$PATH"
 
 source "$HOME/.bash_aliases"
 
@@ -53,7 +51,7 @@ fi
 
 export ENABLE_LSP=1
 
-if [ "$SYSTEM_PROFILE" == "host" ]; then
+if command -v lb > /dev/null; then
   export SECRET_ROOT="$HOME/Env/secrets"
   LB_ENV="$SECRET_ROOT/db/lockbox.bash"
   if [ -e "$LB_ENV" ]; then
@@ -83,8 +81,8 @@ PS1="\$(git uncommitted --mode pwd 2>/dev/null)$PS1"
 
 unset LOCAL_STATE SSH_AGENT_ENV FILE PS1_COLOR
 
-if [ "$SYSTEM_PROFILE" == "host" ]; then
-  task-runner
+if command -v manage-data > /dev/null; then
+  manage-data tasks
 fi
 
 git-uncommitted --mode motd
