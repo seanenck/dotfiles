@@ -79,7 +79,7 @@ for FILE in "$HOME/.ssh/"*.privkey; do
 done
 
 PS1="[\u@\[\e[${PS1_COLOR}m\]\h\[\e[0m\]:\W]$ "
-PS1="\$(git uncommitted --pwd 2>/dev/null)$PS1"
+PS1="\$(git uncommitted --mode pwd 2>/dev/null)$PS1"
 
 unset LOCAL_STATE SSH_AGENT_ENV FILE PS1_COLOR
 
@@ -87,4 +87,4 @@ if [ "$SYSTEM_PROFILE" == "host" ]; then
   task-runner
 fi
 
-git-uncommitted --motd
+git-uncommitted --mode motd
