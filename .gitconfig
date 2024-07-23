@@ -47,6 +47,6 @@
 [url "~/Active/git/upstream/"]
     insteadOf = upstream:
 [includeIf "hasconfig:remote.*.url:private:**"]
-    path = ~/.config/etc/gitconfig
+    path = ~/.config/git/signing.config
 [includeIf "hasconfig:remote.*.url:upstream:**"]
-    path = ~/.config/etc/gitconfig
+    path = ~/.config/git/signing.config
