@@ -66,6 +66,13 @@ if lsp_exists("deno") then
     }
 end
 
+if lsp_exists("zls") then
+    lspconfig.zls.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
+    }
+end
+
 if lsp_exists("gopls") then
     lspconfig.gopls.setup{
         on_attach = on_attach,
@@ -113,7 +120,10 @@ if lsp_exists("pylsp") then
 end
 
 if lsp_exists("clangd") then
-    lspconfig.clangd.setup{}
+    lspconfig.clangd.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
+    }
 end
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
