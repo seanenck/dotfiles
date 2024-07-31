@@ -119,12 +119,34 @@ if lsp_exists("pylsp") then
     }
 end
 
+if lsp_exists("rust-analyzer") then
+    lspconfig.rust_analyzer.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
+    }
+end
+
 if lsp_exists("clangd") then
     lspconfig.clangd.setup{
         on_attach = on_attach,
         capabilities = capabilities,
     }
 end
+
+if lsp_exists("nimlangserver") then
+    lspconfig.nim_langserver.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
+    }
+end
+
+if lsp_exists("serve-d") then
+    lspconfig.serve_d.setup{
+        on_attach = on_attach,
+        capabilities = capabilities,
+    }
+end
+
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     pattern = "*",
