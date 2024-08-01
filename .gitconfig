@@ -49,4 +49,4 @@
 [includeIf "hasconfig:remote.*.url:private:**"]
     path = ~/.config/git/signing.config
 [includeIf "hasconfig:remote.*.url:upstream:**"]
-    path = ~/.config/git/signing.config
+    path = ~/.config/git/upstreams.config
