@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 [[ $- != *i* ]] && return
 
-for FILE in /etc/bashrc /etc/bash.bashrc /etc/bash/bashrc /etc/bash/bash.bashrc /opt/homebrew/etc/profile.d/bash_completion.sh; do
+for FILE in /etc/bashrc /etc/bash.bashrc /etc/bash/bashrc /etc/bash/bash.bashrc /opt/homebrew/etc/profile.d/bash_completion.sh "$HOME/.bash_aliases"; do
   if [ -s "$FILE" ]; then
     source "$FILE"
   fi
@@ -16,11 +16,6 @@ export VISUAL=nvim
 export DELTA_PAGER="less -c -X"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 PS1_COLOR="93"
-case $(uname) in
-  "Linux")
-    PS1_COLOR=95
-    ;;
-esac
 
 if [ -d "/opt/homebrew" ]; then
   export HOMEBREW_PREFIX="/opt/homebrew";
@@ -37,8 +32,6 @@ if command -v go >/dev/null; then
 fi
 
 export PATH="$HOME/.local/bin:$PATH"
-
-source "$HOME/.bash_aliases"
 
 # disable ctrl+s
 stty -ixon
