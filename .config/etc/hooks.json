@@ -1,5 +1,0 @@
-{
-    "Path": "Active/git/upstream",
-    "User": "seanenck",
-    "PasswordCommand": ["lb", "show", "online/user/github/token"]
-}
