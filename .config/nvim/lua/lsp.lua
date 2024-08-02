@@ -22,22 +22,21 @@ cmp.setup({
 util = require 'lspconfig.util'
 lspconfig = require "lspconfig"
 
-lsps = {
-    ["bashls"] = {},
-    ["gopls"] = {
-        gopls = {
-            gofumpt = true,
-            staticcheck = true
-        }
-    }
-}
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local paths = {}
 for p in string.gmatch(os.getenv("PATH"), "([^:]+)") do
     paths[p] = 1
 end
-for lsp, settings in pairs(lsps) do
+for lsp, settings in pairs({
+        ["bashls"] = {},
+        ["gopls"] = {
+            gopls = {
+                gofumpt = true,
+                staticcheck = true
+            }
+        }
+    }) do
     cmd = require(string.format("lspconfig.server_configurations.%s", lsp)).default_config.cmd
     exe = nil
     for _, arg in pairs(cmd) do
