@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 [[ $- != *i* ]] && return
 
-for FILE in /etc/bashrc /etc/bash.bashrc /etc/bash/bashrc /etc/bash/bash.bashrc /opt/homebrew/etc/profile.d/bash_completion.sh "$HOME/.bash_aliases"; do
+for FILE in /etc/bashrc /etc/bash.bashrc /etc/bash/bashrc /etc/bash/bash.bashrc /opt/homebrew/etc/profile.d/bash_completion.sh; do
   if [ -s "$FILE" ]; then
     source "$FILE"
   fi
@@ -15,7 +15,7 @@ export EDITOR=nvim
 export VISUAL=nvim
 export DELTA_PAGER="less -c -X"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
-PS1_COLOR="93"
+source "$HOME/.bash_aliases"
 
 if [ -d "/opt/homebrew" ]; then
   export HOMEBREW_PREFIX="/opt/homebrew";
@@ -69,7 +69,7 @@ for FILE in "$HOME/.ssh/"*.privkey; do
   ssh-add "$FILE" > /dev/null 2>&1
 done
 
-PS1="[\u@\[\e[${PS1_COLOR}m\]\h\[\e[0m\]:\W]$ "
+PS1="[\u@\[\e[93m\]\h\[\e[0m\]:\W]$ "
 PS1="\$(git uncommitted --mode pwd 2>/dev/null)$PS1"
 
 unset LOCAL_STATE SSH_AGENT_ENV FILE PS1_COLOR
