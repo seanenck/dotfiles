@@ -34,7 +34,7 @@ vim.api.nvim_create_autocmd({"Filetype"}, {
     end
 })
 
-local bad_prefix = function()
+local invalid_commands = (function()
     local invalids = {">", "<", "^:"}
     for _, prefix in ipairs({"w", "wq"}) do
         for _, write in ipairs({"1", ":", " "}) do
@@ -45,8 +45,7 @@ local bad_prefix = function()
         end
     end
     return invalids
-end
-local invalid_commands = bad_prefix()
+end)()
 
 vim.api.nvim_create_autocmd({ "CmdlineChanged" }, {
     pattern = { "*" },
