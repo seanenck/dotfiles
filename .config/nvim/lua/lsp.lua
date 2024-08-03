@@ -74,14 +74,12 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     }
 )
 
-function toggle_diagnostics()
-    vim.diagnostic.open_float(nil, {
-        focus=false,
-        scope="buffer",
-        format=function(d)
-            return string.format("%s (line: %d, col: %d)", d.message, d.lnum, d.col)
-        end
-    })
-end
-
-vim.api.nvim_set_keymap("n", "<C-e>", ':call v:lua.toggle_diagnostics()<CR>', { noremap = true, silent = true })
+vim.keymap.set("n", "<C-e>", function()
+        vim.diagnostic.open_float(nil, {
+            focus=false,
+            scope="buffer",
+            format=function(d)
+                return string.format("%s (line: %d, col: %d)", d.message, d.lnum, d.col)
+            end
+        })
+    end, { noremap = true, silent = true })
