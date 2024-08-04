@@ -1,5 +1,5 @@
 -- nvim-cmp settings
-local cmp = require'cmp'
+local cmp = require("cmp")
 
 cmp.setup({
     snippet = {
@@ -19,9 +19,8 @@ cmp.setup({
 })
 
 -- actual lsp setup
-util = require 'lspconfig.util'
-lspconfig = require "lspconfig"
-
+util = require("lspconfig.util")
+lspconfig = require("lspconfig")
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local paths = {}
