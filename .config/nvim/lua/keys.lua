@@ -18,6 +18,7 @@ mappers.nop({"<F1>"})
 for _, mouseMiddle in ipairs({"", "2-", "3-", "4-"}) do
     mappers.nop({"<" .. mouseMiddle .. "MiddleMouse>"})
 end
+mappers.nop({"<RightMouse>"})
 
 -- disable macros
 mappers.nmap("q", "<Nop>")
