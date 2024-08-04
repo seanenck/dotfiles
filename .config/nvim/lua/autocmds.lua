@@ -34,28 +34,14 @@ vim.api.nvim_create_autocmd({"Filetype"}, {
     end
 })
 
-local invalid_commands = (function()
-    local invalids = {">", "<", "^:"}
-    for _, prefix in ipairs({"w", "wq"}) do
-        for _, write in ipairs({"1", ":", " "}) do
-            table.insert(invalids, string.format("^%s%s", prefix, write))
-        end
-        for i=0,9,1 do
-            table.insert(invalids, string.format("^%s%d", prefix, i))
-        end
-    end
-    return invalids
-end)()
-
+-- prevent 'wq[.]' from writing files with another name"
 vim.api.nvim_create_autocmd({ "CmdlineChanged" }, {
     pattern = { "*" },
     callback = function(e)
         local cmd = vim.fn.getcmdline()
         if cmd ~= nil then
-            for _, invalid in ipairs(invalid_commands) do
-                if cmd:find(invalid) ~= nil then
-                    vim.fn.setcmdline("")
-                end
+            if cmd:match("^wq.") then
+                vim.fn.setcmdline("")
             end
         end
     end,
