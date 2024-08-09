@@ -29,6 +29,7 @@ for p in string.gmatch(os.getenv("PATH"), "([^:]+)") do
 end
 for lsp, settings in pairs({
         ["bashls"] = {},
+        ["pyright"] = {},
         ["gopls"] = {
             gopls = {
                 gofumpt = true,

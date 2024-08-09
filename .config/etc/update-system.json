@@ -1,4 +1,8 @@
 {
+  "State": {
+    "Format": "2006-01-02",
+    "Path": ".local/state/updates"
+  },
   "Updates": [
     { "Detect": "nvim", "Command": ["neovim-plugins"]},
     { "Detect": "kitty", "Command": ["remotes"] },
