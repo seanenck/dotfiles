@@ -30,6 +30,7 @@ end
 for lsp, settings in pairs({
         ["bashls"] = {},
         ["pyright"] = {},
+        ["efm"] = {},
         ["gopls"] = {
             gopls = {
                 gofumpt = true,
