@@ -4,7 +4,7 @@
     "Path": ".local/state/updates"
   },
   "Updates": [
-    { "Detect": "editor", "Command": ["editor-plugins"]},
+    { "Detect": "vim", "Command": ["editor-plugins"]},
     { "Detect": "kitty", "Command": ["remotes"] },
     { "Detect": "go", "Command": ["gotooling"] }
   ]
