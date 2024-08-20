@@ -1,0 +1,5 @@
+.git/
+.null
+.config/nvim/
+.config/efm-langserver/
+.config/mypy/

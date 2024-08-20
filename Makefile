@@ -1,4 +1,4 @@
-FILES   := $(shell find . -type f | cut -d '/' -f 2- | grep '^\.' | grep -v '\.git/')
+FILES   := $(shell find . -type f | cut -d '/' -f 2- | grep '^\.' | grep -v -F -f .null)
 DIRS    := $(shell find $(FILES) -type f -exec dirname {} \; | grep -v '^\.$$' | sort -u)
 
 install: _dirs _files

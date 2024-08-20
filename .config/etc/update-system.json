@@ -4,7 +4,7 @@
     "Path": ".local/state/updates"
   },
   "Updates": [
-    { "Detect": "nvim", "Command": ["neovim-plugins"]},
+    { "Detect": "editor", "Command": ["editor-plugins"]},
     { "Detect": "kitty", "Command": ["remotes"] },
     { "Detect": "go", "Command": ["gotooling"] }
   ]

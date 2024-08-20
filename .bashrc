@@ -11,8 +11,8 @@ shopt -s direxpand
 # check the window size after each command
 shopt -s checkwinsize
 
-export EDITOR=nvim
-export VISUAL=nvim
+export EDITOR=vim
+export VISUAL=vim
 export DELTA_PAGER="less -c -X"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 source "$HOME/.bash_aliases"
@@ -38,11 +38,9 @@ stty -ixon
 
 LOCAL_STATE="$HOME/.local/state"
 mkdir -p "$LOCAL_STATE"
-if [ -d "$LOCAL_STATE/nvim/undo" ]; then
-  find "$LOCAL_STATE/nvim/undo" -type f -mmin +60 -delete
+if [ -d "$LOCAL_STATE/.vim/undo" ]; then
+  find "$LOCAL_STATE/.vim/undo" -type f -mmin +60 -delete
 fi
-
-export ENABLE_LSP=1
 
 if command -v lb > /dev/null; then
   export SECRET_ROOT="$HOME/Env/secrets"
