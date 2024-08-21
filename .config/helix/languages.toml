@@ -1,0 +1,3 @@
+[language-server.gopls]
+command = "gopls"
+config = { "gofumpt" = true, "staticcheck" = true }

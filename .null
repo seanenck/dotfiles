@@ -1,6 +1,7 @@
 .git/
 .null
 .config/nvim/
-.config/efm-langserver/
 .config/mypy/
 .config/vim
+.config/etc/editor-plugins.json
+.config/etc/update-system.json

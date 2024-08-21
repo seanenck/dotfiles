@@ -10,6 +10,8 @@ C-c = "yank_main_selection_to_clipboard"
 esc = "exit_select_mode"
 tab = "goto_next_buffer"
 S-tab = "goto_previous_buffer"
+C-w = "wclose"
+C-e = "diagnostics_picker"
 [keys.select]
 C-c = "yank_main_selection_to_clipboard"
 esc = "exit_select_mode"
