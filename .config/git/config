@@ -1,5 +1,4 @@
 [core]
-    editor = vim
     pager = delta
     autocrlf = input
 [interactive]

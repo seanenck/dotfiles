@@ -12,7 +12,8 @@ shopt -s direxpand
 shopt -s checkwinsize
 
 export EDITOR=hx
-export VISUAL=hx
+export VISUAL=$EDITOR
+export GIT_EDITOR=$EDITOR
 export DELTA_PAGER="less -R -c -X"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export CHROMA_STYLE=vim
