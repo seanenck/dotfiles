@@ -3,7 +3,7 @@ root-markers:
   - .git/
 
 tools:
-  sh-shellcheck: &sh-shellcheck
+  bash-shellcheck: &bash-shellcheck
     lint-command: 'shellcheck -f gcc -x'
     lint-source: 'shellcheck'
     lint-formats:
@@ -12,5 +12,5 @@ tools:
       - '%f:%l:%c: %tote: %m'
 
 languages:
-  sh:
-    - <<: *sh-shellcheck
+  bash:
+    - <<: *bash-shellcheck
