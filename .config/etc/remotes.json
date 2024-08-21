@@ -1,11 +1,21 @@
 {
   "State": ".local/state/remotes",
-  "Remotes": [
-    "https://github.com/kovidgoyal/kitty",
-    "https://github.com/rxhanson/Rectangle"
-  ],
-  "Filter": [
-    "[a-zA-Z0-9.]+$",
-    "[0-9].[0-9]"
-  ]
+  "Sources": {
+    "https://github.com/kovidgoyal/kitty": "Git",
+    "https://github.com/rxhanson/Rectangle": "Git",
+    "vim": "Brew"
+  },
+  "Modes": {
+    "Git": {
+      "Command": ["git", "ls-remote", "--tags"],
+      "Filter": [
+        "[a-zA-Z0-9.]+$",
+        "[0-9].[0-9]"
+      ]
+    },
+    "Brew": {
+      "Command": ["brew", "info", "--json"],
+      "Field": "versions.stable"
+    }
+  }
 }

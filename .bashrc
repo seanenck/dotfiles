@@ -13,9 +13,11 @@ shopt -s checkwinsize
 
 export EDITOR=vim
 export VISUAL=vim
-export DELTA_PAGER="less -c -X"
+export DELTA_PAGER="less -R -c -X"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
+export CHROMA_STYLE=vim
 source "$HOME/.bash_aliases"
+export LESSOPEN='| p() { chroma --style='$CHROMA_STYLE' --fail "$1" || cat "$1"; }; p "%s"'
 
 if [ -d "/opt/homebrew" ]; then
   export HOMEBREW_PREFIX="/opt/homebrew";

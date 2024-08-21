@@ -5,7 +5,6 @@
   },
   "Updates": [
     { "Detect": "vim", "Command": ["editor-plugins"]},
-    { "Detect": "kitty", "Command": ["remotes"] },
-    { "Detect": "go", "Command": ["gotooling"] }
+    { "Detect": "kitty", "Command": ["remotes"] }
   ]
 }

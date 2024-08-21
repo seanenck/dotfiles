@@ -1,3 +1,4 @@
 {
-    "Library": "Env/secrets/lib"
+    "Library": "Env/secrets/lib",
+    "URL": "https://google.com"
 }
