@@ -15,7 +15,7 @@ endfunction
 call SetupVimDir(&g:directory)
 call SetupVimDir(&g:undodir)
 call SetupVimDir(&g:backupdir)
-call system("echo find " . &g:undodir . " -type f -mmin +60 -delete")
+call system("find " . &g:undodir . " -type f -mmin +60 -delete")
 
 highlight Pmenu ctermbg=grey guibg=grey ctermfg=black guifg=black
 let loaded_netrwPlugin = 1
