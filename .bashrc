@@ -38,9 +38,6 @@ stty -ixon
 
 LOCAL_STATE="$HOME/.local/state"
 mkdir -p "$LOCAL_STATE"
-if [ -d "$LOCAL_STATE/.vim/undo" ]; then
-  find "$LOCAL_STATE/.vim/undo" -type f -mmin +60 -delete
-fi
 
 if command -v lb > /dev/null; then
   export SECRET_ROOT="$HOME/Env/secrets"

@@ -1,6 +1,6 @@
 [
   {
-    "Path": ".vim/pack/dist/start",
+    "Path": ".config/vim/pack/dist/start",
     "Enabled": true,
     "Plugins": [
       "https://github.com/dense-analysis/ale",
