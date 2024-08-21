@@ -11,8 +11,8 @@ shopt -s direxpand
 # check the window size after each command
 shopt -s checkwinsize
 
-export EDITOR=vim
-export VISUAL=vim
+export EDITOR=hx
+export VISUAL=hx
 export DELTA_PAGER="less -R -c -X"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 export CHROMA_STYLE=vim

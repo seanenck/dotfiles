@@ -2,8 +2,7 @@
   "State": ".local/state/remotes",
   "Sources": {
     "https://github.com/kovidgoyal/kitty": "Git",
-    "https://github.com/rxhanson/Rectangle": "Git",
-    "vim": "Brew"
+    "https://github.com/rxhanson/rectangle": "Git"  
   },
   "Modes": {
     "Git": {
