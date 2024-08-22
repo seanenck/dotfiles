@@ -1,7 +1,7 @@
 [
   {
     "Path": ".config/vim/pack/dist/start",
-    "Enabled": true,
+    "Enabled": false,
     "Plugins": [
       "https://github.com/dense-analysis/ale",
       "https://github.com/vim-airline/vim-airline"
@@ -9,7 +9,7 @@
   },
   {
     "Path": ".config/nvim/pack/plugins/start",
-    "Enabled": false,
+    "Enabled": true,
     "Plugins": [
       "https://github.com/neovim/nvim-lspconfig",
       "https://github.com/hrsh7th/nvim-cmp",

@@ -1,7 +1,6 @@
 .git/
 .null
-.config/nvim/
+.config/bat
 .config/mypy/
 .config/vim
-.config/etc/editor-plugins.json
-.config/etc/update-system.json
+.config/helix

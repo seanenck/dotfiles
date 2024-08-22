@@ -4,6 +4,7 @@
     "Path": ".local/state/updates"
   },
   "Updates": [
+    { "Detect": "editor-plugins", "Command": ["editor-plugins"] },
     { "Detect": "kitty", "Command": ["remotes"] }
   ]
 }
