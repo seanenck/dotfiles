@@ -21,6 +21,7 @@ source "$HOME/.bash_aliases"
 export LESSOPEN='| p() { chroma --style='$CHROMA_STYLE' --fail "$1" || cat "$1"; }; p "%s"'
 
 if [ -d "/opt/homebrew" ]; then
+  export HOMEBREW_NO_VERIFY_ATTESTATIONS=1
   export HOMEBREW_PREFIX="/opt/homebrew";
   export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
   export HOMEBREW_REPOSITORY="/opt/homebrew";
