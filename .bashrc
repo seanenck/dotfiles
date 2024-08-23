@@ -19,7 +19,6 @@ export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 source "$HOME/.bash_aliases"
 
 if [ -d "/opt/homebrew" ]; then
-  export HOMEBREW_NO_VERIFY_ATTESTATIONS=1
   export HOMEBREW_PREFIX="/opt/homebrew";
   export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
   export HOMEBREW_REPOSITORY="/opt/homebrew";
