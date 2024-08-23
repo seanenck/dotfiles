@@ -72,7 +72,7 @@ PS1="\$(git uncommitted --mode pwd 2>/dev/null)$PS1"
 unset LOCAL_STATE SSH_AGENT_ENV FILE PS1_COLOR
 
 if command -v manage-data > /dev/null; then
-  manage-data tasks
+  (manage-data tasks &)
 fi
 
 git-uncommitted --mode motd
