@@ -29,23 +29,14 @@
   "remotes": {
     "Flags": ["enabled", "update-system"],
     "Settings": {
-      "Go": [
-        "honnef.co/go/tools/cmd/staticcheck@latest",
-        "github.com/mgechev/revive@latest",
-        "mvdan.cc/gofumpt@latest",
-        "golang.org/x/tools/gopls@latest",
-        "github.com/mattn/efm-langserver@latest",
-        "github.com/rclone/rclone@latest"
-      ],
-      "Cargo": [
-        "git-delta",
-        "ripgrep",
-        "bat"
-      ],
       "State": ".local/state/remotes",
       "Sources": {
         "https://github.com/kovidgoyal/kitty": "Git",
-        "https://github.com/rxhanson/rectangle": "Git"
+        "https://github.com/rxhanson/rectangle": "Git",
+        "https://github.com/jqlang/jq": "Git",
+        "https://github.com/golang/go": "Git",
+        "https://github.com/neovim/neovim": "Git",
+        "https://github.com/koalaman/shellcheck": "Git"
       },
       "Modes": {
         "Git": {
