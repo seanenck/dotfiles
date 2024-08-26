@@ -1,0 +1,128 @@
+{
+  "golint": {
+    "Flags": ["enabled"],
+    "Settings": {
+      "Tools": [
+        {
+          "Name": "revive",
+          "Command": ["revive"],
+          "Detect": false
+        },
+        {
+          "Name": "govet",
+          "Command": ["go", "vet"],
+          "Detect": false
+        },
+        {
+          "Name": "staticcheck",
+          "Command": ["staticcheck", "-checks", "all", "-debug.run-quickfix-analyzers"],
+          "Detect": false
+        },
+        {
+          "Name": "gofumpt",
+          "Command": ["gofumpt", "-l", "-extra"],
+          "Detect": true
+        }
+      ]
+    }
+  },
+  "remotes": {
+    "Flags": ["enabled", "update-system"],
+    "Settings": {
+      "State": ".local/state/remotes",
+      "Sources": {
+        "https://github.com/kovidgoyal/kitty": "Git",
+        "https://github.com/rxhanson/rectangle": "Git"
+      },
+      "Modes": {
+        "Git": {
+          "Command": ["git", "ls-remote", "--tags"],
+          "Filter": [
+            "[a-zA-Z0-9.]+$",
+            "[0-9].[0-9]"
+          ]
+        }
+      }
+    }
+  },
+  "update-system": {
+    "Flags": ["enabled"],
+    "Settings": {
+      "Format": "2006-01-02",
+      "Path": ".local/state/updates"
+    }
+  },
+  "file-upload": {
+    "Flags": ["enabled"],
+    "Settings": {
+      "Bind": "0.0.0.0:8080",
+      "Store": "Downloads",
+      "Extensions": ["jpeg", "jpg", "png", "mov"]
+    }
+  },
+  "editor-plugins": {
+    "Flags": ["enabled", "update-system"],
+    "Settings": {
+      "Plugins": [
+        {
+          "Path": ".config/vim/pack/dist/start",
+          "Enabled": false,
+          "Plugins": [
+            "https://github.com/dense-analysis/ale",
+            "https://github.com/vim-airline/vim-airline"
+          ]
+        },
+        {
+          "Path": ".config/nvim/pack/plugins/start",
+          "Enabled": true,
+          "Plugins": [
+            "https://github.com/neovim/nvim-lspconfig",
+            "https://github.com/hrsh7th/nvim-cmp",
+            "https://github.com/hrsh7th/cmp-nvim-lsp",
+            "https://github.com/vim-airline/vim-airline",
+            "https://github.com/petertriho/nvim-scrollbar",
+            "https://github.com/L3MON4D3/LuaSnip"
+          ]
+        }
+      ]
+    }
+  },
+  "git-uncommitted": {
+    "Flags": ["enabled"],
+    "Settings": {
+      "Directories": ["Env", "Workspace"]
+    }
+  },
+  "virt": {
+    "Flags": ["enabled"],
+    "Settings": {
+      "Directory": ".config/vm"
+    }
+  },
+  "transcode-media": {
+    "Flags": ["enabled"],
+    "Settings": {
+      "Transcode": [
+        {
+          "Extensions": ["jpeg", "jpg", "mov"],
+          "Command": ["cp", "{INPUT}", "{OUTPUT}.{EXT}"]
+        },
+        {
+          "Extensions": ["heic"],
+          "Command": ["sips", "--setProperty", "format", "jpeg", "--out", "{OUTPUT}.jpeg", "{INPUT}"]
+        }
+      ]
+    }
+  },
+  "git-current-state": {
+    "Flags": ["enabled"],
+    "Settings": {}
+  },
+  "manage-data": {
+    "Flags": ["enabled"],
+    "Settings": {
+      "Library": "Env/secrets/lib",
+      "URL": "https://google.com"
+    }
+  }
+}
