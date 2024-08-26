@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 [[ $- != *i* ]] && return
 
-for FILE in /etc/bashrc /etc/bash.bashrc /etc/bash/bashrc /etc/bash/bash.bashrc /opt/homebrew/etc/profile.d/bash_completion.sh; do
+for FILE in /etc/bashrc /etc/bash.bashrc /etc/bash/bashrc /etc/bash/bash.bashrc /opt/homebrew/etc/profile.d/bash_completion.sh /opt/fs/root/share/bash-completion/bash_completion; do
   if [ -s "$FILE" ]; then
     source "$FILE"
   fi
