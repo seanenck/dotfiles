@@ -124,5 +124,18 @@
       "Library": "Env/secrets/lib",
       "URL": "https://google.com"
     }
+  },
+  "gotooling": {
+    "Flags": ["enabled", "update-system"],
+    "Settings": {
+      "Tools": [
+        "honnef.co/go/tools/cmd/staticcheck@latest",
+        "github.com/mgechev/revive@latest",
+        "mvdan.cc/gofumpt@latest",
+        "golang.org/x/tools/gopls@latest",
+        "github.com/mattn/efm-langserver@latest",
+        "github.com/rclone/rclone@latest"
+      ]
+    }
   }
 }
