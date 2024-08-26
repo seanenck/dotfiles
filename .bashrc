@@ -18,12 +18,18 @@ export DELTA_PAGER="less -R -c -X"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 source "$HOME/.bash_aliases"
 
+export PATH="$HOME/.local/bin:$PATH"
+FILE="/opt/fs/root"
+if [ -d "$FILE" ]; then
+  export PATH="$FILE/bin:$PATH";
+  export MANPATH="$FILE/share/man${MANPATH+:$MANPATH}:";
+fi
+
 if [ -d "/opt/homebrew" ]; then
   export HOMEBREW_PREFIX="/opt/homebrew";
   export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
   export HOMEBREW_REPOSITORY="/opt/homebrew";
   export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
-  export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
   export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
 fi
 
@@ -37,8 +43,6 @@ FILE="$HOME/.cargo/env"
 if [ -e "$FILE" ]; then
   source "$FILE"
 fi
-
-export PATH="$HOME/.local/bin:$PATH"
 
 # disable ctrl+s
 stty -ixon

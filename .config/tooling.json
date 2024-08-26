@@ -36,7 +36,9 @@
         "https://github.com/jqlang/jq": "Git",
         "https://github.com/golang/go": "Git",
         "https://github.com/neovim/neovim": "Git",
-        "https://github.com/koalaman/shellcheck": "Git"
+        "https://github.com/koalaman/shellcheck": "Git",
+        "https://github.com/openssl/openssl": "Git",
+        "https://git.code.sf.net/p/isync/isync": "Git"
       },
       "Modes": {
         "Git": {
@@ -145,6 +147,80 @@
         "ripgrep",
         "bat"
       ]
+    }
+  },
+  "build-from": {
+    "Flags": ["enabled"],
+    "Settings": {
+      "Root": "/opt/fs/root",
+      "Builds": {
+        "bin/nvim": {
+            "Install": [
+                "ln",
+                "-sf",
+                "{{ $.CurDir }}/bin/nvim",
+                "{{ $.RootDir }}/bin/"
+            ]
+        },
+        "cacert.pem": {
+            "Install": [
+                "cp",
+                "cacert.pem",
+                "{{ $.RootDir }}/etc/ssl/cacert.pem"
+            ]
+        },
+        "isync.spec": {
+            "Configure": [
+                "./configure",
+                "--prefix={{ $.RootDir }}",
+                "--with-ssl={{ $.RootDir }}"
+            ],
+            "Build": ["make"],
+            "Install": ["make", "install"]
+        },
+        "shellcheck": {
+            "Install": [
+                "ln",
+                "-sf",
+                "{{ $.CurDir }}/shellcheck",
+                "{{ $.RootDir }}/bin/"
+            ]
+        },
+        "jq": {
+            "Install": [
+                "ln",
+                "-sf",
+                "{{ $.CurDir }}/jq",
+                "{{ $.RootDir }}/bin/"
+            ]
+        },
+        "bin/go": {
+            "Install": [
+                "ln",
+                "-sf",
+                "{{ $.CurDir }}/bin/go",
+                "{{ $.RootDir }}/bin/"
+            ]
+        },
+        "Configure": {
+          "Configure": [
+            "./Configure",
+            "--prefix={{ $.RootDir }}",
+            "--openssldir={{ $.RootDir }}/etc/ssl",
+            "--libdir=lib",
+            "no-ssl3",
+            "no-ssl3-method",
+            "no-zlib"
+          ],
+          "Build": ["make"],
+          "Install": [
+            "make",
+            "install",
+            "MANDIR={{ $.RootDir }}/share/man",
+            "MANSUFFIX=ssl"
+          ]
+        }
+      }
     }
   }
 }
