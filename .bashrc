@@ -32,6 +32,11 @@ if command -v go >/dev/null; then
   export PATH="$GOPATH/bin:$PATH"
 fi
 
+FILE="$HOME/.cargo/env"
+if [ -e "$FILE" ]; then
+  source "$FILE"
+fi
+
 export PATH="$HOME/.local/bin:$PATH"
 
 # disable ctrl+s
