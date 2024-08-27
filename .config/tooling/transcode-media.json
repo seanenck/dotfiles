@@ -1,0 +1,35 @@
+{
+  "Flags": [
+    "enabled"
+  ],
+  "Settings": {
+    "Transcode": [
+      {
+        "Extensions": [
+          "jpeg",
+          "jpg",
+          "mov"
+        ],
+        "Command": [
+          "cp",
+          "{INPUT}",
+          "{OUTPUT}.{EXT}"
+        ]
+      },
+      {
+        "Extensions": [
+          "heic"
+        ],
+        "Command": [
+          "sips",
+          "--setProperty",
+          "format",
+          "jpeg",
+          "--out",
+          "{OUTPUT}.jpeg",
+          "{INPUT}"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "Flags": [
+    "enabled"
+  ],
+  "Settings": {
+    "Tools": [
+      {
+        "Name": "revive",
+        "Command": [
+          "revive"
+        ],
+        "Detect": false
+      },
+      {
+        "Name": "govet",
+        "Command": [
+          "go",
+          "vet"
+        ],
+        "Detect": false
+      },
+      {
+        "Name": "staticcheck",
+        "Command": [
+          "staticcheck",
+          "-checks",
+          "all",
+          "-debug.run-quickfix-analyzers"
+        ],
+        "Detect": false
+      },
+      {
+        "Name": "gofumpt",
+        "Command": [
+          "gofumpt",
+          "-l",
+          "-extra"
+        ],
+        "Detect": true
+      }
+    ]
+  }
+}

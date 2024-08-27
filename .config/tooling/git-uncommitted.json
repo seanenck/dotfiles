@@ -1,0 +1,11 @@
+{
+  "Flags": [
+    "enabled"
+  ],
+  "Settings": {
+    "Directories": [
+      "Env",
+      "Workspace"
+    ]
+  }
+}

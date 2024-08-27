@@ -1,0 +1,44 @@
+{
+  "Flags": [
+    "enabled",
+    "update-system"
+  ],
+  "Settings": {
+    "State": ".local/state/remotes",
+    "Sources": {
+      "https://github.com/kovidgoyal/kitty": "Git",
+      "https://github.com/rxhanson/rectangle": "Git",
+      "https://github.com/jqlang/jq": "Git",
+      "https://github.com/golang/go": "Git",
+      "https://github.com/neovim/neovim": "Git",
+      "https://github.com/koalaman/shellcheck": "Git",
+      "https://github.com/scop/bash-completion": "Git",
+      "https://ftp.gnu.org/gnu/bash/": "HTTP|bash"
+    },
+    "Modes": {
+      "Git": {
+        "Command": [
+          "git",
+          "ls-remote",
+          "--tags"
+        ],
+        "Filter": [
+          "[a-zA-Z0-9.]+$",
+          "[0-9].[0-9]"
+        ]
+      },
+      "HTTP": {
+        "Command": [
+          "curl",
+          "-L"
+        ],
+        "Filters": {
+          "bash": {
+            "Start": "bash-[0-9][.]",
+            "End": "[.]tar[.]gz"
+          }
+        }
+      }
+    }
+  }
+}

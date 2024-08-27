@@ -18,71 +18,11 @@ export DELTA_PAGER="less -R -c -X"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 source "$HOME/.bash_aliases"
 
-export PATH="$HOME/.local/bin:$PATH"
-FILE="/opt/fs/root"
-if [ -d "$FILE" ]; then
-  export PATH="$FILE/bin:$PATH";
-  export MANPATH="$FILE/share/man${MANPATH+:$MANPATH}:";
-fi
-
-if [ -d "/opt/homebrew" ]; then
-  export HOMEBREW_PREFIX="/opt/homebrew";
-  export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
-  export HOMEBREW_REPOSITORY="/opt/homebrew";
-  export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
-  export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
-  export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
-fi
-
-if command -v go >/dev/null; then
-  export GOTOOLCHAIN=local
-  export GOPATH="$HOME/Library/Go"
-  export PATH="$GOPATH/bin:$PATH"
-fi
-
-FILE="$HOME/.cargo/env"
-if [ -e "$FILE" ]; then
-  source "$FILE"
-fi
-
 # disable ctrl+s
 stty -ixon
 
-LOCAL_STATE="$HOME/.local/state"
-mkdir -p "$LOCAL_STATE"
-
-if command -v lb > /dev/null; then
-  export SECRET_ROOT="$HOME/Env/secrets"
-  LB_ENV="$SECRET_ROOT/db/lockbox.bash"
-  if [ -e "$LB_ENV" ]; then
-    source "$LB_ENV"
-  fi
-  unset LB_ENV 
-
-  for FILE in "$HOME/.completions/"*.bash; do
-    source "$FILE"
-  done
-fi
-  
-SSH_AGENT_ENV="$LOCAL_STATE/ssh-agent.env"
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-  ssh-agent > "$SSH_AGENT_ENV"
-fi
-export SSH_AUTH_SOCK="$LOCAL_STATE/ssh-agent.socket"
-if [ ! -f "$SSH_AUTH_SOCK" ]; then
-  source "$SSH_AGENT_ENV" > /dev/null
-fi
-for FILE in "$HOME/.ssh/"*.privkey; do
-  ssh-add "$FILE" > /dev/null 2>&1
+for FILE in "$HOME/.config/bashrc/"*; do
+  source "$FILE"
 done
 
-PS1="[\u@\[\e[93m\]\h\[\e[0m\]:\W]$ "
-PS1="\$(git uncommitted --mode pwd 2>/dev/null)$PS1"
-
-unset LOCAL_STATE SSH_AGENT_ENV FILE PS1_COLOR
-
-if command -v manage-data > /dev/null; then
-  (manage-data tasks &)
-fi
-
-git-uncommitted --mode motd
+unset FILE
