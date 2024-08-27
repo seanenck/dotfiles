@@ -37,11 +37,8 @@
         "https://github.com/golang/go": "Git",
         "https://github.com/neovim/neovim": "Git",
         "https://github.com/koalaman/shellcheck": "Git",
-        "https://github.com/openssl/openssl": "Git",
-        "https://git.code.sf.net/p/isync/isync": "Git",
         "https://github.com/scop/bash-completion": "Git",
-        "https://ftp.gnu.org/gnu/bash/": "HTTP|bash",
-        "https://curl.se/docs/caextract.html": "HTTP|curl"
+        "https://ftp.gnu.org/gnu/bash/": "HTTP|bash"
       },
       "Modes": {
         "Git": {
@@ -57,10 +54,6 @@
             "bash": {
               "Start": "bash-[0-9][.]",
               "End": "[.]tar[.]gz"
-            },
-            "curl": {
-              "Start": "/ca/cacert-",
-              "End": "[.]pem"
             }
           }
         }
@@ -194,26 +187,10 @@
                 "{{ $.RootDir }}/bin/"
             ]
         },
-        "cacert.pem": {
-            "Install": [
-                "cp",
-                "cacert.pem",
-                "{{ $.RootDir }}/etc/ssl/cacert.pem"
-            ]
-        },
         "bashline.c": {
             "Configure": [
                 "./configure",
                 "--prefix={{ $.RootDir }}"
-            ],
-            "Build": ["make"],
-            "Install": ["make", "install"]
-        },
-        "isync.spec": {
-            "Configure": [
-                "./configure",
-                "--prefix={{ $.RootDir }}",
-                "--with-ssl={{ $.RootDir }}"
             ],
             "Build": ["make"],
             "Install": ["make", "install"]
@@ -241,24 +218,6 @@
                 "{{ $.CurDir }}/bin/go",
                 "{{ $.RootDir }}/bin/"
             ]
-        },
-        "include/openssl": {
-          "Configure": [
-            "./Configure",
-            "--prefix={{ $.RootDir }}",
-            "--openssldir={{ $.RootDir }}/etc/ssl",
-            "--libdir=lib",
-            "no-ssl3",
-            "no-ssl3-method",
-            "no-zlib"
-          ],
-          "Build": ["make"],
-          "Install": [
-            "make",
-            "install",
-            "MANDIR={{ $.RootDir }}/share/man",
-            "MANSUFFIX=ssl"
-          ]
         }
       }
     }
