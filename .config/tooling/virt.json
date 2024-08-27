@@ -1,6 +1,5 @@
 {
   "Flags": [
-    "enabled"
   ],
   "Settings": {
     "Directory": ".config/vm"

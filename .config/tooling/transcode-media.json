@@ -5,6 +5,7 @@
   "Settings": {
     "Transcode": [
       {
+        "Enabled": true,
         "Extensions": [
           "jpeg",
           "jpg",
@@ -17,6 +18,18 @@
         ]
       },
       {
+        "Enabled": true,
+        "Extensions": [
+          "heic"
+        ],
+        "Command": [
+          "heif-convert",
+          "{INPUT}",
+          "{OUTPUT}.jpeg"
+        ]
+      },
+      {
+        "Enabled": false,
         "Extensions": [
           "heic"
         ],

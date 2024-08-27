@@ -1,76 +1,8 @@
 {
-  "Flags": [
-    "enabled"
-  ],
+  "Flags": [],
   "Settings": {
     "Root": "/opt/fs/root",
     "Builds": {
-      "contrib/completion/git-completion.bash": {
-        "Install": [
-          "ln",
-          "-sf",
-          "{{ $.CurDir }}/contrib/completion/git-completion.bash",
-          "{{ $.RootDir }}/share/bash-completion/completions/git"
-        ]
-      },
-      "bash_completion.sh.in": {
-        "Configure": [
-          "./configure",
-          "--prefix={{ $.RootDir }}"
-        ],
-        "Build": [
-          "make"
-        ],
-        "Install": [
-          "make",
-          "install"
-        ]
-      },
-      "bin/nvim": {
-        "Install": [
-          "ln",
-          "-sf",
-          "{{ $.CurDir }}/bin/nvim",
-          "{{ $.RootDir }}/bin/"
-        ]
-      },
-      "bashline.c": {
-        "Configure": [
-          "./configure",
-          "--prefix={{ $.RootDir }}"
-        ],
-        "Build": [
-          "make"
-        ],
-        "Install": [
-          "make",
-          "install"
-        ]
-      },
-      "shellcheck": {
-        "Install": [
-          "ln",
-          "-sf",
-          "{{ $.CurDir }}/shellcheck",
-          "{{ $.RootDir }}/bin/"
-        ]
-      },
-      "jq": {
-        "Install": [
-          "ln",
-          "-sf",
-          "{{ $.CurDir }}/jq",
-          "{{ $.RootDir }}/bin/"
-        ]
-      },
-      "bin/go": {
-        "Install": [
-          "ln",
-          "-sf",
-          "{{ $.CurDir }}/bin/go",
-          "{{ $.RootDir }}/bin/"
-        ]
-      }
     }
   }
 }

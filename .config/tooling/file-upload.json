@@ -1,7 +1,5 @@
 {
-  "Flags": [
-    "enabled"
-  ],
+  "Flags": [],
   "Settings": {
     "Bind": "0.0.0.0:8080",
     "Store": "Downloads",

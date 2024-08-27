@@ -11,11 +11,6 @@
       "golang.org/x/tools/gopls@latest",
       "github.com/mattn/efm-langserver@latest",
       "github.com/rclone/rclone@latest"
-    ],
-    "Cargo": [
-      "git-delta",
-      "ripgrep",
-      "bat"
     ]
   }
 }

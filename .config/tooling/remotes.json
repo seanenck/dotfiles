@@ -8,12 +8,7 @@
     "Sources": {
       "https://github.com/kovidgoyal/kitty": "Git",
       "https://github.com/rxhanson/rectangle": "Git",
-      "https://github.com/jqlang/jq": "Git",
-      "https://github.com/golang/go": "Git",
-      "https://github.com/neovim/neovim": "Git",
-      "https://github.com/koalaman/shellcheck": "Git",
-      "https://github.com/scop/bash-completion": "Git",
-      "https://ftp.gnu.org/gnu/bash/": "HTTP|bash"
+      "https://github.com/golang/go": "Git"
     },
     "Modes": {
       "Git": {
