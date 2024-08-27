@@ -1,6 +1,10 @@
 FILES   := $(shell find . -type f | cut -d '/' -f 2- | grep '^\.' | grep -v -F -f .null)
 DIRS    := $(shell find $(FILES) -type f -exec dirname {} \; | grep -v '^\.$$' | sort -u)
 
+all:
+	env | grep SHELL | grep bash
+	make install
+
 install: _dirs _files
 
 _files:
