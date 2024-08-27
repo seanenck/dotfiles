@@ -39,7 +39,9 @@
         "https://github.com/koalaman/shellcheck": "Git",
         "https://github.com/openssl/openssl": "Git",
         "https://git.code.sf.net/p/isync/isync": "Git",
-        "https://github.com/scop/bash-completion": "Git"
+        "https://github.com/scop/bash-completion": "Git",
+        "https://ftp.gnu.org/gnu/bash/": "HTTP|bash",
+        "https://curl.se/docs/caextract.html": "HTTP|curl"
       },
       "Modes": {
         "Git": {
@@ -48,6 +50,19 @@
             "[a-zA-Z0-9.]+$",
             "[0-9].[0-9]"
           ]
+        },
+        "HTTP": {
+          "Command": ["curl", "-L"],
+          "Filters": {
+            "bash": {
+              "Start": "bash-[0-9][.]",
+              "End": "[.]tar[.]gz"
+            },
+            "curl": {
+              "Start": "/ca/cacert-",
+              "End": "[.]pem"
+            }
+          }
         }
       }
     }
