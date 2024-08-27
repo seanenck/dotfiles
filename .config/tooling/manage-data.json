@@ -1,7 +1,9 @@
 {
   "Flags": [
+    "enabled"
   ],
   "Settings": {
+    "Remote": true,
     "Library": "Env/secrets/lib",
     "URL": "https://google.com"
   }
