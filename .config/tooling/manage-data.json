@@ -1,6 +1,5 @@
 {
   "Flags": [
-    "enabled"
   ],
   "Settings": {
     "Library": "Env/secrets/lib",
