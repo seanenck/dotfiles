@@ -3,7 +3,7 @@
     "enabled"
   ],
   "Settings": {
-    "Remote": true,
+    "Remote": false,
     "Library": "Env/secrets/lib",
     "URL": "https://google.com"
   }
