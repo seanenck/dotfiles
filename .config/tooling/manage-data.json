@@ -4,6 +4,7 @@
   ],
   "Settings": {
     "Remote": false,
+    "Caffeinate": false,
     "Library": "Env/secrets/lib",
     "URL": "https://google.com"
   }
