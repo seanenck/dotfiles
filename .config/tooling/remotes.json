@@ -10,7 +10,8 @@
       "https://github.com/rxhanson/rectangle": "Git",
       "https://gitlab.alpinelinux.org/alpine/aports": "Git",
       "https://github.com/golang/go": "Git",
-      "https://github.com/rclone/rclone": "Git"
+      "https://github.com/rclone/rclone": "Git",
+      "https://github.com/jqlang/jq": "Git"
     },
     "Modes": {
       "Git": {
