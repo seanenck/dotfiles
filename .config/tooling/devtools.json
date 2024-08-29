@@ -9,8 +9,7 @@
       "github.com/mgechev/revive@latest",
       "mvdan.cc/gofumpt@latest",
       "golang.org/x/tools/gopls@latest",
-      "github.com/mattn/efm-langserver@latest",
-      "github.com/rclone/rclone@latest"
+      "github.com/mattn/efm-langserver@latest"
     ]
   }
 }

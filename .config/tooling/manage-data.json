@@ -1,7 +1,5 @@
 {
-  "Flags": [
-    "enabled"
-  ],
+  "Flags": [],
   "Settings": {
     "LockFile": "Active/tasks/tmp/.lock",
     "Remote": false,
