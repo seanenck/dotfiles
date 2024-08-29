@@ -3,6 +3,7 @@
     "enabled"
   ],
   "Settings": {
+    "LockFile": "Active/tasks/tmp/.lock",
     "Remote": false,
     "Caffeinate": false,
     "Library": "Env/secrets/lib",
