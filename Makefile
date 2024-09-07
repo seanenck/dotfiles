@@ -1,4 +1,4 @@
-FILES   := $(shell find . -type f | cut -d '/' -f 2- | grep '^\.' | grep -v -F -f .null | grep -v -F '.git' | grep -v -F '.null')
+FILES   := $(shell find . -type f -wholename "\./\.*" | cut -d '/' -f 2- | grep -v -E '\.(git/|null)' | grep -v -F -f .null)
 DIRS    := $(shell find $(FILES) -type f -exec dirname {} \; | grep -v '^\.$$' | sort -u)
 
 all:
