@@ -1,5 +1,3 @@
-.git/
-.null
 .config/mypy/
 .config/vim/
 .config/helix/
