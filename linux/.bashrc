@@ -21,7 +21,7 @@ source "$HOME/.bash_aliases"
 # disable ctrl+s
 stty -ixon
 
-for FILE in "$HOME/.config/bashrc/"*; do
+for FILE in "$HOME/.config/shellrc/"*; do
   source "$FILE"
 done
 

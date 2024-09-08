@@ -1,0 +1,13 @@
+#!/bin/sh
+DATA="$HOME/Env/secrets/data/lib"
+if [ -z "$1" ]; then
+    echo "command not set"
+    exit 1
+fi
+CMD="$DATA/$1"
+if [ ! -e "$CMD" ]; then
+    echo "invalid lib"
+    exit 1
+fi
+
+"$CMD" ${@:2}
