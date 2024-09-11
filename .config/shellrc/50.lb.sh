@@ -5,5 +5,9 @@ if command -v lb > /dev/null; then
   if [ -e "$LB_ENV" ]; then
     source "$LB_ENV"
   fi
+  LB_ENV="$HOME/.config/shellrc/99.lb.sh"
+  if [ ! -s "$LB_ENV" ]; then
+    lb completions > "$LB_ENV"
+  fi
   unset LB_ENV 
 fi
