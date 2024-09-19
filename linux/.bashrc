@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 [[ $- != *i* ]] && return
+[[ -n "$BASHRC_INIT" ]] && return
 
+export BASHRC_INIT=1
 for FILE in /etc/bashrc /etc/bash.bashrc /etc/bash/bashrc /etc/bash/bash.bashrc /opt/homebrew/etc/profile.d/bash_completion.sh /opt/fs/root/share/bash-completion/bash_completion; do
   if [ -s "$FILE" ]; then
     source "$FILE"
   fi
 done
+export -n BASHRC_INIT
 
 shopt -s direxpand
 # check the window size after each command
