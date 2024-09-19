@@ -1,5 +1,5 @@
 #!/bin/sh
-DATA="$HOME/Env/secrets/data/lib"
+DATA="$HOME/Library/Secrets/bin"
 if [ -z "$1" ]; then
     echo "command not set"
     exit 1

@@ -2,8 +2,10 @@ path+=("$HOME/.local/bin")
 export PATH
 
 autoload -Uz compinit && compinit
-for file in $HOME/.config/shellrc/*; do
-  source "$file"
-done
+if [ -d "$HOME/.config/shellrc" ]; then
+  for file in $HOME/.config/shellrc/*; do
+    source "$file"
+  done
+fi
 
 caffeinate manage-data tasks
