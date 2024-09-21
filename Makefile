@@ -3,6 +3,7 @@ FILES   := $(shell find . -type f | grep -f $(OS) | cut -d '/' -f 2-)
 DIRS    := $(shell find $(FILES) -type f -exec dirname {} \; | grep -v '^\.$$' | sort -u)
 CMD     := ln -sf
 DESTDIR := $(HOME)
+MKDIR   := mkdir -p
 
 all: _dirs _files
 
@@ -14,6 +15,6 @@ _files:
 
 _dirs:
 	@for dir in $(DIRS); do \
-		echo mkdir $$dir; \
-		mkdir -p $(DESTDIR)/$$dir ; \
+		echo $(MKDIR) $$dir; \
+		$(MKDIR) $(DESTDIR)/$$dir ; \
 	done
