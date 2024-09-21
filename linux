@@ -1,0 +1,13 @@
+.bashrc
+.bash_profile
+.bash_aliases
+.bash_aliases
+.bash_profile
+.bashrc
+.config/bat/
+.config/efm-langserver/
+.config/git
+.config/nvim
+.config/tooling
+.config/shellrc
+.ssh/
