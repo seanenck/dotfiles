@@ -1,5 +1,6 @@
 #!/bin/sh
-LOGS="/Users/enck/.local/state/vm/logs"
+LOGS="/Users/enck/Library/vfu"
+mkdir -p "$LOGS"
 SCREEN="vfu-vm"
 STOPPED="stopped"
 IS_BOOTSTRAP="bootstrap"

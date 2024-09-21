@@ -22,6 +22,10 @@
     {
       "mode": "nvme",
       "path": "$CONFIG/data.img"
+    },
+    {
+      "mode": "nvme",
+      "path": "$CONFIG/home.img"
     }
   ],
   "env": {
@@ -37,14 +41,8 @@
     "documents": {
         "path": "~/Documents"
     },
-    "home": {
-        "path": "~/.local/state/vm/alpine"
-    },
     "downloads": {
         "path": "~/Downloads"
-    },
-    "workspace": {
-        "path": "~/Workspace"
     }
   },
   "networks": [
