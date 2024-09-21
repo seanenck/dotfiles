@@ -1,5 +1,8 @@
 #!/bin/sh
 for f in $(ls); do
+  if [ -d "$f" ]; then
+    continue
+  fi
   ext=$(echo "$f" | rev | cut -d "." -f 1 | tr '[:upper:]' '[:lower:]' | rev)
   target="$(date +%d).$(date +%H%M%S).$(shasum -a 256 "$f" | cut -c 1-7)."
   case "$ext" in
