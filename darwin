@@ -1,6 +1,6 @@
 .config/kitty
-.local/bin
 .zshrc
 .gitconfig
 .config/vm
 .config/shellrc/50.lb.sh
+.config/tooling

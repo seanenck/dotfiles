@@ -1,7 +1,10 @@
 {
   "Flags": [
+    "enabled",
+    "darwin"
   ],
   "Settings": {
-    "Directory": ".config/vm"
+    "Directory": ".config/vm",
+    "Executable": "/Applications/vfu.app/Contents/MacOS/vfu-cli"
   }
 }

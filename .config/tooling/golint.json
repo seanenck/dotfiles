@@ -1,6 +1,7 @@
 {
   "Flags": [
-    "enabled"
+    "enabled",
+    "linux"
   ],
   "Settings": {
     "Tools": [

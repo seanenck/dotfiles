@@ -1,10 +1,10 @@
 {
-  "Flags": [],
+  "Flags": [
+    "enabled",
+    "darwin"
+  ],
   "Settings": {
-    "LockFile": "Active/tasks/tmp/.lock",
-    "Remote": false,
     "Caffeinate": false,
-    "Library": "Env/secrets/lib",
-    "URL": "https://google.com"
+    "Library": "Env/secrets/macos/bin"
   }
 }

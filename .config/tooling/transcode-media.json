@@ -1,5 +1,8 @@
 {
-  "Flags": [],
+  "Flags": [
+      "enabled",
+      "darwin"
+  ],
   "Settings": {
     "Transcode": [
       {
@@ -16,7 +19,7 @@
         ]
       },
       {
-        "Enabled": true,
+        "Enabled": false,
         "Extensions": [
           "heic"
         ],
@@ -27,7 +30,7 @@
         ]
       },
       {
-        "Enabled": false,
+        "Enabled": true,
         "Extensions": [
           "heic"
         ],

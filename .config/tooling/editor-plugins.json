@@ -1,7 +1,8 @@
 {
   "Flags": [
     "enabled",
-    "update-system"
+    "update-system",
+    "linux"
   ],
   "Settings": {
     "Plugins": [

@@ -1,6 +1,7 @@
 {
   "Flags": [
-    "enabled"
+    "enabled",
+    "linux"
   ],
   "Settings": {
     "Format": "2006-01-02",
