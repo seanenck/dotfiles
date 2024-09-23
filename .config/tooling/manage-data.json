@@ -1,10 +1,9 @@
 {
   "Flags": [
-    "enabled",
     "darwin"
   ],
   "Settings": {
-    "Caffeinate": false,
+    "Caffeinate": true,
     "Library": "Env/secrets/macos/bin"
   }
 }

@@ -8,4 +8,4 @@ if [ -d "$HOME/.config/shellrc" ]; then
   done
 fi
 
-caffeinate manage-data tasks
+manage-data tasks
