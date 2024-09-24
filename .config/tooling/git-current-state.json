@@ -1,7 +1,6 @@
 {
   "Flags": [
-    "linux",
-    "darwin"
+    "all"
   ],
   "Settings": {}
 }

@@ -1,7 +1,6 @@
 {
   "Flags": [
-    "darwin",
-    "linux"
+    "all"
   ],
   "Settings": {
     "Directories": [
