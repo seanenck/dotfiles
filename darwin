@@ -5,3 +5,5 @@
 .config/shellrc/50.lb.sh
 .config/shellrc/99.prompt.sh
 .config/tooling
+.vimrc
+.vim/
