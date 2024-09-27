@@ -4,6 +4,7 @@
   ],
   "Settings": {
     "Caffeinate": true,
+    "LockFile": "Active/tasks/tmp/tasks.lock",
     "Library": "Env/secrets/macos/bin"
   }
 }
