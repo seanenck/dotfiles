@@ -1,0 +1,31 @@
+{
+  "Flags": [
+    "linux"
+  ],
+  "Settings": {
+    "Edge": false,
+    "Name": "ttypty",
+    "Output": "Workspace",
+    "Architecture": ["uname", "-m"],
+    "Repository": {
+      "URL": "https://dl-cdn.alpinelinux.org/alpine/{{ $.Tag }}",
+      "Repositories": ["main", "community"]
+    },
+    "Source": {
+      "Remote": "https://gitlab.alpinelinux.org/alpine/aports",
+      "Directory": "scripts",
+      "Template": [
+        "profile_{{ $.Name }}() {",
+        "  profile_standard",
+        "  title='{{ $.Name }}'",
+        "  desc='{{ $.Name }} personal spin iso'",
+        "  kernel_flavors='virt'",
+        "  profile_abbrev='{{ $.Name }}'",
+        "  aarch='{{ $.Arch }}'",
+        "  kernel_addons=",
+        "  apks=\"$apks {{ $.World }}\"",
+        "}"
+      ]
+    }
+  }
+}
