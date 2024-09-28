@@ -1,5 +1,5 @@
 OS      := $(shell uname | tr '[:upper:]' '[:lower:]')
-FILES   := $(shell find . -type f | grep -f $(OS) | cut -d '/' -f 2-)
+FILES   := $(shell find . -type f | grep -F -f $(OS) | cut -d '/' -f 2-)
 DIRS    := $(shell find $(FILES) -type f -exec dirname {} \; | grep -v '^\.$$' | sort -u)
 CMD     := ln -sf
 DESTDIR := $(HOME)
