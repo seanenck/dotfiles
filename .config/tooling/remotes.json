@@ -20,10 +20,9 @@
         "Filter": "^linux-virt-([a-zA-Z0-9.-]*?) description:"
       },
       "Git": {
-        "Split": "\t",
         "Command": "git",
         "Arguments": ["ls-remote", "--tags"],
-        "Filter": "^refs/tags/([a-zA-Z0-9._-]+?)$"
+        "Filter": "[a-f0-9]+\trefs/tags/([a-zA-Z0-9._-]+?)$"
       }
     }
   }
