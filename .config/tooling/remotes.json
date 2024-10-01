@@ -15,19 +15,14 @@
     },
     "Modes": {
       "Alpine": {
-        "Command": [
-          "apk",
-          "info"
-        ],
+        "Command": "apk",
+        "Arguments": ["info"],
         "Filter": "^linux-virt-([a-zA-Z0-9.-]*?) description:"
       },
       "Git": {
         "Split": "\t",
-        "Command": [
-          "git",
-          "ls-remote",
-          "--tags"
-        ],
+        "Command": "git",
+        "Arguments": ["ls-remote", "--tags"],
         "Filter": "^refs/tags/([a-zA-Z0-9._-]+?)$"
       }
     }
