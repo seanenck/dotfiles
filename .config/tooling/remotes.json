@@ -10,10 +10,22 @@
       "https://github.com/rxhanson/rectangle": "Git",
       "https://github.com/rclone/rclone": "Git",
       "https://gitlab.alpinelinux.org/alpine/aports": "Git",
-      "https://github.com/golang/go": "Git"
+      "https://github.com/golang/go": "Git",
+      "linux-virt": "Alpine"
     },
     "Modes": {
+      "Alpine": {
+        "Command": [
+          "apk",
+          "info"
+        ],
+        "Filter": [
+          "linux-virt-",
+          " description"
+        ]
+      },
       "Git": {
+        "Split": "\t",
         "Command": [
           "git",
           "ls-remote",
@@ -23,18 +35,6 @@
           "[a-zA-Z0-9.]+$",
           "[0-9].[0-9]"
         ]
-      },
-      "HTTP": {
-        "Command": [
-          "curl",
-          "-L"
-        ],
-        "Filters": {
-          "bash": {
-            "Start": "bash-[0-9][.]",
-            "End": "[.]tar[.]gz"
-          }
-        }
       }
     }
   }
