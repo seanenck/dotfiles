@@ -38,7 +38,7 @@ for lsp, settings in pairs({
             }
         }
     }) do
-    cmd = require(string.format("lspconfig.server_configurations.%s", lsp)).default_config.cmd
+    cmd = require(string.format("lspconfig.configs.%s", lsp)).default_config.cmd
     exe = nil
     for _, arg in pairs(cmd) do
         exe = arg
