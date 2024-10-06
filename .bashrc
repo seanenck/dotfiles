@@ -14,7 +14,10 @@ shopt -s direxpand
 # check the window size after each command
 shopt -s checkwinsize
 
-export EDITOR=nvim
+export EDITOR=vi
+if command -v nvim > /dev/null; then
+  export EDITOR=nvim
+fi
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 export DELTA_PAGER="less -R -c -X"
