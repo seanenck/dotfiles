@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-alias cat=bat
+if command -v bat > /dev/null; then
+  alias cat=bat
+fi
 alias diff="diff --color -u"
 alias ls='ls --color=auto'
-alias grep="rg"
+if command -v rg > /dev/null; then
+  alias grep="rg"
+fi
 alias vi="$EDITOR"
 alias vim="$EDITOR"
 alias less="less -R"
