@@ -6,7 +6,7 @@
   "Settings": {
     "State": ".local/state/remotes",
     "Sources": {
-      "https://github.com/kovidgoyal/kitty": "Git",
+      "https://github.com/wez/wezterm": "Git",
       "https://github.com/rxhanson/rectangle": "Git",
       "https://github.com/rclone/rclone": "Git",
       "https://gitlab.alpinelinux.org/alpine/aports": "Git",
