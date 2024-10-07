@@ -24,6 +24,11 @@ config.keys = {
     action = wezterm.action.DisableDefaultAssignment,
   },
   {
+    key = "n",
+    mods = "CMD",
+    action = wezterm.action.SpawnCommandInNewWindow({cwd = wezterm.home_dir }),
+  },
+  {
     key = 'w',
     mods = 'CMD',
     action = wezterm.action.CloseCurrentTab{confirm=false}
