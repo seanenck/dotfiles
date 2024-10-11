@@ -5,6 +5,6 @@
   "Settings": {
     "Inhibit": "caffeinate",
     "LockFile": "Active/tasks/tmp/tasks.lock",
-    "Library": "Env/secrets/macos/bin"
+    "Library": "Env/secrets/manage/bin"
   }
 }
