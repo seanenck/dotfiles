@@ -7,6 +7,7 @@ set $term flatpak run org.wezfurlong.wezterm
 set $menu_cmd ~/.local/bin/host/menu
 set $rofi_cmd $menu_cmd list | rofi -dmenu | $menu_cmd rewrite | sh
 set $menu $rofi_cmd
+set $sleep pkill -10 swayidle
 
 gaps outer 5px
 gaps inner 5px
@@ -23,7 +24,8 @@ bindsym $mod+q kill
 # sway management
 bindsym $mod+r reload
 bindsym $mod+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
-bindsym $mod+Shift+x exec pkill -10 swayidle
+bindsym $mod+Shift+x exec $sleep
+bindsym $mod+Shift+s exec $sleep && systemctl suspend
 
 # view organization
 bindsym $mod+Shift+f fullscreen
