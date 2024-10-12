@@ -7,5 +7,3 @@ if [ -d "$HOME/.config/shellrc" ]; then
     source "$file"
   done
 fi
-
-manage-data tasks

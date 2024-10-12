@@ -1,7 +1,5 @@
 {
-  "Flags": [
-    "darwin"
-  ],
+  "Flags": [],
   "Settings": {
     "Inhibit": "caffeinate",
     "LockFile": "Active/tasks/tmp/tasks.lock",
