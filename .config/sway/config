@@ -4,7 +4,8 @@ input "1:1:AT_Translated_Set_2_keyboard" {
 }
 
 set $term flatpak run org.wezfurlong.wezterm
-set $rofi_cmd printf "firefox\nwezterm\nthunar" | rofi -dmenu | sed 's#wezterm#$term#;s#firefox#flatpak run org.mozilla.firefox#' | sh
+set $menu_cmd ~/.local/bin/host/menu
+set $rofi_cmd $menu_cmd list | rofi -dmenu | $menu_cmd rewrite | sh
 set $menu $rofi_cmd
 
 gaps outer 5px

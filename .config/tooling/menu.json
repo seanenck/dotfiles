@@ -1,0 +1,10 @@
+{
+  "Flags": [
+    "host",
+    "linux"
+  ],
+  "Settings": {
+    "Apps": ["thunar"],
+    "Flatpak": true
+  }
+}
