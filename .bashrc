@@ -14,6 +14,13 @@ shopt -s direxpand
 # check the window size after each command
 shopt -s checkwinsize
 
+# disable ctrl+s
+stty -ixon
+
+for FILE in "$HOME/.config/shellrc/"*; do
+  source "$FILE"
+done
+
 export EDITOR=vi
 if command -v vim > /dev/null; then
   export EDITOR=vim
@@ -26,12 +33,5 @@ export GIT_EDITOR=$EDITOR
 export DELTA_PAGER="less -R -c -X"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 source "$HOME/.bash_aliases"
-
-# disable ctrl+s
-stty -ixon
-
-for FILE in "$HOME/.config/shellrc/"*; do
-  source "$FILE"
-done
 
 unset FILE

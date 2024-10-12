@@ -8,7 +8,11 @@
     "State": ".local/state/remotes",
     "Sources": {
       "https://github.com/rclone/rclone": "Git",
-      "https://github.com/golang/go": "Git"
+      "https://github.com/golang/go": "Git",
+      "https://github.com/neovim/neovim": "Git",
+      "https://github.com/BurntSushi/ripgrep": "Git",
+      "https://github.com/sharkdp/bat": "Git",
+      "https://github.com/dandavison/delta": "Git"
     },
     "Modes": {
       "Alpine": {
