@@ -1,6 +1,7 @@
 #!/bin/sh
 FILE="/run/.containerenv"
 if [ -e "$FILE" ]; then
+  export GIT_PAGER=delta
   NAME=$(grep "name=" "$FILE" | sed 's/"//g' | cut -d "=" -f 2)
   export CONTAINER_NAME="$NAME"
   FILE="$HOME/.local/bin/$NAME"
