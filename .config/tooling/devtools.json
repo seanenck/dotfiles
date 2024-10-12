@@ -1,7 +1,8 @@
 {
   "Flags": [
     "update-system",
-    "linux"
+    "linux",
+    "container"
   ],
   "Settings": {
     "go": {

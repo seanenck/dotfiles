@@ -1,6 +1,7 @@
 {
   "Flags": [
     "update-system",
+    "container",
     "linux"
   ],
   "Settings": {
