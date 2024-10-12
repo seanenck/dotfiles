@@ -11,3 +11,7 @@
 .config/tooling
 .config/shellrc
 .ssh/
+.config/sway
+.config/waybar
+.config/wezterm
+.config/vim

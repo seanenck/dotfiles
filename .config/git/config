@@ -41,9 +41,9 @@
     format = man
 [merge]
     conflictstyle = diff3
-[url "~/Active/git/private/"]
+[url "mini.ttypty.com:~/Active/git/private/"]
     insteadOf = private:
-[url "~/Active/git/upstream/"]
+[url "mini.ttypty.com:~/Active/git/upstream/"]
     insteadOf = upstream:
 [includeIf "hasconfig:remote.*.url:private:**"]
     path = ~/.config/git/signing.config

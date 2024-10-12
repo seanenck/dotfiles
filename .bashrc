@@ -15,6 +15,9 @@ shopt -s direxpand
 shopt -s checkwinsize
 
 export EDITOR=vi
+if command -v vim > /dev/null; then
+  export EDITOR=vim
+fi
 if command -v nvim > /dev/null; then
   export EDITOR=nvim
 fi
