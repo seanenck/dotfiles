@@ -1,7 +1,6 @@
 {
   "Flags": [
-    "linux",
-    "container"
+    "linux"
   ],
   "Settings": {}
 }
