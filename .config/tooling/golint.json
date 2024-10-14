@@ -4,13 +4,16 @@
     "linux"
   ],
   "Settings": {
+    "Ignores": [
+      "^build/",
+      "^target/"
+    ],
     "Tools": [
       {
         "Name": "revive",
         "Command": [
           "revive"
-        ],
-        "Detect": false
+        ]
       },
       {
         "Name": "govet",
@@ -18,7 +21,9 @@
           "go",
           "vet"
         ],
-        "Detect": false
+        "Ignores": [
+            "named files must all be in one directory"
+        ]
       },
       {
         "Name": "staticcheck",
@@ -28,7 +33,9 @@
           "all",
           "-debug.run-quickfix-analyzers"
         ],
-        "Detect": false
+        "Ignores": [
+            "named files must all be in one directory"
+        ]
       },
       {
         "Name": "gofumpt",
@@ -36,8 +43,7 @@
           "gofumpt",
           "-l",
           "-extra"
-        ],
-        "Detect": true
+        ]
       }
     ]
   }
