@@ -95,8 +95,8 @@ applications:
     mode: "github"
     remote:
       upstream: "koalaman/shellcheck"
-      asset: "linux.86_64.tar.xz$"
+      asset: "linux.x86_64.tar.xz$"
     binaries:
       files:
-        - "ShellCheck"
+        - "shellcheck"
       destination: "~/.local/bin"
