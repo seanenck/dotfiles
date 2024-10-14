@@ -1,8 +1,5 @@
 {
   "Flags": [
-    "update-system",
-    "linux",
-    "container"
   ],
   "Settings": {
     "State": ".local/state/remotes",
