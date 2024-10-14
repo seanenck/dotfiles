@@ -1,4 +1,5 @@
 directory: ~/.local/fs
+token: ~/.local/state/bd.token
 applications:
   go:
     mode: "tagged"
