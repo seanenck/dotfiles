@@ -72,7 +72,7 @@ applications:
     binaries:
       files:
         - "lb"
-      destination: "~/.local/bin/lockbox"
+      destination: "~/.local/bin/host"
   bd:
     mode: "github"
     remote:
@@ -82,3 +82,12 @@ applications:
       files:
         - "bd"
       destination: "~/.local/bin"
+  age:
+    mode: "github"
+    remote:
+      upstream: "FiloSottile/age"
+      asset: "linux-amd64.tar.gz$"
+    binaries:
+      files:
+        - "age"
+      destination: "~/.local/bin/host"
