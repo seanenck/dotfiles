@@ -1,8 +1,8 @@
-.config/wezterm
-.zshrc
-.gitconfig
-.config/vm
 .config/shellrc
 .config/tooling
-.vimrc
+.config/vm
+.config/wezterm
+.gitconfig
 .vim/
+.vimrc
+.zshrc

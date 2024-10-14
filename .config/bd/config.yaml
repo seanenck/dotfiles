@@ -68,6 +68,8 @@ applications:
     remote:
       upstream: "seanenck/lockbox"
       asset: "linux-amd64.tar.gz$"
+    extract:
+      command: ["tar", "xf", "{INPUT}", "-C", "{OUTPUT}"]
     binaries:
       files:
         - "lb"
