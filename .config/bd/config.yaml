@@ -13,8 +13,9 @@ applications:
     binaries:
       files:
         - "bin/go"
-      destination: "~/.local/bin/developer"
+      destination: "~/.local/bin/development"
   rg:
+    disable: true
     mode: "github"
     remote:
       upstream: "BurntSushi/ripgrep"
@@ -24,6 +25,7 @@ applications:
         - "rg"
       destination: "~/.local/bin"
   nvim:
+    disable: true
     mode: "github"
     remote:
       upstream: "neovim/neovim"
@@ -38,6 +40,7 @@ applications:
       upstream: "rclone/rclone"
       asset: "rclone-(.+?)-osx-arm64.zip"
   bat:
+    disable: true
     mode: "github"
     remote:
       upstream: "sharkdp/bat"
@@ -47,6 +50,7 @@ applications:
         - "bat"
       destination: "~/.local/bin"
   delta:
+    disable: true
     mode: "github"
     remote:
       upstream: "dandavison/delta"
@@ -56,6 +60,7 @@ applications:
         - "delta"
       destination: "~/.local/bin"
   efm:
+    disable: true
     mode: "github"
     remote:
       upstream: "mattn/efm-langserver"
@@ -63,7 +68,7 @@ applications:
     binaries:
       files:
         - "efm-langserver"
-      destination: "~/.local/bin"
+      destination: "~/.local/bin/development"
   lb:
     mode: "github"
     remote:
@@ -72,7 +77,7 @@ applications:
     binaries:
       files:
         - "lb"
-      destination: "~/.local/bin/host"
+      destination: "~/.local/bin/development"
   bd:
     mode: "github"
     remote:
@@ -83,6 +88,7 @@ applications:
         - "bd"
       destination: "~/.local/bin"
   age:
+    disable: true
     mode: "github"
     remote:
       upstream: "FiloSottile/age"
@@ -92,6 +98,7 @@ applications:
         - "age"
       destination: "~/.local/bin/host"
   shellcheck:
+    disable: true
     mode: "github"
     remote:
       upstream: "koalaman/shellcheck"
