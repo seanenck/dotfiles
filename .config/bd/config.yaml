@@ -91,3 +91,12 @@ applications:
       files:
         - "age"
       destination: "~/.local/bin/host"
+  shellcheck:
+    mode: "github"
+    remote:
+      upstream: "koalaman/shellcheck"
+      asset: "linux.86_64.tar.xz$"
+    binaries:
+      files:
+        - "ShellCheck"
+      destination: "~/.local/bin"

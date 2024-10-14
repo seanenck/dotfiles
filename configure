@@ -1,0 +1,37 @@
+#!/bin/sh
+OS=$(uname | tr '[:upper:]' '[:lower:]')
+DRYRUN=0
+if [ -n "$1" ] && [ "$1" = "--dryrun" ]; then
+  DRYRUN=1
+fi
+if [ ! -s "$OS" ]; then
+  echo "no $OS file"
+  exit 1
+fi
+FILES=$(find . -type f | grep -F -f "$OS" | cut -d "/" -f 2-)
+DIRS=$(find $FILES -type f -exec dirname {} \; | grep -v '^\.$' | sort -u)
+
+_setup() {
+  local cmd
+  cmd="$1 $HOME/$2"
+  echo "executing: $cmd" | sed "s#$HOME/##g"
+  if [ "$DRYRUN" -eq 1 ]; then
+    return
+  fi
+  if ! $cmd; then
+    echo "  -> failed"
+    exit 1
+  fi
+}
+
+for DIR in $DIRS; do
+  _setup "mkdir -p" "$DIR"
+done
+
+for FILE in $FILES; do
+  _setup "ln -sf $PWD/$FILE" "$FILE"
+done
+
+if [ "$DRYRUN" -eq 1 ]; then
+  echo "[DRYRUN] completed"
+fi
