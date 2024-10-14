@@ -2,6 +2,7 @@ directory: ~/.local/fs
 token: ~/.local/state/bd.token
 applications:
   go:
+    disable: true
     mode: "tagged"
     remote:
       upstream: "https://github.com/golang/go"
