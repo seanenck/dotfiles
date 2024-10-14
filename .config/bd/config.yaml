@@ -73,3 +73,12 @@ applications:
       files:
         - "lb"
       destination: "~/.local/bin/lockbox"
+  bd:
+    mode: "github"
+    remote:
+      upstream: "seanenck/bd"
+      asset: "linux-amd64.tar.gz$"
+    binaries:
+      files:
+        - "bd"
+      destination: "~/.local/bin"
