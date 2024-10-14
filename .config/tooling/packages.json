@@ -1,0 +1,26 @@
+{
+  "Flags": [
+    "linux",
+    "container",
+    "update-system"
+  ],
+  "Settings": {
+    "Packages": [
+      "shellcheck",
+      "git-delta",
+      "bash-language-server",
+      "ripgrep",
+      "age",
+      "bat",
+      "neovim",
+      "go"
+    ],
+    "Lookups": {
+      "arch": {
+        "Command": ["pacman", "-Sl"],
+        "Delimiter": " ",
+        "Index": 1
+      }
+    }
+  }
+}
