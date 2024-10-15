@@ -1,4 +1,0 @@
-directory: ~/.local/fs
-token: ~/.local/state/bd.token
-include:
-  - "~/.config/bd/apps/*"

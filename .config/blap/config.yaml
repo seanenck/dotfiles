@@ -1,0 +1,4 @@
+directory: ~/.local/fs
+token: ~/.local/state/blap.token
+include:
+  - "~/.config/blap/apps/*"
