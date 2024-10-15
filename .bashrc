@@ -17,7 +17,7 @@ shopt -s checkwinsize
 # disable ctrl+s
 stty -ixon
 
-for FILE in "$HOME/.config/shellrc/"*; do
+for FILE in "$HOME/.config/shellrc/"*.sh; do
   source "$FILE"
 done
 
