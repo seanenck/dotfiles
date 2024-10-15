@@ -5,27 +5,27 @@ applications:
       asset: "tarball"
     build:
       - command: ["cargo", "build", "--release", "--locked", "--features", "pcre2"]
-    binaries:
-      files:
-        - "target/release/rg"
-      destination: "~/.local/bin/"
+    deploy:
+      - files:
+          - "target/release/rg"
+        destination: "~/.local/bin/"
   bat:
     github:
       project: "sharkdp/bat"
       asset: "tarball"
     build:
       - command: ["cargo", "build", "--release", "--locked"]
-    binaries:
-      files:
-        - "target/release/bat"
-      destination: "~/.local/bin"
+    deploy:
+      - files:
+          - "target/release/bat"
+        destination: "~/.local/bin"
   delta:
     github:
       project: "dandavison/delta"
       asset: "tarball"
     build:
       - command: ["cargo", "build", "--locked", "--release", "--all-features"]
-    binaries:
-      files:
-        - "target/release/delta"
-      destination: "~/.local/bin"
+    deploy:
+      - files:
+          - "target/release/delta"
+        destination: "~/.local/bin"
