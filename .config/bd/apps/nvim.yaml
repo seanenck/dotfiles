@@ -1,0 +1,57 @@
+applications:
+  nvim:
+    github:
+      project: "neovim/neovim"
+      asset: "nvim-linux64.tar.gz$"
+    binaries:
+      files:
+        - "bin/nvim"
+      destination: "~/.local/bin"
+  nvimluasnip:
+    branch:
+      project: "L3MON4D3/LuaSnip"
+      branch: "master"
+    binaries:
+      files:
+        - "."
+      destination: "~/.config/nvim/pack/plugins/start/LuaSnip"
+  nvimscrollbar:
+    branch:
+      project: "petertriho/nvim-scrollbar"
+      branch: "main"
+    binaries:
+      files:
+        - "."
+      destination: "~/.config/nvim/pack/plugins/start/nvim-scrollbar"
+  vimairline:
+    branch:
+      project: "vim-airline/vim-airline"
+      branch: "master"
+    binaries:
+      files:
+        - "."
+      destination: "~/.config/nvim/pack/plugins/start/vim-airline"
+  nvimlspconfig:
+    branch:
+      project: "neovim/nvim-lspconfig"
+      branch: "master"
+    binaries:
+      files:
+        - "."
+      destination: "~/.config/nvim/pack/plugins/start/nvim-lspconfig"
+  nvimcmp:
+    branch:
+      project: "hrsh7th/nvim-cmp"
+      branch: "main"
+    binaries:
+      files:
+        - "."
+      destination: "~/.config/nvim/pack/plugins/start/nvim-cmp"
+  nvimcmplsp:
+    branch:
+      project: "hrsh7th/cmp-nvim-lsp"
+      branch: "main"
+    binaries:
+      files:
+        - "."
+      destination: "~/.config/nvim/pack/plugins/start/cmp-nvim-lsp"

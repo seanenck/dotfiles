@@ -1,21 +1,22 @@
-lb:
-  github:
-    project: "seanenck/lockbox"
-    asset: "tarball"
-  build:
-    - command: ["make", "VERSION={{ $.Tag }}"]
-  binaries:
-    files:
-      - "build/lb"
-    destination: "~/.local/bin/"
-age:
-  github:
-    project: "FiloSottile/age"
-    asset: "tarball"
-  build:
-    - command: ["go", "build", "-trimpath", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-X main.Version={{ $.Tag }} -linkmode external", "-o", ".", "./..."]
-  binaries:
-    files:
-      - "age"
-      - "age-keygen"
-    destination: "~/.local/bin"
+applications:
+  lb:
+    github:
+      project: "seanenck/lockbox"
+      asset: "tarball"
+    build:
+      - command: ["make", "VERSION={{ $.Tag }}"]
+    binaries:
+      files:
+        - "build/lb"
+      destination: "~/.local/bin/"
+  age:
+    github:
+      project: "FiloSottile/age"
+      asset: "tarball"
+    build:
+      - command: ["go", "build", "-trimpath", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-X main.Version={{ $.Tag }} -linkmode external", "-o", ".", "./..."]
+    binaries:
+      files:
+        - "age"
+        - "age-keygen"
+      destination: "~/.local/bin"

@@ -1,54 +1,55 @@
-gopls:
-  github:
-    project: "golang/tools"
-    asset: "tarball"
-  build:
-    - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "gopls"]
-      directory: "gopls"
-  binaries:
-    files:
-      - "gopls/gopls"
-    destination: "~/.local/bin/development"
-go:
-  priority: 100
-  tagged:
-    repository: "https://github.com/golang/go"
-    download: "https://go.dev/dl/{{ $.Tag }}.linux-amd64.tar.gz"
-    filters: 
-      - "refs/tags/weekly"
-      - "refs/tags/release"
-      - "[0-9]rc[0-9]"
-  binaries:
-    files:
-      - "bin/go"
-    destination: "~/.local/bin/development"
-gofumpt:
-  github:
-    project: "mvdan/gofumpt"
-    asset: "tarball"
-  build:
-    - command: ["go", "build", "-trimpath", "-mod=readonly", "-modcacherw"]
-  binaries:
-    files:
-      - "gofumpt"
-    destination: "~/.local/bin/development"
-revive:
-  github:
-    project: "mgechev/revive"
-    asset: "tarball"
-  build:
-    - command: ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
-  binaries:
-    files:
-      - "revive"
-    destination: "~/.local/bin/development"
-staticcheck:
-  github:
-    project: "dominikh/go-tools"
-    asset: "tarball"
-  build:
-    - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "staticcheck", "./cmd/staticcheck"]
-  binaries:
-    files:
-      - "staticcheck/staticcheck"
-    destination: "~/.local/bin"
+applications:
+  gopls:
+    github:
+      project: "golang/tools"
+      asset: "tarball"
+    build:
+      - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "gopls"]
+        directory: "gopls"
+    binaries:
+      files:
+        - "gopls/gopls"
+      destination: "~/.local/bin/development"
+  go:
+    priority: 100
+    tagged:
+      repository: "https://github.com/golang/go"
+      download: "https://go.dev/dl/{{ $.Tag }}.linux-amd64.tar.gz"
+      filters: 
+        - "refs/tags/weekly"
+        - "refs/tags/release"
+        - "[0-9]rc[0-9]"
+    binaries:
+      files:
+        - "bin/go"
+      destination: "~/.local/bin/development"
+  gofumpt:
+    github:
+      project: "mvdan/gofumpt"
+      asset: "tarball"
+    build:
+      - command: ["go", "build", "-trimpath", "-mod=readonly", "-modcacherw"]
+    binaries:
+      files:
+        - "gofumpt"
+      destination: "~/.local/bin/development"
+  revive:
+    github:
+      project: "mgechev/revive"
+      asset: "tarball"
+    build:
+      - command: ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
+    binaries:
+      files:
+        - "revive"
+      destination: "~/.local/bin/development"
+  staticcheck:
+    github:
+      project: "dominikh/go-tools"
+      asset: "tarball"
+    build:
+      - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "staticcheck", "./cmd/staticcheck"]
+    binaries:
+      files:
+        - "staticcheck/staticcheck"
+      destination: "~/.local/bin"
