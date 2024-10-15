@@ -1,23 +1,4 @@
 directory: ~/.local/fs
 token: ~/.local/state/bd.token
-applications:
-  rclone:
-    github:
-      project: "rclone/rclone"
-      asset: "rclone-(.+?)-osx-arm64.zip"
-  lb:
-    github:
-      project: "seanenck/lockbox"
-      asset: "linux-amd64.tar.gz$"
-    binaries:
-      files:
-        - "lb"
-      destination: "~/.local/bin/development"
-  bd:
-    github:
-      project: "seanenck/bd"
-      asset: "linux-amd64.tar.gz$"
-    binaries:
-      files:
-        - "bd"
-      destination: "~/.local/bin"
+include:
+  - "~/.config/bd/apps/*"

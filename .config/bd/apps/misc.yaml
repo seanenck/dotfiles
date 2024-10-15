@@ -1,0 +1,40 @@
+rclone:
+  github:
+    project: "rclone/rclone"
+    asset: "rclone-(.+?)-osx-arm64.zip"
+nvim:
+  github:
+    project: "neovim/neovim"
+    asset: "nvim-linux64.tar.gz$"
+  binaries:
+    files:
+      - "bin/nvim"
+    destination: "~/.local/bin"
+bd:
+  github:
+    project: "seanenck/bd"
+    asset: "tarball"
+  build:
+    - command: ["make", "VERSION={{ $.Tag }}"]
+  binaries:
+    files:
+      - "build/bd"
+    destination: "~/.local/bin/development"
+shellcheck:
+  github:
+    project: "koalaman/shellcheck"
+    asset: "linux.x86_64.tar.xz$"
+  binaries:
+    files:
+      - "shellcheck"
+    destination: "~/.local/bin"
+efm:
+  github:
+    project: "mattn/efm-langserver"
+    asset: "tarball"
+  build:
+    - command: ["go", "build", "-ldflags", "-X main.revision={{ $.Tag }}", "-o", "efm-langserver", "."]
+  binaries:
+    files:
+      - "efm-langserver"
+    destination: "~/.local/bin"

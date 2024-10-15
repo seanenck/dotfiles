@@ -6,6 +6,7 @@
 .bashrc
 .config/bat/
 .config/bd
+.config/efm-langserver
 .config/git
 .config/nvim
 .config/shellrc
