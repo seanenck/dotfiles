@@ -3,7 +3,7 @@ gopls:
     project: "golang/tools"
     asset: "tarball"
   build:
-    - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "{{ $.Name }}"]
+    - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "gopls"]
       directory: "gopls"
   binaries:
     files:
@@ -47,7 +47,7 @@ staticcheck:
     project: "dominikh/go-tools"
     asset: "tarball"
   build:
-    - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "{{ $.Name }}", "./cmd/staticcheck"]
+    - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "staticcheck", "./cmd/staticcheck"]
   binaries:
     files:
       - "staticcheck/staticcheck"
