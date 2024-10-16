@@ -15,5 +15,4 @@
 .config/tooling
 .config/waybar
 .config/wezterm
-.local/share/applications
 .ssh/
