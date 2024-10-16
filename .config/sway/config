@@ -4,9 +4,7 @@ input "1:1:AT_Translated_Set_2_keyboard" {
 }
 
 set $term flatpak run org.wezfurlong.wezterm
-set $menu_cmd ~/.local/bin/host/menu
-set $rofi_cmd $menu_cmd list | rofi -dmenu | $menu_cmd rewrite | sh
-set $menu $rofi_cmd
+set $menu rofi -show drun
 set $sleep pkill -10 swayidle
 
 gaps outer 5px

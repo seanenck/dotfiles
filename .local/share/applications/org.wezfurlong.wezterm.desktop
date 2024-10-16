@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Name=Wezterm
+GenericName=Terminal
+Comment=Wez Terminal
+Exec=flatpak run org.wezfurlong.wezterm
+Terminal=false
+Type=Application

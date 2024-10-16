@@ -9,9 +9,11 @@
 .config/efm-langserver
 .config/git
 .config/nvim
+.config/rofi
 .config/shellrc
 .config/sway
 .config/tooling
 .config/waybar
 .config/wezterm
+.local/share/applications
 .ssh/
