@@ -1,5 +1,4 @@
 .config/shellrc
-.config/tooling
 .config/vm
 .config/wezterm
 .gitconfig

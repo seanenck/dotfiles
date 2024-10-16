@@ -12,7 +12,6 @@
 .config/rofi
 .config/shellrc
 .config/sway
-.config/tooling
 .config/waybar
 .config/wezterm
 .ssh/
