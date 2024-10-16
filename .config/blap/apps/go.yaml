@@ -2,7 +2,8 @@ applications:
   gopls:
     github:
       project: "golang/tools"
-      asset: "tarball"
+      release:
+        asset: "tarball"
     build:
       - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "gopls"]
         directory: "gopls"
@@ -26,7 +27,8 @@ applications:
   gofumpt:
     github:
       project: "mvdan/gofumpt"
-      asset: "tarball"
+      release:
+        asset: "tarball"
     build:
       - command: ["go", "build", "-trimpath", "-mod=readonly", "-modcacherw"]
     deploy:
@@ -36,7 +38,8 @@ applications:
   revive:
     github:
       project: "mgechev/revive"
-      asset: "tarball"
+      release:
+        asset: "tarball"
     build:
       - command: ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
     deploy:
@@ -46,7 +49,8 @@ applications:
   staticcheck:
     github:
       project: "dominikh/go-tools"
-      asset: "tarball"
+      release:
+        asset: "tarball"
     build:
       - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "staticcheck", "./cmd/staticcheck"]
     deploy:

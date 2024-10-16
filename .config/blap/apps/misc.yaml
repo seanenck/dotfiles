@@ -2,11 +2,13 @@ applications:
   rclone:
     github:
       project: "rclone/rclone"
-      asset: "rclone-(.+?)-osx-arm64.zip"
+      release:
+        asset: "rclone-(.+?)-osx-arm64.zip"
   blap:
     github:
       project: "seanenck/blap"
-      asset: "tarball"
+      release:
+        asset: "tarball"
     build:
       - command: ["make", "VERSION={{ $.Tag }}"]
     deploy:
@@ -16,7 +18,8 @@ applications:
   shellcheck:
     github:
       project: "koalaman/shellcheck"
-      asset: "linux.x86_64.tar.xz$"
+      release:
+        asset: "linux.x86_64.tar.xz$"
     deploy:
       - files:
           - "shellcheck"
@@ -24,7 +27,8 @@ applications:
   efm:
     github:
       project: "mattn/efm-langserver"
-      asset: "tarball"
+      release:
+        asset: "tarball"
     build:
       - command: ["go", "build", "-ldflags", "-X main.revision={{ $.Tag }}", "-o", "efm-langserver", "."]
     deploy:
@@ -32,9 +36,10 @@ applications:
           - "efm-langserver"
         destination: "~/.local/bin"
   gittools:
-    branch:
-      branch: "master"
+    github:
       project: "seanenck/git-tools"
+      branch:
+        name: "master"
     build:
       - command: ["make"]
     deploy:

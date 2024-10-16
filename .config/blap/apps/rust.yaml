@@ -2,7 +2,8 @@ applications:
   rg:
     github:
       project: "BurntSushi/ripgrep"
-      asset: "tarball"
+      release:
+        asset: "tarball"
     build:
       - command: ["cargo", "build", "--release", "--locked", "--features", "pcre2"]
     deploy:
@@ -12,7 +13,8 @@ applications:
   bat:
     github:
       project: "sharkdp/bat"
-      asset: "tarball"
+      release:
+        asset: "tarball"
     build:
       - command: ["cargo", "build", "--release", "--locked"]
     deploy:
@@ -22,7 +24,8 @@ applications:
   delta:
     github:
       project: "dandavison/delta"
-      asset: "tarball"
+      release:
+        asset: "tarball"
     build:
       - command: ["cargo", "build", "--locked", "--release", "--all-features"]
     deploy:

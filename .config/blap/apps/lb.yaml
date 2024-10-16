@@ -2,7 +2,8 @@ applications:
   lb:
     github:
       project: "seanenck/lockbox"
-      asset: "tarball"
+      release:
+        asset: "tarball"
     build:
       - command: ["make", "VERSION={{ $.Tag }}"]
     deploy:
@@ -12,7 +13,8 @@ applications:
   age:
     github:
       project: "FiloSottile/age"
-      asset: "tarball"
+      release:
+        asset: "tarball"
     build:
       - command: ["go", "build", "-trimpath", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-X main.Version={{ $.Tag }} -linkmode external", "-o", ".", "./..."]
     deploy:
