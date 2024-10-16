@@ -31,3 +31,14 @@ applications:
       - files:
           - "efm-langserver"
         destination: "~/.local/bin"
+  gittools:
+    branch:
+      branch: "master"
+      project: "seanenck/git-tools"
+    build:
+      - command: ["make"]
+    deploy:
+      - files:
+          - git-uncommitted
+          - git-current-state
+        destination: "~/.local/bin"
