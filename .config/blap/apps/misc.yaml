@@ -10,7 +10,7 @@ applications:
       release:
         asset: "tarball"
     build:
-      - command: ["make", "VERSION={{ $.Tag }}"]
+      - command: ["make", "VERSION={{ $.Vars.Tag }}"]
     deploy:
       - files:
           - "target/blap"
@@ -19,7 +19,7 @@ applications:
     github:
       project: "koalaman/shellcheck"
       release:
-        asset: "linux.x86_64.tar.xz$"
+        asset: '{{ $.OS }}.{{ if eq $.Arch "amd64" }}x86_64{{ end }}.tar.xz$'
     deploy:
       - files:
           - "shellcheck"
@@ -30,7 +30,7 @@ applications:
       release:
         asset: "tarball"
     build:
-      - command: ["go", "build", "-ldflags", "-X main.revision={{ $.Tag }}", "-o", "efm-langserver", "."]
+      - command: ["go", "build", "-ldflags", "-X main.revision={{ $.Vars.Tag }}", "-o", "efm-langserver", "."]
     deploy:
       - files:
           - "efm-langserver"

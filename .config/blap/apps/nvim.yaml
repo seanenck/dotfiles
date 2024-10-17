@@ -3,7 +3,7 @@ applications:
     github:
       project: "neovim/neovim"
       release:
-        asset: "nvim-linux64.tar.gz$"
+        asset: 'nvim-{{ $.OS }}{{ if eq $.Arch "amd64" }}64{{ end }}.tar.gz$'
     deploy:
       - files:
           - "bin/nvim"
