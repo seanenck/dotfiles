@@ -1,60 +1,74 @@
 applications:
   gopls:
-    github:
-      project: "golang/tools"
-      release:
-        asset: "tarball"
+    source:
+      github:
+        project: "golang/tools"
+        release:
+          asset: "tarball"
     build:
-      - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "gopls"]
-        directory: "gopls"
+      steps:
+        - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "gopls"]
+          directory: "gopls"
     deploy:
-      - files:
-          - "gopls/gopls"
-        destination: "~/.local/bin/development"
+      artifacts:
+        - files:
+            - "gopls/gopls"
+          destination: "~/.local/bin/development"
   go:
     priority: 100
-    git:
-      repository: "https://github.com/golang/go"
-      tagged:
-        download: "https://go.dev/dl/{{ $.Vars.Tag }}.{{ $.OS }}-{{ $.Arch }}.tar.gz"
-        filters: 
-          - "refs/tags/weekly"
-          - "refs/tags/release"
-          - "[0-9]rc[0-9]"
+    source:
+      git:
+        repository: "https://github.com/golang/go"
+        tagged:
+          download: "https://go.dev/dl/{{ $.Vars.Tag }}.{{ $.OS }}-{{ $.Arch }}.tar.gz"
+          filters: 
+            - "refs/tags/weekly"
+            - "refs/tags/release"
+            - "[0-9]rc[0-9]"
     deploy:
-      - files:
-          - "bin/go"
-        destination: "~/.local/bin/development"
+      artifacts:
+        - files:
+            - "bin/go"
+          destination: "~/.local/bin/development"
   gofumpt:
-    github:
-      project: "mvdan/gofumpt"
-      release:
-        asset: "tarball"
+    source:
+      github:
+        project: "mvdan/gofumpt"
+        release:
+          asset: "tarball"
     build:
-      - command: ["go", "build", "-trimpath", "-mod=readonly", "-modcacherw"]
+      steps:
+        - command: ["go", "build", "-trimpath", "-mod=readonly", "-modcacherw"]
     deploy:
-      - files:
-          - "gofumpt"
-        destination: "~/.local/bin/development"
+      artifacts:
+        - files:
+            - "gofumpt"
+          destination: "~/.local/bin/development"
   revive:
-    github:
-      project: "mgechev/revive"
-      release:
-        asset: "tarball"
+    source:
+      github:
+        project: "mgechev/revive"
+        release:
+          asset: "tarball"
     build:
-      - command: ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
+      steps:
+        - command: ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
     deploy:
-      - files:
-          - "revive"
-        destination: "~/.local/bin/development"
+      artifacts:
+        - files:
+            - "revive"
+          destination: "~/.local/bin/development"
   staticcheck:
-    github:
-      project: "dominikh/go-tools"
-      release:
-        asset: "tarball"
+    source:
+      github:
+        project: "dominikh/go-tools"
+        release:
+          asset: "tarball"
     build:
-      - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "staticcheck", "./cmd/staticcheck"]
+      steps:
+        - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "staticcheck", "./cmd/staticcheck"]
     deploy:
-      - files:
-          - "staticcheck/staticcheck"
-        destination: "~/.local/bin"
+      artifacts:
+        - files:
+            - "staticcheck/staticcheck"
+          destination: "~/.local/bin"

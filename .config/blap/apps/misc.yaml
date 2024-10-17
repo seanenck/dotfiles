@@ -1,49 +1,61 @@
 applications:
   rclone:
-    github:
-      project: "rclone/rclone"
-      release:
-        asset: "rclone-(.+?)-osx-arm64.zip"
+    source:
+      github:
+        project: "rclone/rclone"
+        release:
+          asset: "rclone-(.+?)-osx-arm64.zip"
   blap:
-    github:
-      project: "seanenck/blap"
-      release:
-        asset: "tarball"
+    source:
+      github:
+        project: "seanenck/blap"
+        release:
+          asset: "tarball"
     build:
-      - command: ["make", "VERSION={{ $.Vars.Tag }}"]
+      steps:
+        - command: ["make", "VERSION={{ $.Vars.Tag }}"]
     deploy:
-      - files:
-          - "target/blap"
-        destination: "~/.local/bin/development"
+      artifacts:
+        - files:
+            - "target/blap"
+          destination: "~/.local/bin/development"
   shellcheck:
-    github:
-      project: "koalaman/shellcheck"
-      release:
-        asset: '{{ $.OS }}.{{ if eq $.Arch "amd64" }}x86_64{{ end }}.tar.xz$'
+    source:
+      github:
+        project: "koalaman/shellcheck"
+        release:
+          asset: '{{ $.OS }}.{{ if eq $.Arch "amd64" }}x86_64{{ end }}.tar.xz$'
     deploy:
-      - files:
-          - "shellcheck"
-        destination: "~/.local/bin"
+      artifacts:
+        - files:
+            - "shellcheck"
+          destination: "~/.local/bin"
   efm:
-    github:
-      project: "mattn/efm-langserver"
-      release:
-        asset: "tarball"
+    source:
+      github:
+        project: "mattn/efm-langserver"
+        release:
+          asset: "tarball"
     build:
-      - command: ["go", "build", "-ldflags", "-X main.revision={{ $.Vars.Tag }}", "-o", "efm-langserver", "."]
+      steps:
+        - command: ["go", "build", "-ldflags", "-X main.revision={{ $.Vars.Tag }}", "-o", "efm-langserver", "."]
     deploy:
-      - files:
-          - "efm-langserver"
-        destination: "~/.local/bin"
+      artifacts:
+        - files:
+            - "efm-langserver"
+          destination: "~/.local/bin"
   gittools:
-    github:
-      project: "seanenck/git-tools"
-      branch:
-        name: "master"
+    source:
+      github:
+        project: "seanenck/git-tools"
+        branch:
+          name: "master"
     build:
-      - command: ["make"]
+      steps:
+        - command: ["make"]
     deploy:
-      - files:
-          - git-uncommitted
-          - git-current-state
-        destination: "~/.local/bin"
+      artifacts:
+        - files:
+            - git-uncommitted
+            - git-current-state
+          destination: "~/.local/bin"

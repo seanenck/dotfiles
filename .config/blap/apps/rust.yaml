@@ -1,34 +1,43 @@
 applications:
   rg:
-    github:
-      project: "BurntSushi/ripgrep"
-      release:
-        asset: "tarball"
+    source:
+      github:
+        project: "BurntSushi/ripgrep"
+        release:
+          asset: "tarball"
     build:
-      - command: ["cargo", "build", "--release", "--locked", "--features", "pcre2"]
+      steps:
+        - command: ["cargo", "build", "--release", "--locked", "--features", "pcre2"]
     deploy:
-      - files:
-          - "target/release/rg"
-        destination: "~/.local/bin/"
+      artifacts:
+        - files:
+            - "target/release/rg"
+          destination: "~/.local/bin/"
   bat:
-    github:
-      project: "sharkdp/bat"
-      release:
-        asset: "tarball"
+    source:
+      github:
+        project: "sharkdp/bat"
+        release:
+          asset: "tarball"
     build:
-      - command: ["cargo", "build", "--release", "--locked"]
+      steps:
+        - command: ["cargo", "build", "--release", "--locked"]
     deploy:
-      - files:
-          - "target/release/bat"
-        destination: "~/.local/bin"
+      artifacts:
+        - files:
+            - "target/release/bat"
+          destination: "~/.local/bin"
   delta:
-    github:
-      project: "dandavison/delta"
-      release:
-        asset: "tarball"
+    source:
+      github:
+        project: "dandavison/delta"
+        release:
+          asset: "tarball"
     build:
-      - command: ["cargo", "build", "--locked", "--release", "--all-features"]
+      steps:
+        - command: ["cargo", "build", "--locked", "--release", "--all-features"]
     deploy:
-      - files:
-          - "target/release/delta"
-        destination: "~/.local/bin"
+      artifacts:
+        - files:
+            - "target/release/delta"
+          destination: "~/.local/bin"
