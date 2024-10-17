@@ -13,7 +13,7 @@ applications:
       - command: ["make", "VERSION={{ $.Tag }}"]
     deploy:
       - files:
-          - "build/blap"
+          - "target/blap"
         destination: "~/.local/bin/development"
   shellcheck:
     github:
