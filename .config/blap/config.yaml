@@ -2,4 +2,4 @@ directory: ~/.local/fs
 parallelization: 4
 token: ~/.local/state/blap.token
 include:
-  - "~/.config/blap/apps/*"
+  - "~/.config/blap/apps/*.yaml"
