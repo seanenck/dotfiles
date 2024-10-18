@@ -56,7 +56,7 @@ applications:
       artifacts:
         - files:
             - "target/release/just"
-          destination: "~/.local/bin/development"
+          destination: "~/.local/bin/"
         - files:
             - "target/release/just.bash"
           destination: "~/.config/shellrc/completions/"
