@@ -1,5 +1,7 @@
 directory: ~/.local/fs
 parallelization: 4
-token: ~/.local/state/blap.token
+connections:
+  github:
+    token: ~/.local/state/blap.github.token
 include:
   - "~/.config/blap/apps/*.yaml"
