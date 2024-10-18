@@ -13,13 +13,13 @@ applications:
           asset: "tarball"
     build:
       steps:
-        - command: ["make", "VERSION={{ $.Vars.Tag }}"]
+        - command: ["just", "version={{ $.Vars.Tag }}"]
         - command: ["/bin/sh", "-c", "target/blap completions > target/blap.bash"]
     deploy:
       artifacts:
         - files:
             - "target/blap"
-          destination: "~/.local/bin/development"
+          destination: "~/.local/bin"
         - files:
             - "target/blap.bash"
           destination: "~/.config/shellrc/completions/"

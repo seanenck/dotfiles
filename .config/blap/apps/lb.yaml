@@ -7,12 +7,16 @@ applications:
           asset: "tarball"
     build:
       steps:
-        - command: ["make", "VERSION={{ $.Vars.Tag }}"]
+        - command: ["just", "version={{ $.Vars.Tag }}"]
+        - command: ["/bin/sh", "-c", "target/lb completions > target/lb.bash"]
     deploy:
       artifacts:
         - files:
-            - "build/lb"
+            - "target/lb"
           destination: "~/.local/bin/"
+        - files:
+            - "target/lb.bash"
+          destination: "~/.config/shellrc/completions/"
   age:
     source:
       github:

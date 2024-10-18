@@ -42,6 +42,7 @@ applications:
             - "target/release/delta"
           destination: "~/.local/bin"
   just:
+    priority: 50
     source:
       github:
         project: "casey/just"
@@ -50,8 +51,12 @@ applications:
     build:
       steps:
         - command: ["cargo", "build", "--locked", "--release"]
+        - command: ["/bin/sh", "-c", "target/release/just --completions bash > target/release/just.bash"]
     deploy:
       artifacts:
         - files:
             - "target/release/just"
           destination: "~/.local/bin/development"
+        - files:
+            - "target/release/just.bash"
+          destination: "~/.config/shellrc/completions/"
