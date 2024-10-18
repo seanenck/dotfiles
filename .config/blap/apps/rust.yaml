@@ -4,59 +4,48 @@ applications:
       github:
         project: "BurntSushi/ripgrep"
         release:
-          asset: "tarball"
-    build:
-      steps:
-        - command: ["cargo", "build", "--release", "--locked", "--features", "pcre2"]
+          asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}(.*?).tar.gz$'
     deploy:
       artifacts:
         - files:
-            - "target/release/rg"
+            - "rg"
           destination: "~/.local/bin/"
   bat:
     source:
       github:
         project: "sharkdp/bat"
         release:
-          asset: "tarball"
-    build:
-      steps:
-        - command: ["cargo", "build", "--release", "--locked"]
+          asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}{{ if eq $.OS "linux" }}-gnu{{end}}(.*?).tar.gz$'
     deploy:
       artifacts:
         - files:
-            - "target/release/bat"
+            - "bat"
           destination: "~/.local/bin"
   delta:
     source:
       github:
         project: "dandavison/delta"
         release:
-          asset: "tarball"
-    build:
-      steps:
-        - command: ["cargo", "build", "--locked", "--release", "--all-features"]
+          asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}{{ if eq $.OS "linux" }}-gnu{{end}}(.*?).tar.gz$'
     deploy:
       artifacts:
         - files:
-            - "target/release/delta"
+            - "delta"
           destination: "~/.local/bin"
   just:
-    priority: 50
+    priority: 100
     source:
       github:
         project: "casey/just"
         release:
-          asset: "tarball"
-    build:
-      steps:
-        - command: ["cargo", "build", "--locked", "--release"]
-        - command: ["/bin/sh", "-c", "target/release/just --completions bash > target/release/just.bash"]
+          asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}(.*?).tar.gz$'
+    extract:
+      nodepth: true
     deploy:
       artifacts:
         - files:
-            - "target/release/just"
+            - "just"
           destination: "~/.local/bin/"
         - files:
-            - "target/release/just.bash"
+            - "completions/just.bash"
           destination: "~/.config/shellrc/completions/"

@@ -7,13 +7,13 @@ applications:
           asset: "tarball"
     build:
       steps:
-        - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "gopls"]
+        - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "gopls"]
           directory: "gopls"
     deploy:
       artifacts:
         - files:
             - "gopls/gopls"
-          destination: "~/.local/bin/development"
+          destination: "~/.local/bin/"
   go:
     priority: 100
     source:
@@ -29,7 +29,7 @@ applications:
       artifacts:
         - files:
             - "bin/go"
-          destination: "~/.local/bin/development"
+          destination: "~/.local/bin/"
   gofumpt:
     source:
       github:
@@ -43,7 +43,7 @@ applications:
       artifacts:
         - files:
             - "gofumpt"
-          destination: "~/.local/bin/development"
+          destination: "~/.local/bin/"
   revive:
     source:
       github:
@@ -57,7 +57,7 @@ applications:
       artifacts:
         - files:
             - "revive"
-          destination: "~/.local/bin/development"
+          destination: "~/.local/bin/"
   staticcheck:
     source:
       github:
@@ -66,7 +66,7 @@ applications:
           asset: "tarball"
     build:
       steps:
-        - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false -linkmode external", "-o", "staticcheck", "./cmd/staticcheck"]
+        - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "staticcheck", "./cmd/staticcheck"]
     deploy:
       artifacts:
         - files:
