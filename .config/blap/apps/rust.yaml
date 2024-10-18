@@ -41,3 +41,17 @@ applications:
         - files:
             - "target/release/delta"
           destination: "~/.local/bin"
+  just:
+    source:
+      github:
+        project: "casey/just"
+        release:
+          asset: "tarball"
+    build:
+      steps:
+        - command: ["cargo", "build", "--locked", "--release"]
+    deploy:
+      artifacts:
+        - files:
+            - "target/release/just"
+          destination: "~/.local/bin/development"

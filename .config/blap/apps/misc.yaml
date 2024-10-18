@@ -14,11 +14,15 @@ applications:
     build:
       steps:
         - command: ["make", "VERSION={{ $.Vars.Tag }}"]
+        - command: ["/bin/sh", "-c", "target/blap completions > target/blap.bash"]
     deploy:
       artifacts:
         - files:
             - "target/blap"
           destination: "~/.local/bin/development"
+        - files:
+            - "target/blap.bash"
+          destination: "~/.config/shellrc/completions/"
   shellcheck:
     source:
       github:
@@ -52,7 +56,7 @@ applications:
           name: "master"
     build:
       steps:
-        - command: ["make"]
+        - command: ["just"]
     deploy:
       artifacts:
         - files:
