@@ -7,7 +7,7 @@ applications:
           asset: "tarball"
     commands:
       steps:
-        - command: ["just", "version={{ $.Vars.Resource.Tag }}"]
+        - command: ["just", "version={{ $.Vars.Tag }}"]
         - command: ["/bin/sh", "-c", "target/lb completions > $COMPLETIONS/lb.bash"]
         - command: ["ln", "-sf", "{{ $.Vars.Directory}}/target/lb", "$DESTDIR/lb"]
   age:
@@ -18,6 +18,6 @@ applications:
           asset: "tarball"
     commands:
       steps:
-        - command: ["go", "build", "-trimpath", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-X main.Version={{ $.Vars.Resource.Tag }}", "-o", ".", "./..."]
+        - command: ["go", "build", "-trimpath", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-X main.Version={{ $.Vars.Tag }}", "-o", ".", "./..."]
         - command: ["ln", "-sf", "{{ $.Vars.Directory}}/age", "$DESTDIR/age"]
         - command: ["ln", "-sf", "{{ $.Vars.Directory}}/age-keygen", "$DESTDIR/age-keygen"]

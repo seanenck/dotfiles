@@ -13,7 +13,7 @@ applications:
           asset: "tarball"
     commands:
       steps:
-        - command: ["just", "version={{ $.Vars.Resource.Tag }}"]
+        - command: ["just", "version={{ $.Vars.Tag }}"]
         - command: ["/bin/sh", "-c", "target/blap completions > $COMPLETIONS/blap.bash"]
         - command: ["ln", "-sf", "{{ $.Vars.Directory}}/target/blap", "$DESTDIR/blap"]
   shellcheck:
@@ -33,7 +33,7 @@ applications:
           asset: "tarball"
     commands:
       steps:
-        - command: ["go", "build", "-ldflags", "-X main.revision={{ $.Vars.Resource.Tag }}", "-o", "efm-langserver", "."]
+        - command: ["go", "build", "-ldflags", "-X main.revision={{ $.Vars.Tag }}", "-o", "efm-langserver", "."]
         - command: ["ln", "-sf", "{{ $.Vars.Directory}}/efm-langserver", "$DESTDIR/efm-langserver"]
   gittools:
     source:
