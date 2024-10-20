@@ -54,7 +54,7 @@ applications:
         - files:
             - "."
           destination: "~/.config/nvim/pack/plugins/start/nvim-lspconfig"
-  vimcmp:
+  nvimcmp:
     source:
       github:
         project: "hrsh7th/nvim-cmp"

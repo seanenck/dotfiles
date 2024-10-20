@@ -5,7 +5,8 @@ if [ -n "$CONTAINER_NAME" ]; then
 fi
 PS1="[\u@\[\e[93m\]$USE_HOST\[\e[0m\]:\W]$ "
 if command -v git-uncommitted >/dev/null; then
-  export GIT_UNCOMMITTED="$HOME/Workspace $HOME/Env"
+  export GIT_UNCOMMITTED="$HOME/Workspace $HOME"
+  export GIT_UNCOMMITTED_HOME="1"
   if [ "$SHELL" = "/bin/bash" ]; then
     PS1="\$(git uncommitted --mode pwd 2>/dev/null)$PS1"
   fi
