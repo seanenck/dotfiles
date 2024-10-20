@@ -16,63 +16,51 @@ applications:
         project: "L3MON4D3/LuaSnip"
         branch:
           name: "master"
-    deploy:
-      artifacts:
-        - files:
-            - "."
-          destination: "~/.config/nvim/pack/plugins/start/LuaSnip"
+    build:
+      steps:
+        - command: ["rsync", "-avc", "--delete-after", ".", "~/.config/nvim/pack/plugins/start/LuaSnip/"]
   nvimscrollbar:
     source:
       github:
         project: "petertriho/nvim-scrollbar"
         branch:
           name: "main"
-    deploy:
-      artifacts:
-        - files:
-            - "."
-          destination: "~/.config/nvim/pack/plugins/start/nvim-scrollbar"
+    build:
+      steps:
+        - command: ["rsync", "-avc", "--delete-after", ".", "~/.config/nvim/pack/plugins/start/nvim-scrollbar/"]
   vimairline:
     source:
       github:
         project: "vim-airline/vim-airline"
         branch:
           name: "master"
-    deploy:
-      artifacts:
-        - files:
-            - "."
-          destination: "~/.config/nvim/pack/plugins/start/vim-airline"
+    build:
+      steps:
+        - command: ["rsync", "-avc", "--delete-after", ".", "~/.config/nvim/pack/plugins/start/vim-airline/"]
   nvimlspconfig:
     source:
       github:
         project: "neovim/nvim-lspconfig"
         branch:
           name: "master"
-    deploy:
-      artifacts:
-        - files:
-            - "."
-          destination: "~/.config/nvim/pack/plugins/start/nvim-lspconfig"
+    build:
+      steps:
+        - command: ["rsync", "-avc", "--delete-after", ".", "~/.config/nvim/pack/plugins/start/nvim-lspconfig/"]
   nvimcmp:
     source:
       github:
         project: "hrsh7th/nvim-cmp"
         branch:
           name: "main"
-    deploy:
-      artifacts:
-        - files:
-            - "."
-          destination: "~/.config/nvim/pack/plugins/start/nvim-cmp"
+    build:
+      steps:
+        - command: ["rsync", "-avc", "--delete-after", ".", "~/.config/nvim/pack/plugins/start/nvim-cmp/"]
   nvimcmplsp:
     source:
       github:
         project: "hrsh7th/cmp-nvim-lsp"
         branch:
           name: "main"
-    deploy:
-      artifacts:
-        - files:
-            - "."
-          destination: "~/.config/nvim/pack/plugins/start/cmp-nvim-lsp"
+    build:
+      steps:
+        - command: ["rsync", "-avc", "--delete-after", ".", "~/.config/nvim/pack/plugins/start/cmp-nvim-lsp/"]
