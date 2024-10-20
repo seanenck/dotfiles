@@ -33,6 +33,8 @@ applications:
         project: "casey/just"
         release:
           asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}(.*?).tar.gz$'
+    extract:
+      nodepth: true
     commands:
       steps:
         - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }} > $PATHS/{{ $.Name }}"]
