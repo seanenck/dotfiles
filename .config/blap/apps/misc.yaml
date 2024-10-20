@@ -12,14 +12,10 @@ applications:
         release:
           asset: "tarball"
     commands:
-      environment:
-        variables:
-          values:
-            "BUILDPATH": "target"
       steps:
         - command: ["just", "version={{ $.Vars.Tag }}"]
         - command: ["/bin/sh", "-c", "$BUILDPATH/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}.bash"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/$BUILDPATH/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }}/$BUILDPATH > $PATHS/{{ $.Name }}"]
   shellcheck:
     source:
       github:
@@ -28,7 +24,7 @@ applications:
           asset: '{{ $.OS }}.{{ if eq $.Arch "amd64" }}x86_64{{ end }}.tar.xz$'
     commands:
       steps:
-        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }} > $PATHS/{{ $.Name }}"]
   efm:
     source:
       github:
@@ -42,7 +38,7 @@ applications:
             "NAME": "efm-langserver"
       steps:
         - command: ["go", "build", "-ldflags", "-X main.revision={{ $.Vars.Tag }}", "-o", "$NAME", "."]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/$NAME", "$DESTDIR/$NAME"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }} > $PATHS/{{ $.Name }}"]
   gittools:
     source:
       github:
@@ -57,5 +53,4 @@ applications:
             "CURSTATE": "git-current-state"
       steps:
         - command: ["just"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/$UNCOMMIT", "$DESTDIR/$UNCOMMIT"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/$CURSTATE", "$DESTDIR/$CURSTATE"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }} > $PATHS/{{ $.Name }}"]

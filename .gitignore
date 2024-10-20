@@ -29,9 +29,7 @@
 !.config/nvim/init.lua
 !.config/nvim/lua/
 !.config/rofi/
-# ignore generated completions
 !.config/shellrc/
-.config/shellrc/completions
 !.config/sway/
 !.config/vfu/
 !.config/waybar/

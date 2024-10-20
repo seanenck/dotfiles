@@ -7,7 +7,7 @@ applications:
           asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}(.*?).tar.gz$'
     commands:
       steps:
-        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }} > $PATHS/{{ $.Name }}"]
   bat:
     source:
       github:
@@ -16,7 +16,7 @@ applications:
           asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}{{ if eq $.OS "linux" }}-gnu{{end}}(.*?).tar.gz$'
     commands:
       steps:
-        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }} > $PATHS/{{ $.Name }}"]
   delta:
     source:
       github:
@@ -25,7 +25,7 @@ applications:
           asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}{{ if eq $.OS "linux" }}-gnu{{end}}(.*?).tar.gz$'
     commands:
       steps:
-        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }} > $PATHS/{{ $.Name }}"]
   just:
     priority: 100
     source:
@@ -35,5 +35,5 @@ applications:
           asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}(.*?).tar.gz$'
     commands:
       steps:
-        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }} > $PATHS/{{ $.Name }}"]
         - command: ["cp", "{{ $.Vars.Directory }}/completions/{{ $.Name }}.bash", "$COMPLETIONS/{{ $.Name }}.bash"]

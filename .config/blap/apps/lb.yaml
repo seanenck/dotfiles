@@ -6,14 +6,10 @@ applications:
         release:
           asset: "tarball"
     commands:
-      environment:
-        variables:
-          values:
-            "BUILDPATH": "target"
       steps:
         - command: ["just", "version={{ $.Vars.Tag }}"]
         - command: ["/bin/sh", "-c", "$BUILDPATH/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}.bash"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/$BUILDPATH/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }}/$BUILDPATH > $PATHS/{{ $.Name }}"]
   age:
     source:
       github:
@@ -23,5 +19,4 @@ applications:
     commands:
       steps:
         - command: ["go", "build", "-trimpath", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-X main.Version={{ $.Vars.Tag }}", "-o", ".", "./..."]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/{{ $.Name }}-keygen", "$DESTDIR/{{ $.Name }}-keygen"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }} > $PATHS/{{ $.Name }}"]
