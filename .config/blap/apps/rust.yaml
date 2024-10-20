@@ -36,4 +36,4 @@ applications:
     commands:
       steps:
         - command: ["ln", "-sf", "{{ $.Vars.Directory }}/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/completions/{{ $.Name }}.bash", "$COMPLETIONS/{{ $.Name }}.bash"]
+        - command: ["cp", "{{ $.Vars.Directory }}/completions/{{ $.Name }}.bash", "$COMPLETIONS/{{ $.Name }}.bash"]

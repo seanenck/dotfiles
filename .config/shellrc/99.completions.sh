@@ -1,5 +1,5 @@
 #!/bin/sh
-COMPS="$HOME/.config/shellrc/completions"
+COMPS="$HOME/.bash/completions"
 if [ -d "$COMPS" ]; then
   for FILE in "$COMPS/"*; do
     BASE=$(basename "$FILE" | cut -d "." -f 1)
