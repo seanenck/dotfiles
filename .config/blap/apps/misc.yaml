@@ -12,10 +12,14 @@ applications:
         release:
           asset: "tarball"
     commands:
+      environment:
+        variables:
+          values:
+            "BUILDPATH": "target"
       steps:
         - command: ["just", "version={{ $.Vars.Tag }}"]
-        - command: ["/bin/sh", "-c", "target/blap completions > $COMPLETIONS/blap.bash"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/target/blap", "$DESTDIR/blap"]
+        - command: ["/bin/sh", "-c", "$BUILDPATH/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}.bash"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/$BUILDPATH/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
   shellcheck:
     source:
       github:
@@ -24,7 +28,7 @@ applications:
           asset: '{{ $.OS }}.{{ if eq $.Arch "amd64" }}x86_64{{ end }}.tar.xz$'
     commands:
       steps:
-        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/shellcheck", "$DESTDIR/shellcheck"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
   efm:
     source:
       github:
@@ -32,9 +36,13 @@ applications:
         release:
           asset: "tarball"
     commands:
+      environment:
+        variables:
+          values:
+            "NAME": "efm-langserver"
       steps:
-        - command: ["go", "build", "-ldflags", "-X main.revision={{ $.Vars.Tag }}", "-o", "efm-langserver", "."]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/efm-langserver", "$DESTDIR/efm-langserver"]
+        - command: ["go", "build", "-ldflags", "-X main.revision={{ $.Vars.Tag }}", "-o", "$NAME", "."]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/$NAME", "$DESTDIR/$NAME"]
   gittools:
     source:
       github:
@@ -42,7 +50,12 @@ applications:
         branch:
           name: "master"
     commands:
+      environment:
+        variables:
+          values:
+            "UNCOMMIT": "git-uncommitted"
+            "CURSTATE": "git-current-state"
       steps:
         - command: ["just"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/git-uncommitted", "$DESTDIR/git-uncommitted"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/git-current-state", "$DESTDIR/git-current-state"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/$UNCOMMIT", "$DESTDIR/$UNCOMMIT"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/$CURSTATE", "$DESTDIR/$CURSTATE"]

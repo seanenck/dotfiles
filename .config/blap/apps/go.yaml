@@ -7,9 +7,9 @@ applications:
           asset: "tarball"
     commands:
       steps:
-        - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "gopls"]
-          directory: "gopls"
-        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/gopls/gopls", "$DESTDIR/gopls"]
+        - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}"]
+          directory: "{{ $.Name }}"
+        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/{{ $.Name }}/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
   go:
     priority: 100
     source:
@@ -23,7 +23,7 @@ applications:
             - "[0-9]rc[0-9]"
     commands:
       steps:
-        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/bin/go", "$DESTDIR/go"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/bin/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
   gofumpt:
     source:
       github:
@@ -33,7 +33,7 @@ applications:
     commands:
       steps:
         - command: ["go", "build", "-trimpath", "-mod=readonly", "-modcacherw"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/gofumpt", "$DESTDIR/gofumpt"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
   revive:
     source:
       github:
@@ -43,7 +43,7 @@ applications:
     commands:
       steps:
         - command: ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/revive", "$DESTDIR/revive"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
   staticcheck:
     source:
       github:
@@ -52,5 +52,5 @@ applications:
           asset: "tarball"
     commands:
       steps:
-        - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "staticcheck", "./cmd/staticcheck"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/staticcheck/staticcheck", "$DESTDIR/staticcheck"]
+        - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}", "./cmd/{{ $.Name }}"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/{{ $.Name }}/{{ $.Name }}", "$DESTDIR/{{ $.Name }}"]
