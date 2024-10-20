@@ -5,33 +5,27 @@ applications:
         project: "BurntSushi/ripgrep"
         release:
           asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}(.*?).tar.gz$'
-    deploy:
-      artifacts:
-        - files:
-            - "rg"
-          destination: "~/.local/bin/"
+    commands:
+      steps:
+        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/rg", "$DESTDIR/rg"]
   bat:
     source:
       github:
         project: "sharkdp/bat"
         release:
           asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}{{ if eq $.OS "linux" }}-gnu{{end}}(.*?).tar.gz$'
-    deploy:
-      artifacts:
-        - files:
-            - "bat"
-          destination: "~/.local/bin"
+    commands:
+      steps:
+        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/bat", "$DESTDIR/bat"]
   delta:
     source:
       github:
         project: "dandavison/delta"
         release:
           asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}{{ if eq $.OS "linux" }}-gnu{{end}}(.*?).tar.gz$'
-    deploy:
-      artifacts:
-        - files:
-            - "delta"
-          destination: "~/.local/bin"
+    commands:
+      steps:
+        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/delta", "$DESTDIR/delta"]
   just:
     priority: 100
     source:
@@ -39,13 +33,7 @@ applications:
         project: "casey/just"
         release:
           asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}(.*?).tar.gz$'
-    extract:
-      nodepth: true
-    deploy:
-      artifacts:
-        - files:
-            - "just"
-          destination: "~/.local/bin/"
-        - files:
-            - "completions/just.bash"
-          destination: "~/.config/shellrc/completions/"
+    commands:
+      steps:
+        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/just", "$DESTDIR/just"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/completions/just.bash", "$COMPLETIONS/just.bash"]

@@ -5,30 +5,19 @@ applications:
         project: "seanenck/lockbox"
         release:
           asset: "tarball"
-    build:
+    commands:
       steps:
-        - command: ["just", "version={{ $.Vars.Tag }}"]
-        - command: ["/bin/sh", "-c", "target/lb completions > target/lb.bash"]
-    deploy:
-      artifacts:
-        - files:
-            - "target/lb"
-          destination: "~/.local/bin/"
-        - files:
-            - "target/lb.bash"
-          destination: "~/.config/shellrc/completions/"
+        - command: ["just", "version={{ $.Vars.Resource.Tag }}"]
+        - command: ["/bin/sh", "-c", "target/lb completions > $COMPLETIONS/lb.bash"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/target/lb", "$DESTDIR/lb"]
   age:
     source:
       github:
         project: "FiloSottile/age"
         release:
           asset: "tarball"
-    build:
+    commands:
       steps:
-        - command: ["go", "build", "-trimpath", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-X main.Version={{ $.Vars.Tag }}", "-o", ".", "./..."]
-    deploy:
-      artifacts:
-        - files:
-            - "age"
-            - "age-keygen"
-          destination: "~/.local/bin"
+        - command: ["go", "build", "-trimpath", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-X main.Version={{ $.Vars.Resource.Tag }}", "-o", ".", "./..."]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/age", "$DESTDIR/age"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/age-keygen", "$DESTDIR/age-keygen"]

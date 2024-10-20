@@ -11,55 +11,38 @@ applications:
         project: "seanenck/blap"
         release:
           asset: "tarball"
-    build:
+    commands:
       steps:
-        - command: ["just", "version={{ $.Vars.Tag }}"]
-        - command: ["/bin/sh", "-c", "target/blap completions > target/blap.bash"]
-    deploy:
-      artifacts:
-        - files:
-            - "target/blap"
-          destination: "~/.local/bin"
-        - files:
-            - "target/blap.bash"
-          destination: "~/.config/shellrc/completions/"
+        - command: ["just", "version={{ $.Vars.Resource.Tag }}"]
+        - command: ["/bin/sh", "-c", "target/blap completions > $COMPLETIONS/blap.bash"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/target/blap", "$DESTDIR/blap"]
   shellcheck:
     source:
       github:
         project: "koalaman/shellcheck"
         release:
           asset: '{{ $.OS }}.{{ if eq $.Arch "amd64" }}x86_64{{ end }}.tar.xz$'
-    deploy:
-      artifacts:
-        - files:
-            - "shellcheck"
-          destination: "~/.local/bin"
+    commands:
+      steps:
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/shellcheck", "$DESTDIR/shellcheck"]
   efm:
     source:
       github:
         project: "mattn/efm-langserver"
         release:
           asset: "tarball"
-    build:
+    commands:
       steps:
-        - command: ["go", "build", "-ldflags", "-X main.revision={{ $.Vars.Tag }}", "-o", "efm-langserver", "."]
-    deploy:
-      artifacts:
-        - files:
-            - "efm-langserver"
-          destination: "~/.local/bin"
+        - command: ["go", "build", "-ldflags", "-X main.revision={{ $.Vars.Resource.Tag }}", "-o", "efm-langserver", "."]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/efm-langserver", "$DESTDIR/efm-langserver"]
   gittools:
     source:
       github:
         project: "seanenck/git-tools"
         branch:
           name: "master"
-    build:
+    commands:
       steps:
         - command: ["just"]
-    deploy:
-      artifacts:
-        - files:
-            - git-uncommitted
-            - git-current-state
-          destination: "~/.local/bin"
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/git-uncommitted", "$DESTDIR/git-uncommitted"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/git-current-state", "$DESTDIR/git-current-state"]

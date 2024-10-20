@@ -5,15 +5,11 @@ applications:
         project: "golang/tools"
         release:
           asset: "tarball"
-    build:
+    commands:
       steps:
         - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "gopls"]
           directory: "gopls"
-    deploy:
-      artifacts:
-        - files:
-            - "gopls/gopls"
-          destination: "~/.local/bin/"
+        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/gopls/gopls", "$DESTDIR/gopls"]
   go:
     priority: 100
     source:
@@ -25,50 +21,36 @@ applications:
             - "refs/tags/weekly"
             - "refs/tags/release"
             - "[0-9]rc[0-9]"
-    deploy:
-      artifacts:
-        - files:
-            - "bin/go"
-          destination: "~/.local/bin/"
+    commands:
+      steps:
+        - command: ["ln", "-sf", "{{ $.Vars.Directory}}/bin/go", "$DESTDIR/go"]
   gofumpt:
     source:
       github:
         project: "mvdan/gofumpt"
         release:
           asset: "tarball"
-    build:
+    commands:
       steps:
         - command: ["go", "build", "-trimpath", "-mod=readonly", "-modcacherw"]
-    deploy:
-      artifacts:
-        - files:
-            - "gofumpt"
-          destination: "~/.local/bin/"
+        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/gofumpt", "$DESTDIR/gofumpt"]
   revive:
     source:
       github:
         project: "mgechev/revive"
         release:
           asset: "tarball"
-    build:
+    commands:
       steps:
         - command: ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
-    deploy:
-      artifacts:
-        - files:
-            - "revive"
-          destination: "~/.local/bin/"
+        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/revive", "$DESTDIR/revive"]
   staticcheck:
     source:
       github:
         project: "dominikh/go-tools"
         release:
           asset: "tarball"
-    build:
+    commands:
       steps:
         - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "staticcheck", "./cmd/staticcheck"]
-    deploy:
-      artifacts:
-        - files:
-            - "staticcheck/staticcheck"
-          destination: "~/.local/bin"
+        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/staticcheck/staticcheck", "$DESTDIR/staticcheck"]

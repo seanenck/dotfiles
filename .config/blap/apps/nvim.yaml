@@ -5,62 +5,60 @@ applications:
         project: "neovim/neovim"
         release:
           asset: 'nvim-{{ $.OS }}{{ if eq $.Arch "amd64" }}64{{ end }}.tar.gz$'
-    deploy:
-      artifacts:
-        - files:
-            - "bin/nvim"
-          destination: "~/.local/bin"
+    commands:
+      steps:
+        - command: ["ln", "-sf", "{{ $.Vars.Directory }}/bin/nvim", "$DESTDIR/nvim"]
   nvimluasnip:
     source:
       github:
         project: "L3MON4D3/LuaSnip"
         branch:
           name: "master"
-    build:
+    commands:
       steps:
-        - command: ["rsync", "-avc", "--delete-after", ".", "~/.config/nvim/pack/plugins/start/LuaSnip/"]
+        - command: ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/LuaSnip/"]
   nvimscrollbar:
     source:
       github:
         project: "petertriho/nvim-scrollbar"
         branch:
           name: "main"
-    build:
+    commands:
       steps:
-        - command: ["rsync", "-avc", "--delete-after", ".", "~/.config/nvim/pack/plugins/start/nvim-scrollbar/"]
+        - command: ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/nvim-scrollbar/"]
   vimairline:
     source:
       github:
         project: "vim-airline/vim-airline"
         branch:
           name: "master"
-    build:
+    commands:
       steps:
-        - command: ["rsync", "-avc", "--delete-after", ".", "~/.config/nvim/pack/plugins/start/vim-airline/"]
+        - command: ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/vim-airline/"]
   nvimlspconfig:
     source:
       github:
         project: "neovim/nvim-lspconfig"
         branch:
           name: "master"
-    build:
+    commands:
       steps:
-        - command: ["rsync", "-avc", "--delete-after", ".", "~/.config/nvim/pack/plugins/start/nvim-lspconfig/"]
+        - command: ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/nvim-lspconfig/"]
   nvimcmp:
     source:
       github:
         project: "hrsh7th/nvim-cmp"
         branch:
           name: "main"
-    build:
+    commands:
       steps:
-        - command: ["rsync", "-avc", "--delete-after", ".", "~/.config/nvim/pack/plugins/start/nvim-cmp/"]
+        - command: ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/nvim-cmp/"]
   nvimcmplsp:
     source:
       github:
         project: "hrsh7th/cmp-nvim-lsp"
         branch:
           name: "main"
-    build:
+    commands:
       steps:
-        - command: ["rsync", "-avc", "--delete-after", ".", "~/.config/nvim/pack/plugins/start/cmp-nvim-lsp/"]
+        - command: ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/cmp-nvim-lsp/"]
