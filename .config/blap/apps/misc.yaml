@@ -46,11 +46,6 @@ applications:
         branch:
           name: "master"
     commands:
-      environment:
-        variables:
-          values:
-            "UNCOMMIT": "git-uncommitted"
-            "CURSTATE": "git-current-state"
       steps:
         - command: ["just"]
         - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }} > $PATHS/{{ $.Name }}"]
