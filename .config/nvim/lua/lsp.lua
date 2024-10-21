@@ -31,7 +31,25 @@ for lsp, overrides in pairs({
         ["bashls"] = {},
         ["pyright"] = {},
         ["efm"] = {
-            filetypes = {"sh"}
+            filetypes = {"sh"},
+            init_options = {documentFormatting = false},
+            settings = {
+                rootMarkers = {".git/"},
+                languages = {
+                    sh = {
+                        {
+                            lintCommand = 'shellcheck -f gcc -x',
+                            lintSource = 'shellcheck',
+                            lintFormats = {
+                                '%f:%l:%c: %trror: %m',
+                                '%f:%l:%c: %tarning: %m',
+                                '%f:%l:%c: %tote: %m'
+                            },
+                            lintIgnoreExitCode = true
+                        }
+                    }
+                }
+            }
         },
         ["gopls"] = {
             settings = {
@@ -51,6 +69,10 @@ for lsp, overrides in pairs({
     if exe == nil then
         error("cmd not found for lsp")
     end
+    init_opts = cfg.init_options
+    if overrides.init_options ~= nil then
+        init_opts = overrides.init_options
+    end
     settings = cfg.settings
     if overrides.settings ~= nil then
         settings = overrides.settings
@@ -62,6 +84,7 @@ for lsp, overrides in pairs({
     for path in pairs(paths) do
         if util.path.is_file(string.format("%s/%s", path, exe)) then
             lspconfig[lsp].setup{
+                init_options = init_opts,
                 capabilities = capabilities, 
                 settings = settings,
                 filetypes = types
