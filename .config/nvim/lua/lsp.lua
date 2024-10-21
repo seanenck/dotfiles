@@ -27,31 +27,44 @@ local paths = {}
 for p in string.gmatch(os.getenv("PATH"), "([^:]+)") do
     paths[p] = 1
 end
-for lsp, settings in pairs({
+for lsp, overrides in pairs({
         ["bashls"] = {},
         ["pyright"] = {},
-        ["efm"] = {},
+        ["efm"] = {
+            filetypes = {"sh"}
+        },
         ["gopls"] = {
-            gopls = {
-                gofumpt = true,
-                staticcheck = true
+            settings = {
+                gopls = {
+                    gofumpt = true,
+                    staticcheck = true
+                }
             }
         }
     }) do
-    cmd = require(string.format("lspconfig.configs.%s", lsp)).default_config.cmd
+    cfg = require(string.format("lspconfig.configs.%s", lsp)).default_config
     exe = nil
-    for _, arg in pairs(cmd) do
+    for _, arg in pairs(cfg.cmd) do
         exe = arg
         break
     end
     if exe == nil then
         error("cmd not found for lsp")
     end
+    settings = cfg.settings
+    if overrides.settings ~= nil then
+        settings = overrides.settings
+    end
+    types = cfg.filetypes
+    if overrides.filetypes ~= nil then
+        types = overrides.filetypes
+    end
     for path in pairs(paths) do
         if util.path.is_file(string.format("%s/%s", path, exe)) then
             lspconfig[lsp].setup{
                 capabilities = capabilities, 
-                settings = settings
+                settings = settings,
+                filetypes = types
             }
             break
         end
