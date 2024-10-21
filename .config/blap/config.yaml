@@ -5,8 +5,6 @@ connections:
     token: ~/.local/state/blap.github.token
 include:
   - "~/.config/blap/apps/*.yaml"
-pinned:
-  - "^0000000."
 variables:
   values:
     "PATHS": "$HOME/.bash/paths"
