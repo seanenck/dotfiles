@@ -27,6 +27,7 @@ local paths = {}
 for p in string.gmatch(os.getenv("PATH"), "([^:]+)") do
     paths[p] = 1
 end
+
 for lsp, overrides in pairs({
         ["bashls"] = {},
         ["pyright"] = {},
@@ -92,6 +93,11 @@ end
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     pattern = "*",
     callback = function()
+        for key, val in pairs(vim.lsp.get_clients({bufnr = vim.api.nvim_get_current_buf()})) do
+            if val["name"] == "efm" then
+                return
+            end
+        end
         vim.lsp.buf.format { async = false }
     end
 })
