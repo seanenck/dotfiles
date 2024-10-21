@@ -27,40 +27,41 @@ local paths = {}
 for p in string.gmatch(os.getenv("PATH"), "([^:]+)") do
     paths[p] = 1
 end
-
-for lsp, overrides in pairs({
-        ["bashls"] = {},
-        ["pyright"] = {},
-        ["efm"] = {
-            filetypes = {"sh"},
-            init_options = {documentFormatting = false},
-            settings = {
-                rootMarkers = {".git/"},
-                languages = {
-                    sh = {
-                        {
-                            lintCommand = 'shellcheck -f gcc -x',
-                            lintSource = 'shellcheck',
-                            lintFormats = {
-                                '%f:%l:%c: %trror: %m',
-                                '%f:%l:%c: %tarning: %m',
-                                '%f:%l:%c: %tote: %m'
-                            },
-                            lintIgnoreExitCode = true
-                        }
+lsps = {
+    ["bashls"] = {},
+    ["pyright"] = {},
+    ["efm"] = {
+        filetypes = {"sh"},
+        init_options = {documentFormatting = false},
+        settings = {
+            rootMarkers = {".git/"},
+            languages = {
+                sh = {
+                    {
+                        lintCommand = 'shellcheck -f gcc -x',
+                        lintSource = 'shellcheck',
+                        lintFormats = {
+                            '%f:%l:%c: %trror: %m',
+                            '%f:%l:%c: %tarning: %m',
+                            '%f:%l:%c: %tote: %m'
+                        },
+                        lintIgnoreExitCode = true
                     }
                 }
             }
-        },
-        ["gopls"] = {
-            settings = {
-                gopls = {
-                    gofumpt = true,
-                    staticcheck = true
-                }
+        }
+    },
+    ["gopls"] = {
+        settings = {
+            gopls = {
+                gofumpt = true,
+                staticcheck = true
             }
         }
-    }) do
+    }
+}
+
+for lsp, overrides in pairs(lsps) do
     cfg = require(string.format("lspconfig.configs.%s", lsp)).default_config
     exe = nil
     for _, arg in pairs(cfg.cmd) do
