@@ -8,6 +8,7 @@ if command -v git-dotfiles >/dev/null; then
     echo "$DIFF"
     echo
   fi
+  unset DIFF
 fi
 USE_HOST="\h"
 if [ -n "$CONTAINER_NAME" ]; then
