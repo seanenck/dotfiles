@@ -1,14 +1,17 @@
 #!/bin/sh
+HAS_HEADER=0
+HEADER="state
+==="
+
 if command -v git-dotfiles >/dev/null; then
   export GIT_DOTFILES_ROOT="$HOME/Env/dotfiles"
-  DIFF=$(git dotfiles diff)
+  DIFF=$(git dotfiles motd)
   if [ -n "$DIFF" ]; then
-    echo "dotfiles"
-    echo "==="
+    echo "$HEADER"
+    echo "[dotfiles]"
     echo "$DIFF"
-    echo
+    HAS_HEADER=1
   fi
-  unset DIFF
 fi
 USE_HOST="\h"
 if [ -n "$CONTAINER_NAME" ]; then
@@ -21,6 +24,17 @@ if command -v git-uncommitted >/dev/null; then
     PS1="\$(git uncommitted --mode pwd 2>/dev/null)$PS1"
   fi
   
-  git-uncommitted --mode motd
+  DIFF=$(git-uncommitted --mode motd)
+  if [ -n "$DIFF" ]; then
+    if [ "$HAS_HEADER" -eq 0 ]; then
+      echo "$HEADER"
+    fi
+    echo "[uncommitted]"
+    echo "$DIFF"
+    HAS_HEADER=1
+  fi
 fi
-unset USE_HOST
+if [ "$HAS_HEADER" -ne 0 ]; then
+  echo
+fi
+unset USE_HOST HAS_HEADER HEADER DIFF
