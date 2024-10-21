@@ -8,8 +8,10 @@ applications:
     commands:
       steps:
         - command: ["just", "version={{ $.Vars.Tag }}"]
-        - command: ["/bin/sh", "-c", "$BUILDPATH/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}.bash"]
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }}/$BUILDPATH > $PATHS/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "{{ $.Vars.Directories.Working }}/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}.bash"]
+          directory: "target"
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Working }} > $PATHS/{{ $.Name }}"]
+          directory: "target"
   age:
     source:
       github:
@@ -19,4 +21,4 @@ applications:
     commands:
       steps:
         - command: ["go", "build", "-trimpath", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-X main.Version={{ $.Vars.Tag }}", "-o", ".", "./..."]
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }} > $PATHS/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }} > $PATHS/{{ $.Name }}"]

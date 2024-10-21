@@ -9,7 +9,7 @@ applications:
       steps:
         - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}"]
           directory: "{{ $.Name }}"
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }}/{{ $.Name }} > $PATHS/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }}/{{ $.Name }} > $PATHS/{{ $.Name }}"]
   go:
     priority: 100
     source:
@@ -23,7 +23,7 @@ applications:
             - "[0-9]rc[0-9]"
     commands:
       steps:
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }}/bin > $PATHS/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }}/bin > $PATHS/{{ $.Name }}"]
   gofumpt:
     source:
       github:
@@ -33,7 +33,7 @@ applications:
     commands:
       steps:
         - command: ["go", "build", "-trimpath", "-mod=readonly", "-modcacherw"]
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }} > $PATHS/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }} > $PATHS/{{ $.Name }}"]
   revive:
     source:
       github:
@@ -43,7 +43,7 @@ applications:
     commands:
       steps:
         - command: ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }} > $PATHS/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }} > $PATHS/{{ $.Name }}"]
   staticcheck:
     source:
       github:
@@ -53,4 +53,4 @@ applications:
     commands:
       steps:
         - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}", "./cmd/{{ $.Name }}"]
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }}/{{ $.Name }} > $PATHS/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }}/{{ $.Name }} > $PATHS/{{ $.Name }}"]
