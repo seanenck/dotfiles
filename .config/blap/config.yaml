@@ -6,8 +6,7 @@ connections:
 include:
   - "~/.config/blap/apps/*.yaml"
 pinned:
-  - "597504e.84f8677-master.tar.gz"
-  - "597504e.nvimlspconfig.84f8677"
+  - "^0000000."
 variables:
   values:
     "PATHS": "$HOME/.bash/paths"
