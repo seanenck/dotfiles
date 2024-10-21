@@ -36,6 +36,7 @@ applications:
       steps:
         - command: ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/vim-airline/"]
   nvimlspconfig:
+    disable: true
     source:
       github:
         project: "neovim/nvim-lspconfig"
