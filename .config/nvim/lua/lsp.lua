@@ -76,16 +76,13 @@ for lsp, overrides in pairs({
         end
         return val
     end
-    init_opts = set_or_default("init_options")
-    settings = set_or_default("settings")
-    types = set_or_default("filetypes")
     for path in pairs(paths) do
         if util.path.is_file(string.format("%s/%s", path, exe)) then
             lspconfig[lsp].setup{
-                init_options = init_opts,
+                init_options = set_or_default("init_options"),
                 capabilities = capabilities, 
-                settings = settings,
-                filetypes = types
+                settings = set_or_default("settings"),
+                filetypes = set_or_default("filetypes")
             }
             break
         end
