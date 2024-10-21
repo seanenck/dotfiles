@@ -1,4 +1,14 @@
 #!/bin/sh
+if command -v git-dotfiles >/dev/null; then
+  export GIT_DOTFILES_ROOT="$HOME/Env/dotfiles"
+  DIFF=$(git dotfiles diff)
+  if [ -n "$DIFF" ]; then
+    echo "dotfiles"
+    echo "==="
+    echo "$DIFF"
+    echo
+  fi
+fi
 USE_HOST="\h"
 if [ -n "$CONTAINER_NAME" ]; then
   USE_HOST="$CONTAINER_NAME"
@@ -11,8 +21,5 @@ if command -v git-uncommitted >/dev/null; then
   fi
   
   git-uncommitted --mode motd
-fi
-if command -v git-dotfiles >/dev/null; then
-  export GIT_DOTFILES_ROOT="$HOME/Env/dotfiles"
 fi
 unset USE_HOST
