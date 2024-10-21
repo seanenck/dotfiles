@@ -1,0 +1,14 @@
+.bash_aliases
+.bash_profile
+.bashrc
+.config/bat/*
+.config/blap/*
+.config/efm-langserver/*
+.config/git/*
+.config/nvim/*
+.config/rofi/*
+.config/shellrc/*
+.config/sway/*
+.config/waybar/*
+.config/wezterm/*
+.ssh/*

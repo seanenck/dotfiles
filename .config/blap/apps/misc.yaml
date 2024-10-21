@@ -49,3 +49,4 @@ applications:
       steps:
         - command: ["just"]
         - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directory }} > $PATHS/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "./git-dotfiles completions > $COMPLETIONS/git-dotfiles.bash"]
