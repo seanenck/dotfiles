@@ -31,6 +31,7 @@ lsps = {
     ["bashls"] = {},
     ["pyright"] = {},
     ["efm"] = {
+        formatting = false,
         filetypes = {"sh"},
         init_options = {documentFormatting = false},
         settings = {
@@ -94,12 +95,25 @@ end
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     pattern = "*",
     callback = function()
+        found = false
         for key, val in pairs(vim.lsp.get_clients({bufnr = vim.api.nvim_get_current_buf()})) do
-            if val["name"] == "efm" then
-                return
+            if found then
+                break
+            end
+            name = val["name"]
+            settings = lsps[name]
+            if settings ~= nil then
+                found = true
+                if settings.formatting ~= nil then
+                    if not settings.formatting then
+                        return
+                    end
+                end
             end
         end
-        vim.lsp.buf.format { async = false }
+        if found then
+            vim.lsp.buf.format { async = false }
+        end
     end
 })
 
