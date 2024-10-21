@@ -69,18 +69,16 @@ for lsp, overrides in pairs({
     if exe == nil then
         error("cmd not found for lsp")
     end
-    init_opts = cfg.init_options
-    if overrides.init_options ~= nil then
-        init_opts = overrides.init_options
+    local function set_or_default(key)
+        val = cfg[key]
+        if overrides[key] ~= nil then
+            val = overrides[key]
+        end
+        return val
     end
-    settings = cfg.settings
-    if overrides.settings ~= nil then
-        settings = overrides.settings
-    end
-    types = cfg.filetypes
-    if overrides.filetypes ~= nil then
-        types = overrides.filetypes
-    end
+    init_opts = set_or_default("init_options")
+    settings = set_or_default("settings")
+    types = set_or_default("filetypes")
     for path in pairs(paths) do
         if util.path.is_file(string.format("%s/%s", path, exe)) then
             lspconfig[lsp].setup{
