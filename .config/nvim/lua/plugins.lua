@@ -7,3 +7,7 @@ require("scrollbar").setup({})
 
 -- enable LSPs
 require("lsp")
+
+vim.notify = require("notify").setup({
+    background_colour = "#000000"
+})
