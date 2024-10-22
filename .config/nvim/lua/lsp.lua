@@ -18,101 +18,36 @@ cmp.setup({
     })
 })
 
--- actual lsp setup
+-- make lsp+lspconfig work reasonably
 util = require("lspconfig.util")
 lspconfig = require("lspconfig")
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local paths = {}
-for p in string.gmatch(os.getenv("PATH"), "([^:]+)") do
-    paths[p] = 1
-end
-lsps = {
-    ["bashls"] = {},
-    ["pyright"] = {},
-    ["efm"] = {
-        formatting = false,
-        filetypes = {"sh"},
-        init_options = {documentFormatting = false},
-        settings = {
-            rootMarkers = {".git/"},
-            languages = {
-                sh = {
-                    {
-                        lintCommand = 'shellcheck -f gcc -x',
-                        lintSource = 'shellcheck',
-                        lintFormats = {
-                            '%f:%l:%c: %trror: %m',
-                            '%f:%l:%c: %tarning: %m',
-                            '%f:%l:%c: %tote: %m'
-                        },
-                        lintIgnoreExitCode = true
-                    }
-                }
-            }
-        }
-    },
-    ["gopls"] = {
-        settings = {
-            gopls = {
-                gofumpt = true,
-                staticcheck = true
-            }
-        }
-    }
-}
-
-for lsp, overrides in pairs(lsps) do
-    cfg = require(string.format("lspconfig.configs.%s", lsp)).default_config
-    exe = nil
-    for _, arg in pairs(cfg.cmd) do
-        exe = arg
-        break
+-- default nvim behavior will error, don't error if the exe doesn't exist
+local start_client = vim.lsp.start_client
+vim.lsp.start_client = function(config)
+    cmd = config.cmd
+    if cmd == nil or #cmd == 0 then
+        return nil
     end
-    if exe == nil then
-        error("cmd not found for lsp")
+    exe = cmd[1]
+    -- apparently this is an absolute path by now (else use: vim.fn.executable)
+    if not util.path.is_file(exe) then
+        return
     end
-    local function set_or_default(key)
-        val = cfg[key]
-        if overrides[key] ~= nil then
-            val = overrides[key]
-        end
-        return val
-    end
-    for path in pairs(paths) do
-        if util.path.is_file(string.format("%s/%s", path, exe)) then
-            lspconfig[lsp].setup{
-                init_options = set_or_default("init_options"),
-                capabilities = capabilities, 
-                settings = set_or_default("settings"),
-                filetypes = set_or_default("filetypes")
-            }
-            break
-        end
-    end
+    return start_client(config)
 end
 
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-    pattern = "*",
-    callback = function()
-        found = false
-        for key, val in pairs(vim.lsp.get_clients({bufnr = vim.api.nvim_get_current_buf()})) do
-            if found then
-                break
-            end
-            name = val["name"]
-            settings = lsps[name]
-            if settings ~= nil then
-                found = true
-                if settings.formatting ~= nil then
-                    if not settings.formatting then
-                        return
-                    end
+-- straight from the neovim docs on how to handle formatting
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client.supports_method('textDocument/formatting') then
+            vim.api.nvim_create_autocmd('BufWritePre', {
+                buffer = args.buf,
+                callback = function()
+                    vim.lsp.buf.format { async = false }
                 end
-            end
-        end
-        if found then
-            vim.lsp.buf.format { async = false }
+            })
         end
     end
 })
@@ -134,4 +69,7 @@ vim.keymap.set("n", "<C-e>", function()
                 return string.format("%s (line: %d, col: %d)", d.message, d.lnum, d.col)
             end
         })
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true }
+)
+
+require("lspconfigs")

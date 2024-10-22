@@ -62,12 +62,3 @@ applications:
     commands:
       steps:
         - command: ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/cmp-nvim-lsp/"]
-  nvimnotify:
-    source:
-      github:
-        project: "rcarriga/nvim-notify"
-        branch:
-          name: "master"
-    commands:
-      steps:
-        - command: ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/nvim-notify/"]
