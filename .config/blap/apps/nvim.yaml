@@ -62,3 +62,12 @@ applications:
     commands:
       steps:
         - command: ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/cmp-nvim-lsp/"]
+  vimjust:
+    source:
+      github:
+        project: "NoahTheDuke/vim-just"
+        branch:
+          name: "main"
+    commands:
+      steps:
+        - command: ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/vim-just/"]
