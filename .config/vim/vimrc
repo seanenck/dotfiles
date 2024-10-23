@@ -2,8 +2,8 @@ filetype plugin on
 filetype plugin indent on
 syntax on
 
-set viminfo+=n$HOME/.vim/viminfo
-let &g:directory=$HOME . '/.vim'
+set viminfo+=n$HOME/{{ if eq $.Dotfiles.OS "linux" }}.config/{{else}}.{{end}}vim/viminfo
+let &g:directory=$HOME . '/{{ if eq $.Dotfiles.OS "linux" }}.config/{{else}}.{{end}}vim'
 let &g:undodir=&g:directory . '/undo//'
 let &g:backupdir=&g:directory . '/backup//'
 let &g:directory=&g:directory . '/swap//'
