@@ -34,13 +34,13 @@ vim.api.nvim_create_autocmd({"Filetype"}, {
     end
 })
 
--- prevent 'wq[.]' from writing files with another name"
+-- prevent 'wq[.]' from writing files with another name or partial files
 vim.api.nvim_create_autocmd({ "CmdlineChanged" }, {
     pattern = { "*" },
     callback = function(e)
         local cmd = vim.fn.getcmdline()
         if cmd ~= nil then
-            if cmd:match("^wq.") then
+            if cmd:match("^wq.") or cmd:match("^'<,'>") then
                 vim.fn.setcmdline("")
             end
         end
