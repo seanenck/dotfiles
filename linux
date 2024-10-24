@@ -7,5 +7,6 @@
 .config/nvim/*
 .config/shellrc/*
 .config/sway/*
+.config/user-dirs.dirs
 .config/waybar/*
 .ssh/*
