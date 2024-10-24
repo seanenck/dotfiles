@@ -1,5 +1,6 @@
 applications:
   nvim:
+    disable: true
     source:
       github:
         project: "neovim/neovim"

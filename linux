@@ -1,13 +1,11 @@
 .bash_aliases
 .bash_profile
 .bashrc
+.config/alacritty/*
 .config/bat/*
-.config/blap/*
 .config/git/*
 .config/nvim/*
-.config/rofi/*
 .config/shellrc/*
 .config/sway/*
 .config/waybar/*
-.config/wezterm/*
 .ssh/*

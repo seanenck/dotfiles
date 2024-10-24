@@ -13,6 +13,7 @@ applications:
         - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Working }} > $PATHS/{{ $.Name }}"]
           directory: "target"
   age:
+    disable: true
     source:
       github:
         project: "FiloSottile/age"

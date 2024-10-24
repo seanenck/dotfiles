@@ -3,7 +3,7 @@ input "1:1:AT_Translated_Set_2_keyboard" {
   xkb_options caps:ctrl_modifier
 }
 
-set $term flatpak run org.wezfurlong.wezterm
+set $term alacritty
 set $menu rofi -show drun
 set $sleep pkill -10 swayidle
 
@@ -67,4 +67,7 @@ for_window [app_id="."] inhibit_idle fullscreen
 
 exec swaymsg layout splith
 
-include '$(/usr/libexec/sway/layered-include "/usr/share/sway/config.d/*.conf" "/etc/sway/config.d/*.conf" "${XDG_CONFIG_HOME:-$HOME/.config}/sway/config.d/*.conf")'
+include "/usr/libexec/sway/layered-include"
+include "/usr/share/sway/config.d/*.conf"
+include "/etc/sway/config.d/*.conf"
+include "${XDG_CONFIG_HOME:-$HOME/.config}/sway/config.d/*.conf"

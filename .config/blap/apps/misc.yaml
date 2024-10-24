@@ -19,6 +19,7 @@ applications:
         - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Working }} > $PATHS/{{ $.Name }}"]
           directory: "target"
   shellcheck:
+    disable: true
     source:
       github:
         project: "koalaman/shellcheck"
