@@ -12,7 +12,7 @@ if command -v git-dotfiles >/dev/null; then
     export GIT_DOTFILES_DIFF="delta --paging=never"
   fi
   if [ "$(uname)" = "Linux" ]; then
-    export GIT_DOTFILES_HOST="$(grep '^ID=' /etc/os-release | cut -d "=" -f 2)"
+    export GIT_DOTFILES_HOST="$(grep '^ID=' /etc/os-release | cut -d "=" -f 2 | sed 's/"//g')"
   fi
 fi
 if command -v git-uncommitted >/dev/null; then
