@@ -47,7 +47,6 @@
     "clock": {
         // "timezone": "America/New_York",
         "format": "{:%Y-%m-%dT%H:%M:%S}",
-        "format-alt": "{:%Y-%m-%d}",
         "interval": 1
     },
     "network": {
