@@ -1,8 +1,8 @@
 applications:
-  lb:
+  blap:
     source:
       github:
-        project: "seanenck/lockbox"
+        project: "seanenck/blap"
         release:
           asset: "tarball"
     commands:

@@ -1,0 +1,15 @@
+applications:
+  efm:
+    source:
+      github:
+        project: "mattn/efm-langserver"
+        release:
+          asset: "tarball"
+    commands:
+      environment:
+        variables:
+          values:
+            "NAME": "efm-langserver"
+      steps:
+        - command: ["go", "build", "-ldflags", "-X main.revision={{ $.Vars.Tag }}", "-o", "$NAME", "."]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }} > $PATHS/{{ $.Name }}"]

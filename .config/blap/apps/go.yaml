@@ -1,15 +1,4 @@
 applications:
-  gopls:
-    source:
-      github:
-        project: "golang/tools"
-        release:
-          asset: "tarball"
-    commands:
-      steps:
-        - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}"]
-          directory: "{{ $.Name }}"
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }}/{{ $.Name }} > $PATHS/{{ $.Name }}"]
   go:
     priority: 100
     source:
@@ -24,33 +13,3 @@ applications:
     commands:
       steps:
         - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }}/bin > $PATHS/{{ $.Name }}"]
-  gofumpt:
-    source:
-      github:
-        project: "mvdan/gofumpt"
-        release:
-          asset: "tarball"
-    commands:
-      steps:
-        - command: ["go", "build", "-trimpath", "-mod=readonly", "-modcacherw"]
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }} > $PATHS/{{ $.Name }}"]
-  revive:
-    source:
-      github:
-        project: "mgechev/revive"
-        release:
-          asset: "tarball"
-    commands:
-      steps:
-        - command: ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }} > $PATHS/{{ $.Name }}"]
-  staticcheck:
-    source:
-      github:
-        project: "dominikh/go-tools"
-        release:
-          asset: "tarball"
-    commands:
-      steps:
-        - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}", "./cmd/{{ $.Name }}"]
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }}/{{ $.Name }} > $PATHS/{{ $.Name }}"]

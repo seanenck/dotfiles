@@ -1,0 +1,11 @@
+applications:
+  staticcheck:
+    source:
+      github:
+        project: "dominikh/go-tools"
+        release:
+          asset: "tarball"
+    commands:
+      steps:
+        - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}", "./cmd/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }}/{{ $.Name }} > $PATHS/{{ $.Name }}"]

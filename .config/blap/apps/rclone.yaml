@@ -1,0 +1,7 @@
+applications:
+  rclone:
+    source:
+      github:
+        project: "rclone/rclone"
+        release:
+          asset: "rclone-(.+?)-osx-arm64.zip"

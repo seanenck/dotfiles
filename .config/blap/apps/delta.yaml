@@ -1,0 +1,10 @@
+applications:
+  delta:
+    source:
+      github:
+        project: "dandavison/delta"
+        release:
+          asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}{{ if eq $.OS "linux" }}-gnu{{end}}(.*?).tar.gz$'
+    commands:
+      steps:
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }} > $PATHS/{{ $.Name }}"]

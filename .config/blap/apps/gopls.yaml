@@ -1,0 +1,12 @@
+applications:
+  gopls:
+    source:
+      github:
+        project: "golang/tools"
+        release:
+          asset: "tarball"
+    commands:
+      steps:
+        - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}"]
+          directory: "{{ $.Name }}"
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }}/{{ $.Name }} > $PATHS/{{ $.Name }}"]

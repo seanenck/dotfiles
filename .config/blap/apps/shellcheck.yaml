@@ -1,0 +1,10 @@
+applications:
+  shellcheck:
+    source:
+      github:
+        project: "koalaman/shellcheck"
+        release:
+          asset: '{{ $.OS }}.{{ if eq $.Arch "amd64" }}x86_64{{ end }}.tar.xz$'
+    commands:
+      steps:
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }} > $PATHS/{{ $.Name }}"]

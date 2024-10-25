@@ -1,0 +1,14 @@
+applications:
+  just:
+    priority: 100
+    source:
+      github:
+        project: "casey/just"
+        release:
+          asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}(.*?).tar.gz$'
+    extract:
+      nodepth: true
+    commands:
+      steps:
+        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }} > $PATHS/{{ $.Name }}"]
+        - command: ["cp", "{{ $.Vars.Directories.Root }}/completions/{{ $.Name }}.bash", "$COMPLETIONS/{{ $.Name }}.bash"]
