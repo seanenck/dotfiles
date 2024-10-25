@@ -23,9 +23,9 @@ if command -v rpm-ostree >/dev/null; then
         return
       fi
       if [ "$HAS" -eq 1 ]; then
-        echo "rpm-ostree rebase ostree-unverified-image:oci-archive:$TARGET"
-      else
         echo "rpm-ostree upgrade"
+      else
+        echo "rpm-ostree rebase ostree-unverified-image:oci-archive:$TARGET"
       fi
     }
   fi
