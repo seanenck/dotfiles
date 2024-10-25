@@ -3,7 +3,17 @@ input "1:1:AT_Translated_Set_2_keyboard" {
   xkb_options caps:ctrl_modifier
 }
 
-set $term alacritty
+output eDP-1 {
+    pos 0 0
+}
+
+output DP-1 {
+    pos 1920 0
+}
+
+output * bg #4688b0 solid_color
+
+set $term kitty
 set $menu rofi -show drun
 set $sleep pkill -10 swayidle
 
@@ -67,7 +77,6 @@ for_window [app_id="."] inhibit_idle fullscreen
 
 exec swaymsg layout splith
 
-include "/usr/libexec/sway/layered-include"
-include "/usr/share/sway/config.d/*.conf"
-include "/etc/sway/config.d/*.conf"
-include "${XDG_CONFIG_HOME:-$HOME/.config}/sway/config.d/*.conf"
+include /usr/share/sway/config.d/*.conf
+include /etc/sway/config.d/*.conf
+include ${XDG_CONFIG_HOME:-$HOME/.config}/sway/config.d/*.conf
