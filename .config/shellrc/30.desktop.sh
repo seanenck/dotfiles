@@ -14,18 +14,24 @@ EOF
 )
 if [ -d "$DIR" ]; then
   if command -v flatpak >/dev/null; then
-    for APP in $(flatpak list --columns app --app | tail -n +1); do
-      NAME=$(echo "$APP" | rev | cut -d "." -f 1 | rev)
-      {
-        echo "$DESKTOP_FILE" | sed "s/{{APP}}/$APP/g;s/{{NAME}}/$NAME/g;s/{{TYPE}}/flatpak/g;s/{{CMD}}/flatpak run /g"
-      } > "$DIR/$APP.desktop"
-    done
+    FILE="$DIR/$APP.desktop"
+    if [ ! -e "$FILE" ]; then
+      for APP in $(flatpak list --columns app --app | tail -n +1); do
+        NAME=$(echo "$APP" | rev | cut -d "." -f 1 | rev)
+        {
+          echo "$DESKTOP_FILE" | sed "s/{{APP}}/$APP/g;s/{{NAME}}/$NAME/g;s/{{TYPE}}/flatpak/g;s/{{CMD}}/flatpak run /g"
+        } > "$FILE"
+      done
+    fi
   fi
   if [ -e "$TERMINAL_FILE" ]; then
-    {
-      APP=$(cat "$TERMINAL_FILE")
-      echo "$DESKTOP_FILE" | sed "s/{{APP}}/$APP/g;s/{{NAME}}/terminal/g;s/{{TYPE}}/terminal/g;s/{{CMD}}//g"
-    } > "$DIR/org.localhost.terminal.desktop"
+    FILE="$DIR/org.localhost.terminal.desktop"
+    if [ ! -e "$FILE" ]; then
+      {
+        APP=$(cat "$TERMINAL_FILE")
+        echo "$DESKTOP_FILE" | sed "s/{{APP}}/$APP/g;s/{{NAME}}/terminal/g;s/{{TYPE}}/terminal/g;s/{{CMD}}//g"
+      } > "$FILE"
+    fi
   fi
   unset FILE NAME APP
 fi
