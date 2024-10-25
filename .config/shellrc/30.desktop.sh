@@ -21,10 +21,9 @@ if [ -d "$DIR" ]; then
       } > "$DIR/$APP.desktop"
     done
   fi
-  FILE="$HOME/.local/state/terminal"
-  if [ -e "$FILE" ]; then
+  if [ -e "$TERMINAL_FILE" ]; then
     {
-      APP=$(cat "$FILE")
+      APP=$(cat "$TERMINAL_FILE")
       echo "$DESKTOP_FILE" | sed "s/{{APP}}/$APP/g;s/{{NAME}}/terminal/g;s/{{TYPE}}/terminal/g;s/{{CMD}}//g"
     } > "$DIR/org.localhost.terminal.desktop"
   fi
