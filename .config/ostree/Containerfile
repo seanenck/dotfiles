@@ -1,0 +1,14 @@
+ARG release=41
+ARG variant=sericea
+
+FROM quay.io/fedora-ostree-desktops/$variant:$release
+RUN rpm-ostree install \
+    age \
+    kitty \
+    neovim \
+    ripgrep \
+    ShellCheck \
+    git-delta \
+    just \
+    bat && \
+    ostree container commit
