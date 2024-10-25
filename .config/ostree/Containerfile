@@ -11,4 +11,6 @@ RUN rpm-ostree install \
     git-delta \
     just \
     bat && \
+    rpm-ostree uninstall \
+    foot && \
     ostree container commit
