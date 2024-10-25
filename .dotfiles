@@ -5,7 +5,9 @@
 .config/bat/*
 .config/blap/*
 .config/git/*
+{{- if $.Dotfiles.Category "kitty" }}
 .config/kitty/*
+{{- end }}
 .config/nvim/*
 .config/ostree/*
 .config/rofi/*
