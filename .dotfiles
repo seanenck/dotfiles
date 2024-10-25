@@ -10,7 +10,7 @@
 .config/ostree/*
 .config/rofi/*
 .config/shellrc/*
-.config/sway/config
+.config/sway/*
 .config/user-dirs.dirs
 .config/waybar/*
 .ssh/*
@@ -22,5 +22,6 @@
 !.config/blap/apps/shellcheck.yaml
 !.config/blap/apps/bat.yaml
 !.config/blap/apps/rg.yaml
+!.config/sway/config.d/*
 {{- end}}
 {{- end}}
