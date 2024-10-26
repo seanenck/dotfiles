@@ -1,4 +1,5 @@
 directory: ~/.local/fs
+indexing: true
 parallelization: 4
 connections:
   github:
