@@ -13,7 +13,7 @@ output DP-1 {
 
 output * bg #4688b0 solid_color
 
-set $term kitty
+set $term $(cat $HOME/.local/state/terminal)
 set $menu rofi -show drun
 set $sleep pkill -10 swayidle
 

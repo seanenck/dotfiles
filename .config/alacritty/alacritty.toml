@@ -30,13 +30,13 @@ family = "monospace"
 
 [[keyboard.bindings]]
 action = "Paste"
-key = "P"
-mods = "Control"
+key = "V"
+mods = "Super"
 
 [[keyboard.bindings]]
 action = "Copy"
-key = "Y"
-mods = "Control"
+key = "C"
+mods = "Super"
 
 [[keyboard.bindings]]
 action = "ToggleViMode"

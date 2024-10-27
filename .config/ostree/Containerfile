@@ -4,7 +4,7 @@ ARG variant=sericea
 FROM quay.io/fedora-ostree-desktops/$variant:$release
 RUN rpm-ostree install \
     age \
-    kitty \
+    alacritty \
     neovim \
     ripgrep \
     ShellCheck \

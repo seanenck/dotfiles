@@ -2,6 +2,9 @@
 .bash_aliases
 .bash_profile
 .bashrc
+{{- if $.Dotfiles.Category "alacritty" }}
+.config/alacritty/*
+{{- end }}
 .config/bat/*
 .config/blap/*
 .config/git/*
