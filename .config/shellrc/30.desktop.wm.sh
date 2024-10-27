@@ -14,15 +14,15 @@ EOF
 )
 if [ -d "$DIR" ]; then
   if command -v flatpak >/dev/null; then
-    FILE="$DIR/$APP.desktop"
-    if [ ! -e "$FILE" ]; then
-      for APP in $(flatpak list --columns app --app | tail -n +1); do
+    for APP in $(flatpak list --columns app --app | tail -n +1); do
+      FILE="$DIR/$APP.desktop"
+      if [ ! -e "$FILE" ]; then
         NAME=$(echo "$APP" | rev | cut -d "." -f 1 | rev)
         {
           echo "$DESKTOP_FILE" | sed "s/{{APP}}/$APP/g;s/{{NAME}}/$NAME/g;s/{{TYPE}}/flatpak/g;s/{{CMD}}/flatpak run /g"
         } > "$FILE"
-      done
-    fi
+      fi
+    done
   fi
   if [ -e "$TERMINAL_FILE" ]; then
     FILE="$DIR/org.localhost.terminal.desktop"
