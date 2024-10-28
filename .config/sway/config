@@ -5,21 +5,8 @@ input "1:1:AT_Translated_Set_2_keyboard" {
 
 #{{- $monitorFile := "$HOME/.local/state/monitor" }}
 #{{- if $.Dotfiles.Exists $monitorFile }}
+include ${XDG_CONFIG_HOME:-$HOME/.config}/sway/monitors/{{ $.Dotfiles.Read $monitorFile }}.conf
 #{{- $monitor := $.Dotfiles.Read $monitorFile }}
-#{{- if eq $monitor "monitor-right" }}
-output eDP-1 {
-    pos 0 0
-}
-#{{- end }}
-
-output DP-1 {
-#{{- if eq $monitor "monitor-left" }}
-    pos 0 0
-#{{- end }}
-#{{- if eq $monitor "monitor-right" }}
-    pos 1920 0
-#{{- end }}
-}
 #{{- end }}
 
 output * bg #4688b0 solid_color
