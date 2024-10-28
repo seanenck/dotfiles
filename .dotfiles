@@ -2,15 +2,12 @@
 .bash_aliases
 .bash_profile
 .bashrc
-{{- if $.Dotfiles.Category "alacritty" }}
-.config/alacritty/*
+{{- if $.Dotfiles.Exists "$TERMINAL_FILE" }}
+.config/{{ $.Dotfiles.Read "$TERMINAL_FILE" }}/*
 {{- end }}
 .config/bat/*
 .config/blap/*
 .config/git/*
-{{- if $.Dotfiles.Category "kitty" }}
-.config/kitty/*
-{{- end }}
 .config/nvim/*
 .config/ostree/*
 .config/rofi/*
