@@ -24,8 +24,6 @@ output DP-1 {
 
 output * bg #4688b0 solid_color
 
-set $term {{ $.Dotfiles.Read "$HOME/.local/state/terminal" }}
-set $menu rofi -show drun
 set $sleep pkill -10 swayidle
 
 gaps outer 5px
@@ -36,8 +34,8 @@ exec swayidle -w timeout 600 'swaylock -f -c 000000' \
                  resume 'swaymsg "output * dpms on"'
 
 # process creation/removal
-bindsym $mod+Space exec $term
-bindsym $mod+t exec $menu
+bindsym $mod+Space exec {{ $.Dotfiles.Read "$HOME/.local/state/terminal" }}
+bindsym $mod+t exec rofi -show drun
 bindsym $mod+q kill
 
 # sway management
