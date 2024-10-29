@@ -1,38 +1,38 @@
 #!/bin/sh
 DIR="$HOME/.local/share/applications/"
-DESKTOP_FILE=$(
-cat << EOF
+if [ -d "$DIR" ]; then
+  desktopentry() {
+    usage="<name> <app> <type> (<cmd>)"
+    if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+      echo "$usage"
+      return
+    fi
+    file="$DIR/$2.desktop"
+    if [ -e "$file" ]; then
+      return
+    fi
+    {
+    cat << EOF
 [Desktop Entry]
 Version=1.0
-Name={{NAME}}
-GenericName={{TYPE}}: {{APP}}
-Comment={{TYPE}} {{APP}} ({{NAME}})
-Exec={{CMD}} {{APP}}
+Name=$1
+GenericName=$3: $2
+Comment=$3 $2 ($1)
+Exec=$4 $2
 Terminal=false
 Type=Application
 EOF
-)
-if [ -d "$DIR" ]; then
+    } > "$file"
+  }
   if command -v flatpak >/dev/null; then
     for APP in $(flatpak list --columns app --app | tail -n +1); do
-      FILE="$DIR/$APP.desktop"
-      if [ ! -e "$FILE" ]; then
-        NAME=$(echo "$APP" | rev | cut -d "." -f 1 | rev)
-        {
-          echo "$DESKTOP_FILE" | sed "s/{{APP}}/$APP/g;s/{{NAME}}/$NAME/g;s/{{TYPE}}/flatpak/g;s/{{CMD}}/flatpak run /g"
-        } > "$FILE"
-      fi
+      NAME=$(echo "$APP" | rev | cut -d "." -f 1 | rev)
+      desktopentry "$NAME" "$APP" "flatpak" "flatpak run"
     done
   fi
   if [ -e "$TERMINAL_FILE" ]; then
-    FILE="$DIR/org.localhost.terminal.desktop"
-    if [ ! -e "$FILE" ]; then
-      {
-        APP=$(cat "$TERMINAL_FILE")
-        echo "$DESKTOP_FILE" | sed "s/{{APP}}/$APP/g;s/{{NAME}}/terminal/g;s/{{TYPE}}/terminal/g;s/{{CMD}}//g"
-      } > "$FILE"
-    fi
+    desktopentry "terminal" "$(cat "$TERMINAL_FILE")" "terminal"
   fi
-  unset FILE NAME APP
+  unset NAME APP
 fi
-unset DIR DESKTOP_FILE
+unset DIR
