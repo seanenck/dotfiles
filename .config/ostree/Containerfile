@@ -2,15 +2,16 @@ ARG release=41
 ARG variant=sericea
 
 FROM quay.io/fedora-ostree-desktops/$variant:$release
-RUN rpm-ostree install \
+RUN dnf5 install --setopt=install_weak_deps=False -y \
     age \
     alacritty \
-    neovim \
     ripgrep \
     ShellCheck \
     git-delta \
     just \
+    binutils \
+    neovim \
     bat && \
-    rpm-ostree uninstall \
+    dnf5 remove -y \
     foot && \
     ostree container commit

@@ -9,10 +9,8 @@ if command -v rpm-ostree >/dev/null; then
         return
       fi
       TARGET="$OSTREE_IMAGE_DIR/system.ociarchive"
-      HAS=0
       echo "deploying..."
       if [ -e "$TARGET" ]; then
-        HAS=1
         if ! sudo mv "$TARGET" "$TARGET.last"; then
           echo "failed to backup last target"
           return
@@ -22,11 +20,7 @@ if command -v rpm-ostree >/dev/null; then
         echo "failed to place image"
         return
       fi
-      if [ "$HAS" -eq 1 ]; then
-        echo "rpm-ostree upgrade"
-      else
-        echo "rpm-ostree rebase ostree-unverified-image:oci-archive:$TARGET"
-      fi
+      echo "bootc --transport=oci-archive $TARGET"
     }
   fi
 fi
