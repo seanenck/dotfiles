@@ -9,7 +9,6 @@
 .config/blap/*
 .config/git/*
 .config/nvim/*
-.config/ostree/*
 .config/rofi/*
 .config/shellrc/*
 .config/sway/*
