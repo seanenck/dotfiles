@@ -1,3 +1,5 @@
+systemimage := home_dir() / "Workspace" / "workstation-builds"
+
 [no-cd]
 golint:
     @command -v go > /dev/null
@@ -10,3 +12,8 @@ golint:
 system-updates:
     @! command -v flatpak > /dev/null || flatpak update
     @! command -v blap > /dev/null || blap upgrade --commit
+
+update-system-image:
+    test -d {{systemimage}} || git clone https://github.com/seanenck/workstation-builds {{systemimage}}
+    git -C {{systemimage}} pull
+    cd {{systemimage}} && just
