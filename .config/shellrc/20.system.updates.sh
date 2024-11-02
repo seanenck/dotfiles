@@ -1,25 +1,28 @@
 #!/bin/sh
-HAS=0
+COMMANDS=""
 for ITEM in flatpak blap; do
   if command -v "$ITEM" >/dev/null; then
-    HAS=1
-    break
+    COMMANDS="$COMMANDS $ITEM"
   fi
 done
-if [ "$HAS" -eq 1 ]; then
+if [ -n "$COMMANDS" ]; then
   sysupdate() {
-    if command -v flatpak >/dev/null; then
-      if ! flatpak update; then
-        echo "flatpak update failed"
-        return
-      fi
-    fi
-    if command -v blap >/dev/null; then
-      if ! blap upgrade --commit; then
-        echo "blap updates failed"
-        return
-      fi
-    fi
+    for cmd in $COMMANDS; do
+      case "$cmd" in
+        "flatpak")
+          if ! flatpak update; then
+            echo "flatpak update failed"
+            return
+          fi
+          ;;
+        "blap")
+          if ! blap upgrade --commit; then
+            echo "blap updates failed"
+            return
+          fi
+          ;;
+      esac
+    done
   }
 fi
-unset HAS ITEM
+unset ITEM
