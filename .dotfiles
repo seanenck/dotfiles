@@ -2,6 +2,7 @@
 .bash_aliases
 .bash_profile
 .bashrc
+.justfile
 {{- if $.Dotfiles.Exists "$TERMINAL_FILE" }}
 .config/{{ $.Dotfiles.Read "$TERMINAL_FILE" }}/*
 {{- end }}
