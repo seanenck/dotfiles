@@ -12,9 +12,9 @@ golint:
 system-updates:
     @! command -v flatpak > /dev/null || flatpak update
     @! command -v blap > /dev/null || blap upgrade --commit
-    just --global-justfile update-system-image
+    @just --global-justfile update-system-image
 
 update-system-image:
-    test -d {{systemimage}} || git clone https://github.com/seanenck/workstation-builds {{systemimage}}
-    git -C {{systemimage}} pull
-    cd {{systemimage}} && just needs
+    @test -d {{systemimage}} || git clone https://github.com/seanenck/workstation-builds {{systemimage}}
+    @git -C {{systemimage}} pull
+    @cd {{systemimage}} && just needs
