@@ -1,5 +1,5 @@
 #!/bin/sh
-export TERMINAL_FILE="$HOME/.local/state/terminal"
+export TERMINAL_FILE="$HOME/.local/state/system/terminal"
 if [ ! -e "$TERMINAL_FILE" ]; then
   FOUND=0
   for TERMINAL in kitty alacritty wezterm foot; do

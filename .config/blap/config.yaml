@@ -4,7 +4,7 @@ indexing:
 parallelization: 4
 connections:
   github:
-    token: ~/.local/state/blap.github.token
+    token: ~/.local/state/system/blap.github.token
 include:
   - "~/.config/blap/apps/*.yaml"
 variables:
