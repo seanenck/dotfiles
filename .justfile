@@ -7,6 +7,6 @@ golint:
     @staticcheck -checks all -debug.run-quickfix-analyzers ./... | sed 's#^#staticcheck: #g'
     @gofumpt -l -extra $(find . -type f -name "*.go") | sed 's#^#gofumpt:     #g'
 
-system-update:
+update-system:
     @! command -v flatpak > /dev/null || flatpak update
     @! command -v blap > /dev/null || blap upgrade --commit
