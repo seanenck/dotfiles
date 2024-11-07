@@ -16,7 +16,7 @@
 .config/user-dirs.dirs
 .config/waybar/*
 .ssh/*
-{{- if eq $.Dotfiles.Host "fedora" }}
+{{- if or (eq $.Dotfiles.Host "fedora") (eq $.Dotfiles.Host "opensuse-tumbleweed") }}
 !.config/blap/apps/age.yaml
 !.config/blap/apps/delta.yaml
 !.config/blap/apps/just.yaml
@@ -24,6 +24,11 @@
 !.config/blap/apps/shellcheck.yaml
 !.config/blap/apps/bat.yaml
 !.config/blap/apps/rg.yaml
+{{- if eq $.Dotfiles.Host "fedora" }}
 !.config/sway/config.d/*
+{{- end}}
+{{- if eq $.Dotfiles.Host "opensuse-tumbleweed" }}
+!.config/blap/apps/image.yaml
+{{- end}}
 {{- end}}
 {{- end}}
