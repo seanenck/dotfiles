@@ -10,4 +10,3 @@ golint:
 update-system:
     @! command -v flatpak > /dev/null || flatpak update
     @! command -v blap > /dev/null || blap upgrade --commit
-    rsync -avc --delete-after ~/.local/state/system/ mini.ttypty.com:~/Active/current/workdir/

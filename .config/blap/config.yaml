@@ -2,9 +2,6 @@ directory: ~/.local/fs
 indexing:
   enabled: true
 parallelization: 4
-connections:
-  github:
-    token: ~/.local/state/system/blap.github.token
 include:
   - "~/.config/blap/apps/*.yaml"
 variables:
