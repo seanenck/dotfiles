@@ -21,7 +21,7 @@ exec swayidle -w timeout 600 'swaylock -f -c 000000' \
                  resume 'swaymsg "output * dpms on"'
 
 # process creation/removal
-bindsym $mod+Space exec {{ $.Dotfiles.Read "$HOME/.local/state/system/terminal" }}
+bindsym $mod+Space exec {{ $.Dotfiles.Env "TERMINAL_EMULATOR" }}
 bindsym $mod+t exec rofi -show drun
 bindsym $mod+q kill
 

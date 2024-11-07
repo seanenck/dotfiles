@@ -3,9 +3,7 @@
 .bash_profile
 .bashrc
 .justfile
-{{- if $.Dotfiles.Exists "$TERMINAL_FILE" }}
-.config/{{ $.Dotfiles.Read "$TERMINAL_FILE" }}/*
-{{- end }}
+.config/{{ $.Dotfiles.Env "TERMINAL_EMULATOR" }}/*
 .config/bat/*
 .config/blap/*
 .config/git/*

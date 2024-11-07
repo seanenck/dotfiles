@@ -30,8 +30,8 @@ EOF
       desktopentry "$NAME" "$APP" "flatpak" "flatpak run"
     done
   fi
-  if [ -e "$TERMINAL_FILE" ]; then
-    desktopentry "terminal" "$(cat "$TERMINAL_FILE")" "terminal"
+  if [ -n "$TERMINAL_EMULATOR" ]; then
+    desktopentry "terminal" "$TERMINAL_EMULATOR" "terminal"
   fi
   unset NAME APP
 fi

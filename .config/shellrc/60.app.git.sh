@@ -6,7 +6,7 @@ if command -v git-dotfiles >/dev/null; then
   fi
   if [ "$(uname)" = "Linux" ]; then
     export GIT_DOTFILES_HOST="$(grep '^ID=' /etc/os-release | cut -d "=" -f 2 | sed 's/"//g')"
-    export GIT_DOTFILES_CATEGORY="development $(cat $TERMINAL_FILE)"
+    export GIT_DOTFILES_CATEGORY="development $TERMINAL_EMULATOR"
     export GIT_DOTFILES_AUTODETECT=1
   fi
 fi
