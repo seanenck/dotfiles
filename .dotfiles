@@ -29,6 +29,7 @@
 {{- end}}
 {{- if eq $.Dotfiles.Host "opensuse-tumbleweed" }}
 !.config/blap/apps/image.yaml
+.config/osc/*
 {{- end}}
 {{- end}}
 {{- end}}
