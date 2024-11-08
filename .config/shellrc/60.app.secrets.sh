@@ -2,10 +2,10 @@
 SECRETS="$HOME/Env/secrets"
 if [ -d "$SECRETS" ]; then
   export SECRET_ROOT="$SECRETS"
-  LB_ENV="$SECRET_ROOT/db/lockbox.bash"
-  if [ -e "$LB_ENV" ]; then
-    source "$LB_ENV"
+  SECRET_ENV="$SECRET_ROOT/secrets.env"
+  if [ -e "$SECRET_ENV" ]; then
+    source "$SECRET_ENV"
   fi
-  unset LB_ENV 
+  unset SECRET_ENV 
 fi
 unset SECRETS
