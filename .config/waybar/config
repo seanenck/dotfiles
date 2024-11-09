@@ -8,6 +8,7 @@
     ],
     "modules-right": [
         "idle_inhibitor",
+        "backlight",
         "battery",
         "pulseaudio",
         "network",
@@ -76,6 +77,11 @@
             "default": ["", "", ""]
         },
         "on-click": "pavucontrol"
+    },
+    "backlight": {
+	    "device": "intel_backlight",
+	    "format": "{percent}% {icon}",
+	    "format-icons": ["", ""]
     },
     "battery": {
         "states": {
