@@ -3,17 +3,21 @@
 .bash_profile
 .bashrc
 .justfile
-.config/{{ $.Dotfiles.Env "TERMINAL_EMULATOR" }}/*
 .config/bat/*
 .config/blap/*
 .config/git/*
 .config/nvim/*
-.config/rofi/*
 .config/shellrc/*
-.config/sway/*
 .config/user-dirs.dirs
-.config/waybar/*
 .ssh/*
+
+{{- if ne ($.Dotfiles.Env "XDG_CURRENT_DESKTOP") "" }} 
+.config/waybar/*
+.config/{{ $.Dotfiles.Env "TERMINAL_EMULATOR" }}/*
+.config/rofi/*
+.config/sway/*
+{{- end}}
+
 {{- if or (eq $.Dotfiles.Host "fedora") (eq $.Dotfiles.Host "opensuse-tumbleweed") }}
 !.config/blap/apps/age.yaml
 !.config/blap/apps/delta.yaml
