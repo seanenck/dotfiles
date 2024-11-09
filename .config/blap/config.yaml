@@ -4,6 +4,9 @@ indexing:
 parallelization: 4
 include:
   - "~/.config/blap/apps/*.yaml"
+connections:
+  github:
+    token: ["secret-tool", "lookup", "blap", "github"]
 variables:
   values:
     "PATHS": "$HOME/.bash/paths"
