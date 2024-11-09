@@ -26,6 +26,7 @@
 !.config/sway/config.d/*
 {{- end}}
 {{- if eq $.Dotfiles.Host "opensuse-tumbleweed" }}
+!.config/blap/apps/efm.yaml
 !.config/blap/apps/image.yaml
 .config/osc/*
 {{- end}}
