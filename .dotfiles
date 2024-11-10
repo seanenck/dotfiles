@@ -11,7 +11,7 @@
 .config/user-dirs.dirs
 .ssh/*
 
-{{- if ne ($.Dotfiles.Env "XDG_CURRENT_DESKTOP") "" }} 
+{{- if eq ($.Dotfiles.Env "DESKTOP_SESSION") "sway" }}
 .config/waybar/*
 .config/{{ $.Dotfiles.Env "TERMINAL_EMULATOR" }}/*
 .config/rofi/*

@@ -1,5 +1,5 @@
 #!/bin/sh
-if [ -n "$XDG_CURRENT_DESKTOP" ]; then
+if [ -n "$DESKTOP_SESSION" ] && [ "$DESKTOP_SESSION" = "sway" ]; then
   FOUND=0
   for TERMINAL in kitty alacritty wezterm foot; do
     if command -v "$TERMINAL" > /dev/null; then
