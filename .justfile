@@ -8,5 +8,7 @@ golint:
     @gofumpt -l -extra $(find . -type f -name "*.go") | sed 's#^#gofumpt:     #g'
 
 update-system:
+{{- if eq ($.Dotfiles.Env "CONTAINER_ID") "" }}
     @! command -v flatpak > /dev/null || flatpak update
+{{- end }}
     @! command -v blap > /dev/null || blap upgrade --commit
