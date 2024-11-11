@@ -38,3 +38,9 @@ for key, command in pairs({ ["gl"] = "$", ["gh"] = "^", ["gk"] = "gg", ["gj"] = 
     mappers.nmap(key, command)
     mappers.vmap(key, command)
 end
+
+for _, delete in ipairs({"", "d"}) do
+    for idx, fxn in pairs({mappers.nmap, mappers.vmap}) do
+        fxn('d' .. delete, '"_d' .. delete)
+    end
+end
