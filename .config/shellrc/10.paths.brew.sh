@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if [ $(uname) = "Darwin" ] || [ -d "/opt/homebrew" ]; then
+if [ $(uname) = "Darwin" ] && [ -d "/opt/homebrew" ]; then
   export HOMEBREW_PREFIX="/opt/homebrew";
   export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
   export HOMEBREW_REPOSITORY="/opt/homebrew";
