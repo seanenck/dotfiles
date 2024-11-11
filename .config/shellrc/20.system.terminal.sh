@@ -5,6 +5,7 @@ if [ -n "$DESKTOP_SESSION" ] && [ "$DESKTOP_SESSION" = "sway" ]; then
     if command -v "$TERMINAL" > /dev/null; then
       FOUND=1
       export TERMINAL_EMULATOR="$TERMINAL"
+      echo "$TERMINAL" > "$HOME/.local/state/terminal"
       break
     fi
   done

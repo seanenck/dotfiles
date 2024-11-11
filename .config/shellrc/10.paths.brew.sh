@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-{{ if eq $.Dotfiles.OS "Darwin" }}
-if [ -d "/opt/homebrew" ]; then
+if [ $(uname) = "Darwin" ] || [ -d "/opt/homebrew" ]; then
   export HOMEBREW_PREFIX="/opt/homebrew";
   export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
   export HOMEBREW_REPOSITORY="/opt/homebrew";
@@ -8,4 +7,3 @@ if [ -d "/opt/homebrew" ]; then
   export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
   export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
 fi
-{{- end}}
