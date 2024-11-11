@@ -18,7 +18,7 @@
 .config/sway/*
 {{- end}}
 
-{{- if or (eq $.Dotfiles.Host "fedora") (eq $.Dotfiles.Host "opensuse-tumbleweed") }}
+{{- if or ($.Dotfiles.Host.Is "fedora") ($.Dotfiles.Host.Is "opensuse-tumbleweed") }}
 !.config/blap/apps/age.yaml
 !.config/blap/apps/delta.yaml
 !.config/blap/apps/just.yaml
@@ -26,10 +26,10 @@
 !.config/blap/apps/shellcheck.yaml
 !.config/blap/apps/bat.yaml
 !.config/blap/apps/rg.yaml
-{{- if eq $.Dotfiles.Host "fedora" }}
+{{- if $.Dotfiles.Host.Is "fedora" }}
 !.config/sway/config.d/*
 {{- end}}
-{{- if eq $.Dotfiles.Host "opensuse-tumbleweed" }}
+{{- if $.Dotfiles.Host.Is "opensuse-tumbleweed" }}
 !.config/blap/apps/efm.yaml
 !.config/blap/apps/image.yaml
 .config/osc/*
