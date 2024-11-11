@@ -1,3 +1,10 @@
+noop-system-justfile:
+    @echo noop
+
+update-system:
+    @! command -v flatpak > /dev/null || flatpak update
+    @! command -v blap > /dev/null || blap upgrade --commit
+
 [no-cd]
 golint:
     @command -v go > /dev/null
@@ -6,7 +13,3 @@ golint:
     @go vet ./... | sed 's#^#go vet:      #g'
     @staticcheck -checks all -debug.run-quickfix-analyzers ./... | sed 's#^#staticcheck: #g'
     @gofumpt -l -extra $(find . -type f -name "*.go") | sed 's#^#gofumpt:     #g'
-
-update-system:
-    @! command -v flatpak > /dev/null || flatpak update
-    @! command -v blap > /dev/null || blap upgrade --commit
