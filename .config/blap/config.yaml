@@ -4,11 +4,8 @@ indexing:
 parallelization: 4
 include:
   - "~/.config/blap/apps/*.yaml"
-connections:
-  github:
-    token: ["secret-tool", "lookup", "blap", "github"]
 variables:
   values:
-    "PATHS": "$HOME/.bash/paths"
-    "COMPLETIONS": "$HOME/.bash/completions"
+    "PATHS": "$HOME/.shell/paths"
+    "COMPLETIONS": "$HOME/.shell/completions"
     "NVIM_PLUGINS": "$HOME/.config/nvim/pack/plugins/start"

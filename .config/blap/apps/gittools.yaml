@@ -8,7 +8,5 @@ applications:
     commands:
       steps:
         - command: ["just"]
-        - command: ["/bin/sh", "-c", "{{ $.Vars.Directories.Working }}/git-dotfiles completions > $COMPLETIONS/git-dotfiles.bash"]
-          directory: "target"
         - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Working }}/ > $PATHS/{{ $.Name }}"]
           directory: "target"

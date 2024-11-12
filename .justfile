@@ -4,6 +4,7 @@ noop-system-justfile:
 update-system:
     @! command -v flatpak > /dev/null || flatpak update
     @! command -v blap > /dev/null || blap upgrade --commit
+    @! test -e ~/.local/state/workdir || rsync -avc ~/Active/workdir mini.ttypty.com:~/Active/current/workdir/
 
 [no-cd]
 golint:

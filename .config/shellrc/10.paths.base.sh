@@ -1,5 +1,5 @@
 #!/bin/sh
-DIR="$HOME/.bash"
+DIR="$HOME/.shell"
 if [ -d "$DIR" ]; then
   PATHS="$DIR/paths"
   if [ -d "$PATHS" ]; then
@@ -10,10 +10,11 @@ if [ -d "$DIR" ]; then
   fi
   PATHS="$DIR/completions"
   if [ -d "$PATHS" ]; then
-    for FILE in "$PATHS/"*; do
+    SH=$(basename "$SHELL")
+    for FILE in "$PATHS/"*.$SH; do
       source "$FILE"
     done
   fi
-  unset FILE BASE PATHS
+  unset FILE BASE PATHS SH
 fi
 unset DIR

@@ -1,0 +1,68 @@
+#!/bin/bash
+_install() {
+  echo ".config/blap/config.yaml"
+  echo ".config/blap/apps/blap.yaml"
+  echo ".config/blap/apps/gittools.yaml"
+  echo ".config/blap/apps/just.yaml"
+  echo ".config/blap/apps/lb.yaml"
+  echo ".config/blap/apps/go.yaml"
+  echo ".config/shellrc/"
+  echo ".justfile"
+  case $(uname) in
+    "Linux")
+      echo ".bash_aliases"
+      echo ".bashrc"
+      echo ".bash_profile"
+      echo ".config/bat/"
+      echo ".config/git/"
+      echo ".config/nvim/"
+      echo ".config/user-dirs.dirs"
+      echo ".config/blap/apps/gofumpt.yaml"
+      echo ".config/blap/apps/gopls.yaml"
+      echo ".config/blap/apps/nvimplugins.yaml"
+      echo ".config/blap/apps/revive.yaml"
+      echo ".config/blap/apps/staticcheck.yaml"
+      echo ".config/blap/apps/rclone.yaml"
+      echo ".ssh/"
+      if [ -n "$DESKTOP_SESSION" ] && [ "$DESKTOP_SESSION" = "sway" ]; then
+        echo ".config/waybar/"
+        echo ".config/rofi/"
+        echo ".config/sway/"
+      fi
+      ;;
+    "Darwin")
+      echo ".zshrc"
+      echo ".gitconfig"
+      echo ".config/vfu/"
+      echo ".config/blap/apps/alpine.yaml"
+  esac
+  if [ -n "$TERMINAL_EMULATOR" ]; then
+    echo ".config/$TERMINAL_EMULATOR/"
+  fi
+}
+
+DRYRUN=""
+if [ -n "$1" ]; then
+  if [ "$1" = "--dry-run" ]; then
+    DRYRUN="echo"
+  else
+    echo "unknown command: $1"
+    exit 1
+  fi 
+fi
+
+CMD=""
+DIR=""
+SET=""
+FILE=""
+for SET in $(_install | sort -u); do
+  for FILE in $(find $SET -type f); do
+    DIR=$(dirname "$FILE")
+    if [ "$DIR" != "." ]; then
+      $DRYRUN mkdir -p "$HOME/$DIR"
+    fi
+    $DRYRUN ln -sf "$PWD/$FILE" "$HOME/$FILE"
+  done
+done
+
+unset SET FILE DRYRUN CMD

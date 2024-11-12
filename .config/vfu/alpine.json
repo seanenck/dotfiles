@@ -29,7 +29,7 @@
     }
   ],
   "env": {
-    "CONFIG": "~/.config/vm"
+    "CONFIG": "~/.config/vfu"
   },
   "shares": {
     "active": {
@@ -38,8 +38,8 @@
     "env": {
         "path": "~/Env"
     },
-    "documents": {
-        "path": "~/Documents"
+    "workspace": {
+        "path": "~/Workspace"
     },
     "downloads": {
         "path": "~/Downloads"
