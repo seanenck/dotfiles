@@ -39,8 +39,20 @@ for key, command in pairs({ ["gl"] = "$", ["gh"] = "^", ["gk"] = "gg", ["gj"] = 
     mappers.vmap(key, command)
 end
 
-for _, delete in ipairs({"", "d"}) do
-    for idx, fxn in pairs({mappers.nmap, mappers.vmap}) do
-        fxn('d' .. delete, '"_d' .. delete)
+-- allow clip on/off
+local clip_cfg = {}
+local handle_clip = function()
+    clip_color = "black"
+    if clip_cfg.clipboard == nil then
+        clip_cfg.clipboard = vim.opt.clipboard
+        vim.opt.clipboard = ""
+    else
+        vim.opt.clipboard = clip_cfg.clipboard
+        clip_cfg.clipboard = nil
+        clip_color = "#373737"
     end
+    vim.api.nvim_set_hl(0, "Normal", {bg=clip_color, fg='white'})
 end
+
+handle_clip()
+vim.keymap.set("n", "<C-c>", handle_clip, { noremap = true, silent = true })
