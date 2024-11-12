@@ -1,0 +1,9 @@
+applications:
+  kitty:
+    source:
+      github:
+        project: "kovidgoyal/kitty"
+        release:
+          asset: '.dmg$'
+    extract:
+      command: ["cp", "{{ $.Input }}", "{{ $.Output }}"]

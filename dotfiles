@@ -35,6 +35,8 @@ _install() {
       echo ".gitconfig"
       echo ".config/vfu/"
       echo ".config/blap/apps/alpine.yaml"
+      echo ".config/blap/apps/rectangle.yaml"
+      echo ".config/blap/apps/kitty.yaml"
   esac
   if [ -n "$TERMINAL_EMULATOR" ]; then
     echo ".config/$TERMINAL_EMULATOR/"
