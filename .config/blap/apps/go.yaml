@@ -1,15 +1,14 @@
 applications:
   go:
     priority: 100
-    source:
-      git:
-        repository: "https://github.com/golang/go"
-        tagged:
-          download: "https://go.dev/dl/{{ $.Vars.Tag }}.{{ $.OS }}-{{ $.Arch }}.tar.gz"
-          filters: 
-            - "refs/tags/weekly"
-            - "refs/tags/release"
-            - "[0-9]rc[0-9]"
+    git:
+      repository: "https://github.com/golang/go"
+      tagged:
+        download: "https://go.dev/dl/{{ $.Vars.Tag }}.{{ $.OS }}-{{ $.Arch }}.tar.gz"
+        filters: 
+          - "refs/tags/weekly"
+          - "refs/tags/release"
+          - "[0-9]rc[0-9]"
     commands:
       steps:
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }}/bin > $PATHS/{{ $.Name }}"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/bin/{{ $.Name }}", "$PATHS/"]

@@ -1,11 +1,10 @@
 applications:
   revive:
-    source:
-      github:
-        project: "mgechev/revive"
-        release:
-          asset: "tarball"
+    github:
+      project: "mgechev/revive"
+      release:
+        asset: "tarball"
     commands:
       steps:
         - command: ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }} > $PATHS/{{ $.Name }}"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$PATHS/"]

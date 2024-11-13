@@ -1,9 +1,8 @@
 applications:
   rectangle:
-    source:
-      github:
-        project: "rxhanson/Rectangle"
-        release:
-          asset: '.dmg$'
+    github:
+      project: "rxhanson/Rectangle"
+      release:
+        asset: '.dmg$'
     extract:
       command: ["cp", "{{ $.Input }}", "{{ $.Output }}"]

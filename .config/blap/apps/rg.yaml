@@ -1,10 +1,9 @@
 applications:
   rg:
-    source:
-      github:
-        project: "BurntSushi/ripgrep"
-        release:
-          asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}(.*?).tar.gz$'
+    github:
+      project: "BurntSushi/ripgrep"
+      release:
+        asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}(.*?).tar.gz$'
     commands:
       steps:
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }} > $PATHS/{{ $.Name }}"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$PATHS/"]

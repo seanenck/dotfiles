@@ -1,12 +1,15 @@
 applications:
   gittools:
-    source:
-      github:
-        project: "seanenck/git-tools"
-        branch:
-          name: "master"
+    github:
+      project: "seanenck/git-tools"
+      branch:
+        name: "master"
     commands:
       steps:
         - command: ["just"]
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Working }}/ > $PATHS/{{ $.Name }}"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-uncommitted", "$PATHS/"]
+          directory: "target"
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-motd", "$PATHS/"]
+          directory: "target"
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-current-state", "$PATHS/"]
           directory: "target"

@@ -1,14 +1,13 @@
 applications:
   blap:
-    source:
-      github:
-        project: "seanenck/blap"
-        release:
-          asset: "tarball"
+    github:
+      project: "seanenck/blap"
+      release:
+        asset: "tarball"
     commands:
       steps:
         - command: ["just", "version={{ $.Vars.Tag }}"]
-        - command: ["/bin/sh", "-c", "SHELL=/bin/bash {{ $.Vars.Directories.Working }}/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}.bash"]
+        - command: ["/bin/sh", "-c", "{{ $.Vars.Directories.Working }}/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}.$COMPSH"]
           directory: "target"
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Working }} > $PATHS/{{ $.Name }}"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$PATHS/"]
           directory: "target"

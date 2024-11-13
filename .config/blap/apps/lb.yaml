@@ -1,14 +1,13 @@
 applications:
   lb:
-    source:
-      github:
-        project: "seanenck/lockbox"
-        release:
-          asset: "tarball"
+    github:
+      project: "seanenck/lockbox"
+      release:
+        asset: "tarball"
     commands:
       steps:
         - command: ["just", "version={{ $.Vars.Tag }}"]
-        - command: ["/bin/sh", "-c", "{{ $.Vars.Directories.Working }}/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}.{{ if eq $.OS \"linux\" }}bash{{else}}zsh{{end}}"]
+        - command: ["/bin/sh", "-c", "{{ $.Vars.Directories.Working }}/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}.$COMPSH"]
           directory: "target"
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Working }} > $PATHS/{{ $.Name }}"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$PATHS/"]
           directory: "target"

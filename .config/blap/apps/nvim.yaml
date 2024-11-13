@@ -1,10 +1,9 @@
 applications:
   nvim:
-    source:
-      github:
-        project: "neovim/neovim"
-        release:
-          asset: 'nvim-{{ $.OS }}{{ if eq $.Arch "amd64" }}64{{ end }}.tar.gz$'
+    github:
+      project: "neovim/neovim"
+      release:
+        asset: 'nvim-{{ $.OS }}{{ if eq $.Arch "amd64" }}64{{ end }}.tar.gz$'
     commands:
       steps:
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }}/bin > $PATHS/{{ $.Name }}"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/bin/{{ $.Name }}", "$PATHS/"]

@@ -1,11 +1,10 @@
 applications:
   gofumpt:
-    source:
-      github:
-        project: "mvdan/gofumpt"
-        release:
-          asset: "tarball"
+    github:
+      project: "mvdan/gofumpt"
+      release:
+        asset: "tarball"
     commands:
       steps:
         - command: ["go", "build", "-trimpath", "-mod=readonly", "-modcacherw"]
-        - command: ["/bin/sh", "-c", "echo {{ $.Vars.Directories.Root }} > $PATHS/{{ $.Name }}"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$PATHS/"]
