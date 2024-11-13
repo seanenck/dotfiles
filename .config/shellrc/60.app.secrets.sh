@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 SECRETS="$HOME/Env/secrets"
 if [ -d "$SECRETS" ]; then
   export SECRET_ROOT="$SECRETS"

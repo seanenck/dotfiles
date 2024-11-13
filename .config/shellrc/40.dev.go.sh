@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 for DIR in "Library" ".cache"; do
   DIR="$HOME/$DIR"
   if [ -d "$DIR" ]; then

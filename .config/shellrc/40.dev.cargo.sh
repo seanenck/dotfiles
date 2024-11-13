@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 FILE="$HOME/.cargo/env"
 if [ -e "$FILE" ]; then
   source "$FILE"

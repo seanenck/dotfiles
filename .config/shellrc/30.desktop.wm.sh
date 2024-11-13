@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
 DIR="$HOME/.local/share/applications/"
 if [ -d "$DIR" ]; then
-  desktopentry() {
+  desktop-entry() {
     usage="<name> <app> <type> (<cmd>)"
     if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
       echo "$usage"

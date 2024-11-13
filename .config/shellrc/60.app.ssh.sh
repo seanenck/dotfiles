@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 if command -v ssh-agent > /dev/null; then
   SSH_FILES="$HOME/.ssh"
   if [ -e "$SSH_FILES/allowed_signers" ]; then
