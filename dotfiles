@@ -44,21 +44,33 @@ _install() {
 }
 
 DRYRUN=""
+CHECK=0
 if [ -n "$1" ]; then
-  if [ "$1" = "--dry-run" ]; then
-    DRYRUN="echo"
-  else
-    echo "unknown command: $1"
-    exit 1
-  fi 
+  case "$1" in
+    "--dry-run")
+      DRYRUN="echo"
+      ;;
+    "--check")
+      CHECK=1
+      ;;
+    *)
+      echo "unknown command: $1"
+      exit 1
+      ;;
+  esac
 fi
 
-CMD=""
 DIR=""
 SET=""
 FILE=""
 for SET in $(_install | sort -u); do
   for FILE in $(find $SET -type f); do
+    if [ "$CHECK" -eq 1 ]; then
+      if ! test -L "$HOME/$FILE"; then
+        echo "non-link dotfile: $FILE"
+      fi
+      continue
+    fi
     DIR=$(dirname "$FILE")
     if [ "$DIR" != "." ]; then
       $DRYRUN mkdir -p "$HOME/$DIR"
@@ -67,4 +79,4 @@ for SET in $(_install | sort -u); do
   done
 done
 
-unset SET FILE DRYRUN CMD
+unset SET FILE DRYRUN CHECK
