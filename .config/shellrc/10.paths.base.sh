@@ -1,5 +1,5 @@
 #!/bin/sh
-DIR="$HOME/.shell"
+DIR="$HOME/.local/shell"
 if [ -d "$DIR" ]; then
   PATHS="$DIR/paths"
   if [ -d "$PATHS" ]; then

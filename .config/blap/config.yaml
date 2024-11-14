@@ -8,6 +8,6 @@ include:
   - "~/.config/blap/bin/*.yaml"
 variables:
   "PATHS": "$HOME/.local/bin"
-  "COMPLETIONS": "$HOME/.shell/completions"
+  "COMPLETIONS": "$HOME/.local/shell/completions"
   "NVIM_PLUGINS": "$HOME/.config/nvim/pack/plugins/start"
   "COMPSH": "{{ if eq $.OS \"linux\" }}bash{{else}}zsh{{end}}"
