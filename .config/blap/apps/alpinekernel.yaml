@@ -1,0 +1,6 @@
+applications:
+  alpinekernel:
+    github:
+      project: "alpinelinux/aports"
+      branch:
+        name: "3.20-stable"

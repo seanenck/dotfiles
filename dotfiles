@@ -35,6 +35,7 @@ _install() {
       echo ".gitconfig"
       echo ".config/vfu/"
       echo ".config/blap/apps/alpine.yaml"
+      echo ".config/blap/apps/alpinekernel.yaml"
       echo ".config/blap/apps/rectangle.yaml"
       echo ".config/blap/apps/kitty.yaml"
   esac
