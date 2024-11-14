@@ -5,4 +5,4 @@ applications:
       release:
         asset: '.dmg$'
     extract:
-      command: ["cp", "{{ $.Input }}", "{{ $.Output }}"]
+      skip: true
