@@ -2,9 +2,9 @@
 _install() {
   echo ".config/blap/config.yaml"
   echo ".config/shellrc/"
-  echo ".justfile"
   case $(uname) in
     "Linux")
+      echo ".justfile"
       echo ".bash_aliases"
       echo ".bashrc"
       echo ".bash_profile"
