@@ -1,0 +1,10 @@
+applications:
+  lb:
+    github:
+      project: "seanenck/lockbox"
+      release:
+        asset: '{{ $.OS }}-{{ $.Arch }}.tar.gz$'
+    commands:
+      steps:
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$PATHS/"]
+        - command: ["/bin/sh", "-c", "{{ $.Vars.Directories.Root }}/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}.$COMPSH"]

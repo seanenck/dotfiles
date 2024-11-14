@@ -1,0 +1,11 @@
+applications:
+  gittools:
+    github:
+      project: "seanenck/git-tools"
+      release:
+        asset: '{{ $.OS }}-{{ $.Arch }}.tar.gz$'
+    commands:
+      steps:
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/git-uncommitted", "$PATHS/"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/git-motd", "$PATHS/"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/git-current-state", "$PATHS/"]

@@ -1,11 +1,6 @@
 #!/bin/bash
 _install() {
   echo ".config/blap/config.yaml"
-  echo ".config/blap/apps/blap.yaml"
-  echo ".config/blap/apps/gittools.yaml"
-  echo ".config/blap/apps/just.yaml"
-  echo ".config/blap/apps/lb.yaml"
-  echo ".config/blap/apps/go.yaml"
   echo ".config/shellrc/"
   echo ".justfile"
   case $(uname) in
@@ -17,11 +12,16 @@ _install() {
       echo ".config/git/"
       echo ".config/nvim/"
       echo ".config/user-dirs.dirs"
-      echo ".config/blap/apps/gofumpt.yaml"
-      echo ".config/blap/apps/gopls.yaml"
+      echo ".config/blap/src/blap.yaml"
+      echo ".config/blap/src/gittools.yaml"
+      echo ".config/blap/src/lb.yaml"
+      echo ".config/blap/src/gofumpt.yaml"
+      echo ".config/blap/src/gopls.yaml"
+      echo ".config/blap/src/revive.yaml"
+      echo ".config/blap/src/staticcheck.yaml"
+      echo ".config/blap/bin/go.yaml"
+      echo ".config/blap/bin/just.yaml"
       echo ".config/blap/apps/nvimplugins.yaml"
-      echo ".config/blap/apps/revive.yaml"
-      echo ".config/blap/apps/staticcheck.yaml"
       echo ".config/blap/apps/rclone.yaml"
       echo ".config/blap/apps/alpine.yaml"
       echo ".config/blap/apps/alpinevirt.yaml"
@@ -38,6 +38,9 @@ _install() {
       echo ".config/vfu/"
       echo ".config/blap/apps/rectangle.yaml"
       echo ".config/blap/apps/kitty.yaml"
+      echo ".config/blap/bin/gittools.yaml"
+      echo ".config/blap/bin/lb.yaml"
+      echo ".config/blap/bin/blap.yaml"
   esac
   if [ -n "$TERMINAL_EMULATOR" ]; then
     echo ".config/$TERMINAL_EMULATOR/"

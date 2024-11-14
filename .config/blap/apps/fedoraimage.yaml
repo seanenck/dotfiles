@@ -1,5 +1,5 @@
 applications:
-  osimage:
+  fedoraimage:
     github:
       project: "seanenck/workstation-builds"
       branch:
