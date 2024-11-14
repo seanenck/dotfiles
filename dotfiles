@@ -23,7 +23,8 @@ _install() {
       echo ".config/blap/apps/revive.yaml"
       echo ".config/blap/apps/staticcheck.yaml"
       echo ".config/blap/apps/rclone.yaml"
-      echo ".config/blap/apps/alpinekernel.yaml"
+      echo ".config/blap/apps/alpine.yaml"
+      echo ".config/blap/apps/alpinevirt.yaml"
       echo ".ssh/"
       if [ -n "$DESKTOP_SESSION" ] && [ "$DESKTOP_SESSION" = "sway" ]; then
         echo ".config/waybar/"
@@ -35,7 +36,6 @@ _install() {
       echo ".zshrc"
       echo ".gitconfig"
       echo ".config/vfu/"
-      echo ".config/blap/apps/alpine.yaml"
       echo ".config/blap/apps/rectangle.yaml"
       echo ".config/blap/apps/kitty.yaml"
   esac
