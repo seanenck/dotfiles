@@ -1,9 +1,0 @@
-applications:
-  fedoraimage:
-    github:
-      project: "seanenck/workstation-builds"
-      branch:
-        name: "master"
-    commands:
-      steps:
-        - command: ["just", "hash={{ $.Vars.Tag }}", "needs"]

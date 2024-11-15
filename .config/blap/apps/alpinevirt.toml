@@ -1,0 +1,11 @@
+[applications]
+  [applications.alpinevirt]
+    [applications.alpinevirt.commands]
+
+      [[applications.alpinevirt.commands.steps]]
+        command = ["/bin/bash", "-c", "diff --ignore-all-space -u <(grep -E '^(pkgver|pkgrel)=' APKBUILD | sort -r | cut -d '=' -f 2 | tr '\n' '-' | sed 's/$/virt/g') <(uname -r)"]
+        directory = "main/linux-lts"
+    [applications.alpinevirt.github]
+      project = "alpinelinux/aports"
+      [applications.alpinevirt.github.branch]
+        name = "3.20-stable"

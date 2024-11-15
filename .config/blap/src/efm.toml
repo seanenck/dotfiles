@@ -1,0 +1,17 @@
+[applications]
+  [applications.efm]
+    [applications.efm.commands]
+      [applications.efm.commands.environment]
+        [applications.efm.commands.environment.variables]
+          [applications.efm.commands.environment.variables.values]
+            NAME = "efm-langserver"
+
+      [[applications.efm.commands.steps]]
+        command = ["go", "build", "-ldflags", "-X main.revision={{ $.Vars.Tag }}", "-o", "$NAME", "."]
+
+      [[applications.efm.commands.steps]]
+        command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+    [applications.efm.github]
+      project = "mattn/efm-langserver"
+      [applications.efm.github.release]
+        asset = "tarball"

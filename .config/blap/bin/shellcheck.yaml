@@ -1,9 +1,0 @@
-applications:
-  shellcheck:
-    github:
-      project: "koalaman/shellcheck"
-      release:
-        asset: '{{ $.OS }}.{{ if eq $.Arch "amd64" }}x86_64{{ end }}.tar.xz$'
-    commands:
-      steps:
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]

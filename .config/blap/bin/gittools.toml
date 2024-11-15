@@ -1,0 +1,16 @@
+[applications]
+  [applications.gittools]
+    [applications.gittools.commands]
+
+      [[applications.gittools.commands.steps]]
+        command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/git-uncommitted", "$LOCALBIN/"]
+
+      [[applications.gittools.commands.steps]]
+        command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/git-motd", "$LOCALBIN/"]
+
+      [[applications.gittools.commands.steps]]
+        command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/git-current-state", "$LOCALBIN/"]
+    [applications.gittools.github]
+      project = "seanenck/git-tools"
+      [applications.gittools.github.release]
+        asset = "{{ $.OS }}-{{ $.Arch }}.tar.gz$"

@@ -1,0 +1,10 @@
+[applications]
+  [applications.bat]
+    [applications.bat.commands]
+
+      [[applications.bat.commands.steps]]
+        command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+    [applications.bat.github]
+      project = "sharkdp/bat"
+      [applications.bat.github.release]
+        asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ end }}(.*?){{ $.OS }}{{ if eq $.OS \"linux\" }}-gnu{{end}}(.*?).tar.gz$"

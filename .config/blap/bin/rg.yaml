@@ -1,9 +1,0 @@
-applications:
-  rg:
-    github:
-      project: "BurntSushi/ripgrep"
-      release:
-        asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}(.*?).tar.gz$'
-    commands:
-      steps:
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]

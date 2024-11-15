@@ -1,0 +1,8 @@
+[applications]
+  [applications.utm]
+    [applications.utm.extract]
+      skip = true
+    [applications.utm.github]
+      project = "utmapp/UTM"
+      [applications.utm.github.release]
+        asset = ".dmg$"

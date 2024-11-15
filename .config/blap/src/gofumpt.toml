@@ -1,0 +1,13 @@
+[applications]
+  [applications.gofumpt]
+    [applications.gofumpt.commands]
+
+      [[applications.gofumpt.commands.steps]]
+        command = ["go", "build", "-trimpath", "-mod=readonly", "-modcacherw"]
+
+      [[applications.gofumpt.commands.steps]]
+        command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+    [applications.gofumpt.github]
+      project = "mvdan/gofumpt"
+      [applications.gofumpt.github.release]
+        asset = "tarball"

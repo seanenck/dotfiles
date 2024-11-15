@@ -1,8 +1,0 @@
-applications:
-  kitty:
-    github:
-      project: "kovidgoyal/kitty"
-      release:
-        asset: '.dmg$'
-    extract:
-      skip: true

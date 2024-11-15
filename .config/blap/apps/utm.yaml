@@ -1,8 +1,0 @@
-applications:
-  utm:
-    github:
-      project: "utmapp/UTM"
-      release:
-        asset: '.dmg$'
-    extract:
-      skip: true

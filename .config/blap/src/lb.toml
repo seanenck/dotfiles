@@ -1,0 +1,18 @@
+[applications]
+  [applications.lb]
+    [applications.lb.commands]
+
+      [[applications.lb.commands.steps]]
+        command = ["just", "--quiet", "version={{ $.Vars.Tag }}"]
+
+      [[applications.lb.commands.steps]]
+        command = ["/bin/sh", "-c", "{{ $.Vars.Directories.Working }}$COMPGEN"]
+        directory = "target"
+
+      [[applications.lb.commands.steps]]
+        command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
+        directory = "target"
+    [applications.lb.github]
+      project = "seanenck/lockbox"
+      [applications.lb.github.release]
+        asset = "tarball"

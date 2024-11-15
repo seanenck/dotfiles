@@ -1,0 +1,8 @@
+[applications]
+  [applications.kitty]
+    [applications.kitty.extract]
+      skip = true
+    [applications.kitty.github]
+      project = "kovidgoyal/kitty"
+      [applications.kitty.github.release]
+        asset = ".dmg$"

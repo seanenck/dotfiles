@@ -1,9 +1,0 @@
-applications:
-  bat:
-    github:
-      project: "sharkdp/bat"
-      release:
-        asset: '.{{ if eq $.Arch "amd64" }}x86_64{{ end }}(.*?){{ $.OS }}{{ if eq $.OS "linux" }}-gnu{{end}}(.*?).tar.gz$'
-    commands:
-      steps:
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]

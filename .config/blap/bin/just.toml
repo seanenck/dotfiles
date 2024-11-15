@@ -1,0 +1,16 @@
+[applications]
+  [applications.just]
+    priority = 100
+    [applications.just.commands]
+
+      [[applications.just.commands.steps]]
+        command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+
+      [[applications.just.commands.steps]]
+        command = ["cp", "-r", "{{ $.Vars.Directories.Root }}/completions/just.{{ if eq $.OS \"linux\" }}bash{{else}}zsh{{end}}", "$COMPLETIONS/{{ $.Name }}"]
+    [applications.just.extract]
+      nodepth = true
+    [applications.just.github]
+      project = "casey/just"
+      [applications.just.github.release]
+        asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ else }}aarch64{{end}}(.*?){{ $.OS }}(.*?).tar.gz$"

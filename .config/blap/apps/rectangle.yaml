@@ -1,8 +1,0 @@
-applications:
-  rectangle:
-    github:
-      project: "rxhanson/Rectangle"
-      release:
-        asset: '.dmg$'
-    extract:
-      skip: true

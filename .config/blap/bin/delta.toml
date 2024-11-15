@@ -1,0 +1,10 @@
+[applications]
+  [applications.delta]
+    [applications.delta.commands]
+
+      [[applications.delta.commands.steps]]
+        command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+    [applications.delta.github]
+      project = "dandavison/delta"
+      [applications.delta.github.release]
+        asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ end }}(.*?){{ $.OS }}{{ if eq $.OS \"linux\" }}-gnu{{end}}(.*?).tar.gz$"

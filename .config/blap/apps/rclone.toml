@@ -1,0 +1,6 @@
+[applications]
+  [applications.rclone]
+    [applications.rclone.github]
+      project = "rclone/rclone"
+      [applications.rclone.github.release]
+        asset = "rclone-(.+?)-osx-arm64.zip"
