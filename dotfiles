@@ -35,9 +35,9 @@ _install() {
     "Darwin")
       echo ".zshrc"
       echo ".gitconfig"
-      echo ".config/vfu/"
       echo ".config/blap/apps/rectangle.yaml"
       echo ".config/blap/apps/kitty.yaml"
+      echo ".config/blap/apps/utm.yaml"
       echo ".config/blap/bin/gittools.yaml"
       echo ".config/blap/bin/lb.yaml"
       echo ".config/blap/bin/blap.yaml"
