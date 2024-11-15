@@ -7,4 +7,4 @@ applications:
     commands:
       steps:
         - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$PATHS/"]
-        - command: ["/bin/sh", "-c", "{{ $.Vars.Directories.Root }}/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}.$COMPSH"]
+        - command: ["/bin/sh", "-c", "{{ $.Vars.Directories.Root }}/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}"]

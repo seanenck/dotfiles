@@ -10,4 +10,4 @@ applications:
     commands:
       steps:
         - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$PATHS/"]
-        - command: ["cp", "-r", "{{ $.Vars.Directories.Root }}/completions/just.$COMPSH", "$COMPLETIONS"]
+        - command: ["cp", "-r", "{{ $.Vars.Directories.Root }}/completions/just.$COMPSH", "$COMPLETIONS/{{ $.Name }}"]
