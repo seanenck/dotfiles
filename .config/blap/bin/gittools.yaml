@@ -6,6 +6,6 @@ applications:
         asset: '{{ $.OS }}-{{ $.Arch }}.tar.gz$'
     commands:
       steps:
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/git-uncommitted", "$PATHS/"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/git-motd", "$PATHS/"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/git-current-state", "$PATHS/"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/git-uncommitted", "$LOCALBIN/"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/git-motd", "$LOCALBIN/"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/git-current-state", "$LOCALBIN/"]

@@ -6,5 +6,5 @@ applications:
         asset: '{{ $.OS }}-{{ $.Arch }}.tar.gz$'
     commands:
       steps:
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$PATHS/"]
-        - command: ["/bin/sh", "-c", "{{ $.Vars.Directories.Root }}$COMPLETIONSGEN"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+        - command: ["/bin/sh", "-c", "{{ $.Vars.Directories.Root }}$COMPGEN"]

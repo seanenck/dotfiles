@@ -9,5 +9,5 @@ applications:
       nodepth: true
     commands:
       steps:
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$PATHS/"]
-        - command: ["cp", "-r", "{{ $.Vars.Directories.Root }}/completions/just.$COMPSH", "$COMPLETIONS/{{ $.Name }}"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+        - command: ["cp", "-r", "{{ $.Vars.Directories.Root }}/completions/just.{{ if eq $.OS \"linux\" }}bash{{else}}zsh{{end}}", "$COMPLETIONS/{{ $.Name }}"]

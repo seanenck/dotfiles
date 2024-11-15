@@ -7,9 +7,9 @@ applications:
     commands:
       steps:
         - command: ["just"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-uncommitted", "$PATHS/"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-uncommitted", "$LOCALBIN/"]
           directory: "target"
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-motd", "$PATHS/"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-motd", "$LOCALBIN/"]
           directory: "target"
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-current-state", "$PATHS/"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-current-state", "$LOCALBIN/"]
           directory: "target"

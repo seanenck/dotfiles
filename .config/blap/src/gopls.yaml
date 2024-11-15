@@ -8,5 +8,5 @@ applications:
       steps:
         - command: ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}"]
           directory: "{{ $.Name }}"
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$PATHS/"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
           directory: "{{ $.Name }}"

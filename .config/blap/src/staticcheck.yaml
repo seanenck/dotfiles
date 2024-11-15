@@ -7,5 +7,5 @@ applications:
     commands:
       steps:
         - command: ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}", "./cmd/{{ $.Name }}"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$PATHS/"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
           directory: "{{ $.Name }}"

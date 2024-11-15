@@ -7,4 +7,4 @@ applications:
     commands:
       steps:
         - command: ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$PATHS/"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]

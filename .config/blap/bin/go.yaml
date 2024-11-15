@@ -11,4 +11,4 @@ applications:
           - "[0-9]rc[0-9]"
     commands:
       steps:
-        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/bin/{{ $.Name }}", "$PATHS/"]
+        - command: ["ln", "-sf", "{{ $.Vars.Directories.Root }}/bin/{{ $.Name }}", "$LOCALBIN/"]
