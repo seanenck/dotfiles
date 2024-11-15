@@ -2,8 +2,8 @@ applications:
   gittools:
     github:
       project: "seanenck/git-tools"
-      branch:
-        name: "master"
+      release:
+        asset: "tarball"
     commands:
       steps:
         - command: ["just"]

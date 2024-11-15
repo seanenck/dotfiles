@@ -7,7 +7,7 @@ applications:
     commands:
       steps:
         - command: ["just", "version={{ $.Vars.Tag }}"]
-        - command: ["/bin/sh", "-c", "{{ $.Vars.Directories.Working }}/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}"]
+        - command: ["/bin/sh", "-c", "{{ $.Vars.Directories.Working }}$COMPLETIONSGEN"]
           directory: "target"
         - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$PATHS/"]
           directory: "target"
