@@ -6,7 +6,7 @@ applications:
         asset: "tarball"
     commands:
       steps:
-        - command: ["just", "version={{ $.Vars.Tag }}"]
+        - command: ["just", "--quiet", "version={{ $.Vars.Tag }}"]
         - command: ["/bin/sh", "-c", "{{ $.Vars.Directories.Working }}$COMPGEN"]
           directory: "target"
         - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]

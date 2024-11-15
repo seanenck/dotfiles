@@ -6,7 +6,7 @@ applications:
         asset: "tarball"
     commands:
       steps:
-        - command: ["just"]
+        - command: ["just", "--quiet"]
         - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-uncommitted", "$LOCALBIN/"]
           directory: "target"
         - command: ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-motd", "$LOCALBIN/"]
