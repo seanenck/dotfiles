@@ -1,13 +1,7 @@
-[applications]
-  [applications.revive]
-    [applications.revive.commands]
-
-      [[applications.revive.commands.steps]]
-        command = ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
-
-      [[applications.revive.commands.steps]]
-        command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
-    [applications.revive.github]
-      project = "mgechev/revive"
-      [applications.revive.github.release]
-        asset = "tarball"
+[applications.revive.github]
+project = "mgechev/revive"
+release = { asset = "tarball" }
+[[applications.revive.commands.steps]]
+command = ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
+[[applications.revive.commands.steps]]
+command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]

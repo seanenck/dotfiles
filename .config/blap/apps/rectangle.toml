@@ -1,8 +1,5 @@
-[applications]
-  [applications.rectangle]
-    [applications.rectangle.extract]
-      skip = true
-    [applications.rectangle.github]
-      project = "rxhanson/Rectangle"
-      [applications.rectangle.github.release]
-        asset = ".dmg$"
+[applications.rectangle.github]
+project = "rxhanson/Rectangle"
+release = { asset = ".dmg$" }
+[applications.rectangle.extract]
+skip = true

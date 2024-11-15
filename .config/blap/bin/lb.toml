@@ -1,13 +1,7 @@
-[applications]
-  [applications.lb]
-    [applications.lb.commands]
-
-      [[applications.lb.commands.steps]]
-        command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
-
-      [[applications.lb.commands.steps]]
-        command = ["/bin/sh", "-c", "{{ $.Vars.Directories.Root }}$COMPGEN"]
-    [applications.lb.github]
-      project = "seanenck/lockbox"
-      [applications.lb.github.release]
-        asset = "{{ $.OS }}-{{ $.Arch }}.tar.gz$"
+[applications.lb.github]
+project = "seanenck/lockbox"
+release = { asset = "{{ $.OS }}-{{ $.Arch }}.tar.gz$" }
+[[applications.lb.commands.steps]]
+command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+[[applications.lb.commands.steps]]
+command = ["/bin/sh", "-c", "{{ $.Vars.Directories.Root }}$COMPGEN"]

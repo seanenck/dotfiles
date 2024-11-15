@@ -2,21 +2,15 @@ directory = "~/.local/fs"
 include = ["~/.config/blap/apps/*", "~/.config/blap/src/*", "~/.config/blap/bin/*"]
 parallelization = 4
 
+variables = [
+  { key = "LOCALBIN", value = "$HOME/.local/bin" },
+  { key = "COMPLETIONS", value = "$HOME/.local/share/{{ if eq $.OS \"linux\" }}bash{{else}}zsh{{end}}-completion/completions" },
+  { key = "NVIM_PLUGINS", value = "$HOME/.config/nvim/pack/plugins/start" },
+  { key = "COMPGEN", value = "/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}" }
+]
+
+[logging]
+file = "~/.local/state/blap.log"
+
 [indexing]
-  enabled = true
-
-[[variables]]
-  key = "LOCALBIN"
-  value = "$HOME/.local/bin"
-
-[[variables]]
-  key = "COMPLETIONS"
-  value = "$HOME/.local/share/{{ if eq $.OS \"linux\" }}bash{{else}}zsh{{end}}-completion/completions"
-
-[[variables]]
-  key = "NVIM_PLUGINS"
-  value = "$HOME/.config/nvim/pack/plugins/start"
-
-[[variables]]
-  key = "COMPGEN"
-  value = "/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}"
+enabled = true

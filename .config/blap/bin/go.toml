@@ -1,12 +1,12 @@
-[applications]
-  [applications.go]
-    priority = 100
-    [applications.go.commands]
-
-      [[applications.go.commands.steps]]
-        command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/bin/{{ $.Name }}", "$LOCALBIN/"]
-    [applications.go.git]
-      repository = "https://github.com/golang/go"
-      [applications.go.git.tagged]
-        download = "https://go.dev/dl/{{ $.Vars.Tag }}.{{ $.OS }}-{{ $.Arch }}.tar.gz"
-        filters = ["refs/tags/weekly", "refs/tags/release", "[0-9]rc[0-9]"]
+[applications.go]
+priority = 100
+[applications.go.git]
+repository = "https://github.com/golang/go"
+tagged.download = "https://go.dev/dl/{{ $.Vars.Tag }}.{{ $.OS }}-{{ $.Arch }}.tar.gz"
+tagged.filters = [
+  "refs/tags/weekly",
+  "refs/tags/release",
+  "[0-9]rc[0-9]"
+]
+[[applications.go.commands.steps]]
+command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/bin/{{ $.Name }}", "$LOCALBIN/"]

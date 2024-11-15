@@ -1,10 +1,5 @@
-[applications]
-  [applications.fedoraimage]
-    [applications.fedoraimage.commands]
-
-      [[applications.fedoraimage.commands.steps]]
-        command = ["just", "hash={{ $.Vars.Tag }}", "needs"]
-    [applications.fedoraimage.github]
-      project = "seanenck/workstation-builds"
-      [applications.fedoraimage.github.branch]
-        name = "master"
+[applications.fedoraimage.github]
+project = "seanenck/workstation-builds"
+branch = { name = "master" }
+[[applications.fedoraimage.commands.steps]]
+command = ["just", "hash={{ $.Vars.Tag }}", "needs"]

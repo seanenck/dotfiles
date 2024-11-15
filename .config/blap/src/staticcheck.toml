@@ -1,14 +1,8 @@
-[applications]
-  [applications.staticcheck]
-    [applications.staticcheck.commands]
-
-      [[applications.staticcheck.commands.steps]]
-        command = ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}", "./cmd/{{ $.Name }}"]
-
-      [[applications.staticcheck.commands.steps]]
-        command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
-        directory = "{{ $.Name }}"
-    [applications.staticcheck.github]
-      project = "dominikh/go-tools"
-      [applications.staticcheck.github.release]
-        asset = "tarball"
+[applications.staticcheck.github]
+project = "dominikh/go-tools"
+release = { asset = "tarball" }
+[[applications.staticcheck.commands.steps]]
+command = ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}", "./cmd/{{ $.Name }}"]
+[[applications.staticcheck.commands.steps]]
+command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
+directory = "{{ $.Name }}"

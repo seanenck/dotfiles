@@ -1,10 +1,5 @@
-[applications]
-  [applications.shellcheck]
-    [applications.shellcheck.commands]
-
-      [[applications.shellcheck.commands.steps]]
-        command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
-    [applications.shellcheck.github]
-      project = "koalaman/shellcheck"
-      [applications.shellcheck.github.release]
-        asset = "{{ $.OS }}.{{ if eq $.Arch \"amd64\" }}x86_64{{ end }}.tar.xz$"
+[applications.shellcheck.github]
+project = "koalaman/shellcheck"
+release = { asset = "{{ $.OS }}.{{ if eq $.Arch \"amd64\" }}x86_64{{ end }}.tar.xz$" }
+[[applications.shellcheck.commands.steps]]
+command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]

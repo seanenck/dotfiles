@@ -1,10 +1,5 @@
-[applications]
-  [applications.rg]
-    [applications.rg.commands]
-
-      [[applications.rg.commands.steps]]
-        command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
-    [applications.rg.github]
-      project = "BurntSushi/ripgrep"
-      [applications.rg.github.release]
-        asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ end }}(.*?){{ $.OS }}(.*?).tar.gz$"
+[applications.rg.github]
+project = "BurntSushi/ripgrep"
+release = { asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ end }}(.*?){{ $.OS }}(.*?).tar.gz$" }
+[[applications.rg.commands.steps]]
+command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]

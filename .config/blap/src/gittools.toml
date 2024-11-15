@@ -1,22 +1,14 @@
-[applications]
-  [applications.gittools]
-    [applications.gittools.commands]
-
-      [[applications.gittools.commands.steps]]
-        command = ["just", "--quiet"]
-
-      [[applications.gittools.commands.steps]]
-        command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-uncommitted", "$LOCALBIN/"]
-        directory = "target"
-
-      [[applications.gittools.commands.steps]]
-        command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-motd", "$LOCALBIN/"]
-        directory = "target"
-
-      [[applications.gittools.commands.steps]]
-        command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-current-state", "$LOCALBIN/"]
-        directory = "target"
-    [applications.gittools.github]
-      project = "seanenck/git-tools"
-      [applications.gittools.github.release]
-        asset = "tarball"
+[applications.gittools.github]
+project = "seanenck/git-tools"
+release = { asset = "tarball" }
+[[applications.gittools.commands.steps]]
+command = ["just", "--quiet"]
+[[applications.gittools.commands.steps]]
+command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-uncommitted", "$LOCALBIN/"]
+directory = "target"
+[[applications.gittools.commands.steps]]
+command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-motd", "$LOCALBIN/"]
+directory = "target"
+[[applications.gittools.commands.steps]]
+command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-current-state", "$LOCALBIN/"]
+directory = "target"

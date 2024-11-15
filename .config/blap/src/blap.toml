@@ -1,18 +1,11 @@
-[applications]
-  [applications.blap]
-    [applications.blap.commands]
-
-      [[applications.blap.commands.steps]]
-        command = ["just", "--quiet", "version={{ $.Vars.Tag }}"]
-
-      [[applications.blap.commands.steps]]
-        command = ["/bin/sh", "-c", "{{ $.Vars.Directories.Working }}$COMPGEN"]
-        directory = "target"
-
-      [[applications.blap.commands.steps]]
-        command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
-        directory = "target"
-    [applications.blap.github]
-      project = "seanenck/blap"
-      [applications.blap.github.release]
-        asset = "tarball"
+[applications.blap.github]
+project = "seanenck/blap"
+release = { asset = "tarball" }
+[[applications.blap.commands.steps]]
+command = ["just", "--quiet", "version={{ $.Vars.Tag }}"]
+[[applications.blap.commands.steps]]
+command = ["/bin/sh", "-c", "{{ $.Vars.Directories.Working }}$COMPGEN"]
+directory = "target"
+[[applications.blap.commands.steps]]
+command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
+directory = "target"
