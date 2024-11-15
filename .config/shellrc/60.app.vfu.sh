@@ -14,7 +14,7 @@ if [ "$(uname)" = "Darwin" ]; then
     
     if [ "$1" = "completions" ]; then
       cat << EOF
-#compdef _lb lb
+#compdef _vfu vfu
 
 _vfu() {
   local curcontext="$curcontext" state len chosen found args
