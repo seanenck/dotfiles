@@ -7,3 +7,6 @@ require("scrollbar").setup({})
 
 -- enable LSPs
 require("lsp")
+
+-- term
+require("toggleterm").setup{}

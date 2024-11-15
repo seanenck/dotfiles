@@ -39,3 +39,9 @@ project = "NoahTheDuke/vim-just"
 branch = { name = "main" }
 [[applications.vimjust.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/vim-just/"]
+
+[applications.toggleterm.github]
+project = "akinsho/toggleterm.nvim"
+branch = { name = "main" }
+[[applications.toggleterm.commands.steps]]
+command = ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/toggleterm/"]

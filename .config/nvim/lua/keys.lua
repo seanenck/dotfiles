@@ -56,3 +56,6 @@ end
 
 handle_clip()
 vim.keymap.set("n", "<C-c>", handle_clip, { noremap = true, silent = true })
+
+-- toggle term
+mappers.nmap("<C-t>", " :ToggleTerm direction=float<CR>")
