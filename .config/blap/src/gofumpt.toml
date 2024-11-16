@@ -1,3 +1,7 @@
+[applications.gofumpt]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "linux" }
+]
 [applications.gofumpt.github]
 project = "mvdan/gofumpt"
 release = { asset = "tarball" }

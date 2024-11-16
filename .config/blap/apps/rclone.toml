@@ -1,3 +1,7 @@
+[applications.rclone]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "linux" }
+]
 [applications.rclone.github]
 project = "rclone/rclone"
 release = { asset = "rclone-(.+?)-osx-arm64.zip" }

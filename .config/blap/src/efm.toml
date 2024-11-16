@@ -1,3 +1,8 @@
+[applications.efm]
+platforms = [
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-fedora"},
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-opensuse-tumbleweed"}
+]
 [applications.efm.github]
 project = "mattn/efm-langserver"
 release = { asset = "tarball" }

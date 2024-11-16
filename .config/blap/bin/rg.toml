@@ -1,3 +1,8 @@
+[applications.rg]
+platforms = [
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-fedora"},
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-opensuse-tumbleweed"}
+]
 [applications.rg.github]
 project = "BurntSushi/ripgrep"
 release = { asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ end }}(.*?){{ $.OS }}(.*?).tar.gz$" }

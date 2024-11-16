@@ -1,3 +1,7 @@
+[applications.gopls]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "linux" }
+]
 [applications.gopls.github]
 project = "golang/tools"
 release = { asset = "tarball" }

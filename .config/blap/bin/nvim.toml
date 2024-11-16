@@ -1,3 +1,8 @@
+[applications.nvim]
+platforms = [
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-fedora"},
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-opensuse-tumbleweed"}
+]
 [applications.nvim.github]
 project = "neovim/neovim"
 release = { asset = "nvim-{{ $.OS }}{{ if eq $.Arch \"amd64\" }}64{{ end }}.tar.gz$" }

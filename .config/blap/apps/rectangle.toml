@@ -1,3 +1,7 @@
+[applications.rectangle]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "darwin" }
+]
 [applications.rectangle.github]
 project = "rxhanson/Rectangle"
 release = { asset = ".dmg$" }

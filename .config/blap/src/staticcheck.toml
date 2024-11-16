@@ -1,3 +1,7 @@
+[applications.staticcheck]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "linux" }
+]
 [applications.staticcheck.github]
 project = "dominikh/go-tools"
 release = { asset = "tarball" }

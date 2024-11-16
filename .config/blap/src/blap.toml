@@ -1,3 +1,7 @@
+[applications.blap]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "linux" }
+]
 [applications.blap.github]
 project = "seanenck/blap"
 release = { asset = "tarball" }

@@ -1,5 +1,8 @@
 [applications.go]
 priority = 100
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "linux"},
+]
 [applications.go.git]
 repository = "https://github.com/golang/go"
 tagged.download = "https://go.dev/dl/{{ $.Vars.Tag }}.{{ $.OS }}-{{ $.Arch }}.tar.gz"

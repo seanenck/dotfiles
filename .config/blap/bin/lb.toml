@@ -1,3 +1,7 @@
+[applications.lb]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "darwin"},
+]
 [applications.lb.github]
 project = "seanenck/lockbox"
 release = { asset = "{{ $.OS }}-{{ $.Arch }}.tar.gz$" }

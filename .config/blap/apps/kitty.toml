@@ -1,3 +1,7 @@
+[applications.kitty]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "darwin" }
+]
 [applications.kitty.github]
 project = "kovidgoyal/kitty"
 release = { asset = ".dmg$" }

@@ -1,3 +1,7 @@
+[applications.utm]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "darwin" }
+]
 [applications.utm.github]
 project = "utmapp/UTM"
 release = { asset = ".dmg$" }

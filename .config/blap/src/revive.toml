@@ -1,3 +1,7 @@
+[applications.revive]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "linux" }
+]
 [applications.revive.github]
 project = "mgechev/revive"
 release = { asset = "tarball" }

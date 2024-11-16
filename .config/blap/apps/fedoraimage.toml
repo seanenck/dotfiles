@@ -1,3 +1,7 @@
+[applications.fedoraimage]
+platforms = [
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-fedora" }
+]
 [applications.fedoraimage.github]
 project = "seanenck/workstation-builds"
 branch = { name = "master" }

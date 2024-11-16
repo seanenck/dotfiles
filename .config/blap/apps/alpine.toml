@@ -1,3 +1,7 @@
+[applications.alpine]
+platforms = [
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-alpine" }
+]
 [applications.alpine.git]
 repository = "https://github.com/alpinelinux/aports"
 tagged.download = "https://dl-cdn.alpinelinux.org/alpine/v{{ $.Vars.Tag.Major }}.{{ $.Vars.Tag.Minor }}/releases/aarch64/alpine-standard-{{ $.Vars.Tag.Version }}-aarch64.iso.sha256"

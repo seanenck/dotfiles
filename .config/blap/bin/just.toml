@@ -1,5 +1,8 @@
 [applications.just]
 priority = 100
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "linux" },
+]
 [applications.just.github]
 project = "casey/just"
 release = { asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ else }}aarch64{{end}}(.*?){{ $.OS }}(.*?).tar.gz$" }

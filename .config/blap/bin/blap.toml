@@ -1,3 +1,7 @@
+[applications.blap]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "darwin"},
+]
 [applications.blap.github]
 project = "seanenck/blap"
 release = { asset = "{{ $.OS }}-{{ $.Arch }}.tar.gz$" }

@@ -1,6 +1,6 @@
 #!/bin/bash
 _install() {
-  echo ".config/blap/config.toml"
+  echo ".config/blap/"
   echo ".config/shellrc/"
   case $(uname) in
     "Linux")
@@ -12,19 +12,6 @@ _install() {
       echo ".config/git/"
       echo ".config/nvim/"
       echo ".config/user-dirs.dirs"
-      echo ".config/blap/src/blap.toml"
-      echo ".config/blap/src/gittools.toml"
-      echo ".config/blap/src/lb.toml"
-      echo ".config/blap/src/gofumpt.toml"
-      echo ".config/blap/src/gopls.toml"
-      echo ".config/blap/src/revive.toml"
-      echo ".config/blap/src/staticcheck.toml"
-      echo ".config/blap/bin/go.toml"
-      echo ".config/blap/bin/just.toml"
-      echo ".config/blap/apps/nvimplugins.toml"
-      echo ".config/blap/apps/rclone.toml"
-      echo ".config/blap/apps/alpine.toml"
-      echo ".config/blap/apps/alpinevirt.toml"
       echo ".ssh/"
       if [ -n "$DESKTOP_SESSION" ] && [ "$DESKTOP_SESSION" = "sway" ]; then
         echo ".config/waybar/"
@@ -35,12 +22,6 @@ _install() {
     "Darwin")
       echo ".zshrc"
       echo ".gitconfig"
-      echo ".config/blap/apps/rectangle.toml"
-      echo ".config/blap/apps/kitty.toml"
-      echo ".config/blap/apps/utm.toml"
-      echo ".config/blap/bin/gittools.toml"
-      echo ".config/blap/bin/lb.toml"
-      echo ".config/blap/bin/blap.toml"
   esac
   if [ -n "$TERMINAL_EMULATOR" ]; then
     echo ".config/$TERMINAL_EMULATOR/"

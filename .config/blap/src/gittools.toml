@@ -1,3 +1,7 @@
+[applications.gittools]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "linux" }
+]
 [applications.gittools.github]
 project = "seanenck/git-tools"
 release = { asset = "tarball" }
