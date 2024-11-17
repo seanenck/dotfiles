@@ -4,13 +4,13 @@ parallelization = 4
 
 variables = [
   { key = "LOCALBIN", value = "$HOME/.local/bin" },
-  { key = "COMPLETIONS", value = "$HOME/.local/share/{{ if eq $.OS \"linux\" }}bash{{else}}zsh{{end}}-completion/completions" },
+  { key = "COMPLETIONS", value = "$HOME/.local/share/{{ if eq $.Config.OS \"linux\" }}bash{{else}}zsh{{end}}-completion/completions" },
   { key = "NVIM_PLUGINS", value = "$HOME/.config/nvim/pack/plugins/start" },
   { key = "COMPGEN", value = "/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}" }
 ]
 
 [logging]
-file = "~/.local/state/blap.log"
+file = "~/{{ if eq $.Config.OS \"linux\" }}.local/state{{else}}Library/com.ttypty/blap{{end}}/blap.log"
 
 [indexing]
 enabled = true
