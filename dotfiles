@@ -2,26 +2,43 @@
 _install() {
   echo ".config/blap/"
   echo ".config/shellrc/"
-  case $(uname) in
-    "Linux")
-      echo ".justfile"
+  if command -v just > /dev/null; then
+    echo ".justfile"
+  fi
+  if command -v bat > /dev/null; then
+    echo ".config/bat/"
+  fi
+  if command -v nvim > /dev/null; then
+    echo ".config/nvim/"
+  fi
+  case "$(basename "$SHELL")" in
+    "bash")
       echo ".bash_aliases"
       echo ".bashrc"
       echo ".bash_profile"
-      echo ".config/bat/"
+      ;;
+    "zsh")
+      echo ".zshrc"
+      ;;
+  esac
+  if command -v git > /dev/null; then
+    if command -v delta > /dev/null; then
       echo ".config/git/"
-      echo ".config/nvim/"
-      echo ".config/user-dirs.dirs"
       echo ".ssh/"
+    else
+      echo ".gitconfig"
+    fi
+  fi
+  
+  case $(uname) in
+    "Linux")
+      echo ".config/user-dirs.dirs"
       if [ -n "$DESKTOP_SESSION" ] && [ "$DESKTOP_SESSION" = "sway" ]; then
         echo ".config/waybar/"
         echo ".config/rofi/"
         echo ".config/sway/"
       fi
       ;;
-    "Darwin")
-      echo ".zshrc"
-      echo ".gitconfig"
   esac
   if [ -n "$TERMINAL_EMULATOR" ]; then
     echo ".config/$TERMINAL_EMULATOR/"
