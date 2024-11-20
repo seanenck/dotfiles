@@ -45,12 +45,12 @@ _install() {
   fi
 }
 
-DRYRUN=""
+DRYRUN=0
 CHECK=0
 if [ -n "$1" ]; then
   case "$1" in
     "--dry-run")
-      DRYRUN="echo"
+      DRYRUN=1
       ;;
     "--check")
       CHECK=1
@@ -73,11 +73,15 @@ for SET in $(_install | sort -u); do
       fi
       continue
     fi
+    if [ "$DRYRUN" -eq 1 ]; then
+      echo "$FILE" | sed "s#HOME/##g"
+      continue
+    fi
     DIR=$(dirname "$FILE")
     if [ "$DIR" != "." ]; then
-      $DRYRUN mkdir -p "$HOME/$DIR"
+      mkdir -p "$HOME/$DIR"
     fi
-    $DRYRUN ln -sf "$PWD/$FILE" "$HOME/$FILE"
+    ln -sf "$PWD/$FILE" "$HOME/$FILE"
   done
 done
 
