@@ -1,4 +1,9 @@
 #!/bin/sh
+if command -v manage-data >/dev/null; then
+  if ! manage-data motd; then
+    echo
+  fi
+fi
 if command -v git-motd >/dev/null; then
   git motd
 fi
