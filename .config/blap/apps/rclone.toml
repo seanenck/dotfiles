@@ -1,7 +1,9 @@
 [applications.rclone]
 platforms = [
-  { value = "{{ $.Config.OS }}", target = "linux" }
+  { value = "{{ $.Config.OS }}", target = "darwin" }
 ]
 [applications.rclone.github]
 project = "rclone/rclone"
 release = { asset = "rclone-(.+?)-osx-arm64.zip" }
+[[applications.rclone.commands.steps]]
+command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
