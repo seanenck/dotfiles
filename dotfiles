@@ -11,6 +11,12 @@ _install() {
   if command -v nvim > /dev/null; then
     echo ".config/nvim/"
   fi
+  VMDIR="$HOME/Active/current/VMs"
+  if [ -d "$VMDIR" ]; then
+    for vm in $(ls "$VMDIR"); do
+      echo ".config/vfu/$vm.json"
+    done
+  fi
   case "$(basename "$SHELL")" in
     "bash")
       echo ".bash_aliases"

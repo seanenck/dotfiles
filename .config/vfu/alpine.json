@@ -1,10 +1,10 @@
 {
   "boot": {
     "efi": {
-      "store": "$CONFIG/efi.alpine"
+      "store": "$CONFIG/efi"
     }
   },
-  "identifier": "$CONFIG/machine.alpine",
+  "identifier": "$CONFIG/machine",
   "resources": {
     "cpus": 2,
     "memory": 8192
@@ -29,7 +29,7 @@
     }
   ],
   "env": {
-    "CONFIG": "~/.config/vfu"
+    "CONFIG": "~/Active/current/VMs/alpine"
   },
   "shares": {
     "active": {
@@ -43,6 +43,9 @@
     },
     "downloads": {
         "path": "~/Downloads"
+    },
+    "documents": {
+        "path": "~/Documents"
     }
   },
   "networks": [

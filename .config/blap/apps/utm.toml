@@ -1,6 +1,6 @@
 [applications.utm]
 platforms = [
-  { value = "{{ $.Config.OS }}", target = "darwin" }
+  { value = "{{ $.Config.OS }}-$BLAP_ENABLE_UTM", target = "darwin-utm" }
 ]
 [applications.utm.github]
 project = "utmapp/UTM"
