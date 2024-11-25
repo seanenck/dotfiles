@@ -2,6 +2,7 @@
 if [ "$(uname)" = "Darwin" ]; then
   VFU_DIR="/Applications/vfu.app/Contents/MacOS"
   if [ -d "$VFU_DIR" ]; then
+    export VFU_DIR
     vfu() {
       EXT="\.json"
       SCREEN_NAME="vfu-vm-"
@@ -69,7 +70,7 @@ EOF
             ;;
           "$START")
             if [ -n "$2" ] && [ "$2" = "$NAME" ]; then
-              screen -d -m -S "$SCREEN" ${VFU_DIR}vfu-cli --config "$CONFIGS/$FILE"
+              screen -d -m -S "$SCREEN" ${VFU_DIR}/vfu-cli --config "$CONFIGS/$FILE"
               DONE=1
               break
             fi
@@ -90,5 +91,4 @@ EOF
     export BLAP_ENABLE_UTM="utm"
     alias utmctl="/Applications/UTM.app/Contents/MacOS/utmctl"
   fi
-  unset VFU_DIR
 fi
