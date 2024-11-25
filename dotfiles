@@ -11,12 +11,6 @@ _install() {
   if command -v nvim > /dev/null; then
     echo ".config/nvim/"
   fi
-  VMDIR="$HOME/Active/current/VMs"
-  if [ -d "$VMDIR" ]; then
-    for vm in $(ls "$VMDIR"); do
-      echo ".config/vfu/$vm.json"
-    done
-  fi
   case "$(basename "$SHELL")" in
     "bash")
       echo ".bash_aliases"
@@ -45,6 +39,14 @@ _install() {
         echo ".config/sway/"
       fi
       ;;
+    "Darwin")
+       VMDIR="$HOME/Active/current/VMs"
+       if [ -d "$VMDIR" ]; then
+         for vm in $(ls "$VMDIR"); do
+           echo ".config/vfu/$vm.json"
+         done
+       fi
+       ;;
   esac
   if [ -n "$TERMINAL_EMULATOR" ]; then
     echo ".config/$TERMINAL_EMULATOR/"
