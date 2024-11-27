@@ -6,6 +6,8 @@ alias diff="diff --color -u"
 alias ls='ls --color=auto'
 if command -v rg > /dev/null; then
   alias grep="rg"
+else
+  alias grep="grep -H"
 fi
 alias vi="$EDITOR"
 alias vim="$EDITOR"
