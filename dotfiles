@@ -27,6 +27,7 @@ _install() {
       echo ".ssh/"
     else
       echo ".gitconfig"
+      echo ".config/git/tools.config"
     fi
   fi
   

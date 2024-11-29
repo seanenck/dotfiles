@@ -1,6 +1,8 @@
 [core]
     pager = delta
     autocrlf = input
+[include]
+    path = ~/.config/git/tools.config
 [interactive]
     diffFilter = delta --color-only
 [delta]
