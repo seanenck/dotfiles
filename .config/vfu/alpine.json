@@ -12,8 +12,16 @@
   "serial": "none",
   "disks": [
     {
+      "mode": "block",
+      "path": "$CONFIG/boot.iso"
+    },
+    {
       "mode": "nvme",
-      "path": "$CONFIG/root.img"
+      "path": "$CONFIG/apkovl.img"
+    },
+    {
+      "mode": "nvme",
+      "path": "$CONFIG/var.img"
     },
     {
       "mode": "nvme",
