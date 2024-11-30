@@ -29,7 +29,7 @@
     }
   ],
   "env": {
-    "CONFIG": "~/Active/current/VMs/alpine"
+    "CONFIG": "~/Active/current/VMs/cusp"
   },
   "shares": {
     "active": {
