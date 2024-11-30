@@ -1,6 +1,7 @@
 [applications.alpine]
 platforms = [
-  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-alpine" }
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-alpine" },
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-cusp" }
 ]
 [applications.alpine.git]
 repository = "https://github.com/alpinelinux/aports"

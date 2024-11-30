@@ -1,6 +1,7 @@
 [applications.alpinevirt]
 platforms = [
-  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-alpine" }
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-alpine" },
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-cusp" }
 ]
 [applications.alpinevirt.github]
 project = "alpinelinux/aports"
