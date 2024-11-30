@@ -21,6 +21,13 @@ _install() {
       echo ".zshrc"
       ;;
   esac
+  if command -v abuild > /dev/null; then
+    mkdir -p "$HOME/.abuild"
+    {
+      echo "# DO NOT EDIT"
+      cat .abuild/abuild.conf
+    } > "$HOME/.abuild/abuild.conf"
+  fi
   if command -v git > /dev/null; then
     if command -v delta > /dev/null; then
       echo ".config/git/"

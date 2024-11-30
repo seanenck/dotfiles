@@ -12,16 +12,8 @@
   "serial": "none",
   "disks": [
     {
-      "mode": "block",
-      "path": "$CONFIG/boot.iso"
-    },
-    {
       "mode": "nvme",
-      "path": "$CONFIG/ovl.img"
-    },
-    {
-      "mode": "nvme",
-      "path": "$CONFIG/data.img"
+      "path": "$CONFIG/root.img"
     },
     {
       "mode": "nvme",
