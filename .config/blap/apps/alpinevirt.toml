@@ -3,9 +3,15 @@ platforms = [
   { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-alpine" },
   { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-cusp" }
 ]
-[applications.alpinevirt.github]
-project = "alpinelinux/aports"
-branch = { name = "3.20-stable" }
+[applications.alpinevirt.web]
+url = "https://gitlab.alpinelinux.org/alpine/aports/-/raw/3.20-stable/main/linux-lts/APKBUILD?ref_type=heads"
+scrape.filters = [
+  "^pkgver=(.*)"
+]
+scrape.download = "https://gitlab.alpinelinux.org/alpine/aports/-/raw/3.20-stable/main/linux-lts/APKBUILD?ref_type=heads"
+[applications.alpinevirt.extract]
+command = ["cp", "{{ $.Input }}", "{{ $.Output }}"]
+[[applications.alpinevirt.commands.steps]]
+command = ["/bin/bash", "-c", "test -e APKBUILD || mv *.APKBUILD* APKBUILD"]
 [[applications.alpinevirt.commands.steps]]
 command = ["/bin/bash", "-c", "diff --ignore-all-space -u <(grep -E '^(pkgver|pkgrel)=' APKBUILD | sort -r | cut -d '=' -f 2 | tr '\n' '-' | sed 's/$/virt/g') <(uname -r)"]
-directory = "main/linux-lts"
