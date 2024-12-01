@@ -32,24 +32,12 @@
     "CONFIG": "~/Linux/VMs/cusp"
   },
   "shares": {
-    "Active": {
-        "path": "~/Active"
-    },
-    "Linux": {
-        "path": "~/Linux"
-    },
-    "Env": {
-        "path": "~/Env"
-    },
-    "Workspace": {
-        "path": "~/Workspace"
-    },
-    "Downloads": {
-        "path": "~/Downloads"
-    },
-    "Documents": {
-        "path": "~/Documents"
-    }
+    "Active": {},
+    "Linux": {},
+    "Env": {},
+    "Workspace": {},
+    "Downloads": {},
+    "Documents": {}
   },
   "networks": [
     {
