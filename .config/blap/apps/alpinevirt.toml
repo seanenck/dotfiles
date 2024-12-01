@@ -8,7 +8,7 @@ url = "https://gitlab.alpinelinux.org/alpine/aports/-/raw/3.20-stable/main/linux
 scrape.filters = [
   "^pkgver=(.*)"
 ]
-scrape.download = "https://gitlab.alpinelinux.org/alpine/aports/-/raw/3.20-stable/main/linux-lts/APKBUILD?ref_type=heads"
+scrape.download = "{{ $.Vars.Source }}"
 [applications.alpinevirt.extract]
 command = ["cp", "{{ $.Input }}", "{{ $.Output }}"]
 [[applications.alpinevirt.commands.steps]]
