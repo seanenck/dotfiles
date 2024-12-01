@@ -29,11 +29,14 @@
     }
   ],
   "env": {
-    "CONFIG": "~/Active/current/VMs/cusp"
+    "CONFIG": "~/Linux/VMs/cusp"
   },
   "shares": {
     "active": {
         "path": "~/Active"
+    },
+    "linux": {
+        "path": "~/Linux"
     },
     "env": {
         "path": "~/Env"

@@ -41,7 +41,7 @@ _install() {
       fi
       ;;
     "Darwin")
-       VMDIR="$HOME/Active/current/VMs"
+       VMDIR="$HOME/Linux/VMs"
        if [ -d "$VMDIR" ]; then
          for vm in $(ls "$VMDIR"); do
            echo ".config/vfu/$vm.json"
