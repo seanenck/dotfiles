@@ -18,25 +18,6 @@ cmp.setup({
     })
 })
 
--- make lsp+lspconfig work reasonably
-lspconfig = require("lspconfig")
-
--- default nvim behavior will error, don't error if the exe doesn't exist
-local start_client = vim.lsp.start_client
-vim.lsp.start_client = function(config)
-    cmd = config.cmd
-    if cmd == nil or #cmd == 0 then
-        return nil
-    end
-    exe = cmd[1]
-    -- apparently this is an absolute path by now (else use: vim.fn.executable)
-    ftype = vim.fn.getftype(exe)
-    if ftype == "" then
-        return
-    end
-    return start_client(config)
-end
-
 -- straight from the neovim docs on how to handle formatting
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
@@ -72,4 +53,18 @@ vim.keymap.set("n", "<C-e>", function()
     end, { noremap = true, silent = true }
 )
 
-require("lspconfigs")
+local scan_configs = function()
+    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+    local lspconfig = require("lspconfig")
+    local results = vim.api.nvim_get_runtime_file("lua/*-lspconfig.lua", true)
+    for i, val in pairs(results) do
+        local base_name = string.gsub(val, "(.*/)(.*)", "%2")
+        local lua_name = string.gsub(base_name, "%.lua", "")
+        local exe_name = string.gsub(lua_name, "%-lspconfig", "")
+        if vim.fn.executable(exe_name) == 1 then
+            module = require(lua_name)
+            module(capabilities, lspconfig)
+        end
+    end
+end
+scan_configs()
