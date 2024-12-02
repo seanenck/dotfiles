@@ -1,8 +1,3 @@
-pinned = [
-  #https://github.com/neovim/nvim-lspconfig/issues/3485
-  "nvimlspconfig"
-]
-
 [applications.nvimcmp]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "linux" }
@@ -24,8 +19,6 @@ branch = { name = "main" }
 command = ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/cmp-nvim-lsp/"]
 
 [applications.nvimlspconfig]
-disable = true
-
 platforms = [
   { value = "{{ $.Config.OS }}", target = "linux" }
 ]

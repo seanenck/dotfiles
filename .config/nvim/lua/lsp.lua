@@ -19,7 +19,6 @@ cmp.setup({
 })
 
 -- make lsp+lspconfig work reasonably
-util = require("lspconfig.util")
 lspconfig = require("lspconfig")
 
 -- default nvim behavior will error, don't error if the exe doesn't exist
@@ -31,7 +30,8 @@ vim.lsp.start_client = function(config)
     end
     exe = cmd[1]
     -- apparently this is an absolute path by now (else use: vim.fn.executable)
-    if not util.path.is_file(exe) then
+    ftype = vim.fn.getftype(exe)
+    if ftype == "" then
         return
     end
     return start_client(config)
