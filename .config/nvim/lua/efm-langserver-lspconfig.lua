@@ -1,6 +1,6 @@
-return function(capabilities, lspconfig)
-    lspconfig["efm"].setup{
-        capabilities = capabilities, 
+return function(settings)
+    settings.lspconfig["efm"].setup{
+        capabilities = settings.capabilities, 
         filetypes = {"sh"},
         init_options = {documentFormatting = false},
         settings = {

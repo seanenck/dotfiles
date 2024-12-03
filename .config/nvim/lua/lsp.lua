@@ -54,8 +54,9 @@ vim.keymap.set("n", "<C-e>", function()
 )
 
 local scan_configs = function()
-    local capabilities = require('cmp_nvim_lsp').default_capabilities()
-    local lspconfig = require("lspconfig")
+    local settings = {}
+    settings.capababilities = require('cmp_nvim_lsp').default_capabilities()
+    settings.lspconfig = require("lspconfig")
     local results = vim.api.nvim_get_runtime_file("lua/*-lspconfig.lua", true)
     for i, val in pairs(results) do
         local base_name = string.gsub(val, "(.*/)(.*)", "%2")
@@ -63,7 +64,7 @@ local scan_configs = function()
         local exe_name = string.gsub(lua_name, "%-lspconfig", "")
         if vim.fn.executable(exe_name) == 1 then
             module = require(lua_name)
-            module(capabilities, lspconfig)
+            module(settings)
         end
     end
 end

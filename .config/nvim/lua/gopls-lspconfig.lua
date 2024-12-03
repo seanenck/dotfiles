@@ -1,6 +1,6 @@
-return function(capabilities, lspconfig)
-    lspconfig["gopls"].setup{
-        capabilities = capabilities, 
+return function(settings)
+    settings.lspconfig["gopls"].setup{
+        capabilities = settings.capabilities, 
         settings = {
             gopls = {
                 gofumpt = true,
