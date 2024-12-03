@@ -1,6 +1,7 @@
 [applications.shellcheck]
 platforms = [
-  { value = "{{ $.Config.OS }}", target = "linux"},
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-fedora"},
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-opensuse-tumbleweed"}
 ]
 [applications.shellcheck.github]
 project = "koalaman/shellcheck"

@@ -1,7 +1,8 @@
 [applications.just]
 priority = 100
 platforms = [
-  { value = "{{ $.Config.OS }}", target = "linux" },
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-fedora"},
+  { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-opensuse-tumbleweed"}
 ]
 [applications.just.github]
 project = "casey/just"
