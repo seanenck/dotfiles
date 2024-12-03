@@ -18,16 +18,6 @@ branch = { name = "main" }
 [[applications.nvimcmplsp.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/cmp-nvim-lsp/"]
 
-[applications.nvimlspconfig]
-platforms = [
-  { value = "{{ $.Config.OS }}", target = "linux" }
-]
-[applications.nvimlspconfig.github]
-project = "neovim/nvim-lspconfig"
-branch = { name = "master" }
-[[applications.nvimlspconfig.commands.steps]]
-command = ["rsync", "-ac", "--delete-after", ".", "$NVIM_PLUGINS/nvim-lspconfig/"]
-
 [applications.nvimluasnip]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "linux" }

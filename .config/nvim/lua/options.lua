@@ -25,3 +25,11 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.omnifunc = "syntaxcomplete#Complete"
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrw = 1
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_ruby_provider = 0
+
+-- option? no treesitter please
+vim.treesitter.start = function()
+end
