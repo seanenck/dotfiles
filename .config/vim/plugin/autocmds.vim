@@ -1,10 +1,16 @@
 augroup vimrcEx
 au!
 
-autocmd FileType markdown,text setlocal textwidth=78 spell
+autocmd FileType markdown,text setlocal textwidth=78
 autocmd FileType loclist setlocal wrap linebreak
 autocmd FileType qf nmap <buffer> <C-e> <cr>:lcl<cr>
 autocmd FileType loclist nmap <buffer> <C-e> <cr>:lcl<cr>
+
+" set directory as readonly
+autocmd BufEnter *
+    \ if isdirectory(@%) |
+    \   setlocal readonly |
+    \ endif
 
 " Return to where we last were
 autocmd BufReadPost *
@@ -17,8 +23,9 @@ autocmd FileType sh setlocal shiftwidth=2
 autocmd CmdlineChanged *
     \ let cmd = getcmdline() |
     \ if !empty(cmd) |
-    \   let match = matchstr(cmd, "^wq.") |
-    \   if !empty(match) |
+    \   let wq = matchstr(cmd, "^wq.") |
+    \   let partial = matchstr(cmd, "^'<,'>") |
+    \   if !empty(wq) || !empty(partial) |
     \     call setcmdline('') |
     \   endif |
     \ endif

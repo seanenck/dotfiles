@@ -5,7 +5,7 @@ parallelization = 4
 variables = [
   { key = "LOCALBIN", value = "$HOME/.local/bin" },
   { key = "COMPLETIONS", value = "$HOME/.local/share/{{ if eq $.Config.OS \"linux\" }}bash{{else}}zsh{{end}}-completion/completions" },
-  { key = "NVIM_PLUGINS", value = "$HOME/.config/nvim/pack/plugins/start" },
+  { key = "VIM_PLUGINS", value = "$HOME/.config/$EDITOR/pack/plugins/start" },
   { key = "COMPGEN", value = "/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}" }
 ]
 

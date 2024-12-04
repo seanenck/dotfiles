@@ -21,19 +21,18 @@ _install() {
       echo ".zshrc"
       ;;
   esac
-  if command -v git > /dev/null; then
-    if command -v delta > /dev/null; then
-      echo ".config/git/"
-      echo ".ssh/"
-    else
-      echo ".gitconfig"
-      echo ".config/git/tools.config"
-    fi
-  fi
   
   case $(uname) in
     "Linux")
-      echo ".config/user-dirs.dirs"
+      if [ "$EDITOR" = "vim" ]; then
+        echo ".config/vim"
+        echo ".config/efm-langserver"
+      fi
+      if command -v git > /dev/null; then
+        echo ".config/user-dirs.dirs"
+        echo ".config/git/"
+      fi
+      echo ".ssh/"
       if [ -n "$DESKTOP_SESSION" ] && [ "$DESKTOP_SESSION" = "sway" ]; then
         echo ".config/waybar/"
         echo ".config/rofi/"
@@ -41,6 +40,10 @@ _install() {
       fi
       ;;
     "Darwin")
+      if command -v git > /dev/null; then
+        echo ".gitconfig"
+        echo ".config/git/tools.config"
+      fi
        VMDIR="$HOME/Linux/VMs"
        if [ -d "$VMDIR" ]; then
          for vm in $(ls "$VMDIR"); do

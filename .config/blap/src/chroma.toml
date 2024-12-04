@@ -1,0 +1,14 @@
+[applications.chroma]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "linux"},
+]
+[applications.chroma.github]
+project = "alecthomas/chroma"
+release = { asset = "tarball" }
+[applications.chroma.commands]
+[[applications.chroma.commands.steps]]
+command = ["go", "build", "-mod=readonly", "-modcacherw", "-ldflags", "-X main.Version={{ $.Vars.Tag }}", "-o", ".", "./..."]
+directory = "cmd/{{ $.Name }}/"
+[[applications.chroma.commands.steps]]
+command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
+directory = "cmd/{{ $.Name }}/"

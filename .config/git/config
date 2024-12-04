@@ -1,26 +1,9 @@
 [core]
-    pager = delta
     autocrlf = input
 [include]
     path = ~/.config/git/tools.config
-[interactive]
-    diffFilter = delta --color-only
-[delta]
-    navigate = true
-    light = false
-    features = decorations
-    keep-plus-minus-markers = true
-    line-numbers = true
 [diff]
     colorMoved = default
-[delta "decorations"]
-    commit-decoration-style = blue ol
-    commit-style = raw
-    file-style = omit
-    hunk-header-decoration-style = blue box
-    hunk-header-file-style = red
-    hunk-header-line-number-style = "#067a00"
-    hunk-header-style = file line-number syntax
 [grep]
     lineNumber = true
 [log]
@@ -51,3 +34,5 @@
     path = ~/.config/git/dev.config
 [includeIf "hasconfig:remote.*.url:upstream:**"]
     path = ~/.config/git/dev.config
+[alias]
+	differ = diff --word-diff

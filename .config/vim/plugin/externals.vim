@@ -11,3 +11,6 @@ let g:ale_linters.go = ['gopls']
 let g:ale_linters.sh = ['shellcheck']
 let g:ale_fixers = {}
 let g:ale_fixers.go = ["gofumpt"]
+let g:ale_go_gopls_init_options = {'ui.diagnostic.staticcheck': v:true}
+let g:ale_hover_to_floating_preview = 1
+highlight clear ALEError

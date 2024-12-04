@@ -10,6 +10,11 @@ noremap <S-j> <NOP>
 noremap <S-h> <NOP>
 noremap <S-k> <NOP>
 noremap <S-l> <NOP>
+noremap <C-h> <NOP>
+noremap <C-l> <NOP>
+noremap <C-q> <NOP>
+noremap <C-j> <NOP>
+noremap <C-k> <NOP>
 
 " mouse handling
 noremap <Rightmouse> <NOP>
@@ -37,3 +42,4 @@ vnoremap gj G
 
 " location list
 nnoremap <silent> <C-e> <Cmd>lopen<CR>
+nnoremap <silent> <C-h> <Cmd>ALEHover<CR>

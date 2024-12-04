@@ -22,15 +22,14 @@ for FILE in "$HOME/.config/shellrc/"*.sh; do
 done
 
 export EDITOR=vi
-if command -v vim > /dev/null; then
-  export EDITOR=vim
-fi
 if command -v nvim > /dev/null; then
   export EDITOR=nvim
 fi
+if command -v vim > /dev/null; then
+  export EDITOR=vim
+fi
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
-export DELTA_PAGER="less -R -c -X"
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 source "$HOME/.bash_aliases"
 

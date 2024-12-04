@@ -10,4 +10,3 @@ require("lsp")
 
 -- term
 require("toggleterm").setup{}
-
