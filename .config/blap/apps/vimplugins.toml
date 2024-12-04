@@ -1,33 +1,3 @@
-[applications.nvimcmp]
-platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-nvim" }
-]
-[applications.nvimcmp.github]
-project = "hrsh7th/nvim-cmp"
-branch = { name = "main" }
-[[applications.nvimcmp.commands.steps]]
-command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/nvim-cmp/"]
-
-[applications.nvimcmplsp]
-platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-nvim" }
-]
-[applications.nvimcmplsp.github]
-project = "hrsh7th/cmp-nvim-lsp"
-branch = { name = "main" }
-[[applications.nvimcmplsp.commands.steps]]
-command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/cmp-nvim-lsp/"]
-
-[applications.nvimluasnip]
-platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-nvim" }
-]
-[applications.nvimluasnip.github]
-project = "L3MON4D3/LuaSnip"
-branch = { name = "master" }
-[[applications.nvimluasnip.commands.steps]]
-command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/LuaSnip/"]
-
 [applications.nvimscrollbar]
 platforms = [
   { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-nvim" }
@@ -77,3 +47,13 @@ project = "dense-analysis/ale"
 branch = { name = "master" }
 [[applications.ale.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/ale/"]
+
+[applications.mini-completion]
+platforms = [
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-nvim" }
+]
+[applications.mini-completion.github]
+project = "echasnovski/mini.completion"
+branch = { name = "main" }
+[[applications.mini-completion.commands.steps]]
+command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/mini.completion/"]
