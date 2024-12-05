@@ -4,7 +4,7 @@ platforms = [
   { value = "{{ $.Config.OS }}-$HOST_OS", target = "linux-cusp" }
 ]
 [applications.alpinevirt.web]
-url = "https://gitlab.alpinelinux.org/alpine/aports/-/raw/3.20-stable/main/linux-lts/APKBUILD?ref_type=heads"
+url = "https://gitlab.alpinelinux.org/alpine/aports/-/raw/{{ $.Getenv \"HOST_OS_VERSION\" }}-stable/main/linux-lts/APKBUILD?ref_type=heads"
 scrape.filters = [
   "^pkgver=(.*)"
 ]
