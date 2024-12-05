@@ -30,7 +30,12 @@ _install() {
       fi
       if command -v git > /dev/null; then
         echo ".config/user-dirs.dirs"
-        echo ".config/git/"
+        echo ".config/git/tools.config"
+        echo ".config/git/dev.config"
+        echo ".config/git/config"
+        if command -v delta > /dev/null; then
+          echo ".config/git/delta.config"
+        fi
       fi
       echo ".ssh/"
       if [ -n "$DESKTOP_SESSION" ] && [ "$DESKTOP_SESSION" = "sway" ]; then

@@ -10,4 +10,8 @@ tagged.filters = [
   "^go[0-9]+[.][0-9]+[.][0-9]+$"
 ]
 [[applications.go.commands.steps]]
+command = ["/bin/sh", "-c", "test -e '{{ $.Vars.Tag }}.hash' || curl --silent -L 'https://go.dev/dl/' | grep '<tt>' > '{{ $.Vars.Tag }}.hash'"]
+[[applications.go.commands.steps]]
+command = ["/bin/sh", "-c", "cat '{{ $.Vars.Tag }}.hash' | grep -q $(sha256sum $(ls ../*\"{{ $.Vars.File }}\") | cut -d ' ' -f 1)"]
+[[applications.go.commands.steps]]
 command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/bin/{{ $.Name }}", "$LOCALBIN/"]

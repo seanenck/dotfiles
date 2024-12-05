@@ -2,6 +2,7 @@
     autocrlf = input
 [include]
     path = ~/.config/git/tools.config
+    path = ~/.config/git/delta.config
 [diff]
     colorMoved = default
 [grep]

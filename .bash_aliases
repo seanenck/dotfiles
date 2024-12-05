@@ -7,13 +7,15 @@ alias ls='ls --color=auto'
 if command -v rg > /dev/null; then
   alias grep="rg"
 else
-  alias grep="grep -Hn --label=[stdin] --color=auto"
+  alias grep="grep --color=auto"
 fi
-if command -v chroma > /dev/null; then
-  chroma() {
-    command chroma --style=vim $@ | nl
-  }
-fi
+review() {
+  if [ -n "$1" ]; then
+    command nvim $@
+    return
+  fi
+  command nvim -R +"set nofoldenable" -
+}
 alias vi="$EDITOR"
 alias vim="$EDITOR"
 alias less="less -R"
