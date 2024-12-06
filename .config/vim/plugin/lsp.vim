@@ -38,6 +38,8 @@ let g:lsp_diagnostics_highlights_delay = 50
 let g:lsp_diagnostics_virtual_text_delay = 50
 let g:lsp_diagnostics_signs_delay = 50
 
+" handle completions
+inoremap <C-Return> <C-x><C-o>
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
