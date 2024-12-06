@@ -6,6 +6,14 @@ if [ -d "$SECRETS" ]; then
   if [ -e "$SECRET_ENV" ]; then
     source "$SECRET_ENV"
   fi
-  unset SECRET_ENV 
+  CONFIG_TOML="$SECRET_ROOT/configs/$(uname | tr '[:upper:]' '[:lower:]')"
+  if [ -n "$SSH_CONNECTION" ]; then
+    CONFIG_TOML="$CONFIG_TOML.ssh"
+  fi
+  CONFIG_TOML="$CONFIG_TOML.toml"
+  if [ -e "$CONFIG_TOML" ]; then
+    export LOCKBOX_CONFIG_TOML="$CONFIG_TOML"
+  fi
+  unset SECRET_ENV CONFIG_TOML
 fi
 unset SECRETS

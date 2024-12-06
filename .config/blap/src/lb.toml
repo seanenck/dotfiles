@@ -3,6 +3,7 @@ platforms = [
   { value = "{{ $.Config.OS }}", target = "linux" }
 ]
 [applications.lb.github]
+flags = ["pinned"]
 project = "seanenck/lockbox"
 release = { asset = "tarball" }
 [[applications.lb.commands.steps]]

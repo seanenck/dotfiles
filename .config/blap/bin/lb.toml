@@ -3,6 +3,7 @@ platforms = [
   { value = "{{ $.Config.OS }}", target = "darwin"},
 ]
 [applications.lb.github]
+flags = ["pinned"]
 project = "seanenck/lockbox"
 release = { asset = "{{ $.OS }}-{{ $.Arch }}.tar.gz$" }
 [[applications.lb.commands.steps]]
