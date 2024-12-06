@@ -11,10 +11,10 @@ else
 fi
 review() {
   if [ -n "$1" ]; then
-    command nvim $@
+    command "$EDITOR" $@
     return
   fi
-  command vim -R +"set nofoldenable" -
+  command "$EDITOR" -R +"set nofoldenable" -
 }
 alias vi="$EDITOR"
 alias vim="$EDITOR"
