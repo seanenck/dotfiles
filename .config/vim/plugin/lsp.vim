@@ -10,6 +10,8 @@ if executable('gopls')
         \ })
     autocmd BufWritePre *.go
         \ call execute('LspDocumentFormatSync')
+    autocmd BufEnter *.go
+        \ setlocal omnifunc=lsp#complete
 endif
 if executable("efm-langserver")
     au User lsp_setup call lsp#register_server({
@@ -41,7 +43,6 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
 function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
     setlocal signcolumn=yes
     let g:lsp_format_sync_timeout = 1000
 endfunction
