@@ -38,16 +38,6 @@ branch = { name = "main" }
 [[applications.toggleterm.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/toggleterm/"]
 
-[applications.ale]
-platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
-]
-[applications.ale.github]
-project = "dense-analysis/ale"
-branch = { name = "master" }
-[[applications.ale.commands.steps]]
-command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/ale/"]
-
 [applications.mini-completion]
 platforms = [
   { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-nvim" }
@@ -57,3 +47,44 @@ project = "echasnovski/mini.completion"
 branch = { name = "main" }
 [[applications.mini-completion.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/mini.completion/"]
+
+[applications.vimlsp]
+platforms = [
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
+]
+[applications.vimlsp.github]
+project = "prabirshrestha/vim-lsp"
+branch = { name = "master" }
+[[applications.vimlsp.commands.steps]]
+command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-lsp/"]
+
+[applications.asyncomplete]
+platforms = [
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
+]
+[applications.asyncomplete.github]
+project = "prabirshrestha/asyncomplete.vim"
+branch = { name = "master" }
+[[applications.asyncomplete.commands.steps]]
+command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/asyncomplete/"]
+
+[applications.asyncompletelsp]
+platforms = [
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
+]
+[applications.asyncompletelsp.github]
+project = "prabirshrestha/asyncomplete-lsp.vim"
+branch = { name = "master" }
+[[applications.asyncompletelsp.commands.steps]]
+command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/asyncomplete-lsp/"]
+
+[applications.ale]
+flags = ["disabled"]
+platforms = [
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
+]
+[applications.ale.github]
+project = "dense-analysis/ale"
+branch = { name = "master" }
+[[applications.ale.commands.steps]]
+command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/ale/"]

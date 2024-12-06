@@ -14,7 +14,7 @@ review() {
     command nvim $@
     return
   fi
-  command nvim -R +"set nofoldenable" -
+  command vim -R +"set nofoldenable" -
 }
 alias vi="$EDITOR"
 alias vim="$EDITOR"

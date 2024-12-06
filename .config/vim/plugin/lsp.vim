@@ -8,6 +8,8 @@ if executable('gopls')
         \     'staticcheck': v:true,
         \  },
         \ })
+    autocmd BufWritePre *.go
+        \ call execute('LspDocumentFormatSync')
 endif
 if executable("efm-langserver")
     au User lsp_setup call lsp#register_server({
@@ -22,6 +24,7 @@ if executable("efm-langserver")
 		\ 'initialization_options': {},
         \ })
 endif
+
 highlight link LspInformationHighlight Todo
 
 let g:lsp_use_native_client = 1
@@ -41,7 +44,6 @@ function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal signcolumn=yes
     let g:lsp_format_sync_timeout = 1000
-    autocmd! BufWritePre *.go call execute('LspDocumentFormatSync')
 endfunction
 
 augroup lsp_install
