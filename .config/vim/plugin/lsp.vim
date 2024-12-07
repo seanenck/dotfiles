@@ -37,6 +37,7 @@ let g:lsp_fold_enabled = 0
 let g:lsp_diagnostics_highlights_delay = 50
 let g:lsp_diagnostics_virtual_text_delay = 50
 let g:lsp_diagnostics_signs_delay = 50
+let g:lsp_diagnostics_float_cursor = 1
 
 " handle completions
 inoremap <C-Return> <C-x><C-o>
