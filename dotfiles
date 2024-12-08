@@ -11,6 +11,9 @@ _install() {
   if command -v nvim > /dev/null; then
     echo ".config/nvim/"
   fi
+  if command -v lb > /dev/null; then
+    echo ".config/lockbox/"
+  fi
   case "$(basename "$SHELL")" in
     "bash")
       echo ".bash_aliases"
