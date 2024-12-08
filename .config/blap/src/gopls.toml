@@ -5,9 +5,15 @@ platforms = [
 [applications.gopls.github]
 project = "golang/tools"
 release = { asset = "tarball" }
+[applications.gopls.commands]
+variables = [
+    { key = "CACHE", value = "$HOME/.cache/gopls" },
+]
 [[applications.gopls.commands.steps]]
 command = ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}"]
 directory = "{{ $.Name }}"
 [[applications.gopls.commands.steps]]
 command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
 directory = "{{ $.Name }}"
+[[applications.gopls.commands.steps]]
+command = ["/bin/sh", "-c", "test ! -d $CACHE || find $CACHE -type f -mtime +1 -print"]
