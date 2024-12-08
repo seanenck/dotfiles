@@ -3,8 +3,6 @@ au!
 
 autocmd FileType markdown,text setlocal textwidth=78 spell
 autocmd FileType loclist setlocal wrap linebreak
-autocmd FileType qf nmap <buffer> <C-e> <cr>:lcl<cr>
-autocmd FileType loclist nmap <buffer> <C-e> <cr>:lcl<cr>
 
 " set directory as readonly
 autocmd BufEnter *

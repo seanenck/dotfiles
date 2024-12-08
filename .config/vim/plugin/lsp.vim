@@ -54,3 +54,19 @@ augroup lsp_install
     au!
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
+
+let g:buffer_lsp_diagnostics_enabled = 1
+
+function s:ToggleLSPDiagnostics()
+    if g:buffer_lsp_diagnostics_enabled == 1
+        call lsp#disable_diagnostics_for_buffer()
+        let g:buffer_lsp_diagnostics_enabled = 0
+    else
+        call lsp#enable_diagnostics_for_buffer()
+        let g:buffer_lsp_diagnostics_enabled = 1
+    endif
+endfunction
+
+command ToggleLSPDiagnostics call s:ToggleLSPDiagnostics()
+
+nnoremap <silent> <C-o> :ToggleLSPDiagnostics<CR>

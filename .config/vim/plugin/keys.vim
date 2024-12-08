@@ -41,5 +41,4 @@ vnoremap gk gg
 vnoremap gj G
 
 " location list
-nnoremap <silent> <C-e> <Cmd>lopen<CR>
-nnoremap <silent> <C-h> <Cmd>ALEHover<CR>
+nnoremap <buffer> <C-e> <cr>:LspDocumentDiagnostics<cr>
