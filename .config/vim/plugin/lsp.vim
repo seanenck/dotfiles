@@ -13,19 +13,6 @@ if executable('gopls')
     autocmd BufEnter *.go
         \ setlocal omnifunc=lsp#complete
 endif
-if executable("efm-langserver")
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'efm-langserver',
-        \ 'cmd': {server_info->['efm-langserver']},
-        \ 'allowlist': ['bash', 'sh'],
-        \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-		\	lsp#utils#find_nearest_parent_file_directory(
-		\		lsp#utils#get_buffer_path(),
-		\		['.git/']
-		\	))},
-		\ 'initialization_options': {},
-        \ })
-endif
 
 highlight link LspInformationHighlight Todo
 
@@ -48,6 +35,7 @@ inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 function! s:on_lsp_buffer_enabled() abort
     setlocal signcolumn=yes
     let g:lsp_format_sync_timeout = 1000
+    nnoremap <buffer> <C-e> <cr>:LspDocumentDiagnostics<cr>
 endfunction
 
 augroup lsp_install

@@ -29,7 +29,6 @@ _install() {
     "Linux")
       if [ "$EDITOR" = "vim" ]; then
         echo ".config/vim"
-        echo ".config/efm-langserver"
       fi
       if command -v git > /dev/null; then
         echo ".config/user-dirs.dirs"

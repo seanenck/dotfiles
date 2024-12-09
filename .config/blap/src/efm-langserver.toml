@@ -1,6 +1,6 @@
 [applications.efm-langserver]
 platforms = [
-  { value = "{{ $.Config.OS }}", target = "linux"},
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-nvim"},
 ]
 [applications.efm-langserver.github]
 project = "mattn/efm-langserver"

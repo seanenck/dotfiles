@@ -39,6 +39,3 @@ vnoremap gl $
 vnoremap gh ^
 vnoremap gk gg
 vnoremap gj G
-
-" location list
-nnoremap <buffer> <C-e> <cr>:LspDocumentDiagnostics<cr>
