@@ -3,10 +3,10 @@ let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 
 " setup informal shellcheck handling
 def RunShellCheck()
-    g:informal_namespace = "shellcheck"
+    g:informal_markup_namespace = "shellcheck"
     if &ft ==# 'sh'
         exe ":ShellCheck"
-        exe ":InformalUpdate"
+        exe ":InformalMarkupUpdate"
     endif
 enddef
 
@@ -24,13 +24,13 @@ function s:ToggleDiagnostics()
     if g:buffer_diagnostics_enabled == 1
         call lsp#disable_diagnostics_for_buffer()
         let g:buffer_diagnostics_enabled = 0
-        let g:informal_enable = v:false
+        let g:informal_markup_enable = v:false
     else
-        let g:informal_enable = v:true
+        let g:informal_markup_enable = v:true
         call lsp#enable_diagnostics_for_buffer()
         let g:buffer_diagnostics_enabled = 1
     endif
-    exe ":InformalUpdate"
+    exe ":InformalMarkupUpdate"
 endfunction
 
 command ToggleDiagnostics call s:ToggleDiagnostics()
