@@ -51,7 +51,7 @@ _install() {
         echo ".gitconfig"
         echo ".config/git/tools.config"
       fi
-       VMDIR="$HOME/Linux/VMs"
+       VMDIR="$HOME/Library/com.ttypty/vms"
        if [ -d "$VMDIR" ]; then
          for vm in $(ls "$VMDIR"); do
            echo ".config/vfu/$vm.json"

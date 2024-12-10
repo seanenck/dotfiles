@@ -29,12 +29,10 @@
     }
   ],
   "env": {
-    "CONFIG": "~/Linux/VMs/cusp"
+    "CONFIG": "~/Library/com.ttypty/vms/cusp"
   },
   "shares": {
-    "~/Linux": {},
     "~/Env": {},
-    "~/Workspace": {},
     "~/Downloads": {}
   },
   "networks": [
