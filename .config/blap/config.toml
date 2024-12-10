@@ -9,6 +9,9 @@ variables = [
   { key = "COMPGEN", value = "/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}" }
 ]
 
+[connections]
+github.token = ["age", "--decrypt", "-i", "$AGE_KEY", "$BLAP_TOKEN_FILE"]
+
 [logging]
 file = "~/{{ if eq $.Config.OS \"linux\" }}.local/state{{else}}Library/com.ttypty/blap{{end}}/blap.log"
 
