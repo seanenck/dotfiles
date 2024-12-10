@@ -26,12 +26,6 @@ let g:lsp_diagnostics_virtual_text_delay = 50
 let g:lsp_diagnostics_signs_delay = 50
 let g:lsp_diagnostics_float_cursor = 1
 
-" handle completions
-inoremap <C-Return> <C-x><C-o>
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
-
 function! s:on_lsp_buffer_enabled() abort
     setlocal signcolumn=yes
     let g:lsp_format_sync_timeout = 1000
@@ -42,19 +36,3 @@ augroup lsp_install
     au!
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
-
-let g:buffer_lsp_diagnostics_enabled = 1
-
-function s:ToggleLSPDiagnostics()
-    if g:buffer_lsp_diagnostics_enabled == 1
-        call lsp#disable_diagnostics_for_buffer()
-        let g:buffer_lsp_diagnostics_enabled = 0
-    else
-        call lsp#enable_diagnostics_for_buffer()
-        let g:buffer_lsp_diagnostics_enabled = 1
-    endif
-endfunction
-
-command ToggleLSPDiagnostics call s:ToggleLSPDiagnostics()
-
-nnoremap <silent> <C-o> :ToggleLSPDiagnostics<CR>
