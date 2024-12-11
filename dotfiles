@@ -49,7 +49,7 @@ _install() {
 }
 
 [ "$(uname)" = "Linux" ] && DEPLOYED_FILES="$HOME/.cache/dotfiles/"
-[ "$(uname)" = "Darwin" ] && DEPLOYED_FILES="$HOME/Library/com.ttypty.com/dotfiles/"
+[ "$(uname)" = "Darwin" ] && DEPLOYED_FILES="$HOME/Library/com.ttypty/dotfiles/"
 [ -z "$DEPLOYED_FILES" ] && echo "unable to determine deploy location" && exit 1
 DEPLOYED_FILES="${DEPLOYED_FILES}manifest"
 
