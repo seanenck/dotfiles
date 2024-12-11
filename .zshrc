@@ -7,7 +7,7 @@ if [ -d "$comps" ]; then
 fi
 
 [ -d "$HOME/.local/bin" ] && path=("$HOME/.local/bin" $path)
-[ -d "$HOME/Env/wac" ] && path=("$HOME/Env/wac/target/bin" $path) && (manage-data &)
+[ -d "$HOME/Library/com.ttypty/wac" ] && path=("$HOME/Library/com.ttypty/wac/target/bin" $path) && (manage-data &)
 export TERMINAL_EMULATOR="kitty"
 
 [ -s "$HOME/Env/secrets/secrets.env" ] && source "$HOME/Env/secrets/secrets.env" && export SECRETS_ENV_FILE="$HOME/Env/secrets/secrets.env"
