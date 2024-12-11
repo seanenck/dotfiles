@@ -1,4 +1,5 @@
 [applications.gittools]
+flags = ["disabled"]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "darwin"},
 ]
