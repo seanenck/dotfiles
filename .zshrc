@@ -11,7 +11,6 @@ fi
 export TERMINAL_EMULATOR="kitty"
 
 [ -s "$HOME/Env/secrets/secrets.env" ] && source "$HOME/Env/secrets/secrets.env" && export SECRETS_ENV_FILE="$HOME/Env/secrets/secrets.env"
-[ -s "$HOME/Env/secrets/wac.env" ] && source "$HOME/Env/wac/wac.env" && export WAC_ENV_FILE="$HOME/Env/wac/wac.env"
 export CFG_LB="darwin"
 
 transcode-media() {
