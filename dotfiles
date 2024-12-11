@@ -1,19 +1,9 @@
 #!/bin/bash
 _install() {
   echo ".config/blap/"
-  echo ".config/shellrc/"
-  if command -v just > /dev/null; then
-    echo ".justfile"
-  fi
-  if command -v bat > /dev/null; then
-    echo ".config/bat/"
-  fi
-  if command -v nvim > /dev/null; then
-    echo ".config/nvim/"
-  fi
-  if command -v lb > /dev/null; then
-    echo ".config/lockbox/"
-  fi
+  command -v bat > /dev/null && echo ".config/bat/"
+  command -v nvim > /dev/null && echo ".config/nvim/"
+  command -v lb > /dev/null && echo ".config/lockbox/"
   case "$(basename "$SHELL")" in
     "bash")
       echo ".bash_aliases"
@@ -27,17 +17,13 @@ _install() {
   
   case $(uname) in
     "Linux")
-      if [ "$EDITOR" = "vim" ]; then
-        echo ".config/vim"
-      fi
+      [ "$EDITOR" = "vim" ] && echo ".config/vim"
       if command -v git > /dev/null; then
         echo ".config/user-dirs.dirs"
         echo ".config/git/tools.config"
         echo ".config/git/dev.config"
         echo ".config/git/config"
-        if command -v delta > /dev/null; then
-          echo ".config/git/delta.config"
-        fi
+        command -v delta >/dev/null && echo ".config/git/delta.config"
       fi
       echo ".ssh/"
       if [ -n "$DESKTOP_SESSION" ] && [ "$DESKTOP_SESSION" = "sway" ]; then
@@ -53,17 +39,21 @@ _install() {
       fi
        VMDIR="$HOME/Library/com.ttypty/vms"
        if [ -d "$VMDIR" ]; then
-         for vm in $(ls "$VMDIR"); do
-           echo ".config/vfu/$vm.json"
+         for vm in "$VMDIR/"**/*.json; do
+           echo ".config/vfu/$(basename "$vm")"
          done
        fi
        ;;
   esac
-  if [ -n "$TERMINAL_EMULATOR" ]; then
-    echo ".config/$TERMINAL_EMULATOR/"
-  fi
+  [ -n "$TERMINAL_EMULATOR" ] && echo ".config/$TERMINAL_EMULATOR/"
 }
 
+[ "$(uname)" = "Linux" ] && DEPLOYED_FILES="$HOME/.cache/dotfiles/"
+[ "$(uname)" = "Darwin" ] && DEPLOYED_FILES="$HOME/Library/com.ttypty.com/dotfiles/"
+[ -z "$DEPLOYED_FILES" ] && echo "unable to determine deploy location" && exit 1
+DEPLOYED_FILES="${DEPLOYED_FILES}manifest"
+
+DEPLOY=0
 DRYRUN=0
 CHECK=0
 if [ -n "$1" ]; then
@@ -74,11 +64,29 @@ if [ -n "$1" ]; then
     "--check")
       CHECK=1
       ;;
+    "--deploy")
+      DEPLOY=1
+      mkdir -p "$(dirname "$DEPLOYED_FILES")"
+      rm -f "$DEPLOYED_FILES"
+      ;;
     *)
       echo "unknown command: $1"
       exit 1
       ;;
   esac
+fi
+
+if [ "$CHECK" -eq 1 ]; then
+  if [ -e "$DEPLOYED_FILES" ]; then
+    if sha256sum -c "$DEPLOYED_FILES" 2>&1 | grep -v ': OK$' | sed 's/^/  /g' | sed "s#$HOME/##g" | sed '1i\
+===
+' | sed '1i\
+[dotfiles]
+'; then
+      exit 1
+    fi
+    exit 0
+  fi
 fi
 
 DIR=""
@@ -87,21 +95,18 @@ FILE=""
 for SET in $(_install | sort -u); do
   for FILE in $(find $SET -type f); do
     if [ "$CHECK" -eq 1 ]; then
-      if ! test -L "$HOME/$FILE"; then
-        echo "non-link dotfile: $FILE"
-      fi
+      test ! -L "$HOME/$FILE" && echo "non-link dotfile: $FILE"
       continue
     fi
-    if [ "$DRYRUN" -eq 1 ]; then
-      echo "$FILE" | sed "s#HOME/##g"
-      continue
-    fi
+    [ "$DRYRUN" -eq 1 ] && echo "$FILE" | sed "s#HOME/##g"
     DIR=$(dirname "$FILE")
-    if [ "$DIR" != "." ]; then
-      mkdir -p "$HOME/$DIR"
-    fi
-    ln -sf "$PWD/$FILE" "$HOME/$FILE"
+    [ "$DIR" != "." ] && mkdir -p "$HOME/$DIR"
+    CMD="ln -sf"
+    $CMD "$PWD/$FILE" "$HOME/$FILE"
+    [ "$DEPLOY" -eq 1 ] && sha256sum "$PWD/$FILE" >> "$DEPLOYED_FILES"
   done
 done
+
+[ "$DEPLOY" -eq 1 ] && sha256sum "$PWD/dotfiles" >> "$DEPLOYED_FILES"
 
 unset SET FILE DRYRUN CHECK
