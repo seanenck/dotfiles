@@ -4,6 +4,7 @@ _install() {
   command -v bat > /dev/null && echo ".config/bat/"
   command -v nvim > /dev/null && echo ".config/nvim/"
   command -v lb > /dev/null && echo ".config/lockbox/"
+  command -v abuild >/dev/null && echo ".config/abuild/"
   case "$(basename "$SHELL")" in
     "bash")
       echo ".bash_aliases"
