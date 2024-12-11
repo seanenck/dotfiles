@@ -32,7 +32,7 @@
     "CONFIG": "~/Library/com.ttypty/vms/cusp"
   },
   "shares": {
-    "~/Library/com.ttypty/vms/Shared": {}
+    "~/Shared": {}
   },
   "networks": [
     {
