@@ -115,5 +115,4 @@ EOF
 }
 
 command -v dotfiles >/dev/null && dotfiles --check
-command -v git-motd >/dev/null && git motd
 command -v manage-data >/dev/null && manage-data motd
