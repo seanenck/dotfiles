@@ -2,6 +2,6 @@
 project = "seanenck/dotfiles"
 branch = { name = "master" }
 [[applications.dotfiles.commands.steps]]
-command = ["./{{ $.Name }}", "--deploy"]
+command = ["/bin/sh", "-c", "test -e {{ $.Vars.Tag }}.done || ./{{ $.Name }} --deploy && touch {{ $.Vars.Tag }}.done"]
 [[applications.dotfiles.commands.steps]]
 command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
