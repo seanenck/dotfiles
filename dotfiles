@@ -93,7 +93,7 @@ DIR=""
 SET=""
 FILE=""
 for SET in $(_install | sort -u); do
-  for FILE in $(find $SET -type f); do
+  for FILE in $(find "$SET" -type f); do
     if [ "$CHECK" -eq 1 ]; then
       test ! -L "$HOME/$FILE" && echo "non-link dotfile: $FILE"
       continue
