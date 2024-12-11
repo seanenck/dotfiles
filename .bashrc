@@ -62,7 +62,7 @@ export SECRET_ROOT="$HOME/.local/secrets"
 export CFG_LB="linux"
 [ -n "$SSH_CONNECTION" ] && export CFG_LB="linux.ssh" 
 
-[ "$HOST_OS" = "cusp" ] && test -s "/media/apkovl/dev.apkovl.tar.gz" && rsync -ac "/media/apkovl/dev.apkovl.tar.gz" "$HOME/Env/guestos/cusp/"
+[ "$HOST_OS" = "cusp" ] && test -s "/media/apkovl/dev.apkovl.tar.gz" && rsync -ac "/media/apkovl/dev.apkovl.tar.gz" "$HOME/Shared/cusp/"
 
 source "$HOME/.bash_aliases"
 

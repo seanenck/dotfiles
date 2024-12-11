@@ -32,8 +32,7 @@
     "CONFIG": "~/Library/com.ttypty/vms/cusp"
   },
   "shares": {
-    "~/Env": {},
-    "~/Downloads": {}
+    "~/Library/com.ttypty/vims/shared": {}
   },
   "networks": [
     {
