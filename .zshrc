@@ -10,7 +10,8 @@ fi
 [ -d "$HOME/Library/com.ttypty/wac" ] && path=("$HOME/Library/com.ttypty/wac/target/bin" $path) && (manage-data &)
 export TERMINAL_EMULATOR="kitty"
 
-[ -s "$HOME/Env/secrets/secrets.env" ] && source "$HOME/Env/secrets/secrets.env" && export SECRETS_ENV_FILE="$HOME/Env/secrets/secrets.env"
+export SECRET_ROOT="$HOME/Library/com.ttypty/secrets"
+[ -s "$SECRET_ROOT/secrets.env" ] && source "$SECRET_ROOT/secrets.env" && export SECRETS_ENV_FILE="$SECRET_ROOT/secrets.env"
 export CFG_LB="darwin"
 
 transcode-media() {

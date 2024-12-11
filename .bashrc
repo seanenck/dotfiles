@@ -57,7 +57,8 @@ setup-sshagent() {
 setup-sshagent
 unset -f setup-sshagent
 
-[ -s "$HOME/Env/secrets/secrets.env" ] && source "$HOME/Env/secrets/secrets.env" && export SECRETS_ENV_FILE="$HOME/Env/secrets/secrets.env"
+export SECRET_ROOT="$HOME/.local/secrets"
+[ -s "$SECRET_ROOT/secrets.env" ] && source "$SECRET_ROOT/secrets.env" && export SECRETS_ENV_FILE="$SECRET_ROOT/secrets.env"
 export CFG_LB="linux"
 [ -n "$SSH_CONNECTION" ] && export CFG_LB="linux.ssh" 
 

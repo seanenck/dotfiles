@@ -35,15 +35,14 @@ _install() {
     "Darwin")
       if command -v git > /dev/null; then
         echo ".gitconfig"
-        echo ".config/git/tools.config"
       fi
-       VMDIR="$HOME/Library/com.ttypty/vms"
-       if [ -d "$VMDIR" ]; then
-         for vm in "$VMDIR/"**/*.json; do
-           echo ".config/vfu/$(basename "$vm")"
-         done
-       fi
-       ;;
+      VMDIR="$HOME/Library/com.ttypty/vms"
+      if [ -d "$VMDIR" ]; then
+        for vm in "$VMDIR/"**/*.json; do
+          echo ".config/vfu/$(basename "$vm")"
+        done
+      fi
+      ;;
   esac
   [ -n "$TERMINAL_EMULATOR" ] && echo ".config/$TERMINAL_EMULATOR/"
 }
