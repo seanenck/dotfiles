@@ -1,13 +1,3 @@
-[applications.nvimscrollbar]
-platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-nvim" }
-]
-[applications.nvimscrollbar.github]
-project = "petertriho/nvim-scrollbar"
-branch = { name = "main" }
-[[applications.nvimscrollbar.commands.steps]]
-command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/nvim-scrollbar/"]
-
 [applications.vimairline]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "linux" }
@@ -27,16 +17,6 @@ project = "NoahTheDuke/vim-just"
 branch = { name = "main" }
 [[applications.vimjust.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-just/"]
-
-[applications.toggleterm]
-platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-nvim" }
-]
-[applications.toggleterm.github]
-project = "akinsho/toggleterm.nvim"
-branch = { name = "main" }
-[[applications.toggleterm.commands.steps]]
-command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/toggleterm/"]
 
 [applications.mini-completion]
 platforms = [
