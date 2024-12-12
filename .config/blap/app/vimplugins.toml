@@ -78,12 +78,12 @@ branch = { name = "master" }
 [[applications.vimgo.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-go/"]
 
-[applications.asycomplete]
+[applications.asyncomplete]
 platforms = [
   { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
 ]
-[applications.asycomplete.github]
+[applications.asyncomplete.github]
 project = "prabirshrestha/asyncomplete.vim"
 branch = { name = "master" }
-[[applications.asycomplete.command.steps]]
+[[applications.asyncomplete.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/asyncomplete.vim/"]
