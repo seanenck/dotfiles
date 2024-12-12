@@ -20,7 +20,7 @@ transcode-media() {
 }
 
 vfu() {
-  "$HOME/.local/libexec/vfu"
+  "$HOME/.local/libexec/vfu" $@
 }
 
 command -v dotfiles >/dev/null && dotfiles --check
