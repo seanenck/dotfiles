@@ -16,18 +16,15 @@ autocmd BufWrite,BufEnter * call RunShellCheck()
 inoremap <C-Return> <C-x><C-o>
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
 " toggle on/off diagnostics
 let g:buffer_diagnostics_enabled = 1
 function s:ToggleDiagnostics()
     if g:buffer_diagnostics_enabled == 1
-        call lsp#disable_diagnostics_for_buffer()
         let g:buffer_diagnostics_enabled = 0
         let g:informal_markup_enable = v:false
     else
         let g:informal_markup_enable = v:true
-        call lsp#enable_diagnostics_for_buffer()
         let g:buffer_diagnostics_enabled = 1
     endif
     exe ":InformalMarkupUpdate"

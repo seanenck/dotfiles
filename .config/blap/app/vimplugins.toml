@@ -49,6 +49,7 @@ branch = { name = "main" }
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/mini.completion/"]
 
 [applications.vimlsp]
+flags = ["disabled"]
 platforms = [
   { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
 ]
@@ -59,6 +60,7 @@ branch = { name = "master" }
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-lsp/"]
 
 [applications.asyncomplete]
+flags = ["disabled"]
 platforms = [
   { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
 ]
@@ -69,6 +71,7 @@ branch = { name = "master" }
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/asyncomplete/"]
 
 [applications.asyncompletelsp]
+flags = ["disabled"]
 platforms = [
   { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
 ]
