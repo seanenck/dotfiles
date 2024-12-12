@@ -47,6 +47,7 @@ _install() {
       echo ".config/blap/src/lb.toml"
       echo ".config/blap/src/revive.toml"
       echo ".config/blap/src/staticcheck.toml"
+      echo ".local/libexec/golint"
       ;;
     "Darwin")
       echo ".config/blap/app/kitty.toml"
