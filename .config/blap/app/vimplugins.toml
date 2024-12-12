@@ -73,10 +73,16 @@ platforms = [
   { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
 ]
 [applications.vimgo.github]
-project = "seanenck/vim-go"
+project = "fatih/vim-go"
 branch = { name = "master" }
+[applications.vimgo.commands]
+variables = [
+  { key = "INSTALLDIR", value = "$VIM_PLUGINS/vim-go/" },
+]
 [[applications.vimgo.commands.steps]]
-command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-go/"]
+command = ["rsync", "-ac", "--delete-after", ".", "$INSTALLDIR"]
+[[applications.vimgo.commands.steps]]
+command = ["/bin/sh", "-c", "cd $INSTALLDIR && git apply $HOME/.config/blap/patches/0001.vim-go.diagnostics.patch"]
 
 [applications.asyncomplete]
 platforms = [

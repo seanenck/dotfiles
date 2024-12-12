@@ -1,0 +1,45 @@
+diff --git a/autoload/go/lsp.vim b/autoload/go/lsp.vim
+index a776bc55..04633f6d 100644
+--- a/autoload/go/lsp.vim
++++ b/autoload/go/lsp.vim
+@@ -263,6 +263,7 @@ function! s:newlsp() abort
+         " Vim says that a buffer name can't be an absolute path.
+         let l:bufname = fnamemodify(l:fname, ':.')
+ 
++        call setqflist([], 'r')
+         if len(l:data.diagnostics) > 0 && (l:level > 0 || bufnr(l:bufname) == bufnr(''))
+           " make sure the buffer is listed and loaded before calling getbufline() on it
+           if !bufexists(l:bufname)
+@@ -286,11 +287,13 @@ function! s:newlsp() abort
+ 
+             if l:diag.severity == 1
+               let l:errorMatches = add(l:errorMatches, l:matchpos)
+-            elseif l:diag.severity == 2
++            elseif l:diag.severity > 1
+               let l:warningMatches = add(l:warningMatches, l:matchpos)
+             endif
+           endfor
+         endif
++        exe ":DiagnosticsClear"
++        exe ":DiagnosticsPlace"
+ 
+         if bufnr(l:bufname) == bufnr('')
+           " only apply highlighting when the diagnostics are for the current
+@@ -1518,14 +1521,12 @@ function! s:processDiagnostic(diagnostic, bufname, fname) abort
+   let l:severity = go#lsp#lsp#SeverityToErrorType(a:diagnostic.severity)
+   let l:diagnostic.error = printf('%s:%s:%s:%s: %s', a:fname, l:line, l:col, l:severity, l:diagnostic.message)
+ 
+-  if !(a:diagnostic.severity == 1 || a:diagnostic.severity == 2)
+-    return [l:diagnostic, []]
+-  endif
+-
+   " return when the diagnostic is not for the current buffer.
+-  if bufnr(a:bufname) != bufnr('')
++  let bufnr = bufnr(a:bufname)
++  if bufnr != bufnr('')
+     return [l:diagnostic, []]
+   end
++  call setqflist([{'bufnr': bufnr, 'lnum': l:line, 'text': l:diagnostic.message, 'type': l:severity}], 'a')
+ 
+   " don't bother trying to highlight errors or warnings that span
+   " the whole file (e.g when there's missing package documentation).
