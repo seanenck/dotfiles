@@ -10,7 +10,7 @@ variables = [
 ]
 
 [connections]
-github.token = ["read-blap-token"]
+github.token = ["$SECRET_ROOT/libexec/read-blap-token"]
 
 [logging]
 file = "~/{{ if eq $.Config.OS \"linux\" }}.local/state{{else}}Library/com.ttypty/blap{{end}}/blap.log"
