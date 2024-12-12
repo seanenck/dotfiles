@@ -48,50 +48,6 @@ branch = { name = "main" }
 [[applications.mini-completion.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/mini.completion/"]
 
-[applications.vimlsp]
-flags = ["disabled"]
-platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
-]
-[applications.vimlsp.github]
-project = "prabirshrestha/vim-lsp"
-branch = { name = "master" }
-[[applications.vimlsp.commands.steps]]
-command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-lsp/"]
-
-[applications.asyncomplete]
-flags = ["disabled"]
-platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
-]
-[applications.asyncomplete.github]
-project = "prabirshrestha/asyncomplete.vim"
-branch = { name = "master" }
-[[applications.asyncomplete.commands.steps]]
-command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/asyncomplete/"]
-
-[applications.asyncompletelsp]
-flags = ["disabled"]
-platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
-]
-[applications.asyncompletelsp.github]
-project = "prabirshrestha/asyncomplete-lsp.vim"
-branch = { name = "master" }
-[[applications.asyncompletelsp.commands.steps]]
-command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/asyncomplete-lsp/"]
-
-[applications.ale]
-flags = ["disabled"]
-platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
-]
-[applications.ale.github]
-project = "dense-analysis/ale"
-branch = { name = "master" }
-[[applications.ale.commands.steps]]
-command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/ale/"]
-
 [applications.vimshellcheck]
 platforms = [
   { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
@@ -101,3 +57,23 @@ project = "itspriddle/vim-shellcheck"
 branch = { name = "master" }
 [[applications.vimshellcheck.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-shellcheck/"]
+
+[applications.vimqfdiag]
+platforms = [
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
+]
+[applications.vimqfdiag.github]
+project = "bfrg/vim-qf-diagnostics"
+branch = { name = "master" }
+[[applications.vimqfdiag.commands.steps]]
+command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-qf-diagnostics/"]
+
+[applications.vimgo]
+platforms = [
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
+]
+[applications.vimgo.github]
+project = "seanenck/vim-go"
+branch = { name = "master" }
+[[applications.vimgo.commands.steps]]
+command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-go/"]
