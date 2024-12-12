@@ -1,9 +1,0 @@
-[applications.utm]
-platforms = [
-  { value = "{{ $.Config.OS }}-$BLAP_ENABLE_UTM", target = "darwin-utm" }
-]
-[applications.utm.github]
-project = "utmapp/UTM"
-release = { asset = ".dmg$" }
-[applications.utm.extract]
-skip = true
