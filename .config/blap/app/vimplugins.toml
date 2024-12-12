@@ -30,7 +30,7 @@ command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/mini.completion/
 
 [applications.vimshellcheck]
 platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux" }
 ]
 [applications.vimshellcheck.github]
 project = "itspriddle/vim-shellcheck"
@@ -40,7 +40,7 @@ command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-shellcheck/"
 
 [applications.vimqfdiag]
 platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux" }
 ]
 [applications.vimqfdiag.github]
 project = "bfrg/vim-qf-diagnostics"
