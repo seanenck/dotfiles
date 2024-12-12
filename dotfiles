@@ -50,6 +50,8 @@ _install() {
       echo ".local/libexec/golint"
       ;;
     "Darwin")
+      echo ".local/libexec/vfu"
+      echo ".local/libexec/transcode-media"
       echo ".config/blap/app/kitty.toml"
       echo ".config/blap/app/rectangle.toml"
       echo ".config/blap/bin/blap.toml"

@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+transcode-media() {
+  local file ext dt hashed tmpl
+  for file in *.*; do
+    ext=$(basename "$file" | rev | cut -d "." -f 1 | rev | tr '[:upper:]' '[:lower:]')
+    dt=$(date +"%d.T_%H%M%S")
+    hashed=$(shasum -a 256 "$file" | cut -c 1-7)
+    tmpl="$dt.$hashed."
+    echo "processing: $file (-> $tmpl)"
+    case "$ext" in
+      "jpeg" | "jpg" | "mov")
+        mv "$file" "$tmpl$ext"
+        ;;
+      "heic")
+        tmpl="${tmpl}jpeg"
+        sips --setProperty format jpeg --out "${tmpl}" "$file"
+        if [ -e "$tmpl" ]; then
+          rm -f "$file"
+        fi
+        ;;
+    esac
+  done
+}
+
+transcode-media

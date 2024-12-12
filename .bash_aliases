@@ -15,3 +15,9 @@ fi
 alias vi="$EDITOR"
 alias vim="$EDITOR"
 alias less="less -R"
+
+if command -v go >/dev/null; then
+  golint() {
+    "$HOME/.local/libexec/golint"
+  }
+fi
