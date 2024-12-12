@@ -1,3 +1,4 @@
+# common plugins for both vim+neovim
 [applications.vimairline]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "linux" }
@@ -18,6 +19,9 @@ branch = { name = "main" }
 [[applications.vimjust.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-just/"]
 
+# ===
+# neovim specific plugins
+# ===
 [applications.mini-completion]
 platforms = [
   { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-nvim" }
@@ -28,9 +32,32 @@ branch = { name = "main" }
 [[applications.mini-completion.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/mini.completion/"]
 
+[applications.nvimscrollbar]
+platforms = [
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-nvim" }
+]
+[applications.nvimscrollbar.github]
+project = "petertriho/nvim-scrollbar"
+branch = { name = "main" }
+[[applications.nvimscrollbar.commands.steps]]
+command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/nvim-scrollbar/"]
+
+[applications.nvimlint]
+platforms = [
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-nvim" }
+]
+[applications.nvimlint.github]
+project = "mfussenegger/nvim-lint"
+branch = { name = "master" }
+[[applications.nvimlint.commands.steps]]
+command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/nvim-lint/"]
+
+# ===
+# vim specific plugins
+# ===
 [applications.vimshellcheck]
 platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux" }
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
 ]
 [applications.vimshellcheck.github]
 project = "itspriddle/vim-shellcheck"
@@ -40,7 +67,7 @@ command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-shellcheck/"
 
 [applications.vimqfdiag]
 platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux" }
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
 ]
 [applications.vimqfdiag.github]
 project = "bfrg/vim-qf-diagnostics"
