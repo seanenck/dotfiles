@@ -76,4 +76,4 @@ EOF
   echo "vfu [$startcmd|$statuscmd] <vm?>"
 }
 
-vfu
+vfu "$1" "$2"
