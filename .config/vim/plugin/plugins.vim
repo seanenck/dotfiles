@@ -41,4 +41,4 @@ let g:go_doc_ballon = 1
 let g:go_doc_popup_window = 1
 
 autocmd filetype go nnoremap <buffer> <C-h> :GoDoc<CR>
-autocmd FileType go nnoremap <buffer> <C-e> :GoDiagnostics<cr>
+autocmd FileType sh,go nnoremap <buffer> <C-e> <cr>:copen<cr>

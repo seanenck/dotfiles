@@ -17,7 +17,6 @@ autocmd BufReadPost *
     \ endif
 
 autocmd FileType sh setlocal shiftwidth=2
-autocmd FileType sh nnoremap <buffer> <C-e> <cr>:copen<cr>
 
 autocmd CmdlineChanged *
     \ let cmd = getcmdline() |
