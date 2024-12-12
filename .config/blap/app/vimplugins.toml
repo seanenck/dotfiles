@@ -92,16 +92,6 @@ branch = { name = "master" }
 [[applications.ale.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/ale/"]
 
-[applications.informal]
-platforms = [
-  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
-]
-[applications.informal.github]
-project = "seanenck/vim-informal"
-branch = { name = "master" }
-[[applications.informal.commands.steps]]
-command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-informal/"]
-
 [applications.vimshellcheck]
 platforms = [
   { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }

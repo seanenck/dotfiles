@@ -3,9 +3,7 @@ let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 
 let g:qfdiagnostics = {"virttext": v:true}
 
-" setup informal shellcheck handling
 def RunShellCheck()
-    g:informal_markup_namespace = "shellcheck"
     if &ft ==# 'sh'
         exe ":ShellCheck"
         exe ":DiagnosticsClear"
