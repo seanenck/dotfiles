@@ -98,3 +98,13 @@ project = "seanenck/vim-informal"
 branch = { name = "master" }
 [[applications.informal.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-informal/"]
+
+[applications.vimshellcheck]
+platforms = [
+  { value = "{{ $.Config.OS }}-$EDITOR", target = "linux-vim" }
+]
+[applications.vimshellcheck.github]
+project = "itspriddle/vim-shellcheck"
+branch = { name = "master" }
+[[applications.viminformal.commands.steps]]
+command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-shellcheck/"]
