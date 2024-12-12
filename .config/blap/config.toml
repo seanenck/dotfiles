@@ -1,5 +1,5 @@
 directory = "~/.local/fs"
-include = ["~/.config/blap/apps/*", "~/.config/blap/src/*", "~/.config/blap/bin/*"]
+include = ["~/.config/blap/app/*", "~/.config/blap/src/*", "~/.config/blap/bin/*"]
 parallelization = 4
 
 variables = [
