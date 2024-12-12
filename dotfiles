@@ -1,6 +1,5 @@
 #!/bin/bash
 _install() {
-  echo ".config/blap/"
   command -v bat > /dev/null && echo ".config/bat/"
   command -v nvim > /dev/null && echo ".config/nvim/"
   command -v lb > /dev/null && echo ".config/lockbox/"
@@ -15,7 +14,8 @@ _install() {
       echo ".zshrc"
       ;;
   esac
-  
+
+  echo ".config/blap/config.toml"
   case $(uname) in
     "Linux")
       [ "$EDITOR" = "vim" ] && echo ".config/vim"
@@ -32,8 +32,29 @@ _install() {
         echo ".config/rofi/"
         echo ".config/sway/"
       fi
+      echo ".config/blap/app/alpine.toml"
+      echo ".config/blap/app/alpinevirt.toml"
+      echo ".config/blap/app/vimplugins.toml"
+      echo ".config/blap/bin/go.toml"
+      echo ".config/blap/bin/just.toml"
+      echo ".config/blap/bin/shellcheck.toml"
+      echo ".config/blap/src/age.toml"
+      echo ".config/blap/src/blap.toml"
+      echo ".config/blap/src/dotfiles.toml"
+      echo ".config/blap/src/gittools.toml"
+      echo ".config/blap/src/gofumpt.toml"
+      echo ".config/blap/src/gopls.toml"
+      echo ".config/blap/src/lb.toml"
+      echo ".config/blap/src/revive.toml"
+      echo ".config/blap/src/staticcheck.toml"
       ;;
     "Darwin")
+      echo ".config/blap/app/kitty.toml"
+      echo ".config/blap/app/rectangle.toml"
+      echo ".config/blap/bin/blap.toml"
+      echo ".config/blap/bin/lb.toml"
+      echo ".config/blap/bin/rclone.toml"
+      echo ".config/blap/src/dotfiles.toml"
       if command -v git > /dev/null; then
         echo ".gitconfig"
       fi
