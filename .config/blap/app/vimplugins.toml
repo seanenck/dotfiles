@@ -106,5 +106,5 @@ platforms = [
 [applications.vimshellcheck.github]
 project = "itspriddle/vim-shellcheck"
 branch = { name = "master" }
-[[applications.viminformal.commands.steps]]
+[[applications.vimshellcheck.commands.steps]]
 command = ["rsync", "-ac", "--delete-after", ".", "$VIM_PLUGINS/vim-shellcheck/"]
