@@ -6,7 +6,7 @@ platforms = [
 project = "seanenck/lockbox"
 release = { asset = "{{ $.OS }}-{{ $.Arch }}.tar.gz$" }
 [[applications.lb.commands.steps]]
-command = ["/bin/sh", "-c", "test -e '{{ $.Vars.GetFile \"hash\" }}' || curl --silent -L $(dirname '{{ $.Vars.URL }}')/'lockbox-{{ slice $.Vars.Tag 1 }}-checksums.txt' | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"]
+command = ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L $(dirname '{{ $.Vars.URL }}')/'lockbox-{{ slice $.Vars.Tag 1 }}-checksums.txt' | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"]
 [[applications.lb.commands.steps]]
 command = ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"]
 [[applications.lb.commands.steps]]
