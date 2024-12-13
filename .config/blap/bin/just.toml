@@ -9,9 +9,9 @@ release = { asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ else }}aarch64{{end}}
 [applications.just.extract]
 nodepth = true
 [[applications.just.commands.steps]]
-command = ["/bin/sh", "-c", "test -e '{{ $.Vars.Tag }}.hash' || curl --silent -L $(dirname '{{ $.Vars.URL }}')/SHA256SUMS | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.Tag }}.hash'"]
+command = ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L $(dirname '{{ $.Vars.URL }}')/SHA256SUMS | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"]
 [[applications.just.commands.steps]]
-command = ["/bin/sh", "-c", "cat '{{ $.Vars.Tag }}.hash' | grep -q $(sha256sum $(ls ../*\"{{ $.Vars.File }}\") | cut -d ' ' -f 1)"]
+command = ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"]
 [[applications.just.commands.steps]]
 command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
 [[applications.just.commands.steps]]

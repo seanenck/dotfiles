@@ -6,9 +6,9 @@ platforms = [
 project = "seanenck/blap"
 release = { asset = "{{ $.OS }}-{{ $.Arch }}.tar.gz$" }
 [[applications.blap.commands.steps]]
-command = ["/bin/sh", "-c", "test -e '{{ $.Vars.Tag }}.hash' || curl --silent -L $(dirname '{{ $.Vars.URL }}')/'{{ $.Name }}-{{ slice $.Vars.Tag 1 }}-checksums.txt' | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.Tag }}.hash'"]
+command = ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L $(dirname '{{ $.Vars.URL }}')/'{{ $.Name }}-{{ slice $.Vars.Tag 1 }}-checksums.txt' | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"]
 [[applications.blap.commands.steps]]
-command = ["/bin/sh", "-c", "cat '{{ $.Vars.Tag }}.hash' | grep -q $(sha256sum $(ls ../*\"{{ $.Vars.File }}\") | cut -d ' ' -f 1)"]
+command = ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"]
 [[applications.blap.commands.steps]]
 command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
 [[applications.blap.commands.steps]]
