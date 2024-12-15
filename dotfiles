@@ -21,7 +21,6 @@ _install() {
       [ "$EDITOR" = "vim" ] && echo ".config/vim"
       if command -v git > /dev/null; then
         echo ".config/user-dirs.dirs"
-        echo ".config/git/tools.config"
         echo ".config/git/dev.config"
         echo ".config/git/config"
         command -v delta >/dev/null && echo ".config/git/delta.config"
