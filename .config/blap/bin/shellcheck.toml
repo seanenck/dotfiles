@@ -6,8 +6,8 @@ platforms = [
 project = "koalaman/shellcheck"
 release = { asset = "{{ $.OS }}.{{ if eq $.Arch \"amd64\" }}x86_64{{ else }}aarch64{{ end }}.tar.xz$" }
 [[applications.shellcheck.setup]]
-command = ["/bin/sh", "-c", "if test ! -e '{{ $.Vars.NewFile \"hash\" }}'; then echo 'no {{ $.Vars.GetFile \"hash\" }} found for release'; exit 1; fi"]
-[[applications.shellcheck.setup]]
-command = ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"]
-[[applications.shellcheck.setup]]
-command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+command = [
+    ["/bin/sh", "-c", "if test ! -e '{{ $.Vars.NewFile \"hash\" }}'; then echo 'no {{ $.Vars.GetFile \"hash\" }} found for release'; exit 1; fi"],
+    ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"],
+    ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+]

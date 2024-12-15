@@ -6,8 +6,8 @@ platforms = [
 project = "rclone/rclone"
 release = { asset = "rclone-(.+?)-osx-arm64.zip" }
 [[applications.rclone.setup]]
-command = ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L $(dirname '{{ $.Vars.URL }}')/SHA256SUMS | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"]
-[[applications.rclone.setup]]
-command = ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"]
-[[applications.rclone.setup]]
-command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+command = [
+    ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L $(dirname '{{ $.Vars.URL }}')/SHA256SUMS | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"],
+    ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"],
+    ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+]
