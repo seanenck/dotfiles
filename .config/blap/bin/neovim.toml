@@ -1,0 +1,16 @@
+[applications.neovim]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "linux" },
+]
+[applications.neovim.git]
+repository = "https://github.com/neovim/neovim"
+tagged.download = "https://dl-cdn.cusplinux.org/cusp/v3.21/repacked/aarch64/nvim-linux64.tar.gz"
+tagged.filters = [
+  "^v[0-9]+[.][0-9]+[.][0-9]+$"
+]
+[[applications.neovim.commands.steps]]
+command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/bin/nvim", "$LOCALBIN/"]
+[[applications.neovim.commands.steps]]
+command = ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L '{{ $.Vars.URL }}.sha256' | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"]
+[[applications.neovim.commands.steps]]
+command = ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"]
