@@ -36,6 +36,8 @@ _install() {
       echo ".config/blap/app/vimplugins.toml"
       echo ".config/blap/bin/go.toml"
       echo ".config/blap/bin/just.toml"
+      echo ".config/blap/bin/neovim.toml"
+      echo ".config/blap/bin/rg.toml"
       echo ".config/blap/bin/shellcheck.toml"
       echo ".config/blap/src/age.toml"
       echo ".config/blap/src/blap.toml"
