@@ -21,3 +21,11 @@ if command -v go >/dev/null; then
     "$HOME/.local/libexec/golint"
   }
 fi
+
+review() {
+  if [ -n "$1" ]; then
+    command "$EDITOR" $@
+    return
+  fi
+  command "$EDITOR" -R +"set nofoldenable" -
+}
