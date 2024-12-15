@@ -5,7 +5,7 @@ platforms = [
 [applications.revive.github]
 project = "mgechev/revive"
 release = { asset = "tarball" }
-[[applications.revive.commands.steps]]
+[[applications.revive.setup]]
 command = ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
-[[applications.revive.commands.steps]]
+[[applications.revive.setup]]
 command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]

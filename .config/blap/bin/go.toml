@@ -9,9 +9,9 @@ tagged.download = "https://go.dev/dl/{{ $.Vars.Tag }}.{{ $.OS }}-{{ $.Arch }}.ta
 tagged.filters = [
   "^go[0-9]+[.][0-9]+[.][0-9]+$"
 ]
-[[applications.go.commands.steps]]
+[[applications.go.setup]]
 command = ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L 'https://go.dev/dl/' | grep '<tt>' > '{{ $.Vars.GetFile \"hash\" }}'"]
-[[applications.go.commands.steps]]
+[[applications.go.setup]]
 command = ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"]
-[[applications.go.commands.steps]]
+[[applications.go.setup]]
 command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/bin/{{ $.Name }}", "$LOCALBIN/"]

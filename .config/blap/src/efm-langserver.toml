@@ -6,7 +6,7 @@ platforms = [
 project = "mattn/efm-langserver"
 release = { asset = "tarball" }
 [applications.efm-langserver.commands]
-[[applications.efm-langserver.commands.steps]]
+[[applications.efm-langserver.setup]]
 command = ["go", "build", "-ldflags", "-X main.revision={{ $.Vars.Tag }}", "-o", "{{ $.Name }}", "."]
-[[applications.efm-langserver.commands.steps]]
+[[applications.efm-langserver.setup]]
 command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]

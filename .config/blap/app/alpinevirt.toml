@@ -11,7 +11,7 @@ scrape.filters = [
 scrape.download = "{{ $.Vars.Source }}"
 [applications.alpinevirt.extract]
 command = ["cp", "{{ $.Input }}", "{{ $.Output }}"]
-[[applications.alpinevirt.commands.steps]]
+[[applications.alpinevirt.setup]]
 command = ["/bin/bash", "-c", "test -e APKBUILD || mv *.APKBUILD* APKBUILD"]
-[[applications.alpinevirt.commands.steps]]
+[[applications.alpinevirt.setup]]
 command = ["/bin/bash", "-c", "diff --ignore-all-space -u <(grep -E '^(pkgver|pkgrel)=' APKBUILD | sort -r | cut -d '=' -f 2 | tr '\n' '-' | sed 's/$/virt/g') <(uname -r)"]

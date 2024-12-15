@@ -5,8 +5,8 @@ platforms = [
 [applications.staticcheck.github]
 project = "dominikh/go-tools"
 release = { asset = "tarball" }
-[[applications.staticcheck.commands.steps]]
+[[applications.staticcheck.setup]]
 command = ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}", "./cmd/{{ $.Name }}"]
-[[applications.staticcheck.commands.steps]]
+[[applications.staticcheck.setup]]
 command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
 directory = "{{ $.Name }}"

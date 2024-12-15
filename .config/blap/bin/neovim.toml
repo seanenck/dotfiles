@@ -8,9 +8,9 @@ tagged.download = "https://dl-cdn.cusplinux.org/cusp/v3.21/repacked/aarch64/nvim
 tagged.filters = [
   "^v[0-9]+[.][0-9]+[.][0-9]+$"
 ]
-[[applications.neovim.commands.steps]]
+[[applications.neovim.setup]]
 command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/bin/nvim", "$LOCALBIN/"]
-[[applications.neovim.commands.steps]]
+[[applications.neovim.setup]]
 command = ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L '{{ $.Vars.URL }}.sha256' | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"]
-[[applications.neovim.commands.steps]]
+[[applications.neovim.setup]]
 command = ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"]

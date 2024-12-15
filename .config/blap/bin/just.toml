@@ -8,11 +8,11 @@ project = "casey/just"
 release = { asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ else }}aarch64{{end}}(.*?){{ $.OS }}(.*?).tar.gz$" }
 [applications.just.extract]
 nodepth = true
-[[applications.just.commands.steps]]
+[[applications.just.setup]]
 command = ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L $(dirname '{{ $.Vars.URL }}')/SHA256SUMS | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"]
-[[applications.just.commands.steps]]
+[[applications.just.setup]]
 command = ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"]
-[[applications.just.commands.steps]]
+[[applications.just.setup]]
 command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
-[[applications.just.commands.steps]]
+[[applications.just.setup]]
 command = ["cp", "-r", "{{ $.Vars.Directories.Root }}/completions/just.{{ if eq $.OS \"linux\" }}bash{{else}}zsh{{end}}", "$COMPLETIONS/{{ $.Name }}"]

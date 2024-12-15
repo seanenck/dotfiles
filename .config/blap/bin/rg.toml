@@ -5,11 +5,11 @@ platforms = [
 [applications.rg.github]
 project = "BurntSushi/ripgrep"
 release = { asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ else }}aarch64{{end}}(.*?){{ $.OS }}(.*?).tar.gz$" }
-[[applications.rg.commands.steps]]
+[[applications.rg.setup]]
 command = ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L '{{ $.Vars.URL }}.sha256' | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"]
-[[applications.rg.commands.steps]]
+[[applications.rg.setup]]
 command = ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"]
-[[applications.rg.commands.steps]]
+[[applications.rg.setup]]
 command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
-[[applications.rg.commands.steps]]
+[[applications.rg.setup]]
 command = ["cp", "-r", "{{ $.Vars.Directories.Root }}/complete/rg.{{ if eq $.OS \"linux\" }}bash{{else}}zsh{{end}}", "$COMPLETIONS/{{ $.Name }}"]
