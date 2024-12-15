@@ -1,7 +1,6 @@
 [core]
     autocrlf = input
 [include]
-    path = ~/.config/git/tools.config
     path = ~/.config/git/delta.config
 [diff]
     colorMoved = default
@@ -38,3 +37,9 @@
 [alias]
     diffwd = diff --word-diff
     showwd = show --word-diff
+[motd]
+    enable = uncommitted
+[uncommitted]
+    scan = true
+    paths = ~/Workspace ~/.local/secrets
+    home = false

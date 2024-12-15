@@ -1,4 +1,2 @@
 [user]
   useConfigOnly = true
-[include]
-    path = ~/.config/git/tools.config
