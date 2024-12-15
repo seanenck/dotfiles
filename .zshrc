@@ -25,7 +25,8 @@ vfu() {
 
 if [ -n "$KITTY_PID" ]; then
   ssh() {
-    exec kitten ssh @$
+    kitten ssh $@
+    return
   }
 fi
 
