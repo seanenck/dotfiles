@@ -6,6 +6,7 @@ platforms = [
 project = "mvdan/gofumpt"
 release = { asset = "tarball" }
 [[applications.gofumpt.setup]]
-command = ["go", "build", "-trimpath", "-mod=readonly", "-modcacherw"]
-[[applications.gofumpt.setup]]
-command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+command = [
+    ["go", "build", "-trimpath", "-mod=readonly", "-modcacherw"],
+    ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+]

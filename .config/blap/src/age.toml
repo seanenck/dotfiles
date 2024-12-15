@@ -5,10 +5,9 @@ platforms = [
 [applications.age.github]
 project = "FiloSottile/age"
 release = { asset = "tarball" }
-[applications.age.commands]
 [[applications.age.setup]]
-command = ["go", "build", "-mod=readonly", "-modcacherw", "-ldflags", "-X main.Version={{ $.Vars.Tag }}", "-o", ".", "./..."]
-[[applications.age.setup]]
-command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
-[[applications.age.setup]]
-command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}-keygen", "$LOCALBIN/"]
+command = [
+    ["go", "build", "-mod=readonly", "-modcacherw", "-ldflags", "-X main.Version={{ $.Vars.Tag }}", "-o", ".", "./..."],
+    ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"],
+    ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}-keygen", "$LOCALBIN/"]
+]

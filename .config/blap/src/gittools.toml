@@ -8,11 +8,9 @@ release = { asset = "tarball" }
 [[applications.gittools.setup]]
 command = ["just", "--quiet"]
 [[applications.gittools.setup]]
-command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-uncommitted", "$LOCALBIN/"]
-directory = "target"
-[[applications.gittools.setup]]
-command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-motd", "$LOCALBIN/"]
-directory = "target"
-[[applications.gittools.setup]]
-command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-current-state", "$LOCALBIN/"]
+command = [
+    ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-uncommitted", "$LOCALBIN/"],
+    ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-motd", "$LOCALBIN/"],
+    ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-current-state", "$LOCALBIN/"]
+]
 directory = "target"

@@ -6,6 +6,7 @@ platforms = [
 project = "mgechev/revive"
 release = { asset = "tarball" }
 [[applications.revive.setup]]
-command = ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"]
-[[applications.revive.setup]]
-command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+command = [
+    ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"],
+    ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+]

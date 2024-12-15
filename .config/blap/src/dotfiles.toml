@@ -2,6 +2,7 @@
 project = "seanenck/dotfiles"
 branch = { name = "master" }
 [[applications.dotfiles.setup]]
-command = ["./{{ $.Name }}", "--deploy"]
-[[applications.dotfiles.setup]]
-command = ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+command = [
+    ["./{{ $.Name }}", "--deploy"],
+    ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+]

@@ -6,8 +6,8 @@ platforms = [
 project = "golang/tools"
 release = { asset = "tarball" }
 [[applications.gopls.setup]]
-command = ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}"]
-directory = "{{ $.Name }}"
-[[applications.gopls.setup]]
-command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
+command = [
+    ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}"],
+    ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
+]
 directory = "{{ $.Name }}"

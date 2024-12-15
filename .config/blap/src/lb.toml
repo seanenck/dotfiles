@@ -8,8 +8,8 @@ release = { asset = "tarball" }
 [[applications.lb.setup]]
 command = ["just", "--quiet", "version={{ $.Vars.Tag }}"]
 [[applications.lb.setup]]
-command = ["/bin/sh", "-c", "{{ $.Vars.Directories.Working }}$COMPGEN"]
-directory = "target"
-[[applications.lb.setup]]
-command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
+command = [
+    ["/bin/sh", "-c", "{{ $.Vars.Directories.Working }}$COMPGEN"],
+    ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
+]
 directory = "target"
