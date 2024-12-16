@@ -1,9 +1,9 @@
-[applications.rectangle]
+[apps.rectangle]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "darwin" }
 ]
-[applications.rectangle.github]
+[apps.rectangle.github]
 project = "rxhanson/Rectangle"
 release = { asset = ".dmg$" }
-[applications.rectangle.extract]
+[apps.rectangle.extract]
 skip = true

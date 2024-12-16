@@ -1,12 +1,12 @@
-[applications.rclone]
+[apps.rclone]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "darwin" }
 ]
-[applications.rclone.github]
+[apps.rclone.github]
 project = "rclone/rclone"
 release = { asset = "rclone-(.+?)-osx-arm64.zip" }
-[[applications.rclone.setup]]
-command = [
+[[apps.rclone.setup]]
+commands = [
     ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L $(dirname '{{ $.Vars.URL }}')/SHA256SUMS | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"],
     ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"],
     ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
