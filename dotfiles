@@ -26,11 +26,6 @@ _install() {
         command -v delta >/dev/null && echo ".config/git/delta.config"
       fi
       echo ".ssh/"
-      if [ -n "$DESKTOP_SESSION" ] && [ "$DESKTOP_SESSION" = "sway" ]; then
-        echo ".config/waybar/"
-        echo ".config/rofi/"
-        echo ".config/sway/"
-      fi
       echo ".config/blap/app/alpine.toml"
       echo ".config/blap/app/alpinevirt.toml"
       echo ".config/blap/app/vimplugins.toml"
