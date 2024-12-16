@@ -1,12 +1,12 @@
-[applications.age]
+[apps.age]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "linux"},
 ]
-[applications.age.github]
+[apps.age.github]
 project = "FiloSottile/age"
 release = { asset = "tarball" }
-[[applications.age.setup]]
-command = [
+[[apps.age.setup]]
+commands = [
     ["go", "build", "-mod=readonly", "-modcacherw", "-ldflags", "-X main.Version={{ $.Vars.Tag }}", "-o", ".", "./..."],
     ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"],
     ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}-keygen", "$LOCALBIN/"]

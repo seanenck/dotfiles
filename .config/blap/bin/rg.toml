@@ -1,12 +1,12 @@
-[applications.rg]
+[apps.rg]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "linux" },
 ]
-[applications.rg.github]
+[apps.rg.github]
 project = "BurntSushi/ripgrep"
 release = { asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ else }}aarch64{{end}}(.*?){{ $.OS }}(.*?).tar.gz$" }
-[[applications.rg.setup]]
-command = [
+[[apps.rg.setup]]
+commands = [
     ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L '{{ $.Vars.URL }}.sha256' | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"],
     ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"],
     ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"],

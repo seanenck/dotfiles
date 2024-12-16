@@ -1,12 +1,12 @@
-[applications.staticcheck]
+[apps.staticcheck]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "linux" }
 ]
-[applications.staticcheck.github]
+[apps.staticcheck.github]
 project = "dominikh/go-tools"
 release = { asset = "tarball" }
-[[applications.staticcheck.setup]]
-command = ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}", "./cmd/{{ $.Name }}"]
-[[applications.staticcheck.setup]]
-command = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
+[[apps.staticcheck.setup]]
+commands = ["go", "build", "-v", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}", "./cmd/{{ $.Name }}"]
+[[apps.staticcheck.setup]]
+commands = ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
 directory = "{{ $.Name }}"

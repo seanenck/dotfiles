@@ -1,12 +1,12 @@
-[applications.gopls]
+[apps.gopls]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "linux" }
 ]
-[applications.gopls.github]
+[apps.gopls.github]
 project = "golang/tools"
 release = { asset = "tarball" }
-[[applications.gopls.setup]]
-command = [
+[[apps.gopls.setup]]
+commands = [
     ["go", "build", "-v", "-buildmode=pie", "-mod=readonly", "-modcacherw", "-ldflags", "-compressdwarf=false", "-o", "{{ $.Name }}"],
     ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
 ]

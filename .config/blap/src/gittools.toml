@@ -1,14 +1,14 @@
-[applications.gittools]
+[apps.gittools]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "linux" }
 ]
-[applications.gittools.github]
+[apps.gittools.github]
 project = "seanenck/git-tools"
 release = { asset = "tarball" }
-[[applications.gittools.setup]]
-command = ["just", "--quiet"]
-[[applications.gittools.setup]]
-command = [
+[[apps.gittools.setup]]
+commands = ["just", "--quiet"]
+[[apps.gittools.setup]]
+commands = [
     ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-uncommitted", "$LOCALBIN/"],
     ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-motd", "$LOCALBIN/"],
     ["ln", "-sf", "{{ $.Vars.Directories.Working }}/git-current-state", "$LOCALBIN/"]

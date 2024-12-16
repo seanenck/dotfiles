@@ -1,8 +1,8 @@
-[applications.dotfiles.github]
+[apps.dotfiles.github]
 project = "seanenck/dotfiles"
 branch = { name = "master" }
-[[applications.dotfiles.setup]]
-command = [
+[[apps.dotfiles.setup]]
+commands = [
     ["./{{ $.Name }}", "--deploy"],
     ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
 ]

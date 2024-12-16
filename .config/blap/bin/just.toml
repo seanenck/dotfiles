@@ -1,15 +1,15 @@
-[applications.just]
+[apps.just]
 priority = 100
 platforms = [
   { value = "{{ $.Config.OS }}", target = "linux" },
 ]
-[applications.just.github]
+[apps.just.github]
 project = "casey/just"
 release = { asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ else }}aarch64{{end}}(.*?){{ $.OS }}(.*?).tar.gz$" }
-[applications.just.extract]
+[apps.just.extract]
 nodepth = true
-[[applications.just.setup]]
-command = [
+[[apps.just.setup]]
+commands = [
     ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L $(dirname '{{ $.Vars.URL }}')/SHA256SUMS | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"],
     ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"],
     ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"],

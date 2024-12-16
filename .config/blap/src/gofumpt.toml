@@ -1,12 +1,12 @@
-[applications.gofumpt]
+[apps.gofumpt]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "linux" }
 ]
-[applications.gofumpt.github]
+[apps.gofumpt.github]
 project = "mvdan/gofumpt"
 release = { asset = "tarball" }
-[[applications.gofumpt.setup]]
-command = [
+[[apps.gofumpt.setup]]
+commands = [
     ["go", "build", "-trimpath", "-mod=readonly", "-modcacherw"],
     ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
 ]

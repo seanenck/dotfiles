@@ -1,14 +1,14 @@
-[applications.lb]
+[apps.lb]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "linux" }
 ]
-[applications.lb.github]
+[apps.lb.github]
 project = "seanenck/lockbox"
 release = { asset = "tarball" }
-[[applications.lb.setup]]
-command = ["just", "--quiet", "version={{ $.Vars.Tag }}"]
-[[applications.lb.setup]]
-command = [
+[[apps.lb.setup]]
+commands = ["just", "--quiet", "version={{ $.Vars.Tag }}"]
+[[apps.lb.setup]]
+commands = [
     ["/bin/sh", "-c", "{{ $.Vars.Directories.Working }}$COMPGEN"],
     ["ln", "-sf", "{{ $.Vars.Directories.Working }}/{{ $.Name }}", "$LOCALBIN/"]
 ]

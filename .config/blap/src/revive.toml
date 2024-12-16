@@ -1,12 +1,12 @@
-[applications.revive]
+[apps.revive]
 platforms = [
   { value = "{{ $.Config.OS }}", target = "linux" }
 ]
-[applications.revive.github]
+[apps.revive.github]
 project = "mgechev/revive"
 release = { asset = "tarball" }
-[[applications.revive.setup]]
-command = [
+[[apps.revive.setup]]
+commands = [
     ["go", "build", "-buildmode=pie", "-trimpath", "-modcacherw"],
     ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
 ]
