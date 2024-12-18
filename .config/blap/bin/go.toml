@@ -11,7 +11,7 @@ tagged.filters = [
 ]
 [[apps.go.setup]]
 commands = [
-    ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L 'https://go.dev/dl/' | grep '<tt>' > '{{ $.Vars.GetFile \"hash\" }}'"],
+    ["/bin/sh", "-c", "test -e '{{ $.Vars.GetFile \"hash\" }}' || curl --silent -L 'https://go.dev/dl/' | grep '<tt>' > '{{ $.Vars.GetFile \"hash\" }}'"],
     ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"],
     ["ln", "-sf", "{{ $.Vars.Directories.Root }}/bin/{{ $.Name }}", "$LOCALBIN/"]
 ]

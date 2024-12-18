@@ -11,6 +11,6 @@ tagged.filters = [
 [[apps.neovim.setup]]
 commands = [
     ["ln", "-sf", "{{ $.Vars.Directories.Root }}/bin/nvim", "$LOCALBIN/"],
-    ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L '{{ $.Vars.URL }}.sha256' | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"],
+    ["/bin/sh", "-c", "test -e '{{ $.Vars.GetFile \"hash\" }}' || curl --silent -L '{{ $.Vars.URL }}.sha256' | grep \"$(basename '{{ $.Vars.URL }}')\" > '{{ $.Vars.GetFile \"hash\" }}'"],
     ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"]
 ]

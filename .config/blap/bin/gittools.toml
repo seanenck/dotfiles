@@ -8,7 +8,7 @@ project = "seanenck/git-tools"
 release = { asset = "{{ $.OS }}-{{ $.Arch }}.tar.gz$" }
 [[applications.gittools.setup]]
 command = [
-    ["/bin/sh", "-c", "test -e '{{ $.Vars.NewFile \"hash\" }}' || curl --silent -L $(dirname '{{ $.Vars.URL }}')/'{{ $.Vars.File }}.sha256sum' > '{{ $.Vars.GetFile \"hash\" }}'"],
+    ["/bin/sh", "-c", "test -e '{{ $.Vars.GetFile \"hash\" }}' || curl --silent -L $(dirname '{{ $.Vars.URL }}')/'{{ $.Vars.File }}.sha256sum' > '{{ $.Vars.GetFile \"hash\" }}'"],
     ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"],
     ["ln", "-sf", "{{ $.Vars.Directories.Root }}/git-uncommitted", "$LOCALBIN/"],
     ["ln", "-sf", "{{ $.Vars.Directories.Root }}/git-motd", "$LOCALBIN/"],
