@@ -10,6 +10,7 @@ variables = [
 ]
 
 [connections]
+timeouts.get = 15
 github.command = ["$SECRET_ROOT/libexec/read-blap-token"]
 
 [logging]
