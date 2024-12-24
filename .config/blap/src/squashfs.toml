@@ -1,0 +1,13 @@
+[apps.squashfs]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "darwin" }
+]
+[apps.squashfs.github]
+project = "plougher/squashfs-tools"
+release = { asset = "tarball" }
+[[apps.squashfs.setup]]
+directory = "squashfs-tools"
+commands = [
+    ["make"],
+    ["ln", "-sf", "{{ $.Vars.Directories.Root }}/squashfs-tools/mksquashfs", "$LOCALBIN/"]
+]
