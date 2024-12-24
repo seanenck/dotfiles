@@ -16,7 +16,7 @@
       "path": "$CONFIG/boot.iso"
     },
     {
-      "mode": "nvme",
+      "mode": "block",
       "path": "$CONFIG/apkovl.img"
     },
     {
