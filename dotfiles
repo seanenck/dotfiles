@@ -55,7 +55,6 @@ _install() {
       echo ".config/blap/bin/lb.toml"
       echo ".config/blap/bin/rclone.toml"
       echo ".config/blap/src/dotfiles.toml"
-      echo ".config/blap/src/squashfs.toml"
       if command -v git > /dev/null; then
         echo ".gitconfig"
       fi
