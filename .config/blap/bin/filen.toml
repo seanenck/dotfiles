@@ -1,0 +1,7 @@
+[apps.filen]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "linux"},
+]
+[apps.filen.github]
+project = "FilenCloudDienste/filen-cli"
+release = { asset = "{{ $.OS }}-x64.tar.gz$" }

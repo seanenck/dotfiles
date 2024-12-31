@@ -30,6 +30,7 @@ _install() {
       echo ".config/blap/app/alpine.toml"
       echo ".config/blap/app/alpinevirt.toml"
       echo ".config/blap/app/vimplugins.toml"
+      echo ".config/blap/bin/filen.toml"
       echo ".config/blap/bin/go.toml"
       echo ".config/blap/bin/just.toml"
       echo ".config/blap/bin/neovim.toml"
@@ -53,7 +54,6 @@ _install() {
       echo ".config/blap/app/rectangle.toml"
       echo ".config/blap/bin/blap.toml"
       echo ".config/blap/bin/lb.toml"
-      echo ".config/blap/bin/rclone.toml"
       echo ".config/blap/src/dotfiles.toml"
       if command -v git > /dev/null; then
         echo ".gitconfig"
