@@ -26,9 +26,9 @@
     format = man
 [merge]
     conflictstyle = diff3
-[url "git.ttypty.com:~/Active/git/private/"]
+[url "git.ttypty.com:~/Git/private/"]
     insteadOf = private:
-[url "git.ttypty.com:~/Active/git/upstream/"]
+[url "git.ttypty.com:~/Git/upstream/"]
     insteadOf = upstream:
 [includeIf "hasconfig:remote.*.url:private:**"]
     path = ~/.config/git/dev.config
