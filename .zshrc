@@ -7,7 +7,6 @@ if [ -d "$comps" ]; then
 fi
 
 [ -d "$HOME/.local/bin" ] && path=("$HOME/.local/bin" $path)
-[ -d "$HOME/Library/com.ttypty/wac" ] && path=("$HOME/Library/com.ttypty/wac/target/bin" $path) && (manage-data &)
 export TERMINAL_EMULATOR="kitty"
 
 export SECRET_ROOT="$HOME/Library/com.ttypty/secrets"
