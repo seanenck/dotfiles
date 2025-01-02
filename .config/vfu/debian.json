@@ -1,0 +1,36 @@
+{
+  "boot": {
+    "efi": {
+      "store": "$CONFIG/efi"
+    }
+  },
+  "identifier": "$CONFIG/machine",
+  "resources": {
+    "cpus": 2,
+    "memory": 8192
+  },
+  "serial": "none",
+  "disks": [
+    {
+      "mode": "nvme",
+      "path": "$CONFIG/rootfs.img"
+    },
+    {
+      "mode": "nvme",
+      "path": "$CONFIG/home.img"
+    }
+  ],
+  "env": {
+    "CONFIG": "~/Library/com.ttypty/vms/debian"
+  },
+  "shares": {
+    "~/Downloads": {},
+    "~/Workspace": {}
+  },
+  "networks": [
+    {
+      "mac": "5e:49:6b:f7:7f:84",
+      "mode": "nat"
+    }
+  ]
+}
