@@ -1,0 +1,13 @@
+[apps.delta]
+platforms = [
+  { value = "{{ $.Config.OS }}", target = "linux" },
+]
+[apps.delta.github]
+project = "dandavison/delta"
+release = { asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ else }}aarch64{{end}}(.*?){{ $.OS }}(.*?).tar.gz$" }
+[[apps.delta.setup]]
+commands = [
+    ["/bin/sh", "-c", "if test ! -e '{{ $.Vars.GetFile \"hash\" }}'; then echo 'no {{ $.Vars.GetFile \"hash\" }} found for release'; exit 1; fi"],
+    ["/bin/sh", "-c", "cat '{{ $.Vars.GetFile \"hash\" }}' | grep -q $(sha256sum '{{ $.Vars.Archive }}' | cut -d ' ' -f 1)"],
+    ["ln", "-sf", "{{ $.Vars.Directories.Root }}/{{ $.Name }}", "$LOCALBIN/"]
+]
