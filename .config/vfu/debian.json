@@ -12,6 +12,10 @@
   "serial": "none",
   "disks": [
     {
+      "mode": "block",
+      "path": "$CONFIG/init.iso"
+    },
+    {
       "mode": "nvme",
       "path": "$CONFIG/rootfs.img"
     },
