@@ -26,8 +26,8 @@ mkdir -p "$HOME/.local/bin" "$HOME/.local/state" "$HOME/.local/fs" "$HOME/.local
 export PATH="$HOME/.local/bin:$PATH"
 
 export EDITOR=vi
-command -v nvim >/dev/null && export EDITOR=nvim
 command -v vim >/dev/null && export EDITOR=vim
+command -v nvim >/dev/null && export EDITOR=nvim
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
