@@ -22,11 +22,4 @@ vfu() {
   "$HOME/.local/libexec/vfu" $@
 }
 
-if [ -n "$KITTY_PID" ]; then
-  ssh() {
-    kitten ssh $@
-    return
-  }
-fi
-
 command -v dotfiles >/dev/null && dotfiles --check
