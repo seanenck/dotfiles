@@ -20,6 +20,7 @@ if [ -e /etc/os-release ]; then
   HOST_OS="$(grep '^ID=' /etc/os-release | cut -d "=" -f 2 | sed 's/"//g')"
   HOST_OS_VERSION="$(grep '^VERSION_ID=' /etc/os-release | cut -d "=" -f 2 | cut -d "." -f 1,2)"
   export HOST_OS HOST_OS_VERSION
+  [ "$HOST_OS" = "debian" ] && touch "~/.hushlogin"
 fi
 
 mkdir -p "$HOME/.local/bin" "$HOME/.local/state" "$HOME/.local/fs" "$HOME/.local/share/bash-completion/completions"
