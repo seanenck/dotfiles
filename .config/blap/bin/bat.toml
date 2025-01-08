@@ -4,7 +4,7 @@ platforms = [
 ]
 [apps.bat.github]
 project = "sharkdp/bat"
-release = { asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ else }}aarch64{{end}}(.*?){{ $.OS }}{{ if eq ($.Getenv \"HOST_OS\") \"alpine\" }}-musl{{ else }}-gnu{{ end }}(.*?).tar.gz$" }
+release = { asset = ".{{ if eq $.Arch \"amd64\" }}x86_64{{ else }}aarch64{{end}}(.*?){{ $.OS }}-{{ $.Getenv \"LIBC\" }}(.*?).tar.gz$" }
 [[apps.bat.setup]]
 commands = [
     ["/bin/sh", "-c", "if test ! -e '{{ $.Vars.GetFile \"hash\" }}'; then echo 'no {{ $.Vars.GetFile \"hash\" }} found for release'; exit 1; fi"],

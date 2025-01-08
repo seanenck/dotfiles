@@ -6,7 +6,8 @@ variables = [
   { key = "LOCALBIN", value = "$HOME/.local/bin" },
   { key = "COMPLETIONS", value = "$HOME/.local/share/{{ if eq $.Config.OS \"linux\" }}bash{{else}}zsh{{end}}-completion/completions" },
   { key = "VIM_PLUGINS", value = "$HOME/.config/$EDITOR/pack/plugins/start" },
-  { key = "COMPGEN", value = "/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}" }
+  { key = "COMPGEN", value = "/{{ $.Name }} completions > $COMPLETIONS/{{ $.Name }}" },
+  { key = "LIBC", value = "{{ if eq $.Config.OS \"linux\" }}{{ if ne ($.Config.Getenv \"HOST_OS\") \"alpine\" }}gnu{{else}}musl{{end}}{{ end }}" },
 ]
 
 [connections]
