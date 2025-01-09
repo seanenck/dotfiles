@@ -1,4 +1,0 @@
-PACKAGER="Sean Enck <sean@ttypty.com>"
-REPOROOT="/home/enck/.local/cusp/packages"
-REPODEST="/home/enck/.local/cusp/packages/cusp/next"
-PACKAGER_PRIVKEY=/home/enck/.abuild/dev@cusplinux.org-674b2f71.rsa
