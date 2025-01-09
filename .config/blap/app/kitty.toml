@@ -1,9 +1,0 @@
-[apps.kitty]
-platforms = [
-  { value = "{{ $.Config.OS }}", target = "darwin" }
-]
-[apps.kitty.github]
-project = "kovidgoyal/kitty"
-release = { asset = ".dmg$" }
-[apps.kitty.extract]
-skip = true
