@@ -21,7 +21,7 @@ _download() {
     [ -z "$release" ] && echo "no release found: $1" && exit 1
     base="${DIR}/$(basename "$release")"
     [ -e "$base" ] && return
-    echo "downloading: $release"
+    echo "downloading release for $1"
     tmpbase="${base}.tmp"
     curl -L --silent "$release" > "$tmpbase"
     if echo "$base" | grep -q '.tar.gz$'; then
