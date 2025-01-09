@@ -1,5 +1,5 @@
 #!/bin/sh -e
-OFFSET=".cache"
+OFFSET=".local/ttypty"
 [ "$(uname)" = "Darwin" ] && OFFSET="Library/com.ttypty"
 DEPLOY="$HOME/$OFFSET/dotfiles/fs"
 URL="https://github.com/seanenck/dotfiles"

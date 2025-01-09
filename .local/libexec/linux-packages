@@ -1,7 +1,8 @@
 #!/bin/sh -e
 . "$HOME/Workspace/dotfiles/.local/libexec/github-packages"
 TOKEN="$($HOME/.local/secrets/libexec/api-token)"
-DIR="$HOME/.local/fps"
+ROOT_DIR="$HOME/.local/ttypty"
+DIR="$ROOT_DIR/fs"
 BIN="$HOME/.local/bin"
 COMPLETIONS="$HOME/.local/share/bash-completion/completions/"
 LIBC="gnu"
