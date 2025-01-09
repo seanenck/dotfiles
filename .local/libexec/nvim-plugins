@@ -6,7 +6,7 @@ _update() {
   dest="${PLUGINS}$base"
   echo "updating nvim plugin: $base"
   [ -d "$dest" ] || git clone --quiet "https://github.com/$1" "$dest"
-  git -C "$dest" --quiet pull
+  git -C "$dest" pull --quiet
 }
 
 mkdir -p "$PLUGINS"
