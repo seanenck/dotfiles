@@ -32,6 +32,7 @@ _install() {
       echo ".config/blap/app/vimplugins.toml"
       echo ".config/blap/bin/bat.toml"
       echo ".config/blap/bin/delta.toml"
+      echo ".config/blap/bin/deno.toml"
       echo ".config/blap/bin/filen.toml"
       echo ".config/blap/bin/go.toml"
       echo ".config/blap/bin/just.toml"
