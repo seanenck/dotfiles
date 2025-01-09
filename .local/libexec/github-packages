@@ -6,6 +6,8 @@ latest_release() {
     -H "Authorization: Bearer $API_TOKEN" \
     "https://api.github.com/repos/$1/releases/latest" | \
     grep 'browser_download_url' | \
+    cut -d ":" -f 2- | \
+    sed 's/\s*//g' | \
     sort | \
     grep "$2" | \
     sed 's/"//g' | \

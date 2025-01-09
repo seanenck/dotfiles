@@ -1,0 +1,91 @@
+#!/bin/sh -e
+. "$HOME/Workspace/dotfiles/.local/libexec/github-packages"
+TOKEN="$($HOME/.local/secrets/libexec/api-token)"
+DIR="$HOME/.local/fps"
+BIN="$HOME/.local/bin"
+COMPLETIONS="$HOME/.local/share/bash-completion/completions/"
+LIBC="gnu"
+ARCH="aarch64"
+
+_latest_release() {
+  [ -z "$API_TOKEN" ] && echo "no API_TOKEN set" && exit 1
+  curl --silent -L \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer $API_TOKEN" \
+    "https://api.github.com/repos/$1/releases/latest" | \
+    grep 'browser_download_url' | \
+    sort | \
+    grep "$2" | \
+    sed 's/"//g'
+}
+
+_tarunpack() {
+  offset=""
+  args=""
+  if [ -n "$STRIP" ]; then
+    args="--strip-components=$STRIP"
+    offset="$(tar tf "$1" | cut -d '/' -f ${STRIP} | sort -u | sed 's/\n//g')/"
+  fi
+  tar -xvf "$1" $args -C "$BIN" "$offset$2"
+}
+
+_download() {
+    release=$(latest_release "$1" "$2")
+    [ -z "$release" ] && echo "no release found: $1" && exit 1
+    base="${DIR}/$(basename "$release")"
+    [ -e "$base" ] && return
+    echo "downloading release for $1"
+    echo "$release"
+    tmpbase="${base}.tmp"
+    [ -e "$tmpbase" ] || curl -L --silent "$release" > "$tmpbase"
+    case "$1" in
+      "sharkdp/bat")
+        STRIP=1 _tarunpack "$tmpbase" "bat"
+        ;;
+      "dandavison/delta")
+        STRIP=1 _tarunpack "$tmpbase" "delta"
+        ;;
+      "koalaman/shellcheck")
+        STRIP=1 _tarunpack "$tmpbase" "shellcheck"
+        ;;
+      "FilenCloudDienste/filen-cli")
+        if ! file "$tmpbase" | grep -q "ELF 64-bit LSB executable"; then
+          echo "invalid download"
+          return
+        fi
+        ;;
+      "casey/just")
+        _tarunpack "$tmpbase" "just"
+        just --completions bash > "$COMPLETIONS/just"
+        ;;
+      "BurntSushi/ripgrep")
+        STRIP=1 _tarunpack "$tmpbase" "rg"
+        rg --generate=complete-bash > "$COMPLETIONS/rg"
+        ;;
+      *)
+        echo "unknown deployment: $1"
+        return
+        ;;
+    esac
+    mv "$tmpbase" "$base"
+}
+
+mkdir -p "$DIR"
+[ -z "$TOKEN" ] && echo "no github token found/set" && exit 1
+export API_TOKEN="$TOKEN"
+_download "sharkdp/bat" "$ARCH-unknown-linux-$LIBC"
+_download "dandavison/delta" "$ARCH-unknown-linux-$LIBC"
+_download "koalaman/shellcheck" "linux\.$ARCH"
+_download "FilenCloudDienste/filen-cli" "linux-x64"
+_download "casey/just" "$ARCH-unknown-linux"
+_download "BurntSushi/ripgrep" "$ARCH-unknown-linux-gnu"
+
+# age
+# go
+# gittools
+# gofumpt
+# gopls
+# lb
+# neovim
+# revive
+# staticcheck
