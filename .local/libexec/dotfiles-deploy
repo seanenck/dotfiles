@@ -1,5 +1,7 @@
 #!/bin/sh -e
-DEPLOY="$HOME/Library/com.ttypty/dotfiles/fs"
+OFFSET=".cache"
+[ "$(uname)" = "Darwin" ] && OFFSET="Library/com.ttypty"
+DEPLOY="$HOME/$OFFSET/dotfiles/fs"
 URL="https://github.com/seanenck/dotfiles"
 
 mkdir -p "$DEPLOY"

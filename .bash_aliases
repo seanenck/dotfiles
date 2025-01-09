@@ -22,10 +22,6 @@ if command -v go >/dev/null; then
   }
 fi
 
-review() {
-  if [ -n "$1" ]; then
-    command "$EDITOR" $@
-    return
-  fi
-  command "$EDITOR" -R +"set nofoldenable" -
+update-packages() {
+  "$HOME/.local/libexec/dotfiles-deploy"
 }

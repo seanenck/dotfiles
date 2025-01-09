@@ -15,6 +15,7 @@ _install() {
       ;;
   esac
 
+  echo ".local/libexec/dotfiles-deploy"
   case $(uname) in
     "Linux")
       [ "$EDITOR" = "nvim" ] && echo ".config/nvim/"
@@ -39,7 +40,6 @@ _install() {
       echo ".config/blap/bin/shellcheck.toml"
       echo ".config/blap/src/age.toml"
       echo ".config/blap/src/blap.toml"
-      echo ".config/blap/src/dotfiles.toml"
       echo ".config/blap/src/gittools.toml"
       echo ".config/blap/src/gofumpt.toml"
       echo ".config/blap/src/gopls.toml"
@@ -50,7 +50,6 @@ _install() {
       ;;
     "Darwin")
       echo ".local/libexec/vfu"
-      echo ".local/libexec/dotfiles-deploy"
       echo ".local/libexec/macos-packages"
       echo ".local/libexec/transcode-media"
       if command -v git > /dev/null; then
