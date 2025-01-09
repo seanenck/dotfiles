@@ -1,0 +1,16 @@
+#!/bin/sh -e
+PLUGINS="$HOME/.config/nvim/pack/plugins/start/"
+
+_update() {
+  base="$(basename "$1")"
+  dest="${PLUGINS}$base"
+  [ -d "$dest" ] || git clone --quiet "https://github.com/$1" "$dest"
+  git -C "$dest" pull
+}
+
+mkdir -p "$PLUGINS"
+_update "vim-airline/vim-airline"
+_update "NoahTheDuke/vim-just"
+_update "echasnovski/mini.completion"
+_update "petertriho/nvim-scrollbar"
+_update "mfussenegger/nvim-lint"

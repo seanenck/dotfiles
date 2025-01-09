@@ -27,9 +27,9 @@ _install() {
         echo ".config/git/config"
         command -v delta >/dev/null && echo ".config/git/delta.config"
       fi
+      echo ".local/libexec/nvim-plugins"
       echo ".ssh/"
       echo ".config/blap/config.toml"
-      echo ".config/blap/app/vimplugins.toml"
       echo ".config/blap/bin/bat.toml"
       echo ".config/blap/bin/delta.toml"
       echo ".config/blap/bin/deno.toml"
