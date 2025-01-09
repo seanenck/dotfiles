@@ -19,7 +19,7 @@ _latest_release() {
 _download() {
     release=$(_latest_release "$1" "$2")
     [ -z "$release" ] && echo "no release found: $1" && exit 1
-    base="${DIR}$(basename "$release")"
+    base="${DIR}/$(basename "$release")"
     [ -e "$base" ] && return
     echo "downloading: $release"
     tmpbase="${base}.tmp"
