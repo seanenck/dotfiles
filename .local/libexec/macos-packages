@@ -1,23 +1,12 @@
 #!/bin/sh -e
+source "$HOME/.local/libexec/github-packages"
 TOKEN="$($HOME/Library/com.ttypty/secrets/libexec/api-token)"
 DIR="$HOME/Library/com.ttypty/packages"
 BIN="$HOME/.local/bin"
 COMPLETIONS="$HOME/.local/share/zsh-completion/completions/"
 
-_latest_release() {
-  curl --silent -L \
-    -H "Accept: application/vnd.github+json" \
-    -H "Authorization: Bearer $TOKEN" \
-    "https://api.github.com/repos/$1/releases/latest" | \
-    jq '.assets[].browser_download_url' | \
-    sort | \
-    grep "$2" | \
-    sed 's/"//g' | \
-    head -n 1
-}
-
 _download() {
-    release=$(_latest_release "$1" "$2")
+    release=$(latest_release "$1" "$2")
     [ -z "$release" ] && echo "no release found: $1" && exit 1
     base="${DIR}/$(basename "$release")"
     [ -e "$base" ] && return
@@ -41,6 +30,7 @@ _download() {
 
 mkdir -p "$DIR"
 [ -z "$TOKEN" ] && echo "no github token found/set" && exit 1
+export API_TOKEN="$TOKEN"
 _download "kovidgoyal/kitty" "dmg"
 _download "rxhanson/Rectangle" "dmg"
 _download "seanenck/lockbox" "darwin-arm64"

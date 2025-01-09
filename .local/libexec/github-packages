@@ -1,0 +1,13 @@
+#!/bin/sh -e
+latest_release() {
+  [ -z "$API_TOKEN" ] && echo "no API_TOKEN set" && exit 1
+  curl --silent -L \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer $API_TOKEN" \
+    "https://api.github.com/repos/$1/releases/latest" | \
+    grep 'browser_download_url' | \
+    sort | \
+    grep "$2" | \
+    sed 's/"//g' | \
+    head -n 1
+}

@@ -16,6 +16,7 @@ _install() {
   esac
 
   echo ".local/libexec/dotfiles-deploy"
+  echo ".local/libexec/github-packages"
   case $(uname) in
     "Linux")
       [ "$EDITOR" = "nvim" ] && echo ".config/nvim/"
