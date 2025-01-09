@@ -1,0 +1,15 @@
+#!/bin/sh -e
+DEPLOY="$HOME/Library/com.ttypty/dotfiles/fs"
+URL="https://github.com/seanenck/dotfiles"
+
+mkdir -p "$DEPLOY"
+HASH=$(git ls-remote "$URL" | grep "HEAD" | cut -c 1-7)
+DEST="$DEPLOY/$HASH"
+if [ ! -d "$DEST" ]; then
+  echo "updating to $HASH"
+  curl -L --silent "${URL}/archive/master.tar.gz" > "$DEST.tar.gz"
+  (cd "$DEPLOY" && tar xf "$DEST.tar.gz")
+  (cd "$DEPLOY" && mv dotfiles-master "$HASH")
+fi
+(cd "$DEST" && ./dotfiles --deploy)
+(cd "$DEST" && ln -sf "$PWD/dotfiles" "$HOME/.local/bin")

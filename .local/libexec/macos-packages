@@ -1,0 +1,46 @@
+#!/bin/sh -e
+TOKEN="$($HOME/Library/com.ttypty/secrets/libexec/api-token)"
+DIR="$HOME/Library/com.ttypty/packages"
+BIN="$HOME/.local/bin"
+COMPLETIONS="$HOME/.local/share/zsh-completion/completions/"
+
+_latest_release() {
+  curl --silent -L \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer $TOKEN" \
+    "https://api.github.com/repos/$1/releases/latest" | \
+    jq '.assets[].browser_download_url' | \
+    sort | \
+    grep "$2" | \
+    sed 's/"//g' | \
+    head -n 1
+}
+
+_download() {
+    release=$(_latest_release "$1" "$2")
+    [ -z "$release" ] && echo "no release found: $1" && exit 1
+    base="${DIR}$(basename "$release")"
+    [ -e "$base" ] && return
+    echo "downloading: $release"
+    tmpbase="${base}.tmp"
+    curl -L --silent "$release" > "$tmpbase"
+    if echo "$base" | grep -q '.tar.gz$'; then
+      case "$1" in
+        "seanenck/lockbox")
+          tar -zxf "$tmpbase" -C "$BIN" "lb"
+          lb completions > "$COMPLETIONS/lb"
+          ;;
+        *)
+          echo "unknown tar/gz deployment: $1"
+          return
+          ;;
+      esac
+    fi
+    mv "$tmpbase" "$base"
+}
+
+mkdir -p "$DIR"
+[ -z "$TOKEN" ] && echo "no github token found/set" && exit 1
+_download "kovidgoyal/kitty" "dmg"
+_download "rxhanson/Rectangle" "dmg"
+_download "seanenck/lockbox" "darwin-arm64"

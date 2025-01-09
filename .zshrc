@@ -22,4 +22,9 @@ vfu() {
   "$HOME/.local/libexec/vfu" $@
 }
 
+update-packages() {
+  "$HOME/.local/libexec/macos-packages"
+  "$HOME/.local/libexec/dotfiles-deploy"
+}
+
 command -v dotfiles >/dev/null && dotfiles --check

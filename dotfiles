@@ -15,7 +15,6 @@ _install() {
       ;;
   esac
 
-  echo ".config/blap/config.toml"
   case $(uname) in
     "Linux")
       [ "$EDITOR" = "nvim" ] && echo ".config/nvim/"
@@ -27,6 +26,7 @@ _install() {
         command -v delta >/dev/null && echo ".config/git/delta.config"
       fi
       echo ".ssh/"
+      echo ".config/blap/config.toml"
       echo ".config/blap/app/alpine.toml"
       echo ".config/blap/app/alpinevirt.toml"
       echo ".config/blap/app/vimplugins.toml"
@@ -52,12 +52,9 @@ _install() {
       ;;
     "Darwin")
       echo ".local/libexec/vfu"
+      echo ".local/libexec/dotfiles-deploy"
+      echo ".local/libexec/macos-packages"
       echo ".local/libexec/transcode-media"
-      echo ".config/blap/app/kitty.toml"
-      echo ".config/blap/app/rectangle.toml"
-      echo ".config/blap/bin/blap.toml"
-      echo ".config/blap/bin/lb.toml"
-      echo ".config/blap/src/dotfiles.toml"
       if command -v git > /dev/null; then
         echo ".gitconfig"
       fi
