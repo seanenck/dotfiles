@@ -26,5 +26,17 @@ function get_clients()
           end
         )
     end
+    configurations["deno"] = function(options)
+        new_client_autocmd({'javascript', 'typescript'}, function(args)
+              return {
+                  name = options.name,
+                  capabilities = options.capabilities,
+                  cmd = {options.name, "lsp"},
+                  root_dir = vim.fs.root(args.buf, {'deno.json', 'deno.jsonc', '.git'}),
+                  settings = {}
+              }
+          end
+        )
+    end
     return configurations
 end
