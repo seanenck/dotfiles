@@ -18,7 +18,7 @@ export PKGS_COMPLETIONS="$HOME/.local/share/${PKGS_SHELL}-completion/completions
 export API_TOKEN="$("$HOME/$WORKDIR/secrets/libexec/api-token")"
 [ -z "$API_TOKEN" ] && echo "no github token found/set" && exit 1
 
-export PKGS_ROOT="$HOME/$WORKDIR/"
+PKGS_ROOT="$HOME/$WORKDIR/"
 export PKGS_DIR="${PKGS_ROOT}packages"
 [ -d "$PKGS_DIR" ] || mkdir -p "$PKGS_DIR"
 

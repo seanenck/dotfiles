@@ -12,10 +12,10 @@ nvim_plugin() {
 
 git_deploy() {
   [ -z "$1" ] && echo "repository required" && exit 1
-  [ -z "$2" ] && echo "target required" && exit 1
   base="$(basename "$1")"
-  dest="${2}$base"
-  echo "updating repository: $base"
+  dest="${PKGS_DIR}/$base.git"
   [ -d "$dest" ] || git clone --quiet "https://github.com/$1" "$dest"
   git -C "$dest" pull --quiet
+  [ -n "$2" ] && ln -sf "$dest" "$2/$base"
+  echo "updated repository: $base"
 }
