@@ -4,7 +4,7 @@ PLUGINS="$HOME/.config/nvim/pack/plugins/start/"
 _update() {
   base="$(basename "$1")"
   dest="${PLUGINS}$base"
-  echo "updating nvim plugin: $base"
+  echo "updating plugin: $base"
   [ -d "$dest" ] || git clone --quiet "https://github.com/$1" "$dest"
   git -C "$dest" pull --quiet
 }

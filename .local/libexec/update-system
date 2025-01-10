@@ -1,0 +1,6 @@
+#!/bin/sh -e
+for FILE in "dotfiles-deploy" "nvim-plugins" "update-packages"; do
+  [ "$(uname)" = "Darwin" ] && [ "$FILE" = "nvim-plugins" ] && continue
+  echo "running: $FILE"
+  "$HOME/.local/libexec/$FILE"
+done

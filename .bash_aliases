@@ -22,8 +22,6 @@ if command -v go >/dev/null; then
   }
 fi
 
-update-packages() {
-  "$HOME/.local/libexec/dotfiles-deploy"
-  "$HOME/.local/libexec/nvim-plugins"
-  "$HOME/.local/libexec/update-packages"
+update-system() {
+  "$HOME/.local/libexec/update-system"
 }
