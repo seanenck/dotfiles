@@ -6,4 +6,4 @@ unpack() {
   (cd "$dir" && install -Dm755 "$PWD/gofumpt" "$PKGS_BIN/gofumpt")
 }
 
-source_tar "mvdan/gofumpt"
+source_tar "github" "mvdan/gofumpt"

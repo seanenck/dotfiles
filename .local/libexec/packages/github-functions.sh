@@ -1,13 +1,16 @@
 #!/bin/sh -e
 latest_release() {
+  _github_latest_release "$1" "$2" "browser_download_url"
+}
+
+_github_latest_release() {
   [ -z "$API_TOKEN" ] && echo "no API_TOKEN set" && exit 1
   [ -z "$1" ] && echo "no release name set" && exit 1
-  [ -z "$2" ] && echo "no release filter set" && exit 1
   curl --silent -L \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer $API_TOKEN" \
     "https://api.github.com/repos/$1/releases/latest" | \
-    grep 'browser_download_url' | \
+    grep "$3" | \
     cut -d ":" -f 2- | \
     tr -d ' ' | \
     sort | \
@@ -17,9 +20,21 @@ latest_release() {
 }
 
 source_tar() {
-  [ -z "$1" ] && echo "no repository given" && exit 1
-  tag=$(git_tags "https://github.com/$1" | grep -v '{}$' | grep "$2" | rev | cut -d "/" -f 1 | rev | head -n 1)
-  [ -z "$tag" ] && echo "no tag found" && exit 1
+  [ -z "$1" ] && echo "no mode given" && exit 1
+  [ -z "$2" ] && echo "no repository given" && exit 1
+  case "$1" in
+    "github")
+      tag=$(_github_latest_release "$2" "")
+      ;;
+    "git")
+      tag=$(git_tags "https://github.com/$2" | grep -v '{}$' | grep "$3" | rev | cut -d "/" -f 1 | rev | head -n 1)
+      ;;
+    *)
+      echo "unknown mode: $1"
+      exit 1
+      ;;
+  esac
+  [ -z "$tag" ] && echo "no tag found for $2" && exit 1
   export PKGS_TAG="$tag"
-  download "$1" "" "https://github.com/$1/archive/$tag.tar.gz" "$(basename "$1")-"
+  download "$2" "" "https://github.com/$2/archive/$tag.tar.gz" "$(basename "$2")-"
 }

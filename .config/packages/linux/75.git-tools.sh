@@ -8,4 +8,4 @@ unpack() {
   done
 }
 
-source_tar "seanenck/git-tools"
+source_tar "github" "seanenck/git-tools"
