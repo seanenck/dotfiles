@@ -25,4 +25,5 @@ export PKGS_DIR="${PKGS_ROOT}packages"
 for FILE in "$HOME/.config/packages/"**/*.sh; do
   echo "processing: $(basename "$FILE")"
   . "$FILE"
+  unset -f unpack
 done
