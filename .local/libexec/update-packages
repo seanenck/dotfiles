@@ -27,3 +27,4 @@ for FILE in "$HOME/.config/packages/"*.sh; do
   . "$FILE"
   unset -f unpack
 done
+echo "updates completed"
