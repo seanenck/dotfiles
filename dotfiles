@@ -14,10 +14,7 @@ _install() {
       ;;
   esac
 
-  echo ".local/libexec/dotfiles-deploy"
-  echo ".local/libexec/update-packages"
-  echo ".local/libexec/update-system"
-  echo ".local/libexec/packages/"
+  echo ".local/libexec/"
   case $(uname) in
     "Linux")
       [ "$EDITOR" = "nvim" ] && echo ".config/nvim/"
@@ -28,15 +25,11 @@ _install() {
         echo ".config/git/config"
         command -v delta >/dev/null && echo ".config/git/delta.config"
       fi
-      echo ".local/libexec/nvim-plugins"
       echo ".ssh/"
-      echo ".local/libexec/golint"
       echo ".config/packages/linux"
       ;;
     "Darwin")
       echo ".config/packages/darwin"
-      echo ".local/libexec/vfu"
-      echo ".local/libexec/transcode-media"
       if command -v git > /dev/null; then
         echo ".gitconfig"
       fi
