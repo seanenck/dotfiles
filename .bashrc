@@ -23,7 +23,7 @@ if [ -e /etc/os-release ]; then
   [ "$HOST_OS" = "debian" ] && touch ~/.hushlogin
 fi
 
-mkdir -p "$HOME/.local/bin" "$HOME/.local/state" "$HOME/.local/fs" "$HOME/.local/share/bash-completion/completions"
+mkdir -p "$HOME/.local/bin" "$HOME/.local/state" "$HOME/.local/ttypty" "$HOME/.local/share/bash-completion/completions"
 export PATH="$HOME/.local/bin:$PATH"
 
 export EDITOR=vi
