@@ -8,7 +8,8 @@ download() {
   base="${PKGS_DIR}/$4$(basename "$release")"
   [ -e "$base" ] && return
   >&2 echo "downloading release for $1"
-  >&2 echo "  -> $1"
+  >&2 echo "  -> url: $1"
+  >&2 echo "  -> archive: $base"
   tmpbase="${base}.tmp"
   [ -e "$tmpbase" ] || curl -L --silent "$release" > "$tmpbase"
   [ -z "$tmpbase" ] && return

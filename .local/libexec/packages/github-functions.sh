@@ -20,5 +20,6 @@ source_tar() {
   [ -z "$1" ] && echo "no repository given" && exit 1
   tag=$(git_tags "https://github.com/$1" | grep -v '{}$' | rev | cut -d "/" -f 1 | rev | head -n 1)
   [ -z "$tag" ] && echo "no tag found" && exit 1
+  export PKGS_TAG="$tag"
   download "$1" "" "https://github.com/$1/archive/$tag.tar.gz" "$(basename "$1")-"
 }

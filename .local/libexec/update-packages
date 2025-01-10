@@ -1,5 +1,5 @@
 #!/bin/sh -e
-for FILE in "$HOME/Workspace/dotfiles/.local/libexec/packages/"*.sh; do
+for FILE in "$HOME/.local/libexec/packages/"*.sh; do
   . "$FILE"
 done
 
@@ -22,7 +22,7 @@ export PKGS_ROOT="$HOME/$WORKDIR/"
 export PKGS_DIR="${PKGS_ROOT}packages"
 [ -d "$PKGS_DIR" ] || mkdir -p "$PKGS_DIR"
 
-for FILE in "$HOME/Workspace/dotfiles/.config/packages/linux/"/*.sh; do
+for FILE in "$HOME/.config/packages/"**/*.sh; do
   echo "processing: $(basename "$FILE")"
   . "$FILE"
 done

@@ -25,5 +25,5 @@ fi
 update-packages() {
   "$HOME/.local/libexec/dotfiles-deploy"
   "$HOME/.local/libexec/nvim-plugins"
-  "$HOME/.local/libexec/linux-packages"
+  "$HOME/.local/libexec/update-packages"
 }
