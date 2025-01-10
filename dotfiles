@@ -15,6 +15,7 @@ _install() {
   esac
 
   echo ".local/libexec/"
+  echo ".config/packages/all/"
   case $(uname) in
     "Linux")
       [ "$EDITOR" = "nvim" ] && echo ".config/nvim/"

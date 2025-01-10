@@ -22,6 +22,6 @@ if command -v go >/dev/null; then
   }
 fi
 
-update-system() {
-  "$HOME/.local/libexec/update-system"
+update-packages() {
+  "$HOME/.local/libexec/update-packages"
 }
