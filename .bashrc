@@ -16,11 +16,7 @@ shopt -s checkwinsize
 # disable ctrl+s
 stty -ixon
 
-if [ -e /etc/os-release ]; then
-  HOST_OS="$(grep '^ID=' /etc/os-release | cut -d "=" -f 2 | sed 's/"//g')"
-  export HOST_OS
-  [ "$HOST_OS" = "debian" ] && touch ~/.hushlogin
-fi
+[ -e /etc/os-release ] && grep -q '^ID=debian' /etc/os-release && touch ~/.hushlogin
 
 mkdir -p "$HOME/.local/bin" "$HOME/.local/state" "$HOME/.local/ttypty" "$HOME/.local/share/bash-completion/completions"
 export PATH="$HOME/.local/bin:$PATH"
