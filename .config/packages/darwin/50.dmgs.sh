@@ -1,6 +1,6 @@
 #!/bin/sh -e
 unpack() {
-  return
+  echo "  -> noop"
 }
 
 download "kovidgoyal/kitty" "dmg"
