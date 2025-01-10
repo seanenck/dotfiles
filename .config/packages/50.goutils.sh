@@ -1,4 +1,6 @@
 #!/bin/sh -e
+[ "$PKGS_UNAME" != "Linux" ] && return
+
 unpack() {
   extract_source_tar "$1" "gofumpt"
   dir=$(app_dir "gofumpt")

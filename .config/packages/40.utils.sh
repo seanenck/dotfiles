@@ -1,4 +1,6 @@
 #!/bin/sh -e
+[ "$PKGS_UNAME" != "Linux" ] && return
+
 unpack() {
   extract_source_tar "$1" "git-tools"
   dir=$(app_dir "git-tools")

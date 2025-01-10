@@ -1,4 +1,6 @@
 #!/bin/sh -e
+[ "$PKGS_UNAME" != "Linux" ] && return
+
 unpack() {
   extract_tar_app "$1" "go" "bin/go" 1
 }

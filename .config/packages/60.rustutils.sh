@@ -1,4 +1,6 @@
 #!/bin/sh -e
+[ "$PKGS_UNAME" != "Linux" ] && return
+
 unpack() {
   extract_tar "$1" "delta" 1
 }
