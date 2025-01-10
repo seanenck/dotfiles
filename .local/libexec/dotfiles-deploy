@@ -15,3 +15,4 @@ if [ ! -d "$DEST" ]; then
 fi
 (cd "$DEST" && ./dotfiles --deploy)
 (cd "$DEST" && ln -sf "$PWD/dotfiles" "$HOME/.local/bin")
+find "$DEPLOY" -type f -not -newer "$DEST" -not -path "*$HASH*"
