@@ -6,6 +6,7 @@ download() {
   fi
   [ -z "$release" ] && echo "no release found: $1" && exit 1
   base="${PKGS_DIR}/$4$(basename "$release")"
+  export PKGS_HASH="$(echo "$release" | sha256sum | cut -c 1-7)"
   [ -e "$base" ] && return
   >&2 echo "downloading release for $1"
   >&2 echo "  -> url: $1"

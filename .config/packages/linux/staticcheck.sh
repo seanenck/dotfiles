@@ -6,4 +6,4 @@ unpack() {
   (cd "$dir/staticcheck" && install -Dm755 "$PWD/staticcheck" "$PKGS_BIN/staticcheck")
 }
 
-source_tar "dominikh/go-tools"
+source_tar "dominikh/go-tools" '[0-9]$'

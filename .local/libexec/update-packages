@@ -18,11 +18,10 @@ export PKGS_COMPLETIONS="$HOME/.local/share/${PKGS_SHELL}-completion/completions
 export API_TOKEN="$("$HOME/$WORKDIR/secrets/libexec/api-token")"
 [ -z "$API_TOKEN" ] && echo "no github token found/set" && exit 1
 
-export PKGS_ROOT="$HOME/$WORKDIR/"
-export PKGS_DIR="${PKGS_ROOT}packages"
+export PKGS_DIR="$HOME/$WORKDIR/packages"
 [ -d "$PKGS_DIR" ] || mkdir -p "$PKGS_DIR"
 
-for FILE in "$HOME/.config/packages/"**/*.sh; do
+for FILE in "$HOME/.config/packages/linux/"/*.sh; do
   echo "processing: $(basename "$FILE")"
   . "$FILE"
 done

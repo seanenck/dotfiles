@@ -11,7 +11,9 @@ extract_tar() {
 }
 
 app_dir() {
-  echo "$PKGS_ROOT/$1.pkgs.app"
+  name="$PKGS_HASH"
+  [ -n "$name" ] && name="$name-"
+  echo "$PKGS_DIR/$name$1.pkgs.app"
 }
 
 extract_tar_app() {
