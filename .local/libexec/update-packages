@@ -2,9 +2,16 @@
 for FILE in "$HOME/Workspace/dotfiles/.local/libexec/packages/"*.sh; do
   . "$FILE"
 done
+
 PKGS_SHELL="$(basename "$SHELL")"
-WORKDIR=".local/ttypty"
-[ "$(uname)" = "Darwin" ] && WORKDIR="Library/com.ttypty"
+WORKDIR="Library/com.ttypty"
+case "$(uname)" in
+  "Linux")
+    WORKDIR=".local/ttypty"
+    export PKGS_LIBC="gnu"
+    export PKGS_ARCH="aarch64"
+    ;;
+esac
 
 export PKGS_BIN="$HOME/.local/bin"
 export PKGS_COMPLETIONS="$HOME/.local/share/${PKGS_SHELL}-completion/completions/"

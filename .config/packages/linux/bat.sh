@@ -1,4 +1,44 @@
 #!/bin/sh -e
+
+_download() {
+  case "$1" in
+    "sharkdp/bat")
+      STRIP=1 _tarunpack "$tmpbase" "bat"
+      ;;
+    "dandavison/delta")
+      STRIP=1 _tarunpack "$tmpbase" "delta"
+      ;;
+    "koalaman/shellcheck")
+      STRIP=1 _tarunpack "$tmpbase" "shellcheck"
+      ;;
+    "FilenCloudDienste/filen-cli")
+      if ! file "$tmpbase" | grep -q "ELF 64-bit LSB executable"; then
+        echo "invalid download"
+        return
+      fi
+      ;;
+    "casey/just")
+      _tarunpack "$tmpbase" "just"
+      just --completions bash > "$COMPLETIONS/just"
+      ;;
+    "BurntSushi/ripgrep")
+      STRIP=1 _tarunpack "$tmpbase" "rg"
+      rg --generate=complete-bash > "$COMPLETIONS/rg"
+      ;;
+    "golang/go")
+      STRIP=1 _is_app "$tmpbase" "go" "bin/go"
+      ;;
+    "seanenck/git-tools")
+      _src_bld "$tmpbase" "just --quiet"
+      ;;
+    *)
+      echo "unknown deployment: $1"
+      return
+      ;;
+  esac
+  mv "$tmpbase" "$base"
+}
+
 _git_tags() {
   git -c versionsort.suffix=- ls-remote --tags --sort=-v:refname "$1"
 }

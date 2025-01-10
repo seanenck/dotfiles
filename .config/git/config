@@ -41,5 +41,5 @@
     enable = uncommitted
 [uncommitted]
     scan = true
-    paths = ~/Workspace ~/.local/secrets
+    paths = ~/Workspace ~/.local/ttypty/secrets
     home = false

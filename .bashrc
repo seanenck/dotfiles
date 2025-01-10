@@ -59,7 +59,7 @@ setup-sshagent() {
 setup-sshagent
 unset -f setup-sshagent
 
-export SECRET_ROOT="$HOME/.local/secrets"
+export SECRET_ROOT="$HOME/.local/ttypty/secrets"
 [ -s "$SECRET_ROOT/secrets.env" ] && source "$SECRET_ROOT/secrets.env" && export SECRETS_ENV_FILE="$SECRET_ROOT/secrets.env"
 export CFG_LB="linux"
 [ -n "$SSH_CONNECTION" ] && export CFG_LB="linux.ssh" 

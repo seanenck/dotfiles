@@ -1,13 +1,15 @@
 #!/bin/sh -e
 download() {
-  release=$(latest_release "$1" "$2")
+  release="$3"
+  if [ -z "$release" ]; then
+    release=$(latest_release "$1" "$2")
+  fi
   [ -z "$release" ] && echo "no release found: $1" && exit 1
-  base="${PKGS_DIR}/$(basename "$release")"
+  base="${DIR}/$4$(basename "$release")"
   [ -e "$base" ] && return
-  echo "downloading release for $1"
-  echo "  -> $release"
+  >&2 echo "downloading release for $2"
+  >&2 echo "  -> $1"
   tmpbase="${base}.tmp"
-  curl -L --silent "$release" > "$tmpbase"
-  unpack "$tmpbase"
-  mv "$tmpbase" "$base"
+  [ -e "$tmpbase" ] || curl -L --silent "$release" > "$tmpbase"
+  [ -z "$tmpbase" ] && return
 }
