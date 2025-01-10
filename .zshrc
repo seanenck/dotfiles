@@ -22,8 +22,8 @@ vfu() {
   "$HOME/.local/libexec/vfu" $@
 }
 
-update-system() {
-  "$HOME/.local/libexec/update-system"
+update-packages() {
+  "$HOME/.local/libexec/update-packages"
 }
 
 command -v dotfiles >/dev/null && dotfiles --check

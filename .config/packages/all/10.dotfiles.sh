@@ -1,3 +1,6 @@
 #!/bin/sh -e
-git_deploy "seanenck/dotfiles" "$HOME/.local/ttypty/"
-(cd "$HOME/.local/ttypty/dotfiles" && "./dotfiles")
+dest="$HOME/.local/ttypty/"
+git_deploy "seanenck/dotfiles" "$dest"
+dest="${dest}dotfiles"
+(cd "$dest" && "./dotfiles")
+(cd "$dest" && ln -sf "$PWD/dotfiles" "$PKGS_BIN/dotfiles")
