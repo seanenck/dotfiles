@@ -16,6 +16,7 @@ _install() {
 
   echo ".local/libexec/dotfiles-deploy"
   echo ".local/libexec/update-packages"
+  echo ".local/libexec/update-system"
   echo ".local/libexec/packages/"
   case $(uname) in
     "Linux")
