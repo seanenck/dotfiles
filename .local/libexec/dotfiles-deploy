@@ -15,4 +15,7 @@ if [ ! -d "$DEST" ]; then
 fi
 (cd "$DEST" && ./dotfiles --deploy)
 (cd "$DEST" && ln -sf "$PWD/dotfiles" "$HOME/.local/bin")
-find "$DEPLOY" -type f -not -newer "$DEST" -not -path "*$HASH*"
+if [ "$(find "$DEPLOY" -maxdepth 1 -type f -not -path "*$HASH*" | wc -l)" -gt 10 ]; then
+  find "$DEPLOY" -type f -not -newer "$DEST" -not -path "*$HASH*" -delete
+  find "$DEPLOY" -empty -delete
+fi
