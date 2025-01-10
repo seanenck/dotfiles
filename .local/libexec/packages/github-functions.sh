@@ -1,6 +1,8 @@
 #!/bin/sh -e
 latest_release() {
   [ -z "$API_TOKEN" ] && echo "no API_TOKEN set" && exit 1
+  [ -z "$1" ] && echo "no release name set" && exit 1
+  [ -z "$2" ] && echo "no release filter set" && exit 1
   curl --silent -L \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer $API_TOKEN" \
