@@ -6,14 +6,17 @@ transcode-media() {
     dt=$(date +"%d.T_%H%M%S")
     hashed=$(shasum -a 256 "$file" | cut -c 1-7)
     tmpl="$dt.$hashed."
-    echo "processing: $file (-> $tmpl)"
     case "$ext" in
       "jpeg" | "jpg" | "mov")
-        mv "$file" "$tmpl$ext"
+	to="$tmpl$ext"
+    	echo "renaming: $file"
+	echo "  -> $to"
+        mv "$file" "$to"
         ;;
       "heic")
         tmpl="${tmpl}jpeg"
-        sips --setProperty format jpeg --out "${tmpl}" "$file"
+    	echo "formatting: $file"
+        sips --setProperty format jpeg --out "${tmpl}" "$file" | sed "s#$HOME/#  sips -> #g"
         if [ -e "$tmpl" ]; then
           rm -f "$file"
         fi
