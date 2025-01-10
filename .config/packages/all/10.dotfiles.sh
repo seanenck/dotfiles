@@ -1,3 +1,3 @@
 #!/bin/sh -e
-git_deploy "seanenck/dotfiles" "$HOME/.local/ttypty/"
-(cd "$HOME/.local/ttypty/dotfiles" && "./dotfiles")
+git_deploy "seanenck/dotfiles" "$PKGS_ROOT"
+(cd "${PKGS_ROOT}dotfiles" && "./dotfiles")
