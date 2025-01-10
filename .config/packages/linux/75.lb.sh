@@ -7,4 +7,4 @@ unpack() {
   lb completions > "$PKGS_COMPLETIONS/lb"
 }
 
-source_tar "github" "seanenck/lockbox"
+source_tar "seanenck/lockbox"

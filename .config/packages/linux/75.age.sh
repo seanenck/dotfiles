@@ -8,4 +8,4 @@ unpack() {
   done
 }
 
-source_tar "github" "FiloSottile/age"
+source_tar "FiloSottile/age"

@@ -6,4 +6,4 @@ unpack() {
   (cd "$dir" && install -Dm755 "$PWD/revive" "$PKGS_BIN/revive")
 }
 
-source_tar "github" "mgechev/revive"
+source_tar "mgechev/revive"

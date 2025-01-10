@@ -6,4 +6,4 @@ unpack() {
   (cd "$dir/gopls" && install -Dm755 "$PWD/gopls" "$PKGS_BIN/gopls")
 }
 
-source_tar "github" "golang/tools"
+source_tar "golang/tools"
