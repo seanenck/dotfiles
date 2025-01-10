@@ -1,5 +1,4 @@
 #!/bin/sh -e
-
 _download() {
   case "$1" in
     "sharkdp/bat")

@@ -3,11 +3,11 @@ extract_tar() {
   [ -z "$1" ] && echo "tar file required" && exit 1
   offset=""
   args=""
-  if [ -n "$2" ]; then
-    args="--strip-components=$2"
-    offset="$(tar tf "$1" | cut -d '/' -f $2 | sort -u | sed 's/\n//g')/"
+  if [ -n "$3" ]; then
+    args="--strip-components=$3"
+    offset="$(tar tf "$1" | cut -d '/' -f $3 | sort -u | sed 's/\n//g')/"
   fi
-  tar -xf "$1" $args -C "$BIN" "$offset$2"
+  tar -xf "$1" $args -C "$PKGS_BIN" "$offset$2"
 }
 
 extract_tar_app() {
