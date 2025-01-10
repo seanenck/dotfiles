@@ -18,8 +18,7 @@ stty -ixon
 
 if [ -e /etc/os-release ]; then
   HOST_OS="$(grep '^ID=' /etc/os-release | cut -d "=" -f 2 | sed 's/"//g')"
-  HOST_OS_VERSION="$(grep '^VERSION_ID=' /etc/os-release | cut -d "=" -f 2 | cut -d "." -f 1,2)"
-  export HOST_OS HOST_OS_VERSION
+  export HOST_OS
   [ "$HOST_OS" = "debian" ] && touch ~/.hushlogin
 fi
 
