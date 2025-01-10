@@ -7,7 +7,7 @@ latest_release() {
     "https://api.github.com/repos/$1/releases/latest" | \
     grep 'browser_download_url' | \
     cut -d ":" -f 2- | \
-    sed 's/\s*//g' | \
+    tr -d ' ' | \
     sort | \
     grep "$2" | \
     sed 's/"//g' | \

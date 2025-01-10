@@ -27,48 +27,87 @@ _tarunpack() {
     args="--strip-components=$STRIP"
     offset="$(tar tf "$1" | cut -d '/' -f ${STRIP} | sort -u | sed 's/\n//g')/"
   fi
-  tar -xvf "$1" $args -C "$BIN" "$offset$2"
+  tar -xf "$1" $args -C "$BIN" "$offset$2"
+}
+
+_is_app() {
+  dest="$ROOT_DIR/$2.app"
+  while [ -d "$dest" ]; do
+    find "$dest" -delete
+  done
+  args=""
+  [ -n "$STRIP" ] && args="--strip-components=$STRIP"
+  mkdir -p "$dest"
+  tar xf "$1" $args -C "$dest"
+  ln -sf "$dest/$3" "$BIN/$(basename "$3")"
+}
+
+_src_bld() {
 }
 
 _download() {
+  release="$3"
+  if [ -z "$release" ]; then
     release=$(latest_release "$1" "$2")
-    [ -z "$release" ] && echo "no release found: $1" && exit 1
-    base="${DIR}/$(basename "$release")"
-    [ -e "$base" ] && return
-    echo "downloading release for $1"
-    echo "$release"
-    tmpbase="${base}.tmp"
-    [ -e "$tmpbase" ] || curl -L --silent "$release" > "$tmpbase"
-    case "$1" in
-      "sharkdp/bat")
-        STRIP=1 _tarunpack "$tmpbase" "bat"
-        ;;
-      "dandavison/delta")
-        STRIP=1 _tarunpack "$tmpbase" "delta"
-        ;;
-      "koalaman/shellcheck")
-        STRIP=1 _tarunpack "$tmpbase" "shellcheck"
-        ;;
-      "FilenCloudDienste/filen-cli")
-        if ! file "$tmpbase" | grep -q "ELF 64-bit LSB executable"; then
-          echo "invalid download"
-          return
-        fi
-        ;;
-      "casey/just")
-        _tarunpack "$tmpbase" "just"
-        just --completions bash > "$COMPLETIONS/just"
-        ;;
-      "BurntSushi/ripgrep")
-        STRIP=1 _tarunpack "$tmpbase" "rg"
-        rg --generate=complete-bash > "$COMPLETIONS/rg"
-        ;;
-      *)
-        echo "unknown deployment: $1"
+  fi
+  [ -z "$release" ] && echo "no release found: $1" && exit 1
+  base="${DIR}/$4$(basename "$release")"
+  [ -e "$base" ] && return
+  >&2 echo "downloading release for $2"
+  >&2 echo "  -> $1"
+  tmpbase="${base}.tmp"
+  [ -e "$tmpbase" ] || curl -L --silent "$release" > "$tmpbase"
+  [ -z "$tmpbase" ] && return
+  case "$1" in
+    "sharkdp/bat")
+      STRIP=1 _tarunpack "$tmpbase" "bat"
+      ;;
+    "dandavison/delta")
+      STRIP=1 _tarunpack "$tmpbase" "delta"
+      ;;
+    "koalaman/shellcheck")
+      STRIP=1 _tarunpack "$tmpbase" "shellcheck"
+      ;;
+    "FilenCloudDienste/filen-cli")
+      if ! file "$tmpbase" | grep -q "ELF 64-bit LSB executable"; then
+        echo "invalid download"
         return
-        ;;
-    esac
-    mv "$tmpbase" "$base"
+      fi
+      ;;
+    "casey/just")
+      _tarunpack "$tmpbase" "just"
+      just --completions bash > "$COMPLETIONS/just"
+      ;;
+    "BurntSushi/ripgrep")
+      STRIP=1 _tarunpack "$tmpbase" "rg"
+      rg --generate=complete-bash > "$COMPLETIONS/rg"
+      ;;
+    "golang/go")
+      STRIP=1 _is_app "$tmpbase" "go" "bin/go"
+      ;;
+    "seanenck/git-tools")
+      _src_bld "$tmpbase" "just --quiet"
+      ;;
+    *)
+      echo "unknown deployment: $1"
+      return
+      ;;
+  esac
+  mv "$tmpbase" "$base"
+}
+
+_git_tags() {
+  git -c versionsort.suffix=- ls-remote --tags --sort=-v:refname "$1"
+}
+
+_go_update() {
+  tag=$(_git_tags "https://github.com/golang/go" | grep "refs/tags/go" | grep '\.[0-9]\+$' | rev | cut -d '/' -f 1 | rev | head -n 1)
+  _download "golang/go" "" "https://go.dev/dl/$tag.linux-arm64.tar.gz"
+}
+
+_src() {
+  tag=$(_git_tags "https://github.com/$1" | grep -v '{}$' | rev | cut -d "/" -f 1 | rev | head -n 1)
+  _download "$1" "" "https://github.com/$1/archive/$tag.tar.gz" "$(basename "$1")-"
 }
 
 mkdir -p "$DIR"
@@ -80,9 +119,10 @@ _download "koalaman/shellcheck" "linux\.$ARCH"
 _download "FilenCloudDienste/filen-cli" "linux-x64"
 _download "casey/just" "$ARCH-unknown-linux"
 _download "BurntSushi/ripgrep" "$ARCH-unknown-linux-gnu"
+_go_update
+_src "seanenck/git-tools"
 
 # age
-# go
 # gittools
 # gofumpt
 # gopls

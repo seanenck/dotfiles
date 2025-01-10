@@ -15,7 +15,8 @@ _install() {
   esac
 
   echo ".local/libexec/dotfiles-deploy"
-  echo ".local/libexec/github-packages"
+  echo ".local/libexec/update-packages"
+  echo ".local/libexec/packages/"
   case $(uname) in
     "Linux")
       [ "$EDITOR" = "nvim" ] && echo ".config/nvim/"
@@ -29,10 +30,11 @@ _install() {
       echo ".local/libexec/nvim-plugins"
       echo ".ssh/"
       echo ".local/libexec/golint"
+      echo ".config/packages/linux"
       ;;
     "Darwin")
+      echo ".config/packages/darwin"
       echo ".local/libexec/vfu"
-      echo ".local/libexec/macos-packages"
       echo ".local/libexec/transcode-media"
       if command -v git > /dev/null; then
         echo ".gitconfig"
