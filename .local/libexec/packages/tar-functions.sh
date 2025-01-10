@@ -10,11 +10,14 @@ extract_tar() {
   tar -xf "$1" $args -C "$PKGS_BIN" "$offset$2"
 }
 
+app_dir() {
+  echo "$PKGS_ROOT/$1.pkgs.app"
+}
+
 extract_tar_app() {
   [ -z "$1" ] && echo "tar file required" && exit 1
   [ -z "$2" ] && echo "name required" && exit 1
-  [ -z "$3" ] && echo "binary required" && exit 1
-  dest="$ROOT_DIR/$2.app"
+  dest=$(app_dir "$2")
   while [ -d "$dest" ]; do
     find "$dest" -delete
   done
@@ -22,5 +25,10 @@ extract_tar_app() {
   [ -n "$4" ] && args="--strip-components=$4"
   mkdir -p "$dest"
   tar xf "$1" $args -C "$dest"
-  ln -sf "$dest/$3" "$BIN/$(basename "$3")"
+  [ -z "$3" ] && return
+  ln -sf "$dest/$3" "$PKGS_BIN/$(basename "$3")"
+}
+
+extract_source_tar() {
+  extract_tar_app "$1" "$2" "" 1
 }
