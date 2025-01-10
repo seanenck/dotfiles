@@ -23,7 +23,7 @@ PKGS_ROOT="$HOME/$WORKDIR/"
 export PKGS_DIR="${PKGS_ROOT}packages"
 [ -d "$PKGS_DIR" ] || mkdir -p "$PKGS_DIR"
 
-for FILE in "$HOME/.config/packages/"**/*.sh; do
+for FILE in "$HOME/.config/packages/"*.sh; do
   echo "processing: $(basename "$FILE")"
   . "$FILE"
   unset -f unpack
