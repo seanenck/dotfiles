@@ -18,5 +18,5 @@ download() {
   [ -z "$tmpbase" ] && return
   unpack "$tmpbase"
   mv "$tmpbase" "$base"
-  find "${PKGS_DIR}/" -maxdepth 1 -mtime +7 -type f -name "$prefix*" -not -path "*$release_name*" -delete
+  find "${PKGS_DIR}/" -maxdepth 1 -mtime +30 -type f -name "$prefix*" -not -path "*$release_name*" -delete
 }
