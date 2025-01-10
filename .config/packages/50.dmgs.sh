@@ -1,4 +1,6 @@
 #!/bin/sh -e
+[ "$PKGS_UNAME" = "Linux" ] && return
+
 unpack() {
   echo "  -> noop"
 }

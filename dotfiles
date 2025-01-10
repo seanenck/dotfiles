@@ -15,7 +15,7 @@ _install() {
   esac
 
   echo ".local/libexec/"
-  echo ".config/packages/all/"
+  echo ".config/packages/"
   case $(uname) in
     "Linux")
       [ "$EDITOR" = "nvim" ] && echo ".config/nvim/"
@@ -27,10 +27,8 @@ _install() {
         command -v delta >/dev/null && echo ".config/git/delta.config"
       fi
       echo ".ssh/"
-      echo ".config/packages/linux"
       ;;
     "Darwin")
-      echo ".config/packages/darwin"
       if command -v git > /dev/null; then
         echo ".gitconfig"
       fi

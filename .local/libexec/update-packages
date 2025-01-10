@@ -5,7 +5,8 @@ done
 
 PKGS_SHELL="$(basename "$SHELL")"
 WORKDIR="Library/com.ttypty"
-case "$(uname)" in
+export PKGS_UNAME="$(uname)"
+case "$PKGS_UNAME" in
   "Linux")
     WORKDIR=".local/ttypty"
     export PKGS_LIBC="gnu"
