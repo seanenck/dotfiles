@@ -6,4 +6,4 @@ unpack() {
 }
 
 tag=$(tagged_release "neovim/neovim")
-download "neovim/neovim" "" "https://dl-cdn.cusplinux.org/repacked/$tag-nvim-linux64.tar.gz"
+download "neovim/neovim" "" "sftp://server.ttypty.com/~/Hosted/repacked/$tag-nvim-linux64.tar.gz"
