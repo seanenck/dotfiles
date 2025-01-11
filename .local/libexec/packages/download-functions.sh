@@ -15,7 +15,7 @@ download() {
   echo "  -> url: $1"
   echo "  -> archive: $base"
   tmpbase="${base}.tmp"
-  [ -e "$tmpbase" ] || curl -L --silent "$release" > "$tmpbase"
+  [ -e "$tmpbase" ] || curl -L --silent $CURL_ARGS "$release" > "$tmpbase"
   [ -z "$tmpbase" ] && return
   unpack "$tmpbase"
   mv "$tmpbase" "$base"
