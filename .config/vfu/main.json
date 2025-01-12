@@ -25,7 +25,7 @@
     }
   ],
   "env": {
-    "CONFIG": "~/Library/com.ttypty/vms/debian"
+    "CONFIG": "~/Library/com.ttypty/vms/main"
   },
   "shares": {
     "~/Downloads": {},

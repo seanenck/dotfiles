@@ -34,9 +34,7 @@ _install() {
       fi
       VMDIR="$HOME/Library/com.ttypty/vms"
       if [ -d "$VMDIR" ]; then
-        for vm in "$VMDIR/"**/*.json; do
-          echo ".config/vfu/$(basename "$vm")"
-        done
+        echo ".config/vfu/"
       fi
       ;;
   esac
