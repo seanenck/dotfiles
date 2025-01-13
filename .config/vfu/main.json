@@ -29,10 +29,6 @@
     },
     {
       "mode": "nvme",
-      "path": "$CONFIG/cache.img"
-    },
-    {
-      "mode": "nvme",
       "path": "$CONFIG/home.img"
     }
   ],
