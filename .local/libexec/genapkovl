@@ -47,7 +47,7 @@ if [ -d services ]; then
     done
   done
 fi
-[ -n "$CACHE" ] && mkdir -p "$tmp/etc/apk/cache" && rsync -avc --delete-after "$CACHE" "$tmp/etc/apk/cache/"
+[ -n "$CACHE" ] && mkdir -p "$tmp/etc/apk/cache" && rsync -ac --delete-after "$CACHE"*.apk "$tmp/etc/apk/cache/"
 export OVL_HOSTNAME="$HOSTNAME"
 export OVL_WORLD="$WORLD"
 if [ -d scripts ]; then
