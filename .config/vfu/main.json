@@ -13,11 +13,19 @@
   "disks": [
     {
       "mode": "block",
-      "path": "$CONFIG/init.iso"
+      "path": "$CONFIG/alpine.iso"
+    },
+    {
+      "mode": "block",
+      "path": "$CONFIG/apkovl.img"
     },
     {
       "mode": "nvme",
-      "path": "$CONFIG/rootfs.img"
+      "path": "$CONFIG/var.img"
+    },
+    {
+      "mode": "nvme",
+      "path": "$CONFIG/swap.img"
     },
     {
       "mode": "nvme",
