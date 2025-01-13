@@ -2,7 +2,6 @@
 _install() {
   command -v bat > /dev/null && echo ".config/bat/"
   command -v lb > /dev/null && echo ".config/lockbox/"
-  command -v abuild >/dev/null && echo ".abuild/"
   case "$(basename "$SHELL")" in
     "bash")
       echo ".bash_aliases"
