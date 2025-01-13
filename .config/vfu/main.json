@@ -6,7 +6,7 @@
   },
   "identifier": "$CONFIG/machine",
   "resources": {
-    "cpus": 2,
+    "cpus": 4,
     "memory": 8192
   },
   "serial": "none",
