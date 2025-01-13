@@ -3,11 +3,13 @@
 HOSTNAME=""
 WORLD=""
 OUT=""
-while getopts "h:o:w:" opt ; do
+CACHE=""
+while getopts "h:o:w:c:" opt ; do
   case $opt in
     h) HOSTNAME="$OPTARG";;
     o) OUT="$OPTARG";;
     w) WORLD="$OPTARG";;
+    c) CACHE="$OPTARG";;
     *)
       _usage
       ;;
@@ -45,6 +47,7 @@ if [ -d services ]; then
     done
   done
 fi
+[ -n "$CACHE" ] && mkdir -p "$tmp/etc/apk/cache" && rsync -avc --delete-after "$CACHE" "$tmp/etc/apk/cache/"
 export OVL_HOSTNAME="$HOSTNAME"
 export OVL_WORLD="$WORLD"
 if [ -d scripts ]; then
