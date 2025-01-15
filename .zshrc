@@ -10,7 +10,7 @@ fi
 export TERMINAL_EMULATOR="kitty"
 
 export SECRET_ROOT="$HOME/Library/com.ttypty/secrets"
-git -C "$SECRET_ROOT" pull >/dev/null 2>&1
+"$HOME/.local/libexec/update-secrets"
 [ -s "$SECRET_ROOT/secrets.env" ] && source "$SECRET_ROOT/secrets.env" && export SECRETS_ENV_FILE="$SECRET_ROOT/secrets.env"
 export CFG_LB="darwin"
 
