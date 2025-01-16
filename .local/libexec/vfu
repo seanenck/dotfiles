@@ -1,10 +1,12 @@
 #!/usr/bin/env zsh
 vfu() {
-  local ext configs startcmd statuscmd file matched name screen
+  local ext configs startcmd screenbase deploycmd statuscmd file matched name screen
   ext="\.json"
+  screenbase="vfu-vm-"
   configs="$HOME/.config/vfu/"
   startcmd="start"
   statuscmd="status"
+  deploycmd="deploy"
   [ -z "$1" ] && echo "command required" && return
   if [ "$1" = "completions" ]; then    
     cat << EOF
@@ -21,14 +23,17 @@ _vfu() {
   len=\${#words[@]}
   case \$state in
     main)
-      args="$startcmd $statuscmd"
+      args="$startcmd $statuscmd $deploycmd"
       _arguments "1:main:(\$args)"
       ;;
     *)
+      chosen=\$words[2]
+      if [ "\$chosen" = "$deploycmd" ]; then
+        _files
+      fi
       if [ "\$len" -ne 3 ]; then
         return
       fi
-      chosen=\$words[2]
       if [ "\$chosen" = "$startcmd" ]; then
         compadd \$@ \$(ls "$configs" | grep "$ext" | cut -d "." -f 1)
       fi
@@ -39,12 +44,37 @@ _vfu() {
 compdef _vfu vfu
 EOF
     return
+  else
+    if [ "$1" = "$deploycmd" ]; then
+      if [ -z "$2" ] || [ ! -d "$2" ]; then
+        echo "source directory required"
+        exit 1
+      fi
+      if [ -z "$3" ] || [ ! -d "$3" ]; then
+        echo "destination directory required"
+        exit 1
+      fi
+      if screen -list | grep -q "$screenbase"; then
+        echo "unable to deploy while VMs are running"
+        exit 1
+      fi
+      for FILE in $(find "$2" -type f | grep -E '\.(img|iso)$' | grep "$(date +%Y)"); do
+        OBJECT=$(echo "$NAME" | cut -d "." -f 3-)
+        [ ! -e "$3/$OBJECT" ] && echo "$OBJECT does not exist, is this a valid directory?" && exit 1
+        cp "$FILE" "$3"
+        NAME=$(basename "$FILE")
+        OBJECT=$(echo "$NAME" | cut -d "." -f 3-)
+        echo "deploying: $NAME (as $OBJECT)"
+        (cd "$3" && ln -sf "$NAME" "$OBJECT")
+      done
+      exit 0
+    fi
   fi
       
   matched=0
   for file in $(ls "$configs" | grep "$ext"); do
     name="$(basename "$file" | cut -d "." -f 1)"
-    screen="vfu-vm-$name"
+    screen="$screenbase$name"
     case "$1" in
       "$statuscmd")
         if [ "$matched" -eq 0 ]; then
@@ -73,7 +103,7 @@ EOF
   
   echo "invalid command"
   echo
-  echo "vfu [$startcmd|$statuscmd] <vm?>"
+  echo "vfu [$startcmd|$statuscmd|$deploycmd] <vm?>"
 }
 
-vfu "$1" "$2"
+vfu $@
