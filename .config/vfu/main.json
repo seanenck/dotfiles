@@ -25,14 +25,6 @@
     },
     {
       "mode": "nvme",
-      "path": "$CONFIG/usrbin.img"
-    },
-    {
-      "mode": "nvme",
-      "path": "$CONFIG/swap.img"
-    },
-    {
-      "mode": "nvme",
       "path": "$CONFIG/home.img"
     }
   ],
