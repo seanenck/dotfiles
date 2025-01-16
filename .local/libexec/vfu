@@ -60,13 +60,14 @@ EOF
       fi
       for FILE in $(find "$2" -type f | grep -E '\.(img|iso)$' | grep "$(date +%Y)"); do
         OBJECT=$(echo "$NAME" | cut -d "." -f 3-)
-        [ ! -e "$3/$OBJECT" ] && echo "$OBJECT does not exist, is this a valid directory?" && exit 1
+        [ ! -e "$3/$OBJECT" ] && echo "$OBJECT skipped, not deployed" && continue
         cp "$FILE" "$3"
         NAME=$(basename "$FILE")
         OBJECT=$(echo "$NAME" | cut -d "." -f 3-)
         echo "deploying: $NAME (as $OBJECT)"
         (cd "$3" && ln -sf "$NAME" "$OBJECT")
       done
+      echo "deployed"
       exit 0
     fi
   fi
