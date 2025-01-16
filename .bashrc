@@ -18,7 +18,7 @@ stty -ixon
 
 [ -e /etc/os-release ] && grep -q '^ID=debian' /etc/os-release && touch ~/.hushlogin
 
-mkdir -p "$HOME/.local/bin" "$HOME/.local/state" "$HOME/.local/ttypty" "$HOME/.local/share/bash-completion/completions"
+mkdir -p "$HOME/.local/bin" "$HOME/.local/state" "$HOME/.local/ttypty"
 export PATH="$HOME/.local/bin:$PATH"
 
 export EDITOR=nvim

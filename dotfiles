@@ -14,23 +14,17 @@ _install() {
   esac
 
   echo ".local/libexec/"
-  echo ".config/packages/"
   case $(uname) in
     "Linux")
-      [ "$EDITOR" = "nvim" ] && echo ".config/nvim/"
-      [ "$EDITOR" = "vim" ] && echo ".config/vim"
-      if command -v git > /dev/null; then
-        echo ".config/user-dirs.dirs"
-        echo ".config/git/dev.config"
-        echo ".config/git/config"
-        command -v delta >/dev/null && echo ".config/git/delta.config"
-      fi
+      echo ".config/nvim/"
+      echo ".config/user-dirs.dirs"
+      echo ".config/git/dev.config"
+      echo ".config/git/config"
+      command -v delta >/dev/null && echo ".config/git/delta.config"
       echo ".ssh/"
       ;;
     "Darwin")
-      if command -v git > /dev/null; then
-        echo ".gitconfig"
-      fi
+      echo ".gitconfig"
       VMDIR="$HOME/Library/com.ttypty/vms"
       if [ -d "$VMDIR" ]; then
         echo ".config/vfu/"
