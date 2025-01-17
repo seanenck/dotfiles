@@ -16,7 +16,7 @@ transcode-media() {
       "heic")
         tmpl="${tmpl}jpeg"
     	echo "formatting: $file"
-        sips --setProperty format jpeg --out "${tmpl}" "$file" | sed 's#^\s*##g' | sed 's#^#  #g'
+        sips --setProperty format jpeg --out "${tmpl}" "$file" 2>&1 | sed 's#^\s*##g' | sed 's#^#  #g'
         if [ -e "$tmpl" ]; then
           rm -f "$file"
         fi
