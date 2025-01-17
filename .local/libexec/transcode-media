@@ -8,15 +8,15 @@ transcode-media() {
     tmpl="$dt.$hashed."
     case "$ext" in
       "jpeg" | "jpg" | "mov")
-	to="$tmpl$ext"
-    	echo "renaming: $file"
-	echo "  -> $to"
+        to="$tmpl$ext"
+        echo "renaming: $file"
+        echo "  -> $to"
         mv "$file" "$to"
         ;;
       "heic")
         tmpl="${tmpl}jpeg"
     	echo "formatting: $file"
-        sips --setProperty format jpeg --out "${tmpl}" "$file" | sed "s#$HOME/#  sips -> #g"
+        sips --setProperty format jpeg --out "${tmpl}" "$file" | sed 's#^\s*#  #g'
         if [ -e "$tmpl" ]; then
           rm -f "$file"
         fi
