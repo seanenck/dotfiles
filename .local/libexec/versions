@@ -21,6 +21,7 @@ if [ "$FORCE" -eq 0 ] && [ -e "$LAST" ]; then
 fi
 
 _header() {
+  echo "processing: $1" >&2
   echo "$1:0:$1"
 }
 
@@ -88,4 +89,6 @@ if ! diff -u "$LAST" "$CACHE"; then
       mv "$CACHE" "$LAST"
       ;;
   esac
+else
+  touch "$LAST"
 fi
