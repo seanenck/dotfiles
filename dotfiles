@@ -13,9 +13,9 @@ _install() {
       ;;
   esac
 
-  echo ".local/libexec/"
   case $(uname) in
     "Linux")
+      echo ".config/pkgversions/"
       echo ".config/nvim/"
       echo ".config/user-dirs.dirs"
       echo ".config/git/dev.config"
@@ -24,6 +24,7 @@ _install() {
       echo ".ssh/"
       ;;
     "Darwin")
+      echo ".local/libexec/"
       echo ".gitconfig"
       VMDIR="$HOME/Library/com.ttypty/vms"
       if [ -d "$VMDIR" ]; then
