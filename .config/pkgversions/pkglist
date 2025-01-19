@@ -1,5 +1,5 @@
-golang/go
-neovim/neovim
-kovidgoyal/kitty
-rxhanson/Rectangle
-FilenCloudDienste/filen-cli
+check_version "golang/go"
+check_version "neovim/neovim"
+check_version "kovidgoyal/kitty"
+check_version "rxhanson/Rectangle"
+check_version "FilenCloudDienste/filen-cli"
