@@ -27,9 +27,16 @@ export GIT_EDITOR=$EDITOR
 export COMP_KNOWN_HOSTS_WITH_HOSTFILE=""
 
 export GOPATH="$HOME/.cache/go"
-[ -d "$HOME/.cache/staticcheck" ] && find "$HOME/.cache/staticcheck" -type f -mtime +1 -delete 
-[ -d "$HOME/.cache/gopls" ] && find "$HOME/.cache/gopls" -type f -mtime +1 -delete 
-[ -d "$HOME/.local/state/nvim" ] && find "$HOME/.local/state/nvim" -type f -mtime +1 -delete
+cleanup-caches() {
+  local dir
+  for dir in ".cache/staticcheck" ".cache/gopls" ".cache/go-build" ".local/state/nvim"; do
+    dir="$HOME/$dir"
+    [ -d "$dir" ] && find "$dir" -type f -mtime +1 -delete
+  done
+}
+
+cleanup-caches
+unset -f cleanup-caches
 
 if command -v delta > /dev/null; then
   export GIT_PAGER=delta
