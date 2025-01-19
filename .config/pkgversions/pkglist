@@ -1,5 +1,3 @@
-check_version "golang/go"
-check_version "neovim/neovim"
 check_version "kovidgoyal/kitty"
 check_version "rxhanson/Rectangle"
 check_version "FilenCloudDienste/filen-cli"
