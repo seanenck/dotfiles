@@ -70,7 +70,6 @@ unset CFG_LB
 
 source "$HOME/.bash_aliases"
 
-command -v dotfiles >/dev/null && dotfiles --check
 command -v git-motd >/dev/null && git motd
 
 PS1="[\u@\[\e[93m\]\h\[\e[0m\]:\W]$ "
