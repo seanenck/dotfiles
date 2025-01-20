@@ -16,9 +16,7 @@ _install() {
       echo ".config/pkgversions/"
       echo ".config/nvim/"
       echo ".config/user-dirs.dirs"
-      echo ".config/git/dev.config"
-      echo ".config/git/config"
-      command -v delta >/dev/null && echo ".config/git/delta.config"
+      echo ".config/git/"
       echo ".ssh/"
       ;;
     "Darwin")
