@@ -22,13 +22,13 @@ _install() {
     "Darwin")
       echo ".local/libexec/"
       echo ".gitconfig"
+      echo ".config/kitty/"
       VMDIR="$HOME/Library/com.ttypty/vms"
       if [ -d "$VMDIR" ]; then
         echo ".config/vfu/"
       fi
       ;;
   esac
-  [ -n "$TERMINAL_EMULATOR" ] && echo ".config/$TERMINAL_EMULATOR/"
 }
 
 DRYRUN=0

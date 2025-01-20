@@ -7,7 +7,6 @@ if [ -d "$comps" ]; then
 fi
 
 [ -d "$HOME/.local/bin" ] && path=("$HOME/.local/bin" $path)
-export TERMINAL_EMULATOR="kitty"
 
 export SECRET_ROOT="$HOME/Library/com.ttypty/secrets"
 "$HOME/.local/libexec/update-secrets"
