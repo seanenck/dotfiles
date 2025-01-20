@@ -1,7 +1,5 @@
 #!/bin/bash
 _install() {
-  command -v bat > /dev/null && echo ".config/bat/"
-  command -v lb > /dev/null && echo ".config/lockbox/"
   case "$(basename "$SHELL")" in
     "bash")
       echo ".bash_aliases"
@@ -35,26 +33,11 @@ _install() {
   [ -n "$TERMINAL_EMULATOR" ] && echo ".config/$TERMINAL_EMULATOR/"
 }
 
-[ "$(uname)" = "Linux" ] && DEPLOYED_FILES="$HOME/.cache/dotfiles/"
-[ "$(uname)" = "Darwin" ] && DEPLOYED_FILES="$HOME/Library/com.ttypty/dotfiles/"
-[ -z "$DEPLOYED_FILES" ] && echo "unable to determine deploy location" && exit 1
-DEPLOYED_FILES="${DEPLOYED_FILES}manifest"
-
-DEPLOY=0
 DRYRUN=0
-CHECK=0
 if [ -n "$1" ]; then
   case "$1" in
     "--dry-run")
       DRYRUN=1
-      ;;
-    "--check")
-      CHECK=1
-      ;;
-    "--deploy")
-      DEPLOY=1
-      mkdir -p "$(dirname "$DEPLOYED_FILES")"
-      rm -f "$DEPLOYED_FILES"
       ;;
     *)
       echo "unknown command: $1"
@@ -63,37 +46,17 @@ if [ -n "$1" ]; then
   esac
 fi
 
-if [ "$CHECK" -eq 1 ]; then
-  if [ -e "$DEPLOYED_FILES" ]; then
-    if sha256sum -c "$DEPLOYED_FILES" 2>&1 | grep -v ': OK$' | sed 's/^/  /g' | sed "s#$HOME/##g" | sed '1i\
-===
-' | sed '1i\
-[dotfiles]
-'; then
-      exit 1
-    fi
-    exit 0
-  fi
-fi
-
 DIR=""
 SET=""
 FILE=""
 for SET in $(_install | sort -u); do
   for FILE in $(find "$SET" -type f); do
-    if [ "$CHECK" -eq 1 ]; then
-      test ! -L "$HOME/$FILE" && echo "non-link dotfile: $FILE"
-      continue
-    fi
     [ "$DRYRUN" -eq 1 ] && echo "$FILE" | sed "s#HOME/##g"
     DIR=$(dirname "$FILE")
     [ "$DIR" != "." ] && mkdir -p "$HOME/$DIR"
     CMD="ln -sf"
     $CMD "$PWD/$FILE" "$HOME/$FILE"
-    [ "$DEPLOY" -eq 1 ] && sha256sum "$PWD/$FILE" >> "$DEPLOYED_FILES"
   done
 done
 
-[ "$DEPLOY" -eq 1 ] && sha256sum "$PWD/dotfiles" >> "$DEPLOYED_FILES"
-
-unset SET FILE DRYRUN CHECK
+unset SET DIR FILE DRYRUN

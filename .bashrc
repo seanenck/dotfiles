@@ -42,6 +42,7 @@ if command -v delta > /dev/null; then
   export GIT_PAGER=delta
   export DELTA_PAGER="less -R -c -X"
 fi
+command -v bat > /dev/null && export BAT_OPTS="-pp --theme 'Monokai Extended'"
 
 setup-sshagent() {
   local envfile
@@ -61,8 +62,11 @@ unset -f setup-sshagent
 
 export SECRET_ROOT="$HOME/.local/ttypty/secrets"
 [ -s "$SECRET_ROOT/secrets.env" ] && source "$SECRET_ROOT/secrets.env" && export SECRETS_ENV_FILE="$SECRET_ROOT/secrets.env"
-export CFG_LB="linux"
-[ -n "$SSH_CONNECTION" ] && export CFG_LB="linux.ssh" 
+
+CFG_LB="linux"
+[ -n "$SSH_CONNECTION" ] && CFG_LB="linux.ssh" 
+command -v lb > /dev/null && export LOCKBOX_CONFIG_TOML="$SECRET_ROOT/configs/$CFG_LB.toml"
+unset CFG_LB
 
 source "$HOME/.bash_aliases"
 
