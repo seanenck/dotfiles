@@ -58,13 +58,15 @@ EOF
         echo "unable to deploy while VMs are running"
         exit 1
       fi
-      for FILE in $(find "$2" -type f | grep -E '\.(img|iso)$' | grep "$(date +%Y)"); do
-        NAME=$(basename "$FILE")
-        OBJECT=$(echo "$NAME" | cut -d "." -f 3-)
-        [ ! -e "$3/$OBJECT" ] && echo "$OBJECT skipped, not deployed" && continue
-        cp "$FILE" "$3"
-        echo "deploying: $NAME (as $OBJECT)"
-        (cd "$3" && ln -sf "$NAME" "$OBJECT")
+      for TYPE in iso img; do
+        for FILE in $(find "$2" -type f -name "*.$TYPE" | grep "$(date +%Y)" | sort -r | head -n 1); do
+          NAME=$(basename "$FILE")
+          OBJECT=$(echo "$NAME" | cut -d "." -f 3-)
+          [ ! -e "$3/$OBJECT" ] && echo "$OBJECT skipped, not deployed" && continue
+          cp "$FILE" "$3"
+          echo "deploying: $NAME (as $OBJECT)"
+          (cd "$3" && ln -sf "$NAME" "$OBJECT")
+        done
       done
       echo "deployed"
       exit 0
