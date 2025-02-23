@@ -41,5 +41,8 @@
     enable = uncommitted
 [uncommitted]
     scan = true
+    prompt = true
+    matchPrompt = "^(private|upstream):*"
+    matchScan = "^(private|upstream):*"
     paths = ~/Workspace ~/.local/ttypty
     home = false
